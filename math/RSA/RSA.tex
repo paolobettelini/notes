@@ -1,0 +1,117 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{parskip}
+\usepackage{dsfont}
+\usepackage{fullpage}
+
+\title{RSA}
+\author{Paolo Bettelini}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Abstract}
+This document contains the main concepts about RSA cryptography.
+
+\pagebreak
+
+\tableofcontents
+\pagebreak
+
+\section{Definition and usage}
+
+
+RSA (Rivest-Shamir-Adleman, 1977) is a public/private key cryptosystem used for secure data transmission.
+
+There are a few key ideas about asymmetric cryptography algorithms.
+\\
+Consider a scenario where a \textit{sender} wants to send a message to a \textit{receiver}.
+\begin{itemize}
+	\item The public key is publicly distributed by the receiver
+	\item The private key is kept secret by the receiver
+	\item The sender encrypts the message with the public key
+	\item The encrypted message can only be decrypted using the private key
+\end{itemize}
+
+The private key is hard to obtain by an attacker because it means factoring a large numbers, which is a notoriously hard problem.
+
+\section{Secure data transmission}
+
+This algorithm is used in the first steps of a HTTPS connection.
+
+Scenario: a \textit{client} establishes a connection with a \textit{server}.
+\begin{enumerate}
+	\item The server sends its SSL certificate to the client, which contains the public key
+	\item The client generates a one-use session key
+	\item The client encrypts the session key with the public key and sends it to the server
+	\item The server decrypts the session key with its private key
+	\item The session key will be used to encrypt and decrypt each following packet
+\end{enumerate}
+
+Since the RSA algorithm is a rather slow process, it is used only in the first few steps of the connection to safely communicate a random session key.
+This key is used to encrypt and decrypt each following transmission using a symmetric algorithm, such as AES.
+
+\subsection{Hash guarantee}
+
+When the server sends a packet to the client, the packet could be modified by an attacker.
+
+To avoid this risk, the packet comes with a hash of its data.\\
+This hash is encrypted with the private key, and can only be decrypt with the public key.\\
+By doing so, the server is the only one able to create the right encrypted hash for the packet, meaning that if an attacker was to change the transmitted data, he wouldn't be able to encrypt the hash of the data with the private key.
+
+\pagebreak
+
+\section{Algorithm}
+
+\subsection{Finding the keys}
+
+To receive secure data the receiver must generate a public key and a private key.
+
+The algorithm uses 3 numbers \((n,e,d)\), which compose the public and private key.
+\begin{align*}
+	k_{public}\equiv(n,e)\\
+	k_{private}\equiv(n,d)
+\end{align*}
+
+Pick two prime numbers \(p\) and \(q\) such that their product is approximately \(N\) bits long.\\
+The length of the product is proportional to the security of the key.\\
+Common values are \(\{512;1024;2048;4096;\cdots\}\) bits.
+
+The number n is given by
+\[
+	n=p\cdot q
+\]
+Calculate \(\varphi(n)\)
+\[
+	\varphi(n)=(p-1)(q-1)
+\]
+Where \(\varphi(x)\) is the Euler's totient function.
+
+\(e\) is the first result of the equation
+\[
+	\gcd(e, \varphi(n))=1,
+	\quad	1<e<\varphi(n)
+\]
+\(d\) is the first result of the equation
+\[
+	de\equiv 1\quad (mod\,\varphi(n)),\quad 1<d<\varphi(n)
+\]
+
+\subsection{Encryption and decryption}
+
+The encryption is the process of transforming some \textit{data} into a \textit{ciphertext} and viceversa.
+\begin{align*}
+	data&\to ciphertext\\
+	ciphertext&\to data
+\end{align*}
+Considering the \textit{data} and the \textit{ciphertext} as a number
+\begin{align*}
+	ciphertext&=data^e\,mod\,n\\
+	data&=ciphertext^d\,mod\,n
+\end{align*}
+
+
+\end{document}
