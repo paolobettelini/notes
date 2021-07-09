@@ -1,0 +1,137 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{parskip}
+\usepackage{dsfont}
+\usepackage{fullpage}
+\usepackage{pgfplots}
+
+\title{Elliptic Curve Criptography}
+\author{Paolo Bettelini}
+\date{}
+
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\pagebreak
+
+\section{Elliptic Curves}
+
+\subsection{Definition}
+
+An elliptic curve \(E\) is a set of points such that
+\[
+	E=\{(x,y)\,|\,y^2=x^3+ax+b\}\cup\{O\},\quad 4a^3+27b^2\neq 0
+\]
+
+\begin{center}
+	\begin{tikzpicture}
+		\begin{axis}[
+			xmin=-6,
+			xmax=6,
+			ymin=-7,
+			ymax=7,
+			xlabel={\(x\)},
+			ylabel={\(y\)},
+			scale only axis,
+			axis lines=middle,
+			domain=-1.912931:3,
+			samples=100,
+			smooth,
+			clip=false,
+			axis equal image=true,
+			scale=0.9
+		]
+			\addplot [red] {sqrt(x^3+7)}
+				node[right, color=black] {\(y^2=x^3+7\)};
+			\addplot [red] {-sqrt(x^3+7)};
+		\end{axis}
+	\end{tikzpicture}
+\end{center}
+Where \(O\) is a point at infinity.
+
+The elliptic curve is symmetrical about the x-axis.\\
+The opposite of a point \(P\) is its reflection \(-P\).
+
+The coefficients \(a,b\) be part of
+\begin{itemize}
+	\item \(\mathbb{R}\) Real numbers
+	\item \(\mathbb{Q}\) Rational numbers
+	\item \(\mathbb{C}\) Complex numbers
+	\item \(\mathbb{Z}/p\mathbb{Z}\) Finite field
+\end{itemize}
+
+\subsection{Addition}
+
+Given two points \(P,Q\in E\) we can describe a unique third point.\\
+We take the line that intersects \(P\) and \(Q\), the opposite of the third intersection with the curve is out point.
+\[
+	P+Q=-R
+\]
+
+If \(P=Q\), the intersection line will be given by the tangent at that point.\\
+If \(P=-Q\), \(P+Q=O\).\\
+If \(P=-P\) (inflection point, the concavity of the curve changes) \(R=P\), \(P+P=-P=P\).\\
+We consider \(-O\) to be \(O\).
+
+The intersection line \(mx+q\) is given by
+\[
+	m=\frac{P_y-Q_y}{P_y-Q_x}
+\]
+and
+\[
+	q=P_y-mP_x
+\]
+
+\begin{center}
+	\begin{tikzpicture}
+		\begin{axis}[
+			xmin=-6,
+			xmax=6,
+			ymin=-6,
+			ymax=6,
+			xlabel={\(x\)},
+			ylabel={\(y\)},
+			scale only axis,
+			axis lines=middle,
+			domain=-1.912931:3,
+			samples=200,
+			smooth,
+		]
+			\addplot [draw=red] {sqrt(x^3+7)};
+			\addplot [draw=red] {-sqrt(x^3+7)};
+			\addplot [draw=blue][domain=-1.75:1.63] {0.617*x+2.361};
+
+			\draw [color=black, fill=black] (-1.75,1.281) circle (0.1) node [above left] {\(P\)};
+			\draw [color=black, fill=black] (0.5,2.669) circle (0.1) node [above] {\(Q\)};
+			\draw [color=black, fill=black] (1.631,3.367) circle (0.1) node [below right] {\(R\)};
+			\draw [dashed] (1.631,3.367) -- (1.631,-3.367);
+			\draw [color=black, fill=black] (1.631,-3.367) circle (0.1) node [right] {\(-R\)};
+		\end{axis}
+	\end{tikzpicture}
+\end{center}
+
+\subsection{Scalar Multiplication}
+
+Given a point \(P\in E\), multiplying \(kP\) where \(k\in\mathbb{Z}\) is equivalent to adding \(P\) to itself \(k\) times.\\
+Computing \(2P\) is the equivalent of \(P+P\) which can be calculated as \(P+Q=-R\).
+
+\section{Finite field}
+
+\section{Diffie Hellman}
+
+\subsection{Definition}
+
+Diffie–Hellman key exchange is a method of securely exchanging cryptographic keys over a public channel.
+[...]
+
+\subsection{Using elliptic curves}
+
+[...]
+TODO
+
+\end{document}
