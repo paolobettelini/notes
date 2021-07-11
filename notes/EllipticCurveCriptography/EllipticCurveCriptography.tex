@@ -155,4 +155,54 @@ Given the function \(f(G,k)\)
 Now the \textit{client} and \textit{server} share the same value of \(y\) since \(f(y_s,k_c)=f(y_c,k_s)\).\\
 The value of \(y\) is unknown to anyone who has traced the communication between the \textit{client} and the \text{server}.
 
+\pagebreak
+
+\section{Discrete logarithm problem}
+
+\subsection{Definition}
+
+Given an elliptic curve \(E\) and a point \(P\in E\), we consider
+\[
+	kP=Q,\quad
+	k\in\mathbb{Z}
+\]
+Given the value of \(P\) and \(Q\) it is a hard problem to find the value of \(k\).\\
+We can use many ECC multiplication algorithms to compute \(kP\), but reversing this operation for big values of \(k\) is not an easy task.
+
+Furthermore, given \(k_1\) and \(k_2\), we notice that
+\begin{align*}
+	k_1(k_2P)&=k_2(k_1P)\\
+	&=(k_1+k_2)P
+\end{align*}
+It does not matter if we first multiply \(P\) by \(k_1\) and then \(k_2\) or viceversa, \(P\) will always be multiplied \(k_1+k_2\) times.
+
+\subsection{Diffie–Hellman}
+
+We can use the scalar multiplication function with the Diffie–Hellman method.
+
+We define an elliptic curve \(E\) over a finite field \(\mathbb{F}_p\).
+
+The \textit{client} and the \textit{server} publicly establish the domain parameters
+\begin{itemize}
+	\item \(p\) The field that the curve is defined over \(\mathbb{F}_p\) (mod \(p\)).
+	\item \(a\) The parameter \(a\) of the elliptic curve equation.
+	\item \(b\) The parameter \(b\) of the elliptic curve equation.
+	\item \(G\) The generator, a fixed point \(G\in E\).
+	\item \(n\) The prime order of \(G\), the smallest prime such that \(kG=O\).\\In order words, the number of points that can be generated multiplying \(G\) with itself.
+	\item \(h\) The cofactor, the ratio between the amount of points in \(E\) and the prime order of \(G\).\\Ideally we would want \(h=1\), which means that the points are well-distribuited.
+\end{itemize}
+
+We then proceed with the Diffie–Hellman key exchange method.
+\begin{enumerate}
+	\item The \textit{client} generates a private key \(k_c\in \mathbb{Z}\) such that \(1\leq k_c\leq n-1\).
+	\item The \textit{server} generates a private key \(k_s\in \mathbb{Z}\) such that \(1\leq k_s\leq n-1\).
+	\item The \textit{client} computes a public key \(P_c=k_cG\).
+	\item The \textit{server} computes a public key \(P_s=k_sG\).
+	\item The two parts publicly exchange the public keys.
+	\item The \textit{client} computes \(R=k_cP_s\).
+	\item The \textit{server} computes \(R=k_cP_s\).
+\end{enumerate}
+
+Now both parts share the same secret point \(R\in E\).
+
 \end{document}
