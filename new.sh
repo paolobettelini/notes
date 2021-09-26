@@ -13,7 +13,6 @@ cat << EOF > "$1/$1.tex"
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{parskip}
-\usepackage{dsfont}
 \usepackage{fullpage}
 
 \title{$2}
