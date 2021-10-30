@@ -1,6 +1,6 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath}
+\usepackage{amsmath,stackengine}
 \usepackage{amssymb}
 \usepackage{parskip}
 \usepackage{fullpage}
@@ -8,6 +8,8 @@
 \title{Matrices}
 \author{Paolo Bettelini}
 \date{}
+
+\stackMath{}
 
 \begin{document}
 
@@ -98,7 +100,7 @@ Where \(a \cdot b\) denotes the `dot product' between a row and a column.
 
 \pagebreak
 
-\section{Linear transformation}
+\section{Linear Transformation}
 
 Multiplying a vector by a matrix produces another vector. This is a linear transformation.
 
@@ -175,7 +177,7 @@ The rotation matrices for a three-dimensional point are
 
 \pagebreak
 
-\section{Matrix transpose}
+\section{Matrix Transpose}
 
 The transpose operator is analogous to that of vectors
 
@@ -220,7 +222,7 @@ The original rows become the new columns and the original columns become the new
     \end{bmatrix}
 \]
 
-\section{Identify matrix}
+\section{Identify Matrix}
 
 The identify matrix is a square matrix with ones on the main diagonal and zeros elsewhere.
 This matrix is denoted as \(I_n\) where \(n\) is the length of the side.
@@ -246,7 +248,30 @@ When \(I_n\) is applied to a matrix or vector, the matrix or vector remains the 
 
 Every square matrix has a scalar called the determinant.
 
-Given a \(2 \times 2\) matrix \(A\)
+To compute the determinant of a matrix, we must define the minor of a matrix element. \\
+The minor of a matrix element is the part of the matrix remaining after excluding the row and the column containing that particular element.
+
+\[
+    \text{minor of }b=
+    \stackinset{c}{}{c}{1\baselineskip}{\rule{4.25\baselineskip}{0.5pt}}{
+    \stackinset{c}{0\baselineskip}{c}{}{\rule{0.5pt}{3.5\baselineskip}}{
+    \begin{bmatrix}
+        a & b & c \\
+        d & e & f \\
+        g & h & i
+    \end{bmatrix}}}
+    =
+    \begin{vmatrix}
+        d & f \\
+        g & i
+    \end{vmatrix}
+\]
+
+To compute the determinant of a matrix, for each element of a row or column, we multiply the element by the determinant of its minor.
+We then sum all of these values, but every even term has a negative sign.
+This is a recursive operation for \(n > 2\).
+
+For example, given a \(2 \times 2\) matrix \(A\)
 
 \[
     A=
@@ -267,25 +292,59 @@ its determinant is defined as
     \equiv ad-bc
 \]
 
-To compute the determinant of bigger matrices, we must define the minor of a matrix element. \\
-The minor of a matrix element is the part of the matrix remaining after excluding the row and the column containing that particular element.
+For the \(3 \times 3\) case
 
-% https://lapastillaroja.net/wp-content/uploads/2016/09/Intro_to_QC_Vol_1_Loceff.pdf
-
-% det(A^t)=det(A)
-
-\[
-    \text{minor of }b=
+\begin{align*}
+    B&=
     \begin{bmatrix}
         a & b & c \\
         d & e & f \\
         g & h & i
     \end{bmatrix}
-    =
+    \\
+    \det(B)=
     \begin{vmatrix}
+        a & b & c \\
+        d & e & f \\
+        g & h & i
+    \end{vmatrix}
+    &=
+    a \begin{vmatrix}
+        e & f \\
+        h & i
+    \end{vmatrix}
+    -b \begin{vmatrix}
         d & f \\
         g & i
     \end{vmatrix}
+    +c \begin{vmatrix}
+        d & e \\
+        g & h
+    \end{vmatrix}
+\end{align*}
+
+In general, we can define the determinant of a martrix using the Laplace expansion.
+
+\[
+    \det(A)=\sum_{j=1}^{n}{(-1)}^{i+j}A_{ij}\det(\text{minor of }A_{ij})
 \]
 
+where \(i\) is any row.
+
+Instead of expanding the series along a row we could expand it along any column. \\
+The result is always the same no matter what row or what column.
+
+The determinant has some properties, for instance
+
+\begin{align*}
+    \det(A^t)&=\det(A) \\
+    \det(AB)&=\det(A)\det(B)
+\end{align*}
+
+\pagebreak
+
+\section{Matrix Inverses}
+
 \end{document}
+% https://lapastillaroja.net/wp-content/uploads/2016/09/Intro_to_QC_Vol_1_Loceff.pdf
+% pag 82
