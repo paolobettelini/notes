@@ -1,0 +1,245 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{parskip}
+\usepackage{fullpage}
+
+\title{Matrices}
+\author{Paolo Bettelini}
+\date{}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\pagebreak
+
+\section{Definition}
+
+A matrix is a rectangular array of numbers or variables. \\
+Each matrix has a particular size espressed as \(n \times m\). \\
+A generic matrix could look like
+
+\[
+A = \begin{bmatrix} 
+        a_{1,1} & a_{1,2} & \cdots & a_{1,m} \\
+        a_{2,1} & a_{2,2} & \cdots & a_{2,m} \\
+        \vdots  & \vdots  & \ddots & \vdots  \\
+        a_{n,1} & a_{n,2} & \cdots & a_{n,m} 
+    \end{bmatrix}
+\]
+
+\section{Matrix Multiplication}
+
+Matrix multiplication is not a communitative operation.
+
+\[
+    AB\neq BA
+\]
+
+However it is an associative operation.
+
+\[
+    A(BC)=(AB)C
+\]
+
+Matrix multiplication can be computed only if the numer of columns of the first matrix is equal to the number of rows of the other matrix. \\
+This menas that we can compute the product of a \(n \times m\) matrix with a \(i \times j\) matrix, only if \(m=i\). \\
+The resulting product is a matrix with \(n\) rows and \(j\) columns.
+
+\[
+    (n \times m) \cdot (m \times j) = (n \times j)
+\]
+
+If we multiply a \(1 \times n\) matrix by a \(n \times 1\) one, the result is a \(1 \times 1\) matrix or a scalar.
+
+\[
+    \begin{bmatrix} 
+        a_1 & a_2 & \cdots & a_n
+    \end{bmatrix}
+    \cdot
+    \begin{bmatrix} 
+        b_1 \\
+        b_2 \\
+        \vdots \\
+        b_n
+    \end{bmatrix}
+    = \sum_{k=1}^{n} a_k b_k = a_1 b_1 + a_2 b_2 + \cdots + a_n b_n
+\]
+
+This operation is pretty much the same as the dot product in vectors.
+
+For bigger matrices, we apply the same `dot product' between every row and every column. \\
+Here is an example:
+
+\[
+    \begin{bmatrix} 
+        a_1 && a_2 && a_3 && a_4 \\
+        \mathbf{b_1} && \mathbf{b_2} && \mathbf{b_3} && \mathbf{b_4} \\
+        c_1 && c_2 && c_3 && c_4
+    \end{bmatrix}
+    \cdot
+    \begin{bmatrix} 
+        d_1 && \mathbf{e_1} \\
+        d_2 && \mathbf{e_2} \\
+        d_3 && \mathbf{e_3} \\
+        d_4 && \mathbf{e_4}
+    \end{bmatrix}
+    =
+    \begin{bmatrix} 
+        a \cdot d && a \cdot e \\
+        b \cdot d && \mathbf{b \cdot e} \\
+        c \cdot d && c \cdot e
+    \end{bmatrix}
+\]
+
+Where \(a \cdot b\) denotes the `dot product' between a row and a column.
+
+\pagebreak
+
+\section{Linear transformation}
+
+Multiplying a vector by a matrix produces another vector. This is a linear transformation.
+
+For instance, the standard rotation matrix in two dimensions hash the following form:
+
+\[
+    R(\theta)=
+    \begin{bmatrix} 
+        \cos\theta && -\sin\theta \\
+        \sin\theta && \cos\theta
+    \end{bmatrix}
+\]
+
+Multiplying a vector \(\vec{p}\in \mathbb{R}^2\) by \(R(\theta)\) will rotate the point around the origin depending on \(\theta\).
+
+\[
+    \vec{p}=
+    \begin{pmatrix} 
+        x \\
+        y
+    \end{pmatrix}
+\]
+
+We can multiply the rotational matrix by the column vector to obtain the new coordinates
+
+\[
+    \begin{bmatrix} 
+        x' \\
+        y'
+    \end{bmatrix}
+    =
+    \begin{bmatrix} 
+        \cos\theta && -\sin\theta \\
+        \sin\theta && \cos\theta
+    \end{bmatrix}
+    \cdot
+    \begin{bmatrix} 
+        x \\
+        y
+    \end{bmatrix}
+    =
+    \begin{bmatrix} 
+        x\cos\theta - y\sin\theta \\
+        x\sin\theta + y\cos\theta
+    \end{bmatrix}
+\]
+
+Note: the matrix must be positioned on the right of the vector, otherwise the dimensions would no longer be compatible.
+
+The rotation matrices for a three-dimensional point are
+
+\begin{align*}
+    R_x(\theta)&=
+    \begin{bmatrix} 
+        1 & 0 & 0 \\
+        0 & \cos\theta & -\sin\theta \\
+        0 & \sin\theta & \cos\theta
+    \end{bmatrix}
+    \\
+    R_y(\theta)&=
+    \begin{bmatrix} 
+        \cos\theta & 0 & \sin\theta \\
+        0 & 1 & 0 \\
+        -\sin\theta & 0 & \cos\theta
+    \end{bmatrix}
+    \\
+    R_z(\theta)&=
+    \begin{bmatrix} 
+        \cos\theta & -\sin\theta & 0 \\
+        \sin\theta & \cos\theta & 0 \\
+        0 & 0 & 1
+    \end{bmatrix}
+\end{align*}
+
+\pagebreak
+
+\section{Matrix transpose}
+
+The transpose operator is analogous to that of vectors
+
+\[
+    \begin{pmatrix}
+        a_1 & a_2 & \cdots & a_n
+    \end{pmatrix}^t
+    =
+    \begin{pmatrix}
+        a_1 \\
+        a_2 \\
+        \vdots \\
+        a_n
+    \end{pmatrix}
+\]
+
+This is actually a special case, where we apply the transpose operator to a matrix column.
+
+The transpose of a generic \(n \times m\) matrix results in a \(m \times n\) one.
+
+\[
+    {\left(A_{ij}\right)}^t=A_{ji}
+\]
+
+The transpose of a matrix is just a flipped version of the original matrix.
+We can transpose a matrix by switching its rows with its columns.
+The original rows become the new columns and the original columns become the new rows.
+
+\[
+    {\begin{bmatrix} 
+        a_{1,1} & a_{1,2} & \cdots & a_{1,m} \\
+        a_{2,1} & a_{2,2} & \cdots & a_{2,m} \\
+        \vdots  & \vdots  & \ddots & \vdots  \\
+        a_{n,1} & a_{n,2} & \cdots & a_{n,m} 
+    \end{bmatrix}}^t
+    =
+    \begin{bmatrix} 
+        a_{1,1} & a_{2,1} & \cdots & a_{m,1} \\
+        a_{1,2} & a_{2,2} & \cdots & a_{m,2} \\
+        \vdots  & \vdots  & \ddots & \vdots  \\
+        a_{1,n} & a_{2,n} & \cdots & a_{m,n} 
+    \end{bmatrix}
+\]
+
+\pagebreak
+
+\section{Identify matrix}
+
+The identify matrix is a square matrix with ones on the main diagonal and zeros elsewhere.
+This matrix is denoted as \(I_n\) where \(n\) is the length of the side.
+
+\[
+    I_n=
+    \begin{bmatrix}
+        1 & 0 & 0 & \cdots & 0 \\
+        0 & 1 & 0 & \cdots & 0 \\
+        0 & 0 & 1 & \cdots & 0 \\
+        \vdots & \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & 0 & \cdots & 1 \\
+    \end{bmatrix}
+\]
+
+When \(I_n\) is applied to a matrix or vector, the matrix or vector remains the same.
+
+% page 79
+
+\end{document}
