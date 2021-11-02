@@ -9,6 +9,9 @@
 \author{Paolo Bettelini}
 \date{}
 
+\newcommand{\braket}[1]{\left\langle#1\right\rangle}
+\newcommand{\innerprod}[2]{\braket{#1\,|\,#2}}
+
 \stackMath{}
 
 \begin{document}
@@ -32,7 +35,9 @@ A = \begin{bmatrix}
     \end{bmatrix}
 \]
 
-\section{Matrix Multiplication}
+\section{Operations with matrices}
+
+\subsection{Matrix multiplication}
 
 Matrix multiplication is not a communitative operation.
 
@@ -100,84 +105,7 @@ Where \(a \cdot b\) denotes the `dot product' between a row and a column.
 
 \pagebreak
 
-\section{Linear Transformation}
-
-Multiplying a vector by a matrix produces another vector. This is a linear transformation.
-
-For instance, the standard rotation matrix in two dimensions hash the following form:
-
-\[
-    R(\theta)=
-    \begin{bmatrix} 
-        \cos\theta && -\sin\theta \\
-        \sin\theta && \cos\theta
-    \end{bmatrix}
-\]
-
-Multiplying a vector \(\vec{p}\in \mathbb{R}^2\) by \(R(\theta)\) will rotate the point around the origin depending on \(\theta\).
-
-\[
-    \vec{p}=
-    \begin{pmatrix} 
-        x \\
-        y
-    \end{pmatrix}
-\]
-
-We can multiply the rotational matrix by the column vector to obtain the new coordinates
-
-\[
-    \begin{bmatrix} 
-        x' \\
-        y'
-    \end{bmatrix}
-    =
-    \begin{bmatrix} 
-        \cos\theta && -\sin\theta \\
-        \sin\theta && \cos\theta
-    \end{bmatrix}
-    \cdot
-    \begin{bmatrix} 
-        x \\
-        y
-    \end{bmatrix}
-    =
-    \begin{bmatrix} 
-        x\cos\theta - y\sin\theta \\
-        x\sin\theta + y\cos\theta
-    \end{bmatrix}
-\]
-
-Note: the matrix must be positioned on the right of the vector, otherwise the dimensions would no longer be compatible.
-
-The rotation matrices for a three-dimensional point are
-
-\begin{align*}
-    R_x(\theta)&=
-    \begin{bmatrix} 
-        1 & 0 & 0 \\
-        0 & \cos\theta & -\sin\theta \\
-        0 & \sin\theta & \cos\theta
-    \end{bmatrix}
-    \\
-    R_y(\theta)&=
-    \begin{bmatrix} 
-        \cos\theta & 0 & \sin\theta \\
-        0 & 1 & 0 \\
-        -\sin\theta & 0 & \cos\theta
-    \end{bmatrix}
-    \\
-    R_z(\theta)&=
-    \begin{bmatrix} 
-        \cos\theta & -\sin\theta & 0 \\
-        \sin\theta & \cos\theta & 0 \\
-        0 & 0 & 1
-    \end{bmatrix}
-\end{align*}
-
-\pagebreak
-
-\section{Matrix Transpose}
+\subsection{Matrix transpose}
 
 The transpose operator is analogous to that of vectors
 
@@ -222,7 +150,7 @@ The original rows become the new columns and the original columns become the new
     \end{bmatrix}
 \]
 
-\section{Identity Matrix}
+\subsection{Identity matrix}
 
 The identity matrix is a square matrix with ones on the main diagonal and zeros elsewhere.
 This matrix is denoted as \(I_n\) where \(n\) is the length of the side.
@@ -242,9 +170,42 @@ When \(I_n\) is applied to a matrix or vector, the matrix or vector remains the 
 
 % definition using the Kronecker delta
 
+\subsection{Matrix inverse}
+
+An \(n \times n\) matrix \(A\) is invertible (also nonsingular or nondegenerate),
+if there exists an \(n \times n\) matrix \(A^{-1}\) such that
+
+\[
+    AA^{-1}=I_n
+\]
+
+\begin{itemize}
+    \item If \(A\vec{v}=0\) for some non-zero vector \(\vec{v}\), then \(A\) has no inverse.
+    \item If \(A\) is invertible, \(\det(A)\neq 0\).
+    \item If \(A\vec{v}=0\) for some non-zero vector \(\vec{v}\), then \(\det(A)=0\).
+\end{itemize}
+
 \pagebreak
 
-\section{Determinants}
+\subsection{Matrix adjoint}
+
+Given a complex matrix \(A\) we form the transpose and then take the complex conjugate of every element in it.
+
+\[
+    A^\dagger \equiv {\left(A^t\right)}^{*}
+\]
+
+\subsection{Hermitian Matrix}
+
+A matrix \(M\) is called Hermitian if it is equal to its adjoint.
+
+\[
+    M^\dagger = M
+\]
+
+\pagebreak
+
+\subsection{Determinants}
 
 Every square matrix has a scalar called the determinant.
 
@@ -343,20 +304,141 @@ The determinant has some properties, for instance
 
 \pagebreak
 
-\section{Matrix Inverses}
+\section{Linear Transformation}
 
-An \(n \times n\) matrix \(A\) is invertible (also nonsingular or nondegenerate),
-if there exists an \(n \times n\) matrix \(A^{-1}\) such that
+\subsection{Definition}
+
+Multiplying a vector by a matrix produces another vector. This is a linear transformation. \\
+A linear transformation \(T\) moves a vector around the vector space and/or to another space.
 
 \[
-    AA^{-1}=I_n
+    \mathcal{V} \xrightarrow{T} \mathcal{W}
 \]
 
-\begin{itemize}
-    \item If \(A\vec{v}=0\) for some non-zerz vector \(\vec{v}\), then \(A\) has no inverse.
-    \item If \(A\) is invertible, \(\det(A)\neq 0\).
-    \item If \(A\vec{v}=0\) for some non-zero vector \(\vec{v}\), then \(\det(A)=0\).
-\end{itemize}
+The linear transformation has the following proprierties:
+
+\begin{enumerate}
+    \item \(T(c\vec{a})=cT\vec{a}\)
+    \item \(T(\vec{a} + \vec{b}) = T\vec{a} + T\vec{b}\)
+\end{enumerate}
+
+where \(c\) is a scalar of the vector space.
+
+\subsection{The basis}
+
+Given a basis for a vector space
+
+\[
+    \mathcal{B}=\{\vec{b}_1, \vec{b}_2, \ldots, \vec{b}_n\}
+\]
+
+we can expand a vector \(\vec{a}\) along this basis
+
+\[
+    \vec{a} = \sum_{k=1}^{n} \alpha_k \mathcal{B}_k
+\]
+
+We then apply a transformation \(T\) to the vector \(\vec{a}\) and use the proprierties of linear transformations
+
+\[
+    T\vec{a}
+    = T\sum_{k=1}^{n} \alpha_k \mathcal{B}_k
+    = \sum_{k=1}^{n} \alpha_k T\mathcal{B}_k
+\]
+
+This tells us that we only need \(T\mathcal{B}=\{T\vec{b}_1, T\vec{b}_2, \ldots, T\vec{b}_n\}\)
+to determine \(T\) applied to any vector on the vector space. Also, \(T\mathcal{B}\) completely determines the transformation \(T\).
+
+\pagebreak
+
+\subsection{Rotational matrix}
+
+The standard rotation matrix in two dimensions has the following form:
+
+\[
+    R(\theta)=
+    \begin{bmatrix} 
+        \cos\theta && -\sin\theta \\
+        \sin\theta && \cos\theta
+    \end{bmatrix}
+\]
+
+Multiplying a vector \(\vec{p}\in \mathbb{R}^2\) by \(R(\theta)\) will rotate the point around the origin depending on \(\theta\).
+
+\[
+    \vec{p}=
+    \begin{pmatrix} 
+        x \\
+        y
+    \end{pmatrix}
+\]
+
+We can multiply the rotational matrix by the column vector to obtain the new coordinates
+
+\[
+    \begin{bmatrix} 
+        x' \\
+        y'
+    \end{bmatrix}
+    =
+    \begin{bmatrix} 
+        \cos\theta && -\sin\theta \\
+        \sin\theta && \cos\theta
+    \end{bmatrix}
+    \cdot
+    \begin{bmatrix} 
+        x \\
+        y
+    \end{bmatrix}
+    =
+    \begin{bmatrix} 
+        x\cos\theta - y\sin\theta \\
+        x\sin\theta + y\cos\theta
+    \end{bmatrix}
+\]
+
+Note: the matrix must be positioned on the right of the vector, otherwise the dimensions would no longer be compatible.
+
+The rotation matrices for a three-dimensional point are
+
+\begin{align*}
+    R_x(\theta)&=
+    \begin{bmatrix} 
+        1 & 0 & 0 \\
+        0 & \cos\theta & -\sin\theta \\
+        0 & \sin\theta & \cos\theta
+    \end{bmatrix}
+    \\
+    R_y(\theta)&=
+    \begin{bmatrix} 
+        \cos\theta & 0 & \sin\theta \\
+        0 & 1 & 0 \\
+        -\sin\theta & 0 & \cos\theta
+    \end{bmatrix}
+    \\
+    R_z(\theta)&=
+    \begin{bmatrix} 
+        \cos\theta & -\sin\theta & 0 \\
+        \sin\theta & \cos\theta & 0 \\
+        0 & 0 & 1
+    \end{bmatrix}
+\end{align*}
+
+\subsection{Unitary operators}
+
+A linear transformation \(U\) is unitary if it preserves inner products
+
+\[
+    \innerprod{U\vec{a}}{U\vec{b}} = \innerprod{\vec{a}}{\vec{b}}
+\]
+
+This statement implies that the length of the vector is also preserved
+
+\[
+    ||U\vec{a}|| = ||\vec{a}||
+\]
+
+Operations such as rotation or phase change are unitarx operators.
 
 \end{document}
 
