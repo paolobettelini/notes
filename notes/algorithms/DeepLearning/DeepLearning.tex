@@ -3,6 +3,8 @@
 \usepackage{parskip}
 \usepackage{fullpage}
 \usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage{neuralnetwork}
 
 \title{Deep Learning}
 \author{Paolo Bettelini}
@@ -63,7 +65,24 @@ Given a threshold \(\theta=-b\)
     \end{cases}
 \end{align*}
 
-% *picture*
+\begin{center}
+	\begin{tikzpicture}
+		\begin{axis}[
+            scale=0.75,
+			xmin=-3,
+			xmax=3,
+			ymin=-3,
+			ymax=3,
+			xlabel={\(x\)},
+			ylabel={\(y\)},
+			scale only axis,
+			axis lines=middle
+		]
+        \addplot[blue, ultra thick, domain=-3:0] {0};
+        \addplot[blue, ultra thick, domain=0:2.5] {x};
+		\end{axis}
+	\end{tikzpicture}
+\end{center}
 
 \subsection{Sigmoid neurons}
 
@@ -77,7 +96,25 @@ Given a threshold \(\theta=-b\)
     y&=\frac{1}{1+e^{-z}}
 \end{align*}
 
-% *picture*
+\begin{center}
+	\begin{tikzpicture}
+		\begin{axis}[
+            scale=0.75,
+			xmin=-5,
+			xmax=5,
+			ymin=0,
+			ymax=1.25,
+			xlabel={\(x\)},
+			ylabel={\(y\)},
+			scale only axis,
+            smooth,
+            samples=50,
+			axis lines=middle
+		]
+        \addplot[blue, ultra thick, domain=-5:5] {1/(1+e^(-x))};
+		\end{axis}
+	\end{tikzpicture}
+\end{center}
 
 This function has smooth derivatives that change continuously. \\
 This characteristic makes the learning process easier.
@@ -89,13 +126,14 @@ This characteristic makes the learning process easier.
 \section{Types of learning}
 
 \subsection{Supervised learning}
-Each training consists of making the network guess the target output \(t\) for a certian input \(x\), given the difference between the correct target and the guess we tweak the network.
+Each training consists of making the network guess the target output \(t\) for a certain input \(x\), given the difference between the correct target and the guess we tweak the network.
 
 There are two type of supervised learning
 
 \subsubsection{Regression}
-The target output is a numeric value of a vector of values. 
-[\ldots]
+The target output is a numeric value of a vector of values. \\
+To describe the error we can compute the square difference between the target output \(t\) and the actual output \(y\) of the module. \\
+Often the value \(\frac{1}{2}{(t-y)}^2\) is used. The \(\frac{1}{2}\) coefficient is there to cancel the \(2\) out when differentiation is applied.
 
 \subsubsection{Classification}
 The target output is a class or label. Usually either \(1\) or \(0\).
@@ -103,8 +141,29 @@ There could also be multiple labels.
 [\ldots]
 
 \subsection{Reinforcement learning}
+The output is an action of a sequence of actions to maximize the sum of rewards.
+
 \subsection{Unsupervised learning}
+[\ldots]
 
+\pagebreak
 
+% lecture 2.1
+
+\section{Types of network architecture}
+
+\subsection{Feed-forward neural network}
+
+\begin{center}
+    \begin{neuralnetwork}[height=4]
+        \inputlayer[count=3, bias=false, title=Input\\units]
+        \hiddenlayer[count=4, bias=false, title=Hidden\\units] \linklayers{}
+        \outputlayer[count=2, title=Output\\units] \linklayers{}
+    \end{neuralnetwork}
+\end{center}
+
+\subsection{Recurrent network}
+
+\subsection{Symmetrically connected network}
 
 \end{document}
