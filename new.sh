@@ -5,9 +5,9 @@ if [ "$1" = "" ] || [ "$2" = "" ]; then
   exit
 fi
 
-mkdir $1
+mkdir "notes/$1"
 
-cat << EOF > "$1/$1.tex"
+cat << EOF > "notes/$1/$1.tex"
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
