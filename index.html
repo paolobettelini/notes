@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>paolobettelini-notes</title>
+
+    <style>
+        .wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            width: 50%;
+        }
+
+        .highlight {
+            background-color: yellow;
+        }
+
+        .center {
+            text-align: center;
+        }
+        
+        .scrollable {
+            overflow:auto;
+            overflow-x: hidden;
+            background-color: rgb(200, 200, 200);
+            border-radius: 10px;
+        }
+
+        .taglist {
+            margin-top: 0px;
+            padding-top: 0px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <div id="tagList" style="width:50%">
+            <div class="center">
+                <p>Search:
+                    <input class="center" type="text" placeholder="tags" id="searchInput" oninput="searchTags(this.value)">
+                </p>
+            </div>
+            <div class="scrollable" id="tagListContainer" style="height:250px;"></div>
+        </div>
+        <div id="addedTags" style="width:50%">
+            <p class="center">Added Tags:</p>
+            <div class="scrollable" id="addedTagsContainer" style="height:250px;"></div>
+        </div>
+    </div>
+    <div id="results"></div>
+
+    <h1 id="title" style="text-align: center;"></h1>
+        
+    <script>
+		var tagListContainer = el('tagListContainer');
+		var addedTagsContainer = el('addedTagsContainer');
+		var searchInput = el('searchInput');
+		var results = el('results');
+
+		var tags = {}; // { 'tagName':count, ... }
+		var addedTags = [];
+
+		var notes = [
+            {
+                "title": "Deep Learning",
+                "file": "DeepLearning.pdf",
+                "tags": [
+                    "deep learning",
+                    "machine learning",
+                    "artificial intelligence"
+                ]
+            },
+            {
+                "title": "Differentiation",
+                "file": "Differentiation.pdf",
+                "tags": [
+                    "calculus"
+                ]
+            },
+            {
+                "title": "Diffie Hellman Key-Exchange",
+                "file": "DiffieHellman.pdf",
+                "tags": [
+                    "cryptography",
+                    "diffie hellman"
+                ]
+            },
+            {
+                "title": "Elliptic Curve Criptography",
+                "file": "EllipticCurveCriptography.pdf",
+                "tags": [
+                    "elliptic curve",
+                    "cryptography",
+                    "diffie hellman"
+                ]
+            },
+            {
+                "title": "Euler\"s Formula",
+                "file": "EulerFormula.pdf",
+                "tags": [
+                    "complex analysis",
+                    "series",
+                    "trigonometry",
+                    "euler"
+                ]
+            },
+            {
+                "title": "Euler-Mascheroni constant",
+                "file": "EulerMascheroni.pdf",
+                "tags": [
+                    "series",
+                    "euler",
+                    "mascheroni"
+                ]
+            },
+            {
+                "title": "Fundamentals of Quantum Computing",
+                "file": "QuantumComputing.pdf",
+                "tags": [
+                    "quantum",
+                    "spin",
+                    "matrix",
+                    "vector",
+                    "linear transformation",
+                    "probability"
+                ]
+            },
+            {
+                "title": "Grover's Algorithm",
+                "file": "GroversAlgorithm.pdf",
+                "tags": [
+                    "quantum",
+                    "algorithms",
+                    "spin",
+                    "matrices",
+                    "grover"
+                ]
+            },
+            {
+                "title": "Hilbert Space",
+                "file": "HilbertSpace.pdf",
+                "tags": [
+                    "vector",
+                    "matrices",
+                    "hilbert"
+                ]
+            },
+            {
+                "title": "Integration",
+                "file": "Integration.pdf",
+                "tags": [
+                    "calculus"
+                ]
+            },
+            {
+                "title": "Limits",
+                "file": "Limits.pdf",
+                "tags": [
+                    "limit",
+                    "calculus"
+                ]
+            },
+            {
+                "title": "Matrices",
+                "file": "Matrices.pdf",
+                "tags": [
+                    "matrices",
+                    "linear transformation",
+                    "trigonometry"
+                ]
+            },
+            {
+                "title": "Ray-Sphere Intersection",
+                "file": "RaySphereIntersection.pdf",
+                "tags": [
+                    "ray tracing",
+                    "vector"
+                ]
+            },
+            {
+                "title": "Riemann Hypothesis",
+                "file": "RiemannHypothesis.pdf",
+                "tags": [
+                    "zeta function",
+                    "complex analysis",
+                    "series",
+                    "prime counting function",
+                    "number theory",
+                    "riemann",
+                    "euler"
+                ]
+            },
+            {
+                "title": "RSA",
+                "file": "RSA.pdf",
+                "tags": [
+                    "cryptography",
+                    "euler"
+                ]
+            },
+            {
+                "title": "Sorting Algorithms",
+                "file": "SortingAlgorithms.pdf",
+                "tags": [
+                    "sorting",
+                    "algorithms"
+                ]
+            },
+            {
+                "title": "Taylor Series",
+                "file": "TaylorSeries.pdf",
+                "tags": [
+                    "calculus",
+                    "taylor",
+                    "series"
+                ]
+            },
+            {
+                "title": "Fourier Analysis",
+                "file": "FourierAnalysis.pdf",
+                "tags": [
+                    "series",
+                    "trigonometry",
+                    "fourier"
+                ]
+            }
+        ];
+
+		// Shows every possible tag to add
+		function searchTags(name) {
+			name = name.toLowerCase();
+			let found = [];
+			let html = '';
+
+			for (var tagName in tags) {
+				if (!addedTags.includes(tagName) && tagName.includes(name)) {
+					found.push(tagName);
+				}
+			}
+			
+			found.sort((a, b) => tags[b] - tags[a]);
+				
+			found.forEach((tagName, _) => {
+				html += name == '' ?
+					tagElement(tagName, tags[tagName], tagName, true) :
+					tagElement(highlight(tagName, name), tags[tagName], tagName, true);
+			});
+			
+			tagListContainer.innerHTML = html;
+			updateResults();
+		}
+
+		function addTag(name, count) {
+			addedTagsContainer.innerHTML += tagElement(name, count, name, false);
+			addedTags.push(name);
+
+			// Refresh available tags
+			searchTags(searchInput.value);
+		}
+
+		function removeTag(name, el) {
+			addedTagsContainer.removeChild(el);
+			addedTags.splice(addedTags.indexOf(name), 1);
+			
+			searchTags(searchInput.value);
+		}
+
+		function updateResults() {
+			var list = [];
+
+			notes.forEach((doc, _) => {
+				var score = 0; // Importance of the tags relative to the document
+				// Higher the score, less important
+
+				var match = true; // if the document contains all the tags
+
+				addedTags.forEach((tagName, _) => {
+					if (match) {
+						var index = doc.tags.indexOf(tagName);
+
+						if (index != -1)
+							score += index + 1;
+						else
+							match = false;
+					}
+				});
+				
+				if (match) {
+					list.push({
+						doc: doc,
+						score: score
+					});
+				}
+			});
+
+			var html = list.length == 0 ? 'No results found' : 'Results: (' + list.length + ')';
+
+			list.sort((a, b) => {
+				var dif = a.score - b.score;
+				return dif == 0 ? a.doc.title > b.doc.title : dif; // sort by score, title
+			})
+
+
+			list.forEach((item, _) => {
+                let path = item.doc.file.replace('.pdf', '') + '/' + item.doc.file;
+				html += '<p><a href="notes/' + path + '">' + item.doc.title + ' (' + item.doc.file + ')</a></p>';
+				html += '<p>' + tagList(item.doc.tags) + '</p>'
+			})
+
+			results.innerHTML = html;
+		}
+
+		// highlights every occurence of value in the text via a css class
+		function highlight(text, value) {
+			return text.replaceAll(value, '<span class="highlight">' + value + '</span>');
+		}
+
+		function tagElement(content, count, id, addButton) {
+			return '<p>' + content + ' (' + count + ')<button onclick="' + (addButton ? 'addTag(\'' + id + '\', ' + count + ')' : 'removeTag(\'' + id + '\', this.parentElement)') + '">' + (addButton ? '+' : '-') + '</button></p>';
+		}
+		
+		function tagList(docTags) {
+			var str = '<p class="taglist">';
+		
+			for (var i = 0; i < docTags.length; i++) {
+				str += (addedTags.includes(docTags[i]) ? highlight(docTags[i], docTags[i]) : docTags[i]) + '&emsp;';
+			}
+		
+			return str + '</p>';
+		}
+
+		function el(id) {
+			return document.getElementById(id);
+		}
+
+		// Count each tag
+		notes.forEach((doc, _) => {
+			doc.tags.forEach((tag, _) => {
+				tags[tag] = tags[tag] == undefined ? 1 : tags[tag] + 1;
+			})
+		});
+
+		console.log(tags)
+
+		// Show all tags
+		searchTags('');
+	</script>
+</body>
+</html>
