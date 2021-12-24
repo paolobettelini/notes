@@ -14,6 +14,15 @@ cat << EOF > "notes/$1/$1.tex"
 \usepackage{amssymb}
 \usepackage{parskip}
 \usepackage{fullpage}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    pdftitle={$2},
+    pdfpagemode=FullScreen,
+}
 
 \title{$2}
 \author{Paolo Bettelini}
