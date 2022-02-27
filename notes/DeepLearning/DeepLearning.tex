@@ -1,11 +1,13 @@
 \documentclass{article}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{parskip}
 \usepackage{fullpage}
 \usepackage{graphicx}
 \usepackage{pgfplots}
 \usepackage{neuralnetwork}
 \usepackage{hyperref}
+\usepackage{tikz}
 
 \hypersetup{
     colorlinks=true,
@@ -163,6 +165,9 @@ The output is an action of a sequence of actions to maximize the sum of rewards.
 
 \subsection{Feed-forward neural network}
 
+The most common type of neural network is the feed-forward neural network. \\
+If there are more than one hidden layer it is called a \textit{deep} neural network.
+
 \begin{center}
     \begin{neuralnetwork}[height=4]
         \inputlayer[count=3, bias=false, title=Input\\units]
@@ -171,8 +176,169 @@ The output is an action of a sequence of actions to maximize the sum of rewards.
     \end{neuralnetwork}
 \end{center}
 
+At each layer there is a different representation of the initial input. \\
+Similar things may become less similar and less similar things may become more similar.
+
+In order to achieve this each layer must be a non-linear function of the activities in the previous layer.
+
 \subsection{Recurrent network}
 
+The same input might pass multiple times through the same neuron. \\
+They are very difficult to train and more biologically realistic, hence they are more powerful.
+
+Recurrent networks have the ability to remember information in their hidden state.
+
 \subsection{Symmetrically connected network}
+
+They are like recurrent network, but the connections between units are symmetrical
+(they have the same weight in both directions).
+
+Much easier to analyze than recurrent networks, but are more restricted in what they can do.
+
+Symmetrically connected networks without hidden units are called \textit{Hopfield networks}.
+
+% lecture 2.2
+
+\pagebreak
+
+\section{The perceptron}
+
+A perceptron is an example of a statistical pattern recognition system. \\
+The decision unit in a perceptron is a binary threadhold neuron.
+
+\subsection{Learning biases}
+
+We can learn the bias by treating it just like a regular weight,
+rather than having a separate learning rule.
+The bias is just the wight of an extra feature with the value of \(1\).
+
+% Perceptron
+\begin{center}
+    \tikzset{basic/.style={draw,fill=none,text badly centered,minimum width=3em}}
+    \tikzset{input/.style={basic,circle,minimum width=2.5em}}
+    \tikzset{weights/.style={basic,rectangle,minimum width=2em}}
+    \tikzset{functions/.style={basic,circle, minimum width=4em}}
+    \begin{tikzpicture}[scale=1]
+        % Draw input nodes
+        \foreach \h [count=\hi ] in {$x_2$,$x_1$,$1$} {
+            \node[input] (f\hi) at (0,\hi*1.25cm-1.5 cm) {\h};
+        }
+        % Dot dot dot ... x_n
+        \node[below=0.62cm] (idots) at (f1) {\vdots};
+        \node[input, below=0.62cm] (last_input) at (idots) {$x_n$};
+        % Draw summation node
+        \node[functions] (sum) at (4,0) {};
+        % Draw arrows from input nodes to summation node
+        \foreach \h [count=\hi ] in {$w_2$,$w_1$,$b$} {
+            \path (f\hi) -- node[weights] (w\hi) {\h} (sum);
+            \draw[->] (f\hi) -- (w\hi);
+            \draw[->] (w\hi) -- (sum);
+        }
+        % Dot dot dot ... w_n
+        \node[below=0.05cm] (wdots) at (w1) {\vdots};
+        \node[weights, below=0.45cm] (last_weight) at (wdots) {$w_n$};
+        % Add arrows for last node and last weight etc
+        \path[draw,->] (last_input) -- (last_weight);
+        \path[draw,->] (last_weight) -- (sum);
+    
+        % Labels
+        \node[above=1cm]  at (f3) {inputs};
+        \node[above=1cm] at (w3) {weights};
+    \end{tikzpicture}
+\end{center}
+
+\subsection{Convergence procedure}
+
+\begin{itemize}
+    \item Add an extra component with value \(1\) to each input vector.
+        This serves as the bias and is equivalent to the negative of the threshold.
+    \item Pick training cases such that every training case will keep getting picked.
+    \begin{itemize}
+        \item If the output unit incorrectly outputs a \(0\), add the input vector to the weight vector.
+        \item If the output unit incorrectly outputs a \(1\), subtract the input vector to the weight vector.
+        \item If the output unit is correct, don't do anything.
+    \end{itemize}
+\end{itemize}
+
+% lecture 2.3
+
+\subsection{Geometric view}
+
+Each training case defines a hyperplane (depending on the number of components) where
+for an \textit{input vector} there is a \textit{weigth vector} that can be either on the
+correct or wrong side of the hyperplane, depending on the resulting scalar product.
+The plane goes through the origin and is perpendicular to the input vector.
+
+Considering multiple training cases, the resulting vector shall be on all the good sides of all the hyperplanes.
+Such point may not exist. However, if such point exists, the convergence procedure is guaranteed to find it.
+
+% lecture 2.4
+
+%\subsection{Proof of convergence}
+
+%Here is the proof that the convergence procedure will get the right answer for all the training cases
+%if such vector exists.
+
+% lecture 2.5
+
+\subsection{Convergence}
+
+A region in the hyperspace where all the vectors in the regon satisfy all the training case exists if the dataset is linearly separable.
+\\
+This means that for example, considering a two-dimensional binary input vector, a perceptron cannot tell if the inputs are the same
+(the XOR problem). This would lead to four inequalities that are impossible to satisfy.
+
+\pagebreak
+
+% lecture 3.1
+
+\section{Linear neuron}
+
+\subsection{Definition}
+
+The perceptron learning procedure cannot extended to an arbitrary number of hidden layers. \\
+
+The simplest example is a linear neuron with a squared error measure.
+The goal is to minimize the errore over all training cases, rather than the weight vector to be in a given region.
+The output of a linear neuron is a real value output which is a weighted sum of its input.
+
+\[
+    y=\sum_i w_i x_i
+\]
+
+For each training case we tweak each weight
+
+\[
+    \Delta w_i=\epsilon x_i(t-y)
+\]
+
+where \(\epsilon\) is some \textit{learning rate}, \(y\) is the guess of the network and \(t\) is the correct target output.
+
+There is no guarantee with this kind of learning that the single weights will get better.
+
+\subsection{The delta rule}
+
+We can define the error of the network as the squared residuals summed over all training cases
+
+\[
+    E=\frac{1}{2} \sum_{n\in \text{traning}} (t_n - y_n)^2
+\]
+
+Now differentiate to get error derivatives for weights. The purpose of the \(\frac{1}{2}\) term is to get a nice differentiation.
+
+\begin{align*}
+    \frac{\partial E}{\partial w_i}&=
+    \frac{1}{2} \sum_n \frac{\partial y_n}{\partial w_i} \frac{dE_n}{dy_n} \\
+    &= - \sum_n x_{ni} (t_n-y_n)
+\end{align*}
+
+How the error changes as we change the weights, will be how the output changes as we change the weights
+times how the error changes as the change the output.
+
+So now the change of a weight is
+
+\[
+    \Delta w_i=-\epsilon \frac{\partial E}{\partial w_i} = \sum_n \epsilon x_{in}(t_n-y_n)
+\]
 
 \end{document}
