@@ -9,7 +9,6 @@ mkdir "notes/$1"
 
 cat << EOF > "notes/$1/$1.tex"
 \documentclass{article}
-\usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{parskip}
@@ -20,7 +19,7 @@ cat << EOF > "notes/$1/$1.tex"
     colorlinks=true,
     linkcolor=black,
     urlcolor=blue,
-    pdftitle={$2},
+    pdftitle={$1},
     pdfpagemode=FullScreen,
 }
 
