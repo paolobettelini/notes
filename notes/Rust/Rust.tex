@@ -75,4 +75,144 @@ let result = loop {
 };
 \end{lstlisting}
 
+\subsection{Labels}
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+'outer: loop {
+    'inner: loop {
+        // This breaks the inner loop
+        break;
+        // This breaks the outer loop
+        break 'outer;
+    }
+}
+\end{lstlisting}
+
+\subsection{Returning from labelled loops}
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+let mut counter = 0;
+
+let result = 'outer: loop {
+    counter += 1;
+
+    if counter == 10 {
+        break 'outer counter;
+    }
+};
+\end{lstlisting}
+
+\section{Pattern Matching}
+
+\subsection{Basic}
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+    let x = 5;
+    
+    match x {
+      // matching literals
+      1 => println!("one"),
+      // matching multiple patterns
+      2 | 3 => println!("two or three"),
+      // matching ranges
+      4..=9 => println!("within range"),
+      // matching named variables
+      x => println!("{}", x),
+      // default case (ignores value)
+      _ => println!("default Case")
+    }
+\end{lstlisting}
+
+\pagebreak
+
+\subsection{Destructuring}
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+    struct Point {
+        x: i32,
+        y: i32,
+      }
+      
+      let p = Point { x: 0, y: 7 };
+      
+      match p {
+        Point { x, y: 0 } => {
+          println!("{}" , x);
+        },
+        Point { x, y } => {
+          println!("{} {}" , x, y);
+        },
+      }
+      
+      enum Shape {
+        Rectangle { width: i32, height: i32 },
+        Circle(i32),
+      }
+      
+      let shape = Shape::Circle(10);
+      
+      match shape {
+        Shape::Rectangle { x, y } => //...
+        Shape::Circle(radius) => //...
+      }
+\end{lstlisting}
+
+\subsection{Ignoring values}
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+    struct SemVer(i32, i32, i32);
+
+    let version = SemVer(1, 32, 2);
+    
+    match version {
+      SemVer(major, _, _) => {
+        println!("{}", major);
+      }
+    }
+    
+    let numbers = (2, 4, 8, 16, 32);
+    
+    match numbers {
+      (first, .., last) => {
+        println!("{}, {}", first, last);
+      }
+    }
+\end{lstlisting}
+
+\pagebreak
+
+\subsection{Match guards}
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+    let num = Some(4);
+
+    match num {
+      Some(x) if x < 5 => println!("less than five: {}", x),
+      Some(x) => println!("{}", x),
+      None => (),
+    }
+\end{lstlisting}
+
+\subsection{@ bindings}
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+    struct User {
+        id: i32
+      }
+          
+      let user = User { id: 5 };
+          
+      match user {
+        User {
+          id: id_variable @ 3..=7,
+        } => println!("id: {}", id_variable),
+        User { id: 10..=12 } => {
+          println!("within range");
+        },
+        User { id } => println!("id: {}", id),
+      }
+\end{lstlisting}
+
 \end{document}
+
+% https://docs.google.com/document/d/1kQidzAlbqapu-WZTuw4Djik0uTqMZYyiMXTM9F21Dz4/edit
