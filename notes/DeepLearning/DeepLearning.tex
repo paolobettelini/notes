@@ -321,7 +321,7 @@ There is no guarantee with this kind of learning that the single weights will ge
 We can define the error of the network as the squared residuals summed over all training cases
 
 \[
-    E=\frac{1}{2} \sum_{n\in \text{traning}} (t_n - y_n)^2
+    E=\frac{1}{2} \sum_{n\in \text{traning}} {(t_n - y_n)}^2
 \]
 
 Now differentiate to get error derivatives for weights. The purpose of the \(\frac{1}{2}\) term is to get a nice differentiation.
@@ -338,7 +338,56 @@ times how the error changes as the change the output.
 So now the change of a weight is
 
 \[
-    \Delta w_i=-\epsilon \frac{\partial E}{\partial w_i} = \sum_n \epsilon x_{in}(t_n-y_n)
+    \Delta w_i=-\epsilon \frac{\partial E}{\partial w_i} = \epsilon \sum_n x_{in}(t_n-y_n)
 \]
+
+% lecture 3.2
+
+% lecture 3.3
+
+\pagebreak
+
+\section{Logistic neuron}
+
+\subsection{Learning weights}
+
+We can generalize the learning rule for a linear neuron to a logistic neuron, which is a non-linear neuron.
+\\
+\begin{align*}    
+    z&=b+\sum_{i} x_i w_i \\
+    y&=\frac{1}{1+e^{-z}}
+\end{align*}
+
+First we need to compute the derivatives of \(z\) with respect to the inputs \(x_i\), weights \(w_i\) and the output \(y\).
+
+\[
+    \frac{\partial z}{\partial w_i} = x_i,
+    \quad
+    \frac{\partial z}{\partial x_i} = w_i,
+    \quad
+    \frac{dy}{dz}=y(1-y)
+\]
+
+Now, using the chain rule, we can compute the derivative of the output with respect to \(w_i\)
+
+\[
+    \frac{\partial y}{\partial w_i}=\frac{\partial z}{\partial w_i}\frac{dy}{dz}=x_i y(1-y)
+\]
+
+Which means that the error \(E\) changes with respect to \(w_i\) as
+
+\[
+    \frac{\partial E}{\partial w_i} =
+    \sum_n \frac{\partial y_n}{\partial w_i} \frac{\partial E}{\partial y_n} =
+    -\sum_n x_{in} y_n (1-y_n)(t_n-y_n)
+\]
+
+Therefore the learning rule for a logistic neuron is
+
+\[
+    \Delta x_i = -\epsilon \frac{\partial E}{\partial w_i}=\epsilon \sum_n x_{in} y_n (1-y_n)(t_n-y_n)
+\]
+
+% lecture 3.4
 
 \end{document}
