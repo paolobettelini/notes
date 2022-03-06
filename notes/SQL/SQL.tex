@@ -1,0 +1,187 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{parskip}
+\usepackage{fullpage}
+\usepackage{hyperref}
+\usepackage{xcolor,listings}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    pdftitle={SQL},
+    pdfpagemode=FullScreen,
+}
+
+\title{SQL}
+\author{Paolo Bettelini}
+\date{}
+
+\lstdefinestyle{sql} {
+    language=SQL,
+  	backgroundcolor=\color{lightgray},
+  	breakatwhitespace=false,
+    basicstyle=\footnotesize,
+  	breaklines=true,
+  	captionpos=b,
+    commentstyle=\color{dkgreen},
+  	deletekeywords={...},
+  	escapeinside={\%*}{*)},
+  	extendedchars=true,
+  	keepspaces=true,
+  	keywordstyle=\color{blue},
+  	morekeywords={*,modify,MODIFY,...},
+  	numbers=none,
+  	showspaces=false,
+  	showstringspaces=false, 
+  	showtabs=false,
+  	stepnumber=1,
+}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\pagebreak
+
+\section{Users}
+
+\begin{lstlisting}[style=sql]
+    CREATE USER 'username'@'localhost' IDENTIFIED BY 'password';
+    % grant all + can grant
+    GRANT ALL ON database.* TO 'username'@'localhost' [WITH GRANT OPTION];
+    % grant single actions
+    GRANT SELECT, UPDATE, INSERT, DELETE ON database.table TO 'username'@'localhost';
+    % for triggers
+    GRANT EXECUTE ON database.* TO 'username'@'localhost';
+    % grant action on column
+    GRANT UPDATE(column) ON database.table TO 'username'@'localhost';
+\end{lstlisting}
+
+\section{Triggers}
+
+\begin{lstlisting}[style=sql]
+    DELIMITER //
+    CREATE
+    [DEFINER = <user>]
+    TRIGGER triggerName
+    BEFORE [INSERT | UPDATE | DELETE]
+    ON some_table
+    FOR EACH ROW BEGIN
+        IF  NEW.field != 'P' AND NEW.field != 'D' THEN
+            SET NEW.ruolo = 'NV';
+        END IF;
+    END;
+    // 
+    DELIMITER ;
+\end{lstlisting}
+
+\section{Cursors}
+
+\begin{lstlisting}[style=sql]
+    BEGIN
+        % variables
+        
+        DECLARE done INT DEFAULT FALSE;
+        DECLARE cur CURSOR FOR SELECT id, nome, cognome FROM persone;
+        DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+        OPEN cur;
+        iter: WHILE NOT done DO
+            FETCH cur INTO var1, var2, var3;
+
+            % ...
+        END WHILE iter;
+    END;
+\end{lstlisting}
+
+\section{Procedures}
+
+\subsection{Definition}
+
+\begin{lstlisting}[style=sql]
+    DELIMITER //
+    CREATE PROCEDURE addDummyData()
+    BEGIN
+        INSERT INTO dummyTable VALUES ();
+    END
+    //
+    DELIMITER ;
+\end{lstlisting}
+
+\begin{lstlisting}[style=sql]
+    DELIMITER //
+    CREATE PROCEDURE log(var1 VARCHAR(25), var2 VARCHAR(25), var3 VARCHAR(25))
+    BEGIN
+        INSERT INTO dummyTable (field1, field2, field3) VALUES (var1, var2, var3);
+    END;
+    // DELIMITER ;
+\end{lstlisting}
+
+\begin{lstlisting}[style=sql]
+    DELIMITER //
+    CREATE PROCEDURE doSomething(IN inVar INT, OUT outVar INT)
+    BEGIN    
+        SELECT COUNT(id) INTO outVar FROM dummyTable WHERE field = inVar;
+    END;
+    //
+    DELIMITER ;
+\end{lstlisting}
+
+\subsection{Call}
+
+\begin{lstlisting}[style=sql]
+    CALL addDummyData();
+    CALL doSomething(42, @res);
+    SELECT @res;
+\end{lstlisting}
+
+\section{Events}
+
+\begin{lstlisting}[style=sql]
+    CREATE EVENT eventName
+    ON SCHEDULE EVERY 1 SECOND
+    COMMENT 'Adds data'
+    DO
+        CALL someProcedure();
+\end{lstlisting}
+
+\begin{lstlisting}[style=sql]
+    CREATE EVENT eventName
+    ON SCHEDULE EVERY 1 SECOND
+    DO BEGIN
+        DELETE FROM dummyTable;
+    END
+\end{lstlisting}
+
+\section{Functions}
+
+\subsection{Definition}
+
+\begin{lstlisting}[style=sql]
+    DELIMITER //
+    CREATE FUNCTION countSomething (name VARCHAR(25))
+    RETURNS INT
+    [DETERMINISTIC]
+    [READS SQL DATA]
+    BEGIN
+        RETURN (SELECT COUNT(*) FROM dummyTable WHERE user_name = name);
+    END;
+    // DELIMITER ;
+\end{lstlisting}
+
+\subsection{Call}
+
+\begin{lstlisting}[style=sql]
+    SELECT countSomething('Paolo');
+\end{lstlisting}
+
+\pagebreak
+
+\end{document}
+
+
+
+
+
