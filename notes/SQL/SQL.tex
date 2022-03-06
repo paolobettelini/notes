@@ -49,6 +49,8 @@
 
 \begin{lstlisting}[style=sql]
     CREATE USER 'username'@'localhost' IDENTIFIED BY 'password';
+    % access from everywhere
+    CREATE USER 'username'@'\%' IDENTIFIED BY 'password';
     % grant all + can grant
     GRANT ALL ON database.* TO 'username'@'localhost' [WITH GRANT OPTION];
     % grant single actions
@@ -96,7 +98,7 @@
     END;
 \end{lstlisting}
 
-\section{Procedures}
+\section{Stored Procedures}
 
 \subsection{Definition}
 
@@ -139,6 +141,17 @@
 
 \section{Events}
 
+\subsection{Enable}
+
+\begin{lstlisting}[style=sql]
+    SET GLOBAL event_scheduler = ON;
+    SET @@global.event_scheduler = ON;
+    SET GLOBAL event_scheduler = 1;
+    SET @@global.event_scheduler = 1;
+\end{lstlisting}
+
+\subsection{Definition}
+
 \begin{lstlisting}[style=sql]
     CREATE EVENT eventName
     ON SCHEDULE EVERY 1 SECOND
@@ -154,6 +167,18 @@
         DELETE FROM dummyTable;
     END
 \end{lstlisting}
+
+\begin{lstlisting}[style=sql]
+    CREATE EVENT eventName
+    ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 10 SECOND
+    DO BEGIN
+        DELETE FROM dummyTable;
+    END
+\end{lstlisting}
+
+ON SCHEDULE EVERY interval STARTS timestamp [+INTERVAL] ENDS timestamp [+INTERVAL]
+
+\pagebreak
 
 \section{Functions}
 
