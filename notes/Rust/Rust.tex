@@ -61,6 +61,8 @@ let person = ("Paolo", "Bettelini", 18);
 let status: (bool, (u128, i32)) = (true, (1u128, 2));
 \end{lstlisting}
 
+\section{Loops}
+
 \subsection{Returning from loops}
 
 \begin{lstlisting}[language=Rust, style=boxed, numbers=none]
@@ -195,22 +197,102 @@ let result = 'outer: loop {
 
 \subsection{@ bindings}
 
+Bind value to a name
+
 \begin{lstlisting}[language=Rust, style=boxed, numbers=none]
-    struct User {
-        id: i32
-      }
-          
-      let user = User { id: 5 };
-          
-      match user {
-        User {
-          id: id_variable @ 3..=7,
-        } => println!("id: {}", id_variable),
-        User { id: 10..=12 } => {
-          println!("within range");
-        },
-        User { id } => println!("id: {}", id),
-      }
+  match beaufort() {
+    v @ 0..1    => println!("Calm : {} km/h", v),
+    v @ 1..=5   => println!("Light Air : {} km/h", v),
+    v @ 5..=11  => println!("Light Breeze : {} km/h", v),
+    v @ 11..=19 => println!("Gentle Breeze : {} km/h", v)
+  }
+\end{lstlisting}
+
+\pagebreak
+
+\section{Option}
+
+A function that may fail might enclose its return value in an
+\textbf{Option} enum, to notify wheter the action was successful.
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+  fn sqrt(v: f64) -> Option<(f64, f64)> {
+    if v < 0.0 {
+      return None;
+    }
+
+    let sqrt = v.sqrt();
+    Some((sqrt, -sqrt))
+  }
+\end{lstlisting}
+
+\section{Result}
+
+\subsection{Definition}
+
+The \textbf{Result} enum is similar to \textbf{Option} but it
+specifies why the function has failed.
+
+When the function doesn't really need to return anything other than the
+\textbf{Result} status, \textbf{()} can be used.
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+  enum ErrorType {
+    NegativeBase,
+    NegativeArgument,
+    BaseOne
+  }
+  
+  fn log(base: f64, arg: f64) -> Result<f64, ErrorType> {
+    if base <= 0.0 {
+      return Err(ErrorType::NegativeBase);
+    }
+
+    if base == 1.0 {
+      return Err(ErrorType::BaseOne);
+    }
+
+    if arg <= 0.0 {
+      return Err(ErrorType::NegativeArgument);
+    }
+
+    let result = arg.log(base);
+    Ok(result)
+  }
+\end{lstlisting}
+
+\pagebreak
+
+\subsection{? operator}
+
+The \textbf{?} operator is syntax sugar for \textbf{Result} handling. \\
+This operator can be placed at the end of a \textbf{Result} type.
+If the result is an error, the functions returns it, otherwise unwraps
+its value.
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+  fn log(base: f64, arg: f64) -> Result<f64, ErrorType> { ... }
+
+  fn something() -> Result<f64, ErrorType> {
+    let v = match log(2.718, 3.14) {
+      Ok(v) => v,
+      Err(e) => return Err(e)
+    };
+
+    // use `v`
+  }
+\end{lstlisting}
+
+can be written as
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+  fn log(base: f64, arg: f64) -> Result<f64, ErrorType> { ... }
+
+  fn something() -> Result<f64, ErrorType> {
+    let v = log(2.718, 3.14)?;
+
+    // use `v`
+  }
 \end{lstlisting}
 
 \end{document}
