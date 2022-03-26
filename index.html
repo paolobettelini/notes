@@ -7,37 +7,111 @@
     <title>paolobettelini-notes</title>
 
     <style>
+        * {
+            background: #282828;
+            color: #ebdbb2;
+            font-family: monospace;
+        }
+
+        html {
+            scrollbar-width: none;
+        }
+
+        input {
+            border: none;
+            background-color: #3a3939;
+        }
+
+        button {
+            border: none;
+        }
+        
+        button:hover {
+            cursor: pointer;
+        }
+        
+        .plus {
+            color: aquamarine;
+        }
+
+        .minus {
+            color: tomato;
+        }
+
+        .wrapper div {
+            width: 25%;
+        }
+
         .wrapper {
             display: flex;
-            flex-wrap: wrap;
-            width: 50%;
+
+            justify-content: center;
+            align-items: center;
         }
 
         .highlight {
-            background-color: yellow;
+            background-color: #ebdbb2;
+            color: #282828;
         }
 
         .center {
             text-align: center;
         }
-        
+
         .scrollable {
-            overflow:auto;
+            overflow: auto;
             overflow-x: hidden;
-            background-color: rgb(200, 200, 200);
-            border-radius: 10px;
+            scrollbar-width: none;
+            
+            border-radius: 20px;
         }
 
-        .taglist {
-            margin-top: 0px;
-            padding-top: 0px;
+        .scrollable, .scrollable p, .scrollable p button {
+            background-color: #3a3939;
+        }
+
+        #tagList {
+            padding-right: 5px;
+        }
+
+        #addedTags {
+            padding-left: 5px;
+        }
+        
+        #tagList, #addedTags {
+            width: 25vw;
+        }
+
+        .scrollable p {
+            padding-left: 10px;
+        }
+
+        .wrapper div > * {
+            width: 100%;
+        }
+        
+        hr {
+            width: 75%;
+        }
+
+        #results {
+            padding-left: 25%;
+        }
+
+        p {
+            font-size: 16px;
+        }
+
+        #title a {
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
+    <h1 id="title" class="center"><a href="https://github.com/paolobettelini/notes">Paolo Bettelini / Notes</a></h1>
 
     <div class="wrapper">
-        <div id="tagList" style="width:50%">
+        <div id="tagList">
             <div class="center">
                 <p>Search:
                     <input class="center" type="text" placeholder="tags" id="searchInput" oninput="searchTags(this.value)">
@@ -45,11 +119,15 @@
             </div>
             <div class="scrollable" id="tagListContainer" style="height:250px;"></div>
         </div>
-        <div id="addedTags" style="width:50%">
+        <div id="addedTags">
             <p class="center">Added Tags:</p>
             <div class="scrollable" id="addedTagsContainer" style="height:250px;"></div>
         </div>
     </div>
+
+    <br>
+    <hr>
+
     <div id="results"></div>
 
     <h1 id="title" style="text-align: center;"></h1>
@@ -353,7 +431,7 @@
                 }
             });
 
-            var html = list.length == 0 ? 'No results found' : 'Results: (' + list.length + ')';
+            var html = '<p>' + (list.length == 0 ? 'No results found' : 'Results: (' + list.length + ')') + '</p>';
 
             list.sort((a, b) => {
                 var dif = a.score - b.score;
@@ -376,7 +454,7 @@
         }
 
         function tagElement(content, count, id, addButton) {
-            return '<p>' + content + ' (' + count + ')<button onclick="' + (addButton ? 'addTag(\'' + id + '\', ' + count + ')' : 'removeTag(\'' + id + '\', this.parentElement)') + '">' + (addButton ? '+' : '-') + '</button></p>';
+            return '<p>' + content + ' (' + count + ')<button class="' + (addButton ? 'plus' : 'minus') + '" onclick="' + (addButton ? 'addTag(\'' + id + '\', ' + count + ')' : 'removeTag(\'' + id + '\', this.parentElement)') + '">' + (addButton ? '+' : '-') + '</button></p>';
         }
         
         function tagList(docTags) {
