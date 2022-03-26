@@ -105,6 +105,17 @@
         #title a {
             text-decoration: none;
         }
+
+        #copy-icon:hover {
+            cursor: pointer;
+        }
+
+        /* Tooltip - Copy to clipboard */
+        #tooltip {
+            font-size: 10px;
+            margin: 0;
+            padding: 0;
+        }
     </style>
 </head>
 <body>
@@ -120,7 +131,15 @@
             <div class="scrollable" id="tagListContainer" style="height:250px;"></div>
         </div>
         <div id="addedTags">
-            <p class="center">Added Tags:</p>
+            <div class="center">
+                <p>Added Tags:
+                    <!-- Tooltip - Copied to clipboard -->
+                    <svg id="copy-icon" fill="#ebdbb2" aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy">
+                        <path fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path>
+                        <path fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path>
+                    </svg>
+                </p>
+            </div>
             <div class="scrollable" id="addedTagsContainer" style="height:250px;"></div>
         </div>
     </div>
@@ -129,8 +148,6 @@
     <hr>
 
     <div id="results"></div>
-
-    <h1 id="title" style="text-align: center;"></h1>
         
     <script>
         var tagListContainer = el('tagListContainer');
@@ -489,10 +506,15 @@
         searchTags('');
 
         // Read GET params
-        let prefix = '?tags=';
-        if (window.location.href.includes(prefix)) {
-            let index = window.location.href.indexOf(prefix);
-            let arr = window.location.href.substring(index + prefix.length).split(',');
+        let getPrefix = '?tags=';
+        let url = window.location.href;
+
+        if (url.includes(getPrefix)) {
+            // Replace space codes with actual spaces
+            url = url.replaceAll('%20', ' ');
+            
+            let index = url.indexOf(getPrefix);
+            let arr = url.substring(index + getPrefix.length).split(',');
             
             arr.forEach((el, _) => {
                 let count = tags[el];
@@ -501,8 +523,40 @@
                 }
             });
         }
-
-        delete(prefix);
     </script>
+
+    <!-- Copy to clipboard tooltip -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+        // Toolboy
+        tippy('#copy-icon', {
+            content: '<p id="tooltip">Copy to clipboard!</p>',
+            allowHTML: true,
+            duration: [0, 0]
+        });
+
+        // Copy url to clipboard event
+        document.getElementById('copy-icon').onclick = _ => {
+            // Remove GET from url
+            let index = url.indexOf(getPrefix);
+            if (index != -1) {
+                url = url.substring(0, index);
+            }
+
+            // Construct GET params
+            let get = '';
+            addedTags.forEach((el, index) => {
+                if (index != 0) {
+                    get += ',';
+                }
+                get += el;
+            });
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(url + getPrefix + get);
+        }
+    </script>
+
 </body>
 </html>
