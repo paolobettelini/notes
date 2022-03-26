@@ -395,7 +395,7 @@
             updateResults();
         }
 
-        function addTag(name, count) {
+        function addTag(name, count, updateGet) {
             addedTagsContainer.innerHTML += tagElement(name, count, name, false);
             addedTags.push(name);
 
@@ -461,7 +461,7 @@
         }
 
         function tagElement(content, count, id, addButton) {
-            return '<p>' + content + ' (' + count + ')<button class="' + (addButton ? 'plus' : 'minus') + '" onclick="' + (addButton ? 'addTag(\'' + id + '\', ' + count + ')' : 'removeTag(\'' + id + '\', this.parentElement)') + '">' + (addButton ? '+' : '-') + '</button></p>';
+            return '<p>' + content + ' (' + count + ')<button class="' + (addButton ? 'plus' : 'minus') + '" onclick="' + (addButton ? 'addTag(\'' + id + '\', ' + count + ', true)' : 'removeTag(\'' + id + '\', this.parentElement)') + '">' + (addButton ? '+' : '-') + '</button></p>';
         }
         
         function tagList(docTags) {
@@ -487,6 +487,22 @@
 
         // Show all tags
         searchTags('');
+
+        // Read GET params
+        let prefix = '?tags=';
+        if (window.location.href.includes(prefix)) {
+            let index = window.location.href.indexOf(prefix);
+            let arr = window.location.href.substring(index + prefix.length).split(',');
+            
+            arr.forEach((el, _) => {
+                let count = tags[el];
+                if (count != undefined) {
+                    addTag(el, count);      
+                }
+            });
+        }
+
+        delete(prefix);
     </script>
 </body>
 </html>
