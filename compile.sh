@@ -6,5 +6,6 @@ if [ "$1" = "" ]; then
 fi
 
 cd notes/$1
+bibtex $1
 lualatex *.tex
-cd ../..;
+cd ../..
