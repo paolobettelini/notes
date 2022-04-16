@@ -14,7 +14,7 @@ Here's a fun map to look at which shows every links between tags.
 
 ## Cite me
 ```bib
-@online{paolobettelini, <span style="color: red;">text</span>
+@online{paolobettelini,
   author    = {Paolo Bettelini},
   title     = {notes},
   year      = {2022},
