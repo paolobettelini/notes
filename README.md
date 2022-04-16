@@ -11,3 +11,15 @@ All my notes are organized using tags.
 Here's a fun map to look at which shows every links between tags.
 
 ![tags graph](./tags.png)
+
+## Cite me
+```bib
+@online{paolobettelini, <span style="color: red;">text</span>
+  author    = {Paolo Bettelini},
+  title     = {notes},
+  year      = {2022},
+  publisher = {GitHub},
+  journal   = {GitHub repository},
+  url       = {https://github.com/paolobettelini/notes}
+}
+```
