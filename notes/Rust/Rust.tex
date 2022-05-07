@@ -1,4 +1,5 @@
 \documentclass{article}
+
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{parskip}
@@ -26,30 +27,23 @@
 
 \section{Data Types}
 
-\subsection{Basic Types}
-
-%\subsection{Boolean}
-%\subsection{Numbers}
-%\subsubsection{Signed integers}
-%\subsubsection{Unsigned integers}
-%\subsubsection{Floating points}
-%\subsection{Text}
+\subsection{Pritmive Types}
 
 \begin{lstlisting}[language=Rust, style=boxed, numbers=none]
-// boolean
-bool
+  // boolean
+  bool
 
-// signed integers
-i8, i16, i32, i64, i128, isize
+  // signed integers
+  i8, i16, i32, i64, i128, isize
 
-// unsigned integers
-u8, u16, u32, u64, u128, usize
+  // unsigned integers
+  u8, u16, u32, u64, u128, usize
 
-// floating points
-f32, f64
+  // floating points
+  f32, f64
 
-// Text
-char, String, str
+  // Text
+  char, str
 \end{lstlisting}
 
 \subsection{Tuples}
@@ -58,9 +52,9 @@ Tuples are a combination of multiple types.
 Tuples can contain any number of types and/or other tuples.
 
 \begin{lstlisting}[language=Rust, style=boxed, numbers=none]
-let coordinates = (101, 3, 4);
-let person = ("Paolo", "Bettelini", 18);
-let status: (bool, (u128, i32)) = (true, (1u128, 2));
+    let coordinates = (101, 3, 4);
+    let person = ("Paolo", "Bettelini", 18);
+    let status: (bool, (u128, i32)) = (true, (1u128, 2));
 \end{lstlisting}
 
 \subsection{Arrays}
@@ -70,15 +64,15 @@ let status: (bool, (u128, i32)) = (true, (1u128, 2));
 An array is defined by its type and length.
 
 \begin{lstlisting}[language=Rust, style=boxed, numbers=none]
-let values = [1, 2, 3, 4, 5];
-// with explicit type
-let values: [i32; 5] = [1, 2, 3, 4, 5];
+  let values = [1, 2, 3, 4, 5];
+  // with explicit type
+  let values: [i32; 5] = [1, 2, 3, 4, 5];
 \end{lstlisting}
 
 We can also initialize an array by specifying its default value and length
 
 \begin{lstlisting}[language=Rust, style=boxed, numbers=none]
-let values = [0; 5]; // [0, 0, 0, 0, 0]
+  let values = [0; 5]; // [0, 0, 0, 0, 0]
 \end{lstlisting}
 
 \subsubsection{Indexing}
@@ -86,8 +80,8 @@ let values = [0; 5]; // [0, 0, 0, 0, 0]
 We can index an array element using the square brackets
 
 \begin{lstlisting}[language=Rust, style=boxed, numbers=none]
-let first = values[0];
-let second = values[1];
+  let first = values[0];
+  let second = values[1];
 \end{lstlisting}
 
 \subsubsection{Slices}
@@ -95,54 +89,143 @@ let second = values[1];
 We can point to a portion of the array using slices
 
 \begin{lstlisting}[language=Rust, style=boxed, numbers=none]
-let slice = &values[1..5];
-let slice = &values[1..=5];
-let slice = &values[..5];
-let slice = &values[1..];
-let slice = &values[..];
+  let slice = &values[1..5];
+  let slice = &values[1..=5];
+  let slice = &values[..5];
+  let slice = &values[1..];
+  let slice = &values[..];
 \end{lstlisting}
 
+\subsection{Struct}
+
+\subsubsection{Definition}
+
+Structs are a way to group multiple values
+into a single definition.
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+    struct Measurement {
+        id: u32,
+        weight: f64,
+        velocity: f64
+    }
+\end{lstlisting}
+
+Structs can be initialized as follows
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+    let result = Measurement {
+        id: 0,
+        weight: 55.5,
+        velocity: 22.0
+    };
+\end{lstlisting}
+
+Variables can accessed
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+    let id = result.id;
+    let weight = result.weight;
+\end{lstlisting}
+
+A struct can omit the names of its fields
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+    struct MyStruct (i32, f64);
+
+    fn main() {
+        let result = MyStruct (0, 5.5);
+        let a = result.0; // accessing
+        let b = result.1;
+    }
+\end{lstlisting}
+
+\subsection{Union}
+
+A union allows to store different data types
+in the same memory location. Every field must have
+the same size.
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+    union Num {
+        f: f32,
+        i: i32
+    }
+\end{lstlisting}
+
+\pagebreak
+
 \section{Loops}
+
+\subsection{Loop}
+
+An infinite loop
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+    loop {
+        // ...
+    }
+\end{lstlisting}
+
+\subsection{While}
+
+A while loop
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+    while a > 0 {
+        // ...
+    }
+\end{lstlisting}
+
+\subsection{For}
+
+A for loop
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+    for i in 0..10 {
+        // ...
+    }
+\end{lstlisting}
 
 \subsection{Returning from loops}
 
 \begin{lstlisting}[language=Rust, style=boxed, numbers=none]
-let mut counter = 0;
+  let mut counter = 0;
 
-let result = loop {
-    counter += 1;
+  let result = loop {
+      counter += 1;
 
-    if counter == 10 {
-        break counter;
-    }
-};
+      if counter == 10 {
+          break counter;
+      }
+  };
 \end{lstlisting}
 
 \subsection{Labels}
 
 \begin{lstlisting}[language=Rust, style=boxed, numbers=none]
-'outer: loop {
-    'inner: loop {
-        // This breaks the inner loop
-        break;
-        // This breaks the outer loop
-        break 'outer;
+    'outer: loop {
+        'inner: loop {
+            // This breaks the inner loop
+            break;
+            // This breaks the outer loop
+            break 'outer;
+        }
     }
-}
 \end{lstlisting}
 
 \subsection{Returning from labelled loops}
 
 \begin{lstlisting}[language=Rust, style=boxed, numbers=none]
-let mut counter = 0;
+    let mut counter = 0;
 
-let result = 'outer: loop {
-    counter += 1;
+    let result = 'outer: loop {
+        counter += 1;
 
-    if counter == 10 {
-        break 'outer counter;
-    }
-};
+        if counter == 10 {
+            break 'outer counter;
+        }
+    };
 \end{lstlisting}
 
 \section{Pattern Matching}
@@ -150,20 +233,20 @@ let result = 'outer: loop {
 \subsection{Basic}
 
 \begin{lstlisting}[language=Rust, style=boxed, numbers=none]
-    let x = 5;
-    
-    match x {
-      // matching literals
-      1 => println!("one"),
-      // matching multiple patterns
-      2 | 3 => println!("two or three"),
-      // matching ranges
-      4..=9 => println!("within range"),
-      // matching named variables
-      x => println!("{}", x),
-      // default case (ignores value)
-      _ => println!("default Case")
-    }
+  let x = 5;
+
+  match x {
+    // matching literals
+    1 => println!("one"),
+    // matching multiple patterns
+    2 | 3 => println!("two or three"),
+    // matching ranges
+    4..=9 => println!("within range"),
+    // matching named variables
+    x => println!("{}", x),
+    // default case (ignores value)
+    _ => println!("default Case")
+  }
 \end{lstlisting}
 
 \pagebreak
@@ -171,55 +254,55 @@ let result = 'outer: loop {
 \subsection{Destructuring}
 
 \begin{lstlisting}[language=Rust, style=boxed, numbers=none]
-    struct Point {
-        x: i32,
-        y: i32,
-      }
-      
-      let p = Point { x: 0, y: 7 };
-      
-      match p {
-        Point { x, y: 0 } => {
-          println!("{}" , x);
-        },
-        Point { x, y } => {
-          println!("{} {}" , x, y);
-        },
-      }
-      
-      enum Shape {
-        Rectangle { width: i32, height: i32 },
-        Circle(i32),
-      }
-      
-      let shape = Shape::Circle(10);
-      
-      match shape {
-        Shape::Rectangle { x, y } => //...
-        Shape::Circle(radius) => //...
-      }
+  struct Point {
+      x: i32,
+      y: i32,
+    }
+    
+    let p = Point { x: 0, y: 7 };
+    
+    match p {
+      Point { x, y: 0 } => {
+        println!("{}" , x);
+      },
+      Point { x, y } => {
+        println!("{} {}" , x, y);
+      },
+    }
+    
+    enum Shape {
+      Rectangle { width: i32, height: i32 },
+      Circle(i32),
+    }
+    
+    let shape = Shape::Circle(10);
+    
+    match shape {
+      Shape::Rectangle { x, y } => //...
+      Shape::Circle(radius) => //...
+    }
 \end{lstlisting}
 
 \subsection{Ignoring values}
 
 \begin{lstlisting}[language=Rust, style=boxed, numbers=none]
-    struct SemVer(i32, i32, i32);
+  struct SemVer(i32, i32, i32);
 
-    let version = SemVer(1, 32, 2);
-    
-    match version {
-      SemVer(major, _, _) => {
-        println!("{}", major);
-      }
+  let version = SemVer(1, 32, 2);
+  
+  match version {
+    SemVer(major, _, _) => {
+      println!("{}", major);
     }
-    
-    let numbers = (2, 4, 8, 16, 32);
-    
-    match numbers {
-      (first, .., last) => {
-        println!("{}, {}", first, last);
-      }
+  }
+  
+  let numbers = (2, 4, 8, 16, 32);
+  
+  match numbers {
+    (first, .., last) => {
+      println!("{}, {}", first, last);
     }
+  }
 \end{lstlisting}
 
 \pagebreak
@@ -227,13 +310,13 @@ let result = 'outer: loop {
 \subsection{Match guards}
 
 \begin{lstlisting}[language=Rust, style=boxed, numbers=none]
-    let num = Some(4);
+  let num = Some(4);
 
-    match num {
-      Some(x) if x < 5 => println!("less than five: {}", x),
-      Some(x) => println!("{}", x),
-      None => (),
-    }
+  match num {
+    Some(x) if x < 5 => println!("less than five: {}", x),
+    Some(x) => println!("{}", x),
+    None => (),
+  }
 \end{lstlisting}
 
 \subsection{@ bindings}
