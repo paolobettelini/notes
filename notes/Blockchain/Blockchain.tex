@@ -24,35 +24,48 @@
 \tableofcontents
 \pagebreak
 
-\section{Block}
+\section{Components}
+
+\subsection{Wallet}
 
 Each user owns a pair of private and public key.
+Transactions must be signed by the private key. Users
+can send their money to another address, which is given by the public key.
+
+\subsection{Block}
 
 All the transactions broadcasted to the network are grouped into blocks, which contain
 
 \begin{itemize}
-    \item Markle tree root hash
+    \item Transactions hash
     \item Timestamp
-    \item nBits
-    \item Nonce
+    \item difficulty (PoW)
+    \item Nonce (PoW)
     \item Previous block hash
     \item Number of transactions
 \end{itemize}
 
-\section{Proof of Work}
+With each block being confirmed, the blockchain is created
+and transactions are confirmed.
+
+\subsection{Proof of Work}
 
 Proof-of-Work (PoW) is a cryptographic proof that a party has spent
 a certian amount of computational effort.
 
-When a miner solves the puzzle the current block is archived, a new
+When a miner solves the puzzle, the current block is archived, a new
 block is generated and all the transactions in the previous block are confirmed.
 The miner is then rewarded by the system.
 
-\section{Proof of Stake}
+\subsection{Proof of Stake}
 
-\pagebreak
+Proof-of-Stake (PoS) is a consensus mechanism that help choose witch participants
+are rewarded.
 
-\section{Smart Contracts}
+When blockchain participants verify that a transaction is legitimate and add it
+to the blockchain, participants have archived consensus.
+
+\subsection{Smart Contracts}
 
 Smart contracs are programs associated with an address and run on the blockchain.
 The nodes run code from the contract program at a relevant event, such as a received transation.
@@ -60,12 +73,52 @@ The nodes run code from the contract program at a relevant event, such as a rece
 Users can interact with the contract via transactions. Contracts can often interact with other contracts
 and some of them are Turing-complete.
 
+%\subsubsection{Deployment}
+%
+%A smart contract is deployed by sending a transaction to the blockchain which includes the compiled program
+%as well as a special receiver address.
+%
+%The program is added to the current block. When the block is added to the blockchain, the contract
+%will execute one time to set its initial state, at which point the smart contract will now be valid and running.
+
+\subsection{Difficulty (PoW)}
+
+If we want the time gap between two mined blocks to be approximately
+\(N\) units of time, we need adjust the difficulty of the mining process every 
+\(M\) units of time such that
+
+\[
+    \text{difficulty}_\text{current} =
+    \text{difficulty}_\text{previous}
+    \cdot \frac{M}{\Delta (\frac{M}{N})}
+\]
+
+where \(\Delta (x)\) is the units of time to mine the last \(x\) blocks.
+
+Or we could adjust the difficulty \(N\) blocks
+
+\[
+    \text{difficulty}_\text{current} =
+    \text{difficulty}_\text{previous}
+    \cdot \frac{N \cdot k}{\Delta(k)}
+\]
+
+where \(k\) is the number of last blocks on which you want to
+base the adjustment on. These two formulas are the same.
+
+\subsection{Mempool}
+
+The mempool is the place where uncofirmed transactions
+wait to be confirmed.
+When a transaction is broadcasted and received by the nodes,
+if valid, it is put in the mempool.
+When a new block is created, up to X transactions are removed from the
+mempool and will be included in the next block.
+
 \subsection{Deployment}
 
-A smart contract is deployed by sending a transaction to the blockchain which includes the compiled program
-as well as a special receiver address.
-
-The program is added to the current block. When the block is added to the blockchain, the contract
-will execute one time to set its initial state, at which point the smart contract will now be valid and running.
+To deploy a transaction a node has to broadcast it to his peers.
+To avoid flooding of the network, a node will only broadcast
+the same transaction once (as long as the transaction is still in the mempool).
 
 \end{document}
