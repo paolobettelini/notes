@@ -9,6 +9,7 @@ mkdir "notes/$1"
 
 cat << EOF > "notes/$1/$1.tex"
 \documentclass{article}
+
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{parskip}
