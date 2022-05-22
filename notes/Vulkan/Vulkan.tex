@@ -1,0 +1,120 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{parskip}
+\usepackage{fullpage}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    pdftitle={Vulkan},
+    pdfpagemode=FullScreen,
+}
+
+\title{Vulkan}
+\author{Paolo Bettelini}
+\date{}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\pagebreak
+
+\section{Vulkan}
+
+Vulkan is a multi-platform low-level graphical interface (API)
+for GPU rendering.
+
+The GPU is able to perform computation on a lot of data simultaneously
+(SIMD, Single Instruction stream, Multiple Data stream).
+
+\section{Queue}
+
+The GPU is able to run multiple operations in parallel.
+The equivalent of a CPU thread is a \textbf{queue}.
+Queues are grouped by \textbf{queue families}.
+
+Whenever we want the device to perform an operation,
+we have to submit this operation to a specific queue under a family.
+Some queues support only graphical operations,
+some others support only compute operations, and some others support both.
+
+\section{Buffers}
+
+When we need the GPU to read or write data in memory,
+we need to use a \textbf{buffer}.
+
+\section{Command buffers}
+
+To execute an operation we need to create a command buffer
+containg a list of commands to execute.
+
+To submit a command buffer we need to synchronize with the GPU.
+We can also tell the GPU to send back a signal, call \textbf{fence} when
+the operation is done.
+
+\subsection{Primary command buffers}
+
+They can contain any command.
+They are the only type of command buffer that can be submitted to a queue.
+
+\subsection{Secondary command buffers}
+
+They allow you to store functionality that you can reuse multiple times in primary command buffers. 
+
+\section{Compute pipelines}
+
+In order to ask the GPU to perform an operation on some data, we need to write
+a program for it. A program that runs on the GPU is called a shader.
+
+Shaders are written in a shading language (hlsl, glsl, wgpu, rust-gpu, ...)
+which is then compiled into an intermediate bytecode called \textbf{SPIR-V}.
+
+\section{Descriptors}
+
+When we create a compute pipeline for a shader we must bound it to a \textbf{descriptor}.
+A descriptor can contain a buffer to access, buffer viewes, images, samples images etc.
+
+Descriptors are grouped by \textbf{descriptor sets}.
+The shader will declare a specific descriptor from a specific set (both indexed from 0).
+
+\section{Dispatch}
+
+To execute a compute pipeline we need to create a command buffer to do so.
+This is called \textbf{Dispatch}.
+
+% The layout(set = 0, binding = 0) attribute in the GLSL code indicates that this descriptor
+% is the descriptor 0 in the set 0. Descriptor indices and set indices are 0-based.
+
+
+% creat an instance
+% enumerate physical devices and pick one
+% get a family that supported graphics
+% create a device (represents an open channel with the physical device) 
+%   with the family
+%   this will return the device and the queues
+% [
+%    Create buffer(s)
+%   Create primary command buffer
+%   sync cpu
+% ]
+% [
+%    create buffer
+%   create descriptor
+%   create compute shader
+%   create compute pipeline (shader)
+%   bind descriptor
+%   create command buffer to execute pipeline. (Dispath)
+% ]
+
+\end{document}
+
+% https://vulkano.rs/guide/
+
+
+https://vulkano.rs/guide/compute-pipeline
+workgroups
