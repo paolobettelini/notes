@@ -1,0 +1,139 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{parskip}
+\usepackage{fullpage}
+\usepackage{hyperref}
+
+% lilypond is not an classic sty package.
+% First you run lilypond-book <file.tex> or <file.lytex>
+% lilypond-book --pdf file.tex --out=target
+% lilypond will parse every lilypond enviroment in the tex file
+% for each enviroment it will generate a pdf image
+% then it will generate another tex file in the target folder,
+% where it will replace the lilypond enviroments (which do not exist in LaTeX,
+% compiling a document normally would give an error) with the pre compiled images
+% So you're basically using an enviroment that doesn't exist, then using an external tool
+% to parse the document and create another identical TeX file except it points
+% to the precompiled music sheets
+% I have yet to understand why they couldn't just \usepackage{lilypond} and that's it.
+
+% lilypond-book --pdf *.tex --out=target
+% lilypond-book --pdf *.tex --out=target
+% cd target
+% lualatex *.tex
+% mv *.pdf ../
+% cd ..
+% # these files stack up, they have a diffent name each time
+% find . -type f -name "tmp*.pdf" -delete
+% find . -type f -name "tmp*.out" -delete
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    pdftitle={Western Music Notation},
+    pdfpagemode=FullScreen,
+}
+
+\title{Western Music Notation}
+\author{Paolo Bettelini}
+\date{}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\pagebreak
+
+\section{Staff}
+
+The \textbf{staff} or \textbf{stave} is a set of five horizontal lines and four spaces that each represent a different
+note.
+
+% empty staff
+\begin{lilypond}
+    \version "2.22.2"
+    \paper {
+      #(set-paper-size "letter")
+      top-margin = 0.7\cm
+    }
+    \layout { 
+      indent = 0.0\cm
+      pagenumber = no
+    }
+    \new Score \with {
+      \override TimeSignature #'transparent = ##t
+      \override Clef #'transparent = ##t
+      defaultBarType = #""
+      \remove Bar_number_engraver
+      \remove Clef_engraver
+    } <<
+        \context Staff {
+            \repeat unfold 3 {
+                s1
+            }
+        }
+    >>
+\end{lilypond}
+
+\section{Clef}
+
+A \textbf{clef} is a musical symbol used to indice which notes are represented
+by the lines and spaces on a musical stave.
+There are mainly 3 types of clefs.
+
+% types of clefs
+\begin{center}
+    \begin{lilypond}
+        \version "2.22.2"
+        \score {
+            \new StaffGroup <<
+                \new Staff \with {
+                    \override TimeSignature #'transparent = ##t
+                    instrumentName = \markup \center-column {
+                        "Treble"
+                        "Clef"
+                    }
+                } {
+                    \clef treble << \gtr >>
+                }
+                \new Staff \with {
+                    \override TimeSignature #'transparent = ##t
+                    instrumentName = \markup \center-column {
+                        "Alto"
+                        "Clef"
+                    }
+                } {
+                    \clef alto << \gtr >>
+                }
+                \new Staff \with {
+                    \override TimeSignature #'transparent = ##t
+                    instrumentName = \markup \center-column {
+                        "Bass"
+                        "Clef"
+                    }
+                } {
+                    \clef bass << \gtr >>
+                }
+            >>
+            \layout {
+                indent = 2\cm
+                
+            }
+        }
+    \end{lilypond}
+\end{center}
+
+\section{Key Signature}
+
+A \textbf{key signature} is a set of symbols placed
+on the staff at the beginning of a section of music.
+The initial key signature is placed right after the clef.
+
+The symbols are \(\sharp\), \(\flat\) and \(\natural\).
+
+% JSON
+
+\end{document}
