@@ -65,16 +65,37 @@ for GPU rendering.
 The GPU is able to perform computation on a lot of data simultaneously
 (SIMD, Single Instruction stream, Multiple Data stream).
 
+\section{Instance}
+
+A Vulkan application starts by setting up the API through a vulkan instance
+(\textbf{VkInstance}).
+
+\section{Physical Device}
+
+We can query the API for Vulkan supported hardware and select
+one o more physical devices (\textbf{VkPhysicalDevice}) to use for our operations.
+We can query for different capabilities, VRAM size, etc.
+
+\section{Logical Device}
+
+Given a phyical device we can create a logical device (\textbf{VkDevice}).
+The logical device represents an open channel with the physical device.
+it also describes which features (\textbf{VkPhysicalDeviceFeatures}) we will be using.
+
 \section{Queue}
 
 The GPU is able to run multiple operations in parallel.
-The equivalent of a CPU thread is a \textbf{queue}.
-Queues are grouped by \textbf{queue families}.
+The equivalent of a CPU thread is a queue (\textbf{VkQueue}).
+
+\section{Queue family}
+
+Queues are grouped by queue families.
 
 Whenever we want the device to perform an operation,
 we have to submit this operation to a specific queue under a family.
-Some queues support only graphical operations,
-some others support only compute operations, and some others support both.
+Some families support only graphical operations,
+some others support only compute operations, and some others support both
+and or other operations.
 
 \section{Buffers}
 
@@ -141,6 +162,8 @@ Graphics pipelines are more restrictive than compute operations, but they're als
 
 The purpose of this pipeline is to draw a shape on an image.
 
+Both types of pipelines are represented by \textbf{VkPipeline}.
+
 \subsection{Vertex shaders}
 
 The first step when executing a graphics operation is the \textbf{vertex shader}.
@@ -199,8 +222,27 @@ The shape is made out of triangles (3 vertices each).
 
 Before executing a graphics operation we must tell the GPU to enter a "rendering mode",
 by entering what is called a \textbf{render pass}.
+The render pass describes the type of images that are used
+during rendering operations, how they are used and how they should be treated.
 
 A render pass is made of \textbf{attachments} and \textbf{passes}.
+
+\section{Windows}
+
+Rendering to a window.
+
+\subsection{Surface}
+
+A handle to a surface object (\textbf{VkSurfaceKHR}).
+
+\subsection{Swapchain}
+
+A swapchain is a collection of one or mutliple images.
+It is used to draw onto the screen images only when they're done rendering.
+A swapchain may have one, two (\textit{double buffering}) or most commonly three
+(\textit{triple buffering}) swapchain images.
+
+The swapchain will provide us with an image to draw to when needed.
 
 % creat an instance
 % enumerate physical devices and pick one
