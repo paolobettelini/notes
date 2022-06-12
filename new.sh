@@ -40,3 +40,15 @@ cat << EOF > "notes/$1/$1.tex"
 
 \end{document}
 EOF
+
+echo "Sample JSON:"
+echo ""
+cat << EOF
+  {
+    "title": "$2",
+    "file": "$1",
+    "tags": [
+      "tag1", "tag2"
+    ]
+  }
+EOF
