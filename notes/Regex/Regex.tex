@@ -1,0 +1,193 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{parskip}
+\usepackage{fullpage}
+\usepackage{hyperref}
+\usepackage{yFlatTable} % https://github.com/HarveySheppard/yLaTeX
+\usepackage{makecell}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    pdftitle={Regex},
+    pdfpagemode=FullScreen,
+}
+
+\title{Regular Expressions}
+\author{Paolo Bettelini}
+\date{}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\pagebreak
+
+\section{Operators}
+
+\subsection{Anchors}
+
+\begin{tabular}{_r^l}
+    \tableHeaderStyle
+    Symbol & Description \\
+    \^{} & Start of string or line \\
+    \$ & End of string or line \\
+    \textbackslash A & Start of string \\
+    \textbackslash Z & End of string \\
+    \textbackslash b & Word boundary \\
+    \textbackslash B & Not word boundary \\
+    \textbackslash < & Start of word \\
+    \textbackslash > & End of word \\
+\end{tabular}
+
+\subsection{Quantifiers}
+
+\begin{tabular}{_r^l}
+    \tableHeaderStyle
+    Symbol & Description \\
+    * & Match 0 or more times \\
+    + & Match 1 or more times \\
+    ? & Match 0 or 1 time \\
+    \{n\} & Match n times \\
+    \{n,\} & Match n or more times \\
+    \{n,m\} & Match from n to m times \\
+    \hline
+    ? & \makecell[l]{
+        You can add a ? after a quantifier \\
+        to make it \textit{un-greedy}. \\
+        The engine will match as few \\
+        characters as possible.} \\
+\end{tabular}
+
+\subsection{Escaping}
+
+\begin{tabular}{_r^l}
+    \tableHeaderStyle
+    Symbol & Description \\
+    \textbackslash & Escape character \\
+    \textbackslash Q & Start literal sequence \\
+    \textbackslash E & End literal sequence \\
+\end{tabular}
+
+\subsection{Ranges}
+
+\begin{tabular}{_r^l}
+    \tableHeaderStyle
+    Symbol & Description \\
+    \([\cdots]\) & \makecell[l]{
+            A range. \\
+            E.g. [abcz], [0-9], [0-9A-Z], [a-f].} \\
+    \([\text{\^{}}\cdots]\) & Not range \\
+\end{tabular}
+
+\subsection{Characters}
+
+\begin{tabular}{_r^l}
+    \tableHeaderStyle
+    Symbol & Description \\
+    \textbackslash c & Control character \\
+    \textbackslash s & White space \\
+    \textbackslash S & Not white space \\
+    \textbackslash d & Digit \\
+    \textbackslash D & Not digit \\
+    \textbackslash w & Word \\
+    \textbackslash W & Not word \\
+    \textbackslash x & Hexadecimal digit \\
+    \textbackslash O & Octal digit \\
+\end{tabular}
+
+\subsection{POSIX}
+
+\begin{tabular}{_r^l}
+    \tableHeaderStyle
+    Symbol & Description \\
+    \([\text{:upper:}]\) & Upper case letters \\
+    \([\text{:lower:}]\) & Lower case letters \\
+    \([\text{:alpha:}]\) & All letters \\
+    \([\text{:alnum:}]\) & Digits and letters \\
+    \([\text{:digit:}]\) & Digits \\
+    \([\text{:xdigit:}]\) & Hexadecimal digits \\
+    \([\text{:punct:}]\) & Punctuation \\
+    \([\text{:blank:}]\) & Space and tab \\
+    \([\text{:blank:}]\) & Blank characters \\
+    \([\text{:cntrl:}]\) & Control characters \\
+    \([\text{:graph:}]\) & Printed characters \\
+    \([\text{:print:}]\) & Printed characters and spaces \\
+    \([\text{:word:}]\) & Digits, letters and underscore \\
+\end{tabular}
+
+\subsection{Special characters}
+
+\begin{tabular}{_r^l}
+    \tableHeaderStyle
+    Symbol & Description \\
+    \textbackslash n & New line \\
+    \textbackslash r & Carriage return \\
+    \textbackslash t & Tab \\
+    \textbackslash v & Vertical tab \\
+    \textbackslash f & Form feed \\
+    \textbackslash XXX & Octal character \textit{XXX} \\
+    \textbackslash xHH & Hex character \textit{HH} \\
+\end{tabular}
+
+\subsection{String Replacement}
+
+\begin{tabular}{_r^l}
+    \tableHeaderStyle
+    Symbol & Description \\
+    \$n & Nth non-passive group \\
+    \$2 & \textbf{xyz} in \textbf{/\^{}(abc(xyz))\$/} \\
+    \$1 & \textbf{­xyz­} in \textbf{/\^{}(?:abc(xyz))\$/} \\
+    \$` & Before matched string \\
+    \$' & After matches string \\
+    \$+ & Last matches string \\
+    \$\& & Entire matched string \\
+\end{tabular}
+
+\subsection{Assertions}
+
+\begin{tabular}{_r^l}
+    \tableHeaderStyle
+    Symbol & Description \\
+    ?= & Lookahead assertion \\
+    ?! & Negative lookahead \\
+    ?<= & Lookbehind assertion \\
+    ?!= & Negative lookbehind \\
+    ?<! & Negative lookbehind \\
+    ?> & Once-only Subexp­ression \\
+    ?() & Condition \([\)if then\(]\) \\
+    ?()| & Condition \([\)if then else\(]\) \\
+    ?\# & Comment \\
+\end{tabular}
+
+\subsection{Pattern modifiers}
+
+\begin{tabular}{_r^l}
+    \tableHeaderStyle
+    Symbol & Description \\
+    g & Global match \\
+    i * & Case-insensitive \\
+    m * & Multiple lines \\
+    s * & Treat string as single line \\
+    x * & Allow comments and whitespace in pattern \\
+    e * & Evaluate replac­ement \\
+    U * & Un-greedy pattern \\
+\end{tabular}
+
+
+\subsection{Other} % i don't know where to put these
+
+\begin{tabular}{_r^l}
+    \tableHeaderStyle
+    Symbol & Description \\
+    (...) & Group \\
+    ?: & Non-capturing group \\
+    | & Or operator \\
+\end{tabular}
+
+\pagebreak
+
+\end{document}
