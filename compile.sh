@@ -3,7 +3,8 @@
 if [ "$1" = "" ]; then
   echo "Usage: $0 <title> [--bibtex] [--lilypond]"
   echo ""
-  echo "--bibtex   Compile new bibtex references using biber"
+  echo "--bibtex    Compile new bibtex references using biber"
+  echo "--lilypond  Compile using lilypond"
   exit
 fi
 
