@@ -452,6 +452,46 @@ This data type keeps count of all the owners, and drops the value when there are
 The \texttt{Arc<T>} smart pointer (Atomic Reference Counted) is the same as \texttt{Rc<T>}
 but uses atomic operations to increment the owner counter, so it is thread-safe.
 
+\subsection{UnsafeCell}
+
+\texttt{UnsafeCell<T>} is the core primitive that enables
+\textbf{inner mutability}. This means that the value inside it can be
+mutated even with a shared reference. This is a special type and the compiler
+has special knowledge about it.
+
+Inner mutability is accomplished by using \texttt{std::mem::replace()}
+to mutate the value.
+
+\subsection{Cell}
+
+A \texttt{Cell<T>} enables interior mutability using an \texttt{UnsafeCell}.
+
+\begin{lstlisting}[language=Rust, style=boxed, numbers=none]
+  let cell = Cell::new(10); // not mutable
+  cell.set(42);
+  let v = cell.get() + 24;
+\end{lstlisting}
+
+\subsection{RefCell}
+
+A \texttt{RefCell<T>} is like \texttt{Cell} but it will enforce
+borrowing rules at runtime. This will make it impossible
+to have multiple mutable reference to the data.
+
+\subsubsection{Ref and RefMut}
+
+\texttt{Ref} and \texttt{RefMut} are wrappers around a \texttt{RefCell}
+and they are used to update the share state of the \texttt{RefCell}
+when they are dropped.
+
+\subsection{Mutex}
+
+\subsection{RwLock}
+
+\subsection{AsRef}
+
 \end{document}
+% https://youtu.be/8O0Nt9qY_vo?t=35ust of Rust: Smart Pointers and Interior Mutabi80
+% Deref trait is called when you .smth() on a struct.
 
 % https://docs.google.com/document/d/1kQidzAlbqapu-WZTuw4Djik0uTqMZYyiMXTM9F21Dz4/edit
