@@ -44,11 +44,11 @@ EOF
 echo "Sample JSON:"
 echo ""
 cat << EOF
-  {
-    "title": "$2",
-    "file": "$1",
-    "tags": [
-      "tag1", "tag2"
-    ]
-  }
+    {
+        "title": "$2",
+        "file": "$1",
+        "tags": [
+            "tag1", "tag2"
+        ]
+    }
 EOF
