@@ -5,12 +5,19 @@ All the PDF files have been compiled using LuaLaTeX.
 
 Search through my notes at [https://paolobettelini.github.io/notes](https://paolobettelini.github.io/notes).
 
-![website preview](./screenshot.png)
+![website preview](./media/website.png)
+
+<p float="left">
+  <img src="./media/examples/example1.png" width="400" />
+  <img src="./media/examples/example2.png" width="400" /> 
+  <img src="./media/examples/example3.png" width="400" />
+</p>
 
 All my notes are organized using tags.
 Here's a fun map to look at which shows every links between tags.
 
-![tags graph](./tags.png)
+
+![tags graph](./media/tags.png)
 
 ## Cite me
 ```bib
