@@ -7,10 +7,10 @@ Search through my notes at [https://paolobettelini.github.io/notes](https://paol
 
 ![website preview](./media/website.png)
 
-<p float="left">
-  <img src="./media/examples/example1.png" width="180" />
-  <img src="./media/examples/example2.png" width="180" /> 
-  <img src="./media/examples/example3.png" width="180" />
+<p float="center">
+  <img src="./media/examples/example1.png" width="250" />
+  <img src="./media/examples/example2.png" width="250" /> 
+  <img src="./media/examples/example3.png" width="250" />
 </p>
 
 All my notes are organized using tags.
