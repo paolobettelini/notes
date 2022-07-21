@@ -8,9 +8,9 @@ Search through my notes at [https://paolobettelini.github.io/notes](https://paol
 ![website preview](./media/website.png)
 
 <p float="left">
-  <img src="./media/examples/example1.png" width="400" />
-  <img src="./media/examples/example2.png" width="400" /> 
-  <img src="./media/examples/example3.png" width="400" />
+  <img src="./media/examples/example1.png" width="300" />
+  <img src="./media/examples/example2.png" width="300" /> 
+  <img src="./media/examples/example3.png" width="300" />
 </p>
 
 All my notes are organized using tags.
