@@ -7,6 +7,7 @@
 \usepackage{hyperref}
 \usepackage{tikz}
 \usepackage{float}
+\usepackage{xcolor}
 
 \hypersetup{
     colorlinks=true,
@@ -183,7 +184,7 @@ Let \(f(x)\) be critical at \(x=c\)
 \end{itemize}
 A function may also change sign when it is undefined.
 
-\subsection{Second Derivatives}
+\subsection{Concavity}
 
 \begin{minipage}{0.5\textwidth}
     \begin{tikzpicture}[
@@ -232,6 +233,16 @@ A function may also change sign when it is undefined.
 An \textbf{inflection point} is a point where the function is continuous and the concavity at that point changes.
 Hence, when \(f''(x)\) changes sign we have an inflection point.
 
+\subsection{Second Derivative Test}
+
+Suppose that \(x=c\) is a critical point of \(f(x)\) such that \(f'(x)=0\)
+and that \(f''(x)\) is continuous around \(x=c\).
+\begin{itemize}
+    \item If \(f''(x)<0\) then \(x=c\) is a relative maximum.
+    \item If \(f''(x)>0\) then \(x=c\) is a relative minumum.
+    \item If \(f''(x)=0\) then \(x=c\) could be a relative maximum, minimum or neither.
+\end{itemize}
+
 \section{Rules for differentiation}
 
 \[
@@ -269,6 +280,76 @@ Hence, when \(f''(x)\) changes sign we have an inflection point.
 \[
     \frac{d}{dx}(f^g)=f^g\left(\frac{f'g}{f}+g'\ln f\right)
 \]
+
+\pagebreak
+
+\section{Intermediate value Theorem}
+
+A function \(f\) continuous on an interval \([a;b]\) will take
+every value in the interval \([f(a);f(b)]\).
+
+\section{Bolzano's Theorem}
+
+If \(f(x)\) is continuous on \([a;b]\) and \(f(a)\cdot f(b) <0\) then there is a root.
+\[
+    f(a)\cdot f(b) <0 \implies \exists c \in [a;b] \mid f(c) = 0
+\]
+
+\section{Weierstrass Theorem}
+
+If \(f(x)\) is continuous in \([a;b]\) then the function will have a maxima and a minima.
+
+\section{Rolle's Theorem}
+Suppose that \(f(x)\) is continuous on \([a;b]\) and differentiable on \((a;b)\).
+\[
+    f(a)=f(b) \implies \exists \,c \,|\, f'(c) = 0, \quad
+    a < c < b
+\]
+
+\section{Mean Value Theorem}
+
+Suppose \(f(x)\) is a function continuous on \([a;b]\) and
+differentiable on \((a;b)\), there there exist a number \(c\) such that
+\[
+    f'(x)=\frac{f(b)-f(a)}{b-a}, \quad a<c<b
+\]
+
+\begin{minipage}{0.5\textwidth}
+    \begin{tikzpicture}[
+        declare function={
+            func(\x) = - \x * \x * 0.5 + 3 * \x - 1.5;
+            a = 1;
+            b = 4.5;
+            c = 2.75;
+            Width=5;
+            Height=4;
+            m = {(func(b) - func(a)) / (b-a)};
+        }
+    ]
+
+        \draw[domain=a:b, smooth, variable=\x, blue, very thick] plot ({\x}, {func(\x)});
+        \draw[domain=a:b, smooth, variable=\x, brown, thick, dashed] plot ({\x}, {m * \x + 2.28125});
+        
+        \draw[-, dashed] (a, 0) node[below] {\(a\)} -- (a, {func(a)}) node[left] {\(f(a)\)};
+        \draw[-, dashed] (b, 0) node[below] {\(b\)} -- (b, {func(b)}) node[right] {\(f(b)\)};
+        \draw[-, dashed] (c, 0) node[below] {\(c\)} -- (c, {func(c)});
+
+        \draw[-, brown, thick] (a, {func(a)}) -- (b, {func(b)});
+        
+        \filldraw [red] (a,{func(a)}) circle (2pt);
+        \filldraw [red] (b,{func(b)}) circle (2pt);
+        \filldraw [red] (c,{func(c)}) circle (2pt) node[above] {\(f(c)\)};
+
+        \draw[->] (0, 0) -- (Width, 0) node[right] {\(x\)};
+        \draw[->] (0, 0) -- (0, Height) node[above] {\(y\)};
+    \end{tikzpicture}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    The mean value on the interval can be represented by the {\color{brown} secant} line.
+    What this means is that the interval contains a point whose tangent is equal to the secant.
+    \\\\
+    Note that if \(f(a) = f(b)\) this is Rolle's theorem.
+\end{minipage}
 
 \pagebreak
 
