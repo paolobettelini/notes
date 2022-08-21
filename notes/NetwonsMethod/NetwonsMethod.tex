@@ -1,0 +1,94 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{parskip}
+\usepackage{fullpage}
+\usepackage{hyperref}
+\usepackage{tikz}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    pdftitle={NetwonsMethod},
+    pdfpagemode=FullScreen,
+}
+
+\title{Netwon's Method}
+\author{Paolo Bettelini}
+\date{}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\pagebreak
+
+\section{Definition}
+
+The Newton's method is a numeric method to approximate the solution to equations
+in the form \(f(x)=0\). Starting from an initial approximation or guess \(x_0\),
+the tangent line at \(x=x=0\) is given by
+\[
+    y=f(x_0) + f'(x_0)(x-x_0)
+\]
+
+\begin{center}
+    \begin{tikzpicture}[
+        scale=2,
+        declare function={
+            f(\x) = 0.25 * (\x - 0.5) * (\x - 0.5) - 0.5;
+            % fPrime(\x) = (f(\x + 0.00025) - f(\x)) / 0.00025;
+            x0 = 4;
+            x1 = 2.5357;
+            x2 = 2.0009;
+            root = 1.914;
+        }
+    ]
+        \draw[domain=0:4.25, smooth, variable=\x, blue, very thick] plot ({\x}, {f(\x)});
+    
+        \draw[domain=2:4.25, smooth, variable=\x, red]
+            plot ({\x}, {f(x0) + 1.75 * (\x - x0)});
+
+        \draw[domain=1.25:4.25, smooth, variable=\x, red]
+            plot ({\x}, {f(x1) + 1.018 * (\x - x1)});
+
+        \draw[->] (0, 0) -- (5, 0) node[above] {\(x\)};
+        \draw[->] (0, -0.75) -- (0, 3) node[right] {\(y\)};
+
+        \draw[-, dashed] (x0, 0) node[below] {\(x_0\)} -- (x0, {f(x0)});
+        \filldraw [black] (x0, 0) circle (0.75pt);
+        \filldraw [black] (x0, {f(x0)}) circle (0.75pt);
+
+        \draw[-, dashed] (x1, 0) node[below] {\(x_1\)} -- (x1, {f(x1)});
+        \filldraw [black] (x1, 0) circle (0.75pt);
+        \filldraw [black] (x1, {f(x1)}) circle (0.75pt);
+
+        \draw[-, dashed] (x2, 0) node[below] {\(x_2\)} -- (x2, {f(x2)});
+        \filldraw [black] (x2, 0) circle (0.75pt);
+        \filldraw [black] (x2, {f(x2)}) circle (0.75pt);
+
+        \filldraw [red] (root, 0) circle (0.75pt);
+    \end{tikzpicture}
+\end{center}
+
+By projecting the root of the tangent onto the graph, we get another tangen whose root is closer
+to the root we are looking for. By doing this process recursively we may approach the solution.
+
+The next approximation \(x_1\) occurs when the tangent of \(x_0\) is 0, so
+\begin{align*}
+    0 &= f(x_0) + f'(x_0)(x_1 - x_0) \\
+    x_1 - x_0 &= - \frac{f(x_0)}{f'(x_0)} \\
+    x_1 &= x_0 - \frac{f(x_0)}{f'(x_0)}
+\end{align*}
+as long as \(f'(x_0) \neq 0\).
+
+If \(x_n\) is an approximation of the solution to \(f(x)=0\) and \(f'(x_n) \neq 0\) then a closer approximation is given by
+\[
+    x_{n+1} = x_n - \frac{f(x_0)}{f'(x_n)}
+\]
+
+\pagebreak
+
+\end{document}
