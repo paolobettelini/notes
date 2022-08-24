@@ -5,6 +5,8 @@
 \usepackage{parskip}
 \usepackage{fullpage}
 \usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{wrapfig}
 \usepackage{bettelini}
 
 \hypersetup{
@@ -83,7 +85,7 @@ meaning that we can rewrite the integral as
 
 \pagebreak
 
-\section{Integration By Parts}
+\subsection{Integration By Parts}
 
 Starting from the product rule
 \[
@@ -101,6 +103,76 @@ Since the indefinite integral of \(f'(x)g(x)\) is equal to some function plus an
 
 \pagebreak
 
-%\section{Area Problem}
+\section{Definite Integrals}
+
+\subsection{Area Problem}
+
+\begin{wrapfigure}{l}{10cm}
+    \begin{center}
+        \begin{tikzpicture}[
+            scale=1.25,
+            declare function={
+                func(\x) = 0.1 * (\x - 2) * (\x - 2) + 2;
+                Width=7.5;
+                Height=5;
+                A = 1;
+                B = 7;
+                N = 7;
+                Delta = {(B-A) / N};
+            }
+        ]
+            \draw[->] (0, 0) -- (0, Height) node[right] {\(y\)};
+            \draw[->] (0, 0) -- (Width, 0) node[above] {\(x\)};
+    
+            \pgfmathtruncatemacro\END{N-1}
+            \foreach \x in {0,1,...,\END} {
+                % rectangle
+                \fill [green, opacity=0.2]
+                    ({A + Delta * \x}, 0) rectangle ({A + Delta * (\x+1)}, {func(A + Delta * (\x + 1))});
+                
+                % x*_i
+                \draw[-] ({A + Delta * \x}, 0) node[below] {\(x_{\x}^*\)}
+                    -- ({A + Delta * \x}, {func(A + Delta * (\x + 1))});
+    
+                    % line over rectangle
+                \draw[-] ({A + Delta * \x}, {func(A + Delta * (\x + 1))})
+                    -- ({A + Delta * (\x+1)}, {func(A + Delta * (\x + 1))});
+            }
+    
+            \draw[-, dashed, red, ultra thick] (A, 0) -- (A, {func(A)}) node[above, black] {\(a\)};
+            \draw[-, dashed, red, ultra thick] (B, 0) -- (B, {func(B)}) node[right, black] {\(b\)};
+    
+            \draw[domain=0:Width, smooth, variable=\x, blue, ultra thick] plot ({\x}, {func(\x)});
+        \end{tikzpicture}
+    \end{center}
+\end{wrapfigure}
+
+We want to find the signed area between \(f(x)\) and the \(x\)-axis between
+the interval \([a;b]\).\\
+One way to do it would be by dividing the area into \(n\) rectangles, each of width
+\[
+    \Delta x = \frac{b-a}{n}
+\]
+The height of each triangle is given by \(f(x_k^*)\).
+The area under the curve is approximately
+\[
+    A \approx \sum_{k=0}^{n-1}f(x_k^*)\Delta x
+\]
+Notice that the position of \(x_k^*\) within the base of each rectangle controls the type of
+the approximation of the area under the curve
+\\
+\begin{itemize}
+    \item Left \rightarrow\, approximation by abundance
+    \item Right \rightarrow\, approximation by defect
+    \item Middle \rightarrow\, middle ground and such
+\end{itemize}
+The type of approximation does not matter when we let \(n\to \infty\).
+As the amount of rectangles approaches infinity, the approximation approaches
+the exact value of the area.
+\[
+    A = \lim_{n\to\infty} \sum_{k=0}^{n}f(x_k^*)\Delta x
+\]
+
+\subsection{Definition}
 
 \end{document}
