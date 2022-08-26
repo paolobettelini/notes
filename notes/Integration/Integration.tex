@@ -128,15 +128,18 @@ Since the indefinite integral of \(f'(x)g(x)\) is equal to some function plus an
             \foreach \x in {0,1,...,\END} {
                 % rectangle
                 \fill [green, opacity=0.2]
-                    ({A + Delta * \x}, 0) rectangle ({A + Delta * (\x+1)}, {func(A + Delta * (\x + 1))});
+                    ({A + Delta * \x}, 0) rectangle ({A + Delta * (\x+1)}, {func(A + Delta * (\x + 0.5))});
                 
-                % x*_i
-                \draw[-] ({A + Delta * \x}, 0) node[below] {\(x_{\x}^*\)}
-                    -- ({A + Delta * \x}, {func(A + Delta * (\x + 1))});
-    
-                    % line over rectangle
-                \draw[-] ({A + Delta * \x}, {func(A + Delta * (\x + 1))})
-                    -- ({A + Delta * (\x+1)}, {func(A + Delta * (\x + 1))});
+                \draw[-] ({A + Delta * \x}, 0)
+                    -- ({A + Delta * \x}, {func(A + Delta * (\x + 0.5))});
+
+                \draw[-, dashed] ({A + Delta * (\x + 0.5)}, 0)
+                    node[below] {\(x_{\x}^*\)}
+                    -- ({A + Delta * (\x + 0.5)}, {func(A + Delta * (\x + 0.5))});
+
+                % line over rectangle
+                \draw[-] ({A + Delta * \x}, {func(A + Delta * (\x + 0.5))})
+                    -- ({A + Delta * (\x+1)}, {func(A + Delta * (\x + 0.5))});
             }
     
             \draw[-, dashed, red, ultra thick] (A, 0) -- (A, {func(A)}) node[above, black] {\(a\)};
@@ -159,13 +162,9 @@ The area under the curve is approximately
     A \approx \sum_{k=0}^{n-1}f(x_k^*)\Delta x
 \]
 Notice that the position of \(x_k^*\) within the base of each rectangle controls the type of
-the approximation of the area under the curve
-\\
-\begin{itemize}
-    \item Left \rightarrow\, approximation by abundance
-    \item Right \rightarrow\, approximation by defect
-    \item Middle \rightarrow\, middle ground and such
-\end{itemize}
+the approximation of the area under the curve.
+By moving \(x_k^*\) within the base we may achieve an approximation by abundance
+or defect.
 The type of approximation does not matter when we let \(n\to \infty\).
 As the amount of rectangles approaches infinity, the approximation approaches
 the exact value of the area.
