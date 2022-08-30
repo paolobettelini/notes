@@ -9,6 +9,8 @@
 \usepackage{wrapfig}
 \usepackage{bettelini}
 
+\usetikzlibrary{positioning, arrows.meta} 
+
 \hypersetup{
     colorlinks=true,
     linkcolor=black,
@@ -226,6 +228,60 @@ When the upper or lower limit is not constant,
     &= u'(x)f(u(x)) - v'(x)f(v(x))
 \end{align*}
 
-% https://tutorial.math.lamar.edu/Classes/CalcI/AvgFcnValue.aspx
+\section{Average Function Value}
+
+The average value of a continuous function \(f(x)\) over the interval \([a;b]\) is given by
+\[
+    f_\text{avg} = \frac{1}{b-a} \integral[a][b][f(x)][x]
+\]
+
+\section{Mean Value Theorem}
+If \(f(x)\) is a continuous function on \(I=[a;b]\), \(f(x)\) will at some point in \(I\)
+reach its average value, meaning
+\[
+    \exists c \suchthat f(c) = \frac{1}{b-a} \integral[a][b][f(x)][x]
+\]
+
+\section{Area Between Functions}
+
+\begin{wrapfigure}{l}{7.5cm}
+    \begin{tikzpicture}[x=4cm, y=4cm, >=Stealth, declare function={
+        func1(\x) = sin(3.14*\x/2 r);
+        func2(\x) = \x*\x;
+        a=0.25;
+        b=0.9;
+    }]
+        % area under func1 
+        \fill[cyan!30!white] plot[domain=a:b] (\x,{func1(\x)}) -- plot[domain=b:a] (\x,{0}) -- cycle;
+        
+
+        % area under func2
+        \fill[white] plot[domain=a:b] (\x,{func2(\x)}) -- plot[domain=b:a] (\x,{0}) -- cycle;
+        
+        % func1
+        \draw[blue, -, thick] plot[domain=-0.3:1.25] (\x,{func1(\x)});
+        
+        % func2
+        \draw[red, -, thick]  plot[domain=-0.5:1.2] (\x,{func2(\x)});
+
+        \draw[-, dashed] (a, 0) node[below] {\(a\)} -- (a, {func1(a)});
+        \draw[-, dashed] (b, 0) node[below] {\(b\)} -- (b, {func1(b)});
+
+        \draw[black, -] (-.5,0) -- (1.25, 0)
+            node[black, below left=4pt and 2pt] {\(x\)};
+        \draw[black, -] (0,-.5) -- (0,1.5)
+            node[black, below left=4pt and 2pt] {\(y\)};
+    \end{tikzpicture} 
+\end{wrapfigure}
+
+Given a function \(f(x)\) and \(g(x)\), the area enclosed by the two functions
+in the interval \(I=[a;b]\) is given by
+\[
+    A=\integral[a][b][f(x)-g(x)][x]
+\]
+assuming that \(f(x)\geq g(x)\) when \(x\in I\). \\
+Note that \(A\geq 0\). \\
+If \(f(x)<g(x)\) for some \(x\in I\) this formula won't work. However, it is still
+possible to split the integral into multiple integrals at every point where \(f(x) - g(x)\) changes sign.
 
 \end{document}
