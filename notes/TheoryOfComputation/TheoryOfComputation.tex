@@ -5,6 +5,11 @@
 \usepackage{parskip}
 \usepackage{fullpage}
 \usepackage{hyperref}
+\usepackage{tikz}
+
+\usetikzlibrary{ % tikz packages
+	cd % tikz-cd communitative diagrams
+}
 
 \hypersetup{
     colorlinks=true,
@@ -18,29 +23,83 @@
 \author{Paolo Bettelini}
 \date{}
 
+% Empty string symbol.
+\newcommand{\emptyString}{\lambda}
+
 \begin{document}
 
 \maketitle
 \tableofcontents
 \pagebreak
 
+\section{Fields of Study}
+
+\subsection{Complexity Theory}
+
+Classify problems according to their degree
+of "difficulty".
+
+\subsection{Computability Theory}
+
+Classify problems as being solvable or unsolvable.
+
+\subsection{Automata Theory}
+
+Compare different computation models.
+
 \section{Alphabet}
 
-An alphabet is a set of values which represents the solutions
-to a certain problem. \\
+An \textit{alphabet} is a finite set of \textit{symbols}.
+For example: \(\{a,b,c,\cdots, z\}\)\\
 The set \(\{0,1\}\) is the binary set. The set \(\{0,1\}^*\) is the set of
 all binary strings (union of all \(n\)-permutations of \(\{0,1\}\) and an empty string).
 In general, if \(\Sigma\) is an alphabet \(\Sigma^*\) is the set
 of all strings over \(\Sigma\)
 \[
-    \Sigma^* = \lambda \cup \bigcup_{n\in\mathbb{N}} \Sigma^n
+    \Sigma^* = \emptyString \cup \bigcup_{n\in\mathbb{N}} \Sigma^n
 \]
-where \(\lambda\) is the empty string.
-Note that \(\lambda \neq \varnothing \neq \{\lambda\}\).
-\section{Turing Machines}
+where \(\emptyString\) is the empty string.
+Note that \(\emptyString \neq \varnothing \neq \{\emptyString\}\).
+\\
+The length of a string \(w\) is denoted as \(|w|\).
 
-% https://web.cs.ucdavis.edu/~doty/fall2015ecs120/notes.pdf
+A set of strings is called a \textit{language}.
+
+\section{Finite automaton}
+
+A finite automaton is a machine which process a string
+symbol by symbol from left to right. The automaton is in one of his \textit{states}
+after processing a symbol. The machine might terminate in an
+\textit{accept state} or not.
+
+A finite automaton \(M=(Q, \Sigma, \delta, q, F)\)
+\begin{itemize}
+    \item \(Q\) is a finite set of \textit{states}
+    \item \(\Sigma\) is an alphabet
+    \item \(\delta : Q \times \Sigma \to Q\) is the \textit{transition function}
+    \item \(q\) is an element of \(Q\) called the \textit{start state}
+    \item \(F\) is a subset of \(Q\) which contains the \textit{accept states}
+\end{itemize}
+The transition function is the logical components, it determines
+in which state the machine will be after processing a symbol at any state.
+
+The following automaton processes a binary string.
+The start state is \(q_1\) and the only accept state is \(q_3\).
+The program moves to the next state only if the symbol is \(1\),
+so it will reach \(q_3\) only if the input strings contains at least two \(1\)s.
+\begin{center}
+    \begin{tikzcd}
+        {} \arrow[r] & q_1 \arrow[r, "1"] \arrow["0"', loop, distance=2em, in=125, out=55] & q_2 \arrow[r, "1"] \arrow["0"', loop, distance=2em, in=125, out=55] & q_3 \arrow["{0,1}"', loop, distance=2em, in=125, out=55]
+    \end{tikzcd}
+\end{center}
 
 \pagebreak
 
+The language of \(M\), denoted \(L(M)\) is the set of all accepted strings
+by \(M\).
+
 \end{document}
+
+% https://cglab.ca/~michiel/TheoryOfComputation/TheoryOfComputation.pdf
+% todo: proofs
+% pag 34
