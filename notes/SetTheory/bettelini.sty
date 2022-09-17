@@ -1,0 +1,46 @@
+\ProvidesPackage{bettelini}[2022/08/21 Random Utils]
+
+\RequirePackage{xparse}
+
+% Disable hyphenation globally
+\newcommand{\nohyphenation}{
+    \tolerance=1
+    \emergencystretch=\maxdimen
+    \hyphenpenalty=10000
+    \hbadness=10000
+}
+
+% Fill the remaining space of a wrapfigure
+\newcommand{\wrapfill}{
+    \par
+    \ifnum \value{WF@wrappedlines} > 0
+        \addtocounter{WF@wrappedlines}{-1}%
+        \null\vspace{
+            \arabic{WF@wrappedlines}
+            \baselineskip
+        }
+        \WFclear
+    \fi
+}
+
+\newcommand{\suchthat}{
+    \,|\,
+}
+
+% Integral command
+\ExplSyntaxOn
+\DeclareDocumentCommand{\integral}{d[] d[] d[] d[]}
+{
+    \IfNoValueTF { #4 }
+    {
+        \IfNoValueTF { #3 }
+        { \int #1\,d#2 }
+        { \text{Either\,\,2\,\,or\,\,4\,\,arguments\,\,must\,\,be\,\,passed} }
+    }
+    {
+        \int\limits\c_math_subscript_token{#1}^{#2} #3 \,d#4
+        % In Expl Syntax characters as '_' or ':' are used as letters in command names
+        % hence the \c_math_subscript_token{#1} rather than _{#1}
+    }
+}
+\ExplSyntaxOff
