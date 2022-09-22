@@ -66,6 +66,11 @@ Note that \(\emptyString \neq \varnothing \neq \{\emptyString\}\).
 \\
 The length of a string \(w\) is denoted as \(|w|\).
 
+If \(\Sigma\) is an alphabet,
+\[
+    \Sigma_\emptyString = \emptyString \union \Sigma
+\]
+
 A set of strings is called a \textit{language}.
 
 \section{Deterministic Finite Automaton}
@@ -120,6 +125,9 @@ then it will uniquely switch to the state \(\delta(r, a)\)
 
 The language of \(M\), denoted \(L(M)\) is the set of all accepted strings
 by \(M\).
+\[
+    L(M) = \{w \in \Sigma^* \suchthat M\text{ accepts }w\}
+\]
 
 \section{Regular Operations}
 
@@ -180,10 +188,14 @@ accepts \(A \union B\) so \(A \union B\) is regular.
 
 \section{Nondeterministic Finite Automaton}
 
-Nondeterministic finite automaton (NFA) are state-machines
+Nondeterministic finite automata (NFA) are state-machines
 like DFAs but can change multiple states at a time by processing
 empty strings \(\emptyString\) and when processing a symbol
 \(a\) may have multiple possible states to switch to.
+The NFA will choose the "correct" switch in order to end in an accept state, if possible.
+
+The following automaton where \(\Sigma = \{1\}\) will end in an accept state
+if the input has length which is a multiple of \(2\) or \(3\).
 
 \newcommand\double[3][10]{%
   \draw (#2)
@@ -229,6 +241,37 @@ empty strings \(\emptyString\) and when processing a symbol
                 edge node {\(1\)} (b1);
     \end{tikzpicture}
 \end{center}
+The first switch is done by processing an empty string and the direction is chosen magically
+in order to end in an accept state.
+
+A NFA is defined as \(M=(Q, \Sigma, \delta, q, F)\) where
+\begin{itemize}
+    \item \(Q\) is a finite set of \textit{states}
+    \item \(\Sigma\) is an alphabet
+    \item \(\delta : Q \times \Sigma_\emptyString \to \mathcal{P}(Q)\) is the \textit{transition function}
+    \item \(q\) is an element of \(Q\) called the \textit{start state}
+    \item \(F\) is a subset of \(Q\) which contains the \textit{accept states}
+\end{itemize}
+
+\section{Equivalente of DFAs and NFAs}
+
+Anything that can be computed by a NFA can also be computed by a DFA and vice versa.
+
+\subsection{DFA to NFA conversion}
+
+Let \(M=(Q, \Sigma, \delta, q, F)\) be a DFA.
+\(\delta\) is not a transition function of a NFA, so we need to redefine it as \(\delta'\).
+Since \(\delta\) cannot process \(\emptyString\), \(\delta'\)
+it is defined as
+\[
+    \delta'(r, a)=
+    \begin{cases} 
+        \delta(r, a) & x \neq \emptyString \\
+        \emptyset & x = \emptyString
+    \end{cases}
+\]
+where \(r\) is a state in \(Q\) and \(a\) is a symbol in \(\Sigma_\emptyString\). \\
+We can conclude that \(N=(Q, \Sigma, \delta', q, F)\).
 
 \end{document}
 
