@@ -273,8 +273,44 @@ it is defined as
 where \(r\) is a state in \(Q\) and \(a\) is a symbol in \(\Sigma_\emptyString\). \\
 We can conclude that \(N=(Q, \Sigma, \delta', q, F)\).
 
+\subsection{NFA to DFA conversion}
+
+Let \(N=(Q, \Sigma, \delta, q, F)\) be a NFA. The idea is to construct a DFA \(M=(Q', \Sigma, \delta', q', F')\)
+that runs all the possible combinations that could be run by \(N\) at the same time.
+Any state of \(M\) is a set of states \(R \in \mathcal{P}(Q)\), so we will say that
+\(Q'=\mathcal{P}(Q)\). The set of accept states is any state \(R\) which contains an accept
+state of \(N\)
+\[
+    F' = \{R \in Q' \suchthat R \intersection F \neq \emptyset\}
+\]
+Let's assume that \(N\) does not execute any \(\emptyString\)-transitions.
+\(q'\) would be \(\{q\}\) and \(\delta'\) would be
+\[
+    \delta'(R, a) = \bigcup_{r\in R}\delta(r,a)
+\]
+which is the union of all possible states \(N\) could switch to.
+Recall that for every \(r\in R\), \(\delta(r,a)\) is a set
+of all possible states to switch to.
+
+Let's now remove the previous assumption. Now, \(M\)
+must also consider every state that could be reached by
+making zero or more \(\emptyString\)-transitions.
+The \(\emptyString\)-closure
+for a state \(r\), \(C_\emptyString(r)\), is defined as
+the set of all possible states that can be reached from \(r\) by making
+zero or more \(\emptyString\)-transitions.
+The \(\emptyString\)-closure for a set of states \(R\) is defined as
+\[
+    C_\emptyString(R) = \bigcup_{r\in R}C_\emptyString(r)
+\]
+The initial state \(q'\) is now given by \(C_\emptyString(q)\)
+and the transition function
+\[
+    \delta'(R, a) = \bigcup_{r\in R}C_\emptyString(\delta(r, a))
+\]
+
 \end{document}
 
 % https://cglab.ca/~michiel/TheoryOfComputation/TheoryOfComputation.pdf
 % todo: proofs
-% pag 46
+% pag 50
