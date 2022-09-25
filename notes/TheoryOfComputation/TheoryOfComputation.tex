@@ -159,7 +159,7 @@ or if an automaton that accepts said language exists.
     \exists M \suchthat L(M) = A
 \]
 
-\subsection{Closure under union}
+\subsection{Closure under union (extra)}
 
 \textit{If \(A\) and \(B\) are two regular languages over the same alphabet
 \(\Sigma\), then \(A \union B\) is also regular.}
@@ -383,7 +383,7 @@ The transition function is hence defined as
 \begin{center}
     \begin{tikzpicture}[node distance=2cm,on grid,auto]
         \node[state] (q0) {\(q_0\)};
-        \node (inv) [left=of 0] {};
+        \node (inv) [left=of q0] {};
 
         \node[state] (q1) [right=of q0] {\(q_1\)};
         \node[state] (q2) [below=of q0] {\(q_2\)};
@@ -412,13 +412,106 @@ Here \(F_1 = \{q_1, q_3, q_5\}\) but the actual accept states are the ones for \
 
 \textit{If \(A\) is a regular language, then \(A^*\) is also regular.}
 
-\textbf{TODO}
+Let \(N_1 = (Q_1, \Sigma, \delta_1, q_0, F_1)\) be a NFAs such that
+\(A_1 = L(N_1)\). We can construct another NFA \(N=(Q, \Sigma, \delta, q, F)\)
+such that \(L(N)=A_1^*\).
+We want \(N_1\) to be able to switch back to its initial point
+when it is in a state \(r \in F_1\). This means that the concatenation of
+accepted strings can cycle one after the other. Since \(\emptyString\)
+also needs to be accepted we need a new start state which is an accept state.
+
+\begin{itemize}
+    \item \(Q = \{q_a\} \union Q_1\)
+    \item \(q = q_a\)
+    \item \(F = F_1 \union \{q\}\)
+    \item \[
+        \delta(r,a) =
+        \begin{cases}
+            \delta_1(r,a) & (r \in Q_1 \land r \notin F_1) \lor (r \in F_1 \land a \neq \emptyString) \\
+            \delta_1(r,a) \union \{q\} & r \in F_1 \land a = \emptyString \\
+            \{q\} & r = q \land a = \emptyString \\
+            \emptyset & r = q \land a \neq \emptyString
+        \end{cases}
+    \]
+\end{itemize}
+
+\begin{center}
+    \begin{tikzpicture}[node distance=2cm,on grid,auto]
+        \node[state, accepting] (q) {\(q\)};
+        \node[state] (q0) [right=of q] {\(q_0\)};
+        \node (inv) [left=of q0] {};
+
+        \node[state, accepting] (q1) [right=of q0] {\(q_1\)};
+        \node[state] (q2) [below=of q0] {\(q_2\)};
+        \node[state, accepting] (q3) [below=of q1] {\(q_3\)};
+        \node[state] (q4) [below=of q2] {\(q_4\)};
+        \node[state, accepting] (q5) [below=of q3] {\(q_5\)};
+
+        \draw[draw=black] (q0) ++(-0.5, 0.5) rectangle ++(3,-5);
+
+        \path[->]
+            (inv)
+                edge node {\(\emptyString\)} (q0)
+            (q1)
+                edge node {\(\emptyString\)} (q0)
+            (q3)
+                edge node {\(\emptyString\)} (q0)
+            (q5)
+                edge node {\(\emptyString\)} (q0);
+    \end{tikzpicture}
+\end{center}
 
 \subsection{Closure under complement}
 
 \textit{If \(A\) is a regular language, then \(\bar{A}\) is also regular.}
 
-\textbf{TODO}
+Let \(N_1 = (Q_1, \Sigma, \delta_1, q_0, F_1)\) be a NFAs such that
+\(A_1 = L(N_1)\). We can construct another NFA \(N=(Q, \Sigma, \delta, q, F)\)
+such that \(L(N)=\bar{A_1}\).
+Any state \(r \notin F_1\) will be able to switch to a new state \(q_a\),
+which is the only accept state of \(N\), with a \(\emptyString\)-transition.
+This will negate any accepting state of \(N_1\) and vice versa.
+
+\begin{itemize}
+    \item \(Q=\{q_a\} \union Q_1\)
+    \item \(q = q_0\)
+    \item \(F = \{q_a\}\)
+    \item \[
+        \delta(r,a) =
+        \begin{cases}
+            \delta_1(r,a) \union \{q_a\} & r \in F_1 \\
+            \delta_1(r,a) & r \notin F_1 \\
+        \end{cases}
+    \]
+\end{itemize}
+
+\begin{center}
+    \begin{tikzpicture}[node distance=2cm,on grid,auto]
+        \node[state] (q0) {\(q_0\)};
+        \node (inv) [left=of q0] {};
+
+        \node[state] (q1) [right=of q0] {\(q_1\)};
+        \node[state] (q2) [below=of q0] {\(q_2\)};
+        \node[state] (q3) [below=of q1] {\(q_3\)};
+        \node[state] (q4) [below=of q2] {\(q_4\)};
+        \node[state] (q5) [below=of q3] {\(q_5\)};
+
+        \node[state] (n2) [right=of q3] {\(q_a\)};
+
+        \draw[draw=black] (q0) ++(-0.5, 0.5) rectangle ++(3,-5);
+
+        \path[->]
+            (inv)
+                edge node {} (q0)
+            (q1)
+                edge node {\(\emptyString\)} (n2)
+            (q3)
+                edge node {\(\emptyString\)} (n2)
+            (q5)
+                edge node {\(\emptyString\)} (n2);
+    \end{tikzpicture}
+\end{center}
+Here \(F_1=\{q_0, q_2, q_4\}\), but the only actual accept state is \(q_a\).
 
 \subsection{Closure under intersection}
 
@@ -428,8 +521,9 @@ Here \(F_1 = \{q_1, q_3, q_5\}\) but the actual accept states are the ones for \
 Since \(A\union B\) is regular and \(A \intersection B \subseteq A \union B\),
 \(A \intersection B\) is also regular.
 
+\section{Regular Expression}
+
 \end{document}
 
 % https://cglab.ca/~michiel/TheoryOfComputation/TheoryOfComputation.pdf
-% todo: proofs
-% pag 59
+% pag 60
