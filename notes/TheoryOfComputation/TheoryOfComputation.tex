@@ -162,13 +162,17 @@ of all strings over \(\Sigma\)
 
 A language is regular if it can be expressed as a regular expression,
 or if an automaton that accepts said language exists.
+\(A\) is regular iff
+\[
+    \exists M \suchthat L(M) = A
+\]
 
 \subsubsection{Closure under union}
 
 \textit{If \(A\) and \(B\) are two regular languages over the same alphabet
-\(\Sigma\), there \(A \union B\) is also regular.}
+\(\Sigma\), then \(A \union B\) is also regular.}
 
-We can prove this by making an automaton that accepts both languages.
+We can prove this by making a DFA that accepts both languages.
 Let's say that \(M_1=(Q_1, \Sigma, \delta_1, q_1, F_1)\) accepts \(A\)
 and \(M_2=(Q_2, \Sigma, \delta_2, q_2, F_2)\) accepts \(B\).
 The automaton \(M=(Q, \Sigma, \delta, q, F)\) must run \(M_1\) and \(M_2\) \textit{simultaneously},
@@ -309,8 +313,115 @@ and the transition function
     \delta'(R, a) = \bigcup_{r\in R}C_\emptyString(\delta(r, a))
 \]
 
+\section{Closure under regular operations}
+
+We proved using DFAs that if \(A\) and \(B\) are two regular languages over \(\Sigma\), then \(A\union B\)
+is also regular.
+\[
+    \exists M \suchthat L(M) = A \union B
+\]
+We can prove the closure under regular operations using NFAs.
+
+\subsection{Closure under union}
+
+\textit{If \(A\) and \(B\) are two regular languages over the same alphabet
+\(\Sigma\), then \(A \union B\) is also regular.}
+
+Let \(N_1 = (Q_1, \Sigma, \delta_1, q_1, F_1)\) and
+\(N_2 = (Q_2, \Sigma, \delta_2, q_2, F_2)\) be two NFAs such that
+\(A_1 = L(N_1)\) and \(A_2 = L(N_2)\).
+We can construct another NFA \(N=(Q, \Sigma, \delta, q_0, F)\)
+such that \(L(N)=A\union B\).
+\(N\) will either go to \(N_1\) or \(N_2\) by making a \(\emptyString\)-transition.
+\begin{itemize}
+    \item \(Q=\{q_0\} \union Q_1 \union Q_2\)
+    \item \(F=F_1 \union F_2\)
+    \item \[
+        \delta(r, a) =
+        \begin{cases}
+            \delta_1(r, a) & r \in Q_1 \\
+            \delta_2(r, a) & r \in Q_2 \\
+            \{q_1, q_2\} & r = \emptyString \\
+            \emptyset & r \neq \emptyString
+        \end{cases}
+    \]
+\end{itemize}
+
+\begin{center}
+    \begin{tikzpicture}[node distance=2cm,on grid,auto]
+        \node[state] (0) {\(q_0\)};
+        \node (inv) [left=of 0] {};
+
+        \node[state] (a1) [above right=of 0] {\(N_1\)};
+        
+        \node[state] (b1) [below right=of 0] {\(N_2\)};
+        
+        \path[->]
+            (inv)
+                edge node {} (0)
+            (0)
+                edge node {\(\emptyString\)} (a1)
+                edge node {\(\emptyString\)} (b1);
+    \end{tikzpicture}
+\end{center}
+
+\subsection{Closure under concatenation}
+
+\textit{If \(A\) and \(B\) are two regular languages over the same alphabet
+\(\Sigma\), then \(AB\) is also regular.}
+
+Let \(N_1 = (Q_1, \Sigma, \delta_1, q_1, F_1)\) and
+\(N_2 = (Q_2, \Sigma, \delta_2, q_2, F_2)\) be two NFAs such that
+\(A_1 = L(N_1)\) and \(A_2 = L(N_2)\).
+We can construct another NFA \(N=(Q, \Sigma, \delta, q_0, F)\)
+such that \(L(N)=AB\).
+\(N\) will start by executing \(N_1\), meaning \(q_0=q_1\). If \(N\) switches to a state
+\(r\in F_1\) it can move to executing \(N_2\) with a \(\emptyString\)-transition.
+The accepted states are only the ones of \(N_2\) meaning \(F=F_2\). \(Q=Q_1 \union Q_2\).
+The transition function is hence defined as
+\[
+    \delta(r, a)
+    \begin{cases}
+        \delta_1(r, a) & (r \in Q_1 \land r \notin F_1) \lor (r \in F_1 \land r \neq \emptyString) \\
+        \delta_1(r, a) \union \{q_2\} & r \in F_1 \land r = \emptyString \\
+        \delta_2(r, a) & r \in Q_2
+    \end{cases}
+\]
+
+\begin{center}
+    \begin{tikzpicture}[node distance=2cm,on grid,auto]
+        \node[state] (q0) {\(q_0\)};
+        \node (inv) [left=of 0] {};
+
+        \node[state] (q1) [right=of q0] {\(q_1\)};
+        \node[state] (q2) [below=of q0] {\(q_2\)};
+        \node[state] (q3) [below=of q1] {\(q_3\)};
+        \node[state] (q4) [below=of q2] {\(q_4\)};
+        \node[state] (q5) [below=of q3] {\(q_5\)};
+
+        \node[state] (n2) [right=of q3] {\(N_2\)};
+
+        \draw[draw=black] (q0) ++(-0.5, 0.5) rectangle ++(3,-5) node[below] {\(N_1\)};
+
+        \path[->]
+            (inv)
+                edge node {} (q0)
+            (q1)
+                edge node {\(\emptyString\)} (n2)
+            (q3)
+                edge node {\(\emptyString\)} (n2)
+            (q5)
+                edge node {\(\emptyString\)} (n2);
+    \end{tikzpicture}
+\end{center}
+Here \(F_1 = \{q_1, q_3, q_5\}\) but the actual accept states are the ones for \(N_2\).
+
+\subsection{Closure under star}
+
+\textit{If \(A\) is a regular languages, then \(A^*\) is also regular.}
+
 \end{document}
 
 % https://cglab.ca/~michiel/TheoryOfComputation/TheoryOfComputation.pdf
 % todo: proofs
-% pag 50
+% pag 59
