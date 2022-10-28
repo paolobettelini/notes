@@ -6,6 +6,7 @@
 \usepackage{fullpage}
 \usepackage{hyperref}
 \usepackage{tikz}
+\usepackage{wrapfig}
 \usepackage{bettelini}
 
 \usetikzlibrary{ % tikz packages
@@ -152,8 +153,7 @@ of all strings over \(\Sigma\)
 
 \section{Regular language}
 
-A language is regular if it can be expressed as a regular expression,
-or if an automaton that accepts said language exists.
+A language is regular if an automaton that accepts said language exists.
 \(A\) is regular iff
 \[
     \exists M \suchthat L(M) = A
@@ -567,7 +567,84 @@ Let \(R_1, R_2\) and \(R_3\) be regular expressions
 
 \pagebreak
 
+\subsection{Equivalence of regular expressions and regular languages}
+
+\subsection{A regular expression describes a regular language}
+
+Let \(R\) be a regular expression over \(\Sigma\).
+
+\begin{wrapfigure}{r}{2.5cm}
+    \begin{tikzpicture}[node distance=2cm,on grid,auto]
+        \node[state, accepting] (q) {\(q\)};
+        \node (inv) [left=of q] {};
+    
+        \path[->]
+            (inv)
+                edge node {} (q);
+    \end{tikzpicture}
+\end{wrapfigure}
+
+Assume that \(R=\emptyString\). Then \(R\) describes \(\{\emptyString\}\).
+This language is regular and we can prove it by constructing an NFA \(N=(Q, \Sigma, \delta, q, F)\)
+such that \(L(N)=\{\emptyString\}\).
+\(q\) is the start state, \(Q=\{q\}\), \(F=\{q\}\) and \(\delta(r,a)=\emptyset\)
+where \(a\in\Sigma_\emptyString\).
+\wrapfill
+
+\begin{wrapfigure}{r}{2.5cm}
+    \begin{tikzpicture}[node distance=2cm,on grid,auto]
+        \node[state] (q) {\(q\)};
+        \node (inv) [left=of q] {};
+    
+        \path[->]
+            (inv)
+                edge node {} (q);
+    \end{tikzpicture}
+\end{wrapfigure}
+
+Assume that \(R=\emptyset\). Then \(R\) describes \(\emptyset\).
+This language is regular and we can prove it by constructing an NFA \(N=(Q, \Sigma, \delta, q, F)\)
+such that \(L(N)=\emptyset\).
+\(q\) is the start state, \(Q=\{q\}\), \(F=\emptyset\) and \(\delta(r,a)=\emptyset\) where \(a\in\Sigma_\emptyString\).
+\wrapfill
+
+\begin{wrapfigure}{r}{2.5cm}
+    \begin{tikzpicture}[node distance=2cm,on grid,auto]
+        \node (inv) {};
+        \node[state] (q0) [right=of inv] {\(q_0\)};
+        \node[state, accepting] (q1) [below=of q0] {\(q_1\)};
+    
+        \path[->]
+            (inv)
+                edge node {} (q0)
+            (q0)
+                edge node {} (q1);
+    \end{tikzpicture}
+\end{wrapfigure}
+
+Assume that \(R=a\) where \(a\in\Sigma\). Then \(R\) describes \(\{a\}\).
+This language is regular and we can prove it by constructing an NFA \(N=(Q, \Sigma, \delta, q, F)\)
+such that \(L(N)=\{a\}\).
+\(q_0\) is the start state, \(Q=\{q_0, q_1\}\), \(F=\{q_1\}\) and
+\[
+    \delta(r,b \in ) =
+    \begin{cases}
+        \{q_1\} & b=a\\
+        \emptyset & b \neq a
+    \end{cases}
+\]
+where \(b\in\Sigma_\emptyString\).
+\wrapfill
+
+\subsection{A DFA can be converted into a regular expression}
+
+\subsection{Conclusion}
+
+Since any DFA \(M\) can be converted into a regular expression that describes \(L(M)\)
+and every regular expression describes a regular language, we can conclude that a language \(L\)
+is regular iff there exists a regular expression that describes \(L\)
+
 \end{document}
 
 % https://cglab.ca/~michiel/TheoryOfComputation/TheoryOfComputation.pdf
-% pag 64
+% pag 66
