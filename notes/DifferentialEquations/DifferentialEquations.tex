@@ -8,6 +8,7 @@
 \usepackage{hyperref}
 \usepackage{pgfplots}
 \usepackage{wrapfig}
+\usepackage{bettelini}
 \usetikzlibrary{calc}
 
 \hypersetup{
@@ -42,6 +43,27 @@
 Differential equations are equations where the solution is a function
 or a set of functions.
 
+\subsection{Order}
+
+The \textit{order} of a differential equation is the largest derivative present in the
+differential equation
+
+\subsection{Types}
+
+\textit{Ordinary differential equations} are equations with only
+ordinary derivatives in them, whilst \textit{partial differential equations}
+have partial derivatives in them.
+
+\subsection{Linearity}
+
+A differential equation is said to be linear if it can be written as
+\[
+    \sum_n a_n(t) \frac{d^n}{dt^n}y(t)=g(t)
+\]
+where there are no products of the function \(y(t)\) and its derivatives,
+\(y(t)\) or its derivative do not occur to any power other than the first power
+and \(y(t)\) or any of its derivative are composed with another function.
+
 \section{First-Order Differential Equations}
 
 A first-order differential equation is a differential equation in the form
@@ -58,7 +80,9 @@ iff \(f\) is linear on the second argument.
 The equation is also said to be \textit{constant}
 iff \(a\) and \(b\) are also constant.
 
-\subsection{Linear Constant Coefficients Differential Equations}
+\pagebreak
+
+\subsection{Constant Coefficients Differential Equations}
 
 \begin{theorem1}
     The general solution to the constant differential equation
@@ -167,7 +191,7 @@ We will prove the theorem again using this method.
 
 \pagebreak
 
-\subsection{Linear Constant Coefficients Differential Equations with Initial Point}
+\subsection{Constant Coefficients Differential Equations with Initial Point}
 
 We want to constraint the equation such that it has an unique solution
 rather than infinite solutions.
@@ -176,7 +200,7 @@ rather than infinite solutions.
 \]
 
 \begin{theorem2}
-    The genera solution to the ordinary constant differential equation
+    The general solution to the ordinary constant differential equation
     \[
         y' = ay + b,
     \]
@@ -207,12 +231,13 @@ rather than infinite solutions.
     \end{align*}
 \end{proof}
 
-\subsection{Linear Variable Coefficients Differential Equations}
+\subsection{Linear Coefficients Differential Equations}
 
 An ordinary linear differential equation with variable coefficients is defined as
 \[
     y' = a(t)y(t) + b(t)
 \]
+Where \(a\) and \(b\) are continuous functions.
 The solution to the linear equation with constant coefficients still applies
 if \(\frac{b}{a}\) is constant.
 
@@ -273,7 +298,7 @@ if \(\frac{b}{a}\) is constant.
     \end{align*}
 \end{proof}
 
-\subsection{Linear Variable Coefficients Differential Equations with Initial Point}
+\subsection{Linear Coefficients Differential Equations with Initial Point}
 
 A linear differential equation with variable coefficients and an initial point is given by
 \[
@@ -282,8 +307,22 @@ A linear differential equation with variable coefficients and an initial point i
 \]
 
 \begin{theorem4}
-    TODO % 18 (26 / 431)
+    The general solution to the differential equation
+    \[
+        y'=a(t)y(t)+b(t)
+    \]
+    where \(a\) and \(b\) are continuous functions, with a given point
+    \[
+        y(t_0)=y_0
+    \]
+    is given by
+    \[
+        y(t)=y_0 e^{A(t)}+e^{A(t)} \integral[t_0][t][e^{-A(s)}b(s)][s]
+    \]
 \end{theorem4}
+\begin{proof}
+    % pag 18
+\end{proof}
 
 \pagebreak
 
@@ -337,7 +376,7 @@ Separable equations are equations that can be solved by integrating both sides.
 This doesn't generally work with first-order linear wquations.
 A separable equation has the form
 \[
-    h(h)h'=g(t)
+    h(y)y'=g(t)
 \]
 \begin{theorem6}
     A separable differential equation has solutions where
@@ -376,12 +415,34 @@ A separable equation has the form
 
 \pagebreak
 
+\subsection{Exact equations}
+
+An exact equations has the form
+\[
+    M(x,y)+N(x,y)\frac{dy}{dx}=0
+\]
+which can be written
+\[
+    \Psi_x+\Psi_y \frac{dy}{dx}=0
+\]
+Using the multi variable chain rule it can be reduced to
+\[
+    \frac{d}{dx}\left( \Psi(x,y(x)) \right) = 0
+\]
+which has an implicit solution
+\[
+    \Psi(x,y)=C
+\]
+
+
+\pagebreak
+
 \section{Slope Field}
 
 A slope field or directional field is a field to visualize
 solutions to a first-order differential equation.
 
-\begin{wrapfigure}[15]{l}{7.5cm} % 10 is the number of wrapfigure lines
+\begin{wrapfigure}{l}{7.5cm}
     \begin{tikzpicture}[declare function={f(\x,\y)=\x+\y;}]
         \def\xmax{3} \def\xmin{-3}
         \def\ymax{3} \def\ymin{-3}
@@ -407,7 +468,6 @@ solutions to a first-order differential equation.
         \draw (current bounding box.south) node[below]
         {Slope field of \quad \(\frac{dy}{dx}=x+y\).};
     \end{tikzpicture}
-
 \end{wrapfigure}
 
 \phantom{ } \\
@@ -418,19 +478,7 @@ is \(x + y\). \\
 This means that if a solution passes through \((x,y)\), then its slope is \(x+y\). \\
 The red curve shows a solution.
 
-% this is embarassing
-% I don't know how to deal with wrapfig
-\phantom{ } \\
-\phantom{ } \\
-\phantom{ } \\
-\phantom{ } \\
-\phantom{ } \\
-\phantom{ } \\
-\phantom{ } \\
-\phantom{ } \\
-\phantom{ } \\
-\phantom{ } \\
-\phantom{ } \\
+\wrapfill
 
 \section{Euler's Method}
 
@@ -440,16 +488,24 @@ first-order differential equation numerically given a point of the solution.
 Starting at the known solution point \(A_0\), we take small steps the direction
 of the slope field. As the length of the steps \(s \to 0\)
 we approach the solution to the equation. \\
-The angle of the slope is given by
-\[
-    \theta = \tan\left(\frac{dy}{dx}\right)
-\]
-so each step gives the sequence of points
-\[
-    A_n = A_{n-1} \cdot s \left(\cos(\theta), \sin(\theta)\right)
-\]
+%The angle of the slope is given by
+%\[
+%    \theta = \tan^{-1}\left(\frac{dy}{dx}\right)
+%\]
+%so each step gives the sequence of points
+%\[
+%    A_n = A_{n-1} \cdot s \left(\cos(\theta), \sin(\theta)\right)
+%\]
 
 \pagebreak
+
+\section{Second-Order Differential Equations}
+
+A second-order differential equation has the form
+\[
+    y''(t)+a(t)y'(t)+b(t)y(t)=f(t)
+\]
+if \(f(t)=0\) then the equation is said to be \textit{homogeneous}.
 
 % reference https://users.math.msu.edu/users/gnagy/teaching/ode.pdf
 
