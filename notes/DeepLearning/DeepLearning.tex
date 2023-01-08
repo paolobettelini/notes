@@ -324,12 +324,15 @@ We can define the error of the network as the squared residuals summed over all 
     E=\frac{1}{2} \sum_{n\in \text{traning}} {(t_n - y_n)}^2
 \]
 
-Now differentiate to get error derivatives for weights. The purpose of the \(\frac{1}{2}\) term is to get a nice differentiation.
+Now differentiate with respect to a single weight \(w_i\).
+Note that \(E_n\) depends on \(y_n\) which depends on \(w_i\), so we can use the chain rule.
+The purpose of the \(\frac{1}{2}\) term is to get a nice differentiation.
 
 \begin{align*}
     \frac{\partial E}{\partial w_i}&=
-    \frac{1}{2} \sum_n \frac{\partial y_n}{\partial w_i} \frac{dE_n}{dy_n} \\
-    &= - \sum_n x_{ni} (t_n-y_n)
+    \frac{1}{2} \sum_n \frac{dE_n}{dy_n} \frac{\partial y_n}{\partial w_i} \\
+    &= \frac{1}{2} \sum_n -2(t_n-y_n) x_{ni} \\
+    &= - \sum_n (t_n-y_n) x_{ni}
 \end{align*}
 
 How the error changes as we change the weights, will be how the output changes as we change the weights
@@ -371,14 +374,14 @@ First we need to compute the derivatives of \(z\) with respect to the inputs \(x
 Now, using the chain rule, we can compute the derivative of the output with respect to \(w_i\)
 
 \[
-    \frac{\partial y}{\partial w_i}=\frac{\partial z}{\partial w_i}\frac{dy}{dz}=x_i y(1-y)
+    \frac{\partial y}{\partial w_i}=\frac{dy}{dz}\frac{\partial z}{\partial w_i}=x_i y(1-y)
 \]
 
 Which means that the error \(E\) changes with respect to \(w_i\) as
 
 \[
     \frac{\partial E}{\partial w_i} =
-    \sum_n \frac{\partial y_n}{\partial w_i} \frac{\partial E}{\partial y_n} =
+    \sum_n \frac{\partial E}{\partial y_n} \frac{\partial y_n}{\partial w_i} =
     -\sum_n x_{in} y_n (1-y_n)(t_n-y_n)
 \]
 
@@ -398,6 +401,10 @@ So far we've learned how to learn the weights of a simple neural network (input 
 However, we still lack the learning for more complicated neural nets with hidden layers.
 This is because we don't know their features, in fact, they're called \textit{hidden units}
 because we don't know what they ought to do.
+
+One way to learn the weights would be to randomly modify a weight. If the network
+gets better, keep the change, otherwise, discard it. This is, however, extremely
+inefficient.
 
 The backpropagation algorithm computes the gradient from the final layer to the first layer.
 
