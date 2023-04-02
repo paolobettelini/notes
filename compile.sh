@@ -28,7 +28,11 @@ elif [ "$2" = "--lilypond" ]; then
     find . -type f -name "tmp*.pdf" -delete
     find . -type f -name "tmp*.out" -delete
 else
-    lualatex *.tex
+    tectonic $1.tex
 fi
+
+echo ""
+echo "Open your file at"
+echo $SCRIPT_DIR/notes/$1/$1.pdf
 
 cd $WORKING_DIR

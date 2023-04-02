@@ -1,7 +1,7 @@
 # notes
 A collection of my personal notes.
 
-All the PDF files have been compiled using LuaLaTeX.
+All the PDF files have been compiled using Tectonic.
 
 Search through my notes at [https://paolobettelini.github.io/notes](https://paolobettelini.github.io/notes).
 
