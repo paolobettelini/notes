@@ -7,6 +7,7 @@
 \usepackage{hyperref}
 \usepackage{tikz}
 \usepackage{makecell}
+\usepackage{adjustbox}
 
 \usetikzlibrary{ % tikz packages
 	cd % tikz-cd communitative diagrams
@@ -19,6 +20,8 @@
     pdftitle={CategoryTheory},
     pdfpagemode=FullScreen,
 }
+
+\newcommand{\opp}[1]{{#1}^{\text{op}}}
 
 \title{Category Theory}
 \author{Paolo Bettelini}
@@ -222,18 +225,49 @@ Note
 
 \section{Types of elements}
 
+\subsection{Initial objects}
+
+An initial object \(I\) is an object if
+for every object \(X\) in a category \(C\)
+there exist exactly one morphism \(I\to X\).
+\[
+    \forall X\in \text{ob}(C) \,\exists_{=1}f:I\to X
+\]
+
+\subsection{Terminal objects}
+
+An terminal object \(T\) is an object if
+for every object \(X\) in a category \(C\)
+there exist exactly one morphism \(X\to T\).
+\[
+    \forall X\in \text{ob}(C) \,\exists_{=1}f:X\to T
+\]
+
 \subsection{Void}
 
 The void element is equivalent to the logical \textbf{false}.
-It is impossible to construct. This, functions that take void
+It is impossible to construct. Thus, functions that take void
 as an argument are impossible to call.
+It is impossible to map a set of the empty set, because
+any object canot have an image.
+
+In the category of sets, the singleton is the only terminal initial object,
+as there exists a unique function (the empty function) from the empty set
+into any other given set.
 
 \subsection{Singleton}
 
-A singleton is a single empty tuple element and
-is equivalent to the logical \textbf{true}. It can be constructed from nothing.
+A singleton is a set with one element (e.g. \(\{0\}\)) and
+is equivalent to the logical \textbf{true}.
+It can be constructed from nothing.
+
+In the category of sets, any singleton is a terminal object,
+as there exists a unique function (the constant function) from any given
+set into the singleton.
 
 % \subsection{Bool}
+
+\pagebreak
 
 \section{Types of categories}
 
@@ -288,6 +322,85 @@ It is equivalent to a set closed under an associative binary operation.
 
 % A monad is this mapping from a to (b, T)
 
+\subsection{Opposite Category}
+
+Given a category \(C\) we can defined an opposite category \(\opp{C}\)
+where the objects are the same and the morphisms are inverted.
+
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+        \begin{tikzcd}
+            a \arrow[d, "f"'] \arrow[rd, "g \circ f"] &   \\
+            b \arrow[r, "g"']                         & c
+        \end{tikzcd}
+    \end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+        \begin{tikzcd}
+            a                &                                    \\
+            b \arrow[u, "\opp{f}"] & c \arrow[l, "\opp{g}"] \arrow[lu, "\opp{f} \circ \opp{g} = \opp{(g \circ f)}"']
+        \end{tikzcd}
+    \end{center}
+\end{minipage}
+
+\pagebreak
+
+\section{Universal Construction}
+
+Universal construction is used to define objects in terms of their
+relationships to other objects up to a unique isomorphism.
+
+The definition starts by defining a universal property of the object.
+At this point there may be more objects with this property and we need to rank
+them such that the highest rank is the object we want.
+
+\subsection{Example: Cartesian Product}
+
+A cartesian product of two objects has the following
+outgoing morphisms:
+\begin{enumerate}
+    \item \(p:a\times b \to a\), which returns the first value of the ordered pair
+    \item \(q:a\times b \to b\), which returns the second value of the ordered pair
+\end{enumerate}
+
+In the following diagram \(c_1\) and \(c_2\) are the candidate objects
+for the caridnal product.
+We rank a candidate \(c_i\) higher than \(c_j\) if there is a morphism
+\(m:c_i \to c_j\).
+
+\begin{minipage}{0.5\textwidth}
+    \adjustbox{scale=1.5,center}{%
+    \begin{tikzcd}
+        & c_2 \arrow[d, "m"] \arrow[rdd, "q_2", bend left] \arrow[ldd, "p_2"', bend right] &   \\
+        & c_1 \arrow[ld, "p_1"] \arrow[rd, "p_2"']                                         &   \\
+      a &                                                                                  & b
+    \end{tikzcd}
+    }
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{align*}
+        p_1 \circ m &= p_2 \\
+        q_1 \circ m &= q_2
+    \end{align*}
+\end{minipage}
+
+Whenever \(m\) is \textit{flawed}, such as when it loses information
+or does not preserve structure, we discard \(c_i\). \\
+In conclusion, let \(c=a \times b\) be the actual cartesian product
+with morphisms \(p\) and \(q\).
+For any contender \(c'\) with morphisms \(p'\) and \(q'\),
+there exist a unique morphism
+\[
+    m:c'\to c
+\]
+where
+\begin{align*}
+    p' \circ m &= p \\
+    q' \circ m &= q
+\end{align*}
+
 \end{document}
 
 % https://tikzcd.yichuanshen.de/
+% https://youtu.be/Bsdl_NKbNnU?list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_&t=473
