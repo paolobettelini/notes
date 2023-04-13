@@ -229,7 +229,7 @@ Note
 
 An initial object \(I\) is an object if
 for every object \(X\) in a category \(C\)
-there exist exactly one morphism \(I\to X\).
+there exists exactly one morphism \(I\to X\).
 \[
     \forall X\in \text{ob}(C) \,\exists_{=1}f:I\to X
 \]
@@ -238,7 +238,7 @@ there exist exactly one morphism \(I\to X\).
 
 An terminal object \(T\) is an object if
 for every object \(X\) in a category \(C\)
-there exist exactly one morphism \(X\to T\).
+there exists exactly one morphism \(X\to T\).
 \[
     \forall X\in \text{ob}(C) \,\exists_{=1}f:X\to T
 \]
@@ -349,22 +349,24 @@ where the objects are the same and the morphisms are inverted.
 \section{Universal Construction}
 
 Universal construction is used to define objects in terms of their
-relationships to other objects up to a unique isomorphism.
+relationships up to a unique isomorphism.
+This means that the objects that satisfy the same universal property
+are isomorphic.
+Its purpose is to define an object without knowledge about the object itself,
+but rather just the morphisms.
 
-The definition starts by defining a universal property of the object.
-At this point there may be more objects with this property and we need to rank
-them such that the highest rank is the object we want.
+\section{Product}
 
-\subsection{Example: Cartesian Product}
-
-A cartesian product of two objects has the following
-outgoing morphisms:
+The categorical product represents many operations
+such as the cartesian product of sets.
+A product of two objects \(a\) and \(b\) has the following
+morphisms:
 \begin{enumerate}
     \item \(p:a\times b \to a\), which returns the first value of the ordered pair
     \item \(q:a\times b \to b\), which returns the second value of the ordered pair
 \end{enumerate}
 
-In the following diagram \(c_1\) and \(c_2\) are the candidate objects
+In the following diagram \(c\) is the actual product and \(c'\) is a candidate object
 for the caridnal product.
 We rank a candidate \(c_i\) higher than \(c_j\) if there is a morphism
 \(m:c_i \to c_j\).
@@ -372,35 +374,83 @@ We rank a candidate \(c_i\) higher than \(c_j\) if there is a morphism
 \begin{minipage}{0.5\textwidth}
     \adjustbox{scale=1.5,center}{%
     \begin{tikzcd}
-        & c_2 \arrow[d, "m"] \arrow[rdd, "q_2", bend left] \arrow[ldd, "p_2"', bend right] &   \\
-        & c_1 \arrow[ld, "p_1"] \arrow[rd, "p_2"']                                         &   \\
+        & c' \arrow[d, "m"] \arrow[rdd, "q'", bend left] \arrow[ldd, "p'"', bend right] &   \\
+        & c \arrow[ld, "p"] \arrow[rd, "q"']                                         &   \\
       a &                                                                                  & b
     \end{tikzcd}
     }
 \end{minipage}
 \begin{minipage}{0.5\textwidth}
     \begin{align*}
-        p_1 \circ m &= p_2 \\
-        q_1 \circ m &= q_2
+        p' &= p \circ m \\
+        q' &= q \circ m 
     \end{align*}
 \end{minipage}
 
 Whenever \(m\) is \textit{flawed}, such as when it loses information
-or does not preserve structure, we discard \(c_i\). \\
-In conclusion, let \(c=a \times b\) be the actual cartesian product
-with morphisms \(p\) and \(q\).
-For any contender \(c'\) with morphisms \(p'\) and \(q'\),
-there exist a unique morphism
+or does not preserve structure, we discard \(c_i\).
+
+The universal property is that for any other product
+\(c'\) with morphisms \(p'\) and \(q'\),
+s a unique morphism
 \[
     m:c'\to c
 \]
-where
+such that
 \begin{align*}
-    p' \circ m &= p \\
-    q' \circ m &= q
+    p \circ m &= p' \\
+    q \circ m &= q'
 \end{align*}
+
+\pagebreak
+
+\subsection{Coproduct}
+
+The coproduct represents operations
+such as the disjoint union of sets.
+The coproduct is the product when the morphisms are inverted.
+The coproduct of two objects \(a\) and \(b\) has the following
+morphisms:
+\begin{enumerate}
+    \item \(p:a \to a\sqcup b\)
+    \item \(q:b \to a\sqcup b\)
+\end{enumerate}
+
+Let \(c=a\sqcup b\).
+
+\begin{minipage}{0.5\textwidth}
+    \adjustbox{scale=1.5,center}{%
+    \begin{tikzcd}
+        & c'                &                                                  \\
+        & c \arrow[u, "m"'] &                                                  \\
+        a \arrow[ruu, "p'", bend left] \arrow[ru, "p"'] &                   & b \arrow[luu, "q'"', bend right] \arrow[lu, "q"]
+    \end{tikzcd}
+    }
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{align*}
+        p' &= m \circ p \\
+        q' &= m \circ q
+    \end{align*}
+\end{minipage}
+
+The universal property is that for any other object \(c'\)
+with morphisms \(p':a \to c'\) and \(q':b \to c'\),
+there exists a unique morphism \(m:c \to c'\)
+such that
+\begin{align*}
+    p' &= m \circ p \\
+    q' &= m \circ q
+\end{align*}
+
+\section{Functor}
+
+A functor is a mapping from a category
 
 \end{document}
 
+% this is so sick
+% https://categorytheory.gitlab.io/functor_and_natural_transformation.html#index-0
+
 % https://tikzcd.yichuanshen.de/
-% https://youtu.be/Bsdl_NKbNnU?list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_&t=473
+% https://youtu.be/LkIRsNj9T-8?list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_&t=772
