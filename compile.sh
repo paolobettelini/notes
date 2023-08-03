@@ -28,7 +28,7 @@ elif [ "$2" = "--lilypond" ]; then
     find . -type f -name "tmp*.pdf" -delete
     find . -type f -name "tmp*.out" -delete
 else
-    tectonic $1.tex
+    tectonic $1.tex -Z search-path=../../packages/
 fi
 
 echo ""
