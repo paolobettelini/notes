@@ -1,0 +1,142 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{parskip}
+\usepackage{fullpage}
+\usepackage{hyperref}
+\usepackage{stellar}
+\usepackage{bettelini}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    pdftitle={Differential Equations},
+    pdfpagemode=FullScreen,
+}
+
+\begin{document}
+
+\title{Differential Equations Laplace Transform}
+\id{diffeq-laplace-transform}
+\genpage
+
+\section{Laplace Transform}
+
+\begin{snippet}{diffeq-laplace-transform}
+\sdefinition{Laplace Transform}{
+    Given a piecewise continuous function \(f(t)\), the Laplace transform
+    is defined as
+    \[
+        \mathcal{L}\{f(t)\}= \integral[0][\infty][e^{-st}f(t)][t]=F(s)
+    \]
+}
+\end{snippet}
+
+\subsection{Properties of the Laplace Transform}
+
+\begin{snippet}{diffeq-laplace-transform-contant-property}
+\scorollary{Laplace Transform constant property}{
+    It is easy to see that given \(f(t)\) and \(g(t)\)
+    \[
+        \mathcal{L}\{af(t)+bg(t)\} = a\mathcal{L}\{f(t)\} + b\mathcal{L}\{g(t)\}
+    \]
+    for any constants \(a\) and \(b\).
+}
+\end{snippet}
+
+\subsection{Inverse Laplace Transform}
+
+\begin{snippet}{diffeq-inverse-laplace-transform}
+\sdefinition{Inverse Laplace Transform}{
+    The Inverse Laplace Transform is defined as
+    \[
+        {\mathcal{L}}^{-1} \{F(s)\}= f(t)
+    \]
+}
+\end{snippet}
+
+\subsection{Properties of the Inverse Laplace Transform}
+
+\begin{snippet}{diffeq-inverse-laplace-transform-contant-property}
+\scorollary{Inverse Laplace Transform constant property}{
+    Given the Laplace transforms \(F(s)\) and \(G(s)\)
+    \[
+        {\mathcal{L}}^{-1} \{aF(s)+bG(s)\} =
+        a{\mathcal{L}}^{-1}\{F(s)\} +
+        b{\mathcal{L}}^{-1}\{G(s)\}
+    \]
+    for any constants \(a\) and \(b\).
+}
+\end{snippet}
+
+\subsection{Heaviside function}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% FROM HERE
+
+A consider a function in the form \(H(t-c)f(t-c)\) where \(H\) is the
+Heaviside step function, meaning \(f(t)\) is shifted by \(c\) and is \(0\) for \(t < c\).
+
+\begin{align*}
+    \mathcal{L}\{H(t-c)f(t-c)\} &=
+    \integral[0][\infty][e^{-st}H(t-c)f(t-c)][t] \\
+    &= \integral[c][\infty][e^{-st}f(t-c)][t]
+\end{align*}
+Now substitue for \(u=t-c\)
+\begin{align*}
+    \integral[0][\infty][e^{-s(u+c)}f(u)][u]
+    &= \integral[0][\infty][e^{-su}e^{-cs}f(u)][u] \\
+    &= e^{-cs} \integral[0][\infty][e^{-su}f(u)][u]
+\end{align*}
+
+Concluding that
+
+\[
+    \mathcal{L}\{H(t-c)f(t-c)\} =
+    e^{-cs}F(s)
+    \quad
+    \text{and}
+    \quad
+    {\mathcal{L}}^{-1}\{e^{-cs}F(s)\} =
+    H(t-c)f(t-c)
+\]
+
+\subsection{Laplace Transform of derivatives}
+
+\begin{snippet}{diffeq-laplace-transform-of-derivatives}
+\stheorem{Laplace Transform of derivatives}{
+    Let \(f'\), \(f''\), \(\cdots\), \(f^{(n-1)}\) be continuous functions
+    and \(f^{(n)}\) a piecewise continuous functions. Then,
+    \[
+        \mathcal{L}\{f^{(n)}\} =
+        s^n \mathcal{L}\{f\} -
+        \sum_{k=1}^n s^{n-k}f^{(k-1)}(0)
+    \]
+}
+\end{snippet}
+
+\subsection{Solving Initial value problems}
+
+\begin{snippet}{diffeq-solving-iv-problems}
+Given an initial value problem differential equation, we can apply the Laplace
+transform on both sides of the equation. After applying the initial conditions
+(\(y(0), y'(0), \cdots\)), the differential equation is transformed into an algebraic equation.
+
+Note that if the initial conditions are not expressed as  \(y(0), y'(0), \cdots\),
+we need to first make a change of variable.
+
+We can then isolate \(\mathcal{L}\{y\}\) in the equation and get
+\[
+    \mathcal{L}\{y\} = M
+\]
+Then apply the inverse Laplace transform to solve the equation
+\[
+    y={\mathcal{L}}^{-1}\{M\}
+\]
+\end{snippet}
+
+% from https://tutorial.math.lamar.edu/Classes/DE/IVPWithNonConstantCoefficient.aspx
+
+
+\end{document}

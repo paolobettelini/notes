@@ -1,4 +1,4 @@
-\documentclass[a4paper]{article}
+\documentclass[preview]{standalone}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -6,28 +6,27 @@
 \usepackage{fullpage}
 \usepackage{hyperref}
 \usepackage{tikz}
+\usepackage{stellar}
+\usepackage{bettelini}
 
 \hypersetup{
     colorlinks=true,
     linkcolor=black,
     urlcolor=blue,
-    pdftitle={Limits},
+    pdftitle={Assets},
     pdfpagemode=FullScreen,
 }
 
-\title{Limits}
-\author{Paolo Bettelini}
-\date{}
-
 \begin{document}
 
-\maketitle
-\tableofcontents
-\pagebreak
+\title{Limits}
+\id{limits}
+\genpage
 
 \section{Definition}
 
-A limit is usually used to describe the behavior of a function as its argument approaches a given value.
+\begin{snippet}{limits-expl1}
+A limit is used to describe the behavior of a function as its argument approaches a given value.
 The limit towards a certain value \(c\) within a function can be be approached both from the right and from the left.
 The limit in a general sense exists if the value approached from both sides is the same and well-defined.
 We define the limit of \(x\) approaching \(c\) from the left within the function \(f(x)\) as
@@ -42,14 +41,22 @@ We define the limit of \(x\) approaching \(c\) within function \(f(x)\) as
 \[
     \lim_{x\to c}f(x)
 \]
+\end{snippet}
 
-Formally, given a function \(f:D\to \mathbb{R}\) the limit \(L=\lim_{x\to c}f(x)\) exists if given an arbitrary small \(\epsilon >0\) there is another number \(\delta >0\) such that
-\[
-    |f(x)-L|<\epsilon
-    \text{ when }
-    0<|x-c|<\delta
-\]
+\begin{snippet}{limits-definition}
+\sdefinition{Limit}{
+    Given a function \(f:D\to \mathbb{R}\),
+    the limit \[L=\lim_{x\to c}f(x)\] exists if given an arbitrary small
+    \(\epsilon >0\) there is another number \(\delta >0\) such that
+    \[
+        0<|x-c|<\delta
+        \implies
+        |f(x)-L|<\epsilon
+    \]
+}
+\end{snippet}
 
+\begin{snippet}{limits-definition-illustration}
 \begin{center}
     \begin{tikzpicture}[
         declare function={
@@ -80,7 +87,9 @@ Formally, given a function \(f:D\to \mathbb{R}\) the limit \(L=\lim_{x\to c}f(x)
         \draw[domain=-0.25:6, smooth, variable=\x, blue, thick] plot ({\x}, {func(\x)});
     \end{tikzpicture}
 \end{center}
+\end{snippet}
 
+\begin{snippet}{limits-expl2}
 This means that for any \(x\) in the red region \(0<|x-c|<\delta\text{ or }|x-c|\in (0; \delta)\),
 the function at that point will lie in the yellow region.
 This value is closer to \(L\) than either \(L + \epsilon\) or \(L - \epsilon\)
@@ -102,18 +111,17 @@ there is some \(\delta > 0\) such that
 \[
     |f(x)-L|<\epsilon \text{ when } -\delta < x-c < 0
 \]
-
-\pagebreak
+\end{snippet}
 
 \section{Infinite Limits and Limits at Infinity}
 
+\begin{snippet}{right-left-limit-definition}
 The limit
 \[
     \lim_{x\to c}f(x) = \infty
 \]
 diverges to \(\infty\) if we can make it arbitrarily large for all \(x\)
 sufficiently close to \(c\), without actually letting \(x=a\).
-In other words iff
 \[
     \forall M \in \mathbb{R} \exists \delta > 0 | f(x) > M \text{ when } 0<|x-a|<\delta, x \neq a
 \]
@@ -128,17 +136,24 @@ where it diverges to \(-\infty\) when
 \[
     \forall M \in \mathbb{R} \exists \delta > 0 | f(x) < M \text{ when } 0<|x-a|<\delta, x \neq a
 \]
+\end{snippet}
 
-These functions present a vertical asymptote at \(x=a\).
+\begin{snippet}{vertical-asymptote-limits}
+If the limit of a function as it approaches \(a\) diverges,
+then it has a vertical asymptote at \(x=a\).
+\end{snippet}
 
-Limits can approach values that are \(\infty\) or \(-\infty\).
+\begin{snippet}{horizontal-asymptote-limits}
+Limits can approach a value at \(\infty\) or \(-\infty\).
 If the limit converges they will have an horizontal asymptote at \(y=L\).
 \[
     \lim_{x \to \infty} f(x) = L
     \quad
     \lim_{x \to -\infty} f(x) = L
 \]
+\end{snippet}
 
+\begin{snippet}{limit-to-inf-convergence}
 The limit
 \[
     \lim_{x \to \infty} f(x)=L
@@ -147,7 +162,9 @@ converges to \(L\) if for every \(\epsilon > 0\) there exists a \(M > 0\) such t
 \[
     |f(x)-L| < \epsilon \text{ when } x > M
 \]
+\end{snippet}
 
+\begin{snippet}{limit-to-inf-convergence-illustration}
 \begin{center}
     \begin{tikzpicture}[
         declare function={
@@ -173,8 +190,10 @@ converges to \(L\) if for every \(\epsilon > 0\) there exists a \(M > 0\) such t
         \draw[domain=0.25:Width, samples=100, smooth, variable=\x, blue, thick] plot ({\x}, {func(\x)});
     \end{tikzpicture}
 \end{center}
+\end{snippet}
 
-Likewise, the limit
+\begin{snippet}{limit-to-neg-inf-convergence}
+The limit
 \[
     \lim_{x \to -\infty} f(x)=L
 \]
@@ -182,9 +201,9 @@ converges to \(L\) if for every \(\epsilon > 0\) there exists a \(M > 0\) such t
 \[
     |f(x)-L| < \epsilon \text{ when } x < M
 \]
+\end{snippet}
 
-\pagebreak
-
+\begin{snippet}{limits-at-infinity-divergence}
 Limits at infinities may also diverge to infinities
 \begin{align*}
     \lim_{x \to \infty} &= \infty \text{ if } \forall N \exists M > 0 | f(x) > N, x > M \\
@@ -192,9 +211,11 @@ Limits at infinities may also diverge to infinities
     \lim_{x \to -\infty} &= \infty \text{ if } \forall N \exists M > 0 | f(x) > N, x < M \\
     \lim_{x \to -\infty} &= -\infty \text{ if } \forall N \exists M > 0 | f(x) < N, x < M
 \end{align*}
+\end{snippet}
 
 \section{Properties}
 
+\begin{snippet}{limits-properties}
 If the limit exists
 \[
     \lim_{x\to c}f(g(x))=f(\lim_{x\to c}g(x))
@@ -208,19 +229,24 @@ If the limit exists
 \[
     \lim_{x\to c}\frac{f(x)}{g(x)} = \frac{\lim_{x\to c}f(x)}{\lim_{x\to c}g(x)}
 \]
+\end{snippet}
 
 \section{Squeeze Theorem}
 
-Let \(h(x)\), \(f(x)\) and \(g(x)\) be three functions such that
-\(h(x) \leq f(x) \leq g(x)\). \\
-If
-\[
-    \lim_{x \to x_0} g(x) = f(x) = L
-\]
-then
-\[
-    \lim_{x \to x_0} f(x) = L
-\]
+\begin{snippet}{squeeze-theorem}
+\stheorem{Squeeze Theorem}{
+    Let \(h(x)\), \(f(x)\) and \(g(x)\) be three functions such that
+    \(h(x) \leq f(x) \leq g(x)\). \\
+    If
+    \[
+        \lim_{x \to x_0} h(x) = g(x) = L
+    \]
+    then
+    \[
+        \lim_{x \to x_0} f(x) = L
+    \]
+}
+\end{snippet}
 
 % definitions for limits at infinities
 % https://tutorial.math.lamar.edu/Classes/CalcI/DefnOfLimit.aspx

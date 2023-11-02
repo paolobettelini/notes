@@ -1,0 +1,201 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{parskip}
+\usepackage{fullpage}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{stellar}
+\usepackage{bettelini}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    pdftitle={Assets},
+    pdfpagemode=FullScreen,
+}
+
+\begin{document}
+
+\title{Series}
+\id{series}
+\genpage
+
+\section{Divergence and convergence}
+
+\begin{snippet}{infinite-series-convergence}
+An infinite series converges if the limit
+of its partial sum sequence also converges,
+otherwise it diverges.
+\end{snippet}
+
+\section{Properties}
+
+\begin{snippet}{infinite-series-properties}
+\stheorem{}{
+    \[
+        \left(
+            \sum_{n=0}^\infty a_n
+        \right)
+        \left(
+            \sum_{n=0}^\infty b_n
+        \right)
+        =
+        \sum_{n=0}^\infty \sum_{k=0}^n a_k b_{n-k}
+    \]
+}
+\end{snippet}
+
+\section{Covergence theorem}
+
+\begin{snippet}{convergence-theorem}
+\stheorem{Convergence Theorem}{
+    If \(\sum a_n\) converges then \(\lim_{n\to\infty}a_n=0\)
+}
+\end{snippet}
+
+\begin{snippet}{convergence-theorem-proof}
+\sproof{Convergence Theorem}{
+    Consider the partial sum
+    \[
+        s_n = \sum_{k=1}^{n}a_k
+    \]
+    The sequence \(a_n\) can now be expressed as
+    \[
+        a_n = s_n - s_{n-1}
+    \]
+    Since \(\sum a_n\) converges, \(\lim_{n\to\infty}s_n=L\) for \(L\) finite. \\
+    The limit \(\lim_{n\to\infty}s_{n-1}=L\) because \(n-1 \to \infty \text{ as } n \to \infty\).
+    This implies the following
+    \[
+        \lim_{n \to \infty} a_n
+        = \lim_{n \to \infty} s_n - s_{n-1} = L - L = 0
+    \]
+}
+\end{snippet}
+
+\section{Divergence test}
+
+\begin{snippet}{divergence-test}
+\stheorem{Divergence test}{
+    If \(\lim_{n \to \infty} a_n \neq 0\) then \(\sum a_n\) diverges.
+}
+\end{snippet}
+% TODO proof
+
+\section{Absolute and conditional convergence}
+
+\begin{snippet}{absolute-convergence}
+\sdefinition{Absolute convergence}{
+    A series \(\sum a_n\) is said to converge absolutely if
+    \(\sum |a_n|\) converges.
+}
+\end{snippet}
+
+\begin{snippet}{series-expl1}
+This is a stronger type of convergence. Every absolutely convergent series is also convergent.
+
+A series that is convergent but not absolutely convergent is called conditionally convergent.
+\end{snippet}{series-expl2}
+
+\section{Riemann rearrangement theorem}
+
+\begin{snippet}{riemann-rearrangement-theorem}
+\stheorem{Riemann rearranged theorem}{
+    If a series is conditionally convergent, then its terms can be rearranged such that
+    the series converges to any \(r\in \mathbb{R}\) or such that it diverges (to infinity or no finite value).
+    If the series is absolutely convergent then any rearrangement of its terms will converge to the same value.
+}
+\end{snippet}
+
+\section{Geometric series}
+
+\begin{snippet}{geometric-series-definition}
+\sdefinition{Geometric Series}{
+    A geometric series is a series of the form
+    \[
+        \sum_{n=0}^\infty r^n
+    \]
+    meaning that the ratio between two adject terms is constant.
+}
+\end{snippet}
+
+% theorem?
+\begin{snippet}{geometric-series-convergence}
+This type of series converges for \(|r| < 1\) and always converges absolutely.
+\[
+    \sum_{n=0}^\infty r^n = \frac{1}{1-r}
+\]
+\end{snippet}
+
+\section{Telescoping series}
+
+\begin{snippet}{geometric-series-definition}
+\sdefinition{Geometric Series}{
+    A telescoping series is a series where the terms in the partial sums cancel eachother,
+    leaving a finite number of terms.
+}
+\end{snippet}
+
+\begin{snippet}{geometric-series-example-1}
+\sexample{Geometric Series}{
+    \begin{align*}
+        &\sum_{n=0}^\infty \frac{1}{n^2 + 3n + 2}
+        = \sum_{n=0}^\infty \left[ \frac{1}{n+1} - \frac{1}{n+2} \right]
+        = \lim_{N \to \infty} \sum_{n=0}^N \left[ \frac{1}{n+1} - \frac{1}{n+2} \right] \\
+        &= \frac{1}{1} - \frac{1}{2} + \frac{1}{2} - \frac{1}{3}
+        + \frac{1}{3} - \frac{1}{4} + \cdots + \frac{1}{n} - \frac{1}{n+1} +
+        \frac{1}{n+1} - \frac{1}{n+2} \\
+        &= \lim_{N \to \infty} 1 - \frac{1}{n+2} = 1
+    \end{align*}
+}
+\end{snippet}
+
+\section{Harmonic series}
+
+\begin{snippet}{harmonic-series-definition}
+\sdefinition{Harmonic Series}{
+    The harmonic series is the following digergent series
+    \[
+        \sum_{n=1}^\infty \frac{1}{n}
+    \]
+}
+\end{snippet}
+
+\section{Integral Test}
+
+\begin{snippet}{integral-test}
+\sdefinition{Integral Test}{
+    Let \(f(x)\) be a continuous function on \([k;\infty)\)
+    such that it is decreasing and positive on the interval \([N; \infty)\)
+    for some \(N\).
+    \[
+        \integral[k][\infty][f(x)][x] \text{ converges } \implies
+        \sum_{n=k}^{\infty} f(n) \text{ converges}
+    \]
+    and
+    \[
+        \integral[k][\infty][f(x)][x] \text{ diverges } \implies
+        \sum_{n=k}^{\infty} f(n) \text{ diverges}
+    \]
+}
+\end{snippet}
+
+\begin{snippet}{integral-test-proof}
+\sproof{Integral Test}{
+    TODO
+}
+\end{snippet}
+
+\section{p-series}
+
+\begin{snippet}{p-series-definition}
+\sdefinition{p-series Test}{
+    If \(k > 0\) then \[\sum_{n=k}^\infty \frac{1}{n^p}\]
+    converges if \(p > 1\) and diverges if \(p \leq 1\).
+}
+\end{snippet}
+
+\end{document}

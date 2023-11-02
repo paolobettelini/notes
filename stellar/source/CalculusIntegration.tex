@@ -1,4 +1,4 @@
-\documentclass[a4paper]{article}
+\documentclass[preview]{standalone}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -8,6 +8,7 @@
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usepackage{wrapfig}
+\usepackage{stellar}
 \usepackage{bettelini}
 
 \usetikzlibrary{positioning, arrows.meta} 
@@ -16,37 +17,43 @@
     colorlinks=true,
     linkcolor=black,
     urlcolor=blue,
-    pdftitle={Integration},
+    pdftitle={Assets},
     pdfpagemode=FullScreen,
 }
 
-\title{Integration}
-\author{Paolo Bettelini}
-\date{}
-
 \begin{document}
 
-\maketitle
-\tableofcontents
-\pagebreak
+\title{Integration}
+\id{integration}
+\genpage
 
 \section{Indefinite Integrals}
 
-\subsection{Definition}
+\subsection{Definitions}
 
-Given a function \(f(x)\), an \textbf{anti-derivative} or \textbf{primitive}
-is any function \(F(x)\) such that
-\[
-    \frac{dF}{dx} = f(x)
-\]
-The operator to find a primitive function is called the \textbf{indefinite integral}
-\[
-    \integral[f(x)][x]=F(x)+C,
-    \quad C\in\mathbb{R}
-\]
-The function to integrate (integrand) is delimited by the integral symbol \(\int\)
-and a differential of the variable of integration \(dx\).
-\\
+\begin{snippet}{primitive-function-definition}
+\sdefinition{Primitive function}{
+    Given a function \(f(x)\), an \textbf{anti-derivative} or \textbf{primitive}
+    is any function \(F(x)\) such that
+    \[
+        \frac{dF}{dx} = f(x)
+    \]
+}
+\end{snippet}
+
+\begin{snippet}{indefinite-integral-definition}
+\sdefinition{Indefinite integral}{
+    The operator to find a primitive function is called the \textbf{indefinite integral}
+    \[
+        \integral[f(x)][x]=F(x)+C,
+        \quad C\in\mathbb{R}
+    \]
+    The function to integrate (integrand) is delimited by the integral symbol \(\int\).
+    and a differential of the variable of integration \(dx\).
+}
+\end{snippet}
+
+\begin{snippet}{indefinite-inegral-expl}
 A function has infinitely many primitives, hence the \(+ C\) term. This essentially
 means that the derivative of a function is the same when the function is shifted
 up or down, the rate of change is the same. By reversing the process we don't know
@@ -55,9 +62,11 @@ the up or down shift of the original function.
     f(x)=\integral[\frac{df}{dx}][x] + C
 \]
 for some specific \(C\).
+\end{snippet}
 
 \subsection{Properties}
 
+\begin{snippet}{indefinite-integral-properties}
 If \(k\) is a constant
 \[
     \integral[kf(x)][x] = k \integral[f(x)][x]
@@ -66,50 +75,65 @@ If \(k\) is a constant
 \[
     \integral[f(x) \pm g(x)][x] = \integral[f(x)][x] \pm \integral[g(x)][x]
 \]
+\end{snippet}
 
 \subsection{Substitution Rule}
 
-Given an integral in the form
-\[
-    \integral[f(g(x))g'(x)][x]
-\]
-Let
-\[
-    u = g(x)
-\]
-The differential of u is then
-\[
-    du=g'(x)dx
-\]
-meaning that we can rewrite the integral as
-\[
-    \integral[f(u)][u] = F(u) + C = F(g(x)) + C
-\]
-
-\pagebreak
+\begin{snippet}{substitution-rule}
+\stheorem{Substitution Rule}{
+    Given an integral in the form
+    \[
+        \integral[f(g(x))g'(x)][x]
+    \]
+    Let
+    \[
+        u = g(x)
+    \]
+    The differential of u is then
+    \[
+        du=g'(x)dx
+    \]
+    meaning that we can rewrite the integral as
+    \[
+        \integral[f(u)][u] = F(u) + C = F(g(x)) + C
+    \]
+}
+\end{snippet}
 
 \subsection{Integration By Parts}
 
-Starting from the product rule
-\[
-    \frac{d}{dx}\big(f(x)g(x)\big)=f'(x)g(x)+f(x)g'(x)
-\]
-if we integrate both parts we get
-\begin{align*}
-    f(x)g(x)+C&=\int f'(x)g(x)\,dx+\int f(x)g'(x)\,dx \\
-    \int f(x)g'(x)\,dx &= f(x)g(x)+C - \int f'(x)g(x)\,dx 
-\end{align*}
-Since the indefinite integral of \(f'(x)g(x)\) is equal to some function plus an arbitrary constant, we can ignore the \(+C\) term.
-\[
-    \int f(x)g'(x)\,dx = f(x)g(x) - \int f'(x)g(x)\,dx
-\]
+\begin{snippet}{integration-by-parts}
+\stheorem{Integration by parts}{
+    Let \(f(x)\) and \(g(x)\) be functions
+    \[
+        \int f(x)g'(x)\,dx = f(x)g(x) - \int f'(x)g(x)\,dx
+    \]
+}
+\end{snippet}
 
-\pagebreak
+\begin{snippet}{integration-by-parts-proof}
+\sproof{Integration by parts}{
+    Starting from the product rule
+    \[
+        \frac{d}{dx}\big(f(x)g(x)\big)=f'(x)g(x)+f(x)g'(x)
+    \]
+    if we integrate both parts we get
+    \begin{align*}
+        f(x)g(x)+C&=\int f'(x)g(x)\,dx+\int f(x)g'(x)\,dx \\
+        \int f(x)g'(x)\,dx &= f(x)g(x)+C - \int f'(x)g(x)\,dx 
+    \end{align*}
+    Since the indefinite integral of \(f'(x)g(x)\) is equal to some function plus an arbitrary constant, we can ignore the \(+C\) term.
+    \[
+        \int f(x)g'(x)\,dx = f(x)g(x) - \int f'(x)g(x)\,dx
+    \]
+}
+\end{snippet}
 
 \section{Definite Integrals}
 
 \subsection{Area Problem}
 
+\begin{snippet}{area-problem-illustration}
 \begin{wrapfigure}{l}{10cm}
     \begin{center}
         \begin{tikzpicture}[
@@ -174,18 +198,23 @@ the exact value of the area.
 \[
     A = \lim_{n\to\infty} \sum_{k=0}^{n}f(x_k^*)\Delta x
 \]
+\wrapfill
+\end{snippet}
 
 \subsection{Definition}
 
+\begin{snippet}{definite-integral-definition}
 Given a function \(f(x)\) continuous on the interval \([a;b]\), we divide the interval
 into \(n\) rectangles of width \(\Delta x = \frac{b-a}{n}\) and height \(f(x_k^*)\).
 The definitive interval of \(f(x)\) from \(a\) to \(b\) is
 \[
     \integral[a][b][f(x)][x] = \lim_{n\to \infty} \sum_{k=0}^{n} f(x_k^*)\Delta x
 \]
+\end{snippet}
 
 \subsection{Properties}
 
+\begin{snippet}{definite-integral-properties}
 \[
     \integral[a][b][f(x)][x] = -\integral[b][a][f(x)][x]
 \]
@@ -199,54 +228,72 @@ If \(k\) is constant
 \[
     \integral[a][a][f(x)][x] = 0
 \]
+\end{snippet}
 
 \subsection{Fundamental Theorem of Calculus}
 
-A primitive function \(F(x)\) (with \(C=0\), so passing through the origin) represents the area
-from \(0\) to \(x\) of \(f(x)\).
+\begin{snippet}{fundamental-theorem-of-calculus}
+\stheorem{Fundamental Theorem of Calculus}{
+    A primitive function \(F(x)\) (with \(C=0\), thus passing through the origin) represents the area
+    from \(0\) to \(x\) of \(f(x)\).
 
-Let \(f(x)\) be continuous on the interval \(I=[a;b]\) and \(F(x)\) any primitive of \(f(x)\),
-then \(F(x)\) is also continuous on \(I\) and
-\[
-    \integral[0][x][f(t)][t] = F(x)
-\]
-and
-\[
-    \integral[a][b][f(x)][x] = F(b) - F(a)
-\]
-This also means that
-\[
-    f(x)=\integral[0][x][f'(t)][t]
-\]
-or
-\[
-    \frac{d}{dx}\integral[a][x][f(t)][t]=f(x)
-\]
-When the upper or lower limit is not constant,
-\begin{align*}
-    \frac{d}{dx} \integral[v(x)][u(x)][f(t)][t]
-    &= \frac{d}{dx} \left[ F(u(x)) - F(v(x)) \right] \\
-    &= u'(x)f(u(x)) - v'(x)f(v(x))
-\end{align*}
+    Let \(f(x)\) be continuous on the interval \(I=[a;b]\) and \(F(x)\) any primitive of \(f(x)\),
+    then \(F(x)\) is also continuous on \(I\) and
+    \[
+        \integral[0][x][f(t)][t] = F(x)
+    \]
+    and
+    \[
+        \integral[a][b][f(x)][x] = F(b) - F(a)
+    \]
+    This also means that
+    \[
+        f(x)=\integral[0][x][f'(t)][t]
+    \]
+    or
+    \[
+        \frac{d}{dx}\integral[a][x][f(t)][t]=f(x)
+    \]
+}
+\end{snippet}
+
+\begin{snippet}{fundamental-calculus-theorem-corollary-1}
+\scorollary{Non-constant integral limits derivative}{
+    When the upper or lower limit is not constant,
+    \begin{align*}
+        \frac{d}{dx} \integral[v(x)][u(x)][f(t)][t]
+        &= \frac{d}{dx} \left[ F(u(x)) - F(v(x)) \right] \\
+        &= u'(x)f(u(x)) - v'(x)f(v(x))
+    \end{align*}
+}
+\end{snippet}
 
 \section{Average Function Value}
 
-The average value of a continuous function \(f(x)\) over the interval \([a;b]\) is given by
-\[
-    f_\text{avg} = \frac{1}{b-a} \integral[a][b][f(x)][x]
-\]
+\begin{snippet}{average-function-value}
+\stheorem{Average Function Value}{
+    The average value of a continuous function \(f(x)\) over the interval \([a;b]\) is given by
+    \[
+        f_\text{avg} = \frac{1}{b-a} \integral[a][b][f(x)][x]
+    \]
+}
+\end{snippet}
 
 \section{Mean Value Theorem}
-If \(f(x)\) is a continuous function on \(I=[a;b]\), \(f(x)\) will at some point in \(I\)
-reach its average value, meaning
-\[
-    \exists c \suchthat f(c) = \frac{1}{b-a} \integral[a][b][f(x)][x]
-\]
 
-\pagebreak
+\begin{snippet}{mean-value-theorem}
+\stheorem{Mean Value Theorem}{
+    If \(f(x)\) is a continuous function on \(I=[a;b]\), \(f(x)\) will at some point in \(I\)
+    reach its average value, meaning
+    \[
+        \exists c \suchthat f(c) = \frac{1}{b-a} \integral[a][b][f(x)][x]
+    \]
+}
+\end{snippet}
 
 \section{Area Between Functions}
 
+\begin{snippet}{area-between-functions-illustration}
 \begin{wrapfigure}{l}{7.5cm}
     \begin{tikzpicture}[x=4cm, y=4cm, >=Stealth, declare function={
         func1(\x) = sin(3.14*\x/2 r);
@@ -329,11 +376,11 @@ and we want to find the areas enclosed by the functions when \(y\in [d;c]\)
 \]
 
 \wrapfill
-
-\pagebreak
+\end{snippet}
 
 \section{Volume of solid revolutions}
 
+\begin{snippet}{volume-of-solid-revolutions-illustration}
 A solid of revolution is a solid made by rotating about an axis a function
 on an interval \([a;b]\).
 
@@ -373,9 +420,11 @@ on an interval \([a;b]\).
         \end{axis}
     \end{tikzpicture}
 \end{minipage}
+\end{snippet}
 
 \subsection{Simple revolutions}
 
+\begin{snippet}{simple-revolutions}
 Let's start by assuming a rotation aroud the \(x\)-axis of a function \(y=f(x)\) on \([a;b]\).
 we divide the interval into \(n\) subsections of width \(\Delta x = \frac{b-a}{n}\).
 For each section we then choose a point \(x^*_k\).
@@ -402,9 +451,11 @@ The same approach works for a rotation around the \(y\)-axis.
     V = \integral[a][b][A(y)][y]
 \]
 where \(A=\pi \cdot {[f(y)]}^2\)
+\end{snippet}
 
 \subsection{Hollow volumes}
 
+\begin{snippet}{hollow-volumes}
 When the volume is obtained by rotating an area bounded by two functions, the volume
 is partially hollow. This can also happen with a single function.
 In this case we can obtain the volume as \(\textbf{outer volume} - \textbf{inner volume}\)
@@ -417,16 +468,20 @@ Using annuluses,
 \]
 When we have disks, \(\text{inner radius}=0\). More complex shapes may
 require other area functions.
+\end{snippet}
 
 \subsection{Other axis}
 
+\begin{snippet}{revolution-integral-other-axis}
 When we are rotating a function about \(x=a\) or \(y=a\)
 we need to change the area function accordingly, therefore
 usually adjusting the \textbf{outer radius} and \textbf{inner radius}
 variables.
+\end{snippet}
 
 \subsection{Method of cylinders}
 
+\begin{snippet}{method-of-cylinders}
 Sometimes it is tricky or impossible to integrate the volume using disks or annuluses.
 We can also cover the volume by using the area of an empty cylinder. In this case we would have
 \[
@@ -434,5 +489,6 @@ We can also cover the volume by using the area of an empty cylinder. In this cas
 \]
 where \(r\) is the radius of the cylinder ad \(h\) is the height of the cylinder.
 % https://tutorial.math.lamar.edu/Classes/CalcI/VolumeWithCylinder.aspx
+\end{snippet}
 
 \end{document}

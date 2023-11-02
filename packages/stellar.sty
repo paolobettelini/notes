@@ -5,6 +5,7 @@
 \RequirePackage{xcolor}
 \RequirePackage{parskip}
 \RequirePackage{fullpage}
+\RequirePackage{ifthen}
 \RequirePackage[most]{tcolorbox}
 
 %%%%%%%%%% Stellar commands utils %%%%%%%%%%
@@ -17,14 +18,18 @@
 }
 \ExplSyntaxOff
 
-% Only works if ..
+\newcommand{\beginnewline}{%
+    \ifthenelse{\boolean{@twocolumn}}{%
+        \if@firstcolumn\else\par\fi%
+    }{%
+        \if@nobreak\else\par\fi%
+    }%
+}
 
 \newcommand{\@padcmd}[1]{
-~\par\noindent
-
+\beginnewline~\\
 #1
-
-~\par
+\beginnewline~\\
 }
 
 \renewcommand{\title}[1]{\@padcmd{!title #1}}
@@ -34,6 +39,8 @@
 \newcommand{\genpage}{\@padcmd{!gen-page true}}
 \newcommand{\gencourse}{\@padcmd{!gen-course true}}
 \newcommand{\includesnpt}[1]{\@padcmd{!include #1}}
+\newcommand{\id}[1]{\@padcmd{!id #1}}
+\newcommand{\plain}[1]{\@padcmd{!plain #1}}
 
 \newenvironment{snippet}[1]
 {\@padcmd{!snippet #1}}
@@ -79,8 +86,8 @@
 \definecolor{examplefr}{HTML}{2e8181}
 \definecolor{notebg}{HTML}{e6e6e6}
 \definecolor{notefr}{HTML}{6f6f6f}
-\definecolor{proofbg}{HTML}{f9effb} % change colors
-\definecolor{prooffr}{HTML}{a74eb4} % change colors
+\definecolor{proofbg}{HTML}{f9effb} % TODO: change colors
+\definecolor{prooffr}{HTML}{a74eb4} % TODO: change colors
 
 \customsentence{Theorem}{Theorem}{theorembg}{theoremfr}
 \customsentence{Corollary}{Corollary}{corollarybg}{corollaryfr}
@@ -92,12 +99,12 @@
 \customsentence{Axiom}{Axiom}{definitionbg}{definitionfr}
 \customsentence{Proof}{Proof}{proofbg}{prooffr}
 
-\newcommand{\stheorem}[2]{\begin{Theorem}{#1}{}#2\end{Theorem}}
-\newcommand{\scorollary}[2]{\begin{Corollary}{#1}{}#2\end{Corollary}}
-\newcommand{\slemma}[2]{\begin{Lemma}{#1}{}#2\end{Lemma}}
-\newcommand{\sproposition}[2]{\begin{Proposition}{#1}{}#2\end{Proposition}}
-\newcommand{\sdefinition}[2]{\begin{Definition}{#1}{}#2\end{Definition}}
-\newcommand{\sexample}[2]{\begin{Example}{#1}{}#2\end{Example}}
-\newcommand{\snote}[2]{\begin{Note}{#1}{}#2\end{Note}}
-\newcommand{\saxiom}[2]{\begin{Axiom}{#1}{}#2\end{Axiom}}
-\newcommand{\sproof}[2]{\begin{Proof}{#1}{}#2\end{Proof}}
+\newcommand{\stheorem}[2]{\vspace{-0.35cm}\begin{Theorem}{#1}{}#2\end{Theorem}}
+\newcommand{\scorollary}[2]{\vspace{-0.35cm}\begin{Corollary}{#1}{}#2\end{Corollary}}
+\newcommand{\slemma}[2]{\vspace{-0.35cm}\begin{Lemma}{#1}{}#2\end{Lemma}}
+\newcommand{\sproposition}[2]{\vspace{-0.35cm}\begin{Proposition}{#1}{}#2\end{Proposition}}
+\newcommand{\sdefinition}[2]{\vspace{-0.35cm}\begin{Definition}{#1}{}#2\end{Definition}}
+\newcommand{\sexample}[2]{\vspace{-0.35cm}\begin{Example}{#1}{}#2\end{Example}}
+\newcommand{\snote}[2]{\vspace{-0.35cm}\begin{Note}{#1}{}#2\end{Note}}
+\newcommand{\saxiom}[2]{\vspace{-0.35cm}\begin{Axiom}{#1}{}#2\end{Axiom}}
+\newcommand{\sproof}[2]{\vspace{-0.35cm}\begin{Proof}{#1}{}#2\end{Proof}}
