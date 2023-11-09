@@ -5,6 +5,10 @@ All the PDF files have been compiled using Tectonic.
 
 Search through my notes at [https://paolobettelini.github.io/notes](https://paolobettelini.github.io/notes).
 
+> [!NOTE]
+> Some of my notes are being moved to [stellar](./stellar) in a more course-like setting.
+> PDF renders are not available so you need to host the website yourself for now.
+
 ![website preview](./media/website.png)
 
 <p float="center">
