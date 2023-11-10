@@ -1,4 +1,4 @@
-\documentclass[a4paper]{article}
+\documentclass[preview]{standalone}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -6,6 +6,7 @@
 \usepackage{parskip}
 \usepackage{fullpage}
 \usepackage{hyperref}
+\usepackage{makecell}
 \usepackage{stellar}
 
 \hypersetup{
@@ -16,36 +17,39 @@
     pdfpagemode=FullScreen,
 }
 
-\title{Group Theory}
-\author{Paolo Bettelini}
-\date{}
-
 \begin{document}
 
-\maketitle
-\tableofcontents
-\pagebreak
+\title{Group Theory}
+\id{grouptheory}
+\genpage
 
 \section{Groups}
 
 \subsection{Cayley tables}
 
+\begin{snippet}{cayley-table-illustration}
 A binary operation \(\circ\) on a finite set \(G\) can be
 visualized using a \textit{Cayley table}.
 
 Example: \(G=\{0,1\}\) and \(\circ \equiv \text{multiplication}\).
-\begin{tabular}{|c|c|c|}
-    \hline
-    \(\circ\) & 0 & 1 \\
-    \hline
-    0 & 0 & 0 \\
-    \hline
-    1 & 0 & 1 \\
-    \hline
-\end{tabular}
+\makecell{
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \(\circ\) & 0 & 1 \\
+        \hline
+        0 & 0 & 0 \\
+        \hline
+        1 & 0 & 1 \\
+        \hline
+    \end{tabular}
+}
+\\
+\phantom{ }
+\end{snippet}
 
 \subsection{Definition}
 
+\begin{snippet}{monoid-definition}
 \sdefinition{Monoid}{
     A \textit{monoid} \((G,\circ)\) is a tuple containing a set \(G\) and
     a binary operation \(\circ \colon G \times G \to G\).
@@ -56,11 +60,13 @@ Example: \(G=\{0,1\}\) and \(\circ \equiv \text{multiplication}\).
         \item \textbf{Associativity}: \(\forall a,b,c\in G, a \circ (b \circ c) = (a \circ b) \circ c\)
         \item \textbf{Identity}: \(\exists e \,|\, \forall a \in G, ea=ae=a\) 
     \end{enumerate}
+    
+    The operation \(\circ\) between \(a\) and \(b\) may be written as
+    \(a\circ b\) or just \(ab\).
 }
+\end{snippet}
 
-The operation \(\circ\) between \(a\) and \(b\) may be written as
-\(a\circ b\) or just \(ab\).
-
+\begin{snippet}{group-definition}
 \sdefinition{Group}{
     A \textit{group} is a monoid \((G,\circ)\) where each element has an inverse.
     
@@ -68,13 +74,17 @@ The operation \(\circ\) between \(a\) and \(b\) may be written as
         \item \textbf{Inverse}: \(\forall a \in G, \exists a^{-1} \in G \,|\, a^{-1}a = aa^{-1} = e\)
     \end{enumerate}
 }
+\end{snippet}
 
 \subsection{Proof of uniqueness of the identity element}
 
-\stheorem{Uniqueness of the inverse element}{
+\begin{snippet}{uniqueness-of-the-identity-element}
+\stheorem{Uniqueness of the identity element}{
     If \(e\) is an identity element of a group, then it is unique.
 }
+\end{snippet}
 
+\begin{snippet}{uniqueness-of-the-identity-element-proof}
 \sproof{Uniqueness of the identity element}{
     Suppose there is more than one identity element, \(e_1\) and \(e_2\).
     \begin{align*}
@@ -84,13 +94,17 @@ The operation \(\circ\) between \(a\) and \(b\) may be written as
     Thus, \(e_1\) and \(e_2\) must be the same. This reasoning can be extended
     to when we may suppose to have \(n\) identity elements.
 }
+\end{snippet}
 
 \subsection{Proof of uniqueness of the inverse element}
 
+\begin{snippet}{uniqueness-of-the-inverse-element}
 \stheorem{Uniqueness of the inverse element}{
     If \(a^{-1}\) is an inverse of \(a\) in a group, then it is unique.
 }
+\end{snippet}
 
+\begin{snippet}{uniqueness-of-the-inverse-element-proof}
 \sproof{Uniqueness of the inverse element}{
     Suppose we have \(a\in G\) with inverses \(b\) and \(c\).
     \begin{align*}
@@ -101,28 +115,36 @@ The operation \(\circ\) between \(a\) and \(b\) may be written as
     Thus, \(b\) and \(c\) must be the same. This reasoning can be extended
     to when we may suppose to have \(n\) inverses of \(a\).
 }
+\end{snippet}
 
 \subsection{Cancellation laws}
 
+\begin{snippet}{right-cancellation-law}
 \stheorem{Right cancellation law}{
     \[
         ba = ca \implies b = c
     \]
 }
+\end{snippet}
 
+\begin{snippet}{left-cancellation-law}
 \stheorem{Left cancellation law}{
     \[
         ab = ac \implies b = c
     \]
 }
+\end{snippet}
 
 \subsection{Inverse of Product}
 
+\begin{snippet}{inverse-of-product}
 \stheorem{Inverse of Product}{
     Consider a group \((G, \circ)\). For any two elements \(a,b \in G\)
     \[{(a \circ b)}^{-1} = b^{-1} \circ a^{-1}\]
 }
+\end{snippet}
 
+\begin{snippet}{inverse-of-product-proof}
 \sproof{Inverse of Product}{
     We start by noticing that by associativity we have
     \begin{align*}
@@ -138,30 +160,40 @@ The operation \(\circ\) between \(a\) and \(b\) may be written as
     \end{align*}
     We can clearly see that \((b^{-1} \circ a^{-1}) = {(a \circ b)}^{-1}\).
 }
+\end{snippet}
 
-In general, we have
-\[
-    (a_1 \circ a_2 \circ \dots a_n)^{-1}
-    = a_n^{-1} \circ \dots \circ a_2^{-1} \circ a_1^{-1}
-\]
+\begin{snippet}{generalized-inverse-of-product}
+\stheorem{Generalized Inverse of Product}{
+    Consider a group \((G, \circ)\). For any elements \(a_1,a_2,\cdots,a_n \in G\)
+    \[
+        (a_1 \circ a_2 \circ \dots a_n)^{-1}
+        = a_n^{-1} \circ \dots \circ a_2^{-1} \circ a_1^{-1}
+    \]
+}
+\end{snippet}
 
 \section{Subgroups}
 
 \subsection{Definition}
 
+\begin{snippet}{subgroup-definition}
 \sdefinition{Subgroups}{
     Given an algebraic structure \(g=(G, \circ)\) and a group \(h=(H, \circ)\), \(h\)
     is a subgroup of \(g\) (\(g \leq h\)) if \(H \subseteq G\).
 }
+\end{snippet}
 
 \subsection{One-Step Subgroup Test}
 
+\begin{snippet}{one-step-subgroup-test}
 \stheorem{One-Step Subgroup Test}{
     Let \((G, \circ)\) be a group and let \(H \subseteq G\) where \(\emptyset \neq H\).\\
     Then \((H, \circ)\) is a subgroup of \((G, \circ) \iff
     \forall a,b \in H, a \circ b^{-1} \in H\).
 }
+\end{snippet}
 
+\begin{snippet}{one-step-subgroup-test-proof}
 \sproof{One-Step Subgroup Test}{
     (\(\implies\)): Assume \((H, \circ) \leq (G, \circ)\).
     The properties of a group directly infer \(\forall a,b \in H, a \circ b^{-1} \in H\) \\
@@ -174,9 +206,11 @@ In general, we have
         \(a\circ b^{-1} = a \circ (b^{-1})^{-1}=a\circ b\). This implies \(a, b \in H\).
     \end{itemize}
 }
+\end{snippet}
 
 \subsection{The centralizer subgroup}
 
+\begin{snippet}{centralizer-group}
 \sdefinition{The centralizer subgroup}{
     Let \(H \leq G\) be groups and define
     \[
@@ -185,24 +219,29 @@ In general, we have
         \}
     \]
     as the centralizer of \(H\).
+    This is the set of all elements of \(G\) such that they commute with every element of \(H\).
 }
+\end{snippet}
 
-This is the set of all elements of \(G\) such that they commute with every element of \(H\).
-
+\begin{snippet}{centralizer-of-subgroup-is-subgroup}
 \stheorem{}{
     Let \(H \leq G\), then \(\text{C}_G(H) \leq G\).
 }
+\end{snippet}
 
-\sproof{}{
+\begin{snippet}{centralizer-of-subgroup-is-subgroup-proof}
+\sproof{Centralizer of subgroup is subgroup}{
     Suppose \(a,b \in \text{C}_G(H)\).
     We want to show \(ab^{-1} \in \text{C}_G(H)\).\\
     Note that the condition \(gh=hg \iff hg^{-1}=g^{-1}h\).\\
     Consider the expression \((ab^{-1})h = a(b^{-1}h) = ahb^{-1} = h(ab^{-1})\).
     This means that \(ab^{-1} \in \text{C}_G(H)\) and thus in \(H\).
 }
+\end{snippet}
 
 \subsection{The conjugate subgroup}
 
+\begin{snippet}{conjugate-subgroup}
 \sdefinition{The conjugate subgroup}{
     Let \(H \leq G\) be groups and define
     \[
@@ -212,12 +251,15 @@ This is the set of all elements of \(G\) such that they commute with every eleme
     \]
     as the conjugate subgroup.
 }
+\end{snippet}
 
-
+\begin{snippet}{conjugate-subgroup-is-subgroup}
 \stheorem{}{
     Let \(H \leq G\), then \(g^{-1}Hg \leq G\).
 }
+\end{snippet}
 
+\begin{snippet}{conjugate-subgroup-is-subgroup-proof}
 \sproof{}{
     Suppose \(a,b \in g^{-1}Hg\).
     We want to show \(ab^{-1} \in g^{-1}Hg\).\\
@@ -227,9 +269,11 @@ This is the set of all elements of \(G\) such that they commute with every eleme
     =g^{-1}h_1gg^{-1}h_2^{-1}g = g^{-1} (h_1h_2) g \in g^{-1}Hg \)
     because \(h_1h_2 \in H\).
 }
+\end{snippet}
 
 \section{Center of a group}
 
+\begin{snippet}{center-of-group}
 \sdefinition{Center of a group}{
     Let \(G\) be a group. The center of the group \(G\) is defined as
     \[
@@ -241,17 +285,22 @@ This is the set of all elements of \(G\) such that they commute with every eleme
 
 This is the set of all elements that commute with every other element.
 The condition \(gx=xg\) is also sometimes expressed as \(gxg^{-1} = x\).
+\end{snippet}
 
+\begin{snippet}{center-of-group-is-subgroup}
 \stheorem{}{
     Let \(G\) be a group, then \(\text{Z}(G) \leq G\).
 }
+\end{snippet}
 
+\begin{snippet}{center-of-group-is-subgroup-proof}
 \sproof{}{
     Assume \(a, b \in \text{Z}(G)\) meaning \(a = gag^{-1}\) and \(b = gag^{-1}\) for any \(g \in G\). \\
     We want to show \(ab^{-1} \in \text{Z}(G)\).
     \(ab^{-1} = (gag^{-1}){(gbg^{-1})}^{-1} = gag^{-1}gb^{-1}g^{-1}
     = g ab^{-1} g^{-1}\) which is precisely the requirement to be in \(\text{Z}(G)\).
 }
+\end{snippet}
 
 % https://www.youtube.com/watch?v=m4yYeTGe-ic&list=PL22w63XsKjqwN7sHsEiy0yqkcjQfXAuVb
 
