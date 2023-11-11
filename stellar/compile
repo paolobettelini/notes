@@ -6,12 +6,12 @@ search_folder="../packages"
 mongourl="mongodb://localhost:11223"
 
 WORKING_DIR=`pwd`
+# TODO: use this properly
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
-
-cd $SCRIPT_DIR
 
 function compile_and_gen () {
     if [[ "$1" == *.tex ]]; then
+        # generate from LaTeX
         echo "Compiling $1"
         tectonic "$1" -Z search-path="$search_folder" > /dev/null
 
@@ -33,6 +33,33 @@ function compile_and_gen () {
         #    --output "$pdf";
 
         rm "$pdf";
+    elif [ -e "$1/Cargo.toml" ]; then
+        # compile nannou
+
+        snippet_name=$(basename "$1")
+        
+        # cleanup old versions
+        if [ -e "$1/website/dist/index.js" ]; then
+            rm "$1/website/dist/index.js"
+        fi
+        if [ -e "$data_folder/snippets/$snippet_name" ]; then
+            rm -rf "$data_folder/snippets/$snippet_name*"
+        fi
+
+        cd "$1"
+        # compile using shared folder to cache shared packages
+        CARGO_TARGET_DIR="../target" wasm-pack build
+
+        cd website
+        npm install
+        npm run build
+
+        cd "$WORKING_DIR"
+        mkdir -p "$data_folder/snippets/$snippet_name"
+
+        # generate snippet folder
+        rm "$1/website/dist/index.js"
+        mv "$1"/website/dist/* "$data_folder/snippets/$snippet_name"
     fi
 }
 
@@ -44,4 +71,4 @@ else
     done
 fi
 
-cd $WORKING_DIR
+cd "$WORKING_DIR"
