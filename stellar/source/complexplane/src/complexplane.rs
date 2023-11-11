@@ -5,13 +5,12 @@ use nannou::text::Font;
 use std::cell::RefCell;
 use std::sync::Arc;
 
-/*
 lazy_static! {
-    pub static ref CMFONT: Arc<Font> = {
-        let font_data: &[u8] = include_bytes!("cmunbmr.ttf");
+    pub static ref FONT: Arc<Font> = {
+        let font_data: &[u8] = include_bytes!("lmmath-regular.ttf");
         Arc::new(Font::from_bytes(font_data).unwrap())
     };
-}*/
+}
 
 struct Model {
     dragging: bool,
@@ -47,8 +46,8 @@ async fn model(app: &App) -> Model {
         ..Default::default()
     };
 
-    let width = 600;
-    let height = 400;
+    let width = 750;
+    let height = 750;
 
     let w_id = app
         .new_window()
@@ -60,7 +59,7 @@ async fn model(app: &App) -> Model {
 
     Model {
         dragging: false,
-        point_pos: (0.0, 0.0),
+        point_pos: (201.0, 251.0),
     }
 }
 
@@ -71,6 +70,9 @@ fn update(app: &App, model: &mut Model, update: Update) {
 fn view(app: &App, model: &Model, frame: Frame) {
     let draw = app.draw();
     let win = app.window_rect();
+
+    let font_size = 48;
+    let weight = 3.0;
     
     draw.background().color(WHITE);
 
@@ -85,14 +87,14 @@ fn view(app: &App, model: &Model, frame: Frame) {
         .start(pt2(win.left(), 0.0))
         .end(pt2(win.right(), 0.0))
         .color(BLACK)
-        .weight(2.0);
+        .weight(weight);
 
     // Draw the y-axis.
     draw.line()
         .start(pt2(0.0, win.bottom()))
         .end(pt2(0.0, win.top()))
         .color(BLACK)
-        .weight(2.0);
+        .weight(weight);
 
     // TODO fix the real axis
 
@@ -106,11 +108,12 @@ fn view(app: &App, model: &Model, frame: Frame) {
             .start(pt2(x_pos, -5.0))
             .end(pt2(x_pos, 5.0))
             .color(BLACK)
-            .weight(2.0);
+            .weight(weight);
         draw.text(&x.to_string())
-            .xy(pt2(x_pos, 15.0))
+            .xy(pt2(x_pos, 34.0))
             .color(BLACK)
-            .font_size(12);
+            .font(FONT.as_ref().clone())
+            .font_size(font_size);
     }
 
     // Draw ticks and labels on the y-axis.
@@ -123,19 +126,20 @@ fn view(app: &App, model: &Model, frame: Frame) {
             .start(pt2(-5.0, y_pos))
             .end(pt2(5.0, y_pos))
             .color(BLACK)
-            .weight(2.0);
+            .weight(weight);
         draw.text(&format!("{y}i"))
-            .xy(pt2(20.0, y_pos))
+            .xy(pt2(25.0, y_pos + 20.0))
             .color(BLACK)
-            //.font(CMFONT.as_ref().clone())
-            .font_size(12);
+            .font(FONT.as_ref().clone())
+            .font_size(font_size);
     }
 
     // Origin
     draw.text("0")
-        .xy(pt2(12.0, 12.0))
+        .xy(pt2(20.0, 35.0))
         .color(BLACK)
-        .font_size(12);
+        .font(FONT.as_ref().clone())
+        .font_size(font_size);
 
     // Draw point
     draw.ellipse()
@@ -146,9 +150,10 @@ fn view(app: &App, model: &Model, frame: Frame) {
     let im = map_range(model.point_pos.1, win.bottom(), win.top(), y_min, y_max);
     let coord = complex_to_string(re, im);
     draw.text(&coord)
-        .xy(pt2(model.point_pos.0, model.point_pos.1 + 15.0))
+        .xy(pt2(model.point_pos.0, model.point_pos.1 + 40.0))
         .color(BLACK)
-        .font_size(12);
+        .font(FONT.as_ref().clone())
+        .font_size(font_size);
 
     draw.to_frame(app, &frame).unwrap();
 }
@@ -201,7 +206,7 @@ fn complex_to_string(re: f32, im: f32) -> String {
     if im == 0.0 {
         // Do nothing if the imaginary part is 0.
     } else if im > 0.0 {
-        result.push('+');
+        result.push_str(" + ");
         if im != 1.0 {
             result.push_str(&format!("{:.1}", im));
         }
@@ -210,5 +215,5 @@ fn complex_to_string(re: f32, im: f32) -> String {
         result.push_str(&format!("{:.1}i", im));
     }
 
-    result
+    result.replace('-', " - ")
 }
