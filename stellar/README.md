@@ -14,6 +14,7 @@ cd stellar
 ```
 This script uses `tectonic` to compile all the `tex` file and then runs `stellar-cli`
 to generate the snippets and import them in the database.
+To compile the `nannout` snippets you also need `wasm-pack` and `npm`.
 Make sure to open the script and change your configurations. A mongoDB database is needed.
 Then, open the web server
 ```bash
