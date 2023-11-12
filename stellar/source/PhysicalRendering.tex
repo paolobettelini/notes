@@ -1,4 +1,4 @@
-\documentclass[a4paper]{article}
+\documentclass[preview]{standalone}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -6,10 +6,7 @@
 \usepackage{fullpage}
 \usepackage{hyperref}
 \usepackage{tikz}
-
-\usepackage[backend=bibtex]{biblatex}
-
-\addbibresource{resources/references.bib}
+\usepackage{stellar}
 
 \usetikzlibrary{angles,quotes}
 
@@ -21,37 +18,46 @@
     pdfpagemode=FullScreen,
 }
 
-\title{Physical Rendering}
-\author{Paolo Bettelini}
-\date{}
-
 \begin{document}
 
-\maketitle
-\tableofcontents
-\pagebreak
+\title{Physical Rendering}
+\id{physicalrendering}
+\genpage
 
 \section{Measurements}
 
 \subsection{Radiant Flux}
 
-The radiant flux (or power) \(\Phi\) is the total amount of energy passing
-through a surface per second and is measured in \([W]\) (watts) as \(\frac{J}{s}\).
+\begin{snippet}{radiant-flux-definition}
+\sdefinition{Radiant Flux}{
+    The \textit{radiant flux} (or power) \(\Phi\) is the total amount of energy passing
+    through a surface per second and is measured in \([W]\) (Watts) as \(\frac{J}{s}\).
+}
+\end{snippet}
 
 \subsection{Irradiance}
 
-The irradiance \(E\) is the measurements of the radiant flux per \textit{unit area}
-and is measured in \([W]{[M]}^{-2}\) as \(\frac{\Phi}{m^2}\).
+\begin{snippet}{irradiance-definition}
+\sdefinition{Irradiance}{
+    The \textit{irradiance} \(E\) is the measurements of the radiant flux per \textit{unit area}
+    and is measured in \([W]{[M]}^{-2}\) as \(\frac{\Phi}{m^2}\).
+}
+\end{snippet}
 
 \subsection{Radiance}
 
-The radiance \(L\) is the irradiance per unit solid angle (steradian) and is
-measured in \([W]{[M]}^{-2}{[sr]}^{-1}\) as \(\frac{E}{sr}\).
+\begin{snippet}{radiance-definition}
+\sdefinition{Radiance}{
+    The radiance \(L\) is the irradiance per unit solid angle (steradian) and is
+    measured in \([W]{[M]}^{-2}{[sr]}^{-1}\) as \(\frac{E}{sr}\).
+}
+\end{snippet}
 
 \section{Geometry}
 
 \subsection{Fundamental vectors}
 
+\begin{snippet}{fundamental-vectors-illustration}
 % tikz picture
 \begin{center}
     \begin{tikzpicture}
@@ -79,10 +85,12 @@ measured in \([W]{[M]}^{-2}{[sr]}^{-1}\) as \(\frac{E}{sr}\).
     \item \({\theta}_i, {\theta}_r\) incident and reflected angles
 \end{itemize}
 
-The reflected ray is given by \(\hat{R}=\hat{L}-2\hat{N}(\hat{L}\cdot\hat{N})\)
+The reflected ray is given by \(\hat{R}=\hat{L}-2\hat{N}(\hat{L}\cdot\hat{N})\).
+\end{snippet}
 
 \subsection{Light attenuation}
 
+\begin{snippet}{light-attenuation}
 The amount of radiance on a point is given by
 \[
     \Phi \left(\hat{L} \cdot \hat{N}\right) = \Phi \cdot \cos(\alpha)
@@ -91,13 +99,13 @@ where \(\alpha\) is the angle between the two vectors.
 \\
 This means that if the light source is perfectly above the point, then
 there is no light attenuation \((\alpha = 0)\).
-
-\pagebreak
+\end{snippet}
 
 \section{Materials}
 
 \subsection{Types of materials}
 
+\begin{snippet}{types-of-material-reflections}
 Different materials reflect incoming light to different directions and absord different amounts of it.
 
 \begin{center}
@@ -151,92 +159,110 @@ Different materials reflect incoming light to different directions and absord di
         \node[below] at (0,0) {Diffuse};
     \end{tikzpicture}
 \end{center}
+\end{snippet}
 
 \subsection{Bidirectional reflectance distribution function}
 
-The BRDF function (Bidirectional reflectance distribution function) is a probability distribution
-for the amount of light reflected in a certain direction.
-\[
-    f_r(\hat{w}, x, \hat{w}^\prime)
-\]
-
-\begin{itemize}
-    \item \(\hat{w}\) incoming ray direction
-    \item \(x\) point of collision
-    \item \(\hat{w}^\prime\) outgoing ray direction
-\end{itemize}
-
-This function follows the Helmholtz-reciprocity
-\[
-    \forall \hat{w},x,\hat{w}^\prime, \quad f_r(\hat{w}, x, \hat{w}^\prime) = f_r(\hat{w}^\prime, x, \hat{w})
-\]
-positivity
-\[
-    \forall \hat{w},x,\hat{w}^\prime, \quad f_r(\hat{w}, x, \hat{w}^\prime) \geq 0
-\]
-and energy conservation
-\[
-    \int_\Omega f_r(\hat{w}, x, \hat{w}^\prime) \cos \theta \, d\hat{w}^\prime \leq 1
-\]
-where \(\Omega\) encloses the scene (usually a hemisphere).
+\begin{snippet}{brdf-definition}
+\sdefinition{Bidirectional reflectance distribution function}{
+    The \textit{BRDF function} (Bidirectional reflectance distribution function) is a probability distribution
+    for the amount of light reflected in a certain direction.
+    \[
+        f_r(\hat{w}, x, \hat{w}^\prime)
+    \]
+    where
+    \begin{itemize}
+        \item \(\hat{w}\) incoming ray direction
+        \item \(x\) point of collision
+        \item \(\hat{w}^\prime\) outgoing ray direction
+    \end{itemize}
+    The function follows the following properties:
+    \begin{enumerate}
+        \item \textbf{Helmholtz-reciprocity}:
+        \(
+            \forall \hat{w},x,\hat{w}^\prime, \quad f_r(\hat{w}, x, \hat{w}^\prime) = f_r(\hat{w}^\prime, x, \hat{w})
+        \)
+        \item \textbf{positivity}:
+        \(
+            \forall \hat{w},x,\hat{w}^\prime, \quad f_r(\hat{w}, x, \hat{w}^\prime) \geq 0
+        \)
+        \item \textbf{energy conversation}:
+        \[
+            \int_\Omega f_r(\hat{w}, x, \hat{w}^\prime) \cos \theta \, d\hat{w}^\prime \leq 1
+        \]
+    \end{enumerate}
+    where \(\Omega\) encloses the scene (usually a hemisphere).
+}
+\end{snippet}
 
 \subsection{Bidirectional transmittance distribution function}
 
-If the material can also transfer light through itself, we use the BTDF function
+\begin{snippet}{btdf}
+If a material can also transfer light through itself, we use the BTDF function
 (Bidirectional transmittance distribution function).
+\end{snippet}
 
 \subsection{Bidirectional scattering distribution function}
 
+\begin{snippet}{bsdf}
 We use the BSDF or BxDF (Bidirectional scattering distribution function)
 to generalize both the BTDF and BRDF.
-
-\pagebreak
+\end{snippet}
 
 \section{Rendering equation}
 
-The rendering equation tells us how much radiance is exiting a \textit{surface point}
-in a given direction. Note that objects may also be emitting light.
-\[
-    \textit{Light exiting point} = \textit{Material emitted light} + \textit{Reflected incoming light}
-\]
-Formally,
-\[
-    L_o(x, \vec{\omega})
-    =L_e(x, \vec{\omega})
-    +\int_\Omega L_i(x,\vec{\omega})f_r(\vec{\omega}, x, \vec{\omega}^\prime)
-    \cos \theta d\vec{\omega}^\prime
-\]
-
-\begin{itemize}
-    \item \(L_o\) outgoing radiance from point \(x\) in the direction \(\vec{\omega}\)
-    \item \(L_e\) emitted radiance from point \(x\) in the direction \(\vec{\omega}\) by the object itself
-    \item \(\Omega\) scene
-    \item \(L_i\) incoming radiance to point \(x\) from the direction \(\vec{\omega}\)
-    \item \(f_r\) BRDF
-    \item \(\cos \theta\) light attenuation
-\end{itemize}
-
-This value is difficult to compute. For each point, the light at that point
-depends on the incoming radiance of every other point, which also depends on the first point.
-This integral is infinite-dimensional because of the infinite bounces.
+\begin{snippet}{rendering-equation-definition}
+\sdefinition{Rendering Equation}{
+    The \textit{rendering equation} tells us how much radiance is exiting a \textit{surface point}
+    in a given direction. Note that objects may also be emitting light.
+    \[
+        \textit{Light exiting point} = \textit{Material emitted light} + \textit{Reflected incoming light}
+    \]
+    Formally,
+    \[
+        L_o(x, \vec{\omega})
+        =L_e(x, \vec{\omega})
+        +\int_\Omega L_i(x,\vec{\omega})f_r(\vec{\omega}, x, \vec{\omega}^\prime)
+        \cos \theta d\vec{\omega}^\prime
+    \]
+    
+    \begin{itemize}
+        \item \(L_o\) outgoing radiance from point \(x\) in the direction \(\vec{\omega}\)
+        \item \(L_e\) emitted radiance from point \(x\) in the direction \(\vec{\omega}\) by the object itself
+        \item \(\Omega\) scene
+        \item \(L_i\) incoming radiance to point \(x\) from the direction \(\vec{\omega}\)
+        \item \(f_r\) BRDF
+        \item \(\cos \theta\) light attenuation
+    \end{itemize}
+    
+    This value is difficult to compute. For each point, the light at that point
+    depends on the incoming radiance of every other point, which also depends on the first point.
+    This integral is infinite-dimensional because of the infinite bounces.
+}
+\end{snippet}
 
 \section{Phong reflection model}
 
+\begin{snippet}{phone-reflection-model}
 The phong reflection model is an approximation
 to the rendering equation.
+\end{snippet}
 
 \subsection{Simplified ambient BRDF model}
 
+\begin{snippet}{simplified-ambient-brdf-model}
 \[
-    I_a=k_a I_a
+    I=k_a I_a
 \]
 \begin{itemize}
     \item \(k_a\) ambient coefficient of an object (base color)
     \item \(I_a\) ambient intensity of the scene/light sources
 \end{itemize}
+\end{snippet}
 
 \subsection{Simplified diffuse BRDF model}
 
+\begin{snippet}{simplified-diffuse-brdf-model}
 \[
     I_d=k_d (\vec{L} \cdot \vec{N})
 \]
@@ -246,9 +272,11 @@ to the rendering equation.
     \item \(\vec{L}\) vector pointing to the light vector
     \item \(\vec{N}\) surface normal
 \end{itemize}
+\end{snippet}
 
 \subsection{Simplified specular BRDF model}
 
+\begin{snippet}{simplified-specular-brdf-model}
 \[
     I_s=k_s {(\vec{V} \cdot \vec{R})}^n
 \]
@@ -259,12 +287,12 @@ to the rendering equation.
     \item \(\vec{R}\) reflected direction of the light ray
     \item \(\vec{n}\) shininess factor
 \end{itemize}
-
-\pagebreak
+\end{snippet}
 
 \subsection{Result}
 
-The sum of the following simplified models
+\begin{snippet}{phone-result-illustration}
+The sum of the phone simplified models
 gives a good approximation to the rendering equation.
 
 \begin{figure}[h]
@@ -281,10 +309,11 @@ from the light.
 Note that the specular intensity cannot be precomputed as it is dependant
 on the camera position.
 
-\pagebreak
+\end{snippet}
 
 \section{Reflection and refraction}
 
+\begin{snippet}{reflection-refraction-illustration}
 \begin{tikzpicture}
     \draw (0,0) circle [radius=2cm];
     
@@ -306,9 +335,8 @@ on the camera position.
     \draw[-] (0,-2) -- (0,2);
     \draw[-] (-2,0) -- (2,0);
     
-    \end{tikzpicture}
-
-\pagebreak
+\end{tikzpicture}
+\end{snippet}
 
 ASSETS TO USE
 
@@ -335,11 +363,5 @@ Snell's law
     = \frac{V_1}{V_2}
     = \frac{n_2}{n_1}
 \]
-
-\pagebreak
-
-\nocite{*} % cite all entries
-
-\printbibliography
 
 \end{document}
