@@ -3,7 +3,7 @@
 source_folder="source"
 data_folder="data"
 search_folder="../packages"
-mongourl="mongodb://192.168.1.111:11223"
+mongourl="mongodb://localhost"
 
 WORKING_DIR=`pwd`
 # TODO: use this properly
@@ -17,7 +17,7 @@ function compile_and_gen () {
 
         echo "Generating snippets from $1"
         pdf=$(echo "$1" | sed 's/\.tex$/.pdf/');
-        RUST_LOG=debug stellar-cli generate snippets \
+        stellar-cli generate snippets \
             --input "$pdf" \
             --data-output "$data_folder" \
             --bottom-offset 9.5 \
@@ -51,7 +51,7 @@ function compile_and_gen () {
         CARGO_TARGET_DIR="../target" wasm-pack build
 
         cd website
-        npm install --dry-run --quiet || npm install # run install only if necessary
+        npm install # --dry-run --quiet || npm install # run install only if necessary
         npm run build
 
         cd "$WORKING_DIR"
