@@ -1,0 +1,220 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{parskip}
+\usepackage{fullpage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{pgfplots}
+\usepackage{bettelini}
+\usepackage{makecell}
+\usepackage{stellar}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    pdftitle={ComplexAnalysis},
+    pdfpagemode=FullScreen,
+}
+
+\makeatletter 
+\tikzset{ 
+reuse path/.code={\pgfsyssoftpath@setcurrentpath{#1}} 
+} 
+\tikzset{even odd clip/.code={\pgfseteorule}, 
+protect/.code={ 
+\clip[overlay,even odd clip,reuse path=#1] 
+(current bounding box.south west) rectangle (current bounding box.north east)
+; 
+}} 
+\makeatother
+
+\usetikzlibrary{3d,arrows.meta,decorations.markings,perspective}
+\tikzset{->-/.style={decoration={% https://tex.stackexchange.com/a/39282/194703
+  markings,
+  mark=at position #1 with {\arrow{>}}},postaction={decorate}},
+  ->-/.default=0.55}
+
+\begin{document}
+  
+\title{Complex Analysis}
+\id{complexanalysis-definitions}
+\genpage
+
+\section{Riemann Spheres}
+
+\begin{snippet}{riemann-sphere-definition}
+\sdefinition{Riemann Sphere}{
+    A \textit{Riemann Sphere} is a unit sphere used to represent the complex plane
+    using stereographic projection.
+    The Riemann sphere lays on the complex plane. A complex number
+    is represented by the intersection between the sphere
+    and a ray starting from the topmost point of the sphere
+    and intersecting with the given complex number on the complex plane.
+}
+\end{snippet}
+
+\begin{snippet}{riemann-sphere-illustration}
+\begin{center}
+\pgfmathsetmacro{\myaz}{15}
+\begin{tikzpicture}[
+        declare function={%
+            stereox(\x,\y)=2*\x/(1+\x*\x+\y*\y);
+            stereoy(\x,\y)=2*(\y+1)/(1+\x*\x+(\y+1)*(\y+1)) + 1;
+            stereoz(\x,\y)=(-1+\x*\x+\y*\y)/(1+\x*\x+\y*\y);
+            Px=1.75;
+            Py=-1.5;
+            Qx=-1.0;
+            Qy=-1.0;
+            amax=2.5;
+        },
+        scale=2.5,
+        line join=round,line cap=round,
+        dot/.style={circle,fill,inner sep=1pt},>={Stealth[length=1.2ex]}]
+    \pgfdeclarelayer{background}
+    \pgfdeclarelayer{foreground} 
+    \pgfsetlayers{background,main,foreground}
+    \path[save path=\pathSphere,ball color=gray,fill opacity=0.6] 
+        (0, 1, 0) circle[radius=1];
+    \begin{scope}[3d view={\myaz}{15}]
+        \draw (-amax,amax) -- (-amax,-amax) coordinate (bl) -- (amax,-amax) 
+            coordinate (br)-- (amax,amax);
+        \begin{scope}
+            \tikzset{protect=\pathSphere}
+            \draw (-amax,amax) -- (amax,amax);
+        \end{scope}
+        \begin{scope}
+            \clip[reuse path=\pathSphere];
+            \draw[dashed] (-amax,amax) -- (amax,amax);
+        \end{scope}
+        \begin{scope}[canvas is xy plane at z=0]
+            \path[save path=\pathPlane] (\myaz:amax) -- (\myaz+180:amax) --(bl) -- (br) -- cycle;
+            \begin{pgfonlayer}{background}
+                \fill[blue!30,fill opacity=0.6]
+                    (\myaz:1) arc[start angle=\myaz,end angle=\myaz-180,radius=1]
+                    -- (-amax,0) -- (-amax,amax) -- (amax,amax) -- (amax,0) -- cycle;
+            \end{pgfonlayer}
+            \fill[blue!30,fill opacity=0.6]
+                (\myaz:1) arc[start angle=\myaz,end angle=\myaz-180,radius=1]
+                -- (-amax,0) -- (-amax,-amax) -- (amax,-amax) -- (amax,0) -- cycle;
+        \end{scope}
+
+        %\draw[-] (0,-2,0) node[dot,label=below:{$z$}](z){}
+        %    -- node[auto,pos=0.5]{\(p\)} (0, -1, 1)
+        %    node[dot,label=below right:{\(s\)}](z*){};
+
+        \draw[-] (-2,0,0) node[dot,label=below:{$z$}](z){}
+            -- node[auto,pos=0.5]{} (-1, 0, 1)
+            node[dot,label=below right:{\(s\)}](z*){};
+  
+        \begin{pgfonlayer}{background} 
+            \draw[dashed] (z*) -- (0,0,2) node[dot,label=above:{$\zeta$}](zeta){};
+        \end{pgfonlayer}
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+\end{snippet}
+
+\section{Subsets of the complex plane}
+
+\begin{snippet}{open-disk-definition}
+\sdefinition{Open Disk}{
+    An open disk \(D_\delta(z_0)\) is the set of points
+    with distance less than \(\delta\) from \(z_0\)
+    \[
+        D_\delta(z_0)=\{z\in \mathbb{C} \suchthat |z-z_0|<\delta\}
+    \]
+}
+\end{snippet}
+
+\begin{snippet}{closed-disk-definition}
+\sdefinition{Closed Disk}{
+    A closed open disk \(D_\delta(z_0)\) is the set of points
+    with distance less than or equal to \(\delta\) from \(z_0\)
+    \[
+        \overline{D_\delta(z_0)}=\{z\in \mathbb{C} \suchthat |z-z_0|\leq\delta\}
+    \]
+}
+\end{snippet}
+
+\begin{snippet}{circle-definition}
+\sdefinition{Circle}{
+    A circle \(C_\delta(z_0)\) is the set of points
+    with distance equal to \(\delta\) from \(z_0\)
+    \[
+        C_\delta(z_0)=\{z\in \mathbb{C} \suchthat |z-z_0|=\delta\}
+    \]
+}
+\end{snippet}
+
+\begin{snippet}{interior-point-definition}
+\sdefinition{Interior Point}{
+    A point \(z\) is an interior point of \(\Omega\) iff there is an open disk
+    at \(z\) whose point are in \(\Omega\)
+    \[
+        \exists D_{r>0}(z) \subset \Omega
+    \]
+}
+\end{snippet}
+
+\begin{snippet}{boundary-point-definition}
+\sdefinition{Boundary Point}{
+    \(z\) is a boundary point of \(\Omega\) iff every open disk at \(z\)
+    contains points both in \(\Omega\) and not in \(\Omega\).
+}
+\end{snippet}
+
+\begin{snippet}{exterior-point-definition}
+\sdefinition{Exterior Point}{
+    The point \(z\) is an exterior point of \(\Omega\) iff it is not a boundary
+    point of an interior point.
+}
+\end{snippet}
+
+\begin{snippet}{accumulation-point-definition}
+\sdefinition{Accumulation Point}{
+    \(z\) is an \textit{accumulation point} or limit point of \(\Omega\) if any
+    \(D_\delta(z)\backslash \{z\}\) always contains points of \(\Omega\).
+    \\
+    In order to always contain points of \(\Omega\), \(\Omega\) must have an
+    infinite amount of points, since \(\delta\) can be as little as we want.
+}
+\end{snippet}
+
+\begin{snippet}{open-set-definition}
+\sdefinition{Open Set}{
+    A set \(\Omega\) is \textit{open} if all points in \(\Omega\)
+    are interior points of \(\Omega\).
+}
+\end{snippet}
+
+\begin{snippet}{closed-set-definition}
+\sdefinition{Closed Set}{
+    A set \(\Omega\) is \textit{closed} if every accumulation point of \(\Omega\)
+    is in \(\Omega\). 
+}
+\end{snippet}
+
+\begin{snippet}{bounded-set-definition}
+\sdefinition{Bunded Set}{
+    A set \(\Omega\) is \textit{bounded} if
+    \[
+        \exists M>0 \suchthat \Omega \subset D_M(0)
+    \]
+    In other words there must exist an \(M>0\) such that \(\forall z\in \Omega:|z|<M\)
+}
+\end{snippet}
+
+\begin{snippet}{connected-set-definition}
+\sdefinition{Connected Set}{
+    An open set \(\Omega\) is connected if it cannot be written as
+    \(\Omega=\Omega_1 \union \Omega_2\) where \(\Omega_1 \intersection \Omega_2 = \emptyset\).
+    In other words any two points in \(\Omega\) must be connectable by a continuous
+    curve where all the points of the curve are also in \(\Omega\).
+}
+\end{snippet}
+% 1 2 3 4 5 6 7 8 del libro
+
+\end{document}
