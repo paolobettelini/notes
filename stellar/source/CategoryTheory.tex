@@ -36,6 +36,15 @@
 
 \section{Category}
 
+\begin{snippetdefinition}{category-definition}{Category Definition}
+    A \textit{category} is a tuple \(C=(\text{ob}(C), \text{hom}(C), \circ)\) where:
+    \begin{itemize}
+        \item \(\text{ob}(C)\) is a class of \textit{objects};
+        \item \(\text{hom}(C)\) is a class of \textit{morphisms} or \textit{arrows};
+        \item \(\circ\) a binary operation called \textit{composition}.
+    \end{itemize}
+\end{snippetdefinition}
+
 A category consists of \textit{objects} and \textit{morphism} or \textit{arrows}.
 \\
 An arrow has a beginning and an ending, and it goes from one object to another.
@@ -123,58 +132,64 @@ Compositions have the associative property
 
 \section{Homomorphisms}
 
-A homomorphism is a map between two structures of the same type.
+\begin{snippetdefinition}{homomorphism-definition}{Homomorphism}
+    A homomorphism is a map between two structures of the same type.
+\end{snippetdefinition}
 
 \subsection{Epimorphisms}
 
-An epimorphism is a \textbf{surjective} morphism.
+\begin{snippetdefinition}{epimorphism-definition}{Epimorphism}
+    An epimorphism is a \textit{surjective} morphism.
+    An epimorphism is labelled with \(\twoheadrightarrow\).
+\end{snippetdefinition}
 
-We can define surjectivity only in terms of morphisms.
-\\
-Consider a morphism \(f: a \rightarrow b\) which maps elements of \(a\) onto \(b\).
-Let's also define the morphisms \(g_1\) and \(g_2\) which map elements from \(b\) to \(c\).
-The domain of \(g_1\) and \(g_2\) is the codomain of \(f\). These two functions act
-as \(f\) for object in the image of \(f\), but may map objects differently
-for objects in the codomain of \(f\) but outside the image of \(f\).
-If the morphism is surjective, hence if the codomain and the image of \(f\) are the same,
-then \(g_1\) and \(g_2\) will always act as \(f\).
+\begin{snippetdefinition}{surjectivity-from-morphisms}{Surjectivity from morphisms}
+    Consider a morphism \(f: a \rightarrow b\) which maps elements of \(a\) onto \(b\).
+    Let's also define the morphisms \(g_1\) and \(g_2\) which map elements from \(b\) to \(c\).
+    The domain of \(g_1\) and \(g_2\) is the codomain of \(f\). These two functions act
+    as \(f\) for object in the image of \(f\), but may map objects differently
+    for objects in the codomain of \(f\) but outside the image of \(f\).
+    If the morphism is surjective, hence if the codomain and the image of \(f\) are the same,
+    then \(g_1\) and \(g_2\) will always act as \(f\).
 
-\begin{center}
-    \begin{tikzcd}
-        a \arrow[r, "f"] &
-        b \arrow[r, "g_1", shift left]
-        \arrow[r, "g_2"', shift right] & c
-    \end{tikzcd}
-\end{center}
+    A morphism \(f: a \rightarrow b\) is a epimorphism if
 
-formally,
+    \[
+        \forall c\, \forall g_1, g_2 : b \rightarrow c, g_1 \circ f = g_2 \circ f \Rightarrow g_1 = g_2
+    \]
 
-\[
-    \forall c\, \forall g_1, g_2 : b \rightarrow c, g_1 \circ f = g_2 \circ f \Rightarrow g_1 = g_2
-\]
-
-An epimorphism is labelled with \(\twoheadrightarrow\).
+    \begin{center}
+        \begin{tikzcd}
+            a \arrow[r, "f"] &
+            b \arrow[r, "g_1", shift left]
+            \arrow[r, "g_2"', shift right] & c
+        \end{tikzcd}
+    \end{center}
+\end{snippetdefinition}
 
 \subsection{Monomorphisms}
 
-An epimorphism is an \textbf{injective} morphism.
+\begin{snippetdefinition}{monomorphism-definition}{Monomorphism}
+    An monomorphism is an \textit{injective} morphism.
+    A monomorphism is labelled with \(\hookrightarrow\).
+\end{snippetdefinition}
 
-\begin{center}
-    \begin{tikzcd}
-        c \arrow[r, "g_1", shift left]
-        \arrow[r, "g_2"', shift right] &
-        a \arrow[r, "f"] & b
-    \end{tikzcd}
-\end{center}
+\begin{snippetdefinition}{injectivity-from-morphisms}{Injectivity from morphisms}
+    A morphism \(f: a \rightarrow b\) is a monomorphism if
+    
+    \[
+        \forall c\, \forall g_1, g_2: c \rightarrow a, 
+        f \circ g_1 = f \circ g_2 \Rightarrow g_1 = g_2
+    \]
 
-A morphism \(f: a \rightarrow b\) is a monomorphism if
-
-\[
-    \forall c\, \forall g_1, g_2: c \rightarrow a, 
-    f \circ g_1 = f \circ g_2 \Rightarrow g_1 = g_2
-\]
-
-A monomorphism is labelled with \(\hookrightarrow\).
+    \begin{center}
+        \begin{tikzcd}
+            c \arrow[r, "g_1", shift left]
+            \arrow[r, "g_2"', shift right] &
+            a \arrow[r, "f"] & b
+        \end{tikzcd}
+    \end{center}
+\end{snippetdefinition}
 
 \subsection{Isomorphisms}
 
@@ -224,21 +239,25 @@ Note
 
 \subsection{Initial objects}
 
-An initial object \(I\) is an object if
-for every object \(X\) in a category \(C\)
-there exists exactly one morphism \(I\to X\).
-\[
-    \forall X\in \text{ob}(C) \,\exists_{=1}f:I\to X
-\]
+\begin{snippetdefinition}{initial-object-definition}{Initial object}
+    An \textit{initial object} \(I\) is an object if
+    for every object \(X\) in a category \(C\)
+    there exists exactly one morphism \(I\to X\).
+    \[
+        \forall X\in \text{ob}(C) \,\exists_{=1}f\colon I\to X
+    \]
+\end{snippetdefinition}
 
 \subsection{Terminal objects}
 
-An terminal object \(T\) is an object if
-for every object \(X\) in a category \(C\)
-there exists exactly one morphism \(X\to T\).
-\[
-    \forall X\in \text{ob}(C) \,\exists_{=1}f:X\to T
-\]
+\begin{snippetdefinition}{terminal-object-definition}{Terminal object}
+    A \textit{terminal object} \(T\) is an object if
+    for every object \(X\) in a category \(C\)
+    there exists exactly one morphism \(X\to T\).
+    \[
+        \forall X\in \text{ob}(C) \,\exists_{=1}f\colon X\to T
+    \]
+\end{snippetdefinition}
 
 \subsection{Void}
 
@@ -319,42 +338,35 @@ It is equivalent to a set closed under an associative binary operation.
 
 \subsection{Opposite Category}
 
-\begin{snippet}{opposite-category}
-%\sdefinition{Opposite Category}{
+\begin{snippetdefinition}{opposite-category}{Opposite Category}
     Given a category \(C\) we can defined an \textit{opposite category} \(\opp{C}\)
     where the objects are the same and the morphisms are inverted.
     
-    \begin{minipage}{0.5\textwidth}
-        \begin{center}
-            \begin{tikzcd}
-                a \arrow[d, "f"'] \arrow[rd, "g \circ f"] &   \\
-                b \arrow[r, "g"']                         & c
-            \end{tikzcd}
-        \end{center}
-    \end{minipage}
-    \begin{minipage}{0.5\textwidth}
-        \begin{center}
-            \begin{tikzcd}
-                a                &                                    \\
-                b \arrow[u, "\opp{f}"] & c \arrow[l, "\opp{g}"] \arrow[lu, "\opp{f} \circ \opp{g} = \opp{(g \circ f)}"']
-            \end{tikzcd}
-        \end{center}
-    \end{minipage}
-%}
-\end{snippet}
+    \begin{center}
+    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRDpAF9T1Nd9CKMgEYqtRizYAjLjxAZseAkWGlR1es1aIQAY1m9FAogGZyYzZJ0duh-spRn14rdIPy+SwcgAsaixLaelxiMFAA5vBEoABmAE4QALZIZCA4EEiqLlYgMSDUDHRSMAwACp7GOnFY4QAWOO7xSZnU6UgATBqBbOH5IIXFZRUOINV1Dba5CcmIqW2IndlB4QAEADprulhxuit5k00zfmkZiGZLbDEAesAbODAAHjjAEGicnI3TSACsrafnliC11ua3uTxeb046022124Rud0ez1e7wAvMAABSrDZbHZ7ACUnARoKREPefQGJXKRhGY3qfTgtSwMQaswOX0QvxOSGOgJ6xLByMhn2anL+SBM7NFXPmPilR3FZ3lKUV7WViCy8zVckOKu5Gs4FE4QA
+    \begin{tikzcd}
+        a \arrow[d, "f"'] \arrow[rd, "g \circ f"] \arrow[rd] \arrow[d] &   &  & a                                      &                                                                                                                              \\
+        b \arrow[r, "g"'] \arrow[r]                                    & c &  & b \arrow[u, "f^{\text{op}}"] \arrow[u] & c \arrow[lu, "f^{\text{op}} \circ g^{\text{op}}={(g \circ f)}^{\text{op}}"'] \arrow[l, "g^{\text{op}}"] \arrow[lu] \arrow[l]
+    \end{tikzcd}
+    \end{center}
+    % REDO this picture because there are two arrows overlapping
+\end{snippetdefinition}
 
 
 \section{Universal Construction}
 
-Universal construction is used to define objects in terms of their
-relationships up to a unique isomorphism.
-This means that the objects that satisfy the same universal property
-are isomorphic.
-Its purpose is to define an object without knowledge about the object itself,
-but rather just the morphisms.
+\begin{snippetdefinition}{universal-construction-defintion}{Universal Construction}
+    Universal construction is used to define objects in terms of their
+    relationships up to a unique isomorphism.
+    This means that the objects that satisfy the same universal property
+    are isomorphic.
+    Its purpose is to define an object without knowledge about the object itself,
+    but rather just the morphisms.
+\end{snippetdefinition}
 
 \section{Product}
 
+\begin{snippet}{categorial-product-universal-construction}
 The categorical product represents many operations
 such as the cartesian product of sets.
 A product of two objects \(a\) and \(b\) has the following
@@ -365,7 +377,7 @@ morphisms:
 \end{enumerate}
 
 In the following diagram \(c\) is the actual product and \(c'\) is a candidate object
-for the caridnal product.
+for the cardinal product.
 We rank a candidate \(c_i\) higher than \(c_j\) if there is a morphism
 \(m:c_i \to c_j\).
 
@@ -399,11 +411,11 @@ such that
     p \circ m &= p' \\
     q \circ m &= q'
 \end{align*}
-
-\pagebreak
+\end{snippet}
 
 \subsection{Coproduct}
 
+\begin{snippet}{categorial-coproduct-universal-construction}
 The coproduct represents operations
 such as the disjoint union of sets.
 The coproduct is the product when the morphisms are inverted.
@@ -440,6 +452,7 @@ such that
     p' &= m \circ p \\
     q' &= m \circ q
 \end{align*}
+\end{snippet}
 
 \section{Functor}
 
