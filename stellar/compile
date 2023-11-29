@@ -34,7 +34,7 @@ function compile_and_gen () {
 
         rm "$pdf";
     elif [ -e "$1/Cargo.toml" ]; then
-        # compile nannou
+        # Generate from nannou project
 
         snippet_name=$(basename "$1")
         
@@ -60,7 +60,15 @@ function compile_and_gen () {
         # generate snippet folder
         rm "$1/website/dist/index.js"
         mv "$1"/website/dist/* "$data_folder/snippets/$snippet_name"
+    elif [[ $1 != *"to_use"* && $1 != *"target"* && $1 != *"resources"* ]]; then
+        # Generate from static files
+        echo "Generating from static files"
+
+        snippet_name=$(basename "$1")
+        mkdir -p "$data_folder/snippets/$snippet_name"
+        cp -r "$1"/* "$data_folder/snippets/$snippet_name"
     fi
+    
 }
 
 if [ $# -gt 0 ]; then
