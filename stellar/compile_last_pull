@@ -1,0 +1,19 @@
+#!/bin/bash
+
+WORKING_DIR=`pwd`
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+
+cd "$SCRIPT_DIR"
+
+# get last pull files files
+output="$(git diff --name-status HEAD@{1}..HEAD)"
+
+IFS=$'\n'  # Set the Internal Field Separator to newline
+for line in $output; do
+    if [[ $line == *"source/"* ]]; then
+        file=$(echo "$line" | sed 's/.*\/source/source/') # remove everything after source
+        ./compile $file
+    fi
+done
+
+cd "$WORKING_DIR"
