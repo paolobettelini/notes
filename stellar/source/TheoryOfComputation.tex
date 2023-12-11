@@ -1,4 +1,4 @@
-\documentclass[a4paper]{article}
+\documentclass[preview]{standalone}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -8,18 +8,19 @@
 \usepackage{tikz}
 \usepackage{wrapfig}
 \usepackage{bettelini}
-
-\usetikzlibrary{ % tikz packages
-    automata,positioning,
-    arrows.meta,bending
-}
+\usepackage{stellar}
 
 \hypersetup{
     colorlinks=true,
     linkcolor=black,
     urlcolor=blue,
-    pdftitle={TheoryOfComputation},
+    pdftitle={Theory of Computation},
     pdfpagemode=FullScreen,
+}
+
+\usetikzlibrary{ % tikz packages
+    automata,positioning,
+    arrows.meta,bending
 }
 
 \tikzset{every state/.style={
@@ -28,18 +29,15 @@
 }}
 \tikzset{>=stealth}  %latex, to, stealth
 
-\title{Theory of Computation}
-\author{Paolo Bettelini}
-\date{}
-
 % Empty string symbol.
 \newcommand{\emptyString}{\lambda}
 
 \begin{document}
 
-\maketitle
-\tableofcontents
-\pagebreak
+\title{Theory of Computation}
+\id{theoryofcomputation}
+\genpage
+
 
 \section{Fields of Study}
 
@@ -159,6 +157,7 @@ A language is regular if an automaton that accepts said language exists.
     \exists M \suchthat L(M) = A
 \]
 
+% extra because we are going to prove it using NFAs anyway soo
 \subsection{Closure under union (extra)}
 
 \textit{If \(A\) and \(B\) are two regular languages over the same alphabet
@@ -251,275 +250,273 @@ A NFA is defined as \(M=(Q, \Sigma, \delta, q, F)\) where
 
 \section{Equivalente of DFAs and NFAs}
 
-Anything that can be computed by a NFA can also be computed by a DFA and vice versa.
+\begin{snippettheorem}{dfa-nfa-equivalence}{DFA and NFA equivalence}
+    Anything that can be computed by a NFA can also be computed by a DFA and vice versa.
+\end{snippettheorem}
 
-\subsection{DFA to NFA conversion}
+\begin{snippetproof}{dfa-nfa-equivalence-proof}{DFA and NFA equivalence}
+    \begin{enumerate}
+        \item \textbf{DFA to NFA conversion:}
+        Let \(D=(Q, \Sigma, \delta, q, F)\) be a DFA.
+        \(\delta\) is not a transition function of a NFA, so we need to redefine it as \(\delta'\).
+        Since \(\delta\) cannot process \(\emptyString\), \(\delta'\)
+        it is defined as
+        \[
+            \delta'(r, a)=
+            \begin{cases} 
+                \delta(r, a) & x \neq \emptyString \\
+                \emptyset & x = \emptyString
+            \end{cases}
+        \]
+        where \(r\) is a state in \(Q\) and \(a\) is a symbol in \(\Sigma_\emptyString\). \\
+        We can conclude that \(N=(Q, \Sigma, \delta', q, F)\).
+        \item \textbf{NFA to DFA conversion:}
+        Let \(N=(Q, \Sigma, \delta, q, F)\) be a NFA. The idea is to construct a DFA \(M=(Q', \Sigma, \delta', q', F')\)
+        that runs all the possible combinations that could be run by \(N\) at the same time.
+        Any state of \(M\) is a set of states \(R \in \mathcal{P}(Q)\), so we will say that
+        \(Q'=\mathcal{P}(Q)\). The set of accept states is any state \(R\) which contains an accept
+        state of \(N\)
+        \[
+            F' = \{R \in Q' \suchthat R \intersection F \neq \emptyset\}
+        \]
+        Let's assume that \(N\) does not execute any \(\emptyString\)-transitions.
+        \(q'\) would be \(\{q\}\) and \(\delta'\) would be
+        \[
+            \delta'(R, a) = \bigcup_{r\in R}\delta(r,a)
+        \]
+        which is the union of all possible states \(N\) could switch to.
+        Recall that for every \(r\in R\), \(\delta(r,a)\) is a set
+        of all possible states to switch to.
+        
+        Let's now remove the previous assumption. Now, \(M\)
+        must also consider every state that could be reached by
+        making zero or more \(\emptyString\)-transitions.
+        The \(\emptyString\)-closure
+        for a state \(r\), \(C_\emptyString(r)\), is defined as
+        the set of all possible states that can be reached from \(r\) by making
+        zero or more \(\emptyString\)-transitions.
+        The \(\emptyString\)-closure for a set of states \(R\) is defined as
+        \[
+            C_\emptyString(R) = \bigcup_{r\in R}C_\emptyString(r)
+        \]
+        The initial state \(q'\) is now given by \(C_\emptyString(q)\)
+        and the transition function
+        \[
+            \delta'(R, a) = \bigcup_{r\in R}C_\emptyString(\delta(r, a))
+        \]
+    \end{enumerate}
+\end{snippetproof}
 
-Let \(M=(Q, \Sigma, \delta, q, F)\) be a DFA.
-\(\delta\) is not a transition function of a NFA, so we need to redefine it as \(\delta'\).
-Since \(\delta\) cannot process \(\emptyString\), \(\delta'\)
-it is defined as
-\[
-    \delta'(r, a)=
-    \begin{cases} 
-        \delta(r, a) & x \neq \emptyString \\
-        \emptyset & x = \emptyString
-    \end{cases}
-\]
-where \(r\) is a state in \(Q\) and \(a\) is a symbol in \(\Sigma_\emptyString\). \\
-We can conclude that \(N=(Q, \Sigma, \delta', q, F)\).
-
-\subsection{NFA to DFA conversion}
-
-Let \(N=(Q, \Sigma, \delta, q, F)\) be a NFA. The idea is to construct a DFA \(M=(Q', \Sigma, \delta', q', F')\)
-that runs all the possible combinations that could be run by \(N\) at the same time.
-Any state of \(M\) is a set of states \(R \in \mathcal{P}(Q)\), so we will say that
-\(Q'=\mathcal{P}(Q)\). The set of accept states is any state \(R\) which contains an accept
-state of \(N\)
-\[
-    F' = \{R \in Q' \suchthat R \intersection F \neq \emptyset\}
-\]
-Let's assume that \(N\) does not execute any \(\emptyString\)-transitions.
-\(q'\) would be \(\{q\}\) and \(\delta'\) would be
-\[
-    \delta'(R, a) = \bigcup_{r\in R}\delta(r,a)
-\]
-which is the union of all possible states \(N\) could switch to.
-Recall that for every \(r\in R\), \(\delta(r,a)\) is a set
-of all possible states to switch to.
-
-Let's now remove the previous assumption. Now, \(M\)
-must also consider every state that could be reached by
-making zero or more \(\emptyString\)-transitions.
-The \(\emptyString\)-closure
-for a state \(r\), \(C_\emptyString(r)\), is defined as
-the set of all possible states that can be reached from \(r\) by making
-zero or more \(\emptyString\)-transitions.
-The \(\emptyString\)-closure for a set of states \(R\) is defined as
-\[
-    C_\emptyString(R) = \bigcup_{r\in R}C_\emptyString(r)
-\]
-The initial state \(q'\) is now given by \(C_\emptyString(q)\)
-and the transition function
-\[
-    \delta'(R, a) = \bigcup_{r\in R}C_\emptyString(\delta(r, a))
-\]
+%\subsection{DFA to NFA conversion}
+%\subsection{NFA to DFA conversion}
 
 \section{Closure under regular operations}
 
-We proved using DFAs that if \(A\) and \(B\) are two regular languages over \(\Sigma\), then \(A\union B\)
-is also regular.
-\[
-    \exists M \suchthat L(M) = A \union B
-\]
-We can prove the closure under regular operations using NFAs.
+\begin{snippettheorem}{nfa-closure-under-regular-operations}{NFA closure under regular operations}
+    Let \(A\) and \(B\) be two regular languages over \(\Sigma\).
+    Then, the following languages:
+        \(A \union B\),
+        \(AB\),
+        \(A^*\),
+        \(\bar{A}\) and
+        \(A \intersection B\)
+    are also regular.
+\end{snippettheorem}
 
-\subsection{Closure under union}
-
-\textit{If \(A\) and \(B\) are two regular languages over the same alphabet
-\(\Sigma\), then \(A \union B\) is also regular.}
-
-Let \(N_1 = (Q_1, \Sigma, \delta_1, q_1, F_1)\) and
-\(N_2 = (Q_2, \Sigma, \delta_2, q_2, F_2)\) be two NFAs such that
-\(A_1 = L(N_1)\) and \(A_2 = L(N_2)\).
-We can construct another NFA \(N=(Q, \Sigma, \delta, q_0, F)\)
-such that \(L(N)=A\union B\).
-\(N\) will either go to \(N_1\) or \(N_2\) by making a \(\emptyString\)-transition.
-\begin{itemize}
-    \item \(Q=\{q_0\} \union Q_1 \union Q_2\)
-    \item \(F=F_1 \union F_2\)
-    \item \[
-        \delta(r, a) =
-        \begin{cases}
-            \delta_1(r, a) & r \in Q_1 \\
-            \delta_2(r, a) & r \in Q_2 \\
-            \{q_1, q_2\} & r = \emptyString \\
-            \emptyset & r \neq \emptyString
-        \end{cases}
-    \]
-\end{itemize}
-
-\begin{center}
-    \begin{tikzpicture}[node distance=2cm,on grid,auto]
-        \node[state] (0) {\(q_0\)};
-        \node (inv) [left=of 0] {};
-
-        \node[state] (a1) [above right=of 0] {\(N_1\)};
+\begin{snippetproof}{nfa-closure-under-regular-operations-proof}{NFA closure under regular operations}
+    \begin{enumerate}
+        \item \textbf{closure under union:}
+        Let \(N_1 = (Q_1, \Sigma, \delta_1, q_1, F_1)\) and
+        \(N_2 = (Q_2, \Sigma, \delta_2, q_2, F_2)\) be two NFAs such that
+        \(A_1 = L(N_1)\) and \(A_2 = L(N_2)\).
+        We can construct another NFA \(N=(Q, \Sigma, \delta, q_0, F)\)
+        such that \(L(N)=A\union B\).
+        \(N\) will either go to \(N_1\) or \(N_2\) by making a \(\emptyString\)-transition.
+        \begin{itemize}
+            \item \(Q=\{q_0\} \union Q_1 \union Q_2\)
+            \item \(F=F_1 \union F_2\)
+            \item \[
+                \delta(r, a) =
+                \begin{cases}
+                    \delta_1(r, a) & r \in Q_1 \\
+                    \delta_2(r, a) & r \in Q_2 \\
+                    \{q_1, q_2\} & r = \emptyString \\
+                    \emptyset & r \neq \emptyString
+                \end{cases}
+            \]
+        \end{itemize}
         
-        \node[state] (b1) [below right=of 0] {\(N_2\)};
+        \begin{center}
+            \begin{tikzpicture}[node distance=2cm,on grid,auto]
+                \node[state] (0) {\(q_0\)};
+                \node (inv) [left=of 0] {};
         
-        \path[->]
-            (inv)
-                edge node {} (0)
-            (0)
-                edge node {\(\emptyString\)} (a1)
-                edge node {\(\emptyString\)} (b1);
-    \end{tikzpicture}
-\end{center}
+                \node[state] (a1) [above right=of 0] {\(N_1\)};
+                
+                \node[state] (b1) [below right=of 0] {\(N_2\)};
+                
+                \path[->]
+                    (inv)
+                        edge node {} (0)
+                    (0)
+                        edge node {\(\emptyString\)} (a1)
+                        edge node {\(\emptyString\)} (b1);
+            \end{tikzpicture}
+        \end{center}
+        \item \textbf{closure under concatenation:}
+        Let \(N_1 = (Q_1, \Sigma, \delta_1, q_1, F_1)\) and
+        \(N_2 = (Q_2, \Sigma, \delta_2, q_2, F_2)\) be two NFAs such that
+        \(A_1 = L(N_1)\) and \(A_2 = L(N_2)\).
+        We can construct another NFA \(N=(Q, \Sigma, \delta, q_0, F)\)
+        such that \(L(N)=AB\).
+        \(N\) will start by executing \(N_1\), meaning \(q_0=q_1\). If \(N\) switches to a state
+        \(r\in F_1\) it can move to executing \(N_2\) with a \(\emptyString\)-transition.
+        The accepted states are only the ones of \(N_2\) meaning \(F=F_2\). \(Q=Q_1 \union Q_2\).
+        The transition function is hence defined as
+        \[
+            \delta(r, a)
+            \begin{cases}
+                \delta_1(r, a) & (r \in Q_1 \land r \notin F_1) \lor (r \in F_1 \land r \neq \emptyString) \\
+                \delta_1(r, a) \union \{q_2\} & r \in F_1 \land r = \emptyString \\
+                \delta_2(r, a) & r \in Q_2
+            \end{cases}
+        \]
+        
+        \begin{center}
+            \begin{tikzpicture}[node distance=2cm,on grid,auto]
+                \node[state] (q0) {\(q_0\)};
+                \node (inv) [left=of q0] {};
+        
+                \node[state] (q1) [right=of q0] {\(q_1\)};
+                \node[state] (q2) [below=of q0] {\(q_2\)};
+                \node[state] (q3) [below=of q1] {\(q_3\)};
+                \node[state] (q4) [below=of q2] {\(q_4\)};
+                \node[state] (q5) [below=of q3] {\(q_5\)};
+        
+                \node[state] (n2) [right=of q3] {\(N_2\)};
+        
+                \draw[draw=black] (q0) ++(-0.5, 0.5) rectangle ++(3,-5) node[below] {\(N_1\)};
+        
+                \path[->]
+                    (inv)
+                        edge node {} (q0)
+                    (q1)
+                        edge node {\(\emptyString\)} (n2)
+                    (q3)
+                        edge node {\(\emptyString\)} (n2)
+                    (q5)
+                        edge node {\(\emptyString\)} (n2);
+            \end{tikzpicture}
+        \end{center}
+        Here \(F_1 = \{q_1, q_3, q_5\}\) but the actual accept states are the ones for \(N_2\).
+        \item \textbf{closure under Kleene star:}
+        Let \(N_1 = (Q_1, \Sigma, \delta_1, q_0, F_1)\) be a NFAs such that
+        \(A_1 = L(N_1)\). We can construct another NFA \(N=(Q, \Sigma, \delta, q, F)\)
+        such that \(L(N)=A_1^*\).
+        We want \(N_1\) to be able to switch back to its initial point
+        when it is in a state \(r \in F_1\). This means that the concatenation of
+        accepted strings can cycle one after the other. Since \(\emptyString\)
+        also needs to be accepted we need a new start state which is an accept state.
+        
+        \begin{itemize}
+            \item \(Q = \{q_a\} \union Q_1\)
+            \item \(q = q_a\)
+            \item \(F = F_1 \union \{q\}\)
+            \item \[
+                \delta(r,a) =
+                \begin{cases}
+                    \delta_1(r,a) & (r \in Q_1 \land r \notin F_1) \lor (r \in F_1 \land a \neq \emptyString) \\
+                    \delta_1(r,a) \union \{q_0\} & r \in F_1 \land a = \emptyString \\
+                    \{q_0\} & r = q \land a = \emptyString \\
+                    \emptyset & r = q \land a \neq \emptyString
+                \end{cases}
+            \]
+        \end{itemize}
+        
+        \begin{center}
+            \begin{tikzpicture}[node distance=2cm,on grid,auto]
+                \node[state, accepting] (q) {\(q\)};
+                \node[state] (q0) [right=of q] {\(q_0\)};
+                \node (inv) [left=of q0] {};
+        
+                \node[state, accepting] (q1) [right=of q0] {\(q_1\)};
+                \node[state] (q2) [below=of q0] {\(q_2\)};
+                \node[state, accepting] (q3) [below=of q1] {\(q_3\)};
+                \node[state] (q4) [below=of q2] {\(q_4\)};
+                \node[state, accepting] (q5) [below=of q3] {\(q_5\)};
+        
+                \draw[draw=black] (q0) ++(-0.5, 0.5) rectangle ++(3,-5);
+        
+                \path[->]
+                    (inv)
+                        edge node {\(\emptyString\)} (q0)
+                    (q1)
+                        edge node {\(\emptyString\)} (q0)
+                    (q3)
+                        edge node {\(\emptyString\)} (q0)
+                    (q5)
+                        edge node {\(\emptyString\)} (q0);
+            \end{tikzpicture}
+        \end{center}
+        \item \textbf{closure under complement:}
+        Let \(N_1 = (Q_1, \Sigma, \delta_1, q_0, F_1)\) be a NFAs such that
+        \(A_1 = L(N_1)\). We can construct another NFA \(N=(Q, \Sigma, \delta, q, F)\)
+        such that \(L(N)=\bar{A_1}\).
+        Any state \(r \notin F_1\) will be able to switch to a new state \(q_a\),
+        which is the only accept state of \(N\), with a \(\emptyString\)-transition.
+        This will negate any accepting state of \(N_1\) and vice versa.
+        
+        \begin{itemize}
+            \item \(Q=\{q_a\} \union Q_1\)
+            \item \(q = q_0\)
+            \item \(F = \{q_a\}\)
+            \item \[
+                \delta(r,a) =
+                \begin{cases}
+                    \delta_1(r,a) \union \{q_a\} & r \in F_1 \\
+                    \delta_1(r,a) & r \notin F_1 \\
+                \end{cases}
+            \]
+        \end{itemize}
+        
+        \begin{center}
+            \begin{tikzpicture}[node distance=2cm,on grid,auto]
+                \node[state] (q0) {\(q_0\)};
+                \node (inv) [left=of q0] {};
+        
+                \node[state] (q1) [right=of q0] {\(q_1\)};
+                \node[state] (q2) [below=of q0] {\(q_2\)};
+                \node[state] (q3) [below=of q1] {\(q_3\)};
+                \node[state] (q4) [below=of q2] {\(q_4\)};
+                \node[state] (q5) [below=of q3] {\(q_5\)};
+        
+                \node[state] (n2) [right=of q3] {\(q_a\)};
+        
+                \draw[draw=black] (q0) ++(-0.5, 0.5) rectangle ++(3,-5);
+        
+                \path[->]
+                    (inv)
+                        edge node {} (q0)
+                    (q1)
+                        edge node {\(\emptyString\)} (n2)
+                    (q3)
+                        edge node {\(\emptyString\)} (n2)
+                    (q5)
+                        edge node {\(\emptyString\)} (n2);
+            \end{tikzpicture}
+        \end{center}
+        Here \(F_1=\{q_0, q_2, q_4\}\), but the only actual accept state is \(q_a\).
+        \item \textbf{closure under intersection:}
+        Since \(A\union B\) is regular and \(A \intersection B \subseteq A \union B\),
+        \(A \intersection B\) is also regular.
+    \end{enumerate}
+\end{snippetproof}
 
-\subsection{Closure under concatenation}
-
-\textit{If \(A\) and \(B\) are two regular languages over the same alphabet
-\(\Sigma\), then \(AB\) is also regular.}
-
-Let \(N_1 = (Q_1, \Sigma, \delta_1, q_1, F_1)\) and
-\(N_2 = (Q_2, \Sigma, \delta_2, q_2, F_2)\) be two NFAs such that
-\(A_1 = L(N_1)\) and \(A_2 = L(N_2)\).
-We can construct another NFA \(N=(Q, \Sigma, \delta, q_0, F)\)
-such that \(L(N)=AB\).
-\(N\) will start by executing \(N_1\), meaning \(q_0=q_1\). If \(N\) switches to a state
-\(r\in F_1\) it can move to executing \(N_2\) with a \(\emptyString\)-transition.
-The accepted states are only the ones of \(N_2\) meaning \(F=F_2\). \(Q=Q_1 \union Q_2\).
-The transition function is hence defined as
-\[
-    \delta(r, a)
-    \begin{cases}
-        \delta_1(r, a) & (r \in Q_1 \land r \notin F_1) \lor (r \in F_1 \land r \neq \emptyString) \\
-        \delta_1(r, a) \union \{q_2\} & r \in F_1 \land r = \emptyString \\
-        \delta_2(r, a) & r \in Q_2
-    \end{cases}
-\]
-
-\begin{center}
-    \begin{tikzpicture}[node distance=2cm,on grid,auto]
-        \node[state] (q0) {\(q_0\)};
-        \node (inv) [left=of q0] {};
-
-        \node[state] (q1) [right=of q0] {\(q_1\)};
-        \node[state] (q2) [below=of q0] {\(q_2\)};
-        \node[state] (q3) [below=of q1] {\(q_3\)};
-        \node[state] (q4) [below=of q2] {\(q_4\)};
-        \node[state] (q5) [below=of q3] {\(q_5\)};
-
-        \node[state] (n2) [right=of q3] {\(N_2\)};
-
-        \draw[draw=black] (q0) ++(-0.5, 0.5) rectangle ++(3,-5) node[below] {\(N_1\)};
-
-        \path[->]
-            (inv)
-                edge node {} (q0)
-            (q1)
-                edge node {\(\emptyString\)} (n2)
-            (q3)
-                edge node {\(\emptyString\)} (n2)
-            (q5)
-                edge node {\(\emptyString\)} (n2);
-    \end{tikzpicture}
-\end{center}
-Here \(F_1 = \{q_1, q_3, q_5\}\) but the actual accept states are the ones for \(N_2\).
-
-\subsection{Closure under Kleene star}
-
-\textit{If \(A\) is a regular language, then \(A^*\) is also regular.}
-
-Let \(N_1 = (Q_1, \Sigma, \delta_1, q_0, F_1)\) be a NFAs such that
-\(A_1 = L(N_1)\). We can construct another NFA \(N=(Q, \Sigma, \delta, q, F)\)
-such that \(L(N)=A_1^*\).
-We want \(N_1\) to be able to switch back to its initial point
-when it is in a state \(r \in F_1\). This means that the concatenation of
-accepted strings can cycle one after the other. Since \(\emptyString\)
-also needs to be accepted we need a new start state which is an accept state.
-
-\begin{itemize}
-    \item \(Q = \{q_a\} \union Q_1\)
-    \item \(q = q_a\)
-    \item \(F = F_1 \union \{q\}\)
-    \item \[
-        \delta(r,a) =
-        \begin{cases}
-            \delta_1(r,a) & (r \in Q_1 \land r \notin F_1) \lor (r \in F_1 \land a \neq \emptyString) \\
-            \delta_1(r,a) \union \{q_0\} & r \in F_1 \land a = \emptyString \\
-            \{q_0\} & r = q \land a = \emptyString \\
-            \emptyset & r = q \land a \neq \emptyString
-        \end{cases}
-    \]
-\end{itemize}
-
-\begin{center}
-    \begin{tikzpicture}[node distance=2cm,on grid,auto]
-        \node[state, accepting] (q) {\(q\)};
-        \node[state] (q0) [right=of q] {\(q_0\)};
-        \node (inv) [left=of q0] {};
-
-        \node[state, accepting] (q1) [right=of q0] {\(q_1\)};
-        \node[state] (q2) [below=of q0] {\(q_2\)};
-        \node[state, accepting] (q3) [below=of q1] {\(q_3\)};
-        \node[state] (q4) [below=of q2] {\(q_4\)};
-        \node[state, accepting] (q5) [below=of q3] {\(q_5\)};
-
-        \draw[draw=black] (q0) ++(-0.5, 0.5) rectangle ++(3,-5);
-
-        \path[->]
-            (inv)
-                edge node {\(\emptyString\)} (q0)
-            (q1)
-                edge node {\(\emptyString\)} (q0)
-            (q3)
-                edge node {\(\emptyString\)} (q0)
-            (q5)
-                edge node {\(\emptyString\)} (q0);
-    \end{tikzpicture}
-\end{center}
-
-\subsection{Closure under complement}
-
-\textit{If \(A\) is a regular language, then \(\bar{A}\) is also regular.}
-
-Let \(N_1 = (Q_1, \Sigma, \delta_1, q_0, F_1)\) be a NFAs such that
-\(A_1 = L(N_1)\). We can construct another NFA \(N=(Q, \Sigma, \delta, q, F)\)
-such that \(L(N)=\bar{A_1}\).
-Any state \(r \notin F_1\) will be able to switch to a new state \(q_a\),
-which is the only accept state of \(N\), with a \(\emptyString\)-transition.
-This will negate any accepting state of \(N_1\) and vice versa.
-
-\begin{itemize}
-    \item \(Q=\{q_a\} \union Q_1\)
-    \item \(q = q_0\)
-    \item \(F = \{q_a\}\)
-    \item \[
-        \delta(r,a) =
-        \begin{cases}
-            \delta_1(r,a) \union \{q_a\} & r \in F_1 \\
-            \delta_1(r,a) & r \notin F_1 \\
-        \end{cases}
-    \]
-\end{itemize}
-
-\begin{center}
-    \begin{tikzpicture}[node distance=2cm,on grid,auto]
-        \node[state] (q0) {\(q_0\)};
-        \node (inv) [left=of q0] {};
-
-        \node[state] (q1) [right=of q0] {\(q_1\)};
-        \node[state] (q2) [below=of q0] {\(q_2\)};
-        \node[state] (q3) [below=of q1] {\(q_3\)};
-        \node[state] (q4) [below=of q2] {\(q_4\)};
-        \node[state] (q5) [below=of q3] {\(q_5\)};
-
-        \node[state] (n2) [right=of q3] {\(q_a\)};
-
-        \draw[draw=black] (q0) ++(-0.5, 0.5) rectangle ++(3,-5);
-
-        \path[->]
-            (inv)
-                edge node {} (q0)
-            (q1)
-                edge node {\(\emptyString\)} (n2)
-            (q3)
-                edge node {\(\emptyString\)} (n2)
-            (q5)
-                edge node {\(\emptyString\)} (n2);
-    \end{tikzpicture}
-\end{center}
-Here \(F_1=\{q_0, q_2, q_4\}\), but the only actual accept state is \(q_a\).
-
-\subsection{Closure under intersection}
-
-\textit{If \(A\) and \(B\) are two regular languages over the same alphabet
-\(\Sigma\), then \(A \intersection B\) is also regular.}
-
-Since \(A\union B\) is regular and \(A \intersection B \subseteq A \union B\),
-\(A \intersection B\) is also regular.
+%\subsection{Closure under union}
+%\subsection{Closure under concatenation}
+%\subsection{Closure under Kleene star}
+%\subsection{Closure under complement}
+%\subsection{Closure under intersection}
 
 \section{Regular Expressions}
 
