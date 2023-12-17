@@ -1,0 +1,104 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{parskip}
+\usepackage{fullpage}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{wrapfig}
+\usepackage{bettelini}
+\usepackage{stellar}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    pdftitle={Theory of Computation},
+    pdfpagemode=FullScreen,
+}
+
+% =======
+\usetikzlibrary{ % tikz packages
+    automata,positioning,
+    arrows.meta,bending
+}
+\tikzset{every state/.style={
+    inner sep=2pt,
+    minimum size=4pt
+}}
+\tikzset{>=stealth}  %latex, to, stealth
+% Empty string symbol.
+\newcommand{\emptyString}{\lambda}
+% =======
+
+\begin{document}
+
+\title{Theory of Computation}
+\id{theoryofcomputation-dfa-vs-nfa}
+\genpage
+
+
+\section{Equivalente of DFAs and NFAs}
+
+\begin{snippettheorem}{dfa-nfa-equivalence}{DFA and NFA equivalence}
+    Anything that can be computed by a NFA can also be computed by a DFA and vice versa.
+\end{snippettheorem}
+
+\begin{snippetproof}{dfa-nfa-equivalence-proof}{DFA and NFA equivalence}
+    \begin{enumerate}
+        \item \textbf{DFA to NFA conversion:}
+        Let \(D=(Q, \Sigma, \delta, q, F)\) be a DFA.
+        \(\delta\) is not a transition function of a NFA, so we need to redefine it as \(\delta'\).
+        Since \(\delta\) cannot process \(\emptyString\), \(\delta'\)
+        it is defined as
+        \[
+            \delta'(r, a)=
+            \begin{cases} 
+                \delta(r, a) & x \neq \emptyString \\
+                \emptyset & x = \emptyString
+            \end{cases}
+        \]
+        where \(r\) is a state in \(Q\) and \(a\) is a symbol in \(\Sigma_\emptyString\). \\
+        We can conclude that \(N=(Q, \Sigma, \delta', q, F)\).
+        \item \textbf{NFA to DFA conversion:}
+        Let \(N=(Q, \Sigma, \delta, q, F)\) be a NFA. The idea is to construct a DFA \(M=(Q', \Sigma, \delta', q', F')\)
+        that runs all the possible combinations that could be run by \(N\) at the same time.
+        Any state of \(M\) is a set of states \(R \in \mathcal{P}(Q)\), so we will say that
+        \(Q'=\mathcal{P}(Q)\). The set of accept states is any state \(R\) which contains an accept
+        state of \(N\)
+        \[
+            F' = \{R \in Q' \suchthat R \intersection F \neq \emptyset\}
+        \]
+        Let's assume that \(N\) does not execute any \(\emptyString\)-transitions.
+        \(q'\) would be \(\{q\}\) and \(\delta'\) would be
+        \[
+            \delta'(R, a) = \bigcup_{r\in R}\delta(r,a)
+        \]
+        which is the union of all possible states \(N\) could switch to.
+        Recall that for every \(r\in R\), \(\delta(r,a)\) is a set
+        of all possible states to switch to.
+        
+        Let's now remove the previous assumption. Now, \(M\)
+        must also consider every state that could be reached by
+        making zero or more \(\emptyString\)-transitions.
+        The \(\emptyString\)-closure
+        for a state \(r\), \(C_\emptyString(r)\), is defined as
+        the set of all possible states that can be reached from \(r\) by making
+        zero or more \(\emptyString\)-transitions.
+        The \(\emptyString\)-closure for a set of states \(R\) is defined as
+        \[
+            C_\emptyString(R) = \bigcup_{r\in R}C_\emptyString(r)
+        \]
+        The initial state \(q'\) is now given by \(C_\emptyString(q)\)
+        and the transition function
+        \[
+            \delta'(R, a) = \bigcup_{r\in R}C_\emptyString(\delta(r, a))
+        \]
+    \end{enumerate}
+\end{snippetproof}
+
+%\subsection{DFA to NFA conversion}
+%\subsection{NFA to DFA conversion}
+
+\end{document}

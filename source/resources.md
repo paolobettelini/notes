@@ -41,6 +41,10 @@ Functional analysis I
     - https://www.youtube.com/watch?v=yDdxFBcvSGw&list=PLBh2i93oe2qsGKDOsuVVw-OCAfprrnGfr
     - https://courses.maths.ox.ac.uk/pluginfile.php/26071/mod_resource/content/6/lecture-notes-MT-2019-April-2020.pdf
 
+Theory of computation
+    - https://cglab.ca/~michiel/TheoryOfComputation/TheoryOfComputation.pdf
+    - pag 71
+
 Topology
     - https://courses.maths.ox.ac.uk/course/view.php?id=1040
 

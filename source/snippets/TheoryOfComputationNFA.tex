@@ -1,0 +1,112 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{parskip}
+\usepackage{fullpage}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{wrapfig}
+\usepackage{bettelini}
+\usepackage{stellar}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    pdftitle={Theory of Computation},
+    pdfpagemode=FullScreen,
+}
+
+% =======
+\usetikzlibrary{ % tikz packages
+    automata,positioning,
+    arrows.meta,bending
+}
+\tikzset{every state/.style={
+    inner sep=2pt,
+    minimum size=4pt
+}}
+\tikzset{>=stealth}  %latex, to, stealth
+% Empty string symbol.
+\newcommand{\emptyString}{\lambda}
+% =======
+
+\begin{document}
+
+\title{Theory of Computation}
+\id{theoryofcomputation-nfa}
+\genpage
+
+\section{Nondeterministic Finite Automaton}
+
+\begin{snippetdefinition}{nfa-definition}{Nondeterministic Finite Automaton}
+    Nondeterministic finite automata (NFA) are state-machines
+    like DFAs but can change multiple states at a time by processing
+    empty strings \(\emptyString\) and when processing a symbol
+    \(a\) may have multiple possible states to switch to.
+    The NFA will choose the "correct" switch in order to end in an accept state, if possible.
+
+    A NFA is defined as \(M=(Q, \Sigma, \delta, q, F)\) where
+    \begin{itemize}
+        \item \(Q\) is a finite set of \textit{states}
+        \item \(\Sigma\) is an alphabet
+        \item \(\delta : Q \times \Sigma_\emptyString \to \mathcal{P}(Q)\) is the \textit{transition function}
+        \item \(q\) is an element of \(Q\) called the \textit{start state}
+        \item \(F\) is a subset of \(Q\) which contains the \textit{accept states}
+    \end{itemize}
+\end{snippetdefinition}
+
+\begin{snippetexample}{nfa-multiple-of-2-of-3}{NFA example}
+    The following automaton where \(\Sigma = \{1\}\) will end in an accept state
+    if the input has length which is a multiple of \(2\) or \(3\).
+    
+    \newcommand\double[3][10]{%
+      \draw (#2)
+        edge [bend left=#1,draw=none]
+        coordinate[at start](#2-#3-s)
+        coordinate[at end](#2-#3-e)
+        (#3)
+        edge [bend right=#1,draw=none]
+        coordinate[at start](#3-#2-e)
+        coordinate[at end](#3-#2-s)
+        (#3);
+    }
+    
+    \begin{center}
+        \begin{tikzpicture}[node distance=2cm,on grid,auto]
+            \node[state] (0) {};
+            \node (inv) [left=of 0] {};
+    
+            \node[state, accepting] (a1) [above right=of 0] {\(q_{a1}\)};
+            \node[state] (a2) [right=of a1] {\(q_{a2}\)};
+            
+            \node[state, accepting] (b1) [below right=of 0] {\(q_{b1}\)};
+            \node[state] (b2) [right=of b1] {\(q_{b2}\)};
+            \node[state] (b3) [below=of b2] {\(q_{b3}\)};
+            
+            \double{a1}{a2};
+    
+            \path[->]
+                (inv)
+                    edge node {} (0)
+                (0)
+                    edge node {\(\emptyString\)} (a1)
+                    edge node {\(\emptyString\)} (b1)
+                (a1-a2-s)
+                    edge node {\(1\)} (a1-a2-e)
+                (a2-a1-s)
+                    edge node {\(1\)} (a2-a1-e)
+                (b1)
+                    edge node {\(1\)} (b2)
+                (b2)
+                    edge node {\(1\)} (b3)
+                (b3)
+                    edge node {\(1\)} (b1);
+        \end{tikzpicture}
+    \end{center}
+    The first switch is done by processing an empty string and the direction is chosen magically
+    in order to end in an accept state.
+\end{snippetexample}
+
+\end{document}
