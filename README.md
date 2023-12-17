@@ -1,36 +1,40 @@
-# notes
-A collection of my personal notes.
+# Notes
 
-All the PDF files have been compiled using Tectonic.
+Welcome to my notes! The following is a collection of math notes
+and related subjects.
+These notes are organized using the [stellar](https://github.com/paolobettelini/stellar)
+software.
 
-Search through my notes at [https://paolobettelini.github.io/notes](https://paolobettelini.github.io/notes).
+# Website preview
 
-> [!NOTE]
-> Some of my notes are being moved to [stellar](./stellar) in a more course-like setting.
-> PDF renders are not available so you need to host the website yourself for now.
+![universe preview](./media/universe.png)
+![course preview](./media/course.png)
 
-![website preview](./media/website.png)
+# How to run
+Install [stellar](https://github.com/paolobettelini/stellar)
+and compile all the snippets.
+```bash
+cd source
+./compile
+cd ..
+```
+This script uses `tectonic` to compile all the `tex` file and then runs `stellar-cli`
+to generate the snippets and import them in the database.
+To compile the `nannout` snippets you also need `wasm-pack` and `npm`.
+Make sure to open the script and change your configurations. A mongoDB database is needed.
+Then, open the web server
+```bash
+stellar-cli web --data data/ --connection-url "mongodb://localhost"
+```
+Go to [localhost:8080/universe/math](http://localhost:8080/universe/math).
 
-<p float="center">
-  <img src="./media/examples/example1.png" width="250" />
-  <img src="./media/examples/example2.png" width="250" /> 
-  <img src="./media/examples/example3.png" width="250" />
-</p>
-
-All my notes are organized using tags.
-Here's a fun map to look at which shows every links between tags.
-
-
-![tags graph](./media/tags.png)
-
-## Cite me
+# Cite me
 ```bib
 @online{paolobettelini,
   author    = {Paolo Bettelini},
   title     = {notes},
-  year      = {2022},
+  year      = {2023},
   publisher = {GitHub},
-  journal   = {GitHub repository},
-  url       = {https://github.com/paolobettelini/notes}
+  journal   = {GitHub repository}
 }
 ```

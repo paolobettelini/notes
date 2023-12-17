@@ -1,4 +1,4 @@
-====== RESOURCES: ======
+# Resources
 
 Measure Theory:
     - https://www.youtube.com/playlist?list=PLBh2i93oe2qvMVqAzsX1Kuv6-4fjazZ8j
@@ -44,7 +44,7 @@ Functional analysis I
 Topology
     - https://courses.maths.ox.ac.uk/course/view.php?id=1040
 
-====== STUFF TODO/NOTES ======
+# Stuff/TODO
 - finish translating the old notes, need more universes
 - hilbert spaces goes in functional analysis
 - move the "to_do" folder files to a page, maybe an "extra" or "other" page
