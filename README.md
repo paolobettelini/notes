@@ -22,6 +22,9 @@ This script uses `tectonic` to compile all the `tex` file and then runs `stellar
 to generate the snippets and import them in the database.
 To compile the `nannou` snippets you also need `wasm-pack` and `npm`.
 Make sure to open the script and change your configurations. A mongoDB database is needed.
+It is advisable to set the `CARGO_TARGET_DIR` variable so that
+the rust projects share the same target folder.
+
 Then, open the web server
 ```bash
 stellar-cli web --data data/ --connection-url "mongodb://localhost"
