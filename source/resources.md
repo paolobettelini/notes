@@ -59,6 +59,9 @@ Quantum computing:
     - https://lapastillaroja.net/wp-content/uploads/2016/09/Intro_to_QC_Vol_1_Loceff.pdf
     from p. 153
 
+Complex analysis:
+    - Murray R. Spiegel
+
 # Stuff/TODO
 - finish translating the old notes, need more universes
 - hilbert spaces goes in functional analysis
