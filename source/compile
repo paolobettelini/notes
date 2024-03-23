@@ -4,9 +4,10 @@ snippets_folder="snippets"
 pages_folder="pages"
 courses_folder="courses"
 universes_folder="universes"
+latex_folder="latex"
 
 data_folder="../data"
-search_folder="snippets/packages"
+search_folder="latex/packages"
 mongourl="mongodb://localhost"
 
 WORKING_DIR=`pwd`
@@ -64,7 +65,7 @@ function compile_snippet () {
         # generate snippet folder
         rm "$1/website/dist/index.js"
         mv "$1"/website/dist/* "$data_folder/snippets/$snippet_name"
-    elif [[ $1 != *"to_use"* && $1 != *"target"* && $1 != *"packages"* ]]; then
+    elif [[ $1 != *"resources"* && $1 != *"packages"* ]]; then
         # Generate from static files
         echo "Generating from static files"
 
@@ -99,6 +100,13 @@ function compile_snippets () {
     done
 }
 
+function compile_latex () {
+    echo "Compiling latex folder"
+    for file in "$latex_folder"/*; do
+        compile_snippet "$file"
+    done
+}
+
 function compile_pages () {
     echo "Compiling pages folder"
     for file in "$pages_folder"/*; do
@@ -125,11 +133,13 @@ function compile () {
         compile_snippets
     elif [[ "$1" == *"$pages_folder" || "$1" == *"$pages_folder/" ]]; then
         compile_pages
+    elif [[ "$1" == *"$latex_folder" || "$1" == *"$latex_folder/" ]]; then
+        compile_latex
     elif [[ "$1" == *"$courses_folder" || "$1" == *"$courses_folder/" ]]; then
         compile_courses
     elif [[ "$1" == *"$universes_folder" || "$1" == *"$universes_folder/" ]]; then
         compile_universes
-    elif [[ "$1" == *"$snippets_folder/"* ]]; then
+    elif [[ "$1" == *"$snippets_folder/"* || "$1" == *"$latex_folder/"* ]]; then
         compile_snippet $1
     elif [[ "$1" == *"$pages_folder/"* ]]; then
         compile_page $1

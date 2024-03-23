@@ -1,3 +1,12 @@
+# Source
+
+Structure:
+* [universe](./universes/) static universe files
+* [courses](./courses/) static course files
+* [snippets](./snippets/) snippets source files, both static and not
+* [latex](./latex/) latex files which generate PDFs which generate both snippets
+    and pages using the `stellar-cli generate` command.
+
 # Pure math
 
 Measure Theory:
@@ -49,6 +58,9 @@ Topology
 Differentiable Manifolds
     - https://aetemad.iut.ac.ir/sites/aetemad.iut.ac.ir/files/files_course/lang20s.20introduction20to20differentiable20manifolds20isbn200387954775springer202002263s_mddg_.pdf
 
+Complex analysis:
+    - Murray R. Spiegel
+
 # More niche subjects for me
 
 Theory of computation
@@ -58,9 +70,6 @@ Theory of computation
 Quantum computing:
     - https://lapastillaroja.net/wp-content/uploads/2016/09/Intro_to_QC_Vol_1_Loceff.pdf
     from p. 153
-
-Complex analysis:
-    - Murray R. Spiegel
 
 # Stuff/TODO
 - finish translating the old notes, need more universes
