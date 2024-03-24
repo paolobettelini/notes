@@ -145,8 +145,12 @@
     <div id="sliderHandle"></div>
 </div>
 
+<div id="controls">
+    <button id="playPauseButton">Play</button>
+</div>
+
 <style>
-  #imageSlider {
+#imageSlider {
     max-width: 500px;
     margin: 0 auto;
     position: relative;
@@ -173,44 +177,84 @@
     left: 0;
     pointer-events: none;
   }
+  #controls {
+    text-align: center;
+    margin-top: 20px;
+  }
 </style>
 
 <script>
-    const sliderTimeline = document.getElementById('sliderTimeline');
-    const sliderHandle = document.getElementById('sliderHandle');
-    const images = document.querySelectorAll('#imageSlider img');
-    const totalFrames = images.length;
-    let currentFrame = 0;
-  
-    // Calculate the width of each frame on the timeline
-    const frameWidth = 100 / (totalFrames - 1);
-  
-    // Set initial position of the handle
-    sliderHandle.style.left = `${frameWidth * currentFrame}%`;
-  
-    // Function to update image display
-    function updateImage() {
-      images.forEach(img => img.style.display = 'none');
-      images[currentFrame].style.display = 'block';
-    }
-  
-    // Function to handle slider movement
-    function handleSliderMove(event) {
-      const sliderRect = sliderTimeline.getBoundingClientRect();
-      const newPosition = (event.clientX - sliderRect.left) / sliderRect.width * 100;
-      sliderHandle.style.left = `${newPosition}%`;
-      currentFrame = Math.round(newPosition / frameWidth);
-      updateImage();
-    }
-  
-    // Add event listener for slider timeline
-    sliderTimeline.addEventListener('mousedown', () => {
-      sliderTimeline.addEventListener('mousemove', handleSliderMove);
-      sliderTimeline.addEventListener('mouseup', () => {
-        sliderTimeline.removeEventListener('mousemove', handleSliderMove);
-      }, { once: true });
-    });
-  
-    // Initial image display
+   const sliderTimeline = document.getElementById('sliderTimeline');
+  const sliderHandle = document.getElementById('sliderHandle');
+  const images = document.querySelectorAll('#imageSlider img');
+  const totalFrames = images.length;
+  let currentFrame = 0;
+  let isPlaying = false;
+  let animationInterval;
+  let lastRenderedImageIndex = 0;
+
+  // Calculate the width of each frame on the timeline
+  const frameWidth = 100 / (totalFrames - 1);
+
+  // Set initial position of the handle
+  sliderHandle.style.left = `${frameWidth * currentFrame}%`;
+
+  // Function to update image display
+  function updateImage() {
+    images[lastRenderedImageIndex].style.display = 'none';
+    lastRenderedImageIndex = currentFrame;
+    images[currentFrame].style.display = 'block';
+    //images.forEach(img => img.style.display = 'none');
+    //images[currentFrame].onload = () => {
+    //    images[lastRenderedImageIndex].style.display = 'none';
+    //    lastRenderedImageIndex = currentFrame;
+    //}
+  }
+
+  // Function to handle slider movement
+  function handleSliderMove(event) {
+    const sliderRect = sliderTimeline.getBoundingClientRect();
+    const newPosition = (event.clientX - sliderRect.left) / sliderRect.width * 100;
+    sliderHandle.style.left = `${newPosition}%`;
+    currentFrame = Math.round(newPosition / frameWidth);
     updateImage();
+  }
+
+  // Function to start the animation
+  function startAnimation() {
+    isPlaying = true;
+    animationInterval = setInterval(() => {
+      currentFrame = (currentFrame + 1) % totalFrames;
+      sliderHandle.style.left = `${frameWidth * currentFrame}%`;
+      updateImage();
+    }, 100); // Change interval as needed (in milliseconds)
+    document.getElementById('playPauseButton').textContent = 'Pause';
+  }
+
+  // Function to stop the animation
+  function stopAnimation() {
+    isPlaying = false;
+    clearInterval(animationInterval);
+    document.getElementById('playPauseButton').textContent = 'Play';
+  }
+
+  // Toggle animation when play/pause button is clicked
+  document.getElementById('playPauseButton').addEventListener('click', () => {
+    if (isPlaying) {
+      stopAnimation();
+    } else {
+      startAnimation();
+    }
+  });
+
+  // Add event listener for slider timeline
+  sliderTimeline.addEventListener('mousedown', () => {
+    sliderTimeline.addEventListener('mousemove', handleSliderMove);
+    sliderTimeline.addEventListener('mouseup', () => {
+      sliderTimeline.removeEventListener('mousemove', handleSliderMove);
+    }, { once: true });
+  });
+
+  // Initial image display
+  updateImage();
   </script>
