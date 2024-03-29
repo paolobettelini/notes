@@ -1,0 +1,179 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{bettelini}
+\usepackage{booktabs}
+\usepackage{xparse}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    pdftitle={Assets},
+    pdfpagemode=FullScreen,
+}
+
+% https://tex.stackexchange.com/questions/97613/tabular-integration-by-parts
+\tikzset{Arrow Style/.style={text=black, font=\boldmath}}
+\newcommand{\tikzmark}[1]{%
+    \tikz[overlay, remember picture, baseline] \node (#1) {};%
+}
+\newcommand*{\XShift}{0.5em}
+\newcommand*{\YShift}{0.5ex}
+\NewDocumentCommand{\DrawArrow}{s O{} m m m}{%
+    \begin{tikzpicture}[overlay,remember picture]
+        \draw[->, thick, Arrow Style, #2] 
+                ($(#3.west)+(\XShift,\YShift)$) -- 
+                ($(#4.east)+(-\XShift,\YShift)$)
+        node [midway,above] {#5};
+    \end{tikzpicture}%
+}
+\NewDocumentCommand{\DrawIntegralLine}{s O{} m m}{%
+    \begin{tikzpicture}[overlay,remember picture]
+        \draw[->, thick, Arrow Style, #2] 
+                ($(#3.west)-(\XShift,\YShift)$) to 
+                [bend right=45] ($(#4.east)-(-\XShift,\YShift)$)
+        node [midway,above] {};
+    \end{tikzpicture}%
+}
+
+
+
+\begin{document}
+
+\title{Integration}
+\id{integration-exercises}
+\genpage
+
+\subsection{Integrals by substitution}
+
+\begin{snippetexercise}{integral-sub-ex-1}{}
+    Solve \(\integral[\sin(x)e^{\cos(x)}][x]\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{integral-sub-ex-1-sol}{}
+    We substitute
+    \begin{align*}
+        u&=\cos(x) \\
+        du&=\sin(x)dx \\
+        dx &= \frac{du}{\sin(x)}
+    \end{align*}
+    and by substitution
+    \begin{align*}
+        &\integral[\sin(x)e^u\frac{du}{\sin(x)}][u] \\
+        =&\integral[e^u][u]=e^u+C=e^{\cos(x)}+C
+    \end{align*}
+\end{snippetsolution}
+
+\begin{snippetexercise}{integral-sub-ex-2}{}
+    Solve \(\integral[\frac{5}{{(2x+3)}^2}][x]\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{integral-sub-ex-2-sol}{}
+    We substitute
+    \begin{align*}
+        u&=2x+3 \\
+        du&= 2dx \\
+        dx &= \frac{du}{2}
+    \end{align*}
+    and by substitution
+    \begin{align*}
+        &\integral[\frac{1}{2}\cdot\frac{5}{u^2}][u] \\
+        =&\frac{5}{2}\left(\frac{u^{-1}}{-1}+C\right) \\
+        =&\frac{-5}{2(2x+3)}+C
+    \end{align*}
+\end{snippetsolution}
+
+\begin{snippetexercise}{integral-sub-ex-3}{}
+    Solve \(\integral[\frac{x}{\sqrt{{(x^2+5)}^3}}][x]\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{integral-sub-ex-3-sol}{}
+    We substitute
+    \begin{align*}
+        u&=x^2+5 \\
+        du&= 2xdx \\
+        dx &= \frac{du}{2x}
+    \end{align*}
+    and by substitution
+    \begin{align*}
+        &\integral[\frac{x}{u^{\frac{3}{2}}}\cdot\frac{1}{2x}][u] \\
+        =&\frac{1}{2}\integral[u^{-\frac{3}{2}}][u] \\
+        =&-\frac{1}{\sqrt{x^2+5}}+C
+    \end{align*}
+\end{snippetsolution}
+
+\subsection{Integrals by parts}
+
+\begin{snippetexercise}{integral-parts-ex-1}{}
+    Solve \(\integral[x^3e^x][x]\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{integral-parts-ex-1-sol}{}
+    We differentiate \(x^3\) and integrate \(e^x\):
+    \[
+        \renewcommand{\arraystretch}{1.5}
+        \begin{array}{c @{\hspace*{1.0cm}} c}\toprule
+           D & I \\\cmidrule{1-2}
+          x^3   \tikzmark{Left 1} & \tikzmark{Right 1}e^x \\
+          3x^2  \tikzmark{Left 2} & \tikzmark{Right 2}e^{x} \\      
+          6x    \tikzmark{Left 3} & \tikzmark{Right 3}e^{x} \\      
+          6     \tikzmark{Left 4} & \tikzmark{Right 4}e^{x} \\      
+          0     \tikzmark{Left 5} & \tikzmark{Right 5}e^{x} \\\bottomrule
+        \end{array}
+    \]
+    %-----------------------------------------
+    \DrawArrow[draw=red]{Left 1}{Right 2}{$+$}%
+    \DrawArrow[draw=red]{Left 2}{Right 3}{$-$}%
+    \DrawArrow[draw=red]{Left 3}{Right 4}{$+$}%
+    \DrawArrow[draw=red]{Left 4}{Right 5}{$-$}%
+
+    The result is \(e^x(x^3-3x^2+6x-6)+C\).
+\end{snippetsolution}
+
+\subsection{Others}
+
+\begin{snippetexercise}{integral-parts-mixed-1}{}
+    Solve \(\integral[\cos(\ln(x))][x]\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{integral-parts-mixed-1-sol}{}
+    We substitute
+    \begin{align*}
+        u&=\ln(x) \\
+        du&= \frac{dx}{x} \\
+        dx &= udx
+    \end{align*}
+    and by substitution
+    \begin{align*}
+        \integral[\cos(u)e^u][u]
+    \end{align*}
+    Now we can differentiate \(e^u\) and integrate \(\cos(u)\):
+
+    \[
+        \renewcommand{\arraystretch}{1.5}
+        \begin{array}{c @{\hspace*{1.0cm}} c}\toprule
+           D & I \\\cmidrule{1-2}
+          {\color{blue}+} e^u   \tikzmark{Left 1} & \tikzmark{Right 1}+\cos(u) \\
+          {\color{blue}-} e^u  \tikzmark{Left 2} & \tikzmark{Right 2}+\sin(u) \\
+          {\color{blue}+} e^u    \tikzmark{Left 3} & \tikzmark{Right 3}-\cos(u) \\      
+        \end{array}
+    \]
+    %-----------------------------------------
+    \DrawArrow[draw=red]{Left 1}{Right 2}{}%
+    \DrawArrow[draw=red]{Left 2}{Right 3}{}%
+    \DrawIntegralLine[draw=red, -]{Left 3}{Right 3}%
+
+    \begin{align*}
+        &\integral[\cos(u)e^u][u] = e^u\sin(u)+e^u\cos(u) -\integral[\cos(u)e^u][u] \\
+        &2\integral[\cos(u)e^u][u] =  \\
+        &\integral[\cos(u)e^u][u] = \frac{e^u(\sin(u)+\cos(u))}{2} + C \\
+        &= \frac{x(\sin(\ln(x))+\cos(\ln(x)))}{2} + C
+    \end{align*}
+\end{snippetsolution}
+
+\end{document}
