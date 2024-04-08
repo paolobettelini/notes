@@ -31,6 +31,10 @@ stellar-cli web --data data/ --connection-url "mongodb://localhost"
 ```
 Go to [localhost:8080/universe/math](http://localhost:8080/universe/math).
 
+# Cron fetch
+If you want to periodically update the content automatically
+you can call `source/try_pull_and_compile` using crontab.
+
 # Cite me
 ```bib
 @online{paolobettelini,

@@ -8,7 +8,7 @@ latex_folder="latex"
 
 data_folder="../data"
 search_folder="latex/packages"
-mongourl="mongodb://localhost"
+mongourl="mongodb://192.168.1.111:11223"
 
 WORKING_DIR=`pwd`
 
@@ -158,18 +158,33 @@ function compile_last_pull () {
     # get last pull files files
     output="$(git diff --name-status HEAD@{1}..HEAD)"
 
-    # TODO:
-    # git will give various files like
-    # - source/folder/file1.html
-    # - source/folder/file1.html
-    # and the scripts need to compile "source/folder" only once
-    # TODO: when the line doesn't start with "D" (delete)
+    # Array to store compiled snippets/name to avoid compilating the same thing
+    # multiple times
+    declare -a compiled_snippets
 
     IFS=$'\n'  # Set the Internal Field Separator to newline
     for line in $output; do
-        if [[ $line == *"source/"* ]]; then
+        if [[ $line == *"source/"* ]]; then # if it's contained in the source/ folder
             file=$(echo "$line" | sed 's/.*source\///') # remove everything before "source"
-            ./compile $file
+            
+            if [ -f "$file" ]; then # check if file exists
+
+                # Convert snippets/name/name to snippets/name
+                if [[ $file == snippets/*/* ]]; then
+                    # Remove the "/<name2>" part
+                    file="${file%/*}"
+                fi
+
+                # If it is not in the list of already compiled snippets
+                if ! [[ " ${compiled_snippets[@]} " =~ " $file " ]]; then
+                    ./compile $file
+                fi
+
+                # Files that are not in the snippets/ folder do not risk
+                # being compiled multiple times but everything is put in the list
+                # for simplicity purposes.            
+                compiled_snippets+=("$file")
+            fi
         fi
     done
 }
