@@ -74,4 +74,7 @@ Quantum computing:
 # Stuff/TODO
 - finish translating the old notes, need more universes
 - hilbert spaces goes in functional analysis
-- move the "to_do" folder files to a page, maybe an "extra" or "other" page
+
+# Misc
+
+Chemistry visualizations: https://kut.ai/research/web-molecules/
