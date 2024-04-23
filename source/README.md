@@ -7,6 +7,9 @@ Structure:
 * [latex](./latex/) latex files which generate PDFs which generate both snippets
     and pages using the `stellar-cli generate` command.
 
+# Some parametrized snippets:
+* `yt-embed`: Embeds a YouTube video. Params: <b>src, width, height</b>
+
 # Pure math
 
 Measure Theory:
