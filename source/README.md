@@ -73,10 +73,12 @@ Complex analysis:
 Theory of computation
     - https://cglab.ca/~michiel/TheoryOfComputation/TheoryOfComputation.pdf
     - pag 71
+    - https://scholarship.claremont.edu/cgi/viewcontent.cgi?article=1256&context=hmc_theses#page18
 
 Quantum computing:
     - https://lapastillaroja.net/wp-content/uploads/2016/09/Intro_to_QC_Vol_1_Loceff.pdf
     from p. 153
+
 
 # Stuff/TODO
 - finish translating the old notes, need more universes
