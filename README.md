@@ -8,7 +8,7 @@ software.
 # Website preview
 
 ![universe preview](./media/universe.png)
-![course preview](./media/course.png)
+![course preview](./media/physicalrendering.png)
 
 # How to run
 Install [stellar](https://github.com/paolobettelini/stellar)
