@@ -3,6 +3,10 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{stellar}
+\usepackage{tikz}
+\usepackage{chemfig}
+\usepackage{makecell}
+\usepackage{soul}
 
 \hypersetup{
     colorlinks=true,
@@ -12,12 +16,136 @@
     pdfpagemode=FullScreen,
 }
 
+% === COMMANDS ===
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+    \node[shape=circle,draw,inner sep=1.1pt] (char) {#1};}
+}
+\newcommand\angstrom{\mbox{\normalfont\AA}}
+\newcommand\namebond[4][5pt]{\chemmove{\path(#2)--(#3)node[midway,sloped,yshift=#1]{#4};}}
+\newcommand\arcbetweennodes[3]{
+    \pgfmathanglebetweenpoints{\pgfpointanchor{#1}{center}}{\pgfpointanchor{#2}{center}}
+    \let#3\pgfmathresult
+}
+\newcommand\arclabel[8][stealth-stealth,shorten <=1pt,shorten >=1pt]{
+    \chemmove{
+        \arcbetweennodes{#4}{#3}\anglestart \arcbetweennodes{#4}{#5}\angleend
+        \draw[#1]([shift=(\anglestart:#2)]#4)arc(\anglestart:\angleend:#2);
+        \pgfmathparse{(\anglestart+\angleend)/2}\let\anglestart\pgfmathresult
+        \node[shift=(\anglestart:#2+1pt)#4,anchor=\anglestart+180,rotate=\anglestart#7,
+        inner sep=0pt,outer sep=#8]at(#4){#6};
+    }
+}
+
 \begin{document}
 
 \title{Stellar}
-\id{chimica-vserp}
+\id{chimica-vsepr}
 \genpage
 
+\section{Geometria molecolare VSEPR}
 
+\begin{snippetdefinition}{vsepr-definition}{VSEPR}
+    La geometria di una molecola può essere rappresentata ricorrendo al modello VSEPR
+    (\textit{Valence Shell Electron Pair Repulsion}), il quale principio è basato sulla repulsione degli
+    elettroni di valenza, i quali tendono a collocarsi alla maggior distanza possibile l'uno
+    dall'altro.
+\end{snippetdefinition}
+
+\subsection{Lineare}
+
+\begin{snippet}{vsepr-lineare-illustration}
+    \begin{center}
+        \chemfig{
+            \Charge{90=\|,-90=\|}{O}=C=\Charge{90=\|,-90=\|}{O}
+        } \qquad
+        \chemfig{
+            @{1}\circled{O}=@{2}\circled{C}=@{3}\circled{O}
+        } \arclabel{-0.5cm}{1}{2}{3}{\footnotesize180\textdegree}{-90}{-8.5pt}
+    \end{center}
+    \phantom{}
+\end{snippet}
+
+\includesnpt[cid=280]{molecule}
+
+\subsection{Triangolare planare}
+
+\begin{snippet}{vsepr-triangolare-planare-illustration}
+    \begin{center}
+        \chemleft[
+            \chemfig{
+                {\Charge{90=\|,-180=\|}{O}}
+                =[:-45]C(-[:-90]{\Charge{0=\|,-90=\|,-180=\|}{O}})
+                -[:45]\Charge{45=\|,135=\|,-45=\|}{O}
+            } 
+        \chemright]$^{2-}$
+        \hspace*{.35cm}
+        \chemfig{
+            @{0}\circled{O}
+            -[:-45]@{1}\circled{C}(-[:-90]@{2}\circled{O})
+            =[:45]@{3}\circled{O}
+        } \arclabel{0.5cm}{0}{1}{2}{\footnotesize120\textdegree}{-202.5}{0}
+    \end{center}
+    \phantom{}
+\end{snippet}
+
+\includesnpt[cid=6356]{molecule}
+
+\subsection{Pramidale}
+
+\begin{snippet}{vsepr-piramidale-illustration}
+    \begin{center}
+
+    \end{center}
+    \phantom{}
+\end{snippet}
+
+\includesnpt[cid=222]{molecule}
+
+\subsection{Tetraedrica}
+
+\begin{snippet}{vsepr-tetraedrica-illustration}
+    \begin{center}
+        \chemfig{
+            H-[:-90]C(<:[:-135]H)(<[:-90]H)(-[:-45]H)
+        }
+        \hspace*{1cm}
+        \chemfig{
+            @{0}\circled{H}-[:-90]@{1}\circled{C}(-[:-165]@{2}\circled{H})(-[:-90]\circled{H})(-[:-15]\circled{H})
+        } \arclabel{.6cm}{0}{1}{2}{\footnotesize107.3\textdegree}{-142.5}{2pt}
+    \end{center}
+    \phantom{}
+\end{snippet}
+
+\includesnpt[cid=297]{molecule}
+
+\subsection{Bipiramidale trigonale}
+
+\begin{snippet}{vsepr-bipiramidale-trigonale-illustration}
+    \begin{center}
+
+    \end{center}
+    \phantom{}
+\end{snippet}
+
+\includesnpt[cid=24819]{molecule}
+
+\subsection{Ottaedrica}
+
+\begin{snippet}{vsepr-ottaedrica-illustration}
+    \begin{center}
+        \chemfig{
+            F-[:-90]S(-[:-90]F)(<:[:30]F)(<:[:150]F)(<[:-150]F)(<[:-30]F)
+        }
+        \hspace*{1.05cm}
+        \chemfig{
+            \circled{F}-[:-90]@{1}\circled{S}(-[:-90]@{0}\circled{F})(-[:30]\circled{F})(-[:150]\circled{F})
+            (-[:-150]\circled{F})(-[:-30]@{2}\circled{F})
+        }
+        \arclabel{.6cm}{0}{1}{2}{\footnotesize90\textdegree}{-299}{1}
+    \end{center}
+    \phantom{}
+\end{snippet}
+
+\includesnpt[cid=17358]{molecule}
 
 \end{document}
