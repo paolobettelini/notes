@@ -35,7 +35,7 @@ Calculus:
     - https://tutorial.math.lamar.edu/classes/calci/calci.aspx
     - https://tutorial.math.lamar.edu/classes/calcII/calcII.aspx
     - https://tutorial.math.lamar.edu/classes/calciii/calciii.aspx
-    - "Let’s start with differentiation of the power series"
+    - "Let's start with differentiation of the power series"
     - Put the Taylor series at the end in a whole section for power series
 
 Physical rendering:
