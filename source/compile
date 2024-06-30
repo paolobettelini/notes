@@ -23,22 +23,15 @@ function compile_snippet () {
         echo "Compiling $1"
         tectonic "$1" -Z search-path="$search_folder" > /dev/null
 
-        echo "Generating snippets from $1"
+        echo "Generating data from $1"
         pdf=$(echo "$1" | sed 's/\.tex$/.pdf/');
-        stellar-cli generate snippets \
+        stellar-cli generate \
             --input "$pdf" \
             --data-output "$data_folder" \
             --bottom-offset 9.5 \
             --top-offset=-20 \
             --import \
             --connection-url "$mongourl";
-
-        # You should compile all the snippets before generating PDFs
-        #echo "Generating PDF from $1"
-        #stellar-cli generate pdf \
-        #    --input "$pdf" \
-        #    --data "$data_folder" \
-        #    --output "$pdf";
 
         rm "$pdf";
     elif [ -e "$1/Cargo.toml" ]; then
@@ -72,7 +65,7 @@ function compile_snippet () {
         # Generate from static files
         echo "Generating from static files"
 
-        snippet_name=$(basename "$1")
+        snippet_name=$(basename "$1") # TODO: support /snippets/name/something/something/something.smth
         mkdir -p "$data_folder/snippets/$snippet_name"
         cp -r "$1"/* "$data_folder/snippets/$snippet_name"
     fi   
