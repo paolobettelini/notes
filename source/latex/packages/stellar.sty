@@ -6,6 +6,7 @@
 \RequirePackage{parskip}
 \RequirePackage{fullpage}
 \RequirePackage{ifthen}
+\RequirePackage{amsthm}
 \RequirePackage[most]{tcolorbox}
 
 % Hyperref setup
@@ -43,6 +44,8 @@
     }%
 }
 
+% Command to break lines before and after the content.
+% Used for every PDF command.
 \newcommand{\@padcmd}[1]{
 \beginnewline~\\
 #1
@@ -62,6 +65,13 @@
 \NewDocumentEnvironment{snippet}{m o}
 {\@padcmd{!snippet #1}}
 {\@padcmd{!endsnippet \IfNoValueF{#2}{#2}}}
+
+% Command to put the QED symbol
+\newcommand{\@qed}{%
+    \ifhmode \unskip\nobreak\hfil\penalty50\hskip1em\null\hfill\(\blacksquare\)%
+    \else \leavevmode\hbox{}\nobreak\hfill\(\blacksquare\)%
+    \fi%
+}
 
 %%%%%%%%%% Colored sentences commands %%%%%%%%%%
 % Adapted from
@@ -128,7 +138,7 @@
 \customsentence{Character}{Character}{characterbg}{characterfr}
 \customsentence{Summary}{Summary}{summarybg}{summaryfr}
 
-%%%%% \begin{stheorem} and such
+%%%%% \begin{stheorem} and such. These enviroments only handle the appearance.
 
 \newenvironment{stheorem}[1]
 {\vspace{-0.35cm}\begin{Theorem}{#1}{}}
@@ -182,7 +192,7 @@
 {\vspace{-0.35cm}\begin{Summary}{#1}{}}
 {\end{Summary}}
 
-%%%%% \begin{snippettheorem} and such
+%%%%% \begin{snippettheorem} and such. These enviroments inject stellar commands in the PDF.
 
 \NewDocumentEnvironment{snippettheorem}{m m o}
 {\begin{snippet}{#1}[#3]
@@ -234,8 +244,8 @@
 
 \NewDocumentEnvironment{snippetproof}{m m m o}
 {\begin{snippet}{#1}[#4]
-\begin{sproof}{\snippetref[#2][#3]}}
-{\end{sproof}
+\begin{sproof}{\snippetref[#2][\color{prooffr}{#3}]}} % Add link
+{\@qed\end{sproof} % Add QED symbol
 \end{snippet}}
 
 \NewDocumentEnvironment{snippetexercise}{m m o}
