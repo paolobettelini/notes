@@ -1,7 +1,56 @@
 use git2::{Repository, StatusOptions};
 use log::{error, info};
 use std::path::PathBuf;
+use std::process::Command;
 
+pub fn git_pull_and_get_files(notes_path: &PathBuf) -> Vec<PathBuf> {
+    // git pull
+    let output = Command::new("git")
+        .current_dir(notes_path)
+        .arg("pull")
+        .output()
+        .expect("failed to execute `git pull`");
+
+    if !output.status.success() {
+        if let Ok(stdout) = String::from_utf8(output.stderr) {
+            log::error!("Failed to execute `git pull` file: {}", stdout);
+            std::process::exit(1);
+        } else {
+            log::error!("Failed to execute `git pull`");
+            std::process::exit(1);
+        }
+    }
+
+    let mut result = vec![];
+
+    // git diff --name-status HEAD@{1}..HEAD
+    let output = Command::new("git")
+        .current_dir(notes_path)
+        .arg("diff")
+        .arg("--name-status")
+        .arg("HEAD@{1}..HEAD")
+        .output()
+        .expect("failed to execute `git diff --name-status HEAD@{1}..HEAD`");
+
+    if let Ok(stdout) = String::from_utf8(output.stdout) {
+        if stdout.is_empty() {
+            return vec![];
+        }
+
+        for entry in stdout.split('\n') {
+            // Added or modifier
+            if entry.starts_with('M') || entry.starts_with('A') {
+                let filename = &entry[2..];
+                result.push(notes_path.join(filename));
+            }
+
+        }
+    }
+
+    result
+}
+
+/*
 pub fn git_pull_and_get_files(notes_path: &PathBuf) -> Vec<PathBuf> {
     // Log the git pull execution
     info!("Executing `git pull` operation");
@@ -98,4 +147,4 @@ pub fn git_pull_and_get_files(notes_path: &PathBuf) -> Vec<PathBuf> {
         .collect();
 
     files
-}
+}*/

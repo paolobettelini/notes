@@ -23,7 +23,7 @@ MONGO_CONNECTION_URL # connection URL to mongodb
 ```
 Install the required libraries (some snippets require `npm` and `wasm-pack` to compile)
 ```bash
-pacman -S tectonic npm wasm-pack 
+pacman -S tectonic npm wasm-pack git
 ```
 Install the compiler (or download it from the releases)
 ```bash
