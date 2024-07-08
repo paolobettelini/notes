@@ -1,9 +1,9 @@
 use args::*;
 use clap::Parser;
 use regex::Regex;
+use std::collections::HashSet;
 use std::fs;
 use std::path::PathBuf;
-use std::collections::HashSet;
 use stellar_database::ClientHandler;
 
 mod args;
@@ -90,7 +90,8 @@ async fn main() {
             &mut imported_pages_count,
             &mut imported_courses_count,
             &mut imported_universes_count,
-        ).await;
+        )
+        .await;
     } else {
         // Query the folder(s)
 
@@ -210,7 +211,8 @@ async fn compile_generic_files(
                     }
 
                     let (page, snippets) =
-                        compiler::compile_latex(&current_path, data_path, db_client, dir.path()).await;
+                        compiler::compile_latex(&current_path, data_path, db_client, dir.path())
+                            .await;
 
                     *imported_pages_count += page as u32;
                     *imported_snippets_count += snippets;
@@ -219,7 +221,8 @@ async fn compile_generic_files(
                     compiled_snippets.insert(current_path);
                 }
                 if folder_name == SNIPPETS_FOLDER {
-                    let res = compiler::compile_snippet(&current_path, &data_path, &db_client).await;
+                    let res =
+                        compiler::compile_snippet(&current_path, &data_path, &db_client).await;
                     *imported_snippets_count += res as u32;
                 }
                 if folder_name == PAGES_FOLDER {
@@ -231,7 +234,8 @@ async fn compile_generic_files(
                     *imported_courses_count += res as u32;
                 }
                 if folder_name == UNIVERSES_FOLDER {
-                    let res = compiler::compile_universe(&current_path, &data_path, &db_client).await;
+                    let res =
+                        compiler::compile_universe(&current_path, &data_path, &db_client).await;
                     *imported_universes_count += res as u32;
                 }
             }

@@ -1,6 +1,6 @@
 use git2::{Repository, StatusOptions};
-use std::path::{PathBuf, Path};
-use log::{info, error};
+use log::{error, info};
+use std::path::{Path, PathBuf};
 
 pub fn git_pull_and_get_files(notes_path: &PathBuf) -> Vec<PathBuf> {
     // Log the git pull execution
@@ -28,10 +28,12 @@ pub fn git_pull_and_get_files(notes_path: &PathBuf) -> Vec<PathBuf> {
         std::process::exit(1);
     });
 
-    let fetch_commit = repo.reference_to_annotated_commit(&fetch_head).unwrap_or_else(|e| {
-        error!("Failed to convert FETCH_HEAD to commit: {}", e);
-        std::process::exit(1);
-    });
+    let fetch_commit = repo
+        .reference_to_annotated_commit(&fetch_head)
+        .unwrap_or_else(|e| {
+            error!("Failed to convert FETCH_HEAD to commit: {}", e);
+            std::process::exit(1);
+        });
 
     let analysis = repo.merge_analysis(&[&fetch_commit]).unwrap_or_else(|e| {
         error!("Merge analysis failed: {}", e);
@@ -49,20 +51,23 @@ pub fn git_pull_and_get_files(notes_path: &PathBuf) -> Vec<PathBuf> {
             std::process::exit(1);
         });
 
-        reference.set_target(fetch_commit.id(), "Fast-Forward").unwrap_or_else(|e| {
-            error!("Failed to set target for reference: {}", e);
-            std::process::exit(1);
-        });
+        reference
+            .set_target(fetch_commit.id(), "Fast-Forward")
+            .unwrap_or_else(|e| {
+                error!("Failed to set target for reference: {}", e);
+                std::process::exit(1);
+            });
 
         repo.set_head("refs/heads/main").unwrap_or_else(|e| {
             error!("Failed to set head to `refs/heads/main`: {}", e);
             std::process::exit(1);
         });
 
-        repo.checkout_head(Some(git2::build::CheckoutBuilder::default().force())).unwrap_or_else(|e| {
-            error!("Failed to checkout head: {}", e);
-            std::process::exit(1);
-        });
+        repo.checkout_head(Some(git2::build::CheckoutBuilder::default().force()))
+            .unwrap_or_else(|e| {
+                error!("Failed to checkout head: {}", e);
+                std::process::exit(1);
+            });
     } else {
         error!("Non-fast-forward merges are not supported in this example.");
         std::process::exit(1);
@@ -70,7 +75,9 @@ pub fn git_pull_and_get_files(notes_path: &PathBuf) -> Vec<PathBuf> {
 
     // Get the status options to retrieve modified and created files
     let mut status_opts = StatusOptions::new();
-    status_opts.include_untracked(true).recurse_untracked_dirs(true);
+    status_opts
+        .include_untracked(true)
+        .recurse_untracked_dirs(true);
 
     let statuses = repo.statuses(Some(&mut status_opts)).unwrap_or_else(|e| {
         error!("Failed to get repository statuses: {}", e);

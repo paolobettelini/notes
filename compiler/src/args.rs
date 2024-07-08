@@ -17,7 +17,7 @@ pub struct App {
     pub snippets: bool,
 
     /// Compile current git status files last pull
-    #[arg(long = "pull", short='p')]
+    #[arg(long = "pull", short = 'p')]
     pub git: bool,
 
     /// Check only latex folder

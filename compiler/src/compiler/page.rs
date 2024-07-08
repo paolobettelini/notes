@@ -1,8 +1,8 @@
-use std::path::PathBuf;
-use std::path::Path;
 use std::fs;
-use tokio::fs::create_dir_all;
+use std::path::Path;
+use std::path::PathBuf;
 use stellar_database::ClientHandler;
+use tokio::fs::create_dir_all;
 
 pub async fn compile_page<'a>(file: &'a Path, data: &PathBuf, db_client: &ClientHandler) -> bool {
     let filename = match file.file_name() {
@@ -30,7 +30,11 @@ pub async fn compile_page<'a>(file: &'a Path, data: &PathBuf, db_client: &Client
 
     if target_file.exists() {
         if let Err(e) = fs::remove_file(&target_file) {
-            log::error!("Failed to remove existing file {}: {}", target_file.display(), e);
+            log::error!(
+                "Failed to remove existing file {}: {}",
+                target_file.display(),
+                e
+            );
             return false;
         }
     }
@@ -39,6 +43,13 @@ pub async fn compile_page<'a>(file: &'a Path, data: &PathBuf, db_client: &Client
         log::error!("Failed to copy file to {}: {}", target_file.display(), e);
         return false;
     }
+
+    // Import
+    stellar_import::import_page_with_client(db_client, file)
+        .await
+        .unwrap_or_else(|e| {
+            log::error!("Could not import page: {}", e);
+        });
 
     true
 }

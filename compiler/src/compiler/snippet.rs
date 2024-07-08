@@ -1,15 +1,19 @@
-use std::path::{Path, PathBuf};
 use std::fs;
+use std::io;
+use std::path::{Path, PathBuf};
 use stellar_database::ClientHandler;
 use tokio::fs::{create_dir_all, read_dir};
 use tokio::io::AsyncWriteExt;
-use std::io;
 
-pub async fn compile_snippet<'a>(folder: &'a Path, data: &PathBuf, db_client: &ClientHandler) -> bool {
+pub async fn compile_snippet<'a>(
+    folder: &'a Path,
+    data: &PathBuf,
+    db_client: &ClientHandler,
+) -> bool {
     // TODO: check for build.py
     // NANNOU:
     //    snippet_name=$(basename "$1")
-    //    
+    //
     //    # cleanup old versions
     //    if [ -e "$1/website/dist/index.js" ]; then
     //        rm "$1/website/dist/index.js"
@@ -50,24 +54,42 @@ pub async fn compile_snippet<'a>(folder: &'a Path, data: &PathBuf, db_client: &C
     // Delete the target folder if it exists
     if target_folder.exists() {
         if let Err(e) = fs::remove_dir_all(&target_folder) {
-            log::error!("Failed to remove existing directory {}: {}", target_folder.display(), e);
+            log::error!(
+                "Failed to remove existing directory {}: {}",
+                target_folder.display(),
+                e
+            );
             return false;
         }
     }
 
     // Create the target folder
     if let Err(e) = create_dir_all(&target_folder).await {
-        log::error!("Failed to create directory {}: {}", target_folder.display(), e);
+        log::error!(
+            "Failed to create directory {}: {}",
+            target_folder.display(),
+            e
+        );
         return false;
     }
 
     // Copy all contents from the source folder to the target folder
     if let Err(e) = copy_recursively(folder, &target_folder) {
-        log::error!("Failed to copy contents to {}: {}", target_folder.display(), e);
+        log::error!(
+            "Failed to copy contents to {}: {}",
+            target_folder.display(),
+            e
+        );
         return false;
     }
 
-    log::info!("Snippet compiled successfully.");
+    // Import
+    stellar_import::import_snippet_with_client(db_client, folder)
+        .await
+        .unwrap_or_else(|e| {
+            log::error!("Could not import snippet: {}", e);
+        });
+
     true
 }
 
