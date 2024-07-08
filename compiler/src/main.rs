@@ -41,7 +41,7 @@ async fn main() {
     let notes_path = utils::get_notes_path(&NOTES_PATH_ENV);
 
     let data_path = if let Ok(v) = std::env::var(DATA_PATH_ENV) {
-        PathBuf::from(DATA_PATH_ENV)
+        PathBuf::from(v)
     } else {
         // Assume the data folder is in the notes folder
         notes_path.join(DATA_FOLDER)

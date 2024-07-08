@@ -16,8 +16,8 @@ pub async fn compile_course<'a>(file: &'a Path, data: &PathBuf, db_client: &Clie
     let id = filename.replace(".json", "");
     log::info!("Compiling course: {}", &id);
 
-    let mut folder = data.join(crate::COURSES_FOLDER);
-    folder.push(&id);
+    let folder = data.join(crate::COURSES_FOLDER);
+    // folder.push(&id);
 
     if !folder.exists() {
         if let Err(e) = create_dir_all(&folder).await {

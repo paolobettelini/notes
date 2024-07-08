@@ -20,8 +20,8 @@ pub async fn compile_universe<'a>(
     let id = filename.replace(".json", "");
     log::info!("Compiling universe: {}", &id);
 
-    let mut folder = data.join(crate::UNIVERSES_FOLDER);
-    folder.push(&id);
+    let folder = data.join(crate::UNIVERSES_FOLDER);
+    //folder.push(&id);
 
     if !folder.exists() {
         if let Err(e) = create_dir_all(&folder).await {

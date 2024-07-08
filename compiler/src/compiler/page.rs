@@ -16,8 +16,8 @@ pub async fn compile_page<'a>(file: &'a Path, data: &PathBuf, db_client: &Client
     let id = filename.replace(".html", "");
     log::info!("Compiling page: {}", &id);
 
-    let mut folder = data.join(crate::PAGES_FOLDER);
-    folder.push(&id);
+    let folder = data.join(crate::PAGES_FOLDER);
+    // folder.push(&id);
 
     if !folder.exists() {
         if let Err(e) = create_dir_all(&folder).await {
