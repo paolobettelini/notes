@@ -12,28 +12,54 @@ software.
 
 # How to run
 Install [stellar](https://github.com/paolobettelini/stellar)
-and compile all the snippets.
+and clone the repository
+```bash
+git clone https://github.com/paolobettelini/notes
+```
+Set the necessary enviromental variables:
+```bash
+NOTESPATH # pointing to the notes/ directory
+MONGO_CONNECTION_URL # connection URL to mongodb
+```
+Install the required libraries (some snippets require `npm` and `wasm-pack` to compile)
+```bash
+pacman -S tectonic npm wasm-pack 
+```
+Install the compiler (or download it from the releases)
+```bash
+cd notes/compiler
+cargo build --release
+mv target/release/compile /usr/local/bin/notes
+```
+# Compile everything
 ```bash
 cd source
-./compile
+notes # compiles everything
 cd ..
 ```
-This script uses `tectonic` to compile all the `tex` file and then runs `stellar-cli`
-to generate the snippets and import them in the database.
-To compile the `nannou` snippets you also need `wasm-pack` and `npm`.
-Make sure to open the script and change your configurations. A mongoDB database is needed.
+
 It is advisable to set the `CARGO_TARGET_DIR` variable so that
 the rust projects share the same target folder.
 
-Then, open the web server
+Then, start the web server
 ```bash
-stellar-cli web --data data/ --connection-url "mongodb://localhost"
+stellar web --data data/ --connection-url $MONGO_CONNECTION_URL
 ```
-Go to [localhost:8080/universe/math](http://localhost:8080/universe/math).
+Go to [localhost:8080/search](http://localhost:8080/search).
 
-# Periodic fetch
-If you want to periodically update the content automatically
-you can call `source/try_pull_and_compile` using a scheduler (for example `crontab` or `systemd`).
+# Compiler usage
+```bash
+notes # compiles everything
+notes Something # compiles everything that contains "Something"
+notes -r "S|T|N|G" # compiles everything that matches the regex
+notes --latex # compiles all the latex files
+notes --snippets # compiles all the universes
+notes --pages # compiles all the universes
+notes --courses # compiles all the universes
+notes --universes # compiles all the universes
+notes --universes -r "" # compiles all the universes that match the regex
+```
+
 
 # Cite me
 ```bib
