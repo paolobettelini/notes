@@ -1,6 +1,6 @@
 use git2::{Repository, StatusOptions};
 use log::{error, info};
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 pub fn git_pull_and_get_files(notes_path: &PathBuf) -> Vec<PathBuf> {
     // Log the git pull execution

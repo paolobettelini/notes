@@ -1,7 +1,6 @@
 use std::path::Path;
 use std::path::PathBuf;
 use std::process::Command;
-use std::process::Stdio;
 use stellar_database::ClientHandler;
 
 const SEARCH_FOLDER: &str = "packages"; // relative to LATEX_FOLDER

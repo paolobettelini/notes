@@ -1,8 +1,6 @@
 use args::*;
 use clap::Parser;
-use regex::Regex;
 use std::collections::HashSet;
-use std::fs;
 use std::path::PathBuf;
 use stellar_database::ClientHandler;
 

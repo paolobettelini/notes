@@ -2,8 +2,7 @@ use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
 use stellar_database::ClientHandler;
-use tokio::fs::{create_dir_all, read_dir};
-use tokio::io::AsyncWriteExt;
+use tokio::fs::create_dir_all;
 
 pub async fn compile_snippet<'a>(
     folder: &'a Path,
