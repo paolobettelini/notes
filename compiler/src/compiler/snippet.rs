@@ -12,23 +12,6 @@ pub async fn compile_snippet<'a>(
     data: &PathBuf,
     db_client: &ClientHandler,
 ) -> bool {
-    // NANNOU:
-    //    # compile
-    //    wasm-pack build --release
-    //
-    //    cd website
-    //    npm install # TODO: only if necessary
-    //    npm run build
-    //
-    //
-    //    # generate snippet folder
-    //    rm "dist/index.js"
-    //    mv "dist/* "$target_folder"
-    //    rm -tf "dist/"
-
-    // TODO: Do not compile resources/ or packages/
-    // maybe put an empty compilation script there
-    
     let filename = match folder.file_name() {
         Some(name) => name.to_string_lossy().into_owned(),
         None => {
