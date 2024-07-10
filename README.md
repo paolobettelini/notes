@@ -60,6 +60,12 @@ notes --universes # compiles all the universes
 notes --universes -r "..." # compiles all the universes that match the regex
 ```
 
+# Custom build scripts for snippets
+By default, snippets in the `snippets/` folder are just copied to the `data/` folder.
+However, it is possible to add a custom build script `build.py` to the snippet directory
+to implement custom behavior. The build script will receive a single parameter representing
+the target folder where the files need to be written to.
+
 # Fish configuration
 If you're writing notes using stellar you might find this setup useful (`~/.config/fish/config.fish`):
 ```bash

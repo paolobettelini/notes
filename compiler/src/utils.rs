@@ -1,6 +1,7 @@
 use regex::Regex;
 use std::fs;
-use std::path::PathBuf;
+use std::process::Command;
+use std::path::{Path, PathBuf};
 
 pub fn query_all_files(path: &PathBuf) -> Vec<PathBuf> {
     let mut result = Vec::new();
@@ -75,5 +76,25 @@ pub fn get_notes_path(env: &str) -> PathBuf {
             current_dir
         }
         Ok(v) => PathBuf::from(v),
+    }
+}
+
+pub fn run_python_script(current_dir: &Path, script_path: &Path, folder_path: &Path) {
+    let res = Command::new("python")
+        .current_dir(current_dir)
+        .arg(script_path)
+        .arg(folder_path)
+        .output();
+
+    match res {
+        Ok(output) => {
+            if !output.status.success() {
+                log::error!("Script execution failed");
+                log::error!("{}", String::from_utf8_lossy(&output.stderr));
+            }
+        }
+        Err(e) => {
+            log::error!("Script execution failed: {}", e);
+        }
     }
 }
