@@ -2,23 +2,46 @@ use git2::{Repository, StatusOptions};
 use log::{error, info};
 use std::path::PathBuf;
 use std::process::Command;
+use std::process::Stdio;
+use std::io::{BufRead, BufReader};
 
 pub fn git_pull_and_get_files(notes_path: &PathBuf) -> Vec<PathBuf> {
     // git pull
-    let output = Command::new("git")
+    let mut child = Command::new("git")
         .current_dir(notes_path)
         .arg("pull")
-        .output()
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
         .expect("failed to execute `git pull`");
 
-    if !output.status.success() {
-        if let Ok(stdout) = String::from_utf8(output.stderr) {
-            log::error!("Failed to execute `git pull` file: {}", stdout);
-            std::process::exit(1);
-        } else {
-            log::error!("Failed to execute `git pull`");
-            std::process::exit(1);
+    // Capture stdout
+    if let Some(stdout) = child.stdout.take() {
+        let reader = BufReader::new(stdout);
+        for line in reader.lines() {
+            match line {
+                Ok(line) => log::info!("{}", line),
+                Err(e) => log::error!("Error reading stdout: {}", e),
+            }
         }
+    }
+
+    // Capture stderr
+    if let Some(stderr) = child.stderr.take() {
+        let reader = BufReader::new(stderr);
+        for line in reader.lines() {
+            match line {
+                Ok(line) => log::error!("{}", line),
+                Err(e) => log::error!("Error reading stderr: {}", e),
+            }
+        }
+    }
+
+    let status = child.wait().expect("Failed to wait on child");
+
+    if !status.success() {
+        log::error!("Command `git pull` was unsuccessful");
+        std::process::exit(1);
     }
 
     let mut result = vec![];
