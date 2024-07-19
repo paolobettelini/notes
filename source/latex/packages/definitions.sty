@@ -13,11 +13,35 @@
 % See https://tex.stackexchange.com/questions/38982/what-is-the-difference-between-mathbin-vs-mathrel
 % Some symbols don't need it. Anyway I just used mathbin everywhere else.
 
+% === UTILS ===
+
+% This is a command to create textual reference commands
+% E.g. \function will write "function" which a reference to `function-definition`
+% You can also specify another text \function[functions] (E.g. for the plural version)
+% You can also specify the link label \topologicalspace[open][Open set] (usually used when a definition defines multiple words)
+%
+% The parameters are:
+%   1. the command to generate
+%   2. the snippet ID
+%   3. the snippet label
+%   4. the default value to write
+\newcommand{\createtextcmd}[4]{%
+    \DeclareDocumentCommand{#1}{o o}{%
+        \IfNoValueTF {##1}%
+        {\snippetref[#2|#3][#4]}% plain version
+        {% overwrite text to write
+            \IfNoValueTF {##2}
+            {\snippetref[#2|#3][##1]}%
+            {\snippetref[#2|##2][##1]}% overwrite label
+        }%
+        \xspace%
+    }
+}
+
 % === SET THEORY ===
 
 % \function (text)
-\newcommand{\function}{\snippetref[function-definition][function]\xspace}
-\newcommand{\functions}{\snippetref[function-definition][functions]\xspace}
+\createtextcmd{\function}{function-definition}{Function}{function}
 
 % \subseteq (math)
 \let\origsubseteq\subseteq
@@ -83,10 +107,19 @@
 }
 
 % \topologicalspace (text)
-\newcommand{\topologicalspace}{\snippetref[topological-space-definition|Topological space][topological space]\xspace}
+\createtextcmd{\topologicalspace}{topological-space-definition}{Topological space}{topological space}
 
 % \neighborhood (text)
-\newcommand{\neighborhood}{\snippetref[neighbourhood-definition|Neighborhood][neighborhood]\xspace}
+\createtextcmd{\neighborhood}{neighbourhood-definition}{Neighborhood}{neighborhood}
+
+% \closedset (text)
+\createtextcmd{\closedset}{closed-set-definition}{Closed set}{closed set}
+
+% \boundarypoint (text)
+\createtextcmd{\boundarypoint}{boundary-point-definition}{Boundary point}{boundary point}
+
+% \interiorpoint (text)
+\createtextcmd{\interiorpoint}{interior-point-definition}{Interior point}{interior point}
 
 % === LOGIC ===
 
@@ -95,7 +128,7 @@
 \renewcommand{\iff}{\mathbin{\snippetref[logic-biconditional-logical-connective-definition|Biconditional logical connective][\color{black}{\origiff}]}}
 
 % \ifandonlyif (text)
-\newcommand{\ifandonlyif}{\snippetref[logic-biconditional-logical-connective-definition|Biconditional logical connective][if and only if]\xspace}
+\createtextcmd{\ifandonlyif}{logic-biconditional-logical-connective-definition}{Biconditional logical connective}{if and only if}
 
 % \implies (math)
 \let\origimplies\implies
@@ -165,10 +198,19 @@
 % === MEASURE THEORY ===
 
 % \sigmaalgebra (text)
-\newcommand{\sigmaalgebra}{\snippetref[sigma-algebra-definition][\(\sigma\)-algebra]\xspace}
+\createtextcmd{\sigmaalgebra}{sigma-algebra-definition}{Sigma algebra}{\(\sigma\)-algebra}
 
 % \measure (text)
-\newcommand{\measure}{\snippetref[measure-definition][measure]\xspace}
+\createtextcmd{\measure}{measure-definition}{Measure}{measure}
+
+% === GRAPH THEORY ===
+
+% \graph (text)
+\createtextcmd{\graph}{graph-definition}{Graph}{graph}
+
+% \path (text)
+\createtextcmd{\path}{path-definition}{Path}{path}
+
 
 % === MISC ===
 

@@ -1,12 +1,5 @@
 # Source
 
-Structure:
-* [universe](./universes/) static universe files
-* [courses](./courses/) static course files
-* [snippets](./snippets/) snippets source files, both static and not
-* [latex](./latex/) latex files which generate PDFs which generate both snippets
-    and pages using the `stellar-cli generate` command.
-
 # Some parametrized snippets:
 * `yt-embed`: Embeds a YouTube video. Params: <b>src, width, height</b>
 * `centered-img`: Displays an image. You can put the image in `snippets/static`.
@@ -82,7 +75,7 @@ Quantum computing:
 
 # Stuff/TODO
 - finish translating the old notes, need more universes
-- hilbert spaces goes in functional analysis
+- try to put many \snippetref in definitions.sty
 
 # Misc
 
