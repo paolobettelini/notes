@@ -16,11 +16,18 @@ pub fn git_pull_and_get_files(notes_path: &PathBuf) -> Vec<PathBuf> {
         .expect("failed to execute `git pull`");
 
     // Capture stdout
-    if let Some(stdout) = child.stdout.take() {
+    if let Some(stdout) = child.stdout.take() { 
         let reader = BufReader::new(stdout);
         for line in reader.lines() {
             match line {
-                Ok(line) => log::info!("{}", line),
+                Ok(line) => {
+                    log::info!("{}", &line);
+
+                    // Returns prematurely
+                    if line.contains("Already up to date.") {
+                        return vec![];
+                    }
+                },
                 Err(e) => log::error!("Error reading stdout: {}", e),
             }
         }
