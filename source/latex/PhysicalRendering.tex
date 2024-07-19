@@ -230,91 +230,90 @@ to the rendering equation.
 \subsection{Simplified ambient BRDF model}
 
 \begin{snippet}{simplified-ambient-brdf-model}
-\[
-    I=k_a I_a
-\]
-\begin{itemize}
-    \item \(k_a\) ambient coefficient of an object (base color)
-    \item \(I_a\) ambient intensity of the scene/light sources
-\end{itemize}
+    \[
+        I=k_a I_a
+    \]
+    \begin{itemize}
+        \item \(k_a\) ambient coefficient of an object (base color)
+        \item \(I_a\) ambient intensity of the scene/light sources
+    \end{itemize}
 \end{snippet}
 
 \subsection{Simplified diffuse BRDF model}
 
 \begin{snippet}{simplified-diffuse-brdf-model}
-\[
-    I_d=k_d (\vec{L} \cdot \vec{N})
-\]
+    \[
+        I_d=k_d (\vec{L} \cdot \vec{N})
+    \]
 
-\begin{itemize}
-    \item \(k_d\) diffuse coefficient of an object
-    \item \(\vec{L}\) vector pointing to the light vector
-    \item \(\vec{N}\) surface normal
-\end{itemize}
+    \begin{itemize}
+        \item \(k_d\) diffuse coefficient of an object
+        \item \(\vec{L}\) vector pointing to the light vector
+        \item \(\vec{N}\) surface normal
+    \end{itemize}
 \end{snippet}
 
 \subsection{Simplified specular BRDF model}
 
 \begin{snippet}{simplified-specular-brdf-model}
-\[
-    I_s=k_s {(\vec{V} \cdot \vec{R})}^n
-\]
+    \[
+        I_s=k_s {(\vec{V} \cdot \vec{R})}^n
+    \]
 
-\begin{itemize}
-    \item \(k_s\) specular coefficient of an object
-    \item \(\vec{V}\) direction towards the camera
-    \item \(\vec{R}\) reflected direction of the light ray
-    \item \(\vec{n}\) shininess factor
-\end{itemize}
+    \begin{itemize}
+        \item \(k_s\) specular coefficient of an object
+        \item \(\vec{V}\) direction towards the camera
+        \item \(\vec{R}\) reflected direction of the light ray
+        \item \(\vec{n}\) shininess factor
+    \end{itemize}
 \end{snippet}
 
 \subsection{Result}
 
 \begin{snippet}{phone-result-illustration}
-The sum of the phone simplified models
-gives a good approximation to the rendering equation.
+    The sum of the phone simplified models
+    gives a good approximation to the rendering equation.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{resources/phong.png}
-\end{figure}
-% In the shader I do return surfaceColor * (spec + dif);
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{resources/phong.png}
+    \end{figure}
+    % In the shader I do return surfaceColor * (spec + dif);
 
-The diffuse and ambient values must be computed for each light in the scene.
-It is sufficient to consider only the light rays that hit the camera, meaning
-we can trace rays from the camera to the point, and assume that they're reflections
-from the light.
+    The diffuse and ambient values must be computed for each light in the scene.
+    It is sufficient to consider only the light rays that hit the camera, meaning
+    we can trace rays from the camera to the point, and assume that they're reflections
+    from the light.
 
-Note that the specular intensity cannot be precomputed as it is dependent
-on the camera position.
-
+    Note that the specular intensity cannot be precomputed as it is dependent
+    on the camera position.
 \end{snippet}
 
 \section{Reflection and refraction}
 
 \begin{snippet}{reflection-refraction-illustration}
-\begin{tikzpicture}
-    \draw (0,0) circle [radius=2cm];
-    
-    % Incoming ray
-    \draw[->, thick] (-3,1) -- (0,0);
+    \begin{tikzpicture}
+        \draw (0,0) circle [radius=2cm];
+        
+        % Incoming ray
+        \draw[->, thick] (-3,1) -- (0,0);
 
-    % Reflected ray
-    \draw[->, thick, opacity=0.5] (0,0) -- (3,1)
-        node[above, opacity=1] {Reflected Ray};
+        % Reflected ray
+        \draw[->, thick, opacity=0.5] (0,0) -- (3,1)
+            node[above, opacity=1] {Reflected Ray};
 
-    % Refracted ray
-    \draw[->, thick, opacity=0.25] (0,0) -- (1.25,-2.25)
-        node[below, opacity=1] {Refracted Ray};
-    
-    % Incident angle
-    %\draw [dashed] (-3,0) arc [start angle=180, end angle=140, radius=3cm];
-    %\node at (-2.5, 0.5) {$\theta_i$};
-    
-    \draw[-] (0,-2) -- (0,2);
-    \draw[-] (-2,0) -- (2,0);
-    
-\end{tikzpicture}
+        % Refracted ray
+        \draw[->, thick, opacity=0.25] (0,0) -- (1.25,-2.25)
+            node[below, opacity=1] {Refracted Ray};
+        
+        % Incident angle
+        %\draw [dashed] (-3,0) arc [start angle=180, end angle=140, radius=3cm];
+        %\node at (-2.5, 0.5) {$\theta_i$};
+        
+        \draw[-] (0,-2) -- (0,2);
+        \draw[-] (-2,0) -- (2,0);
+        
+    \end{tikzpicture}
 \end{snippet}
 
 ASSETS TO USE

@@ -116,71 +116,71 @@ If \(k\) is a constant
 \subsection{Area Problem}
 
 \begin{snippet}{area-problem-illustration}
-\begin{wrapfigure}{l}{10cm}
-    \begin{center}
-        \begin{tikzpicture}[
-            scale=1.25,
-            declare function={
-                func(\x) = 0.1 * (\x - 2) * (\x - 2) + 2;
-                Width=7.5;
-                Height=5;
-                A = 1;
-                B = 7;
-                N = 7;
-                Delta = {(B-A) / N};
-            }
-        ]
-            \draw[->] (0, 0) -- (0, Height) node[right] {\(y\)};
-            \draw[->] (0, 0) -- (Width, 0) node[above] {\(x\)};
-    
-            \pgfmathtruncatemacro\END{N-1}
-            \foreach \x in {0,1,...,\END} {
-                % rectangle
-                \fill [green, opacity=0.2]
-                    ({A + Delta * \x}, 0) rectangle ({A + Delta * (\x+1)}, {func(A + Delta * (\x + 0.5))});
-                
-                \draw[-] ({A + Delta * \x}, 0)
-                    -- ({A + Delta * \x}, {func(A + Delta * (\x + 0.5))});
+    \begin{wrapfigure}{l}{10cm}
+        \begin{center}
+            \begin{tikzpicture}[
+                scale=1.25,
+                declare function={
+                    func(\x) = 0.1 * (\x - 2) * (\x - 2) + 2;
+                    Width=7.5;
+                    Height=5;
+                    A = 1;
+                    B = 7;
+                    N = 7;
+                    Delta = {(B-A) / N};
+                }
+            ]
+                \draw[->] (0, 0) -- (0, Height) node[right] {\(y\)};
+                \draw[->] (0, 0) -- (Width, 0) node[above] {\(x\)};
+        
+                \pgfmathtruncatemacro\END{N-1}
+                \foreach \x in {0,1,...,\END} {
+                    % rectangle
+                    \fill [green, opacity=0.2]
+                        ({A + Delta * \x}, 0) rectangle ({A + Delta * (\x+1)}, {func(A + Delta * (\x + 0.5))});
+                    
+                    \draw[-] ({A + Delta * \x}, 0)
+                        -- ({A + Delta * \x}, {func(A + Delta * (\x + 0.5))});
 
-                \draw[-, dashed] ({A + Delta * (\x + 0.5)}, 0)
-                    node[below] {\(x_{\x}^*\)}
-                    -- ({A + Delta * (\x + 0.5)}, {func(A + Delta * (\x + 0.5))});
+                    \draw[-, dashed] ({A + Delta * (\x + 0.5)}, 0)
+                        node[below] {\(x_{\x}^*\)}
+                        -- ({A + Delta * (\x + 0.5)}, {func(A + Delta * (\x + 0.5))});
 
-                % line over rectangle
-                \draw[-] ({A + Delta * \x}, {func(A + Delta * (\x + 0.5))})
-                    -- ({A + Delta * (\x+1)}, {func(A + Delta * (\x + 0.5))});
-            }
-    
-            \draw[-, dashed, red, ultra thick] (A, 0) -- (A, {func(A)}) node[above, black] {\(a\)};
-            \draw[-, dashed, red, ultra thick] (B, 0) -- (B, {func(B)}) node[right, black] {\(b\)};
-    
-            \draw[domain=0:Width, smooth, variable=\x, blue, ultra thick] plot ({\x}, {func(\x)});
-        \end{tikzpicture}
-    \end{center}
-\end{wrapfigure}
+                    % line over rectangle
+                    \draw[-] ({A + Delta * \x}, {func(A + Delta * (\x + 0.5))})
+                        -- ({A + Delta * (\x+1)}, {func(A + Delta * (\x + 0.5))});
+                }
+        
+                \draw[-, dashed, red, ultra thick] (A, 0) -- (A, {func(A)}) node[above, black] {\(a\)};
+                \draw[-, dashed, red, ultra thick] (B, 0) -- (B, {func(B)}) node[right, black] {\(b\)};
+        
+                \draw[domain=0:Width, smooth, variable=\x, blue, ultra thick] plot ({\x}, {func(\x)});
+            \end{tikzpicture}
+        \end{center}
+    \end{wrapfigure}
 
-We want to find the signed area between \(f(x)\) and the \(x\)-axis between
-the interval \([a;b]\).\\
-One way to do it would be by dividing the area into \(n\) rectangles, each of width
-\[
-    \Delta x = \frac{b-a}{n}
-\]
-The height of each triangle is given by \(f(x_k^*)\).
-The area under the curve is approximately
-\[
-    A \approx \sum_{k=0}^{n-1}f(x_k^*)\Delta x
-\]
-Notice that the position of \(x_k^*\) within the base of each rectangle controls the type of
-the approximation of the area under the curve.
-By moving \(x_k^*\) within the base we may achieve an approximation by abundance
-or defect.
-The type of approximation does not matter when we let \(n\to \infty\).
-As the amount of rectangles approaches infinity, the approximation approaches
-the exact value of the area.
-\[
-    A = \lim_{n\to\infty} \sum_{k=0}^{n}f(x_k^*)\Delta x
-\]
-\wrapfill
+    We want to find the signed area between \(f(x)\) and the \(x\)-axis between
+    the interval \([a;b]\).\\
+    One way to do it would be by dividing the area into \(n\) rectangles, each of width
+    \[
+        \Delta x = \frac{b-a}{n}
+    \]
+    The height of each triangle is given by \(f(x_k^*)\).
+    The area under the curve is approximately
+    \[
+        A \approx \sum_{k=0}^{n-1}f(x_k^*)\Delta x
+    \]
+    Notice that the position of \(x_k^*\) within the base of each rectangle controls the type of
+    the approximation of the area under the curve.
+    By moving \(x_k^*\) within the base we may achieve an approximation by abundance
+    or defect.
+    The type of approximation does not matter when we let \(n\to \infty\).
+    As the amount of rectangles approaches infinity, the approximation approaches
+    the exact value of the area.
+    \[
+        A = \lim_{n\to\infty} \sum_{k=0}^{n}f(x_k^*)\Delta x
+    \]
+    \wrapfill
 \end{snippet}
 
 \subsection{Definition}
@@ -197,19 +197,19 @@ The definitive interval of \(f(x)\) from \(a\) to \(b\) is
 \subsection{Properties}
 
 \begin{snippet}{definite-integral-properties}
-\[
-    \integral[a][b][f(x)][x] = -\integral[b][a][f(x)][x]
-\]
-If \(k\) is constant
-\[
-    \integral[a][b][cf(x)][x] = c\integral[a][b][f(x)][x]
-\]
-\[
-    \integral[a][b][f(x)\pm g(x)][x] = \integral[a][b][f(x)][x] \pm \integral[a][b][g(x)][x]
-\]
-\[
-    \integral[a][a][f(x)][x] = 0
-\]
+    \[
+        \integral[a][b][f(x)][x] = -\integral[b][a][f(x)][x]
+    \]
+    If \(k\) is constant
+    \[
+        \integral[a][b][cf(x)][x] = c\integral[a][b][f(x)][x]
+    \]
+    \[
+        \integral[a][b][f(x)\pm g(x)][x] = \integral[a][b][f(x)][x] \pm \integral[a][b][g(x)][x]
+    \]
+    \[
+        \integral[a][a][f(x)][x] = 0
+    \]
 \end{snippet}
 
 \subsection{Fundamental Theorem of Calculus}
@@ -268,132 +268,132 @@ If \(k\) is constant
 \section{Area Between Functions}
 
 \begin{snippet}{area-between-functions-illustration}
-\begin{wrapfigure}{l}{7.5cm}
-    \begin{tikzpicture}[x=4cm, y=4cm, >=Stealth, declare function={
-        func1(\x) = sin(3.14*\x/2 r);
-        func2(\x) = \x*\x;
-        a=0.25;
-        b=0.9;
-    }]
-        % area under func1 
-        \fill[cyan!30!white] plot[domain=a:b] (\x,{func1(\x)}) -- plot[domain=b:a] (\x,{0}) -- cycle;
-        
+    \begin{wrapfigure}{l}{7.5cm}
+        \begin{tikzpicture}[x=4cm, y=4cm, >=Stealth, declare function={
+            func1(\x) = sin(3.14*\x/2 r);
+            func2(\x) = \x*\x;
+            a=0.25;
+            b=0.9;
+        }]
+            % area under func1 
+            \fill[cyan!30!white] plot[domain=a:b] (\x,{func1(\x)}) -- plot[domain=b:a] (\x,{0}) -- cycle;
+            
 
-        % area under func2
-        \fill[white] plot[domain=a:b] (\x,{func2(\x)}) -- plot[domain=b:a] (\x,{0}) -- cycle;
-        
-        % func1
-        \draw[blue, -, thick] plot[domain=-0.3:1.25] (\x,{func1(\x)});
-        
-        % func2
-        \draw[red, -, thick]  plot[domain=-0.5:1.2] (\x,{func2(\x)});
+            % area under func2
+            \fill[white] plot[domain=a:b] (\x,{func2(\x)}) -- plot[domain=b:a] (\x,{0}) -- cycle;
+            
+            % func1
+            \draw[blue, -, thick] plot[domain=-0.3:1.25] (\x,{func1(\x)});
+            
+            % func2
+            \draw[red, -, thick]  plot[domain=-0.5:1.2] (\x,{func2(\x)});
 
-        \draw[-, dashed] (a, 0) node[below] {\(a\)} -- (a, {func1(a)});
-        \draw[-, dashed] (b, 0) node[below] {\(b\)} -- (b, {func1(b)});
+            \draw[-, dashed] (a, 0) node[below] {\(a\)} -- (a, {func1(a)});
+            \draw[-, dashed] (b, 0) node[below] {\(b\)} -- (b, {func1(b)});
 
-        \draw[-] (-.5,0) -- (1.25, 0)
-            node[below left=4pt and 2pt] {\(x\)};
-        \draw[-] (0,-.5) -- (0,1.5)
-            node[below left=4pt and 2pt] {\(y\)};
-    \end{tikzpicture} 
-\end{wrapfigure}
+            \draw[-] (-.5,0) -- (1.25, 0)
+                node[below left=4pt and 2pt] {\(x\)};
+            \draw[-] (0,-.5) -- (0,1.5)
+                node[below left=4pt and 2pt] {\(y\)};
+        \end{tikzpicture} 
+    \end{wrapfigure}
 
-Given a \function \(y=f(x)\) and \(y=g(x)\), the area enclosed by the two functions
-in the interval \(I=[a;b]\) is given by
-\[
-    A=\integral[a][b][f(x)-g(x)][x]
-\]
-assuming that \(f(x)\geq g(x)\) when \(x\in I\). \\
-Note that \(A\geq 0\). \\
-If \(f(x)<g(x)\) for some \(x\in I\) this formula won't work. However, it is still
-possible to split the integral into multiple integrals at every point where \(f(x) - g(x)\) changes sign.
-To remove the sign contraint we could say
-\[
-    A = \integral[a][b][|f(x)-g(x)|][x]
-\]
-\wrapfill
+    Given a \function \(y=f(x)\) and \(y=g(x)\), the area enclosed by the two functions
+    in the interval \(I=[a;b]\) is given by
+    \[
+        A=\integral[a][b][f(x)-g(x)][x]
+    \]
+    assuming that \(f(x)\geq g(x)\) when \(x\in I\). \\
+    Note that \(A\geq 0\). \\
+    If \(f(x)<g(x)\) for some \(x\in I\) this formula won't work. However, it is still
+    possible to split the integral into multiple integrals at every point where \(f(x) - g(x)\) changes sign.
+    To remove the sign contraint we could say
+    \[
+        A = \integral[a][b][|f(x)-g(x)|][x]
+    \]
+    \wrapfill
 
-\begin{wrapfigure}{l}{7.5cm}
-    \begin{tikzpicture}[x=4cm, y=4cm, >=Stealth, declare function={
-        func1(\x) = sin(3.14*\x/2 r);
-        func2(\x) = \x*\x;
-        a=0.25;
-        b=0.9;
-    }]
-        % area under func1 
-        \fill[cyan!30!white] plot[domain=a:b] ({func1(\x)},\x) -- plot[domain=b:a] ({0}, \x) -- cycle;
-        
+    \begin{wrapfigure}{l}{7.5cm}
+        \begin{tikzpicture}[x=4cm, y=4cm, >=Stealth, declare function={
+            func1(\x) = sin(3.14*\x/2 r);
+            func2(\x) = \x*\x;
+            a=0.25;
+            b=0.9;
+        }]
+            % area under func1 
+            \fill[cyan!30!white] plot[domain=a:b] ({func1(\x)},\x) -- plot[domain=b:a] ({0}, \x) -- cycle;
+            
 
-        % area under func2
-        \fill[white] plot[domain=a:b] ({func2(\x)}, \x) -- plot[domain=b:a] ({0}, \x) -- cycle;
-        
-        % func1
-        \draw[blue, -, thick] plot[domain=-0.3:1.25] ({func1(\x)}, \x);
-        
-        % func2
-        \draw[red, -, thick]  plot[domain=-0.5:1.2] ({func2(\x)}, \x);
+            % area under func2
+            \fill[white] plot[domain=a:b] ({func2(\x)}, \x) -- plot[domain=b:a] ({0}, \x) -- cycle;
+            
+            % func1
+            \draw[blue, -, thick] plot[domain=-0.3:1.25] ({func1(\x)}, \x);
+            
+            % func2
+            \draw[red, -, thick]  plot[domain=-0.5:1.2] ({func2(\x)}, \x);
 
-        \draw[-, dashed] (0, a) node[left] {\(a\)} -- ({func1(a)}, a);
-        \draw[-, dashed] (0, b) node[left] {\(b\)} -- ({func1(b)}, b);
+            \draw[-, dashed] (0, a) node[left] {\(a\)} -- ({func1(a)}, a);
+            \draw[-, dashed] (0, b) node[left] {\(b\)} -- ({func1(b)}, b);
 
-        \draw[-] (-.5,0) -- (1.25, 0)
-            node[below left=4pt and 2pt] {\(x\)};
-        \draw[-] (0,-.5) -- (0,1.5)
-            node[below left=4pt and 2pt] {\(y\)};
-    \end{tikzpicture} 
-\end{wrapfigure}
+            \draw[-] (-.5,0) -- (1.25, 0)
+                node[below left=4pt and 2pt] {\(x\)};
+            \draw[-] (0,-.5) -- (0,1.5)
+                node[below left=4pt and 2pt] {\(y\)};
+        \end{tikzpicture} 
+    \end{wrapfigure}
 
-The same thing applies when we have functions in the form \(x=f(y)\) and \(x=g(y)\)
-and we want to find the areas enclosed by the functions when \(y\in [d;c]\)
-\[
-    A=\integral[d][c][|f(y)-g(y)|][y]
-\]
+    The same thing applies when we have functions in the form \(x=f(y)\) and \(x=g(y)\)
+    and we want to find the areas enclosed by the functions when \(y\in [d;c]\)
+    \[
+        A=\integral[d][c][|f(y)-g(y)|][y]
+    \]
 
-\wrapfill
+    \wrapfill
 \end{snippet}
 
 \section{Volume of solid revolutions}
 
 \begin{snippet}{volume-of-solid-revolutions-illustration}
-A solid of revolution is a solid made by rotating about an axis a \function
-on an interval \([a;b]\).
+    A solid of revolution is a solid made by rotating about an axis a \function
+    on an interval \([a;b]\).
 
-\begin{minipage}{0.5\textwidth}
-    \begin{tikzpicture}[
-        scale=0.75,
-        declare function={
-            func(\x) = 0.1 * (\x - 2) * (\x - 2) * sin(\x r) + 2;
-        }
-    ]
+    \begin{minipage}{0.5\textwidth}
+        \begin{tikzpicture}[
+            scale=0.75,
+            declare function={
+                func(\x) = 0.1 * (\x - 2) * (\x - 2) * sin(\x r) + 2;
+            }
+        ]
 
-        \draw[-] (0,0) -- (9,0) node [above] {\(x\)};
-        \draw[-] (0,-2) -- (0,6) node [above] {\(y\)};
-        \draw[domain=0:9, smooth, variable=\x, blue, thick] plot ({\x}, {func(\x)});
-    \end{tikzpicture}
-\end{minipage}
-\begin{minipage}{0.5\textwidth}
-    \begin{tikzpicture}[
-        declare function={
-            func(\x) = 0.1 * (\x - 2) * (\x - 2) * sin(\x r) + 2;
-        }
-    ]
-        \begin{axis}[
-            ticks=none,
-            colormap/greenyellow,
-            view={15}{15}
-            ]    
-    
-            \addplot3[
-                surf,
-                shader=faceted,
-                samples=20,
-                domain=0:9,y domain=0:2*pi,
-                z buffer=sort]
-            (x,{func(x) * cos(deg(y))}, {func(x) * sin(deg(y))});
-    
-        \end{axis}
-    \end{tikzpicture}
-\end{minipage}
+            \draw[-] (0,0) -- (9,0) node [above] {\(x\)};
+            \draw[-] (0,-2) -- (0,6) node [above] {\(y\)};
+            \draw[domain=0:9, smooth, variable=\x, blue, thick] plot ({\x}, {func(\x)});
+        \end{tikzpicture}
+    \end{minipage}
+    \begin{minipage}{0.5\textwidth}
+        \begin{tikzpicture}[
+            declare function={
+                func(\x) = 0.1 * (\x - 2) * (\x - 2) * sin(\x r) + 2;
+            }
+        ]
+            \begin{axis}[
+                ticks=none,
+                colormap/greenyellow,
+                view={15}{15}
+                ]    
+        
+                \addplot3[
+                    surf,
+                    shader=faceted,
+                    samples=20,
+                    domain=0:9,y domain=0:2*pi,
+                    z buffer=sort]
+                (x,{func(x) * cos(deg(y))}, {func(x) * sin(deg(y))});
+        
+            \end{axis}
+        \end{tikzpicture}
+    \end{minipage}
 \end{snippet}
 
 \subsection{Simple revolutions}

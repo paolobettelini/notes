@@ -24,9 +24,9 @@
 % todo expl
 
 \begin{snippet}{brain-neuron-illustration}
-\begin{center}
-    \includegraphics[scale=0.5]{neuron}
-\end{center}
+    \begin{center}
+        \includegraphics[scale=0.5]{neuron}
+    \end{center}
 \end{snippet}
 
 \section{Linear neurons}
@@ -72,24 +72,24 @@
 \end{snippetdefinition}
 
 \begin{snippet}{linear-threshold-neuron-illustration}
-\begin{center}
-	\begin{tikzpicture}
-		\begin{axis}[
-            scale=0.75,
-			xmin=-3,
-			xmax=3,
-			ymin=-3,
-			ymax=3,
-			xlabel={\(x\)},
-			ylabel={\(y\)},
-			scale only axis,
-			axis lines=middle
-		]
-        \addplot[blue, ultra thick, domain=-3:0] {0};
-        \addplot[blue, ultra thick, domain=0:2.5] {x};
-		\end{axis}
-	\end{tikzpicture}
-\end{center}
+    \begin{center}
+        \begin{tikzpicture}
+            \begin{axis}[
+                scale=0.75,
+                xmin=-3,
+                xmax=3,
+                ymin=-3,
+                ymax=3,
+                xlabel={\(x\)},
+                ylabel={\(y\)},
+                scale only axis,
+                axis lines=middle
+            ]
+            \addplot[blue, ultra thick, domain=-3:0] {0};
+            \addplot[blue, ultra thick, domain=0:2.5] {x};
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
 \end{snippet}
 
 \section{Sigmoid neurons}
@@ -186,111 +186,109 @@ There could also be multiple labels.}
 \end{snippetdefinition}
 
 \begin{snippet}{deep-neural-network-illustration}
-\begin{center}
-    \begin{neuralnetwork}[height=4]
-        \inputlayer[count=3, bias=false, title=Input\\units]
-        \hiddenlayer[count=4, bias=false, title=Hidden\\units] \linklayers{}
-        \outputlayer[count=2, title=Output\\units] \linklayers{}
-    \end{neuralnetwork}
-\end{center}
+    \begin{center}
+        \begin{neuralnetwork}[height=4]
+            \inputlayer[count=3, bias=false, title=Input\\units]
+            \hiddenlayer[count=4, bias=false, title=Hidden\\units] \linklayers{}
+            \outputlayer[count=2, title=Output\\units] \linklayers{}
+        \end{neuralnetwork}
+    \end{center}
 \end{snippet}
 
 \begin{snippet}{deep-neural-network-expl1}
-At each layer there is a different representation of the initial input. \\
-Similar things may become less similar and less similar things may become more similar.
+    At each layer there is a different representation of the initial input. \\
+    Similar things may become less similar and less similar things may become more similar.
 
-In order to achieve this each layer must be a non-linear function of the activities in the previous layer.
+    In order to achieve this each layer must be a non-linear function of the activities in the previous layer.
 \end{snippet}
 
 \subsection{Recurrent network}
 
 \begin{snippet}{recurrent-network-expl1}
-The same input might pass multiple times through the same neuron. \\
-They are very difficult to train and more biologically realistic, hence they are more powerful.
+    The same input might pass multiple times through the same neuron. \\
+    They are very difficult to train and more biologically realistic, hence they are more powerful.
 
-Recurrent networks have the ability to remember information in their hidden state.
+    Recurrent networks have the ability to remember information in their hidden state.
 \end{snippet}
 
 \subsection{Symmetrically connected network}
 
 \begin{snippet}{symmetrically-connected-expl1}
-They are like recurrent network, but the connections between units are symmetrical
-(they have the same weight in both directions).
+    They are like recurrent network, but the connections between units are symmetrical
+    (they have the same weight in both directions).
 
-Much easier to analyze than recurrent networks, but are more restricted in what they can do.
+    Much easier to analyze than recurrent networks, but are more restricted in what they can do.
 
-Symmetrically connected networks without hidden units are called \textit{Hopfield networks}.
+    Symmetrically connected networks without hidden units are called \textit{Hopfield networks}.
 \end{snippet}
 
 % lecture 2.2
 
-\pagebreak
-
 \section{The perceptron}
 
 \begin{snippet}{perceptron-expl}
-A perceptron is an example of a statistical pattern recognition system. \\
-The decision unit in a perceptron is a binary threadhold neuron.
+    A perceptron is an example of a statistical pattern recognition system. \\
+    The decision unit in a perceptron is a binary threadhold neuron.
 \end{snippet}
 
 \subsection{Learning biases}
 
 \begin{snippet}{learning-biases-expl}
-We can learn the bias by treating it just like a regular weight,
-rather than having a separate learning rule.
-The bias is just the wight of an extra feature with the value of \(1\).
+    We can learn the bias by treating it just like a regular weight,
+    rather than having a separate learning rule.
+    The bias is just the wight of an extra feature with the value of \(1\).
 \end{snippet}
 
 % Perceptron
 \begin{snippet}{perceptron-illustration}
-\begin{center}
-    \tikzset{basic/.style={draw,fill=none,text badly centered,minimum width=3em}}
-    \tikzset{input/.style={basic,circle,minimum width=2.5em}}
-    \tikzset{weights/.style={basic,rectangle,minimum width=2em}}
-    \tikzset{functions/.style={basic,circle, minimum width=4em}}
-    \begin{tikzpicture}[scale=1]
-        % Draw input nodes
-        \foreach \h [count=\hi ] in {$x_2$,$x_1$,$1$} {
-            \node[input] (f\hi) at (0,\hi*1.25cm-1.5 cm) {\h};
-        }
-        % Dot dot dot ... x_n
-        \node[below=0.62cm] (idots) at (f1) {\vdots};
-        \node[input, below=0.62cm] (last_input) at (idots) {$x_n$};
-        % Draw summation node
-        \node[functions] (sum) at (4,0) {};
-        % Draw arrows from input nodes to summation node
-        \foreach \h [count=\hi ] in {$w_2$,$w_1$,$b$} {
-            \path (f\hi) -- node[weights] (w\hi) {\h} (sum);
-            \draw[->] (f\hi) -- (w\hi);
-            \draw[->] (w\hi) -- (sum);
-        }
-        % Dot dot dot ... w_n
-        \node[below=0.05cm] (wdots) at (w1) {\vdots};
-        \node[weights, below=0.45cm] (last_weight) at (wdots) {$w_n$};
-        % Add arrows for last node and last weight etc
-        \path[draw,->] (last_input) -- (last_weight);
-        \path[draw,->] (last_weight) -- (sum);
-    
-        % Labels
-        \node[above=1cm]  at (f3) {inputs};
-        \node[above=1cm] at (w3) {weights};
-    \end{tikzpicture}
-\end{center}
+    \begin{center}
+        \tikzset{basic/.style={draw,fill=none,text badly centered,minimum width=3em}}
+        \tikzset{input/.style={basic,circle,minimum width=2.5em}}
+        \tikzset{weights/.style={basic,rectangle,minimum width=2em}}
+        \tikzset{functions/.style={basic,circle, minimum width=4em}}
+        \begin{tikzpicture}[scale=1]
+            % Draw input nodes
+            \foreach \h [count=\hi ] in {$x_2$,$x_1$,$1$} {
+                \node[input] (f\hi) at (0,\hi*1.25cm-1.5 cm) {\h};
+            }
+            % Dot dot dot ... x_n
+            \node[below=0.62cm] (idots) at (f1) {\vdots};
+            \node[input, below=0.62cm] (last_input) at (idots) {$x_n$};
+            % Draw summation node
+            \node[functions] (sum) at (4,0) {};
+            % Draw arrows from input nodes to summation node
+            \foreach \h [count=\hi ] in {$w_2$,$w_1$,$b$} {
+                \path (f\hi) -- node[weights] (w\hi) {\h} (sum);
+                \draw[->] (f\hi) -- (w\hi);
+                \draw[->] (w\hi) -- (sum);
+            }
+            % Dot dot dot ... w_n
+            \node[below=0.05cm] (wdots) at (w1) {\vdots};
+            \node[weights, below=0.45cm] (last_weight) at (wdots) {$w_n$};
+            % Add arrows for last node and last weight etc
+            \path[draw,->] (last_input) -- (last_weight);
+            \path[draw,->] (last_weight) -- (sum);
+        
+            % Labels
+            \node[above=1cm]  at (f3) {inputs};
+            \node[above=1cm] at (w3) {weights};
+        \end{tikzpicture}
+    \end{center}
 \end{snippet}
 
 \subsection{Convergence procedure}
 
 \begin{snippet}{convergence-procedure}
-\begin{itemize}
-    \item Add an extra component with value \(1\) to each input vector.
-        This serves as the bias and is equivalent to the negative of the threshold.
-    \item Pick training cases such that every training case will keep getting picked.
     \begin{itemize}
-        \item If the output unit incorrectly outputs a \(0\), add the input vector to the weight vector.
-        \item If the output unit incorrectly outputs a \(1\), subtract the input vector to the weight vector.
-        \item If the output unit is correct, don't do anything.
+        \item Add an extra component with value \(1\) to each input vector.
+            This serves as the bias and is equivalent to the negative of the threshold.
+        \item Pick training cases such that every training case will keep getting picked.
+        \begin{itemize}
+            \item If the output unit incorrectly outputs a \(0\), add the input vector to the weight vector.
+            \item If the output unit incorrectly outputs a \(1\), subtract the input vector to the weight vector.
+            \item If the output unit is correct, don't do anything.
+        \end{itemize}
     \end{itemize}
-\end{itemize}
 \end{snippet}
 
 % lecture 2.3
@@ -298,13 +296,13 @@ The bias is just the wight of an extra feature with the value of \(1\).
 \subsection{Geometric view}
 
 \begin{snippet}{geometric-view-training}
-Each training case defines a hyperplane (depending on the number of components) where
-for an \textit{input vector} there is a \textit{weigth vector} that can be either on the
-correct or wrong side of the hyperplane, depending on the resulting scalar product.
-The plane goes through the origin and is perpendicular to the input vector.
+    Each training case defines a hyperplane (depending on the number of components) where
+    for an \textit{input vector} there is a \textit{weigth vector} that can be either on the
+    correct or wrong side of the hyperplane, depending on the resulting scalar product.
+    The plane goes through the origin and is perpendicular to the input vector.
 
-Considering multiple training cases, the resulting vector shall be on all the good sides of all the hyperplanes.
-Such point may not exist. However, if such point exists, the convergence procedure is guaranteed to find it.
+    Considering multiple training cases, the resulting vector shall be on all the good sides of all the hyperplanes.
+    Such point may not exist. However, if such point exists, the convergence procedure is guaranteed to find it.
 \end{snippet}
 
 % lecture 2.4
@@ -319,10 +317,10 @@ Such point may not exist. However, if such point exists, the convergence procedu
 \subsection{Convergence}
 
 \begin{snippet}{convergence-expl1}
-A region in the hyperspace where all the vectors in the region satisfy all the training case exists if the dataset is linearly separable.
-\\
-This means that for example, considering a two-dimensional binary input vector, a perceptron cannot tell if the inputs are the same
-(the XOR problem). This would lead to four inequalities that are impossible to satisfy.
+    A region in the hyperspace where all the vectors in the region satisfy all the training case exists if the dataset is linearly separable.
+    \\
+    This means that for example, considering a two-dimensional binary input vector, a perceptron cannot tell if the inputs are the same
+    (the XOR problem). This would lead to four inequalities that are impossible to satisfy.
 \end{snippet}
 
 % lecture 3.1
@@ -332,55 +330,55 @@ This means that for example, considering a two-dimensional binary input vector, 
 \subsection{Definition}
 
 \begin{snippet}{linear-neuron-learning1}
-The perceptron learning procedure cannot extended to an arbitrary number of hidden layers. \\
+    The perceptron learning procedure cannot extended to an arbitrary number of hidden layers. \\
 
-The simplest example is a linear neuron with a squared error measure.
-The goal is to minimize the errore over all training cases, rather than the weight vector to be in a given region.
-The output of a linear neuron is a real value output which is a weighted sum of its input.
+    The simplest example is a linear neuron with a squared error measure.
+    The goal is to minimize the errore over all training cases, rather than the weight vector to be in a given region.
+    The output of a linear neuron is a real value output which is a weighted sum of its input.
 
-\[
-    y=\sum_i w_i x_i
-\]
+    \[
+        y=\sum_i w_i x_i
+    \]
 
-For each training case we tweak each weight
+    For each training case we tweak each weight
 
-\[
-    \Delta w_i=\epsilon x_i(t-y)
-\]
+    \[
+        \Delta w_i=\epsilon x_i(t-y)
+    \]
 
-where \(\epsilon\) is some \textit{learning rate}, \(y\) is the guess of the network and \(t\) is the correct target output.
+    where \(\epsilon\) is some \textit{learning rate}, \(y\) is the guess of the network and \(t\) is the correct target output.
 
-There is no guarantee with this kind of learning that the single weights will get better.
+    There is no guarantee with this kind of learning that the single weights will get better.
 \end{snippet}
 
 \subsection{The delta rule}
 
 \begin{snippet}{linear-neuron-learning2}
-We can define the error of the network as the squared residuals summed over all training cases
+    We can define the error of the network as the squared residuals summed over all training cases
 
-\[
-    E=\frac{1}{2} \sum_{n\in \text{traning}} {(t_n - y_n)}^2
-\]
+    \[
+        E=\frac{1}{2} \sum_{n\in \text{traning}} {(t_n - y_n)}^2
+    \]
 
-Now differentiate with respect to a single weight \(w_i\).
-Note that \(E_n\) depends on \(y_n\) which depends on \(w_i\), so we can use the chain rule.
-The purpose of the \(\frac{1}{2}\) term is to get a nice differentiation.
+    Now differentiate with respect to a single weight \(w_i\).
+    Note that \(E_n\) depends on \(y_n\) which depends on \(w_i\), so we can use the chain rule.
+    The purpose of the \(\frac{1}{2}\) term is to get a nice differentiation.
 
-\begin{align*}
-    \frac{\partial E}{\partial w_i}&=
-    \frac{1}{2} \sum_n \frac{dE_n}{dy_n} \frac{\partial y_n}{\partial w_i} \\
-    &= \frac{1}{2} \sum_n -2(t_n-y_n) x_{ni} \\
-    &= - \sum_n (t_n-y_n) x_{ni}
-\end{align*}
+    \begin{align*}
+        \frac{\partial E}{\partial w_i}&=
+        \frac{1}{2} \sum_n \frac{dE_n}{dy_n} \frac{\partial y_n}{\partial w_i} \\
+        &= \frac{1}{2} \sum_n -2(t_n-y_n) x_{ni} \\
+        &= - \sum_n (t_n-y_n) x_{ni}
+    \end{align*}
 
-How the error changes as we change the weights, will be how the output changes as we change the weights
-times how the error changes as the change the output.
+    How the error changes as we change the weights, will be how the output changes as we change the weights
+    times how the error changes as the change the output.
 
-So now the change of a weight is
+    So now the change of a weight is
 
-\[
-    \Delta w_i=-\epsilon \frac{\partial E}{\partial w_i} = \epsilon \sum_n x_{in}(t_n-y_n)
-\]
+    \[
+        \Delta w_i=-\epsilon \frac{\partial E}{\partial w_i} = \epsilon \sum_n x_{in}(t_n-y_n)
+    \]
 \end{snippet}
 
 % lecture 3.2
@@ -392,61 +390,59 @@ So now the change of a weight is
 \subsection{Learning weights}
 
 \begin{snippet}{logistic-neuron-learning1}
-We can generalize the learning rule for a linear neuron to a logistic neuron, which is a non-linear neuron.
-\\
-\begin{align*}    
-    z&=b+\sum_{i} x_i w_i \\
-    y&=\frac{1}{1+e^{-z}}
-\end{align*}
+    We can generalize the learning rule for a linear neuron to a logistic neuron, which is a non-linear neuron.
+    \\
+    \begin{align*}    
+        z&=b+\sum_{i} x_i w_i \\
+        y&=\frac{1}{1+e^{-z}}
+    \end{align*}
 
-First we need to compute the derivatives of \(z\) with respect to the inputs \(x_i\), weights \(w_i\) and the output \(y\).
+    First we need to compute the derivatives of \(z\) with respect to the inputs \(x_i\), weights \(w_i\) and the output \(y\).
 
-\[
-    \frac{\partial z}{\partial w_i} = x_i,
-    \quad
-    \frac{\partial z}{\partial x_i} = w_i,
-    \quad
-    \frac{dy}{dz}=y(1-y)
-\]
+    \[
+        \frac{\partial z}{\partial w_i} = x_i,
+        \quad
+        \frac{\partial z}{\partial x_i} = w_i,
+        \quad
+        \frac{dy}{dz}=y(1-y)
+    \]
 
-Now, using the chain rule, we can compute the derivative of the output with respect to \(w_i\)
+    Now, using the chain rule, we can compute the derivative of the output with respect to \(w_i\)
 
-\[
-    \frac{\partial y}{\partial w_i}=\frac{dy}{dz}\frac{\partial z}{\partial w_i}=x_i y(1-y)
-\]
+    \[
+        \frac{\partial y}{\partial w_i}=\frac{dy}{dz}\frac{\partial z}{\partial w_i}=x_i y(1-y)
+    \]
 
-Which means that the error \(E\) changes with respect to \(w_i\) as
+    Which means that the error \(E\) changes with respect to \(w_i\) as
 
-\[
-    \frac{\partial E}{\partial w_i} =
-    \sum_n \frac{\partial E}{\partial y_n} \frac{\partial y_n}{\partial w_i} =
-    -\sum_n x_{in} y_n (1-y_n)(t_n-y_n)
-\]
+    \[
+        \frac{\partial E}{\partial w_i} =
+        \sum_n \frac{\partial E}{\partial y_n} \frac{\partial y_n}{\partial w_i} =
+        -\sum_n x_{in} y_n (1-y_n)(t_n-y_n)
+    \]
 
-Therefore the learning rule for a logistic neuron is
+    Therefore the learning rule for a logistic neuron is
 
-\[
-    \Delta x_i = -\epsilon \frac{\partial E}{\partial w_i}=\epsilon \sum_n x_{in} y_n (1-y_n)(t_n-y_n)
-\]
+    \[
+        \Delta x_i = -\epsilon \frac{\partial E}{\partial w_i}=\epsilon \sum_n x_{in} y_n (1-y_n)(t_n-y_n)
+    \]
 \end{snippet}
 
 % lecture 3.4
 
-\pagebreak
-
 \section{Backpropagation}
 
 \begin{snippet}{backpropagation-expl}
-So far we've learned how to learn the weights of a simple neural network (input units and output units).
-However, we still lack the learning for more complicated neural nets with hidden layers.
-This is because we don't know their features, in fact, they're called \textit{hidden units}
-because we don't know what they ought to do.
+    So far we've learned how to learn the weights of a simple neural network (input units and output units).
+    However, we still lack the learning for more complicated neural nets with hidden layers.
+    This is because we don't know their features, in fact, they're called \textit{hidden units}
+    because we don't know what they ought to do.
 
-One way to learn the weights would be to randomly modify a weight. If the network
-gets better, keep the change, otherwise, discard it. This is, however, extremely
-inefficient.
+    One way to learn the weights would be to randomly modify a weight. If the network
+    gets better, keep the change, otherwise, discard it. This is, however, extremely
+    inefficient.
 
-The backpropagation algorithm computes the gradient from the final layer to the first layer.
+    The backpropagation algorithm computes the gradient from the final layer to the first layer.
 \end{snippet}
 
 % https://brilliant.org/wiki/backpropagation/

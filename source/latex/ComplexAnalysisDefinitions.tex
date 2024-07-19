@@ -47,64 +47,64 @@ protect/.code={
 \end{snippetdefinition}
 
 \begin{snippet}{riemann-sphere-illustration}
-\begin{center}
-\pgfmathsetmacro{\myaz}{15}
-\begin{tikzpicture}[
-        declare function={%
-            stereox(\x,\y)=2*\x/(1+\x*\x+\y*\y);
-            stereoy(\x,\y)=2*(\y+1)/(1+\x*\x+(\y+1)*(\y+1)) + 1;
-            stereoz(\x,\y)=(-1+\x*\x+\y*\y)/(1+\x*\x+\y*\y);
-            Px=1.75;
-            Py=-1.5;
-            Qx=-1.0;
-            Qy=-1.0;
-            amax=2.5;
-        },
-        scale=2.5,
-        line join=round,line cap=round,
-        dot/.style={circle,fill,inner sep=1pt},>={Stealth[length=1.2ex]}]
-    \pgfdeclarelayer{background}
-    \pgfdeclarelayer{foreground} 
-    \pgfsetlayers{background,main,foreground}
-    \path[save path=\pathSphere,ball color=gray,fill opacity=0.6] 
-        (0, 1, 0) circle[radius=1];
-    \begin{scope}[3d view={\myaz}{15}]
-        \draw (-amax,amax) -- (-amax,-amax) coordinate (bl) -- (amax,-amax) 
-            coordinate (br)-- (amax,amax);
-        \begin{scope}
-            \tikzset{protect=\pathSphere}
-            \draw (-amax,amax) -- (amax,amax);
-        \end{scope}
-        \begin{scope}
-            \clip[reuse path=\pathSphere];
-            \draw[dashed] (-amax,amax) -- (amax,amax);
-        \end{scope}
-        \begin{scope}[canvas is xy plane at z=0]
-            \path[save path=\pathPlane] (\myaz:amax) -- (\myaz+180:amax) --(bl) -- (br) -- cycle;
-            \begin{pgfonlayer}{background}
+    \begin{center}
+    \pgfmathsetmacro{\myaz}{15}
+    \begin{tikzpicture}[
+            declare function={%
+                stereox(\x,\y)=2*\x/(1+\x*\x+\y*\y);
+                stereoy(\x,\y)=2*(\y+1)/(1+\x*\x+(\y+1)*(\y+1)) + 1;
+                stereoz(\x,\y)=(-1+\x*\x+\y*\y)/(1+\x*\x+\y*\y);
+                Px=1.75;
+                Py=-1.5;
+                Qx=-1.0;
+                Qy=-1.0;
+                amax=2.5;
+            },
+            scale=2.5,
+            line join=round,line cap=round,
+            dot/.style={circle,fill,inner sep=1pt},>={Stealth[length=1.2ex]}]
+        \pgfdeclarelayer{background}
+        \pgfdeclarelayer{foreground} 
+        \pgfsetlayers{background,main,foreground}
+        \path[save path=\pathSphere,ball color=gray,fill opacity=0.6] 
+            (0, 1, 0) circle[radius=1];
+        \begin{scope}[3d view={\myaz}{15}]
+            \draw (-amax,amax) -- (-amax,-amax) coordinate (bl) -- (amax,-amax) 
+                coordinate (br)-- (amax,amax);
+            \begin{scope}
+                \tikzset{protect=\pathSphere}
+                \draw (-amax,amax) -- (amax,amax);
+            \end{scope}
+            \begin{scope}
+                \clip[reuse path=\pathSphere];
+                \draw[dashed] (-amax,amax) -- (amax,amax);
+            \end{scope}
+            \begin{scope}[canvas is xy plane at z=0]
+                \path[save path=\pathPlane] (\myaz:amax) -- (\myaz+180:amax) --(bl) -- (br) -- cycle;
+                \begin{pgfonlayer}{background}
+                    \fill[blue!30,fill opacity=0.6]
+                        (\myaz:1) arc[start angle=\myaz,end angle=\myaz-180,radius=1]
+                        -- (-amax,0) -- (-amax,amax) -- (amax,amax) -- (amax,0) -- cycle;
+                \end{pgfonlayer}
                 \fill[blue!30,fill opacity=0.6]
                     (\myaz:1) arc[start angle=\myaz,end angle=\myaz-180,radius=1]
-                    -- (-amax,0) -- (-amax,amax) -- (amax,amax) -- (amax,0) -- cycle;
+                    -- (-amax,0) -- (-amax,-amax) -- (amax,-amax) -- (amax,0) -- cycle;
+            \end{scope}
+
+            %\draw[-] (0,-2,0) node[dot,label=below:{$z$}](z){}
+            %    -- node[auto,pos=0.5]{\(p\)} (0, -1, 1)
+            %    node[dot,label=below right:{\(s\)}](z*){};
+
+            \draw[-] (-2,0,0) node[dot,label=below:{$z$}](z){}
+                -- node[auto,pos=0.5]{} (-1, 0, 1)
+                node[dot,label=below right:{\(s\)}](z*){};
+    
+            \begin{pgfonlayer}{background} 
+                \draw[dashed] (z*) -- (0,0,2) node[dot,label=above:{$\zeta$}](zeta){};
             \end{pgfonlayer}
-            \fill[blue!30,fill opacity=0.6]
-                (\myaz:1) arc[start angle=\myaz,end angle=\myaz-180,radius=1]
-                -- (-amax,0) -- (-amax,-amax) -- (amax,-amax) -- (amax,0) -- cycle;
         \end{scope}
-
-        %\draw[-] (0,-2,0) node[dot,label=below:{$z$}](z){}
-        %    -- node[auto,pos=0.5]{\(p\)} (0, -1, 1)
-        %    node[dot,label=below right:{\(s\)}](z*){};
-
-        \draw[-] (-2,0,0) node[dot,label=below:{$z$}](z){}
-            -- node[auto,pos=0.5]{} (-1, 0, 1)
-            node[dot,label=below right:{\(s\)}](z*){};
-  
-        \begin{pgfonlayer}{background} 
-            \draw[dashed] (z*) -- (0,0,2) node[dot,label=above:{$\zeta$}](zeta){};
-        \end{pgfonlayer}
-    \end{scope}
-\end{tikzpicture}
-\end{center}
+    \end{tikzpicture}
+    \end{center}
 \end{snippet}
 
 \end{document}
