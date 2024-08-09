@@ -117,6 +117,21 @@
     Thus, if two classes share an element they are the same.
 \end{snippet}
 
+% corollary of shared-element-in-equivalence-class-theorem
+\begin{snippetcorollary}{distinct-equivalence-classes-disjoint}{Distinct equivalence classes are disjoint}
+    Let \(\sim\) be an \equivrelation on a set \(A\)
+    and \(a,b \in A\). Then, \[
+        {[a]_\sim} \intersection {[b]_\sim} \neq \emptyset \iff {[a]_\sim} = {[b]_\sim}
+    \]
+\end{snippetcorollary}
+
+\begin{snippetdefinition}{quotient-set-definition}{Quotient set}
+    Let \(\sim\) be an \equivrelation on a set \(A\).
+    The \textit{quotient set} of \(A\) by \(\sim\) is defined as
+    the set of the \equivclass[equivalence classes] of \(A\) by \(\sim\).
+    \[ A /_\sim = \{ {[a]}_\sim \suchthat a \in A \} \]
+\end{snippetdefinition}
+
 \section{Partition of a set}
 
 \begin{snippetdefinition}{set-partition-definition}{Partition of a set}
@@ -132,66 +147,34 @@
 
 \begin{snippettheorem}{equivalence-classes-form-partition-theorem}{Equivalence classes form partitions}
     Let \(\sim\) be an \equivrelation on a set \(A\).
-    The set of its \equivclass[equivalence classes] is a \partition of \(A\).
+    \begin{enumerate}
+        \item The \quotset \(A/_\sim\) is a \partition of \(A\);
+        \item given a \partition of \(A\), there exist an \equivrelation on \(A\)
+        whose \equivclass[equivalence classes] are the elements of the partition.
+    \end{enumerate}
 \end{snippettheorem}
 
-\subsection{Types of orders}
-
-\begin{snippetdefinition}{preorder-order-definition}{Preorder order}
-    A \textit{preorder} is a \homrelation \(\leq\) on a set \(A\)
-    with the following properties:
+\begin{snippetproof}{equivalence-classes-form-partition-theorem-proof}{equivalence-classes-form-partition-theorem}{Equivalence classes form partitions}
     \begin{enumerate}
-        \item \textit{Reflexive}: \(\forall a \in A, a \leq a\)
-        \item \textit{Transitive}: \(\forall a,b,c \in A, a \leq b \land b \leq c \implies a \leq c\)
+        \item For every \(a\in A\), \(a \in {[a]}_\sim \in A/_\sim\). This means that the elements of \(A/_\sim\)
+            are non-empty and their union is \(A\)
+            \[ \bigcup_{c \in A/_\sim} c = A\]
+            Furthermore, distinct classes in \(A/_\sim\) \snippetref[distinct-equivalence-classes-disjoint][are disjoint] and 
+            thus \(\in A/_\sim\) is a \partition;
+        \item given a partition \(\{C_i\}_{i\in I}\), we construct an \equivrelation \(\approx\) where
+        \(a \approx b\) if \(\exists i\in I \suchthat a,b \in C_i \).
+        Given \(a\in A\), \({[a]}_\approx = C_i\) where \(a \in C_i\) (which is unique).
     \end{enumerate}
-\end{snippetdefinition}
+\end{snippetproof}
 
-\begin{snippetdefinition}{partial-order-definition}{Partial order}
-    A \textit{partial order} is a \homrelation \(\leq\) on a set \(A\)
-    with the following properties:
-    \begin{enumerate}
-        \item \textit{Reflexive}: \(\forall a \in A, a \leq a\)
-        \item \textit{Transitive}: \(\forall a,b,c \in A, a \leq b \land b \leq c \implies a \leq c\)
-        \item \textit{Antisymmetric}: \(\forall a,b \in A, a \leq b \land b \leq a \implies a=b\)
-    \end{enumerate}
-\end{snippetdefinition}
-
-\begin{snippetdefinition}{total-orderv}{Total order}
-    A \textit{total order} is a \homrelation \(\leq\) on a set \(A\)
-    with the following properties:
-    
-    \begin{enumerate}
-        \item \textit{Reflexive}: \(\forall a \in A, a \leq a\)
-        \item \textit{Transitive}: \(\forall a,b,c \in A, a \leq b \land b \leq c \implies a \leq c\)
-        \item \textit{Antisymmetric}: \(\forall a,b \in A, a \leq b \land b \leq a \implies a=b\)
-        \item \textit{Strongly connected} (or \textit{total}): \(\forall a,b\in A, a \leq b \lor b\leq a\)
-    \end{enumerate}
-\end{snippetdefinition}
-
-\begin{snippet}{settheory-3}
-    A total order is a partial order where any two elements are comparable.
+\begin{snippet}{equivalence-classes-form-partition-theorem-expl}
+    An \equivrelation and its associated \partition are both objects representing the same information
 \end{snippet}
 
-\subsection{Elements characterization}
-
-\begin{snippetdefinition}{greatest-element-definition}{Greatest element}
-    Given a partial order on a set \(A\), an element \(g\) is a \textit{greatest element}
-    if \(\forall a\in A, a \leq g\).
-\end{snippetdefinition}
-
-\begin{snippetdefinition}{least-element-definition}{Least element}
-    Given a partial order on a set \(A\), an element \(g\) is a \textit{least element}
-    if \(\forall a\in A, g \leq a\).
-\end{snippetdefinition}
-
-\begin{snippetdefinition}{maximal-element-definition}{Maximal element}
-    Given a partial order on a set \(A\), an element \(g\in A\) that is
-    a greatest element is a \textit{maximal element}.
-\end{snippetdefinition}
-
-\begin{snippetdefinition}{minimal-element-definition}{Minimal element}
-    Given a partial order on a set \(A\), an element \(g\in A\) that is
-    a least element is a \textit{minimal element}.
-\end{snippetdefinition}
+\begin{snippetproposition}{binary-relation-equivalence-condition}{Equivalence condition for binary relation}
+    Let \(\sim\) be a reflexive \binrelation on a set \(A\).
+    Then, \(\sim\) is an \equivrelation \ifandonlyif
+    \[ a\sim b \land a \sim c \implies b \sim c \]
+\end{snippetproposition}
 
 \end{document}
