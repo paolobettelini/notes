@@ -1,0 +1,35 @@
+\ProvidesPackage{scolors}[2023/01/01 Stellar definition commands]
+
+\RequirePackage{xcolor}
+
+% Define a flag to track whether the global color is set
+\newif\ifcolorisset
+
+% Set the global math color and start using it
+\ExplSyntaxOn
+\DeclareDocumentCommand{\scolor}{d[]}{%
+    \global\def\mathcolorOverride{#1}%
+    \colorissettrue% Set the flag to true
+    \color{#1}%
+}
+\ExplSyntaxOff
+
+% Clear the global math color and reset it
+\ExplSyntaxOn
+\DeclareDocumentCommand{\sclear}{d[]}{%
+    \undef\mathcolorOverride% Unset the color
+    \colorissetfalse% Set the flag to false
+    \color{black}%
+}
+\ExplSyntaxOff
+
+% Start using the global color is set, use the specified color otherwise
+\ExplSyntaxOn
+\DeclareDocumentCommand{\scolorweak}{d[]}{%
+    \ifcolorisset
+        \color{\mathcolorOverride}%
+    \else
+        \color{#1}%
+    \fi
+}
+\ExplSyntaxOff
