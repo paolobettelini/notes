@@ -18,10 +18,16 @@ pub fn query_all_files(path: &PathBuf) -> Vec<PathBuf> {
 }
 
 pub fn execute_query(path: &PathBuf, query: &str, regex: bool, ignore_case: bool) -> Vec<PathBuf> {
-    let reg = Regex::new(&query).unwrap_or_else(|_| {
-        log::error!("The provided regex is invalid.");
-        std::process::exit(1);
-    });
+    let regex_option = if regex {
+        let reg = Regex::new(&query).unwrap_or_else(|_| {
+            log::error!("The provided regex is invalid.");
+            std::process::exit(1);
+        });
+
+        Some(reg)
+    } else {
+        None
+    };
 
     let mut result = Vec::new();
 
@@ -36,7 +42,7 @@ pub fn execute_query(path: &PathBuf, query: &str, regex: bool, ignore_case: bool
                     continue;
                 };
 
-                if regex {
+                if let Some(ref reg) = regex_option {
                     // Regex matching
                     if reg.is_match(&file_name) {
                         result.push(entry.path());
