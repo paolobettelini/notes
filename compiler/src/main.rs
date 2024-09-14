@@ -100,14 +100,14 @@ async fn main() {
                     let mut files = vec![];
 
                     for input in inputs {
-                        let res = utils::execute_query(&$folder, input, args.regex, args.ignore_case);
+                        let res = utils::execute_query(&$folder, input, args.regex, args.ignore_case, &args.containing);
                         files.extend(res);
                     }
 
                     files
                 } else {
                     // If no input is specified, query for every file
-                    utils::query_all_files(&$folder)
+                    utils::query_all_files(&$folder, &args.containing)
                 }
             };
         }

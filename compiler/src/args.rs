@@ -36,6 +36,11 @@ pub struct App {
     #[arg(long)]
     pub universes: bool,
 
+    /// Matches only the files that contain this value
+    /// NOTE: is it not affected by --regex and --ignore-case
+    #[arg(long)]
+    pub containing: Option<String>,
+
     /// Compile query
     #[clap()]
     pub inputs: Option<Vec<String>>,

@@ -2,14 +2,23 @@ use regex::Regex;
 use std::fs;
 use std::process::Command;
 use std::path::{Path, PathBuf};
+use std::io::Read;
 
-pub fn query_all_files(path: &PathBuf) -> Vec<PathBuf> {
+pub fn query_all_files(path: &PathBuf, containing: &Option<String>) -> Vec<PathBuf> {
     let mut result = Vec::new();
 
     if let Ok(entries) = fs::read_dir(&path) {
         for entry in entries {
             if let Ok(entry) = entry {
-                result.push(entry.path());
+                let path = entry.path();
+
+                if let Some(value) = containing {
+                    if file_contains_string(&path, &value).unwrap_or(false) {
+                        result.push(path);    
+                    }
+                } else {
+                    result.push(path);
+                }
             }
         }
     }
@@ -17,7 +26,7 @@ pub fn query_all_files(path: &PathBuf) -> Vec<PathBuf> {
     result
 }
 
-pub fn execute_query(path: &PathBuf, query: &str, regex: bool, ignore_case: bool) -> Vec<PathBuf> {
+pub fn execute_query(path: &PathBuf, query: &str, regex: bool, ignore_case: bool, containing: &Option<String>) -> Vec<PathBuf> {
     let regex_option = if regex {
         let reg = Regex::new(&query).unwrap_or_else(|_| {
             log::error!("The provided regex is invalid.");
@@ -42,22 +51,33 @@ pub fn execute_query(path: &PathBuf, query: &str, regex: bool, ignore_case: bool
                     continue;
                 };
 
+                let mut matched_file = None;
+
                 if let Some(ref reg) = regex_option {
                     // Regex matching
                     if reg.is_match(&file_name) {
-                        result.push(entry.path());
+                        matched_file = Some(entry.path());
                     }
                 } else if ignore_case {
                     // Case insensitive matching
                     let file_name_lower = file_name.to_lowercase();
                     let query_lower = query.to_lowercase();
                     if file_name_lower.contains(&query_lower) {
-                        result.push(entry.path());
+                        matched_file = Some(entry.path());
                     }
-                } else {
+                } else if file_name.contains(&query) {
                     // Case sensitive matching
-                    if file_name.contains(&query) {
-                        result.push(entry.path());
+                    matched_file = Some(entry.path());
+                }
+
+                if let Some(path) = matched_file {
+                    // Check if content contains given value, if any
+                    if let Some(value) = containing {
+                        if file_contains_string(&path, &value).unwrap_or(false) {
+                            result.push(path);    
+                        }
+                    } else {
+                        result.push(path);
                     }
                 }
             }
@@ -103,4 +123,9 @@ pub fn run_python_script(current_dir: &Path, script_path: &Path, folder_path: &P
             log::error!("Script execution failed: {}", e);
         }
     }
+}
+
+fn file_contains_string(path: &Path, search_string: &str) -> std::io::Result<bool> {
+    let mut contents = fs::read_to_string(path)?;
+    Ok(contents.contains(search_string))
 }
