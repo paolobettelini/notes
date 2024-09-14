@@ -1,9 +1,9 @@
+use crate::utils::run_python_script;
 use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
 use stellar_database::ClientHandler;
 use tokio::fs::create_dir_all;
-use crate::utils::run_python_script;
 
 const BUILD_SCRIPT_FILENAME: &str = "build.py";
 
@@ -24,7 +24,7 @@ pub async fn compile_snippet<'a>(
 
     let mut target_folder = data.join(crate::SNIPPETS_FOLDER);
     target_folder.push(&filename);
-    
+
     // Delete the target folder if it exists
     if target_folder.exists() {
         if let Err(e) = fs::remove_dir_all(&target_folder) {
@@ -50,7 +50,7 @@ pub async fn compile_snippet<'a>(
     let python_custom_script = contains_build_script(&folder);
 
     if let Some(script) = python_custom_script {
-       // Run "<BUILD_SCRIPT_FILENAME>" with the target directory as a parameter
+        // Run "<BUILD_SCRIPT_FILENAME>" with the target directory as a parameter
 
         log::info!("Running custom build script for snippet {}", &filename);
 
@@ -106,7 +106,7 @@ fn contains_build_script<P: AsRef<Path>>(path: P) -> Option<PathBuf> {
                 }
             }
             None
-        },
+        }
         Err(_) => None,
     }
 }

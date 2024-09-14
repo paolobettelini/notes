@@ -1,8 +1,7 @@
 use regex::Regex;
 use std::fs;
-use std::process::Command;
 use std::path::{Path, PathBuf};
-use std::io::Read;
+use std::process::Command;
 
 pub fn query_all_files(path: &PathBuf, containing: &Option<String>) -> Vec<PathBuf> {
     let mut result = Vec::new();
@@ -14,7 +13,7 @@ pub fn query_all_files(path: &PathBuf, containing: &Option<String>) -> Vec<PathB
 
                 if let Some(value) = containing {
                     if file_contains_string(&path, &value).unwrap_or(false) {
-                        result.push(path);    
+                        result.push(path);
                     }
                 } else {
                     result.push(path);
@@ -26,7 +25,13 @@ pub fn query_all_files(path: &PathBuf, containing: &Option<String>) -> Vec<PathB
     result
 }
 
-pub fn execute_query(path: &PathBuf, query: &str, regex: bool, ignore_case: bool, containing: &Option<String>) -> Vec<PathBuf> {
+pub fn execute_query(
+    path: &PathBuf,
+    query: &str,
+    regex: bool,
+    ignore_case: bool,
+    containing: &Option<String>,
+) -> Vec<PathBuf> {
     let regex_option = if regex {
         let reg = Regex::new(&query).unwrap_or_else(|_| {
             log::error!("The provided regex is invalid.");
@@ -74,7 +79,7 @@ pub fn execute_query(path: &PathBuf, query: &str, regex: bool, ignore_case: bool
                     // Check if content contains given value, if any
                     if let Some(value) = containing {
                         if file_contains_string(&path, &value).unwrap_or(false) {
-                            result.push(path);    
+                            result.push(path);
                         }
                     } else {
                         result.push(path);
@@ -126,6 +131,6 @@ pub fn run_python_script(current_dir: &Path, script_path: &Path, folder_path: &P
 }
 
 fn file_contains_string(path: &Path, search_string: &str) -> std::io::Result<bool> {
-    let mut contents = fs::read_to_string(path)?;
+    let contents = fs::read_to_string(path)?;
     Ok(contents.contains(search_string))
 }

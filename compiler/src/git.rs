@@ -1,9 +1,7 @@
-use git2::{Repository, StatusOptions};
-use log::{error, info};
+use std::io::{BufRead, BufReader};
 use std::path::PathBuf;
 use std::process::Command;
 use std::process::Stdio;
-use std::io::{BufRead, BufReader};
 
 pub fn git_pull_and_get_files(notes_path: &PathBuf) -> Vec<PathBuf> {
     // git pull
@@ -16,7 +14,7 @@ pub fn git_pull_and_get_files(notes_path: &PathBuf) -> Vec<PathBuf> {
         .expect("failed to execute `git pull`");
 
     // Capture stdout
-    if let Some(stdout) = child.stdout.take() { 
+    if let Some(stdout) = child.stdout.take() {
         let reader = BufReader::new(stdout);
         for line in reader.lines() {
             match line {
@@ -27,7 +25,7 @@ pub fn git_pull_and_get_files(notes_path: &PathBuf) -> Vec<PathBuf> {
                     if line.contains("Already up to date.") {
                         return vec![];
                     }
-                },
+                }
                 Err(e) => log::error!("Error reading stdout: {}", e),
             }
         }
@@ -73,7 +71,6 @@ pub fn git_pull_and_get_files(notes_path: &PathBuf) -> Vec<PathBuf> {
                 let filename = &entry[2..];
                 result.push(notes_path.join(filename));
             }
-
         }
     }
 

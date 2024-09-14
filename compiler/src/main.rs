@@ -100,7 +100,13 @@ async fn main() {
                     let mut files = vec![];
 
                     for input in inputs {
-                        let res = utils::execute_query(&$folder, input, args.regex, args.ignore_case, &args.containing);
+                        let res = utils::execute_query(
+                            &$folder,
+                            input,
+                            args.regex,
+                            args.ignore_case,
+                            &args.containing,
+                        );
                         files.extend(res);
                     }
 
