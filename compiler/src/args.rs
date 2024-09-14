@@ -38,7 +38,7 @@ pub struct App {
 
     /// Compile query
     #[clap()]
-    pub input: Option<String>,
+    pub inputs: Option<Vec<String>>,
 }
 
 impl App {

@@ -95,9 +95,16 @@ async fn main() {
 
         macro_rules! get_files {
             ($folder:ident) => {
-                if let Some(input) = &args.input {
-                    // If an input is specified, query the input
-                    utils::execute_query(&$folder, input, args.regex, args.ignore_case)
+                if let Some(inputs) = &args.inputs {
+                    // If input(s) is specified, query the input(s)
+                    let mut files = vec![];
+
+                    for input in inputs {
+                        let res = utils::execute_query(&$folder, input, args.regex, args.ignore_case);
+                        files.extend(res);
+                    }
+
+                    files
                 } else {
                     // If no input is specified, query for every file
                     utils::query_all_files(&$folder)
