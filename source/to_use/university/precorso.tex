@@ -5,6 +5,7 @@
 \usepackage{stellar}
 \usepackage{parskip}
 \usepackage{fullpage}
+\usepackage{wrapfig}
 \usepackage{tikz}
 
 \usetikzlibrary{arrows}
@@ -2649,5 +2650,320 @@ e il punto \(P=(3,1)\), trovare le tangenti a \(\gamma\) passanti per \(P\)}{
     La retta che avevo scartato non è quindi soluzione e non va controllata, in quando
     posso avere al massimo 2 tangenti.
 }
+
+\pagebreak
+
+\sexercise{Determinare la circonferenza che passa per i punti \(O=(0,0)\), \(A=(-6,-4)\) e la retta \(r\colon 2x+3y-1=0\)}{
+    Possiamo notare che, geometricamente, se la retta passa fra i due punti, non può essere la tangente di nessun cerchio
+    passante per i due punti. Per essere tangente ad \(r\), dovrebbe stare in uno dei due semipieni delimitati da \(r\).
+    Se invece i due punti stanno sullo stesso semipiano, allora dovrebbe essere possibile trovare tale circonferenza.
+    In questo caso. Anche nel caso in cui un punti passi per la retta stessa, allora il punto sarebbe
+    coincidente con il punto di tangenza della retta, e anche in questo caso la circonferenza esisterebbe.
+    Imponiamo il passaggio per \(O\) e \(A\) alla generica circonferenza \(x^2 + y^2 + ax + by + c = 0\)
+    e trovo quindi
+    \[
+    \begin{cases}
+        0 = c \\
+        b = 13 - \frac{3}{2}a
+    \end{cases}
+    \]
+    Quindi, la generica circonferenza passante per \(O\) e \(A\) ha equazione del tipo
+    \[ x^2 + y^2 + ax + \left(13-\frac{3}{2}a\right)y = 0 \]
+    Imponiamo ora la tangenza alla retta
+    \[
+    \begin{cases}
+        2x + 3y - 1 = 0 \\
+        x^2 + y^2 + 2x + \left(13-\frac{3}{2}a\right)y = 0
+    \end{cases}    
+    \]
+    che ci porta a
+    \[
+    \begin{cases}
+        x = \frac{1}{2} - \frac{3}{2}y \\
+        \frac{13}{4} y^2 + \left(-\frac{23}{2}-3a\right)y = 0
+    \end{cases}    
+    \]
+    Per imporre la tangenza, poniamo il discriminante nullo, quindi
+    \[
+        \Delta = 9a^2 - \frac{151}{2}a +129 = 0
+    \]
+    e quindi \(a_1 = 6\) e \(a_2 = \frac{43}{78}\).
+}
+
+\pagebreak
+
+\subsection{Coniche}
+
+\sdefinition{Coniche}{
+    Le \textit{coniche} sono le curve che si ottengono sezionando un cono circolare retto con un piano.
+}
+
+Queste coniche si possono introdurre in maniera differenza, cioè come luoghi geometrici, ossia
+sottoinsiemi del piano che soddisfano certe condizioni. Non è semplice stabilire la connessione tra le due definizioni.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.5,parabola/.style={very thin, red}, hyperbola/.style={very thin, violet}, circle/.style={very thin, blue}]
+    \def\b{2}
+    \def\h{2}
+    \def\p{0.5}
+    \pgfmathsetmacro{\rx}{\b/2}
+    \pgfmathsetmacro{\ry}{\rx*\p}
+    \pgfmathsetmacro{\ta}{90-atan2(\h,\ry)}
+    \fill[gray!50]
+    (0, \h) -- (\ta:\rx+0 and \ry) arc (\ta:180-\ta:\rx+0 and \ry) -- cycle;
+    \fill[gray!75] coordinate (bottom) ellipse [x radius=\rx, y radius=\ry];
+    \draw[dashed] (\ta:\rx+0 and \ry) arc (\ta:180-\ta:\rx+0 and \ry);
+    \draw (0, \h) -- (\ta:\rx+0 and \ry) arc (\ta:-180-\ta:\rx+0 and \ry) -- coordinate[pos=.4](hypbend) cycle;
+    \begin{scope}[rotate around={180:(0,\h)}]
+    \fill[gray!50]
+    (0, \h) -- (\ta:\rx+0 and \ry) arc (\ta:180-\ta:\rx+0 and \ry) -- cycle;
+    \fill[gray!75] coordinate (top) ellipse [x radius=\rx, y radius=\ry];
+    \draw (\ta:\rx+0 and \ry) arc (\ta:180-\ta:\rx+0 and \ry) (0, \h) -- coordinate[pos=.3](parabend) (\ta:\rx+0 and \ry) arc (\ta:-180-\ta:\rx+0 and \ry) -- cycle;
+    \end{scope}
+    %% Dots & Axis
+    \fill (top) circle[radius=1pt] (0,\h) circle[radius=1pt] (bottom) circle[radius=1pt];
+    \draw[dotted] (top) -- (bottom);
+    \draw (top) -- ++(-90:\rx+0 and \ry);
+    %% Parabola
+    \path (top) +(50+50*\p:\rx+0 and \ry) coordinate (tmp) +(-50+50*\p:\rx+0 and \ry) coordinate (tmp2);
+    \draw[parabola] (tmp) ..controls ++(-90:0) and ++(\ta+90:\p).. (parabend) node[left]{Parabola} ..controls ++(\ta-90:\p) and ++(-90:0).. (tmp2);
+    %% Circle
+    \def\pos{0.5}
+    \draw[circle] (0,\pos*\h) ellipse [x radius=\pos*\rx, y radius=\pos*\ry] +(180:\pos*\rx) node[above left]{Circle};
+    %% Hyperbola
+    \path (bottom) +(130-50*\p:\rx+0 and \ry) coordinate (tmp) +(230+50*\p:\rx+0 and \ry) coordinate (tmp2);
+    \draw[hyperbola] (tmp) ..controls ++(90:0) and ++(90-\ta:0.6*\p).. (hypbend) node[left]{Hyperbola} ..controls ++(-\ta-90:0.6*\p) and ++(90:0).. (tmp2);
+\end{tikzpicture}
+\end{center}
+
+\sdefinition{Parabola}{
+    Dato un punto \(F\) detto \textit{fuoco} e una retta \(d\) detta \textit{direttrice}
+    non passante per \(F\), la \textit{parabola} di fuoco \(F\) e direttrice \(d\)
+    è il luogo dei punti del piano equidistanti da \(F\) e \(d\).
+}
+
+Se considero la proiezione \(H\) di \(F\) su \(D\) e incido con \(V\) il punto medio
+di \(H\) e \(F\)
+
+\begin{center}
+    \begin{tikzpicture}
+        \node[above] at (0,0) {\(H\)};
+        \fill (0,0) circle (0.05);
+        \draw (-3,0.5) -- (3,-0.5);
+        \node[right] at (3,-0.5) {\(d\)}; 
+
+        \node[left] at (-0.5,-1.5) {\(V\)}; 
+        \fill (-0.5,-1.5) circle (0.05);
+        
+        \draw (0,0) -- (-1,-3);
+
+        \node[below] at (-1,-3) {\(F\)}; 
+        \fill (-1,-3) circle (0.05);
+    \end{tikzpicture}
+\end{center}
+
+Chiaramente, abbiamo che \(d(P, F) > d(V, F)\), \(f(P,d) < d(V, H) = d(V,F)\)
+e quindi \(d(P, F) > d(P,d)\).
+
+\textbf{Descrizione analitica:} si potrebbe prendere un punto \(F=(x_f, y_f)\)
+e una retta \(r\colon ax + by + c=0\) con \(F\not\in r\) e imporre
+una punto generico \(P=(x,y)\) tale che \(d(P, F) = d(P, d)\).
+Esiste una formula per calcolare \(d(P, d)\) ma è computazionalmente complicata.
+Consideriamo allora il caso particolare dove la direttrice è parallela a uno degli assi cartesiani,
+come per esempio quello delle ascisse.
+Abbiamo quindi \(d\colon y-k=0\). La condizione \(F\not\in d\) si esprime quindi semplicemente con
+\(y_f - k \neq 0\) cioè \(y_f \neq k\). Prendiamo quindi un punto arbitrario \(P=(x,y)\).
+Abbiamo quindi le condizione
+\[
+    d(P,F) = \sqrt{{(x-x_f)}^2 +{(y-y_f)}^2} \quad \land \quad
+    d(P, d) = d(P, H) = |y-k|
+\]
+dove \(H\) è la proiezione di \(P\) su \(d\).
+Espandendo il quadrato dell'equaglianza troviamo
+\[ x^2 - 2x_f + \left(x_f^2 + y_f^2 - k^2\right) = 2(y_f-k)y \]
+Siccome \(y_k - k_f \neq 0\) e quindi \(y_k \neq k_f\), possiamo riscrivere l'equazione come
+\[
+    y = \frac{1}{2(y_r - k)}x^2 - \frac{x_f}{y_f-k}x + \frac{x_f^2 + y_f^2 - k^2}{2(y_f-k)}
+\]
+che possiamo riscrivere come
+\[
+    y = ax^2 + bx + c
+\]
+con \(a,b,c\in\mathbb{R}\) e \(a\neq 0\).
+
+Bisognerebbe verificare se ogni equazione di questo tipo rappresenta una prabola, cioè se
+si può ``tornare indietro'' con i conti. La risposta è sì, ma i calcoli sono tediosi.
+
+\paragraph{Casi particolari:}\phantom{ }
+
+\setlength{\intextsep}{0pt}%
+\begin{wrapfigure}{l}{8cm}
+    Consideriamo la parabola \(y=ax^2\).
+    \begin{center}
+        \begin{tikzpicture}[scale=2.5]
+            \draw[->] (-1, 0) -- (1, 0) node[right] {$x$};
+            \draw[->] (0, -1) -- (0, 1) node[above] {$y$};
+            \draw[scale=1, domain=-0.95:0.95, smooth, variable=\x, blue] plot ({\x}, {\x * \x});
+        \end{tikzpicture}
+    \end{center}
+    \vspace{-1cm}
+\end{wrapfigure}
+
+Nel caso in cui \(a<0\), la parabola avrebbe la stessa forma ma specchiata sull'asse delle ascisse.
+In ogni caso, l'asse delle ordinate è sempre un asse di simmetria.
+
+Espandendo la funzione \(y=ax^2 + bx + c\), si ottiene
+\[
+    y = a{\left(x + \frac{b}{2a}\right)}^2 - \frac{b^2}{4a} + c
+\]
+che può anche essere scritto
+\[
+    y = a{\left(x + \frac{b}{2a}\right)}^2 + \frac{4ac - b^2}{4a}
+\]
+Possiamo dunque notare che se \(a>0\), la parabola sta al di sopra della retta
+\(y=\frac{4ac - b^2}{4a}\), mentre se \(a<0\) sta al di sotto.
+
+\wrapfill
+
+\sexercise{Data la parabola di equazione \(y=-3x^2 - 2x - 5\), trovarne vertice e asse di simmetria}{
+    Cominciamo riscrivendo \(y=-3\left(x^2 - \frac{3}{2}x\right)-5\)
+    cioè \(-3\left({\left(x-\frac{1}{3}\right)}^2 - \frac{1}{9}\right) - 5\).
+    Per \(x=\frac{1}{3}\) troviamo \(y=-\frac{14}{3}\) e il vertice è allora \(V=(\frac{1}{3}, -\frac{14}{3})\)
+    e l'asse di simmetria è la retta \(x=\frac{1}{3}\).
+}
+
+Per intersecare una retta con una parabola dobbiamo mettere le due a sistema
+\[
+    \begin{cases}
+        y = ax^2 + bc + c \quad a \neq 0 \\
+        hx + ky + l = 0 \quad (h,k)\neq (0,0)
+    \end{cases}
+\]
+Sostituiamo l'espressione di \(y\) data la prima equazione nella seconda e troviamo la risolvente
+\[
+    hx + k(ax^2 + bc + c) + l = 0 
+\]
+ossia \(kax^2 + (h+kb)x + kc + l = 0\).
+Se \(k \neq 0\), abbiamo un'equazione di secondo grado. Nel caso in cui \(k=0\), e quindi \(h\neq 0\),
+l'equazione si riduce a \(hx + l =0\) che è di primo grado.
+Stiamo quindi intersecando con una retta parallela all'asse delle ordinate, e quindi all'asse simmetrica.
+Dovremmo quindi avere due soluzioni, ma ne troviamo solamente una. È come se la seconda soluzione
+fosse ``scappata ad infinito''. Si potrebbe formalizzare questo concetto (con la geometria proiettiva)
+dove si aggiungono dei punti all'infinito, che sorrispondono alle varie direzioni delle rette.
+
+\pagebreak
+
+\sexercise{Trovare l'equazione della parabola di asse parallelo all'asse \(y\), vertice \(V=(-\frac{1}{2}, \frac{9}{4})\),
+    e tangente alla retta \(r\colon x + y - 2 = 0\)}{
+    L'equazione è del tipo \(y=ax^2 + bx + c\). Sapendo che il vertice è dato,
+    possiamo, mediante il metodo del completamento del quadrato, possiamo dire
+    che \(y=a{\left(x + \frac{1}{2}\right)}^2 + \frac{9}{4}\).
+    Imponiamo successivamente la tangenza a \(r\)
+    \[
+    \begin{cases}
+        y=a{\left(x + \frac{1}{2}\right)}^2 + \frac{9}{4} \\
+        x + y - 2 = 0
+    \end{cases}
+    \]
+    La risolvente è \(x + a\left(x + \frac{1}{2}\right) + \frac{9}{4} - 2 = 0\),
+    cioè \(ax^2 + (1 + a) x + \frac{1}{4}(1+a) = 0\).
+    Ponendo il discriminante nullo troviamo \(a=-1\).
+    La parabola cercata ha allora equazione
+    \(y = -1{\left(x + \frac{1}{2}\right)}^2 + \frac{9}{4}\)
+    cioè \(y=-x^2 - x + 2\).
+}
+
+\sdefinition{Ellisse}{
+    Dati due punti \(F_1\) e \(F_2\) nel piano e un numero
+    \(k > F_1 + F_2\), l'\textit{ellisse} di fuochi \(F_1\) e \(F_2\)
+    e parametro \(k\) è il luogo geometrico dei punti del piano la cui somma delle distanze da \(F_1\)
+    e \(F_1\) è \(k\).
+}
+
+\begin{center}
+    \begin{tikzpicture}
+        \draw (0,0) ellipse (2cm and 1cm);
+    \end{tikzpicture}
+\end{center}
+
+Dalla diseguaglianza triangolare notiamo che \(d(P, F_1) + d(P, F_2) \geq d(F_1, F_2)\).
+Di conseguenza \(k < F_1 + F_2\) porta all'insieme vuoto.
+Notiamo che nel caso in cui \(F_1 = F_2\) otteniamo un cerchio.
+
+L'ellisse ha due assi di simmetria:
+la retta per i 2 fuochi e l'asse del segmento \(\overline{F_1F_2}\).
+
+A differenza della parabola, l'ellisse è una curva limitata.
+Più precisamente, i due assi intersecano ciascuno in due punti detti vertici
+(vi sono quindi 4 vertici).
+Si verifica facilmente che l'ellisse è contenuta nel rettangolo delimitato dalle rette parallele
+agli assi e passanti per i vertici.
+
+\textbf{Descrizione analitica:} consideriamo il caso particolare in cui i due fuochi sono
+su uno degli assi delle coordinate e siano simmetrici rispetto all'origine.
+Consideriamo quindi \(F_1=(c,0)\) e \(F_2 = (-c,0)\).
+Dunque \(k > d(F_1, F_2) = 2|c|\).
+Sia \(P=(x,y)\) un punto arbitrario. Imponiamo allora
+\[ d(P, F_1) = d(P, F_2) = k \]
+Abbiamo allora
+\[ \sqrt{{(x-2)}^2 + {(y-0)}^2} + \sqrt{{(x+c)}^2 + {(y-0)}^2} = 0 \]
+elevando al quadrato troviamo quindi
+\begin{align*}
+    {(x-c)}^2 + y^2 &= k^2 - 2k\sqrt{{(c+x)}^2 + y^2} + {(c+x)}^2 + y^2 \\
+    2k\sqrt{{(x+c)}^2 + y^2} &= k^2 + 4cx \\
+    4k^2 ( x^2 + 2xc + c^2 + y^2) &= k^4 + 8ck^2x + 16c^2x^2 \\
+    (4k^2 - 16c^2)x^2 + 4k^2 + y^2 &= k^4 - 4k^2c^2 \\
+    \frac{4k^2 - 16c^2}{k^2(k^2 - 4c^2)} x^2 + \frac{4k^2}{k^2(k^2-4c^2)}y^2 &= 1 \\
+    \frac{4}{k^2}x^2 + \frac{4}{k^2 - 4c^2}y^2 &= 1
+\end{align*}
+Notiamo che tutti i denominatori sono strettamente positivi.
+Possiamo quindi riscrivere l'espressione come
+\[
+    hx^2 + ly^2 = 1
+\]
+dove \(h,l \geq 0\).
+
+Viceversa, un'equazione di questo tipo rappresenta un'ellisse.
+Chiaramente, se i fuochi sono sull'asse delle ordinate si ottiene un'equazione di questo tipo.
+Spesso si scrive l'equazione nel seguente modo standard:
+\[
+    \frac{x^2}{a^2} + \frac{y^2}{b^2} = 1
+\]
+con \(a\neq 0\) e \(b \neq 0\).
+
+Da questa equazione possiamo trovare i vertici intersecandola con gli assi delle coordinate.
+Sostituendo \(x=0\) troviamo \(y=b\) e \(y=-b\), quindi i due vertici \(V_1 = (0,b)\) e \(V_2 = (0,-b)\).
+Analogamente con \(y=0\) troviamo gli altri due vertici \(V_3=(a,0)\) e \(V_4=(-a,0)\).
+
+Gli assi intercettano due segmenti sull'ellisse di lunghezze \(2|a|\) e \(2|b|\),
+di cui il più lungo è l'asse focale.
+Se supponiamo \(|a| > |b|\), saranno allora
+\(F_1=(c,0)\) e \(F_2=(-c,0)\).
+Ora
+\begin{align*}
+    d(V_1, F_1) + d(V_1, F_2) &= d(V_3, F_1) + d(V_3, F_2) \\
+    2\sqrt{b^2 + c^2} &= \sqrt{{(a-c)}^2} + \sqrt{{(a+c)}^2} \\
+    2\sqrt{b^2 + c^2} &= |a-c| + |a+c| \\
+    4(b^2 + c^2) &= a^2 - 2ac + c^2 + a^2 + 2ac + c^2 + 2|a^2 - c^2|
+\end{align*}
+Poiché \(|a| > |b|\) ne segue che \(|a| > |c|\) cioè \(a^2 > c^2\) e otteniamo quindi
+\begin{align*}
+    4b^2 + 4c^2 &= 2a^2 +2c^2 + 2a^2 - 2c^2 \\
+    c^2 &= a^2 - b^2
+\end{align*}
+
+Dunque i fuochi sono \((\sqrt{a^2 - b^2}, 0)\) e \((-\sqrt{a^2 - b^2}, 0)\).
+
+\sexercise{Data l'ellisse di equazione \(2x^2 + 5y^2 = 3\) trovarne vertici e fuochi}{
+    Sostituendo \(x=0\) e \(y=0\) troviamo
+    \(V_1 = (0, \sqrt{\frac{3}{2}})\), \(V_2 = (0, -\sqrt{\frac{3}{5}})\),
+    \(V_3 = (\sqrt{\frac{3}{2}}, 0)\) e \(V_2 = (-\sqrt{\frac{3}{5}}, 0)\).
+    Poiché \(\sqrt{\frac{3}{2}} > \sqrt{\frac{3}{5}}\), l'asse focale è l'asse delle ascisse.
+    Sia ora \(F_1 = (c,0)\) e \(F_2 = (-c,0)\), abbiamo che
+    \[ d(V_1, F_1) + d(V_1, F_2) = d(V_3, F_1) + d(V_3, F_2) \]
+    risolvendo questa equazione troviamo \(c=\pm \frac{3}{\sqrt{10}}\).
+    I fuochi sono allora \(F_1 = (\frac{3}{\sqrt{10}}, 0)\) e \(F_2 = (-\frac{3}{\sqrt{10}}, 0)\).
+}
+
 
 \end{document}
