@@ -1,0 +1,111 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{principle-of-induction}
+\genpage
+
+\section{Principle of induction}
+
+\begin{snippet}{principle-of-induction-expl}
+    Induction can be used to prove a statement in the form \(P(n)\)
+    for all \(n \in \mathbb{N}\).
+    For induction to work one must need to prove the base base, which is usually \(P(0)\),
+    but other starting points can be used to prove the statement from that point on.
+\end{snippet}
+
+\begin{snippettheorem}{weak-induction-theorem}{Weak induction}
+    Proving that the \textit{base case} \(P(0)\) is true,
+    along with proving the \textit{induction step} \(P(n) \implies P(n+1)\), implies \(P(n)\)
+    for all \(n \geq 0\). In second-order logic
+    \[
+        \forall P \left(
+            P(0) \land \forall n \left( P(n) \implies P(n+1) \right)
+            \implies \forall n \left( P(n) \right)
+        \right)
+    \]
+\end{snippettheorem}
+
+\begin{snippettheorem}{strong-induction-theorem}{Strong induction}
+    Proving that the base case \(P(k)\) for \(k < m\) is true, along with
+    proving the induction step \(P(m)\), implies \(P(n)\)
+    for all \(n\).
+\end{snippettheorem}
+
+%The base case here is when we need to prove \(P(m)\) for \(m=0\).
+\plain{Weak and strong induction are equivalent.}
+
+\section{Exercises}
+
+\begin{snippetexercise}{induction-ex-1}{Weak induction}
+    Prove that for each \(n \geq 1\), the sum \[ \sum_{k=1}^n k = \frac{n(n+1)}{2} \].
+    \begin{itemize}
+        \item The base case is given by \(n=1\) where \(1 = \frac{2}{2} = 1\).
+        \item The inductive case is given by \(\xi = n+1\)
+        \begin{align*}
+            \frac{n(n+1)}{2} + \xi &= \frac{n(n+1)}{2} + \frac{2n}{2} + \frac{2}{2} \\
+            &= \frac{n^2 + 3n + 2}{2} \\
+            &= \frac{(n+1)(n+2)}{2} \\
+            &= \frac{\xi(\xi+1)}{2}
+        \end{align*}
+    \end{itemize}
+\end{snippetexercise}
+
+\begin{snippetexercise}{induction-ex-2}{Weak induction}
+    Prove \(n! > n^2\) for \(n \geq 4\).
+    The base case is \(4!=24 > 4^2 = 16\).
+
+    The induction step is to prove \(n! > n^2 \implies (n +1)! > {(n+1)}^2\).
+    Note that \((n+1)!=(n+1)n!\).
+    Since \(n! > n^2\), then
+    \begin{align*}
+        n!(n+1) &> n^2(n+1) \\
+        n!(n+1) &> n^3 + n^2
+    \end{align*}
+    Since \(n \geq 4\), \(n^3 + n^2 > {(n+1)}^2=n^2+2n+1\).
+    Thus, by the transitive property, \((n+1)! > {(n+1)}^2\).
+\end{snippetexercise}
+
+\begin{snippetexercise}{induction-ex-3}{Weak induction}
+    Prove that
+    \[
+        \sum_{k=1}^n k^2 = \frac{n(n+1)(2n+2)}{6}
+    \]
+    \begin{itemize}
+        \item The base case is \(\frac{6}{6}=1\)
+        \item The induction case is given by
+        \begin{align*}
+            \frac{n(n+1)(2n+2)}{6} + {(n+1)}^2  &= \frac{n(n+1)(2n+2)}{6} + n^2 + 2b + 1 \\
+            &= \frac{(n+1)(n+2)(2(n+1)+1)}{6}
+        \end{align*}
+    \end{itemize}
+\end{snippetexercise}
+
+\begin{snippetexercise}{induction-ex-4}{Weak induction}
+    Per ogni \(n \geq 0\) e per ogni \(h > -1\),
+    \[
+        {(1+h)}^n \geq 1 + nh
+    \]
+    TODO:
+\end{snippetexercise}
+
+\begin{snippetexercise}{induction-ex-5}{Strong induction}
+    Prove that every integer is written as a product of primes.
+    \begin{itemize}
+        \item The base case is \(n=2\), which is a prime number.
+        \item The induction case is given by assuming \(\forall k \leq m\),
+        the number \(k\) is a product of primes. The next number \(n+1\)
+        is either prime or not prime. In the first case it is prime and we can thus
+        write it as a product of prime. In the latter case it is not prime, and thus can be written
+        as \(n+1 = kh\) for \(2\leq k,h< n+1\).
+        By the inductive hypothesis \(h\) and \(k\) can be written as a product of primes.
+        The same goes for \(n+1=hk\). 
+    \end{itemize}
+\end{snippetexercise}
+
+\end{document}
