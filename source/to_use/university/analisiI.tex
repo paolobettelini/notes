@@ -529,8 +529,6 @@ e
     \]
 }
 
-La proprietà del sup è equivalente all'assioma della scelta.
-
 Bisogna tuttavia dimostrare l'unicità di questa costruzione e la sua esistenza.
 
 \stheorem{Teorema di unicità}{
@@ -575,12 +573,168 @@ allora
 \[
     x=y \iff n=m \land a_k=b_k
 \]
-e 
+e
 \[
-    x< y \iff n < m \land a_k < b_k
+    x<y \iff n < m \lor (n=m \land a_i = b_i, i < k \land a_k < b_k)
 \]
 
-Le operazioni sono definite mediante troncamenti,
+Le operazioni sono definite mediante troncamenti.
+Verificiamo che questo modello di \(\mathbb{R}\) soddisfi la proprietà del sup.
+
+Prendiamo quindi  \(E\subseteq \mathbb{R}\) non vuoto e sup limitato. Costruiamo
+il sup mediante un algoritmo.
+\[
+    \sup E = \mu = n,a_1,a_2,a_3,\cdots,a_k,\cdot
+\]
+Per ogni \(x\in E\) scriveremo \(n_x,a(x)_1, a(x)_2,\cdots\).
+\(E\) è non-vuoto e limitato sup, per cui
+\[
+    \{ n_x \,|\, x\in E \}
+\]
+è un insieme di numeri in \(\mathbb{Z}\) limitato superiormente.
+Sia
+\[
+    N = \max\{ n_x \colon x \in E \}
+\]
+Prendiamo ora tutti gli insiemi
+\[
+    E_0 = \{ x\in E \,|\, n_x = N \} \neq \emptyset
+\]
+Poniamo \(a_1 = \max \{ a(x)_1 \,|\, x \in E_0 \}\)
+Abbiamo quindi
+\[
+    E_1 = \{ x \in E_0 \,|\, a(x)_1 = a_1 \} \neq \emptyset
+\]
+Poniamo ora \(a_2 = \max \{ a(x)_2 \,|\, x \in E_1 \}\).
+Con lo stesso metodo troviamo \(a_3, a_4, \cdots\), ossia
+\[
+    a_k = \max \{ a(x)_k \,|\, x \in E_{k-1} \} \quad a_{k+1} = \max\{ a(x)_{k+1} \,|\, x \in E_k \}
+\]
+Trovando quindi
+\[
+    \mu = N,a_1,a_2,\cdots
+\]
+
+Dico che \(\mu\) è un maggiorante di \(E\), e che se \(z<\mu\), \(z\) non è maggiorante.
+Sia allora \(\overline{x} \in E\), quindi
+\[
+    \overline{x} = n_{\overline{x}}, a(\overline{x})_1, a(\overline{x})_2, \cdots
+\]
+Allora \(n_{\overline{x}}\leq N\) se \(n_{\overline{x}} < N\). \(\overline{x} < \mu\).
+Gli elementi in \(E_0\) sono al massimo \(a_1\).
+Se \(n_{\overline{x}} = N\) e \(n_{\overline{x}} \in E_0\) e \(a_1(\overline{x}) = a_1\). \\
+Se \(a(\overline{x})_1 < a_1 \implies \overline{x} < \mu\).\\
+Se invece \(a(\overline{x})_1=a_1 \implies \overline{x} \in E_1\) e \(a(\overline{x})_2 \leq a_2\) \\
+Fino che ad un certo punto non trovo un decimale diverso.
+
+Iterando, se \(\exists k\) tale che \(a(\overline{x})_k < a_k \implies \overline{x} < \mu\).
+Se \(\forall k, a(\overline{x})_k = a_k\), allora \(\overline{x} = \mu\) e \(\mu\) è il max di \(E\).
+Questo procedimento non dimostra che \(\mu \in E\).
+
+Mostriamo ora che è il più piccolo dei maggioranti. Sia
+\[
+    z = n_z, a(z)_1, a(z)_2, \cdots < \mu
+\]
+Deve quindi succedere che o \(n_z < N\), e allora \(\forall x\in E_0 \neq \emptyset, z<x\),
+oppure \(n_z = N\) e \(a(z)_j = a_j\) per tutte le \(j<k\) ma \(a(z)_k < a_k\).
+Allora \(\mu\sup E\).
+
+\subsection{Conseguenze della prorpietà del sup}
+
+Le conseguenze della prorpietà del sup sono:
+\begin{itemize}
+    \item \textbf{proprietà archimedea:} \(\forall x \in \mathbb{R}, \forall a > 0, \exists n\in\mathbb{N} \,|\, na>x\) (in realtà vale anche in \(\mathbb{Q}\)).
+    \item \textbf{densità dei razionali nel reali:} \(\forall x,y \in \mathbb{R}\) dove \(x<y\), esiste \(r\in\mathbb{Q}\,|\, x<r<y\).
+\end{itemize}
+
+\stheorem{Esistenza delle radici nei reali}{
+    \[
+        \forall y>0, \forall n \in \mathbb{N}, n \geq 1,
+        \exists_{=1} x>0 \,|\, x^n = y
+    \]
+}
+
+\sproof{}{
+    Sia \[ E = \{ z \in \mathbb{R} \,|\, z>0 \land z^n \leq y \} \]
+    Dobbiamo quindi mostrare che \(E\) non è vuoto, ed è limitato superiormente.
+    Definiamo \(x = \sup E\) e mostriamo che \(x^n = y\).
+    \begin{itemize}
+        \item \textbf{Non vuoto:} se \(y \geq 1\), basta scegliere \(x=1\) in quanto \(x^n=1 \leq y\).
+        Altrimenti, se \(y < 1\), poniamo \(x=y\) e notiamo che, perché \(y < 1\), allora
+        \(y^n < y\), e quindi \(y \in E\).
+        \item \textbf{Limitato superiormente:} \(E\) è limitato superiormente, infatti \(1+y\)
+        è un maggiorante di \(E\). Se \(z \geq (1+y)\), poiché la funzione \(t\to t^2\) è crescente per \(t > 0\),
+        si ha \(z^n \geq {(1+y)}^n > {(1+y)} > y \implies z \notin E\).
+        Sia \(x =\sup E\). Dico che \(x^n = y\). Dimostro che se suppongo \(x^n > y\)
+        allora per \(k\) grande
+        \[
+            {\left(x- \frac{1}{k}\right)}^n > y
+        \]
+        e quindi \(x-\frac{1}{k}\) è ancora un maggiorante di \(E\), contro l'ipotesi impossibile
+        perché \(x\), che è il \(\sup E\), è il più piccolo maggiorante.
+        Invece, se \(x^n < y\) allora per \(k\) grande
+        \[
+            {\left(x + \frac{1}{k}\right)}^n < y
+        \]
+        allora \(x+\frac{1}{k}\in E\) ed è più grande di \(x\), e \(x\) non è quindi un maggiorante (assurdo).
+        Visto che \(x\) non può essere nè più grande nè più piccolo, \(x^n=y\).
+        \item \textbf{Unicità:} notiamo che se \(0 < t_1 < t_2 \implies t_1^n < t_2^n\).
+    \end{itemize}
+}
+
+Possiamo anche mettere \(z\geq 0\) così dimostrare che \(E\neq \emptyset\) è più facile.
+
+Esercizio: dimostrazione per induzione che \(0<y<1 \implies y^n < y\), per \(n > 1\).
+(Che abbiamo usato nell'ultima dimostrazione).
+
+\subsection{Esercizi sup}
+
+\sexercise{}{
+    Let
+    \[
+        E = \{ x\in\mathbb{R} \,|\, \frac{1}{2} \leq x < 5 \}
+    \]
+    e la successione \[
+        F = \{ x = x_n \,|\, x_n = \frac{n + 1}{n + 2}, \quad n\in\mathbb{N}^* \}
+    \]
+    Trova inf, sup, min, max (se esistono) di \(E\), \(F\), \(E \cup F\) e \(E\cap F\).
+    \begin{itemize}
+        \item \(E\) è limitato superiormente e inferiormente.
+        Il minimo è \(\frac{1}{2}\), mentre \(5\) è un maggiorante, è il più piccolo
+        dei maggioranti quindi \(\sup E = 5\), ma non vi è un massimo.
+        \item \(F\) è limitato superiormente in quanto 
+        \[
+            x_n = \frac{n+1}{n+2} < \frac{n+2}{n+2}  =1
+        \]
+        È limitato inferiormente perché \(x_n > 0\).
+        Per verificare sup e inf, è comodo riscrivere \[
+            x_n = 1 - \frac{1}{n+2}
+        \]
+        Il temrine \(n+2\) cresce con \(n\), quindi \(\frac{1}{n+2}\) decresce al crescere di \(n\)
+        e quindi \(x_n\) cresce approcciando \(1\). Allora con \(n=1\) il termine assume il valore più piccolo,
+        ossia \(\frac{2}{3}\), quindi il minimo di \(F\). Allora siccome ci avviciamo arbitrariamente a
+        \(1\), è lecito ipotizzare \(\sup F = 1\).
+        Il massimo di \(F\) non esiste.
+        Rimane da far vedere che se \(z < 1\) allora \(z\) non è maggiorante di \(F\)
+        cioè
+        \[
+            x_n - z = (1-z) - \frac{1}{n+2} > 0
+        \]
+        purché \(\frac{1}{n+2} < 1-z\) cioè \(n > \frac{1}{1-z}-2\).
+        Quindi \(z\) non è maggiorante e \(\sup E = 1\).
+        \item TODO: esercizio verificare che \(\sup (E \cup F) = \max \{ \sup E,\sup F \}\)
+        e analogamente inf con il min.
+        Mostrare con un esempio che non c'è qualcosa di analogo per l'intersezione.
+        \item Esercizio: posto \(-E = \{ -x \,|\, x \in E\}\) mostrare che
+        \(\sup -E = -\inf E\) e \(\inf -E = -\sup E\).
+        \item Esercizio: Posto \(E+F = \{ x + y \,|\, x \in E, y \in F \}\)
+        cosa si può dire di \(\sup E + F\) e \(\inf E + F\).
+    \end{itemize}
+}
+
+Dimostrare che il max esiste se e solo se \(\sup E\) è finito e appartiene a \(E\).
+Analogamente per il min.
+
 
 % Per negare una proposizione si inverte \forall con \exists e si nega il predicato
 
