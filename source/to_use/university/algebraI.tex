@@ -10,6 +10,7 @@
 
 \usetikzlibrary{arrows}
 \usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{cd}
 
 \title{Algebra I}
 \author{Paolo Bettelini}
@@ -367,5 +368,178 @@ Si dovrebbe dimostrare l'unicità dell'elemento inverso e del neutro.
         {(A+B)}^t = A^t + B^t
     \]
 }
+
+\stheorem{Moltiplicazione associativa}{
+    Se \(A \in M_{m,n}(R)\) e \(B \in M_{n,p} (R)\) e \(C \in M_{p,r} (R)\),
+    allora
+    \[
+        (AB)C = A(BC)
+    \]
+}
+
+\sproof{Moltiplicazione associativa}{
+    \(AB\) è di tipo \(m \times p\). L'elemento di posto \((i,j)\) è
+    \[
+        \sum_{k=1}^n A_{i,j}B_{k,j} = D_{i,j}
+    \]
+    La matrice \((AB)C\) ha dimensione \(m \times r\). L'elemento di posto \((i,l)\)
+    è
+    \begin{align*}
+        \sum_{j=1}^p D_{i,j}C_{j,l} &= \sum_{j=1}^n \left( \sum_{k=1}^n A_{i,k}B_{k,j} \right) C_{j,l} \\
+        &= \sum_{j=1}^p \sum_{k=1}^n A_{i,k} B_{k,j} C_{j,l}
+    \end{align*}
+    \(BC\) è ha dimensione \(n \times r\). L'elemento di post \((k,l)\)
+    è \[
+        \sum_{j=1}^p B_{k,j} C_{j,e} = E_{k,e}
+    \]
+    \(A(BC)\) ha dimensione \(m \times r\). L'elemento di posto \((i,l)\) è
+    \begin{align*}
+        \sum_{k=1}^n A_{i,k}E_{k,l} &= \sum_{k=1}^n A_{i,k} \left( \sum_{j=1}^p B_{k,j}C_{j,e} \right)\\
+        &= \sum_{k=1}^n \sum_{j=1}^p A_{i,k} B_{k,j} C_{j,e}
+    \end{align*}
+}
+
+\sproposition{Distributività destra}{
+    Con \(A, B \in M_{m,n}(R)\) e \(C \in M_{n,p}(R)\)
+    \[
+        (A+B)C = AC + BC
+    \]
+}
+
+\sproposition{Distributività sinistra}{
+    Con \(A, B \in M_{m,n}(R)\) e \(C \in M_{n,p}(R)\)
+    \[
+        A(B+C) = AB + AC
+    \]
+}
+
+In generale non vale \(AB=BA\). Ambo le operazioni sono definite solo se ambo le matrici sono quadrate
+con dimensione \(n\times n\). In tal caso, non è comunque detto che la proprietà valga.
+Nel caso in cui \(n=1\) la proprietà commutativa vale necessariamente.
+
+Il principio di annullamento del prodotto non vale.
+\[
+    \begin{bmatrix}
+        1 & 0 \\
+        0 & 0
+    \end{bmatrix}
+    \begin{bmatrix}
+        0 & 0 \\
+        0 & 1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        0 & 0 \\
+        0 & 0
+    \end{bmatrix}
+\]
+In questo caso il risultato è la matrice nulla ma nessuno dei due era nulla.
+
+\sproposition{}{
+    Se \(A\) e \(B\) sono invertibili e dello stesso ordine, allora
+    \(AB\) è invertibile e \({(AB)}^{-1 = B^{-1}A^{-1}}\).
+}
+
+\sexample{Matrice non invertibile}{
+    \[
+        \begin{bmatrix}
+            1 & 2 \\
+            2 & 4
+        \end{bmatrix}
+        \begin{bmatrix}
+            x & y \\
+            z & w
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            x+2z & y+2w \\
+            2x+4z & 2y+4w
+        \end{bmatrix}
+    \]
+    Notiamo che i punti dove dovrebbe esserci uno \(0\) sono il doppio di quelli con \(1\),
+    quindi non vi è soluzione e non è invertibile.
+}
+
+Se \(A\) e \(B\) sono due matrici quadrate della stessa dimensione
+tali che \(AB = I_n\) allora anche \(BA = I_n\) (La dimostrazione non è banale).
+% Quindi la definizione vale solo con uno.
+
+\sproposition{}{
+    Se \(A \in M_{m,n}(R)\) e \(B \in B_{n,p}(R)\) allora
+    \(B^tA^t \in M_{p,m}(R)\). Abbiamo quindi che
+    \[
+        B^tA^t = {(AB)}^t
+    \]
+}
+
+\sproposition{}{
+    Se \(A\) è invertibile, allora
+    \[
+        {(A^t)}^{-1} = {(A^{-1})}^t
+    \]
+}
+
+\pagebreak
+
+\section{Numeri naturali}
+
+\sdefinition{Assiomi di Peano}{
+    I numeri naturali sono un insieme \(\mathbb{N}\) dotati di una funzione successore
+    \(S \colon \mathbb{N} \to \mathbb{N}\)
+    e di un elemento fissato \(0\) tali che:
+    \begin{itemize}
+        \item la funzione \(S\) è iniettiva;
+        \item \(0 \not\in \text{Im}_S\);
+        \item se \(A\subseteq \mathbb{N}\) tale che \(0\in A\) e \(As\subseteq A\), allora \(A = \mathbb{N}\);
+    \end{itemize}
+}
+
+L'esistenza di un tale insieme è garantita dalla teoria assiomatica.
+Tuttavia, dobbiamo garantire che i modelli degli assiomi di Peano siano isomorfi,
+quindi trovare una funzione biettiva fra tutti i modelli.
+Quindi, dati due modelli \((\mathbb{N}, S, 0)\) e \((\mathbb{N}', S', 0')\)
+bisogna trovare una funzione biettiva \(f\colon \mathbb{N} \to \mathbb{N}'\)
+tale che \(f(0) = 0'\) e \(nfs' = nsf\)
+
+\begin{center}
+% https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiXBAF9T1Nd9CUZAIxVajFmzAIuPbHgJEhpEdXrNWicAHI4WztxAY5-ReVFqJmsHo6iYUAObwioAGYAnCAFskZEDggkAGZVcQ0QV303Tx9EEP9AxAAmUPU2XSiImKQlBKQUsTTNSOoGOgAjGAYABV55ARB3LAcACxxMj29fagCc1MsQBFKKqtrjBU0m1vbbDiA
+\begin{tikzcd}
+    n \arrow[r, "f"] \arrow[d, "s"'] & n' \arrow[d, "s'"] \\
+    ns \arrow[r, "f"']               & n's'              
+\end{tikzcd}
+\end{center}
+
+Questo può essere fatto con un procedimento cosidetto per ricorrenza, dipende fortemente
+dall'assioma 3. In generale gli assiomi di Peano mi permettono di definire successioni di oggetti
+per ricorrenza, cioè assegnando un oggetto associato a \(0\)
+e il modo di costruire l'oggetto associato (come per esempio il fattoriale o l'addizione nei naturali).
+
+La somma è definita nel seguente modo ricorrente: \(m+n=0\) e \(m+S(n) = S(m+n)\).
+
+Usango gli assiomi posso dimsotrare varie proprietà dell'addizione, detta moltiplicazione
+(da definire anch'esso per ricorrenza) e dell'ordine (anch'esso da definire per ricorrenza).
+
+L'ordine è definito solamente da \(n \leq S(n)\).
+
+Le proprietà per \(m,n,p\in\mathbb{N}\) sono:
+\begin{enumerate}
+    \item \textbf{somma associativa:} \((m+n)+p = m + (n+p)\);
+    \item \textbf{somma distributiva:} \(m + n = n + m\);
+    \item \textbf{somma nulla:} \(m + 0 = m\);
+    \item \textbf{prodotto associativo:} \((mn)p = m(np)\);
+    \item \textbf{prodotto distributivo:} \(mn = nm\);
+    \item \textbf{prodotto nullo:} \(m S(0)= m\);
+    \item \textbf{distributiva:} \((m+n)p = mp + np\);
+    \item \textbf{cancellazione somma:} \(m+n = m+p \implies n=p\);
+    \item \textbf{cancellazione prodotto:} \(mn = mp \land m \neq 0 \implies n=p\);
+    \item \textbf{compatibilità tra somma e ordine:} \(m\leq n \implies m+p \leq n + p\);
+    \item \textbf{compatibilità tra prodotto e ordine:} \(m\leq n \implies mp \leq np\);
+\end{enumerate}
+
+Detto \(1\) il numero \(S(0)\) risulterà che \(S(n) = n+1\).
+
+\paragraph{Assioma 3:}
+Un altro modo per dire ciò è che ogni sottoinsieme non vuoto di \(\mathbb{N}\)
+ammette un minimo. Per dimostrarlo sia \(B\subseteq \mathbb{N}\)...
 
 \end{document}
