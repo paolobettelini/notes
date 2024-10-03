@@ -1,16 +1,13 @@
-\documentclass[preview]{standalone}
+\documentclass[preview, dvipsnames]{standalone}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{parskip}
-\usepackage{fullpage}
-\usepackage{hyperref}
-\usepackage{wrapfig}
 \usepackage{pgfplots}
 \usepackage{bettelini}
-\usepackage{makecell}
 \usepackage{stellar}
 \usepackage{definitions}
+
+\begin{document}
 
 \makeatletter 
 \tikzset{ 
@@ -29,10 +26,8 @@ protect/.code={
   markings,
   mark=at position #1 with {\arrow{>}}},postaction={decorate}},
   ->-/.default=0.55}
-
-\begin{document}
   
-\id{complexanalysis-definitions}
+\id{riemann-sphere}
 \genpage
 
 \section{Riemann Spheres}
@@ -66,19 +61,31 @@ protect/.code={
         \pgfdeclarelayer{background}
         \pgfdeclarelayer{foreground} 
         \pgfsetlayers{background,main,foreground}
-        \path[save path=\pathSphere,ball color=gray,fill opacity=0.6] 
-            (0, 1, 0) circle[radius=1];
+
+        % Sphere
+        %\path[save path=\pathSphere,ball color=gray,fill opacity=0.6] 
+        %    (0, 1, 0) circle[radius=0.25];
+
+        % SHADING does not work https://tex.stackexchange.com/questions/528193/tikz-standalone-document-not-rendering-colour-overleaf
+
+        % SPhere without shading
+        \draw[fill = gray!40, opacity = 0.6] (0,1) circle (1);
+        \draw (-1,1) arc (180:360:1 and 0.3);
+        \draw[dashed] (1,1) arc (0:180:1 and 0.3);
+        \fill[fill=black] (0,1) circle (0.5pt);
+
         \begin{scope}[3d view={\myaz}{15}]
             \draw (-amax,amax) -- (-amax,-amax) coordinate (bl) -- (amax,-amax) 
                 coordinate (br)-- (amax,amax);
-            \begin{scope}
-                \tikzset{protect=\pathSphere}
-                \draw (-amax,amax) -- (amax,amax);
-            \end{scope}
-            \begin{scope}
-                \clip[reuse path=\pathSphere];
-                \draw[dashed] (-amax,amax) -- (amax,amax);
-            \end{scope}
+            % Sphere
+            %\begin{scope}
+            %    \tikzset{protect=\pathSphere}
+            %    \draw (-amax,amax) -- (amax,amax);
+            %\end{scope}
+            %\begin{scope}
+            %    \clip[reuse path=\pathSphere];
+            %    \draw[dashed] (-amax,amax) -- (amax,amax);
+            %\end{scope}
             \begin{scope}[canvas is xy plane at z=0]
                 \path[save path=\pathPlane] (\myaz:amax) -- (\myaz+180:amax) --(bl) -- (br) -- cycle;
                 \begin{pgfonlayer}{background}
@@ -99,9 +106,9 @@ protect/.code={
                 -- node[auto,pos=0.5]{} (-1, 0, 1)
                 node[dot,label=below right:{\(s\)}](z*){};
     
-            \begin{pgfonlayer}{background} 
+            %\begin{pgfonlayer}{background} 
                 \draw[dashed] (z*) -- (0,0,2) node[dot,label=above:{$\zeta$}](zeta){};
-            \end{pgfonlayer}
+            %\end{pgfonlayer}
         \end{scope}
     \end{tikzpicture}
     \end{center}
