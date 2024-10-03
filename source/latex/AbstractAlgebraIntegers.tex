@@ -17,22 +17,40 @@
 \section{Divides operator}
 
 \begin{snippetdefinition}{divide-operator-definition}{Divide Operator}
-    Given two integers \(a\) and \(b\),
-    we say that \(a \,|\, b\) if \(a\) \textit{divides} \(b\),
+    Given \(a,b \in \integers\),
+    we say that \(a \,|\, b\) \ifandonlyif \(a\) \textit{divides} \(b\),
     meaning that
     \[
-        \exists x \suchthat ax = b
+        \exists x \in \integers \suchthat ax = b
     \]
 \end{snippetdefinition}
 
-\begin{snippet}{divide-operator-properties}
-Given the integers \(a\), \(b\) and \(c\)
-\begin{align*}
-    a \divides b \iff -a \divides b \iff a \divides -b \\
-    |a| \leq |b|, \quad b \neq 0 \\
-    a \divides b \implies a \divides bc \\
-    a \divides b \land b \divides c \implies a \divides c
-\end{align*}
+\begin{snippetproposition}{divide-operator-properties}{Properties of the divide operator}
+    Given the integers \(a\), \(b\) and \(c\)
+    \begin{enumerate}
+        \item \(a \divides b \land a \divides c \implies a \divides b+c\);
+        \item \(a \divides b \implies a \divides bc\);
+        % basta notare che se b=ac, allora -b=a(-c) e viceversa (per la prima)
+        \item \(a \divides b \iff -a \divides b \iff a \divides -b\);
+        \item \(|a| \leq |b|, \quad b \neq 0\);
+        \item \(a \divides b \land b \divides c \implies a \divides c\);
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetlemma}{divide-operator-abs-property}{}
+    If \(a \divides b \land b\neq 0\), then \(|a|\leq|b|\).
+\end{snippetlemma}
+
+\begin{snippetproof}{divide-operator-abs-property-proof}{divide-operator-abs-property}{}
+    We are going to assume that \(b>0\) and \(a\leq0\) as the case where they are negative is analogous.
+    There exists \(c \in \mathbb{Z} \suchthat b = ac\). Since \(b>0\) and \(a\geq 0\)
+    we have \(a>0\) (otherwise \(b=ac=0\)) and \(c>0\).
+    Thus, \(b= ac \geq a = a\), like we wanted.
+\end{snippetproof}
+
+\begin{snippet}{divide-operator-abs-property-consequence}
+    The dividers of a non-zero numbers are of a finite number because their module
+    is less than \(|b|\).
 \end{snippet}
 
 \section{Division with remainder}
@@ -44,42 +62,181 @@ Given the integers \(a\), \(b\) and \(c\)
     \]
 \end{snippetproposition}
 
-% TODO proof
+\begin{snippetproof}{division-with-remainder-proof}{division-with-remainder}{Division with remainder}
+    Consider \(a=bq+r\) with \(0 \leq r < b\).
+    \begin{enumerate}
+        \item \textbf{Existence:} consider \(R=\{a-bx \suchthat x\in\integers\} \intersection \naturalnumbers\)
+        as the set of potential remainders. We now show that \(R\neq\emptyset\) by
+        letting \(x=-|a|\) and considering the number \(r'=a-b(-|a|) = a + b|a| \geq a+|a| \geq 0\)
+        since \(b > 0\) and
+        \[
+            \begin{cases}
+                a+|a| = 2a \geq 0 & a \geq 0 \\
+                a+|a| = 0 \geq 0 & a < 0
+            \end{cases}
+        \]
+        Thus, \(r'\in R \land R \neq\emptyset\),
+        meaning that \(R\) is a non-empty subsets of \(\naturalnumbers\), and thus has a \leastelement,
+        which is our remainder \(r\). There exists \(q\in\integers \suchthat r=a-bq\), or \(a=bq+r\).
+        This values satisfies the necessary conditions as \(r\geq 0\). However,
+        we still need to show that \(r < b\).
+        If we had \(r \geq b\), then \(r-b > 0\), but we would arrive at
+        \[
+            r-b = a-bq - b = a - b(q+1) \in R
+        \]
+        contrary to the hypothesis that \(r\) is the \leastelement of \(R\) \lightning.
+        Thus, \(r < b\).
+        \item \textbf{Uniqueness:} Let \(a=bq' + r'\) with \(0\leq r' < b\).
+        Let, for instance, \(q \geq q'\). We thus have \(b(q-q') = r' - r\).
+        In the case where \(q-q' > 0\), the first term would be greater or equal than \(b\),
+        However, \(r-r' \leq r' < b\) \lightning. 
+        Thus, \(q-q' = 0\), which means that \(q=q'\) and \(r=r'\).
+    \end{enumerate}
+\end{snippetproof}
 
 % Lemma 5.3.13
 \begin{snippetlemma}{common-dividors-of-quotient-and-remainder}{Quotient and remainder common divisors}
-Let \(a \in \naturalnumbers\) and \(b \in {\naturalnumbers}^+\).
-Let \(q\) and \(r\) be the quotient and remainder of the division of \(b\)
-by \(a\).
-The common divisors of \(a\) and \(b\) are equivalent to the common divisors of \(r\) and \(q\).
+    Let \(a \in \naturalnumbers\) and \(b \in {\naturalnumbers}^+\).
+    Let \(q\) and \(r\) be the quotient and remainder of the division of \(b\)
+    by \(a\).
+    The common divisors of \(a\) and \(b\) are equivalent to the common divisors of \(r\) and \(q\).
 \end{snippetlemma}
 
 % TODO proof
 
+\section{Greatest common divisor of multiple integers}
+
+\begin{snippetdefinition}{greatest-common-divisor-definition}{Greater common divisor}
+    Let \(a_0, a_1, \cdots, a_n \in \integers\) where \((a_0, a_1, \cdots, a_n) \neq (0,0,0,\cdots, 0)\). \\
+    The \textit{greatest common divisors} of \(a_0, a_1, \cdots, a_n\), denoted \(\origgcd(a_0, a_1, \cdots, a_n)\),
+    is the greatest integer \(n\) such that \(n \divides a_k\). \\
+    In the case where \((a_0, a_1, \cdots, a_n) = (0,0,0,\cdots, 0)\), we define \(\origgcd(a_0, a_1, \cdots, a_n) = 0\).
+\end{snippetdefinition}
+
+\plain{This definition is well-defined as the set of greatest common divisors is non-empty
+and it is finite. If the numbers are not all zeroes, their common divisors are finite.}
+
+\begin{snippetproposition}{gcd-of-dividind-pair}{}
+    If \(a \divides b\) and \(a \neq 0\), \(\gcd(a,b) = |a|\).
+\end{snippetproposition}
+
+\begin{snippetproposition}{gcd-of-multiple-of-divisors}{}
+    The value \(k = \gcd(a_0, a_1, \cdots, a_n)\) is a multiple of all the divisors of \(a_0, a_1, \cdots\).
+\end{snippetproposition}
+
+\begin{snippetproposition}{common-divisor-division-equivalence-property}{}
+    Let \(a,b\in\integers\) with \(b>0\) and choose \(q\) and \(r\)
+    such that \(a=bq+r\) (with \(0\leq r < b\)).
+    Then, the common divisors of \(a\) and \(b\) are precisely the common divisors of
+    \(b\) and \(r\).
+\end{snippetproposition}
+
+\begin{snippetproof}{common-divisor-division-equivalence-property-proof}{common-divisor-division-equivalence-property}{}
+    If \(c\divides a\) and \(c\divides b\), then \(c\divides r = a-bq\).
+    Likewise, if \(c \divides b\) and \(c \divides r\) then \(c\divides a = bq+r\)
+\end{snippetproof}
+
+\begin{snippetproposition}{greatest-common-divisor-exists-and-unique}{Uniqueness of GCD}
+    The greatest common divisors of \(a_0, a_1, \cdots, a_n\) exists and is unique.
+\end{snippetproposition}
+
+\begin{snippetproposition}{greatest-common-divisor-multipliers}{}
+    Given integers \(a_0, a_1, \cdots, a_n\), there exists integers \(u_k\) such that
+    \[
+        a_0u_0 + \cdots a_n u_n = \gcd(a_0, a_1, \cdots, a_n)
+    \]
+\end{snippetproposition}
+
+\begin{snippetproposition}{composite-greatest-common-divisor}{Composite GCD}
+    Given integers \(a_0, a_1, \cdots, a_n\)
+    for \(n \geq 2\), \[\gcd(\gcd(a_0, \cdots, a_{n-1}), a_n) = \gcd(a_0, \cdots, a_n)\]
+\end{snippetproposition}
+
+\begin{snippetproposition}{greatest-common-divisor-scalar-multiplication}{Scalar multiplication of GCD}
+    Given integers \(a_0, a_1, \cdots, a_n\) and  an integer \(c\),
+    \[\gcd(ca_0, ca_1, \cdots, ca_n) = c \cdot \gcd(a_0, a_1, \cdots, a_n)\]
+\end{snippetproposition}
+
+\begin{snippetproof}{greatest-common-divisor-scalar-multiplication-proof}{greatest-common-divisor-scalar-multiplication}{Scalar multiplication of GCD}
+    Without loss of generality, assume \(a \geq 0\) and \(b \geq 0\) to be integers.
+    Consider the trivial case \(c=0\), where \(\gcd(0a, 0b) = \gcd(0,0) = 0\) and \(0\gcd(a,b) = 0\).
+    Consider now the case where \(c\neq 0\) and let \(\gcd(ca, cb) = e\) and \(\gcd(a,b) = d\).
+    We need to show that \(e=cd\). Note that \(d\divides a\) and \(d \divides b\), and thus \(cd \divides ca\)
+    and \(cd \divides cb\). This means that \(cd \divides e\) (i.e there exists \(f\) such that \(e=cdf\)).
+    Now note that \(e \divides ca\), so \(cdf \divides ca\), which means
+    \(ca = cdfg\) for some \(g \in \integers\). Since we are in the non-trivial case \(c\neq 0\),
+    we can simplify as \(a=dfg\), from which \(df \divides a\). Likewise,
+    \(df \divides b\). This also means that \(df \divides d\)
+    and thus \(cdf \divides cd\) and \(e \divides cd\).
+    We previously showed that \(cd\divides e\), so \(e\) and \(cd\) are two naturals
+    which divide eachother. They are thus the same.
+
+\end{snippetproof}
+
 \section{Euclidean algorithm}
 
-\begin{snippet}{euclidean-algorithm}
-Euclid's algorithm, is an efficient method for computing the greatest common divisor of two integers
-\(a\) and \(b\) where \(b > 0\).
+\begin{snippet}{euclidean-algorithm-expl}
+    Euclid's algorithm, is an efficient method for computing the greatest common divisor of two integers
+    \(a\) and \(b\) where \(b \geq 0\) and \(a \geq 0\) but \((a,b) \neq (0,0)\).
+    If we want to use negative numbers, we just consider their absolute value and
+    fix the sign accordingly at the end.
 
-Consider
-\[
-    a = bq + r
-\]
-The process is iterative.
-For each iteration take the coefficient of the quotient (\(b\)) and divide it by the remainder.
+    Consider
+    \[
+        a = bq + r
+    \]
+    where \(0 \leq r < b\).
 
-\begin{align*}
-    &a = bq + r, &0 \leq r < b \\
-    &b = rq_1 + r_1, &0 \leq r_1 < r \\
-    &r = r_1q_2 + r_2, &0 \leq r_2 < r_1 \\
-    \phantom{ } &\qquad \vdots & \\
-    &r_n = r_{n+1}q_{n+2} + r_{n+1}, &0 \leq r_{n+2} < r_{n+1} \\
-    &r_{n+1} = r_{n+2}q_{n+3} + 0&
-\end{align*}
-This sequence is stricly decreasing and will terminate with a null remainder.
-The last remainder \(r_{n+2}\) is then the greatest common divisor between \(a\) and \(b\).
+    If \(r=0\), then \(b \divides a\) and thus the greatest common divisor is \(b\).\\
+    If \(r > 0\), the common divisors are the common divisors of \(b\) and \(r\).
+    We thus divide \(b\) times \(r\).
+
+    The process is iterative.
+    For each iteration take the coefficient of the quotient (\(b\)) and divide it by the remainder.
+    \begin{align*}
+        &a = bq + r, &0 \leq r < b \\
+        &b = rq_1 + r_1, &0 \leq r_1 < r \\
+        &r = r_1q_2 + r_2, &0 \leq r_2 < r_1 \\
+        \phantom{ } &\qquad \vdots & \\
+        &r_n = r_{n+1}q_{n+2} + r_{n+1}, &0 \leq r_{n+2} < r_{n+1} \\
+        &r_{n+1} = r_{n+2}q_{n+3} + 0&
+    \end{align*}
+    This sequence is strictly decreasing and will terminate with a null remainder.
+    The last remainder \(r_{n+2}\) is then the greatest common divisor between \(a\) and \(b\).
+    \begin{align*}
+        r_{n+2} &= r_n - r_{n+1}q_{n+2} \\
+        &= r_n - (r_{n-1} - r_nq_{n+1})q_{n+2} \\
+        &= r_{n-1}(-q_{n+2}) + r_n(1 + q_{n+1}q_{n+2}) \\
+        &\cdots 
+    \end{align*}
+    by continuing this process we get
+    \[
+        r_{n+2} = au+bv
+    \]
+    which is a Bézout's identity.
 \end{snippet}
+
+\plain{This algorithms also works for polynomials (by restraining the orders of the terms).}
+
+\begin{snippetexample}{euclid-algorithm-example}{Euclid's algorithm}
+    Consider \(a=1170\) and \(b=486\).
+    We start with
+    \(1170 = 482 \cdot 2 + 198\). So, now we consider \(486\) and \(198\).
+    \begin{align*}
+        1170 &= 482 \cdot 2 + 198 \\
+        486 &= 198 \cdot 2 + 90 \\
+        198 = 90 \cdot 2 + 18 \\
+        90 = 18 * 5 + 0
+    \end{align*}
+    The greatest common divisor is thus \(18\).
+    Now we consider
+    \begin{align*}
+        18 &= 198 - 90\cdot 2 = 198 - (486 - 198 \cdot 2)\cdot 2 \\
+        &= 486(-2) + 198(5) = 486(-2) + (1170 - 486\cdot 2) \cdot 5 \\
+        &= 1170 \cdot 5 + 486(-12)
+    \end{align*}
+    which are Bezout's identities.
+\end{snippetexample}
 
 \section{Bézout's identity}
 
@@ -92,36 +249,7 @@ The last remainder \(r_{n+2}\) is then the greatest common divisor between \(a\)
     Furthermore, the integers \(az+bt\) are multiples of \(d\).
 \end{snippettheorem}
 
-\section{Greatest common divisor of multiple integers}
-
-\begin{snippetdefinition}{greatest-common-divisor-definition}{Greater common divisor}
-The greatest common divisors of \(a_0, a_1, \cdots, a_n\), denoted \(\origgcd(a_0, a_1, \cdots, a_n)\),
-is the greatest integer \(n\) such that \(n \divides a_k\).
-\end{snippetdefinition}
-
-\begin{snippetproposition}{greatest-common-divisor-exists-and-unique}{Uniqueness of GCD}
-    The greatest common divisors of \(a_0, a_1, \cdots, a_n\) exists and is unique.
-\end{snippetproposition}
-
-\begin{snippetproposition}{greatest-common-divisor-multipliers}{}
-Given integers \(a_0, a_1, \cdots, a_n\), there exists integers \(u_k\) such that
-\[
-    a_0u_0 + \cdots a_n u_n = \gcd(a_0, a_1, \cdots, a_n)
-\]
-\end{snippetproposition}
-
-\begin{snippetproposition}{composite-greatest-common-divisor}{Composite GCD}
-Given integers \(a_0, a_1, \cdots, a_n\)
-for \(n \geq 2\), \[\gcd(\gcd(a_0, \cdots, a_{n-1}), a_n) = \gcd(a_0, \cdots, a_n)\]
-\end{snippetproposition}
-
-\begin{snippetproposition}{greatest-common-divisor-scalar-multiplication}{}
-    Given integers \(a_0, a_1, \cdots, a_n\) and  an integer \(c\),
-    \[\gcd(ca_0, ca_1, \cdots, ca_n) = c \cdot \gcd(a_0, a_1, \cdots, a_n)\]
-\end{snippetproposition}
-% TODO proof
-
-% TODO proof
+\plain{These identities are not unique.}
 
 \subsection{Coprime numbers}
 
@@ -140,4 +268,7 @@ for \(n \geq 2\), \[\gcd(\gcd(a_0, \cdots, a_{n-1}), a_n) = \gcd(a_0, \cdots, a_
 \end{snippetproof}
 
 % TODO pag 35 fundamental theorem of arithmetic
+
+% TODOURGENT: separate pages and better titles.
+
 \end{document}
