@@ -53,8 +53,25 @@
     for all \(n\).
 \end{snippettheorem}
 
-%The base case here is when we need to prove \(P(m)\) for \(m=0\).
-\plain{Weak and strong induction are equivalent.}
+\plain{The base case for the strong version seems to disappear,
+but it is actually still the first proposition.}
+
+\begin{snippettheorem}{strong-weak-induction-equivalence-theorem}{Weak and strong induction equivalence}
+    Strong and weak induction are equivalent.
+\end{snippettheorem}
+
+\begin{snippetproof}{strong-weak-induction-equivalence-proof}{strong-weak-induction-equivalence-theorem}{Weak and strong induction equivalence}
+    \iffproof{
+        Let \(B \subseteq \mathbb{N}\) be the \set formed by all the \(m\)
+        such that a proposition \(P(m)\) is true.
+        We know that \(B\) has a \leastelement \(n\) if it is non-empty.
+        Thus, for every \(k < n\) we have that \(k\notin B\) and this \(P(k)\)
+        is true for every \(k < n\).
+        However, by hypothesis, if \(P(k)\) is true for every \(k<n\), then \(P(n)\)
+        is true. That is, \(n\notin B\) \lightning.
+    }{
+    }
+\end{snippetproof}
 
 \section{Equivalence of axiom and principle of induction}
 
@@ -79,154 +96,5 @@
         \[\forall n\in\naturalnumbers, n \in E\] and thus \(E=\naturalnumbers\).
     }
 \end{snippetproof}
-
-\section{Exercises}
-
-\begin{snippetexercise}{induction-ex-1}{Weak induction}
-    Prove that for each \(n \geq 1\), the sum \[ \sum_{k=1}^n k = \frac{n(n+1)}{2} \].
-    \begin{itemize}
-        \item The base case is given by \(n=1\) where \(1 = \frac{2}{2} = 1\).
-        \item The inductive case is given by \(\xi = n+1\)
-        \begin{align*}
-            \frac{n(n+1)}{2} + \xi &= \frac{n(n+1)}{2} + \frac{2n}{2} + \frac{2}{2} \\
-            &= \frac{n^2 + 3n + 2}{2} \\
-            &= \frac{(n+1)(n+2)}{2} \\
-            &= \frac{\xi(\xi+1)}{2}
-        \end{align*}
-    \end{itemize}
-\end{snippetexercise}
-
-\begin{snippetexercise}{induction-ex-2}{Weak induction}
-    Prove \(n! > n^2\) for \(n \geq 4\).
-    The base case is \(4!=24 > 4^2 = 16\).
-
-    The induction step is to prove \(n! > n^2 \implies (n +1)! > {(n+1)}^2\).
-    Note that \((n+1)!=(n+1)n!\).
-    Since \(n! > n^2\), then
-    \begin{align*}
-        n!(n+1) &> n^2(n+1) \\
-        n!(n+1) &> n^3 + n^2
-    \end{align*}
-    Since \(n \geq 4\), \(n^3 + n^2 > {(n+1)}^2=n^2+2n+1\).
-    Thus, by the transitive property, \((n+1)! > {(n+1)}^2\).
-\end{snippetexercise}
-
-\begin{snippetexercise}{induction-ex-3}{Weak induction}
-    Prove that
-    \[
-        \sum_{k=1}^n k^2 = \frac{n(n+1)(2n+2)}{6}
-    \]
-    \begin{itemize}
-        \item The base case is \(\frac{6}{6}=1\).
-        \item The induction case is given by
-        \begin{align*}
-            \frac{n(n+1)(2n+2)}{6} + {(n+1)}^2  &= \frac{n(n+1)(2n+2)}{6} + n^2 + 2b + 1 \\
-            &= \frac{(n+1)(n+2)(2(n+1)+1)}{6}
-        \end{align*}
-    \end{itemize}
-\end{snippetexercise}
-
-\begin{snippetexercise}{induction-ex-4}{Weak induction}
-    Prove that for every \(n \geq 0\) and for every \(x > -1\),
-    \[
-        {(1+x)}^n \geq 1 + nx
-    \]
-    \begin{itemize}
-        \item The base case is \({(1+x)}^0 = 1 \geq 1\).
-        \item The induction case is \({(1+x)}^n \geq 1 + nx \implies {(1+x)}^{n+1} \geq 1 + (n+1)x\).
-            We split the term \({(1+x)}^{n+1}\) into \({(1+x)}^n(1+x)\).
-            Using the induction hypothesis we have \[{(1+x)}^n(1+x) \geq (1+nx)(1+x)\]
-            Now, expand the right-hand side \[(1+nx)(1+x) = 1 + nx + x + nx^2 = 1 + (n+1)x + nx^2\]
-            Now, we need to show \[1+(n+1)x + nx^2 \geq 1 + (n+1)x\]
-            We subtract \(1+(n+1)x\) from both sides to get \(nx^2 \geq 0\).
-            Since \(n \geq 0\) and \(x > -1\), \(x^2 \geq \) for all \(x\), and thus \(nx^2 \geq 0\).
-            Therefore, the inequality holds for \(n+1\). 
-    \end{itemize}
-\end{snippetexercise}
-
-\begin{snippetexercise}{induction-ex-5}{Strong induction}
-    Prove that every integer is written as a product of primes.
-    \begin{itemize}
-        \item The base case is \(n=2\), which is a prime number.
-        \item The induction case is given by assuming \(\forall k \leq m\),
-        the number \(k\) is a product of primes. The next number \(n+1\)
-        is either prime or not prime. In the first case it is prime and we can thus
-        write it as a product of prime. In the latter case it is not prime, and thus can be written
-        as \(n+1 = kh\) for \(2\leq k,h< n+1\).
-        By the inductive hypothesis \(h\) and \(k\) can be written as a product of primes.
-        The same goes for \(n+1=hk\). 
-    \end{itemize}
-\end{snippetexercise}
-
-\begin{snippetexercise}{inductionn-ex-6}{Weak induction}
-    Prove \(m \geq \ln(m)\) for \(m \geq 1\).
-    \begin{itemize}
-        \item The base case is \(1 \geq \ln(1)=0\).
-        \item The induction case is \(m + 1\geq \ln(m + 1) \implies m \geq \ln(m)\).
-        Note that \(m + 1 - 1 \geq \ln(m-1) + 1 = \ln(m-1) + \ln(e)\)
-        and thus \(m + 1 - 1 \geq \ln(e\cdot(m-1)) = \ln(em-e) \geq \ln(m + e - e) = \ln(m)\).
-    \end{itemize}
-\end{snippetexercise}
-
-\begin{snippetexercise}{inductionn-ex-7}{Weak induction}
-    Prove \(n! \geq 2^{n-1}\) for \(n \geq 1\).
-    \begin{itemize}
-        \item The base case is \(1 \geq 2^0\).
-        \item The induction case is \(n! \geq 2^{n-1} \implies (n+1)! \geq 2^n\).
-        We have that \[m!(n+1) \geq (n+1)2^{n-1} = n2^{n-1} + 2\cdot2^{n-1}\]
-        The last term is greater or equal than \(2^n\) since \(n\neq 1\).
-    \end{itemize}
-\end{snippetexercise}
-
-\begin{snippetexercise}{induction-ex-8}{Weak induction}
-    Consider the sequence
-    \[
-        \begin{cases}
-            x_0 = 0 \\
-            x_{n+1} = 2x_n + 1
-        \end{cases}        
-    \]
-    Prove that \(x_n = 2^n - 1\).
-    \begin{itemize}
-        \item The base case is \(x_0 = 0\).
-        \item The induction case is \(x_{n} = 2^n - 1 \implies x_{n+1} = 2^{n+1}-1\).
-        We have that \(x_{n+1} = 2x_n + 1\) which is by the induction step
-        \[2(2^n - 1) + 1 = 2^{n+1} - 1\]
-    \end{itemize}
-\end{snippetexercise}
-
-\begin{snippetexercise}{inductionn-ex-9}{Weak induction}
-    Prove \[
-        \sum_{k=0}^n q^k = \frac{q^{n+1} - 1}{q-1}
-    \]
-    for \(0<q<1\).
-    \begin{itemize}
-        \item The base case is \(1 = 1\).
-        \item The induction case is
-        \begin{align*}
-            \sum_{k=0}^{n + 1} q^k = q^{n+1} + \sum_{k=0}^n q^k &= \frac{q^{n+1} - 1}{q-1} + q^{n+1} \\
-            &= \frac{q^{n+2}-1}{q-1}
-        \end{align*}
-    \end{itemize}
-\end{snippetexercise}
-
-\begin{snippetexercise}{inductionn-ex-10}{Weak induction}
-    Prove \(\frac{1}{m} \geq \frac{1}{m+1}\)
-    for \(m \geq 1\).
-    \begin{itemize}
-        \item The base case is \(1 \leq \frac{1}{2}\).
-        \item The induction case is
-        \begin{align*}
-            \frac{1}{m+1} = \frac{m+1-1}{m+1} &= 1- \frac{m}{m+1} = \frac{1}{\displaystyle \frac{1}{1 + \frac{1}{m}}} \\
-            & \leq 1 + \frac{1}{m} \leq 1 + \frac{1}{m-1}
-        \end{align*}
-        which implies
-        \[
-            \frac{1}{m+1} \leq 1 - \frac{1}{\displaystyle \frac{1}{1 + \frac{1}{m}}} = \frac{1}{m}
-        \]
-    \end{itemize}
-\end{snippetexercise}
-
-% We can start at n+1 and go to the n
 
 \end{document}

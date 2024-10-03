@@ -1,0 +1,213 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{differentiation-rules}
+\genpage
+
+\section{Rules for differentiation}
+
+\subsection{Linear combination}
+
+\begin{snippetproposition}{derivative-of-linear-combination}{Derivative of linear combination}
+    Let \(f(x)\) and \(g(x)\) be differentiable \function[functions] and \(a,b\in\realnumbers\).
+    Then, \[
+        \frac{d}{dx}\left(af(x) + bg(x)\right) = a\frac{d}{dx}\left(f(x)\right)
+        + a\frac{d}{dx}\left(f(x)\right)
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{derivative-of-linear-combination-proof}{derivative-of-linear-combination}{Derivative of linear combination}
+    \begin{align*}
+        \frac{d}{dx}\left(af(x) + bg(x)\right) &= \lim_{h\to 0}
+        \frac{\left[af(x+h) + bg(x+h) \right] - \left[af(x) + bg(x) \right]}{h} \\
+        &= a\frac{d}{dx}\left(f(x)\right) + b\frac{d}{dx}\left(g(x)\right)
+    \end{align*}
+\end{snippetproof}
+
+\subsection{Chain Rule}
+
+\begin{snippettheorem}{chain-rule}{Chain Rule}
+    If \(z\) depends on \(y\), and \(y\) depends on \(x\), then \(z\) also depends on \(x\).
+    \[
+        \frac{dz}{dx}=\frac{dz}{dy}\cdot\frac{dy}{dx}
+    \]
+    which is equivalent to
+    \[
+        \frac{d}{dx}(f(g(x)))=f'(g(x))\cdot g'(x)
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{chain-rule-proof}{chain-rule}{Chain Rule}
+    Assuming that \(z\) and \(y\) are differentiable in \(x\)
+    
+    \begin{align*}
+        \frac{dz}{dx}
+        &= \lim_{\Delta x \to 0} \frac{\Delta z}{\Delta x}
+        = \lim_{\Delta x \to 0} \frac{\Delta z}{\Delta y} \cdot \frac{\Delta y}{\Delta x} \\
+        &= \left(
+            \lim_{\Delta x \to 0} \frac{\Delta z}{\Delta y}
+        \right)
+        \left(
+            \lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x}
+        \right) \\
+        &= \left(
+            \lim_{\Delta x \to 0} \frac{\Delta z}{\Delta y}
+        \right)
+        \cdot
+        \frac{dy}{dx}
+    \end{align*}
+    
+    As \(\Delta x \to 0\) also \(\Delta y \to 0\), so we can replace \(\Delta x\) with \(\Delta y\)
+    
+    \begin{align*}
+        \frac{dz}{dx}
+        &= \left(
+            \lim_{\Delta y \to 0} \frac{\Delta z}{\Delta y}
+        \right)
+        \cdot
+        \frac{dy}{dx} \\
+        &= \frac{dz}{dy} \cdot \frac{dy}{dx}
+    \end{align*}
+\end{snippetproof}
+
+\subsection{Product}
+
+\begin{snippetproposition}{derivative-of-product}{Derivative of product}
+    Let \(f(x)\) and \(g(x)\) be differentiable \function[functions].
+    Then, \[
+        \frac{d}{dx}\left(f(x)g(x)\right) =\frac{df(x)}{dx}g(x) + \frac{dg(x)}{dx}f(x)
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{derivative-of-product-proof}{derivative-of-product}{Derivative of product}
+    \begin{align*}
+        \frac{d}{dx}\left(f(x)g(x)\right) &= \lim_{h \to 0}
+        \frac{f(x+h)g(x+h) - f(x)g(x)}{h} \\
+        &= \lim_{h \to 0} \frac{f(x+h)g(x+h) - f(x)g(x) -f(x)g(x+h) + f(x)g(x+h)}{h} \\
+        &= \lim_{h \to 0} \frac{[f(x+h)-f(x)]g(x+h) + f(x)[g(x+h)-g(x)]}{h} \\
+        &= \lim_{h \to 0} g(x+h)\frac{f(x+h)-f(x)}{h} + \lim_{h \to 0} f(x+h)\frac{g(x+h)-g(x)}{h} \\
+        &= g(x) \frac{df(x)}{dx} + f(x) \frac{dg(x)}{dx}
+    \end{align*}
+\end{snippetproof}
+
+\subsection{Exponent}
+
+\begin{snippettheorem}{derivative-of-exponent-theorem}{Derivative of exponent}
+    Let \(n\in{\realnumbers}^\exceptzero\). Then,
+    \[
+        \frac{d}{dx}(x^n)=nx^{n-1}
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{derivative-of-exponent-theorem-proof}{derivative-of-exponent-theorem}{Derivative of exponent}
+    \todo % bisogna farlo con un naturale nonzero,
+    % e poi x^-n  e poi estenderlo ai razionali
+    % e poi reali?
+
+    % qua ho fatto 1/m ma si potrebbe fare m/n
+    If we have \(x^\frac{1}{m}\), we can set \(f(x)=x^m\) and \(g(x) = x^\frac{1}{m}\)
+    so \(h(x)=f(g(x)) = 1\).
+    We thus have
+    \begin{align*}
+        1 = \frac{dh(x)}{dx} &= \frac{df(y)}{dy} \cdot \frac{dg(x)}{dx} \\
+        &= \frac{df(y)}{dy}\cdot mx^{m-1}
+    \end{align*}
+    and
+    \begin{align*}
+        \frac{df(y)}{dy} = \frac{1}{mx^{m-1}}
+        &= \frac{1}{my^\frac{m-1}{m}} \\
+        &= \frac{1}{m} y^{\frac{1}{m}-1}
+    \end{align*}
+    So the properties holds in \(\rationalnumbers\).
+\end{snippetproof}
+
+\subsection{Exponential function}
+
+\begin{snippettheorem}{derivative-of-exponential-function}{Derivative of exponential function}
+    \todo
+    \[
+        \frac{d}{dx} a^x = \ln(a) a^x
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{derivative-of-exponential-function-proof}{derivative-of-exponential-function}{Derivative of exponential function}
+    \todo % TODOURGENT
+    \begin{align*}
+        \lim_{h \to 0} \frac{e^{x+h}-e^x}{h} &= \lim_{h \to 0} e^x \frac{e^x-1}{h} \\
+        &= e^x \lim_{h \to 0} \frac{e^x-1}{h} \\
+        &= e^x \lim_{h \to 0} \lim_{n\to\infty} \frac{{\left(1+\frac{1}{n}\right)}^{nx}-1}{h} \\
+        &= e^x
+    \end{align*}
+\end{snippetproof}
+
+\subsection{Logarithm}
+
+\begin{snippettheorem}{derivative-of-Logarithm-theorem}{Derivative of logarithm}
+    \todo % TODOURGENT
+    \[
+        \frac{d}{dx} \ln(f(x)) = \frac{f'(x)}{f(x)}
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{derivative-of-Logarithm-theorem-proof}{derivative-of-Logarithm-theorem}{Derivative of logarithm}
+    \todo % TODOURGENT
+    %Let \(y = g(x) = e^x\) and \(h(x) = f(g(y))\)
+    %\begin{align*}
+    %    1 = \frac{dh(x)}{dx} &= \frac{df(y)}{dy} \cdot e^x \\
+    %    &= \frac{df(y)}{dy} y
+    %\end{align*}
+    %so we get
+    %\[
+    %    \frac{df(y)}{dy} = \frac{1}{y}
+    %\]
+\end{snippetproof}
+
+\subsection{Trigonometric functions}
+
+\begin{snippettheorem}{derivative-of-sine-theorem}{Derivative of sine}
+    \[
+        \frac{d}{dx} \sin(x) = \cos(x)
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{derivative-of-sine-theorem-proof}{derivative-of-sine-theorem}{Derivative of sine}
+    \begin{align*}
+        \lim_{h\to 0} \frac{\sin(x+h) - \sin(x)}{h} &=
+        \lim_{h\to 0} \frac{\sin(x)\cos(h) + \cos(x)\sin(h) - \sin(x)}{h} \\
+        &= \left\{\lim_{h\to 0} \sin(x) \frac{\cos(h) - 1}{h} + \cos(x) \frac{\sin(h) - 1}{h}\right\} \\
+        &= \sin(x) \lim_{h\to 0} \frac{\cos(h) - 1}{h} + \cos(x) \lim_{h\to 0} \frac{\sin(h) - 1}{h} \\
+        &= \cos(x)
+    \end{align*}
+\end{snippetproof}
+
+\begin{snippettheorem}{derivative-of-cosine-theorem}{Derivative of cosine}
+    \[
+        \frac{d}{dx} \cos(x) = -\sin(x)
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{derivative-of-cosine-theorem-proof}{derivative-of-cosine-theorem}{Derivative of cosine}
+    \todo %TODOURGENT
+\end{snippetproof}
+
+\subsection{Miscellaneous}
+
+\begin{snippet}{differentiation-rules}
+    \[
+        \frac{d}{dx}\left(\frac{f}{g}\right)=\frac{f'g-fg'}{g^2}
+    \]
+    \[
+        \frac{d}{dx}(f^g)=f^g\left(\frac{f'g}{f}+g'\ln f\right)
+    \]
+\end{snippet}
+
+\end{document}
