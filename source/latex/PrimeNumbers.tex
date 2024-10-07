@@ -1,0 +1,201 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{prime-numbers}
+\genpage
+
+\section{Prime numbers}
+
+%Dato un intero \(a\), tra i suoi divisori ci sono sicuramente \(1\) e \(a\)
+%e i loro opposti.
+
+\begin{snippetdefinition}{prime-number-definition}{Prime numbers}
+    An integer \(p \neq 1\) is said to be \textit{prime}
+    if its only divisors are \(1\), \(-1\), \(p\) and \(-p\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{coprime-product}{Coprime product}
+    Siano \(a,b,c \in \integers\) such that \(c,a\) are \coprime and
+    \(c,b\) are \coprime. Then, \(c\) is also \coprime with \(ab\).
+\end{snippetproposition}
+
+\begin{snippetproof}{coprime-product-proof}{coprime-product}{Coprime product}
+    We know that there exist \(u,v,r,s \in \integers\)
+    such that \(au+cd = 1\) and \(br+cs = 1\).
+    We multiply the members: \(abur + aucs + cvbr + cvcs = 1\).
+    Note that we can rewrite this as \(ab+ur + c(\cdots) = 1\).
+    If \(d \divides ab\) and \(b\divides c\), it follows that \(d \divides 1\),
+    which means that the divisors of \(ab,c\) are only \(1\) and \(-1\),
+    and thus \(\gcd(ab, c) = 1\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{prime-number-divides-product}{}
+    Let \(p\) be a \primen number and let \(a,b\in\integers\).
+    Then, \(p \divides ab\) \ifandonlyif it divides at least one between \(a\) and \(b\).
+\end{snippetcorollary}
+
+\begin{snippetproposition}{every-natural-has-prime-divisor}{Every natural has a prime divisor}
+    Let \(n \in \naturalnumbers\) where \(n \geq 2\). Then, there exists a \primen number \(p\)
+    such that \(p \divides n\).
+\end{snippetproposition}
+
+\begin{snippetproof}{every-natural-has-prime-divisor-proof}{every-natural-has-prime-divisor}{Every natural has a prime divisor}
+    If \(n\) is prime, then the case is trivial.
+    If \(n\) is not prime, it has other divisors others than \(1\) and \(n\) (and their opposites).
+    Let \(a> 0\) such that \(a \divides p\). Thus, \(n=ab\) for some \(b\).
+    We now note that \(1 < a < n\). 
+    By the \stronginduction \(a\) has at least a prime divisor \(p\), which is thus a divisor
+    of \(n=ab\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{infinite-primes-theorem}{There exist infinite primes}
+    There exist infinite \primen numbers.
+\end{snippetcorollary}
+
+\begin{snippetproof}{infinite-primes-theorem-proof}{infinite-primes-theorem}{There exist infinit primes}
+    Assume that there exist a finite amount of \primen numbers \(p_1, p_2, \cdots, p_r\)
+    for \(r \geq 1\). Let
+    \[
+        n = 1 + \prod_{i \geq 1}^r p_i
+    \]
+    Now, \(n > 1 1\) as there is at least a \primen and thus
+    it admits a \primen divisor which needs to be in the list \(p_1, p_2, \cdots, p_r\).
+    Thus, for a given \primen \(p_k\) we have \(p_k \divides p_1, p_2, \cdots, p_r - n = 1\)
+    and thus \(p_k \divides 1\) \lightning.
+\end{snippetproof}
+
+\section{Fundamental theorem of arithmetic}
+
+\begin{snippettheorem}{fundamental-theorem-of-arithmetic-theorem}{Fundamental theorem of arithmetic}
+    Let \(n \in \naturalnumbers\) with \(n \geq 2\).
+    Then, \(n\) can be written as a product of unique \primen[primes] \(p_i\)
+    \[
+        n = \prod_i p_i
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{fundamental-theorem-of-arithmetic-theorem-proof}{fundamental-theorem-of-arithmetic-theorem}{Fundamental theorem of arithmetic}
+    \begin{enumerate}
+        \item \textbf{Existance:} if \(n\) is \primen, then the case is trivial. If \(n\)
+        is not \primen, then \(n\) has a divisor \(a\) where \(1 < a < n\).
+        This means that \(n=ab\) for some \(b\) where \(1 < b < n\).
+        By induction, \(a\) and \(b\) are products of \primen numbers and, thus,
+        \(n=ab\) is a product of primes.
+        \item \textbf{Uniqueness:} Let
+        \[
+            n = \prod_i^r p_i = \prod_i^s q_i
+        \]
+        We can assume without loss of generality that \(r \leq s\).
+        We proceed by induction on \(s\):
+        \begin{itemize}
+            \item the base case \(s=1\) is trivial, \(r = 1\) and \(n=p_1 = q_1\);
+            \item in the case \(s>1\) we have that \(p_1 \divides n = q_1q_2\cdots q_s\).
+            Since \(p_1\) is \primen, we have that \(p_1\) divides one of the \(q_i\).
+            One might choose the ordering such that \(p_1 \divides q_1\).
+            Since \(q_1\) is \primen, its only divisors are only \(1\) and \(q_1\) (and their opposites),
+            and since \(p_1 \neq 1\), weh ave \(p_1 = q_1\).
+            We thus have \(n=p_1p_2\cdots p_r = p_1q_2\cdots q_s\). We divide by \(p_1\)
+            and get some \(n' = p_2p_3\cdots p_s = q_2 q_2 \cdots q_s\).
+            Since \(s > 1\), \(n'> 1\).
+            By applying the induction hypothesis we get that \(r-1=s-1 \iff r = s\)
+            and that \(p_i = q_i\) up to ordering of the terms.
+        \end{itemize}
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippet}{prime-factorization-different-versions}
+    Given a factorization of \primen[primes] of a number \(n\) with \(n \geq 2\),
+    we can group the same occurences of the same prime e write
+    \[
+        n = \prod_i^t p_i^{\alpha_i}
+    \]
+    for \(p_i\) \primen and \(\alpha_i\) positive integers.
+    If we remove the constraint that \(\alpha_i\) is a positive integer and we allow some of them
+    to be null, we can arbitrarily insert and/or remove factor of the form \(p_i^0\).
+    In such case, even \(1\) can be written as
+    \[
+        1 = p_1^0p_2^0 \cdots p_t^0
+    \]
+    In every factorization each prime has the same exponent.
+\end{snippet}
+
+\begin{snippetproposition}{divisors-of-prime-factorization}{}
+    Let \(n=p_1^{a_1}p_2^{a_2}\cdots p_t^{a_t}\) with \(p_1, p_2, \cdots, p_t\)
+    distinct \primen[primes] e \(a_1,a_2,\cdots a_t \in \naturalnumbers\).
+    The positive disivors of \(n\) are all and only the numbers of the form
+    \(p_1^{\beta_1}p_2^{\beta_2}\cdots p_t^{\beta_t}\) with \(0 \leq \beta_i \leq \alpha_i\).
+\end{snippetproposition}
+
+\begin{snippetproof}{divisors-of-prime-factorization-proof}{divisors-of-prime-factorization}{}
+    Clearly, \(p_1^{\beta_1}p_2^{\beta_2}\cdots p_t^{\beta_t} \divides n\).
+    Indeed, \[p_1^{\beta_1}p_2^{\beta_2}\cdots p_t^{\beta_t} (p_1^{\alpha_1 - \beta_1}p_2^{\alpha_2 - \beta_2})\cdots p_t^{\alpha_t - \beta_t}\]
+    On the other hand, let \(a\) be a positive divisor of \(n\).
+    We write it as the product of powers of distinct \primen[primes].
+    As long as we don't add primes in the factorization of \(n\) and in the one of a \(a\)
+    with null exponents, we can assume that the occuring primes will be the same
+    for both factorizations. That is,
+    \[
+        a = p_1^{\beta_1}p_2^{\beta_2}\cdots p_t^{\beta_t}
+    \]
+    If any of the \(\beta_i\) were to be greater than the corresponding \(\alpha_i\), for instance
+    \(\beta_1 > \alpha_1\), we would be able to divide \(p_1^{\alpha_1}\) and get
+    \[p_1^{\beta_1 - \alpha_1}p_2^{\beta_2} \cdots p_t^{\beta_t} b = p_2^{\alpha_2} \cdots p_t^{\alpha_t} \]
+    Now, \(\beta_1 - \alpha_1 > 0\), cioè \(p_1\) divides the first member
+    and thus the secondo member too. Thus, \(p_1\) would divide one of \(p_2,p_3,\cdots,p_t\),
+    which is not possible as \(p_1, p_2, \cdots, p_t\) are distinct \lightning.
+\end{snippetproof}
+
+\begin{snippetcorollary}{number-of-prime-divisors}{Number of prime divisors}
+    Let \(n=p_1^{\alpha_1}p_2^{\alpha_2} \cdots p_t^{\alpha_t}\) with \(p_1,p_2,\cdots,p_t\)
+    distinct \primen[primes]. Then, the number of his positive divisors is equal to
+    \[
+        (a_1+1)(a_2 + 1) \cdots (a_t +1)
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{number-of-prime-divisors-proof}{number-of-prime-divisors}{Number of prime divisors}
+    We need to choose each \(\beta_i\) like in the corollary
+    between \(a_i + 1\) possible integers.
+\end{snippetproof}
+
+\section{Finding LCM}
+
+\begin{snippet}{finding-lcm-of-positive-numbers}
+    Let \(a, b\) be positive integers. We write \(a\) and \(b\)
+    as a product of powers of distinct \primen[primes] including factors of the form \(p_i^0\)
+    as long as the occurring \primen[primes] in both factorizations are the same.
+    \[
+        a = \prod_{i}^t p_i^{\alpha_i}
+    \]
+    and
+    \[
+        b = \prod_{i}^t p_i^{\beta_i}
+    \]
+    The common divisors are thus of the form
+    \[
+        p_1^{\gamma_1}p_2^{\gamma_2}\cdots p_t^{\gamma_t}
+    \]
+    with \(\gamma_i \leq \alpha_i\) and \(\gamma_i \leq \beta_i\)
+    for every \(i\).
+    Among them, we can find the one that is a multriple of all the others by taking every maximal \(\delta_i\).
+    That is, \(\gamma_i = \min(\alpha_i, \beta_i)\).
+    Thus,
+    \[
+        \text{lcm}(a,b) = p_1^{\min(\alpha_1, \beta_1)} \cdots
+        p_t^{\min(\alpha_t, \beta_t)}
+    \]
+\end{snippet}
+
+\begin{snippetproposition}{gcd-lcm-product}{}
+    \[
+        \gcd(a,b) \cdot \text{lcm}(a,b) = ab
+    \]
+\end{snippetproposition}
+
+\end{document}
