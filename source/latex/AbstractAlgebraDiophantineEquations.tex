@@ -2,12 +2,9 @@
 
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{parskip}
-\usepackage{fullpage}
-\usepackage{hyperref}
-\usepackage{bettelini}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{bettelini}
 
 \begin{document}
 
@@ -16,41 +13,66 @@
 
 \section{Linear diophantine equations}
 
-\subsection{Definition}
-
 \begin{snippetdefinition}{linear-diophantine-equation-definition}{Linear diophantine equation}
-    A linear diophantine equations is an equation with 2 or more integer unknowns of the following form.
+    A \textit{linear diophantine equations} is an equation with 2 or more integer unknowns of the following form.
     \[
-        a_1x_1 + a_2+x_2 + \cdots + a_nx_n = b
+        a_1x_1 + a_2x_2 + \cdots + a_nx_n = b
     \]
     where \(a_i,x_i,b \in \naturalnumbers\) and \(x_i\) are unknowns.
 \end{snippetdefinition}
+
+% TODOURGENT move this lemma
+\begin{snippetlemma}{gcd-coprime-division}{}
+    If \(a \divides bc\) and \(\gcd(a,b) = 1\), then \(a\divides c\).
+\end{snippetlemma}
+
+\begin{snippetproof}{gcd-coprime-division-proof}{gcd-coprime-division}{}
+    We can assume that \(a,b,c\) are positive integers and thus there is an integer \(d\)
+    such that \(ad = bc\). If \(a=1\), we have the trivial case \(a\divides c\).
+    Otherwise, let \(p\) be a \primen which divides \(a\). This \primen \(p\)
+    divdes then \(bc\), and thus either divides \(b\) or \(c\).
+    However, \(\lnot(p \divides b)\) (otherwise \(p\divides \gcd(a,b)\) against the hypothesis, which
+    is that \(a\) and \(b\) are \coprime). Thus, \(p\divides c\).
+    We can then simplify by \(p\) and obtain \(a'd = bc'\) with \(a=pa'\)
+    and \(c = pc'\) and proceed by induction; since \(a'<a\) and \(\gcd(a', b) = 1\),
+    we have that \(a'\divides c'\), from which \(a\divides c\).
+\end{snippetproof}
 
 \begin{snippetproposition}{linear-diophantine-equation-solvability}{Linear diophantine equation solvability}
     A linear diophantine equation
     \[
         a_1x_1 + a_2+x_2 + \cdots + a_nx_n = b
     \]
-    is solvable iff \(\gcd(a_1,a_2,\cdots,a_n) \divides b\).
+    is solvable \ifandonlyif \(\gcd(a_1,a_2,\cdots,a_n) \divides b\)
+    (i.e. \(\gcd(a_1,a_2,\cdots,a_n)c = b\) for some \(c\))
+    and given a Bezout's identity of the form
+    \[
+        a_1u_1 + a_2u_2 + \cdots + a_nu_n = \gcd(a_1, a_2, \cdots, a_n)
+    \]
+    a solution is given by \(x_1 = u_1 c, x_2 = u_2 c \cdots\).
 \end{snippetproposition}
 
 \begin{snippetproof}{linear-diophantine-equation-solvability-proof}{linear-diophantine-equation-solvability}{Linear diophantine equation solvability}
-    This is because the left-hand side will always be a value that is a multiple
-    of \(\gcd(a_1,a_2,\cdots,a_n)\).
+    \iffproof{
+        For any integer value that we assign to \(x_1, x_2, \cdots, x_n\), the first member
+        is always a multiple of \(\gcd(x_1, x_2, \cdots, x_n)\).
+    }{
+        If \(\gcd(x_1, x_2, \cdots, x_n) \divides b\), that is \(b = c\gcd(x_1, x_2, \cdots, x_n)\)
+        for some \(c\in \integers\), we can determine a Bezout's identity of the form
+        \[
+            a_1u_1 + a_2u_2 + \cdots + a_nu_n = \gcd(a_1, a_2, \cdots, a_n)
+        \]
+        By multiplying this by \(c\), we find
+        \[
+            ca_1u_1 + ca_2u_2 + \cdots + ca_nu_n = c\gcd(a_1, a_2, \cdots, a_n) = b
+        \]
+        which means that a solution is given by \(x_1 = u_1 c, x_2 = u_2 c, \cdots\).
+        % TODOURGENT coprimi finish proof
+    }
 \end{snippetproof}
 
-\begin{snippetproposition}{linear-diophantine-equation-solution}{Linear diophantine equation solution}
-    Let
-    \[
-        a_1x_1 + a_2+x_2 + \cdots + a_nx_n = b
-    \]
-    be a linear diophantine equation.
-    If \(\gcd(a_1,a_2,\cdots,a_n) \divides b\),
-    then \(b = \gcd(a_1,a_2,\cdots,a_n)e\) for some \(e\). \\
-    By the Bezout identity, which can be find using Euclid's algorithm, we have
-    \[a_1v_1+a_2v_2+\cdots+a_nv_n=\gcd(a_1,a_2,\cdots,a_n)\]
-    meaning that an integer solution is given by \(x_n=ev_n\).
-\end{snippetproposition}
+\plain{If there exist solutions, we can show that there actually exist an infinite amount
+and how to determine them.}
 
 \subsection{Two unkowns}
 
@@ -62,16 +84,13 @@
     \[
         a'x + b'y = c'
     \]
-    Consider any solution to the equation \(x=\overline{x}\) and \(y=\overline{y}\),
-    then the equation has infinitely many other solutions given by
+    Consider any solution to the equation \(x=\overline{x}\) and \(y=\overline{y}\).
+    Then, the equation has infinitely many other solutions given by
     \begin{align*}
-        x &= \overline{x} + b'h
-        y &= \overline{y} + a'h
+        x &= \overline{x} + b'h \\
+        y &= \overline{y} + a'h % TODOURGENT è -?
     \end{align*}
     for any \(h \in \naturalnumbers\).
 \end{snippetproposition}
-
-% PROOF of d != 0
-% e da lì in poi
 
 \end{document}
