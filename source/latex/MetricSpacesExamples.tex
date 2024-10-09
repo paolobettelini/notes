@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{bettelini}
 
 \begin{document}
 
@@ -12,19 +13,45 @@
 
 \section{Examples}
 
-\plain{The intersection of infinitely many open sets is not necessarily open, but their union is.}
+\begin{snippetexample}{valley-metric-example}{Valley metric}
+    The \textit{valley metric} \distancefunctiontext between the point
+    \(a=(x,y)\) and \(b=(t,u)\) is defined as
+    \[
+        \distancefunction[d](a, b) = \begin{cases}
+            |y-u| & x = t \\
+            |y| + |x-t| + |u| & x \neq t
+        \end{cases}
+    \]
+    which satisfies the conditions for the \distancefunctiontext:
+    \begin{enumerate}
+        \item \textbf{Nullity:} \\ \iffproof{
+            If \(x=t\), \(\distancefunction[d](a,b) = 0 \implies \distancefunction[d](a,b) = |y-u|\).
+            The term \(|y-u|\) is \(0\) \ifandonlyif \(y-u = 0\) \\
+            and thus \(y=u\). Since \(x=t\), \(a=b\).
+            Otherwise, \(\distancefunction[d](a,b) = 0 \implies |y| + |x-t| + |u| = 0\). \\
+            This term is \(0\) \ifandonlyif \(|y| = 0 \land |x-t| = 0 \land |u| = 0\).
+            Thus, \(x-t=0\implies x=t\). \\
+            However, \(x\neq t\) \lightning, so this latter case is impossible.
+        }{
+            Let \(a = b\). Then, \(\distancefunction[d](a,b) = |y-u| = 0\).
+        }
+        \item \textbf{Positivity:} If \(x=t\), \(\distancefunction[d](a,b) = |y-u| \geq 0\).
+            Otherwise, \(\distancefunction[d](a,b) = |y| + |x-t| + |u| \geq 0\).
+        \item \textbf{Simmetry:} If \(x=t\), \(\distancefunction[d](a,b) = |y-u| = |u-y| = \distancefunction[d](b,a)\).
+            Otherwise, \[\distancefunction[d](a,b) = |y| + |x-t| + |u| = |u| + |t-x| + |y| = \distancefunction[d](b,a) \]
+        \item \textbf{Triangle inequality:} Let \(m = (m_x, m_y)\).
+            Then, if \(x=t\) and \(m_x=m_y\), \[\distancefunction[d](a,b) = |y-u| \leq |y-m_y| + |m_y - u| = \distancefunction[d](a,m) + \distancefunction[d](m,b)\]
+            Otherwise, \[\distancefunction[d](a,b) = |y| + |x-t| + |u| \leq |y| + |x-m_x| + |m_y| + |m_y| + |m_x-t| + |u| =\distancefunction[d](a,m) + \distancefunction[d](m,b)\]
+    \end{enumerate}
+\end{snippetexample}
 
-\begin{snippetexample}{infinite-intersection-open-sets-not-open-example}{Intersection of infinite open sets is not open}
-    Consider the \set[sets]
+\begin{snippetexample}{graph-distance-example}{Graph metric}
+    Let \(G=(V,E)\) be a \graph. The \distancefunctiontext between two vertices \(a,b\in V\)
+    is defined as
     \[
-        A_k = \left(-\frac{1}{k}, \frac{1}{k}\right)
+        \distancefunction[d](a, b) = \inf S
     \]
-    which are \msopenset[open].
-    Then, their intersection is given by
-    \[
-        \bigcap_{k=1}^\infty A_k = \{0\}
-    \]
-    which is not an \interiorpoint.
+    where \(S\) is the \set of all \walk[walks] between \(a\) and \(b\).
 \end{snippetexample}
 
 \end{document}
