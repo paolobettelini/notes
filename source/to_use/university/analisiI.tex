@@ -8,6 +8,11 @@
 \usepackage{stellar}
 \usepackage{wrapfig}
 \usepackage{tikz}
+\usepackage{stackengine,scalerel}
+\stackMath
+\def\trianglelefteqslant{\ThisStyle{\mathrel{%
+  \stackinset{r}{.75pt+.15\LMpt}{t}{.1\LMpt}{\rule{.3pt}{1.1\LMex+.2ex}}{\SavedStyle\leqslant}%
+}}}
 
 \usetikzlibrary{arrows}
 \usetikzlibrary{decorations.pathreplacing}
@@ -1344,8 +1349,8 @@ Quindi \(x_n \to \xi\) se per ogni interno \(I\) esiste \(N\) tale che \(\forall
         \item Sia \(\{x_n\}\) una successione. Se \(x_n \to \lambda\) e \(x_n \to \mu\)
         allora \(\lambda = \mu\). Infatti supponiamo che \(\lambda \neq \mu\) per il lemma
         \(\exists I\) intorni di \(\lambda\) e \(J\) intorno di \(\mu\) tale che \(I \cap J = \emptyset\).
-        Per ipotesi \(x_n \to \lambda\) quindi \(exists M_1\) tale che \(x_n \in I \forall n \geq N_1\).
-        \(x_n \to \mu\) quindi \(exists M_2\) tale che \(x_n \in J \forall n \geq N_2\).
+        Per ipotesi \(x_n \to \lambda\) quindi \(\exists M_1\) tale che \(x_n \in I \forall n \geq N_1\).
+        \(x_n \to \mu\) quindi \(\exists M_2\) tale che \(x_n \in J \forall n \geq N_2\).
         Quindi se \(n \geq \max\{N_1, N_2\}\), \(x_n \in I \cap J = \emptyset\) .%\ TODOURGENTlightning.
         \item Se \(x_n \to l \in \mathbb{R}\), allora \(\{x_n\}\) è limitato cioè esiste \(m\leq M\)
         tale che \(m \leq x_n \leq M\) per tutte le \(n\).
@@ -1355,7 +1360,131 @@ Quindi \(x_n \to \xi\) se per ogni interno \(I\) esiste \(N\) tale che \(\forall
         \[ A= \min\{x_1, \cdots, x_{N-1}\} \leq x_n \leq \max\{x_1, \cdots, x_{N-1} = B\} \]
         che esistono perché sono insiemi finiti.
         Concludiamo che \(m = \min\{l-1, A\} \leq x_n \leq \max\{l+1, B\} = M\)
+        \item \textbf{Teorema di permanenza del segno:} Se \(x_n \to \lambda\) e \(y_n \to \mu\) e \(\lambda < \mu\), allora esiste
+        \(N \,|\, \forall n \geq N, x_n < y_n\). % Todo disegnino
+        Infatti, \(\forall \lambda < a < b < \mu\),
+        esiste \(N\) tale che \(\forall n \geq N\), \(x_n < a\) e \(y_n > a\).
+        Infatti, assumendo \(\lambda < \mu\), dati \(a,b\) tale che \(\lambda < a < b < \mu\),
+        esistono intorni \(I\) di \(\lambda\) e \(J\) di \(\mu\) tale che
+        \[
+            I \subseteq (-\infty, a)
+        \]
+        e
+        \[
+            J \subseteq (b, +\infty)
+        \]
+        % Uno dei due teoremi di permanenza del segno
+        Per definizione di limite:
+        \begin{itemize}
+            \item \[x_n \to \lambda \implies \exists N_1 \,|\, \forall n \geq N_1, x_n \in I \subseteq (-\infty, a)\]
+            \item \[y_n \to \lambda \implies \exists N_2 \,|\, \forall n \geq N_2, y_n \in J \subseteq (b, +\infty)\]
+        \end{itemize}
+        Quindi, se \(n \geq N = \max\{N_1, N_2\}\), abbiamo
+        \(x_n \in (-\infty, a)\) cioè \(x_n < a\) e \(y\in (b,+\infty)\), cioè \(y_n > b\).
+        Nota: perché valga la tesi, deve esserci la disuguaglianza stretta.
+        Con \[x_n = \frac{{(-1)}^n}{n} \to 0\]
+        Infatti, \(x_n \to 0\) se e solo se \(|x_n| \to 0\)
+        \[
+            \begin{cases}
+                x_n \to 0 & \forall \varepsilon > 0, \exists N \,|\, \forall n \geq N, |x_n - 0| < \varepsilon \\
+                |x_n| \to 0 & \forall \varepsilon > 0, \exists N \,|\, \forall n \geq N, ||x_n| - 0| < \varepsilon
+            \end{cases}
+        \]
+        Poichè
+        \[
+            \left|{(-1)}^n \frac{1}{n}\right| = \frac{1}{n} \to 0
+        \]
+        poniamo \(y_0 = 0, \forall n\) non vale nè \(x_n \geq 0\) nè \(x_n \leq 0\) definitivamente.
+
+        In particolare, se \(y_n \to \mu > 0\), \(y_n\) è definitivamente strettamente \(> 0\)
+        cioè esiste \(N\) tale che \(\forall n \geq N, y_n > 0\) e infatti
+        \(\forall b \in (0, \mu)\) esiste \(N\) tale che \(y_n > b, \forall n \geq N\).
+        \item \textbf{Monotonia del limite (preserva la relazione d'ordine tra le successioni)}:
+        Siamo \(\{x_n\}\) e \(\{y_n\}\) successioni tale che \(x_n \leq y_n\) definitivamente.
+        Se \(\exists \lim x_n = \lambda\) e \(\exists \lim y_n = \mu\) allora \(\lambda \leq \mu\).
+        \item \textbf{Teorema dei carabinieri:} Siano \(\{x_n\}\), \(\{y_n\}\) e \(\{z_n\}\)
+        tre successioni reali con \(x_n \leq y_n \leq z_n\) definitivamente, e supponiamo
+        che \(x_n \to l\) e \(z_n \to l\).
+        Allora, \(y_n \to l\). \\
+        Se \(x_n \to +\infty\) e \(z_n \to +\infty\), allora \(y_n \to +\infty\). \\
+        Se \(x_n \to -\infty\) e \(z_n \to -\infty\), allora \(y_n \to -\infty\).
     \end{enumerate}
 }
+
+La 4. è la contronominale del 3.
+Se non valesse la tesi, cioè \(\lambda > \mu\), per il punto \(3\) si avrebbe
+\(x_n \geq y_n\) definitivamente.
+
+\sproposition{}{
+    Se \(x_n \to 0\) e \(\{y_n\}\) è limitata cioè \(\exists m < M\)
+    tale che \(m \leq y_n \leq n\), allora \(x_n \cdot y_n \to 0\).
+    Infatti,
+    \[
+        0 \leq |x_n \cdot y_n| = |x_n|\cdot |y_n| \leq |x_n| \cdot \max\{ |m|, |M| \}
+    \]
+}
+\sproposition{}{
+    Sono equivalenti:
+    \begin{enumerate}
+        \item \(\exists a,b \,|\, a < b \land a \leq x_n \leq b, \forall n\)
+        \item \(\exists M > 0 \,|\, |x_n| \leq M, \forall n\)
+    \end{enumerate}
+}
+
+\pagebreak
+
+\subsection{Aritmetica dei limiti}
+
+Siano \(\{x_n\}\) e \(\{y_n\}\) successioni reali con \(x_n \to \lambda\)
+e \(y_n \to \mu\) con \(\lambda, \mu \in \overline{\mathbb{R}}\).
+
+\begin{enumerate}
+    \item \(x_n + y_n \to \lambda + \mu\) dove \(\lambda + \mu\).
+        Questa somma è quella usuale se \(\lambda, \mu \in \mathbb{R}\), altrimenti \(\pm\infty + c = \pm\infty\)
+        con \(c\in\mathbb{R}\) e \(\pm\infty \pm \infty = \pm\infty\).
+\end{enumerate}
+
+Dimostrazione:
+Nel caso in cui \(\lambda, \mu\) sono finiti, \(x_n \to \lambda\), ossia
+\[\forall \varepsilon > 0, \exists N_1 \,|\, \forall n \geq N_1, |x_n - \lambda| < \frac{\epsilon}{2}\]
+e \(y_n \to \mu\), ossia
+\[\forall \varepsilon > 0, \exists N_1 \,|\, \forall n \geq N_1, |y_n - \lambda| < \frac{\epsilon}{2}\]
+
+Quindi, se \(n \geq N = \max\{N_1, N_2\}\)
+\[
+    |(x_n-y_n) - (\lambda + \mu)| = |(x_n-\lambda) + (y_n - \mu)|
+    \trianglelefteqslant % trianglelefteq
+    |x_n - \lambda| + |y_n - \lambda| < \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon
+\]
+e per definizione \(x_n + y_n \to \lambda + \mu\).
+
+Dimostriamo ora che se \(x_n \to +\infty\) e \(\{y_n\}\) è limitata allora
+\(x_n + y_n \to +\infty\).
+Ricordiamo chde se \(y_n \to \mu\) finito allora \(\{y_n\}\) è limitata si conclude che
+vale la tesi nel caso \(\lambda = +\infty\) e \(\mu\) finito.
+
+Infatti, \(\{y_n\}\) è limitato quindi esiste \(K\) tale che \(|y_n| \leq K\) per tutte le \(n\).
+\(x_n \to +\infty\) per definizione \(\forall M > 0\), esiste \(N\) tale che \(\forall n \geq N, x_n > M + K\).
+
+Quindi \(\forall n \geq N, x_n + y_n > (M+k)-K = M\) (alla pegio tolgo un \(K\)).
+
+Il caso \(-\infty\) è identico.
+
+Mostriamo ora che \(x_n \to +\infty\) e \(y_n \to -\infty\), allora
+\(x_n + y_n\) può tendere a \(c\in\mathbb{R}\), \(\pm\infty\) o oscillare.
+
+\sexample{}{
+    Considera
+    \[
+        \begin{cases}
+            x_n = n + c \to +\infty \\
+            y_n = -n \to -\infty
+        \end{cases}
+    \]
+    Allora \(x_n + y_n = c \to c\).
+}
+
+% TODOURGENT from: La definizione di limite finito è:
+% fino a fine pagina.
 
 \end{document}
