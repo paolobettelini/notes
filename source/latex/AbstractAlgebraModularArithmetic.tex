@@ -71,13 +71,13 @@
 \begin{snippetproof}{congruent-class-sum-mult-equiv-proof}{congruent-class-sum-mult-equiv}{Equivalence of summation and multiplication}
     We can prove this by noting that there exists integers \(h\) and \(k\) such that
     \(a=a'+hn\) and \(b=b'+kn\).
-    Now \(a+b = a'+b'+n(h+k)\) and \(ab=a'b' + n(hb0+ka'+hkn)\), meaning
+    Now \(a+b = a'+b'+n(h+k)\) and \(ab=a'b' + n(hb'+ka'+hkn)\), meaning
     \(a+b \equiv a' + b' \pmod{n}\) and \(ab \equiv a'b' \pmod{n}\).
 \end{snippetproof}
 
 \subsection{Congruence class}
 
-\begin{snippetdefinition}{congruence-class-definition}{Equivalence class}
+\begin{snippetdefinition}{congruence-class-definition}{Congruence class}
     The \equivclass of \(a \in \integers\) with respect to modulo \(n\)
     is said to be a \textit{congruence class}, denoted \({[a]}_n\).
     \[
@@ -94,7 +94,7 @@
 \subsection{Quotient set}
 
 \begin{snippetdefinition}{modulo-quotient-set-definition}{Modulo quotient set}
-    The set of all congruence classes modulo \(n\) is denoted \(\naturalnumbers / n\).
+    The set of all \congruenceclass[congruence classes] modulo \(n\) is denoted \(\naturalnumbers / n\).
 \end{snippetdefinition}
 
 \begin{snippetproposition}{modulo-quotient-set-size}{Size of quotient set}
@@ -108,20 +108,34 @@
 \subsection{Operations with congruent classes}
 
 \begin{snippetdefinition}{congruent-classes-addition}{Congruent classes addition}
-    Let \({[a]}_n\) and \({[b]}_n\) be congruence classes.  
+    Let \({[a]}_n\) and \({[b]}_n\) be \congruenceclass[congruence classes].  
     \[{[a]}_n \cdot {[b]}_n \triangleq {[a \cdot b]}_n\]
 \end{snippetdefinition}
 
 \begin{snippetdefinition}{congruent-classes-multiplication}{Congruent classes multiplication}
-    Let \({[a]}_n\) and \({[b]}_n\) be congruence classes.  
+    Let \({[a]}_n\) and \({[b]}_n\) be \congruenceclass[congruence classes].  
     \[{[a]}_n + {[b]}_n \triangleq {[a + b]}_n\]
 \end{snippetdefinition}
+
+\begin{snippet}{congruence-classes-operations-expl}
+    We need to verify that the result of these operations is independant of the chosen representative.
+    Namely, given \(a'\in {[a]}_n\) and \(b'\in {[b]}_n\), we must have that
+    \({[a'+b']}_n \in {[a+b]}_n\)
+    and \({[a'b']}_n = {[ab]}_n\). This is proven in \snippetref[congruent-class-sum-mult-equiv][this proposition].
+
+    However, this is not necessarily the case!
+\end{snippet}
+
+\begin{snippetexample}{factorial-of-congruence-class-example}{Factorial of congruence class}
+    We define \({[a]}_n! \triangleq {[a!]}_n\). This is clearly not well-defined as
+    the results depends on the representative of the class.
+\end{snippetexample}
 
 \subsection{Properties of congruent classes}
 
 \begin{snippetproposition}{congruent-classes-properties}{Congruent classes properties}    
-    For all \({[a]}_n, {[b]}_n, {[c]}_n \in \naturalnumbers/n\).
-
+    For all \({[a]}_n, {[b]}_n, {[c]}_n \in \integers/n\),
+    we have the following properties:
     \begin{enumerate}
         \item \textbf{Associative addition}: \({[a]}_n + ({[b]}_n + {[c]}_n) = ({[a]}_n + {[b]}_n) + {[c]}_n\)
         \item \textbf{Associative multiplication}: \({[a]}_n ({[b]}_n {[c]}_n) = ({[a]}_n {[b]}_n) {[c]}_n\)
@@ -129,33 +143,88 @@
         \item \textbf{Commutative multiplication}: \({[a]}_n {[b]}_n = {[b]}_n {[a]}_n\)
         \item \textbf{Neutral addition element}: \({[a]}_n + {[0]}_n = {[a]}_n\)
         \item \textbf{Neutral multiplication element}: \({[a]}_n {[1]}_n = {[a]}_n\)
-        \item \textbf{Inverse addition element}: \((-{[a]}_n) + {[a]}_n = {[0]}_n\)
+        \item \textbf{Inverse addition element}: \(\exists -{[a]}_n \suchthat -{[a]}_n + {[a]}_n = {[0]}_n\)
         \item \textbf{Distributive property}: \(({[a]}_n + {[b]}_n) {[c]}_n = {[a]}_n{[c]}_n + {[b]}_n{[c]}_n\)
-        \item \textbf{Cancellation law}: \({[a]}_n + {[b]}_n = {[a]}_n + {[c]}_n \implies {[b]}_n = {[c]}_n\)
+        %\item \textbf{Cancellation law}: \({[a]}_n + {[b]}_n = {[a]}_n + {[c]}_n \implies {[b]}_n = {[c]}_n\)
     \end{enumerate}
 \end{snippetproposition}
 
-% TODO proofs, especially cancellation law
+\begin{snippetproof}{congruent-classes-properties-proof}{congruent-classes-properties}{Congruent classes properties}
+    \begin{enumerate}
+        \item \textbf{Distributive property}: we have
+        \begin{align*}
+            ({[a]}_n + {[b]}_n) {[c]}_n &= {[a+b]}_n {[c]}_n \\
+            &= {[c(a+b)]}_n  \\
+            &= {[c(a+b)]}_n \\
+            &= {[ac]}_n + {[bc]}_n \\
+            &= {[a]}_n {[c]}_n + {[b]}_n {[c]}_n
+        \end{align*}
+    \end{enumerate}
+\end{snippetproof}
 
-% TODO proof of [a][0] = [0] ?
+\begin{snippetproposition}{congruence-class-is-ring}{Congruence class ring}
+    The algebraic structure \((\integers/n, +, \circ)\)
+    is a \commutativering.
+\end{snippetproposition}
 
-\subsection{Invertible congruent classes}
+\begin{snippetproof}{congruence-class-is-ring-proof}{congruence-class-is-ring}{Congruence class ring}
+    All the properties are \snippetref[congruent-classes-properties][satisfied].
+\end{snippetproof}
+
+\subsection{Inverses of congruence classes}
 
 \begin{snippetdefinition}{invertible-congruent-class-definition}{Invertible congruent class}
-    A congruent class \({[a]}_n\) is \textit{invertible}
-    if there exists an \({[b]}_n\) such that \({[a]}_n{[b]}_n={[1]}_n\).
-    The inverse of \({[a]}_n\) is denoted \({[a]}_n^{-1}\).
+    A \congruenceclass \({[a]}_n\) is \textit{invertible}
+    if there exists an \({[b]}_n\) such that \({[a]}_n{[b]}_n={[1]}_n\). \\
+    The \textit{inverse} of \({[a]}_n\) is denoted \({[a]}_n^{-1}\).
 \end{snippetdefinition}
 
-\subsection{Properties of inverses}
-
+% TODOURGENT:
 \begin{snippetproposition}{inverse-congruent-class-properties}{Properties of inverse congruent classes}
     \begin{enumerate}
-        \item If \({[a]}_n\) is invertible, then \({[a]}_n^{-1}\) is unique.
-        \item If \({[a]}_n\) is invertible, then \({[a]}_n^{-1}\) is invertible and \(({[a]}_n^{-1})^{-1}={[a]}_n\).
-        \item If \({[a]}_n\) and \({[b]}_n\) are invertible, then \({[a]}_n{[b]}_n\) is invertible and
+        \item If \({[a]}_n\) is \invertiblecongclass[invertible], then \({[a]}_n^{-1}\) is unique.
+        \item If \({[a]}_n\) is \invertiblecongclass[invertible], then \({[a]}_n^{-1}\) is \invertiblecongclass[invertible] and \(({[a]}_n^{-1})^{-1}={[a]}_n\).
+        \item If \({[a]}_n\) and \({[b]}_n\) are \invertiblecongclass[invertible], then \({[a]}_n{[b]}_n\) is \invertiblecongclass[invertible] and
         \({({[a]}_n{[b]}_n)}^{-1} = {[a]}_n^{-1}{[b]}_n^{-1}\).
     \end{enumerate}
 \end{snippetproposition}
+
+\begin{snippettheorem}{inverse-congruent-class-invertibility-theorem}{Invertibility of congruence classes}
+    Let \({[a]}_n \in \integers /_n\). Then, \({[a]}_n\) is \invertiblecongclass[invertible] \ifandonlyif \(a\) and \(n\)
+    are \coprime.
+\end{snippettheorem}
+
+\begin{snippetproof}{inverse-congruent-class-invertibility-theorem-proof}{inverse-congruent-class-invertibility-theorem}{Invertibility of congruence classes}
+    \iffproof{
+        If \(a\) and \(n\) are \coprime, there exist \(u\) and \(v\) such that
+        \[
+            au+nv = 1
+        \]
+        Is we consider the congruence classes modulo \(n\), we find
+        \[
+            {[a]}_n{[u]}_n + {[n]}_n{[v]}_n = {[1]}_n
+        \]
+        Now, we note that \({[n]}_n = {[0]}_n\), from which we get that
+        \({[a]}_n{[u]}_n = {[1]}_n\). That is, \({[a]}_n\) is \invertiblecongclass[invertible] and \({[a]}_n^{-1} = {[u]}_n\).
+    }{
+        Let \({[b]}_n\) be such that \({[a]}_n{[b]}_n = {[1]}_n\). Now,
+        we can rewrite this condition as \({[ab]}_n = {[1]}_n\). That is,
+        \(ab = 1+kn\) for some \(k\in\integers\). If \(g=\gcd(a,n)\), then \(d \divides ab-kn = 1\).
+        Thus, \(d=1\), which means that \(a\) and \(n\) are \coprime.
+    }
+\end{snippetproof}
+
+\begin{snippet}{non-invertible-congruence-class}{}
+    Let \({[a]}_n \in \integers /_n\). If \({[a]}_n\) is not \invertiblecongclass[invertible],
+    there exists \({[b]}_n \neq {[c]}_n\) such that \({[a]}_n{[b]}_n = {[a]}_n{[c]}_n\).
+
+    Indeed, let \(d=\gcd(a,n)\) with \(d \neq 1\). We thus have
+    \(n=de\) with \(0<e<n\) and we note that given an arbitrary \(b\in\integers\),
+    we have that \(c=b+e \not\equiv b \pmod{n}\), which means that \({[c]}_n \neq {[b]}_n\)
+    but \(ac = ab+ae = ab+da'e\) with \(a=d'a\) and thus \(ac = a'n\).
+    Thus, \[
+        ac \equiv ab \pmod{n} \implies {[a]}_n {[c]}_n = {[a]}_n {[b]}_n
+    \]
+\end{snippet}
 
 \end{document}
