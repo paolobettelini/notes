@@ -23,29 +23,15 @@
     \]
 \end{snippetdefinition}
 
-\begin{snippet}{euler-totient-function-table}
+\begin{snippet}{euler-totient-function-table-transposed}
     \begin{center}
         \bgroup{}
         \def\arraystretch{1.25}
-        \begin{tabular}{|c| c|}
+        \begin{tabular}{|c| c| c| c| c| c| c| c| c|}
             \hline
-            \(n\) & \(\eulertotient(n)\) \\
+            \(n\) & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
             \hline
-            1 & 1 \\
-            \hline
-            2 & 1 \\
-            \hline
-            3 & 2 \\
-            \hline
-            4 & 2 \\
-            \hline
-            5 & 4 \\
-            \hline
-            6 & 2 \\
-            \hline
-            7 & 6 \\
-            \hline
-            8 & 4 \\
+            \(\eulertotient(n)\) & 1 & 1 & 2 & 2 & 4 & 2 & 6 & 4 \\
             \hline
         \end{tabular}
         \egroup{}
@@ -53,10 +39,81 @@
     \phantom{}
 \end{snippet}
 
-\begin{snippetproposition}{amount-of-invertible-classes}{Amount of invertible classes}
-    The amount of \invertiblecongclass[invertible] classes is \(\eulertotient(n)\).
+\begin{snippetcorollary}{euler-totient-of-prime}{Euler's totient function of prime}
+    Let \(p\) be a \primen. Then,
+    \[ \eulertotient(n) = n-1 \]
+\end{snippetcorollary}
+
+\begin{snippetproposition}{amount-of-invertible-classes}{Amount of invertible modulo classes}
+    The amount of \invertiblecongclass[invertible] classes in \(\integers / n\) is \(\eulertotient(n)\).
 \end{snippetproposition}
 
-% TODOURGENT
+\begin{snippetproof}{amount-of-invertible-classes-proof}{amount-of-invertible-classes}{Amount of invertible modulo classes}
+    The distinct classes in \(\integers / n\) are
+    \[
+        {[0]}_n, {[1]}_n, \cdots, {[n-1]}_n
+    \]
+    Since \({[a]}_n\) is \invertiblecongclass[invertible] \ifandonlyif \(\gcd(a,n)=1\),
+    the amount of invertible classes is given by \(\eulertotient(n)\).
+\end{snippetproof}
+
+\section{Theorems}
+
+\begin{snippettheorem}{euler-theorem}{Euler's theorem}
+    Let \(a,n\in\integers\) such that \(a\) and \(n\) are \coprime.
+    Then,
+    \[
+        a^{\eulertotient(n)} \equiv 1 \pmod{n}
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{euler-theorem-proof}{euler-theorem}{Euler's theorem}
+    Consider the \invertiblecongclass[invertible] classes in \(\integers / n\)
+    \[ {[b_1]}_n, {[b_2]}_n, \cdots, {[b_{\eulertotient(n)}]}_n \]
+    Now, the classes \[
+        {[a]}_n{[b_1]}_n, {[a]}_n{[b_2]}_n, \cdots, {[a]}_n{[b_{\eulertotient(n)}]}_n 
+    \]
+    Since \({[a]}_n\) and \({[b_k]}_n\) are \invertiblecongclass[invertible], then
+    \({[a]}_n{[b_k]}_n\) is also \invertiblecongclass[invertible]. They are also distinct
+    by the cancellation law. Thus, the former and latter list coincide up to ordering.
+    Given this information, we consider the product of said classes:
+    \begin{align*}
+        \prod_{k=1}^{\eulertotient(n)} {[b_k]}_n &= \prod_{k=1}^{\eulertotient(n)} {[a]}_n{[b_k]}_n \\
+        &= \left( \prod_{k=1}^{\eulertotient(n)} {[b_k]}_n \right)
+        \left( \prod_{k=1}^{\eulertotient(n)} {[a]}_n \right)
+    \end{align*}
+    Since the classes \({[b_k]}_n\) are \invertiblecongclass[invertible],
+    we can simplify them
+    \begin{align*}
+        {[1]}_n &= \left( \prod_{k=1}^{\eulertotient(n)} {[a]}_n \right) \\
+        &= {[a^{\eulertotient(n)}]_n}
+    \end{align*}
+\end{snippetproof}
+
+\begin{snippettheorem}{fermat-little-theorem}{Fermat's little theorem}
+    Let \(a,p\in\integers\) such that \(p\) is \primen. Then,
+    \[ a^p \equiv a \pmod{p} \]
+\end{snippettheorem}
+
+\begin{snippetproof}{fermat-little-theorem-proof}{fermat-little-theorem}{Fermat's little theorem}
+    If \(a\) and \(p\) are \coprime, by \eulertheorem we have
+    \[
+        a^{\eulertotient(p)} \equiv 1 \pmod{p}
+    \]
+    However, \(\eulertotient(p) = p-1\) since \(p\) is \primen, and thus
+    \[
+        a^{p-1} \equiv 1 \pmod{p}
+    \]
+    from which we get
+    \[
+        a^p \equiv p \pmod{p}
+    \]
+\end{snippetproof}
+
+\begin{snippet}{fermat-little-theorem-but-not-coprime}
+    If \(a\) is not \coprime with \(p\), we have that \(p\divides a\). That is,
+    \(a \equiv 0 \pmod{p}\), and, thus, every power with positive exponent of \(a\) is
+    congruent to \(0 \pmod{p}\). In particular, \(a^p \equiv 0 \pmod{p}\).
+\end{snippet}
 
 \end{document}
