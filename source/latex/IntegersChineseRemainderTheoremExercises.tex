@@ -1,0 +1,118 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{chinese-remainder-theorem-exercises}
+\genpage
+
+\section{Exercises}
+
+\begin{snippetexercise}{chinese-remainder-theorem-ex-1}{Chinese remainder theorem}
+    Solve
+    \[
+        \begin{cases}
+            x \equiv 3 \pmod{12} \\
+            x \equiv 4 \pmod{5} \\
+            x \equiv 7 \pmod{77} 
+        \end{cases}
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{chinese-remainder-theorem-ex-1-sol}{Chinese remainder theorem}
+    We note that \(12, 5, 57\) are \coprime as pairs.
+    We can thus use the chinese remainder theorem. %TODOURGENT link
+    The system is equivalent to \(x \equiv a \pmod{12\cdot5\cdot77}\).
+    Consider the first two congruences.
+    \[
+        \begin{cases}
+            x \equiv 3 \pmod{12} \\
+            x \equiv 4 \pmod{5}
+        \end{cases}
+    \]
+    We need to find \(x\) such that \(x = 3+12h = 4+5k\) for some \(h,k \in\integers\).
+    We thus have the diophantine equation \(12h - 5k = 1\).
+    A Bezout's identity is for example \(12 \cdot (3) + 5(-7) = 1\),
+    which yields a particular solution \(h=3\) and \(k=7\)
+    which gives \(x=3+12\cdot3 = 39\).
+    Thus, the first two congruences are equivalent to \(x\equiv 39 \pmod{12\cdot 5}\),
+    reducing the system to
+    \[
+        \begin{cases}
+            x \equiv 39 \pmod{12\cdot 5} \\
+            x \equiv 7 \pmod{77}
+        \end{cases}
+    \]
+    We need to find \(x=39 + 60h = 7+77k\) for some \(h,k\in\integers\).
+    Consider the diophantine equation
+    \(77k-60h = 32\). To find the Bezout's identity we use the Euclidean algorithm
+    and we get \(60\cdot9 - 77\cdot 7\).
+    We thus have \(77(-7 \cdot 32) + 60(9 \cdot 32) = 1\)
+    from which \(h=-7\cdot 32\) and \(k=-9(32)\) which is a particular solution
+    \(x = 39 + 60(-7\cdot 32)\).
+    The system is thus equivalent to
+    \[
+        x \equiv 39 + 60(-7\cdot 32) \pmod{77 \cdot 12 \cdot 5}
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{chinese-remainder-theorem-ex-2}{Chinese remainder theorem}
+    Find the last two digits in base \(10\)
+    of \(6^{6666}\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{chinese-remainder-theorem-ex-2-sol}{Chinese remainder theorem}
+    Since \(6\) is not coprime with \(10\), we cannot use \eulertheorem directly.
+    We want to find a value \(0 \leq x \leq 99\) which is congruent to
+    \(6^{6666} \pmod{100}\). The congruence is
+    \[
+        x \equiv 6^{6666} \pmod{100}
+    \]
+    We use the chiense remainder theorem in reverse.
+    \[
+        \begin{cases}
+            x \equiv 6^{6666} \pmod{4} \\
+            x \equiv 6^{6666} \pmod{25}
+        \end{cases}
+    \]
+    Now, \(6\) is a multiple of \(2\). Its exponents of at least \(2\)
+    are multiples of \(4\). Thus, \(6^{6666} \equiv 0 \pmod{4}\).
+    Furthermore, \(6\) and \(25\) are \coprime. By \eulertheorem,
+    \[
+        6^{\eulertotient(25)} \equiv 1 \pmod{25}
+    \]
+    Now, \(\eulertotient(25) = 5^2 - 5 = 20\) and thus
+    \[
+        6^{20} \equiv 1 \pmod{25}
+    \]
+    However, \(6^{6666} \equiv 6 \pmod{20}\), and thus
+    \(6^{6666} \equiv 6^6 \pmod{25}\).
+    The system is reduced to
+    \[
+        \begin{cases}
+            x \equiv 0 \pmod{4} \\
+            x \equiv 6^6 \pmod{25}
+        \end{cases}
+    \]
+    We compute \(6^6 \pmod{25}\): 
+    \begin{align*}
+        6 &\equiv 6 \pmod{25} \\
+        6^2 &= 36 \equiv 11 \pmod{25} \\
+        6^3 &\equiv 11\cdot 66 \equiv 11 \pmod{25} \\
+        6^6 &\equiv 16\cdot 16 \pmod{25} \\ equiv 6 \pmod{25}
+    \end{align*}
+    The system is then reduced to
+    \[
+        \begin{cases}
+            x \equiv 0 \pmod{4} \\
+            x \equiv 6 \pmod{25}
+        \end{cases}
+    \]
+    %  56
+\end{snippetsolution}
+
+\end{document}

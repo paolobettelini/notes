@@ -1,0 +1,214 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{chinese-remainder-theorem}
+\genpage
+
+\section{Chinese remainder theorem}
+
+\begin{snippet}{temp}
+    Consideriamo le equazioni in \(\mathbb{Z} / n\) e congruenze con incognite.
+    Supponiamo di avere una congruenza con incognita del tipo \(a x \equiv b \pmod{n}\)
+    con \(a,b\) interi fissati e \(n\) inteor positivo fissato.
+
+    Se \(a\) è \invertiblecongclass[invertible] modulo \(n\), cioè se esiste \(c\) tale che
+    \(ac \equiv 1 \pmod{n}\), possiamo risolvere la congruenza
+    come faremmo per un'equazione di primo grado nei razionali, cioè "dividendo" per \(a\),
+    o meglio, moltiplicando per \(c\), e troviamo \(x \equiv bc \pmod{n}\).
+
+    Ad esempio, \(3x \equiv 5 \pmod{20}\), poiché \(3\) è coprimo con \(20\),
+    esiste un intero \(c\) tale che \(3c \equiv 1 \pmod{20}\).
+    Troviamo quindi facilmente per esempio \(c=7\), e abbiamo allora
+    \[
+        3\cdot7x \equiv 5\cdot 7 \pmod{20}
+    \]
+    vale a dire che \(x\equiv 35 \pmod{20} \equiv 15 \pmod{20}\)
+
+    In maniera equivalente possiamo considerare l'equazione in \(\mathbb{Z} / n\),
+    \({[a]}_n x = {[b]}_n\) dove cerchiamo in \(x\) in \(\mathbb{Z} / n\).
+    dove cerchiamo \(x\) in \(\mathbb{Z} / n\).
+    Se come sopra \(a\) è coprimo con \(n\), ed esiste, quindi
+    \({[c]}_n\) tale che \({[a]}_n{[c]}_n = {[1]}_n\), l'equazione dat aha come unica soluzione
+    \[
+        x = {[b]}_n{[c]}_n = {[bc]}_n
+    \]
+
+    Nel nostro esempio abbiamo che \({[3]}_{20} x = {[5]_{20}}\) ha un'unica soluzione
+    \(x={[15]}_{20}\).
+    Nota: la congruenza con incognite ha infinite soluzioni, tutti gli interi 
+    congrui a \(15\) modulo \(20\), l'equazione in \(\mathbb{Z} / 20\) ha un'unica soluzione.
+
+    In the general case we find to solve
+    \[
+        ax\equiv b \pmod{n} \qquad \text{and} \qquad {[a]}_n x = {[b]}_n
+    \]
+    We are looking for an \(x\) such that \(ax-b\) sia multiplo di  \(n\), cioè
+    \(ax-b = ny\) per qualche \(y\) intero.
+    This is a diophantine equation
+    \[
+        ax-ny = b
+    \]
+    which has solutions \ifandonlyif \(\gcd(a,n) \divides b\)
+\end{snippet}
+
+\begin{snippetexample}{chinese-remainder-example-1}{}
+    Consider
+    \[
+        6x \equiv 5 \pmod{14}
+    \]
+    and, equivalently \[
+        {[6]}_{14} x = {[5]}_{14}
+    \]
+    Since \(\gcd(6,14) = 2\) does not divide \(5\) the congruence
+    and the corresponding equation have no solution.
+\end{snippetexample}
+
+\begin{snippetexample}{chinese-remainder-example-2}{}
+    Consider
+    \[
+        6x \equiv 10 \pmod{14}
+    \]
+    and, equivalently \[
+        {[6]}_{14} x = {[10]}_{14}
+    \]
+    Since \(\gcd(6,14) = 2 \divides 10\), the equation ha ssolutions
+    which we can find by solving the diophantine equation
+    \[
+        6x - 14y = 10 \iff 3x - 7y = 5
+    \]
+    A Bezout's identity between \(3\) and \(7\) is given by
+    \(3\cdot (-2) + 7 \cdot 1 = 1\).
+    By multiplying by \(5\) we get \(3\cdot (-10) + 7 \cdot 5 = 5\),
+    so a particular solution is given by \(x=-10\) and \(y = -5\)
+    and the general one is \(x=-10 + 7h\) and \(y-5+3h\).
+    This means that the congruence has solutions
+    \(x \equiv -10 \pmod{7}\) (when I multiply it by \(6\) I get a number modulo \(14\))
+    and the corresponding equation has as solutions the classes modulo \(14\)
+    represented by integers congruence to \(-10\) modulo 3.
+    \[
+        x = {[-10]}_{14} = {[4]}_{14}
+    \]
+    and
+    \[
+        x = {[-3]}_{14}
+    \]
+    The amount of solutions is thus \(2 = \gcd(6, 14)\).
+\end{snippetexample}
+
+% questa cosa qua è data dal fatto che diviso l'equazione per d
+
+\begin{snippetproposition}{temp2}{}
+    In generale, se considero la congruenza \(ax \equiv b \pmod{n}\)
+    e l'equazione \({[a]}_n x = {[b]}_n\) e \(d = \gcd(a,b) \divides n\),
+    allora la congruenza è risolubile ed equivalente a
+    \[
+        a'x \equiv b' \pmod{n'}
+    \]
+    con \(a=a'd\), \(b = b'd\), \(n=n'd\).
+    Tutte le classi rappresentate da interi
+    che soddisfano la congruenza data, sono soluzioni
+    dell'equazione data in \(\mathbb{Z} / n\).
+    Se \(c\) è una soluzione particolare della congruenza,
+    abbiamo queste classi
+    \[
+        {[c]}_n, {[c + n']}_n, {[c + 2n']}_n, \cdots, {[c + (d-1)n']}_n
+    \]
+    Notiamo che queste classi sono distinte (le differenza fra i loro rappresentanti
+    non sono multipli di \(n\)) e ogni altra classe del tipo
+    \({[c+kn']}_n\) compare tra queste.
+    Più precisamente \({[c+kn']}_n + {[c+rn']}_n\) con \(r\) resto della divisione
+    di \(k\) per \(d\).
+\end{snippetproposition}
+
+\begin{snippettheorem}{chinese-remainder-theorem}{Chinese remainder theorem}
+    Consider the system of congruences
+    \[
+        \begin{cases}
+            x \equiv a_1 \pmod{n_1} \\
+            x \equiv a_2 \pmod{n_2} \\
+            \cdots \\
+            x \equiv a_r \pmod{n_r}
+        \end{cases}
+    \]
+    with \(a_i\in\integers\) and \(n_i \in\integers^+\)
+    where \(n_i, n_{i+1}\) are \coprime.
+    Then, the given system is equivalent to a congruence
+    of the form \(x \equiv a \pmod{n}\)
+    for some \(a\) and
+    \[
+        n = \prod_{i=1}^r n_i
+    \]
+    
+\end{snippettheorem}
+
+\begin{snippetproof}{chinese-remainder-theorem-proof}{chinese-remainder-theorem}{Chinese remainder theorem}
+    \begin{itemize}
+        \item The base case \(r=1\) is trivial (the congruence is equivalent to itself).
+        \item Let \(r > 1\). We consider the first two congruences
+        \[
+            \begin{cases}
+                x \equiv a_1 \pmod{n_1} \\
+                x \equiv a_2 \pmod{n_2} \\
+            \end{cases}
+        \]
+        We need to determine the integers \(x\) such that
+        \(x = a_1 + n_1h\) for some \(h\in\integers\) and
+        \(x = a_2 + n_2k\) for some \(k\in\integers\).
+        We thus get
+        \[
+            a_1 + n_1 h = a_2 + n_2 k
+        \]
+        which is the diophantine equation
+        \[
+            n_1h - n_2 k = a_2 - a_1
+        \]
+        Since \(n_1\) and \(n_2\) are \coprime, \(\gcd(n_1, n_2) = 1 \divides a_2 - a_1\)
+        and thus solutions exist.
+        However, we want to show that the solutions of the system
+        \[
+            \begin{cases}
+                x \equiv a_1 \pmod{n_1} \\
+                x \equiv a_2 \pmod{n_2} \\
+            \end{cases}
+        \]
+        are only the ones of type \(a + tn_1n_2\)
+        with a particular solution (determined as done above)
+        with \(t\in\integers\).
+        In order to achieve this, we consider the following facts:
+        \begin{enumerate}
+            \item every integers of type \(a+tn_1n_2\) is a solution.
+            Indeed, \(a+tn_1n_2 \equiv a \pmod{n_1} \equiv a_1 \pmod{n_1}\)
+            and \(a+tn_1n_2 \equiv a \pmod{n_2} \equiv a_2 \pmod{n_2}\);
+            \item every solution \(b\) of the system has form \(b = a + tn_1n_2\)
+            for some \(t\in\integers\).
+            Indeed, \(b\equiv a_1 \pmod{n_1}\), \(a \equiv a_1 \pmod{n_1}\)
+            and thus \(b \equiv a \pmod{n_1}\) which means \(b-a\)
+            is a multiple of \(n_1\).
+            Likewise, \(b-a\) is a multiple of \(n_2\).
+            It follows that \(b-a\) is a multiple of \(n_1\) and \(n_2\), which are
+            \coprime, and \(b-a = tn_1n_2\).
+        \end{enumerate}
+        We just showed that the first two congruences are equivalent to a congruence of type
+        \[
+            x \equiv a \pmod{n_1n_2}
+        \]
+        Thus, the system is reduced to
+        \[
+            \begin{cases}
+                x \equiv a_1 \pmod{n_1n_2} \\
+                x \equiv a_3 \pmod{n_3} \\
+                \cdots \\
+                x \equiv a_r \pmod{n_r}
+            \end{cases}
+        \]
+        We iterate this procedure to obtain the thesis.
+    \end{itemize}
+\end{snippetproof}
+
+\end{document}
