@@ -116,4 +116,93 @@
     congruent to \(0 \pmod{p}\). In particular, \(a^p \equiv 0 \pmod{p}\).
 \end{snippet}
 
+\section{Computing Euler's totient function}
+
+\begin{snippetlemma}{euler-totient-function-lemma1}{}
+    Let \(m,n \in \integers^+\) where \(m\) and \(n\) are \coprime. Then,
+    \[ \eulertotient(mn) = \eulertotient(m)\eulertotient(n) \]
+\end{snippetlemma}
+
+\begin{snippetproof}{euler-totient-function-lemma1-proof}{euler-totient-function-lemma1}{}
+    Consider the \function \(f\colon \integers / mn \fromto \integers / m \cartesianprod \integers / n\)
+    defined as
+    \[
+        {[a]}_{mn} \to ({[a]}_m, {[a]}_n)
+    \]
+    This function is well-defined. Indeed,
+    if \({[a]}_{mn} = {[b]}_{mn}\),
+    which means that if \(a-b\) is a multiple of \(mn\), then \(a-b\)
+    is a multiple of \(m\) (i.e. \({[a]}_m = {[b]}_m\)) and \(a-b\)
+    is a multiple of \(n\) (i.e. \({[a]}_n = {[b]}_n\)).
+
+    The function is \injective. Indeed, if we consider
+    two classes \({[a]}_{mn}\) and \({[b]}_{mn}\) with the same image, that is
+    \(({[a]}_{m}, {[a]}_{n}) = ({[b]}_{m}, {[b]}_{n})\), we have
+    \(a-b\) is a multiple of \(m\) and \(a-b\) is a multiple of \(n\).
+    
+    Since \(m\) and \(n\) are \coprime, we have that \(a-b\) is a multiple of \(mn\),
+    which means \({[a]}_{mn} = {[b]}_{mn}\).
+    % If m and n are not coprime, the function is not injective but
+    % it is still well defined.
+    Now, \(\cardinality{\integers / mn} = mn\) and \(\cardinality{\integers / m \cartesianprod \integers / m} = mn\).
+    The function is thus a an \injective \function between two \set[sets] of the same size,
+    so it is \bijective.
+
+    We now consider the subsets of \invertiblecongclass[invertible] elements of
+    \(\integers / mn\), which we will denote \(\text{Inv}(\integers / mn)\).
+    Thus,
+    \[
+        \cardinality{\text{Inv}(\integers / k)} = \eulertotient(k)
+    \]
+    If we prove that the \bijective between \(\integers / mn\)
+    and \(\integers / m \cartesianprod \integers / mn\) induces a \bijective[bijection]
+    between \(\text{Inv}(\integers / mn)\) and \(\text{Inv}(\integers / m \cartesianprod \integers / n)\),
+    we will prove out thesis.
+    Let \({[a]}_{mn} \in \text{Inv}(\integers / mn)\), which means that \(a\)
+    is \coprime with \(mn\), and, thus, \coprime with \(m\) and \(n\).
+    Thus, \(({[a]}_m, {[a]}_n) \in \text{Inv}(\integers / m) \cartesianprod \text{Inv}(\integers / n)\).
+    The \function \(f\) sends elements of \(\text{Inv}(\integers / mm)\)
+    into \(\text{Inv}(\integers / m) \cartesianprod \text{Inv}(\integers / m)\).
+    Likewise, let  \(({[b]}_m, {[c]}_n) \in \text{Inv}(\integers / m) \cartesianprod \text{Inv}(\integers / n)\)
+    and tkae che element \({[a]}_{mn}\) such that \(f({[a]}_{mn}) = ({[b]}_m, {[c]}_n)\).
+    We thus have
+    \[
+        ({[a]}_m, {[a]}_n) = ({[b]}_m, {[c]}_n)
+    \]
+    which implies that \(a-b\) is a multiple of \(m\) (since \(b\) is \coprime with \(n\), so is \(a\)).
+    Also, \(a-c\) is a multiple of \(n\) (since \(c\) is \coprime with \(n\), so is \(a\)).
+    In conclusion, \(a\) is \coprime with \(mn\), and, thus,
+    \({[a]}_{mn}\) is \invertiblecongclass[invertible] like we wanted.
+\end{snippetproof}
+
+\begin{snippetcorollary}{euler-totient-of-prime-factorization}{Euler's totient function of prime factorization}
+    Let
+    \[
+        n = \prod_{i=1}^r p_i^{\alpha_i}
+    \]
+    where \(i\neq j \implies p_i \neq p_j\)
+    and \(\alpha_i \in \integers^+\). Then,
+    \[
+        \eulertotient(n) = \prod_{i=1}^r \eulertotient(p_i^{\alpha_i})
+    \]
+\end{snippetcorollary}
+
+\begin{snippet}{temp}
+    Now, \[\eulertotient(p^\alpha) = \left|\left\{n \in \integers \suchthat 0 \leq n < p^\alpha, \gcd(n, p^\alpha) = 1 \right\}\right| \]
+    Between \(0\) and \(p^\alpha-1\), I need to cout the amount of \coprime[coprimes]
+    with \(p^\alpha\), that is the \coprime[coprimes] with \(p\), meaning those
+    that are not multiples of \(p\).
+    However, the multiples of \(p\) are \(1\) every \(p\).
+    That is, \(p\alpha / p = p^{\alpha - 1}\).
+    We thus have \(p^\alpha - p^{\alpha - 1}\) numbers left that are \coprime with \(p^\alpha\).
+    Thus, \(\eulertotient(p^\alpha) = p^\alpha - p^{\alpha - 1}\).
+
+    In conclusion,
+    \begin{align*}
+        \eulertotient(n) &= \prod_{i=1}^r \eulertotient(p_i^{\alpha_i}) \\
+        &= \prod_{i=1}^r (p_i^{\alpha_i} - p_i^{\alpha_i - 1}) \\
+        &= n \prod_{i=1}^r \left(1 - \frac{1}{p_i}\right)
+    \end{align*}
+\end{snippet}
+
 \end{document}
