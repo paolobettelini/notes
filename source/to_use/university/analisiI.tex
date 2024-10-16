@@ -2568,4 +2568,244 @@ Ciò significa che modificare un numero finito di termini di una serie non ne ca
 Le operazioni aritmetiche sulle serie sono giustificate a posteriori;
 se alla fine vi è una forma di indecisione non erano legali.
 
+\sproposition{}{
+    Un numero decimale può essere espresso come
+    \[
+        x = N + \sum_{k=1}^\infty a_k \cdot 10^{-k}
+    \]
+}
+
+\sexample{}{
+    Mostriamo che se
+    \(x = N, a_1 a_2 \cdots a_k \overline{9}\) dove \(a_j \in \{0,1,2,3,4,5,6,7,8,9\}\)
+    e \(a_k < 9\),
+    allora \(x = N a_1 a_2 \cdots (a_k + 1)\).
+    Abbiamo quindi che
+    \begin{align*}
+        x &= N + \left( \sum_{j=1}^k a_j \cdot 10^{-j} \right)
+        + \sum_{j=k+1}^\infty 9 \cdot 10^{-j} \\
+        &= N + \left( \sum_{j=1}^{k-1} a_j \cdot 10^{-j} \right)
+        + a_k \cdot 10^{-k} + 9\cdot 10^{-k-1}
+        \sum_{h=0}^\infty 10^{-h} \\
+        &= N + \left( \sum_{j=1}^{k-1} a_j \cdot 10^{-j} \right)
+        + a_k \cdot 10^{-k} + 9 \cdot 10^{-k-1} \cdot \frac{10}{9} \\
+        &= N + \left( \sum_{j=1}^{k-1} a_j \cdot 10^{-j}\right) + 10^{-k}(a_k + 1)
+    \end{align*}
+    Ciò puô essere esteso ad ogni base.
+}
+
+Lo studio del carattere consiste nel considerare serie a termini (definitivamente non-negativi).
+
+\stheorem{}{
+    Sia \[
+        \sum_{n=1}^\infty a_n
+    \]
+    una serie a termini \(\geq 0\).
+    Allora, la serie è regolare e \(S = \sup S_n\).
+    In particolare, la serie converge se e solo se la successione
+    \(\{S_N\}\) è limitata superiormente.
+    Nel caso in cui \(\{a_n\}\) sia maggiore o uguale a zero solo definitivamente la conclusione sul
+    carattere vale ma la formula per la somma deve essere modificata
+    in 
+    \[
+        S = S_{n_0} +  \underset{n}{\sup} \sum_{n=n_0}^N a_n
+    \]
+    se \(n_0\) è tale che \(\forall n > n_0, a_n \geq 0\).
+}
+
+\sproof{}{
+    Sia \(\forall n, a_n \geq 0\), allora
+    \[
+        S_{N+1} = \sum_{n=1}^{N+1} a_n = S_n + a_{N+1} \geq S_N
+    \]
+    la successione \(\{S_N\}\) è monotona crescente e quindi
+    \[
+        \exists\, \lim_{n}S_n = \underset{n}{\sup} S_n
+    \]
+    Il caso incui \(a_n \geq 0\) per \(n \geq n_0\) si tratta in modo analogo:
+    \(\forall n > n_0\),
+    \[
+        S_N = \sum_{j=1}^{n_0} a_j + \sum_{j=n_0 + 1}^N a_j
+    \]
+    dove il secondo termine è monotono crescente in \(N\).
+}
+
+Una serie di termini definitivamente positivi è sempre regolare.
+
+\stheorem{Teorema del confronto, confronto asintotico}{
+    Siano
+    \[
+        \sum_{n=1}^\infty a_n
+    \]
+    e
+    \[
+        \sum_{n=1}^\infty b_n
+    \]
+    serie a termini non-negativi.
+    \begin{enumerate}
+        \item \textbf{Confronto:} se \(a_n \leq b_n\) allora
+        \[
+            \sum_{n=1}^\infty a_n \leq \sum_{n=1}^\infty b_n
+        \]
+        In particolare
+        \[
+            \sum_{n=1}^\infty b_n < +\infty \implies
+            \sum_{n=1}^\infty a_n < +\infty
+        \]
+        e
+        \[
+            \sum_{n=1}^\infty a_n = \infty \implies
+            \sum_{n=1}^\infty a_n = +\infty
+        \]
+        \item \textbf{Confronto asintotico:}
+        se \(a_n \sim b_n\), allora
+        \[
+            \sum_{n=1}^\infty a_n \text{ converge } \iff
+            \sum_{n=1}^\infty b_n \text{ converge }
+        \]
+    \end{enumerate}
+}
+
+\sproof{}{
+    \begin{enumerate}
+        \item Siano 
+        \[
+            A_N = \sum_{n=1}^N a_n
+        \]
+        e \[
+            B_N = \sum_{n=1}^N b_n
+        \]
+        poiché \(\forall n, a_n \leq b_n\) risulta \(A_N \leq B_N\)
+        con \(N \to \infty\), per monotonia del limite
+        risulta che 
+        \[
+            \lim_{n}A_n = \sum_{n=1}^N a_n \leq \lim_{n} B_N = \sum_{n=1}^N b_n
+        \]
+        \item Supponiamo che \(a_n \sim b_n\) cosicché
+        \[
+            \frac{a_n}{b_n} \to 1
+        \]
+        Per definizione di limite con \(\varepsilon = \frac{1}{2}\) risulta che
+        \begin{align*}
+            \exists\, n_0 \,|\, \forall n \geq n_0, -\frac{1}{2} < \frac{a_n}{b_n} - 1 < \frac{1}{2}
+            &\iff \frac{1}{2} < \frac{a_n}{b_n} < \frac{3}{2} \\
+            &\iff \frac{1}{2} b_n < a_n < \frac{3}{2} b_n 
+        \end{align*}
+        Utilizzando il primo punto abbiamo
+        \[
+            \frac{1}{2} \sum_{n_0}^\infty b_n < \sum_{n_0}^\infty a_n
+            < \frac{3}{2} \sum_{n_0}^\infty b_n
+        \]
+        e segue la tesi.
+    \end{enumerate}
+}
+
+\scorollary{}{
+    Se \(a_n \perp b_n\) cioè
+    \[ \forall n \geq n_0, \exists \, 0 < m < M \,|\, m \leq \frac{a_n}{b_n} \leq M \]
+    allora \(\sum^\infty a_n\) e \(\sum^\infty b_n\) hanno lo stesso carattere.
+    In particolare questo accade se \(\frac{a_n}{b_n} \to l\) con \(0<l<+\infty\).
+}
+
+\scorollary{}{
+    Se \(a_n = o(b_n)\) cioè
+    \[
+        \frac{a_n}{b_n} \to 0
+    \]
+    per definizione di limite, fissato \(\varepsilon = 1\),
+    esiste \(n_0\) tale che \(0 < \frac{a_n}{b_n} < 1 \implies 0 \leq a_n \leq b_n\)
+    e quindi si applica il confronto.
+}
+
+\sproposition{Convergenza serie-p}{
+    Per \(p \geq 2\), la p-serie converge.
+    Per cominciare, \(\forall n \geq 2\) vale
+    \[
+        \frac{1}{n^p} \leq \frac{1}{n^2} < \frac{2}{n(n+1)}
+    \]
+    Usiamo quindi il confronto con la serie di Mengoli.
+    Questo funziona perché \(\frac{n+1}{2} \leq n\) con \(n \geq 1\).
+    Poiché la serie
+    \[
+        \sum^\infty \frac{1}{n(n+1)} = 1 \implies \sum^\infty \frac{1}{n^2} = \frac{\pi^2}{6} < 2
+    \]
+    Alternativamente, si nota \(\frac{1}{n^2} \sim \frac{1}{n(n+1)}\).
+}
+
+Il teorema di confronto e confronto asintotico non vale
+se le serie non sono a termini definitivamente non-negativi.
+
+\sexercise{}{
+    Stabilire il carattere della serie
+    \[
+        \sum_{n=1}^\infty \frac{n^2 + {(1 + 1/n)}^n + \sin n}{{(n+\sqrt{n})}^3 + \log \left(\frac{n}{n+1}\right)}
+    \]
+    Notiamo che \(\forall n \geq 1, a_n \geq 0\).
+    Notiamo allora che
+    \[
+        a_n = \frac{n^2 \left(1 + \frac{1}{n^2}{\left(1 + \frac{1}{n}\right)}^n + \frac{\sin n}{n}\right)}
+        {n^3 \left\{{\left(1 + \frac{1}{\sqrt{n}}\right)}^3 + \frac{1}{n^3}\log\left(\frac{n}{n+1}\right)\right\}}
+        \sim \frac{1}{n}
+    \]
+    Siccome la serie armonica è una serie-p con \(p=1\), allora la serie diverge.
+}
+
+\stheorem{Divergenza della serie armonica}{
+    La serie ha termini positivi, quindi o converge
+    o diverge, e converge se e solo se le somme parziali
+    sono limite superiormente.
+    Consideriamo solamente le somme parziali della forma \(S_{2^k}\).
+    Abbiamo
+    \begin{align*}
+        S_1 &= 1 \\
+        S_2 &= 1 + \frac{1}{2} \\
+        S_4 &= 1 + \frac{1}{2} + \left(\frac{1}{3} + \frac{1}{4}\right) \\
+        S_8 &= S_4 + \left(\frac{1}{5} + \frac{1}{6} + \frac{1}{7} + \frac{1}{8}\right) > 1 + \frac{3}{2} \\
+        \cdots
+    \end{align*}
+    Per induzione, risulta che \(S_{2^n} > 1 + \frac{n}{2}\) (eccetto il primo).
+    Allora, \begin{align*}
+        S_{2^{n+1}} = S_{2^n} + \left(\frac{1}{2^n + 1} + \frac{1}{2^n + 2} \cdots + \frac{1}{2^{n+1}}\right)
+    \end{align*}
+    Quindi abbiamo \(2^n\) termini tutti più grandi dell'ultimo.
+    Quindi, tutto ciò è maggiore di
+    \[
+        1 + n\frac{1}{2} + \frac{1}{2} = 1 + (n+1)\frac{1}{2}
+    \]
+    In conclusione, \(S_{2^n} > 1 + \frac{n}{2} \to \infty\) per \(n\to \infty\).
+    La successione delle somme parziali non è limitata superiormente e diverge.
+}
+
+Un teorema più forte sarebbe
+
+\stheorem{Teorema di condensazione di Cauchy}{
+    Sia
+    \[
+        \sum^\infty a_n
+    \]
+    una serie a termini positivi e supponiamo che \(\forall n, a_n \geq a_{n+1}\).
+    Allora la serie
+    \[
+        \sum^\infty a_n
+    \]
+    ha lo stesso carattere della serie
+    \[
+        \sum_{k=0}^\infty 2^k a_{2^k}
+    \]
+}
+
+\sproof{}{
+    TODO
+}
+
+\sexample{}{
+    È possibile applicare il teorema di condensazione alla serie armonica
+    e ottenere che
+    \[
+        \sum_{k=0}^\infty {\left(\frac{1}{2^{p-1}}\right)}^k
+    \]
+    che è una serie geometrica di ragione
+    \(\frac{1}{2^{p-1}}\) che converge se e solo se \(p>1\).
+}
+
 \end{document}
