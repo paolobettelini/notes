@@ -351,7 +351,7 @@ The first term
 \[
     \sum_{i=1}^3 \frac{dx_i'(t)}{dt} = \vec{r}'(t)
 \]
-is what \(O'\) perceives as the velocity, \(\vec{r}'(t)\).
+is what \(O'\) perceives as the velocity, \(\vec{v}'(t)\).
 Il termine dice di quanto cambiano le coordinate nel sistema di riferimento di \(O'\),
 ossia la sua velocità.
 Il secondo termine
@@ -373,10 +373,10 @@ Abbimo quindi che
 
 Ciò vorrebbe dire che la terna di assi sta precedendo attorno alla direzione di \(\vec{\omega}\).
 Tutte e 3 i versori stanno ruoando attorno allo stesso asse (infatti, non vi è l'indice \(i\) nel termine
-\(\vec{\omega}\)).
+\(\vec{\omega}\)). Tuttavia, il vettore \(\vec{\omega}\) stesso non è costante.
 Per dimostrare ciò, dobbiamo dare la forma di \(\vec{\omega}\):
 \[
-    \vec{\omega}(t) = \frac{1}{2} \sum_{i=1}^3 \hat{u_j} \wedge \frac{d \hat{u_j}}{dt}
+    \vec{\omega}(t) = \frac{1}{2} \sum_{j=1}^3 \hat{u_j} \wedge \frac{d \hat{u_j}}{dt}
 \]
 
 Sostituendo otteniamo
@@ -385,5 +385,100 @@ Sostituendo otteniamo
     &= \vec{V} + \vec{v}'(t) + \vec{\omega} \wedge \sum_{i=1}^3 x_i'\hat{u_i} \\
     &= \vec{V} + \vec{v}'(t) + \vec{\omega} \wedge \vec{r}'(t)
 \end{align*}
+
+Verifichiamo che la forma di \(\vec{\omega}\) soddisfi la condizione data, quindi
+\begin{align*}
+    (\vec{\omega} \wedge \hat{u_i})_x &= \omega_y u_i^z - \omega_z u_i^y \\
+    &= \frac{1}{2} \sum_{j=1}^3 \left\{ u_i^z \left[u_j^z \frac{du_j^x}{dt} - u_j^x \frac{du_j^z}{dt}\right]
+     - u_i^y \left[u_j^x \frac{du_j^y}{dt} - u_j^y \frac{du_j^x}{dt}\right] \right\} \\
+     &= \frac{1}{2} \sum_{j=1}^3 \left\{
+        \frac{du_j^x}{dt} \left[
+            u_i^z u_j^z + u_i^yu_j^y
+        \right]
+        - \frac{du_j^y}{dt} u_i^yu_j^x - \frac{du_j^z}{dt} u_i^zu_j^x
+     \right\} \\
+     &= \frac{1}{2} \sum_{j=1}^3 \left\{
+        \frac{du_j^x}{dt} \left[
+            \hat{u_i} \cdot \hat{u_j} - u_i^x u_j^x
+        \right]
+        - \frac{du_j^y}{dt} u_i^yu_j^x - \frac{du_j^z}{dt} u_i^zu_j^x
+     \right\} \\
+     &= \frac{1}{2} \sum_{j=1}^3 \left\{
+        \frac{du_j^x}{dt} \left[
+            \delta_{i,j} - u_i^x u_j^x
+        \right]
+        - \frac{du_j^y}{dt} u_i^yu_j^x - \frac{du_j^z}{dt} u_i^zu_j^x
+     \right\} \\
+     &= \frac{1}{2} \sum_{j=1}^3 \left\{
+        \frac{du_j^x}{dt} \delta_{i,j} - u_j^x \left[
+            u_i^x \frac{du_j^x}{dt} + \frac{du_j^y}{dt} u_i^y + \frac{du_j^z}{dt} u_i^z
+        \right]
+     \right\} \\
+     &= \frac{1}{2} \frac{du_i^x}{dt} - \frac{1}{2} \sum_{j=1}^3
+        u_j^x \left[
+            u_i^x \frac{du_j^x}{dt} + \frac{du_j^y}{dt} u_i^y + \frac{du_j^z}{dt} u_i^z
+        \right] \\
+    &= \frac{1}{2} \frac{du_i^x}{dt} - \frac{1}{2} \sum_{j=1}^3
+        u_j^x \left[
+            \hat{u_i} \cdot \frac{d\hat{u_j}}{dt}
+        \right]
+\end{align*}
+
+Siccome
+\[
+    0 = \frac{\hat{u_i}}{dt} \cdot \hat{u_j} + \hat{u_i} \frac{\hat{u_j}}{dt}
+\]
+Allora
+\[
+    \hat{u_i} \frac{\hat{u_j}}{dt} = - \frac{\hat{u_i}}{dt} \cdot \hat{u_j}
+\]
+e quindi
+\begin{align*}
+    (\vec{\omega} \wedge \hat{u_i})_x &= \omega_y u_i^z - \omega_z u_i^y \\
+    &= \frac{1}{2} \frac{du_i^x}{dt} + \frac{1}{2} \sum_{j=1}^3
+    u_j^x \left[
+        \hat{u_j} \cdot \frac{d\hat{u_i}}{dt}
+    \right] \\
+    &= \frac{1}{2} \frac{du_i^x}{dt} + \frac{1}{2} \frac{du_i^x}{dt} \\
+    &= \frac{du_i^x}{dt}
+\end{align*}
+
+Abbiamo quindi che
+\[
+    (\vec{\omega} \wedge \hat{u_i})_x = \frac{du_i^x}{dt}
+    \qquad
+    (\vec{\omega} \wedge \hat{u_i})_y = \frac{du_i^y}{dt}
+    \qquad
+    (\vec{\omega} \wedge \hat{u_i})_z = \frac{du_i^z}{dt}
+\]
+
+Tornando alla velocità,
+\begin{align*}
+    \vec{v} &= \vec{V} + \vec{v}' + \sum_{i=1}^3 x_i' (\vec{\omega} \wedge \hat{u_i}) \\
+    &= \vec{V} + \vec{v}' + \vec{\omega} \wedge \sum_{i=1}^3 x_i' \hat{u_i} \\
+    &= \vec{V} + \vec{v}' + \vec{\omega} \wedge \vec{r}'
+\end{align*}
+
+Troviamo ora la medesima relazione per l'accelerazione.
+Siccome
+\begin{align*}
+    \frac{d\vec{v}'}{dt} &= \sum_{i=1}^3 \left[
+        \frac{d^2 x_i'}{dt^2} \hat{u_i} + \frac{dx_i'}{dt} \frac{d\hat{u_i}}{dt}
+    \right] \\
+    &= \vec{a}' + \sum_{i=1}^3 \frac{dx_i'}{dt} \frac{d\hat{u_i}}{dt} \\
+    &= \vec{a}' + \sum_{i=1}^3 \frac{dx_i'}{dt} (\vec{\omega} \wedge \hat{u_i}) \\
+    &= \vec{a}' + \vec{\omega} \wedge \sum_{i=1}^3 \frac{dx_i'}{dt} \hat{u_i} \\
+    &= \vec{a}' + \vec{\omega} \wedge \vec{v}'
+\end{align*}
+Possiamo trovare la velocità
+\begin{align*}
+    \vec{a} &= \vec{A} + \frac{d\vec{v}'}{dt} + \frac{d\vec{\omega}}{dt} \wedge \vec{r}'
+    + \vec{\omega} \wedge \frac{d\vec{r}'}{dt} \\
+    &= \vec{A} + \vec{a}' + 2 \vec{\omega} \wedge \vec{v}' + \frac{d\vec{\omega}}{dt} \wedge \vec{r}'
+    + \vec{\omega} \wedge (\vec{\omega} \wedge \vec{r}')
+\end{align*}
+
+L'ultimo termine \(\vec{\omega} \wedge (\vec{\omega} \wedge \vec{r}')\) è l'accelerazione centrifuga.
+Il termine \(2 \vec{\omega} \wedge \vec{v}'\) è l'accelerazione di Coriolis.
 
 \end{document}
