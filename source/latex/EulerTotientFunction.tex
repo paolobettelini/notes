@@ -41,7 +41,7 @@
 
 \begin{snippetcorollary}{euler-totient-of-prime}{Euler's totient function of prime}
     Let \(p\) be a \primen. Then,
-    \[ \eulertotient(n) = n-1 \]
+    \[ \eulertotient(p) = p-1 \]
 \end{snippetcorollary}
 
 \begin{snippetproposition}{amount-of-invertible-classes}{Amount of invertible modulo classes}
@@ -118,16 +118,21 @@
 
 \section{Computing Euler's totient function}
 
+\begin{snippetproposition}{euler-totient-of-prime-power}{Euler's totient function of prime power}
+    Let \(p\) be a \primen and \(\alpha \in \integers^+\). Then,
+    \[ \eulertotient(p^\alpha) = p^\alpha - p^{\alpha - 1} \]
+\end{snippetproposition}
+
 \begin{snippetlemma}{euler-totient-function-lemma1}{}
     Let \(m,n \in \integers^+\) where \(m\) and \(n\) are \coprime. Then,
     \[ \eulertotient(mn) = \eulertotient(m)\eulertotient(n) \]
 \end{snippetlemma}
 
 \begin{snippetproof}{euler-totient-function-lemma1-proof}{euler-totient-function-lemma1}{}
-    Consider the \function \(f\colon \integers / mn \fromto \integers / m \cartesianprod \integers / n\)
+    Consider the \function \(\tau\colon \integers / mn \fromto \integers / m \cartesianprod \integers / n\)
     defined as
     \[
-        {[a]}_{mn} \to ({[a]}_m, {[a]}_n)
+        \tau({[a]}_{mn}) \triangleq ({[a]}_m, {[a]}_n)
     \]
     This function is well-defined. Indeed,
     if \({[a]}_{mn} = {[b]}_{mn}\),
@@ -161,7 +166,7 @@
     Let \({[a]}_{mn} \in \text{Inv}(\integers / mn)\), which means that \(a\)
     is \coprime with \(mn\), and, thus, \coprime with \(m\) and \(n\).
     Thus, \(({[a]}_m, {[a]}_n) \in \text{Inv}(\integers / m) \cartesianprod \text{Inv}(\integers / n)\).
-    The \function \(f\) sends elements of \(\text{Inv}(\integers / mm)\)
+    The \function \(\tau\) sends elements of \(\text{Inv}(\integers / mm)\)
     into \(\text{Inv}(\integers / m) \cartesianprod \text{Inv}(\integers / m)\).
     Likewise, let  \(({[b]}_m, {[c]}_n) \in \text{Inv}(\integers / m) \cartesianprod \text{Inv}(\integers / n)\)
     and tkae che element \({[a]}_{mn}\) such that \(f({[a]}_{mn}) = ({[b]}_m, {[c]}_n)\).
@@ -182,27 +187,30 @@
     \]
     where \(i\neq j \implies p_i \neq p_j\)
     and \(\alpha_i \in \integers^+\). Then,
-    \[
-        \eulertotient(n) = \prod_{i=1}^r \eulertotient(p_i^{\alpha_i})
-    \]
+    \begin{align*}
+        \eulertotient(n) &= \prod_{i=1}^r \eulertotient(p_i^{\alpha_i}) \\
+        &= \prod_{i=1}^r (p^\alpha - p^{\alpha - 1}) \\
+        &= n\prod_{i=1}^r \left(1 - \frac{1}{p_i}\right)
+    \end{align*}
 \end{snippetcorollary}
 
-\begin{snippet}{temp}
+
+\begin{snippetproof}{euler-totient-of-prime-factorization-proof}{euler-totient-of-prime-factorization}{Euler's totient function of prime factorization}
     Now, \[\eulertotient(p^\alpha) = \left|\left\{n \in \integers \suchthat 0 \leq n < p^\alpha, \gcd(n, p^\alpha) = 1 \right\}\right| \]
-    Between \(0\) and \(p^\alpha-1\), I need to cout the amount of \coprime[coprimes]
+    Between \(0\) and \(p^\alpha-1\), we need to count the amount of \coprime[coprimes]
     with \(p^\alpha\), that is the \coprime[coprimes] with \(p\), meaning those
     that are not multiples of \(p\).
     However, the multiples of \(p\) are \(1\) every \(p\).
-    That is, \(p\alpha / p = p^{\alpha - 1}\).
+    That is, \(p^\alpha / p = p^{\alpha - 1}\).
     We thus have \(p^\alpha - p^{\alpha - 1}\) numbers left that are \coprime with \(p^\alpha\).
     Thus, \(\eulertotient(p^\alpha) = p^\alpha - p^{\alpha - 1}\).
-
+    
     In conclusion,
     \begin{align*}
         \eulertotient(n) &= \prod_{i=1}^r \eulertotient(p_i^{\alpha_i}) \\
         &= \prod_{i=1}^r (p_i^{\alpha_i} - p_i^{\alpha_i - 1}) \\
         &= n \prod_{i=1}^r \left(1 - \frac{1}{p_i}\right)
     \end{align*}
-\end{snippet}
+\end{snippetproof}
 
 \end{document}
