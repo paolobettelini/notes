@@ -1,0 +1,250 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{monoids-introduction}
+\genpage
+
+\section{Monoids}
+
+\begin{snippetdefinition}{monoid-definition}{Monoid}
+    A \textit{monoid} \((G,\circ)\) is a tuple containing a set \(G\) and
+    a \binoperation \(\circ\) on \(G\).
+    
+    The relation must satisfy the following properties
+    
+    \begin{enumerate}
+        \item \textbf{Associativity}: \(\forall a,b,c\in G, a \circ (b \circ c) = (a \circ b) \circ c\)
+        \item \textbf{Identity}: \(\exists e \suchthat \forall a \in G, ea=ae=a\) 
+    \end{enumerate}
+\end{snippetdefinition}
+
+\subsection{Expoonentiation}
+
+\begin{snippetdefinition}{monoid-exponents-definition}{Exponents on monoids}
+    Let \((G, \circ)\) be a \monoid. We define exponentiation
+    for \(n \in \naturalnumbers\) and \(a\in G\) as follows:
+    \[
+        a^n \triangleq
+        \begin{cases}
+            1 & n=0 \\
+            a^n \circ a & n \neq 0
+        \end{cases}
+    \]
+    where \(1\) is the identity element.
+    If \(a\) has inverse \(a^{-1}\), we also define exponentiation for \(n\in{\mathbb{Z}}^-\)
+    as \({(a^{-1})}^{-n}\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{monoid-inverse-is-exponent-negative-1}{}
+    Let \((G, \circ)\) be a \monoid and \(g\in G\).
+    The operation of exponentiation by \(-1\) on \(g\) gives
+    the inverse \(g^{-1}\) if \(g\) is invertible.
+\end{snippetproposition}
+
+\begin{snippetproof}{monoid-inverse-is-exponent-negative-1-proof}{monoid-inverse-is-exponent-negative-1}{}
+    By definition, \(g^{-1} = {(g^{-1})}^1 = g^{-1}\), which is the inverse.
+\end{snippetproof}
+
+\begin{snippetproposition}{properties-of-monoid-exponents}{Properties of exponents on a monoid}
+    Let \((M, \circ)\) be a \monoid. Then, for all \(g\in M\)
+    and \(m,n \in\naturalnumbers\):
+    \begin{enumerate}
+        \item \(a^m \circ a^n = a^{m+n}\);
+        \item \({(a^m)}^n = a^{mn}\).
+    \end{enumerate}
+    If \(g\) is invertible, the properties are satisfied for \(n \in \integers\).
+\end{snippetproposition}
+
+\begin{snippetlemma}{monoid-opposite-powers-are-inverses}{Opposites powers are inverses of eachother}
+    Let \((M, \circ)\) be a \monoid.
+    If \(a\in M\) is invertible and \(n \in \naturalnumbers\), then \(a^n\)
+    and \(a^{-n}\) are inverses of eachother.
+\end{snippetlemma}
+
+\begin{snippetproof}{monoid-opposite-powers-are-inverses-proof}{monoid-opposite-powers-are-inverses}{Opposites powers are inverses of eachother}
+    Without loss of generality, assume \(n\in\naturalnumbers\).
+    We proceed by \principleofinduction[induction] on \(n\):
+    \begin{itemize}
+        \item the base case is \(a^0 = 1\) and \(a^{-0} = a^0 = 1\);
+        \item for the inductive case let \(k\in\naturalnumbers\) such that \(a^k\)
+        and \(a^{-k}\) are inverses of eachother.
+        For simplity, we denote the inverse of \(a\) as \(\overline{a}\).
+        Now,
+        \begin{align*}
+            a^{k+1} = a^k \circ a 
+        \end{align*}
+        which has \(\overline{a}\overline{a^k}\) as an inverse.
+        By the inductive hypothesis, \(\overline{a^k}\) is
+        \(a^{-k}\). That is, by definition, \({\overline{a}}^k\).
+        Thus, \[\overline{a}\overline{a^k} = \overline{a}{\overline{a}}^k = {\overline{a}}^{k+1}\]
+        Finally, by definition \({\overline{a}}^{k+1} = a^{-(k+1)}\).
+    \end{itemize}
+\end{snippetproof}
+
+\begin{snippetproof}{properties-of-monoid-exponents-proof}{properties-of-monoid-exponents}{Properties of exponents on a monoid}
+    \begin{enumerate}
+        \item We proceed by \principleofinduction[induction] on \(n\):
+        \begin{itemize}
+            \item the base case is \(a^m \circ a^0 = a^m \circ 1 = a^m\);
+            \item for the inductive case let \(k \in \naturalnumbers\)
+            where the properties are satisfied:
+            \begin{align*}
+                a^m \circ a^{k+1} &= a^m \circ (a^k \circ a) \\
+                &= (a^m \circ a^k) \circ a \\
+                &= a^{m+k} \circ a \\
+                &= a^{m+k+1}
+            \end{align*}
+        \end{itemize}
+        \item We proceed by \principleofinduction[induction] on \(n\):
+        \begin{itemize}
+            \item the base case is \({(a^m)}^0 = {(a^{m\cdot 0})} = a^0 = 1\);
+            \item for the inductive case let \(k \in \naturalnumbers\)
+            where the properties are satisfied:
+            \begin{align*}
+                {(a^m)}^{k+1} &= {(a^m)}^k \circ a^m\\
+                &= a^{mk} \circ a^m \\
+                &= a^{mk + m} \\
+                &= a^{m(k+1)}
+            \end{align*}
+        \end{itemize}
+    \end{enumerate}
+
+    To extend these properties to \(n\in\integers\) (for invertible elements),
+    we need to distinguish various cases:
+    \begin{enumerate}
+        \item if \(m+n \geq 0\), we consider various sub-cases:
+        \begin{enumerate}
+            \item if \(m \geq 0\) and \(n \geq 0\): this case has already been tackled;
+            \item if \(m \geq 0\) and \(n < 0\): we have \(a^m\circ a^n = a^m \circ {(a^{-1})}^{-n}\).
+            Now, \(m+n \geq 0\) so \(m \neq -n\). Thus, \(a^{m+n} \circ a^{-n} = a^m\)
+            because \(m+n \geq 0\). We thus have \[a^m\circ a^n = {\left(a^{m+n} \circ (a^{-n})\right)}\circ a^n\]
+            By \snippetref[monoid-opposite-powers-are-inverses][this lemma],
+            \(a^{-n} \circ a^n = 1\). Finally,
+            \[
+                a^m \circ a^n = a^{m+n} (a^{-n} \circ a^n) = a^{m+n} \circ 1 = a^{m+n}
+            \]
+            \item if \(m < 0\) and \(n \geq 0\): analogous to the last case;
+        \end{enumerate}
+        \item if \(m+n < 0\), we use the last cases.
+        We have that \begin{align*}
+            a^{m+n} &= {(a^{-1})}^{-m-n} \\
+            &= {(a^{-1})}^{-m} \circ {(a^{-1})}^{-n}
+        \end{align*}
+        By \snippetref[monoid-opposite-powers-are-inverses][this lemma],
+        \({(a^{-1})}^{-m}\) is the inverse of \({(a^{-1})}^{m}\)
+        and \({(a^{-1})}^{-n}\) is the inverse of \({(a^{-1})}^{-n}\).
+        Thus, \({(a^{-1})}^{-m} \circ {(a^{-1})}^{-n}\) is the inverse of
+        \({(a^{-1})}^{n}\). Thus, \({(a^{-1})}^{-n}\circ{(a^{-1})}^{-m}\)
+        is the inverse of \({(a^{-1})}^{m}\circ {(a^{-1})}^{n}\), thus the inverse of
+        \(a^{-n} \circ a^{-m}\). But the inverse of \(a^{-n} \circ a^{-m}\)
+        is \({(a^{-m})}^{-1} \circ {(a^{-n})}^{-1}\), which by \snippetref[monoid-opposite-powers-are-inverses][this lemma],
+        is equal to \(a^m \circ a^n\).
+    \end{enumerate}
+    The second property is proved analogously.
+\end{snippetproof}
+
+\begin{snippetproposition}{monoid-exponent-distribution}{}
+    Let \((M, \circ)\) be a \monoid.
+    If for \(a,b\in M\), \(a\circ b = b\circ a\),
+    then for \(n\in\naturalnumbers\)
+    \[
+        {(a\circ b)}^n = b^n \circ a^n
+    \]
+    If \(a\) and \(b\) are invertible, then the property holds for \(n\in\integers\).
+\end{snippetproposition}
+
+\begin{snippetproof}{monoid-exponent-distribution-proof}{monoid-exponent-distribution}{}
+    We proceed by \principleofinduction[induction]:
+    \begin{itemize}
+        \item the base case is \({(a\circ b)}^0 = 1 = a^0 \circ b^0 = 1\);
+        \item for the induction case let \(k\in\naturalnumbers\)
+        such that the property holds. Then,
+        \begin{align*}
+            {(a\circ b)}^{k+1} &= {(a\circ b)}^k \circ a \circ b \\
+            &= a^k \circ b^k \circ a \circ b
+        \end{align*}
+        If we had shown that \(b^k \circ a = a \circ b^k\),
+        we could have concluded by saying that
+        \[
+            {(a\circ b)}^{k+1} = a^k \circ b^k \circ a \circ b
+            = a^k \circ a \circ b^k \circ b = a^{k+1} \circ b^{k+1}
+        \]
+        Indeed, we are going to show that \(a\circ b^n = b^n \circ a\)
+        by \principleofinduction[induction] on \(n\):
+        \begin{itemize}
+            \item the base case is \(a\circ b^0 = a \circ 1 = a\)
+            and \(b^0 \circ a = 1 \circ a = a\);
+            \item the induction case is given by
+            \begin{align*}
+                a\circ b^{k+1} &= a \circ b^k \circ b \\
+                &= b^k \circ a \circ b \\
+                &= b^k \circ b \circ a \\
+                &= b^{k+1} \circ a
+            \end{align*}
+        \end{itemize}
+    \end{itemize}
+    To extend this property to \(n\in\integers\) (for invertible elements), we have
+    \begin{align*}
+        {(a\circ b)}^n &= {\left({(a\circ b)}^{-n}\right)}^{-1} \\
+        &= {\left((a^{-n}) \circ (b^{-n})\right)}^{-1}
+    \end{align*}
+    We showed that if \(a\) and \(b\) commute,
+    then \(a\) commutes with the powers of \(b\), the powers of \(b\)
+    commute with the powers of \(a\) (for natural exponent).
+    Thus, this is
+    \begin{align*}
+        &\phantom{=} {\left((b^{-n}) \circ (a^{-n})\right)}^{-1} \\
+        &= (a^{-n})^{-1} \circ (b^{-n})^{-1} \\
+        &= a^n \circ b^n
+    \end{align*}
+\end{snippetproof}
+
+\begin{snippetproposition}{monoid-inverse-commutativity}{}
+    Let \((G, \circ)\) be a \monoid.
+    Then, if \(a\circ b = b\circ a\), \(a\circ b^k = b^k \circ a\).
+\end{snippetproposition}
+
+\begin{snippetproof}{monoid-inverse-commutativity-proof}{monoid-inverse-commutativity}{}
+    \todo
+    Since \(a\) commuted with every power of \(b\), every power of \(b\)
+    commuted with \(a\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{monoid-powers-of-same-element-commut}{Powers of same element commut}
+    Let \((G, \circ)\) be a \monoid.
+    Then, \(a^m \circ a^n = a^n \circ a^m\).
+\end{snippetcorollary}
+
+\subsection{Inverse element}
+
+\begin{snippettheorem}{uniqueness-of-the-inverse-element}{Uniqueness of the inverse element}
+    If \(a^{-1}\) is an inverse of \(a\) in a \monoid, then it is unique.
+\end{snippettheorem}
+
+\begin{snippetproof}{uniqueness-of-the-inverse-element-proof}{uniqueness-of-the-inverse-element}{Uniqueness of the inverse element}
+    Suppose we have \(a\in G\) with inverses \(b\) and \(c\).
+    \begin{align*}
+        b = b \circ e &= b \circ (a \circ c) \\
+        (b \circ a) \circ c &= e \circ c \\
+        &= c
+    \end{align*}
+    Thus, \(b\) and \(c\) must be the same.
+\end{snippetproof}
+
+\begin{snippetproposition}{inverse-element-of-inverse-element}{Inverse element of inverse element}
+    Let \((M, \circ)\) be a \monoid. If \(a\) is invertible by \(a^{-1}\),
+    then \(a^{-1}\) is also invertible and its inverse is \(a\).
+\end{snippetproposition}
+
+\begin{snippetproposition}{inverse-of-inverse-product}{Inverse of product}
+    Let \((M, \circ)\) be a \monoid. If \(a\) and \(b\) are invertible by \(a^{-1}\) and \(b^{-1}\),
+    then \(a\circ b\) is the inverse of\(a^{-1} \circ b^{-1}\).
+\end{snippetproposition}
+
+\end{document}
