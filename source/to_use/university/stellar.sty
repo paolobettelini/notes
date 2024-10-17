@@ -11,6 +11,24 @@
 \RequirePackage[most]{tcolorbox}
 \RequirePackage{wrapfig}
 
+% Integral command
+\ExplSyntaxOn
+\DeclareDocumentCommand{\integral}{d[] d[] d[] d[]}
+{
+    \IfNoValueTF { #4 }
+    {
+        \IfNoValueTF { #3 }
+        { \int #1\,d#2 }
+        { \text{Either\,\,2\,\,or\,\,4\,\,arguments\,\,must\,\,be\,\,passed} }
+    }
+    {
+        \int\limits\c_math_subscript_token{#1}^{#2} #3 \,d#4
+        % In Expl Syntax characters as '_' or ':' are used as letters in command names
+        % hence the \c_math_subscript_token{#1} rather than _{#1}
+    }
+}
+\ExplSyntaxOff
+
 % Fill the remaining space of a wrapfigure
 \newcommand{\wrapfill}{
     \par
