@@ -3146,4 +3146,427 @@ con \(p' < 1\) e \(\varepsilon > 0\) cosicché
 \]
 dove il secondo termine diverge.
 
+\subsection{Formula di Stirling}
+
+\sproposition{}{
+    \[
+        n! = n^n \cdot e^{-n} \cdot
+        \sqrt{2\pi n} \cdot (1 + o(1))
+        \sim n^n e^{-n} \sqrt{2\pi n}
+    \]
+}
+
+Possiamo quindi applicare il criterio della radice anche quando ci sono i fattoriali.
+
+\sexample{}{
+    Studia il carattere di
+    \[
+        \sum_{n=1}^\infty \frac{n^n}{(2n)!}
+    \]
+    Il limite è dato da
+    \begin{align*}
+        \frac{a_{n+1}}{a_n} = \frac{
+            {(n+1)}^{n+1}
+        }{
+            (2n+2)!
+        }
+        \cdot
+        \frac{
+            (2n)!
+        }{
+            n^n
+        }
+        &=
+        {\left(\frac{n+1}{n}\right)}^n
+        \frac{
+            (n+1)(2n)!
+        }{
+            (2n+2)(2n+1)(2n)!
+        } \\
+        &=
+        {\left(\frac{n+1}{n}\right)}^n
+        \frac{n+1}{(2n+2)(2n)!}
+        \sim e \cdot  \frac{
+            n+1
+        }{
+            (2n+2)(2n+1)
+        } \\
+        &= \frac{e^{n(1+1/n)}}{{(2n)}^2 {\left(1 + \frac{1}{n}\right)}{\left(1 + \frac{1}{2n}\right)}}
+        \to 0
+    \end{align*}
+    Quindi la serie converge.
+
+    Con radici abbiamo
+    \begin{align*}
+        {\left[\frac{n^n}{(2n)!}\right]}^{1/n}
+        &= \frac{n}{
+            {\left[
+                {(2n)}^{2n}
+                \cdot 2^{-2n} \cdot \sqrt{4\pi n}(1 + o(1))
+            \right]}^{1/n}
+        } \\
+        &= \frac{n}{
+            {(2n)}^2 \cdot e^{-2} {(4\pi)}^{\frac{1}{2n}}
+            \cdot n^{\frac{1}{2n}}{(1 + o(1))}^{\frac{1}{n}}
+        } \to 0
+    \end{align*}
+    E quindi converge
+}
+
+\sexample{}{
+    Studia il carattere di
+    \[
+        \sum_{n=1}^\infty \frac{e^{n^2} + n^n}{(n^2)! + {\left(1 + \frac{1}{n}\right)}^{n^2}}
+    \]
+    A numeratore abbiamo
+    \begin{align*}
+        e^{n^2} + n^n = e^{n^2} + e^{n \log n} = e^{n^2}
+        \left\{1 + e^{n\log n - n^2}\right\}
+        \sim e^{n^2}
+    \end{align*}
+    A denominatore abbiamo
+    \begin{align*}
+        (n^2)! + {\left(1 + \frac{1}{n}\right)}^{n^2}
+        &= {(n^2)}^{n^2} \cdot e^{-n^2}
+        \cdot \sqrt{2\pi n^2}(1 + o(1))
+        + e^{n^2 \log \left(1 + \frac{1}{n}\right)} \\
+        &= e^{2n^2 \left\{
+            \log n - \frac{1}{2} + \frac{1}{2n^2} \log \sqrt{2\pi n^2}
+        \right\}}(1 + o(1)) + e^{n^2 \log\left(1 + \frac{1}{n}\right)}
+        \\
+        &= e^{2n^2 \left\{
+            \log n - \frac{1}{2} + \frac{1}{2n^2} \log\sqrt{2\pi n^2}
+        \right\}}
+        \left\{1 + o(1) + e^{n^2\log\left(1 + \frac{1}{n}\right) - 2n^2 \left\{\cdots\right\}}\right\} \\
+        &\sim e^{2n^2 \left\{
+            \log n - \frac{1}{n} + \frac{1}{2n^2}
+            \log\sqrt{2\pi n^2}
+        \right\}}
+        = {(n^2)}^{n^2} e^{-n^2} \sqrt{2\pi n^2}
+    \end{align*}
+    Ora possiamo usare il criterio della radice
+    \begin{align*}
+        a_n \sim \frac{
+            e^{n^2}
+        }{
+            {(n^2)}^{n^2}
+            e^{-n^2}
+            \sqrt{2\pi n^2}
+        }
+        = b_n
+    \end{align*}
+    Abbiamo che \(\sum a_n\) ha lo stesso carattere di \(\sum b_n\)
+    e
+    \begin{align*}
+        \sqrt[n]{b_n} &= \frac{
+            e^n
+        }{
+            {(n^2)}^n e^{-n}
+            {(2n)}^{\frac{1}{2n}} n^{1/n}
+        } \\
+        &= \frac{
+            e^{2n}
+        }{
+            n^{2n} {(2n)}^{1/n} n^{1/n}
+        } \to
+        0
+    \end{align*}
+    e quindi la serie converge.
+}
+
+\pagebreak
+
+\subsection{Serie a termini di segno qualunque}
+
+Con serie di segno qualunque non è possibile applicare il criterio asintotico.
+
+Sia \(\{a_n\}\) una successione reale o complessa (o in uno spazio metrico)
+e supponiamo che esista finito il limite \(\underset{n}{\lim}\, a_n = L \in \mathbb{F}\).
+Per definizione di limite, \[\forall \varepsilon > 0, \exists\, N \,|\, \forall n \geq N,
+|a_n - L| < \varepsilon\]
+Quindi, se \(n,m > N\), allora
+\[
+    |a_n - a_m| = |(a_n - L) + (L - a_m)|
+    \trianglelefteqslant
+    |a_n - L| + |L - a_m|
+    < 2 \varepsilon
+\]
+
+\sdefinition{Successione di Cauchy}{
+    Sia \(\{a_n\}\) una successione reale o complessa.
+    Si dice che \(\{a_n\}\) soddisfa la condizione (C) di Cauchy, o più brevemente
+    che è una successione di Cauchy,
+    se
+    \[
+        \forall \varepsilon > 0, \exists\, n \,|\,
+        \forall n,m \geq M,
+        |a_n - a_m| < \varepsilon
+    \]
+    Per quanto visto sopra, se \(a_n \to L\) finito, allora \(\{a_n\}\)
+    è di Cauchy.
+}
+
+\stheorem{}{
+    Sia \(\{a_n\}\) una successione reale o complessa.
+    Sono equivalenti:
+    \begin{enumerate}
+        \item \(\exists\) finito
+        \[
+            \underset{n}{\lim}\, a_n = L
+        \]
+        \item \(\{a_n\}\) è una successione di Cauchy.
+    \end{enumerate}
+}
+
+Abbiamo visto che (1) implica (2). Il converso, vale in \(\mathbb{R}\)
+ma non in \(\mathbb{Q}\).
+
+\sproposition{}{
+    Sia
+    \[
+        \sum^\infty a_n
+    \]
+    una serie reali o complessa e sia \(\{S_N\}\)
+    la successione delle sue somme parziali.
+    Per definizione, \(\sum a_n\) converge a \(S\) se esiste
+    finito \(\underset{n}{\lim}\, S_n \in \mathbb{R}\).
+}
+
+\scorollary{}{
+    Condizione necessaria e sufficiente perché una serie \(\sum a_n\) converga
+    e che la successione delle somme parziali soddisfi le condizioni di Cauchy, scritte
+    in 3 modi equivalenti:
+    \begin{enumerate}
+        \item \[ \forall \varepsilon > 0, \exists\, N \,|\, \forall n,m \geq N, |S_N - S_M| < \varepsilon\]
+        equivalentmeente notando che se \(n>m\), \[S_n - S_m = \sum_{k=1}^n a_k - \sum_{k=1}^m a_k = \sum_{m+1}^{n} a_k\]
+        \item \[
+            \forall \epsilon > 0, \exists\, N \,|\, \forall n,m \geq N
+            \quad n>m \quad \left|\sum_{k=m+1}^n a_k\right| < \varepsilon
+        \]
+        ovvero
+        \[
+            \forall \epsilon > 0, \exists\, N \,|\, \forall n,m \geq N
+            \quad n\geq m \quad \left|\sum_{k=m+1}^n a_k\right| < \varepsilon
+        \]
+        \item \textbf{condizione più usata:}
+        \[
+            \forall \varepsilon > 0, \exists\, N \,|\,
+            \forall m,n \geq N \land \forall p \geq 0, \left|\sum_{k=m}^{m+p} a_k\right|
+            < \varepsilon
+        \]
+    \end{enumerate}
+}
+
+\sdefinition{Convergenza assoluta}{
+    Si dice che una serie
+    \[
+        \sum_{n=1}^\infty a_n
+    \]
+    \textit{converge assolutamente} se 
+    \[
+        \sum_{n=1}^\infty |a_n| < +\infty
+    \]
+}
+
+\stheorem{Teorema fondamentale}{
+    Se una serie converge assolutamente, allora converge.
+}
+
+La serie
+\[
+    \sum_{n=1}^\infty \frac{{(-1)}^n}{n^p}
+\]
+con \(0 < p \leq 1\) converge ma non assolutamente.
+La serie converge per \(p > 0\).
+
+\slemma{disuguaglianza triangolare generalizzata}{
+    Sia \(\{b_k\}\) una successione,
+    allora
+    \[
+        \left|\sum_{k=1}^n b_k\right|
+        \leq
+        \sum_{k=1}^n |b_k|
+    \]
+}
+
+\sproof{}{
+    Per induzione
+    \begin{itemize}
+        \item il caso base è banale;
+        \item \begin{align*}
+            \left|
+                \sum_{k=1}^{n + 1} b_k
+            \right|
+            &= \left|
+                \left(
+                    \sum_{k=1}^{n} b_k
+                \right)
+                + b_{n+1}
+            \right|
+            \trianglelefteqslant \left|
+                \sum_{k=1}^{n} b_k
+            \right|
+            + |b_{n+1}| \\
+            &= \sum_{k=1}^{n} |b_k|
+            + |b_{n+1}| = \sum_{k=1}^{n+1} |b_k|
+        \end{align*}
+    \end{itemize}
+}
+
+\sproof{Teorema fondamentale}{
+    Sapendo che
+    \[
+        \sum_{k=1}^\infty |a_k| < +\infty
+    \]
+    la tesi è che
+    \[
+        \sum_{k=1}^\infty a_k
+    \]
+    converga equivalentemente soddisfa le condizionid i Cauchy.
+    \[
+        \forall \epsilon > 0, \exists\, N \,|\,
+        \forall n \geq m \geq N, \left|\sum_{k=m}^n a_k\right| \leq \epsilon
+    \]
+    Per ipotesi \(\sum |a_k|\) convrgr quindi soddisfa la condizione di Cauchy
+    e dato \(\epsilon > 0\), esiste \(N\) tale che \(\forall n \geq m \geq N\)
+    \[
+    \left|
+        \sum_{k=m}^n |a_k|
+    \right|
+    = \sum_{k=m}^n |a_k| \varepsilon
+    \]
+    Ma per il lemma \(\forall n \geq m \geq N\),
+    \[
+        \left|
+        \sum_{k=m}^n a_k
+        \right|
+        \leq \sum_{k=m}^n |a_k| < \varepsilon
+    \]
+}
+
+Quando abbiamo una serie che non ha termini solo positivi, la prima cosa da fare
+è mettere il modulo e controllare la convergenza assoluta.
+
+\sexample{}{
+    Considera
+    \[
+        \sum \frac{\sin n}{n^2}
+    \]
+    che non ha termini solo positivi. Allora proviamo a studiare la convergenza assoluta.
+    \[
+        \sum \frac{|\sin n|}{n^2}
+    \]
+    Poiché \(\frac{|\sin n|}{n^2} \leq \frac{1}{n^2}\)
+    e \(\sum \frac{1}{n^2 \leq +\infty}\)
+    converge (p-serie), allora la serie dei moduli converge assolutamente e quindi converge.
+}
+
+Vale lo stesso procedimento per
+\[
+    \sum \frac{\sin n}{n^p}
+\]
+con \(p > 1\).
+Se \(p \leq 1\), allora diverge. Ciò segue dal fatto che, per esempio,
+\(|\sin x| > \frac{1}{2}\) se \(\frac{\pi}{6} + k\pi \leq x \leq \frac{5}{6}\pi + k\pi\)
+con \(k\in\mathbb{Z}\). Notiamo che l'intervallo
+\[
+    I_k = \left[\frac{\pi}{6} + k\pi; \frac{5}{6}\pi + k\pi\right]
+\]
+ha lunghezza \(\frac{2\pi}{3} > 1\), quindi conviene un interno \(n\),
+in realtà \(2\) interi in quando la lunghezza è maggiore di \(2\).
+Allora la serie \[
+    \sum \frac{|\sin n|}{n}
+    \geq 
+    \sum_{k\in\mathbb{N}} \frac{|\sin n_k|}{n_k}
+\]
+dove \(n_k\) è un intero in ognuno di \(I_k\).
+Ciò è maggiore o uguale di
+\[
+    \sum \frac{\frac{1}{2}}{\frac{5}{6} \pi + k\pi}
+\]
+in quanto il valore a denominatore è al minomo \(\frac{5}{6} \pi + k\pi\).
+Allora troviamo un multiplo della serie armonica, che diverge.
+
+\sexample{}{
+    Considera
+    \[
+        \sum \frac{
+            -n + {(\sin n)}n^2 - \log n
+        }{
+            {(1+n)}^{10/3} - \cos n
+        }
+    \]
+    allora guardiamo il modulo:
+    \[
+        |a_n| = \frac{
+            |-n + (\sin n)n^2 - \log n|
+        }{
+            |{(1+n)}^{10/3} - \cos n|
+        }
+    \]
+    Maggioriamo rendendo più piccolo il denominatore e più grande il numeratore.
+    \[
+        |a_n| \leq \frac{
+            n + n^2|\sin n| + |\log n|
+        }{
+            {(1+n)}^{10/3} -1
+        }
+    \]
+    Notiamo che \({(1+n)}^{10/3} - 1 \geq \frac{1}{2}{(1+n)}^{10/3} > \frac{1}{2}n^{10/3}\)
+    perché \(n=1\) dà il valore massimo. Quindi
+    \[
+        |a_n| \leq \frac{
+           n
+        }{
+            \frac{1}{2}n^{10/3}         
+        }
+        + \frac{n^2}{\frac{1}{2}n^{10/3}}
+        + \frac{\log n}{\frac{1}{2}n^{10/3}}
+    \]
+    Quindi
+    \[
+        \sum_{n=1}^\infty |a_n| \leq
+        2 \sum n^{-\frac{7}{8}}
+        +
+        2 \sum n^{-\frac{4}{3}}
+        + 2 \sum_{n=2} \frac{1}{n^{10/3} {(\log n)}^{-1}}
+    \]
+    Tutti i termini convergono e quindi la serie converge.
+}
+
+\stheorem{Teorema di Leibniz}{
+    Si consideri la serie
+    \[
+        \sum_{n=1}^\infty
+        {(-1)}^n a_n
+    \]
+    dove \(\forall n, a_n \geq 0\) (serie a termini di segno alterno).
+    Supponiamo che:
+    \begin{enumerate}
+        \item \(a_n \to 0\) con \(n\to +\infty\) (condizione necessaria per la convergenza);
+        \item \(a_n\) è monotona decrescente \(a_n \geq a_{n+1}\).
+    \end{enumerate}
+    Allora, la serie converge.
+    Inoltre, posto \(S\) la somma della serie e \(S_n\) la somma parziale,
+    si ha che l'errore \(E_n = S - S_n\) soddisfa
+    \[
+        |E_n| \leq a_{N+1}
+    \]
+    e inoltre il segno di \(E_N\) è il segno di \({(-1)}^{N+1}\).
+}
+
+Perché il teorema valga basta che \(a_n \geq 0\) e \(a_n \geq a_{n+1}\)
+valgano definitivamente.
+In tal caso la stima dell'errore vale solo per \(n\) sufficientemente grande.
+
+Si può applicare il teorema a
+\[
+    \sum_{n=1}^\infty \frac{{(-1)}^n}{n^p}
+\]
+e notare che la serie converge semplicemente ma non assolutamente per ogni \(p > 0\).
+
+\textbf{Nota:}
+\(a_n \sim b_n\) e \(b_n\) monotona decrescente non implica necessariamente \(a_n\) monotona
+decrescente.
+
 \end{document}
