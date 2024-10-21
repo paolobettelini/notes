@@ -1,0 +1,127 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{subgroups}
+\genpage
+
+
+\section{Subgroups}
+
+\subsection{Definition}
+
+\begin{snippetdefinition}{subgroup-definition}{Subgroups}
+    % TODOURGENT, è un magma non solo un algebraic structure.
+    Given an algebraic structure \(g=(G, \circ)\) and a \group \(h=(H, \circ)\), \(h\)
+    is a subgroup of \(g\) (\(g \leq h\)) if \(H \subseteq G\).
+\end{snippetdefinition}
+
+\subsection{One-Step Subgroup Test}
+
+\begin{snippettheorem}{one-step-subgroup-test}{One-Step Subgroup Test}
+    Let \((G, \circ)\) be a \group and let \(H \subseteq G\) where \(\emptyset \neq H\).\\
+    Then \((H, \circ)\) is a subgroup of \((G, \circ) \iff
+    \forall a,b \in H, a \circ b^{-1} \in H\).
+\end{snippettheorem}
+
+\begin{snippetproof}{one-step-subgroup-test-proof}{one-step-subgroup-test}{One-Step Subgroup Test}
+    \iffproof{
+        Assume \((H, \circ) \leq (G, \circ)\).
+        The properties of a group directly infer \(\forall a,b \in H, a \circ b^{-1} \in H\).
+    }{
+        Assume \(\forall a,b \in H, a \circ b^{-1} \in H\)
+        \begin{itemize}
+            \item \textbf{Identity}: let \(a=b\), then \(a\circ a^{-1} H \implies e \in H\).
+            \item \textbf{Inverse}: Let \(k\in H\), \(a=e\) and \(b=k\).
+            \(a\circ b^{-1} = e \circ k^{-1} \implies k^{-1} \in H\).
+            \item \textbf{Closure}: Let \(m, n \in H \implies n^{-1} \in H\) and let \(a=m\) and \(b=n^{-1}\).
+            \(a\circ b^{-1} = a \circ (b^{-1})^{-1}=a\circ b\). This implies \(a, b \in H\).
+        \end{itemize}
+    }
+\end{snippetproof}
+
+\subsection{The centralizer subgroup}
+
+\begin{snippetdefinition}{centralizer-group}{The centralizer subgroup}
+    Let \(H \leq G\) be groups and define
+    \[
+        \text{C}_G(H) = \{
+            g \in G \suchthat \forall h \in H, gh=hg
+        \}
+    \]
+    as the centralizer of \(H\).
+    This is the set of all elements of \(G\) such that they commute with every element of \(H\).
+\end{snippetdefinition}
+
+\begin{snippettheorem}{centralizer-of-subgroup-is-subgroup}{}
+    Let \(H \leq G\), then \(\text{C}_G(H) \leq G\).
+\end{snippettheorem}
+
+\begin{snippetproof}{centralizer-of-subgroup-is-subgroup-proof}{centralizer-of-subgroup-is-subgroup}{Centralizer of subgroup is subgroup}
+    Suppose \(a,b \in \text{C}_G(H)\).
+    We want to show \(ab^{-1} \in \text{C}_G(H)\).\\
+    Note that the condition \(gh=hg \iff hg^{-1}=g^{-1}h\).\\
+    Consider the expression \((ab^{-1})h = a(b^{-1}h) = ahb^{-1} = h(ab^{-1})\).
+    This means that \(ab^{-1} \in \text{C}_G(H)\) and thus in \(H\).
+\end{snippetproof}
+
+\subsection{The conjugate subgroup}
+
+\begin{snippetdefinition}{conjugate-subgroup}{The conjugate subgroup}
+    Let \(H \leq G\) be groups and define
+    \[
+        g^{-1}Hg = \{
+            g^{-1}hg \suchthat h \in H    
+        \}
+    \]
+    as the conjugate subgroup.
+\end{snippetdefinition}
+
+\begin{snippettheorem}{conjugate-subgroup-is-subgroup}{}
+    Let \(H \leq G\), then \(g^{-1}Hg \leq G\).
+\end{snippettheorem}
+
+\begin{snippetproof}{conjugate-subgroup-is-subgroup-proof}{conjugate-subgroup-is-subgroup}{}
+    Suppose \(a,b \in g^{-1}Hg\).
+    We want to show \(ab^{-1} \in g^{-1}Hg\).\\
+    Note that \(a = g^{-1}h_1g\) and \(b = g^{-1}h_2g\)
+    for some \(h_1, h_2 \in H\). \\
+    This means that \(ab^{-1}=a{(g^{-1}h_2g)}^{-1} = a(g^{-1}h_2^{-1}g)
+    =g^{-1}h_1gg^{-1}h_2^{-1}g = g^{-1} (h_1h_2) g \in g^{-1}Hg \)
+    because \(h_1h_2 \in H\).
+\end{snippetproof}
+
+\section{Center of a group}
+
+\begin{snippetdefinition}{center-of-group}{Center of a group}
+    Let \(G\) be a \group. The center of the group \(G\) is defined as
+    \[
+        \text{Z}(G) = \{
+            g \in G \suchthat \forall x \in G, gx = xg
+        \}
+    \]
+
+    This is the set of all elements that commute with every other element.
+    The condition \(gx=xg\) is also sometimes expressed as \(gxg^{-1} = x\).
+\end{snippetdefinition}
+
+\begin{snippettheorem}{center-of-group-is-subgroup}{}
+    Let \(G\) be a \group, then \(\text{Z}(G) \leq G\).
+\end{snippettheorem}
+
+\begin{snippetproof}{center-of-group-is-subgroup-proof}{center-of-group-is-subgroup}{}
+    Assume \(a, b \in \text{Z}(G)\) meaning \(a = gag^{-1}\) and \(b = gag^{-1}\) for any \(g \in G\). \\
+    We want to show \(ab^{-1} \in \text{Z}(G)\).
+    \(ab^{-1} = (gag^{-1}){(gbg^{-1})}^{-1} = gag^{-1}gb^{-1}g^{-1}
+    = g ab^{-1} g^{-1}\) which is precisely the requirement to be in \(\text{Z}(G)\).
+\end{snippetproof}
+
+% https://www.youtube.com/watch?v=m4yYeTGe-ic&list=PL22w63XsKjqwN7sHsEiy0yqkcjQfXAuVb
+
+\end{document}
