@@ -5,6 +5,7 @@
 \usepackage{stellar}
 \usepackage{definitions}
 \usepackage{bettelini}
+\usepackage{makecell}
 
 \begin{document}
 
@@ -30,11 +31,27 @@
     \end{enumerate}
 \end{snippetproposition}
 
-\subsection{One-Step Subgroup Test}
+\subsection{Subgroup tests}
+
+%TODOURGENT
+%\begin{snippettheorem}{identity-in-set-equivalent-non-empty}{}
+%    Let \((G, \circ) \subgroupleq (H, \circ)\) be a \group[groups].
+%    Then,
+%    \[
+%        1 \in H \iff H \neq H
+%    \]
+%\end{snippettheorem}
+%
+%\begin{snippetproof}{identity-in-set-equivalent-non-empty-proof}{identity-in-set-equivalent-non-empty}{}
+%    \todo
+%\end{snippetproof}
+
+\plain{The condition of containing the identity in a group can be replaced
+by the fact that the set must be non-empty. The same does not work in a monoid.}
 
 \begin{snippettheorem}{one-step-subgroup-test}{One-Step Subgroup Test}
     Let \((G, \circ)\) be a \group and let \(H \subseteq G\) where \(\emptyset \neq H\).\\
-    Then \((H, \circ) \subgroupleq (G, \circ) \iff
+    Then, \((H, \circ) \subgroupleq (G, \circ) \iff
     \forall a,b \in H, a \circ b^{-1} \in H\).
 \end{snippettheorem}
 
@@ -43,19 +60,91 @@
         Assume \((H, \circ) \subgroupleq (G, \circ)\).
         The properties of a \group directly infer \(\forall a,b \in H, a \circ b^{-1} \in H\).
     }{
-        Assume \(\forall a,b \in H, a \circ b^{-1} \in H\):
+        Assume \(\forall a,b \in H, a \circ b^{-1} \in H\) and \(H \neq \emptyset\):
         \begin{itemize}
-            \item \textbf{identity}: let \(a=b\), then \(a\circ a^{-1} H \implies e \in H\).
-            \item \textbf{inverse}: let \(k\in H\), \(a=e\) and \(b=k\).
-            \(a\circ b^{-1} = e \circ k^{-1} \implies k^{-1} \in H\).
-            \item \textbf{closure}: let \(m, n \in H \implies n^{-1} \in H\) and let \(a=m\) and \(b=n^{-1}\).
+            \item \textit{identity}: let \(a=b\), then \(a\circ a^{-1} \in H \implies 1 \in H\).
+            \item \textit{inverse}: let \(k\in H\), \(a=1\) and \(b=k\). Then,
+            \(a\circ b^{-1} = 1 \circ k^{-1} \implies k^{-1} \in H\).
+            \item \textit{closure}: let \(m, n \in H \implies n^{-1} \in H\) and let \(a=m\) and \(b=n^{-1}\).
             \(a\circ b^{-1} = a \circ (b^{-1})^{-1}=a\circ b\). This implies \(a, b \in H\).
         \end{itemize}
     }
 \end{snippetproof}
 
+\begin{snippetproposition}{finite-subgroup-test}{Finite subgroup test}
+    Let \((G, \circ)\) be a \group and let \(H \subseteq G\) where \(\emptyset \neq H\)
+    and \(\cardinality{H} < \infty\). \\
+    Then, \((H, \circ) \subgroupleq (G, \circ) \iff
+    \forall a,b \in H, ab \in H\)
+\end{snippetproposition}
+
+\begin{snippetproof}{finite-subgroup-test-proof}{finite-subgroup-test}{Finite subgroup test}
+    \iffproof{
+        Assume \((H, \circ) \subgroupleq (G, \circ)\).
+        The properties of a \group directly infer \(\forall a,b \in H, ab \in H\).
+    }{
+        Assume \(\forall a,b \in H, ab \in H\) and \(H \neq \emptyset\).
+        We need to show that \(\forall a \in H, a^{-1} \in H\).
+        By \principleofinduction[induction] on \(n\) we show that \(x^n \in H\) for \(n \in \naturalnumbers^\exceptzero\):
+        \begin{itemize}
+            \item the base case is given by \(a^1 = a \in H\);
+            \item for the induction case let \(k \in \naturalnumbers^\exceptzero\)
+                such that \(x^k \in H\). Then, \(x^{k+1} = x^k \circ x \in H\)
+                since \(\circ\) is closed.
+        \end{itemize}
+        Since \(\cardinality{H} < \infty\) and \(\forall a, a^k \in H\)
+        for \(n\in \naturalnumbers^\exceptzero\), infinite powers of \(a\)
+        will give a finite amount of results, meaning that there are \(n,m \in \naturalnumbers^\exceptzero\)
+        where \(m \neq n\) such that the exponentiation is equal \(x^n = x^m\).
+        Without loss of generality, assume \(n>m\).
+        Then, \(x^m = x^n \circ x^{m-n} = x^n\). By the cancellation laws, we find \(x^{m-n} = 1\).
+        We distinguish two cases:
+        \begin{enumerate}
+            \item if \(m-n=1\), we get \(x^1 = 1\) which means \(x=1 \land x^{-1} = 1 \in H\);
+            \item if \(m-n > 1\), we get \(x \circ x^{m-n-1} = 1\) which means
+            \(x^{m-n-1} = x^{-1}\) and \(x^{m-n-1} \in H\) since \(m-n-1 > 0\).
+        \end{enumerate}
+    }
+\end{snippetproof}
+
+\subsection{Intersection and unions of sets}
+
+\begin{snippetproposition}{subgroup-intersection-is-subgroup}{Subgroup intersection is subgroup}
+    Let \(\{H_i\}_{i\in I}\) be \set[sets] such that
+    \((H_i, \circ) \subgroupleq (G, \circ)\) for some \group \((G, \circ)\).
+    Then,
+    \[
+        \left(\,\bigcap_{i\in I} H_i, \circ \right) \subgroupleq (G, \circ)
+    \]
+\end{snippetproposition}
+
+\plain{The intersection of a submonoid is a monoid (if in the definition we require the two identity elements
+to be the same).}
+
+\begin{snippetproof}{subgroup-intersection-is-subgroup-proof}{subgroup-intersection-is-subgroup}{Subgroup intersection is subgroup}
+    Without loss of generality, assume \(\{H_i\}_{i\in I} = \{H, K\}\).
+    Since \(1\in H\) and \(1\in K\), we have \(1 \in H \intersection K\).
+    Let \(a,b \in H\intersection K\), meaning \(a \in H\), \(a\in K\), \(b\in K\), \(b\in K\).
+    Then, \(a\in H, b\in H \implies a\circ b^{-1} \in H\)
+    and \(a\in K, b\in K \implies a\circ b^{-1} \in K\),
+    which together imply \(a \circ b^{-1} \in H \intersection K\).
+\end{snippetproof}
+
+\plain{The same does not work for the union.}
+
+\begin{snippetexample}{union-of-subgroups-not-subgroups-example}{union of subgroups is not subgroup}
+    Consider in \((\integers, +)\) the \subgroup[subgroups]
+    \(3\integers\) and \(4\integers\).
+    Now, \(3\integers \union 4\integers\)
+    contains the numbers that are multiples at least one of \(3\) and \(4\).
+    The union contains \(3\) but not \(4+3=7\). Thus, it is not a \subgroup.
+\end{snippetexample}
+
+% TODOURGENT dopo la generazione
+
 \subsection{The centralizer subgroup}
 
+% TODOURGENT relativo ad un solo elemento.
 \begin{snippetdefinition}{centralizer-group}{The centralizer subgroup}
     Let \(H \subgroupleq G\) be \group[groups] and define
     \[
@@ -64,7 +153,7 @@
         \}
     \]
     as the centralizer of \(H\).
-    This is the set of all elements of \(G\) such that they commute with every element of \(H\).
+    This is the \set of all elements of \(G\) such that they commute with every element of \(H\).
 \end{snippetdefinition}
 
 \begin{snippettheorem}{centralizer-of-subgroup-is-subgroup}{}
@@ -73,8 +162,8 @@
 
 \begin{snippetproof}{centralizer-of-subgroup-is-subgroup-proof}{centralizer-of-subgroup-is-subgroup}{Centralizer of subgroup is subgroup}
     Suppose \(a,b \in \text{C}_G(H)\).
-    We want to show \(ab^{-1} \in \text{C}_G(H)\).\\
-    Note that the condition \(gh=hg \iff hg^{-1}=g^{-1}h\).\\
+    We want to show \(ab^{-1} \in \text{C}_G(H)\). \\
+    Note that the condition \(gh=hg \iff hg^{-1}=g^{-1}h\). \\
     Consider the expression \((ab^{-1})h = a(b^{-1}h) = ahb^{-1} = h(ab^{-1})\).
     This means that \(ab^{-1} \in \text{C}_G(H)\) and thus in \(H\).
 \end{snippetproof}
