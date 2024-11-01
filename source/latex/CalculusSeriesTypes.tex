@@ -10,38 +10,118 @@
 \id{series-types}
 \genpage
 
+\section{Mengoli series}
+
+\begin{snippetdefinition}{mengoli-series-definition}{Mengoli series}
+    The \emph{Mengoli series} is the \series defined as
+    \[
+        \sum_{n=1}^\infty \frac{1}{n(n+1)}
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{mengoli-series-value}{Mengoli series value}
+    \[
+        \sum_{n=1}^\infty \frac{1}{n(n+1)} = 1
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{mengoli-series-value-proof}{mengoli-series-value}{Mengoli series value}
+    We can expand the \partialsum
+    \begin{align*}
+        S_N &= \sum_{n=1}^N \frac{1}{n(n+1)} + \sum_{n=1}^N \frac{1}{n} - \frac{1}{n+1} \\
+        &= \left(1 - \frac{1}{2}\right) + \left(\frac{1}{2} - \frac{1}{3}\right) \cdots \left(\frac{1}{N-1} - \frac{1}{N}\right)
+        + \left(\frac{1}{N} - \frac{1}{N+1}\right) \\
+        &= 1 - \frac{1}{N+1}
+    \end{align*}
+    Finally, we compute the limit
+    \[
+        \lim S_N = \lim \left(1 - \frac{1}{N+1}\right) = 1
+    \]
+\end{snippetproof}
 
 \section{Geometric series}
 
-\begin{snippetdefinition}{geometric-series-definition}{Geometric Series}
-    A \textit{geometric series} is a series of the form
+\begin{snippetdefinition}{geometric-series-definition}{Geometric series}
+    The \emph{geometric series} of \emph{common ratio} \(q\) is the \series of the form
     \[
-        \sum_{n=0}^\infty r^n
+        \sum_{n=0}^\infty q^n
     \]
 \end{snippetdefinition}
 
 \plain{The ratio between two adject terms is constant.}
 
-\begin{snippettheorem}{geometric-series-convergence}{Geometric Series Convergence}
-    A \geometricseries converges for \(|r| < 1\) and always \convergesabsolutely.
+\begin{snippetproposition}{geometric-series-partial-sum}{Geometric series partial sum}
+    The \geometricseries of ratio \(q\) has \partialsum
     \[
-        \sum_{n=0}^\infty r^n = \frac{1}{1-r}
+        S_N = \begin{cases}
+            \frac{q^{N+1}-1}{q-1} & q \neq 1 \\
+            N + 1 & q = 1
+        \end{cases}
     \]
+\end{snippetproposition}
+
+\begin{snippetproof}{geometric-series-partial-sum-proof}{geometric-series-partial-sum}{Geometric series partial sum}
+    If \(q=1\), then \(S_N = N+1\).
+    Otherwise,
+    \begin{align*}
+        S_N &= 1 + q + \cdots + q^N \\
+        q S_n &= q + q^2 + \cdots + q^N + q^{N+1} \\
+        &= (1 + q + \cdots + q^N) + q^{N+1} - 1 \\
+        &= S_n + q^{N+1}-1 \\
+        (q-1) S_N &= q^{N+1} - 1 \\
+        S_N &= \frac{q^{N+1} - 1}{q-1}
+    \end{align*}
+\end{snippetproof}
+
+\begin{snippettheorem}{geometric-series-behavior}{Geometric series behavior}
+    A \geometricseries:
+    \begin{enumerate}
+        \item \seriesconverges for \(|q| < 1\) and always \convergesabsolutely
+            \[
+                \sum_{n=0}^\infty q^n = \frac{1}{1-q}
+            \]
+        \item \seriesdiverges for \(q \geq 1\);
+        \item \seriesoscillates for \(q \leq -1\).
+    \end{enumerate}
 \end{snippettheorem}
+
+\begin{snippetproof}{geometric-series-behavior-proof}{geometric-series-behavior}{Geometric series behavior}
+    \begin{enumerate}
+        \item If \(|q| < 1\),
+            \[
+                \lim \frac{q^{N+1} - 1}{q-1} = \frac{-1}{q-1} = \frac{1}{1-q}
+            \]
+        \item if \(q \geq 1\),
+            \[ \lim S_N = +\infty \]
+        \item if \(q \leq 1\),
+            \[
+                \sum_{n=0}^\infty q^n =
+                \sum_{n=0}^\infty {(-1)}^n {|q|}^n
+            \]
+            and since \(|q|>1\), it \seriesoscillates.
+    \end{enumerate}
+\end{snippetproof}
 
 \section{Telescoping series}
 
-\begin{snippetdefinition}{telescoping-series-definition}{Telescoping Series}
-    A \textit{telescoping series} is a series where the terms in the partial sums cancel each other,
-    leaving a finite number of terms.
+\begin{snippetdefinition}{telescoping-series-definition}{Telescoping series}
+    A \textit{telescoping series} is a \series of general term \(\{a_n\}_{n=k}^\infty\)
+    where \(a_n = b_n - b_{n+1}\) for some \sequence \(\{b_n\}_{n=k}^\infty\).
 \end{snippetdefinition}
 
-\begin{snippetexample}{geometric-series-example-1}{Geometric Series}
+\begin{snippetproposition}{telescoping-series-partial-sum}{Telescoping series partial sum}
+    Consider a \telescopicseries with general term \(\{a_n\}_{n=k}^\infty\)
+    where \(a_n = b_n - b_{n+1}\) for some \sequence \(\{b_n\}_{n=k}^\infty\).
+    Then, its \partialsum is given by
+    \[ S_N = b_k - b_{N+1} \]
+\end{snippetproposition}
+
+\begin{snippetexample}{telescoping-series-example-1}{Telescoping Series}
     \begin{align*}
         &\sum_{n=0}^\infty \frac{1}{n^2 + 3n + 2}
         = \sum_{n=0}^\infty \left[ \frac{1}{n+1} - \frac{1}{n+2} \right]
         = \lim_{N \to \infty} \sum_{n=0}^N \left[ \frac{1}{n+1} - \frac{1}{n+2} \right] \\
-        &= \frac{1}{1} - \frac{1}{2} + \frac{1}{2} - \frac{1}{3}
+        &= \lim_{N \to \infty} \frac{1}{1} - \frac{1}{2} + \frac{1}{2} - \frac{1}{3}
         + \frac{1}{3} - \frac{1}{4} + \cdots + \frac{1}{n} - \frac{1}{n+1} +
         \frac{1}{n+1} - \frac{1}{n+2} \\
         &= \lim_{N \to \infty} 1 - \frac{1}{n+2} = 1
@@ -51,7 +131,7 @@
 \section{Harmonic series}
 
 \begin{snippetdefinition}{harmonic-series-definition}{Harmonic series}
-    The \textit{harmonic series} is the series
+    The \textit{harmonic series} is the \series
     \[
         \sum_{n=1}^\infty \frac{1}{n}
     \]
@@ -64,7 +144,7 @@
 \section{p-series}
 
 \begin{snippetdefinition}{p-series-definition}{\(p\)-series}
-    The \emph{\(p\)-series} is the series of form
+    The \emph{\(p\)-series} is the \series of form
     \[\sum_{n=k}^\infty \frac{1}{n^p}\]
     for \(k > 0\).
 \end{snippetdefinition}
