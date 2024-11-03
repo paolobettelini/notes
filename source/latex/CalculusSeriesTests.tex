@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{bettelini}
 
 \begin{document}
 
@@ -13,13 +14,60 @@
 \section{Comparison Test}
 
 \begin{snippettheorem}{series-comparison-test}{Comparison test}
-    Let \(\sum a_n\) and \(\sum b_n\) be two series with \(a_n, b_n \geq 0\)
-    and \(\forall n, a_n < b_n\). Then,
+    Let \[\sum_{n=k}^\infty a_n\] and \[\sum_{n=k}^\infty b_n\]
+    be \series where \(a_n, b_n \geq 0\) \eventually. Then,
     \begin{enumerate}
-        \item If \(\sum b_n\) is convergent, so is \(\sum a_n\).
-        \item if \(\sum a_n\) is divergent, so is \(\sum b_n\).
+        \item \textbf{comparison:} if \(a_n \leq b_n\) \eventually we have
+        \[
+            \sum_{n=k}^\infty a_n \leq \sum_{n=k}^\infty b_n
+        \]
+        In particular,
+        \[
+            \sum_{n=1}^\infty b_n < +\infty \implies
+            \sum_{n=1}^\infty a_n < +\infty
+        \]
+        and
+        \[
+            \sum_{n=1}^\infty a_n = \infty \implies
+            \sum_{n=1}^\infty a_n = +\infty
+        \]
+        \item \textbf{asymptotic comparison:}
+        if \(a_n \sim b_n\), we have
+        \[
+            \sum_{n=k}^\infty a_n < +\infty \iff
+            \sum_{n=k}^\infty b_n < +\infty
+        \]
     \end{enumerate}
 \end{snippettheorem}
+
+\begin{snippetproof}{series-comparison-test-proof}{series-comparison-test}{Comparison test}
+    \begin{enumerate}
+        \item Let \[
+                A_N = \sum_{n=k}^N a_n \quad B_N = \sum_{n=k}^N b_n
+            \]
+            Since \(a_n \leq b_n\) eventually, we have \(A_N \leq B_N\) with \(N\to\infty\).
+            By monotonie of the limit
+            \[ \underset{n}{\lim}\, A_n = \sum_{n=k}^N a_n \leq \underset{n}{\lim}\, B_n = \sum_{n=k}^N b_n \]
+        \item Assume that \(a_n \asymptotic b_n\) so that \(\frac{a_n}{b_n} \to 1\).
+            By definition of limit with \(\varepsilon = \frac{1}{2}\), it follows
+            \begin{align*}
+                \exists n_0 \suchthat \forall n \geq b_0,
+                -\frac{1}{2} < \frac{a_n}{b_n} - 1 < \frac{1}{2}
+                &\iff \frac{1}{2} < \frac{a_n}{b_n} < \frac{3}{2} \\
+                &\iff \frac{1}{2}b_n < a_n < \frac{3}{2}b_n
+            \end{align*}
+            By using the first point we have
+            \[
+                \frac{1}{2} \sum_{n=n_0}^\infty b_n < \sum_{n=n_0}^\infty a_n < \frac{3}{2} \sum_{n=n_0}^\infty b_n
+            \]
+            and the thesis follows.
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetcorollary}{series-behavior-bigtheta}{}
+    Let \[\sum_{n=k}^\infty a_n\] and \[\sum_{n=k}^\infty b_n\]
+    be \series where \(a_n = \bigtheta(b_n)\). Then, both \series follow the same behavior.
+\end{snippetcorollary}
 
 \section{Limit comparison test}
 
@@ -29,6 +77,24 @@
     \[ c = \lim_{n \to \infty} = \frac{a_n}{b_n} \]
     If \(0 > c > \infty\), then either both series converge or both series diverge.
 \end{snippettheorem}
+
+\section{Cauchy condensation test}
+
+\begin{snippettheorem}{cauchy-condensation-test-theorem}{Cauchy condensation test}
+    Let
+    \[
+        \sum_{n=1}^\infty a_n
+    \]
+    be a \series where \(a_n \geq 0\) and \(\forall n, a_n \geq a_{n+1}\).
+    Then, the \series follows the same behavior as
+    \[
+        \sum_{k=0}^\infty 2^k a_{2^k}
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{cauchy-condensation-test-theorem-proof}{cauchy-condensation-test-theorem}{Cauchy condensation test}
+    \todo
+\end{snippetproof}
 
 \section{Alternating series test}
 
@@ -76,8 +142,8 @@
 
 \section{Integral Test}
 
-\begin{snippetdefinition}{integral-test}{Integral Test}
-    Let \(f(x)\) be a continuous function on \([k;\infty)\)
+\begin{snippettheorem}{integral-test}{Integral Test}
+    Let \(f(x)\) be a continuous \function on \([k;\infty)\)
     such that it is decreasing and positive on the interval \([N; \infty)\)
     for some \(N\).
     \[
@@ -89,7 +155,7 @@
         \integral[k][\infty][f(x)][x] \text{ diverges } \implies
         \sum_{n=k}^{\infty} f(n) \text{ diverges}
     \]
-\end{snippetdefinition}
+\end{snippettheorem}
 
 \begin{snippetproof}{integral-test-proof}{integral-test}{Integral Test}{
     \todo

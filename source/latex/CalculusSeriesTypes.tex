@@ -141,6 +141,29 @@
     The \harmonicseries diverges.
 \end{snippettheorem}
 
+\begin{snippetproof}{harmonic-series-divergence-theorem-proof}{harmonic-series-divergence-theorem}{The harmonic series diverges}
+    The \series has positive terms, so it cannot oscillate and converges \ifandonlyif its \partialsum \sequence
+    is \upperbound[bounded above]. We study \(S_{2^k}\):
+    \begin{align*}
+        S_1 &= 1 \\
+        S_2 &= 1 + \frac{1}{2} \\
+        S_4 &= 1 + \frac{1}{2} + \left(\frac{1}{3} + \frac{1}{4}\right) \\
+        S_8 &= S_4 + \left(\frac{1}{5} + \frac{1}{6} + \frac{1}{7} + \frac{1}{8}\right) > 1 + \frac{3}{2} \\
+        \cdots
+    \end{align*}
+    By \principleofinduction[induction], we have \(S_{2^n} > 1 + \frac{n}{2}\) (except for the first).
+    Thus, \begin{align*}
+        S_{2^{n+1}} = S_{2^n} + \left(\frac{1}{2^n + 1} + \frac{1}{2^n + 2} \cdots + \frac{1}{2^{n+1}}\right)
+    \end{align*}
+    We thus have \(2^n\) terms all bigger than the last one.
+    This means that all of this is bigger than
+    \[
+        1 + n\frac{1}{2} + \frac{1}{2} = 1 + (n+1)\frac{1}{2}
+    \]
+    In conclusion, \(S_{2^n} > 1 + \frac{n}{2} \to \infty\) for \(n\to \infty\).
+    The \sequence \(\{S_N\}\) is not \upperbound[bounded above].
+\end{snippetproof}
+
 \section{p-series}
 
 \begin{snippetdefinition}{p-series-definition}{\(p\)-series}
@@ -155,8 +178,89 @@
     The \(p\)-series converges if \(p > 1\) and diverges if \(p \leq 1\).
 \end{snippettheorem}
 
-\begin{snippetproposition}{nth-root-of-n-limit}{}
-    \[ \lim_{n \to \infty} n^{\frac{1}{n}} = 1 \]
-\end{snippetproposition}
+\begin{snippetproof}{p-series-test-proof}{p-series-test}{\(p\)-series test}
+    We start by assuming \(p \geq 2\).
+    To start, \(\forall n \geq 2\) we have
+    \[
+        \frac{1}{n^p} \leq \frac{1}{n^2} < \frac{2}{n(n+1)}
+    \]
+    We confront the series with the Mengoli series.
+    This works as \(\frac{n+1}{2} \leq n\) with \(n \geq 1\).
+    Since the \series
+    \[
+        \sum^\infty \frac{1}{n(n+1)} = 1 \implies \sum^\infty \frac{1}{n^2} = \frac{\pi^2}{6} < 2
+    \]
+    Alternately, we note \(\frac{1}{n^2} \sim \frac{1}{n(n+1)}\).
+    \todo
+\end{snippetproof}
+
+\section{p-q-series}
+
+\begin{snippetdefinition}{p-q-series-definition}{\(p\text{-}q\)-series}
+    The \emph{\(p\text{-}q\)-series} is the \series of form
+    \[\sum_{n=2}^\infty \frac{1}{n^p{(\log n)}^q}\]
+    for \(k > 0\).
+\end{snippetdefinition}
+
+\begin{snippettheorem}{p-q-series-test-theorem}{\(p\text{-}q\)-series test}
+    The \(p\text{-}q\)-series converges if \(p > 1\) or \(p<1\), or if \(p=1 \land q>1\).
+    Otherwise, it \seriesdiverges.
+\end{snippettheorem}
+
+\begin{snippetproof}{p-q-series-test-theorem-proof}{p-q-series-test-theorem}{\(p\text{-}q\)-series test}
+    Consider the case \(p=1\), which is critical, and \(q \geq 0\).
+    Then,
+    \[
+        \sum_{n=2}^\infty \frac{1}{n {\left(\log n\right)}^q}
+    \]
+    has clearly decreasing terms. Therefore, we can apply the condensation theorem.
+    This series behaves like the series
+    \[
+        \sum_{n=2}^\infty 2^k \frac{1}{2^k \cdot {\left(\log 2^k\right)}^q}
+        = \sum_{n=2}^\infty \frac{1}{{\left(\log 2\right)}^q \cdot k^q}
+    \]
+    which is a \(p\)-series and converges if and only if \(q > 1\).
+    If \(q < 0\), then
+    \[
+        \frac{1}{n{(\log n)}^q} = \frac{{(\log n)}^{-q}}{n}
+    \]
+    is \eventually greater than or equal to \(\frac{1}{n}\) because \({(\log n)}^{-q} \to \infty\), and the \series
+    \seriesdiverges by comparison with the harmonic series.
+
+    For the case \(p > 1\), we show that the series converges for any \(q\).
+    \begin{align*}
+        \frac{
+            1
+        }{
+            n^p {(\log n)}^q
+        }
+    \end{align*}
+    At this point, the logarithm is less significant than the power (whether it is in the numerator for negative \(q\) or in the denominator for positive \(q\)), so the \series \seriesconverges.
+    Since \(p > 1\), we can write \(p = p' + \varepsilon\)
+    with \(p' > 1\) and \(\varepsilon > 0\) such that
+    \begin{align*}
+        a_n &= \frac{1}{n^{p'}\cdot n^\varepsilon {(\log n)}^q} \\
+        &= \frac{1}{n^{p'}} \cdot \frac{1}{n^\varepsilon {(\log n)}^q}
+    \end{align*}
+    In any case, for every \(q\), the term
+    \[
+        \frac{1}{n^\varepsilon {(\log n)}^q} \to 0
+    \]
+    and it follows that \(a_n < \frac{1}{n^{p'}}\) \eventually, and the \series
+    \seriesconverges by comparison with the \series
+    \[
+        \sum \frac{1}{n^{p'}} < +\infty
+    \]
+    because \(p' > 1\).
+
+    The case \(p < 1\) is similar. We prove it by writing \(p = p' - \varepsilon\)
+    with \(p' < 1\) and \(\varepsilon > 0\) so that
+    \[
+        a_n = \frac{1}{n^{p'}} \cdot \left(
+            \frac{n^\varepsilon}{{(\log n)}^q}
+        \right)
+    \]
+    where the second term diverges.
+\end{snippetproof}
 
 \end{document}
