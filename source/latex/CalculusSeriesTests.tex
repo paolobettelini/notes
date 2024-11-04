@@ -96,19 +96,82 @@
     \todo
 \end{snippetproof}
 
-\section{Alternating series test}
+\section{Alternating series test (Leibniz's Theorem)}
 
 \begin{snippettheorem}{alternating-series-test}{Alternating series test}
-    Let \(\sum a_n\) be a series
-    and either \(a_n = {(-1)}^n b_n\) or \(a_n = {(-1)}^{n+1} b_n\)
-    where \(b_n \geq 0\).
-    If the following conditions are met:
+    Let \[\sum_{n=1}^\infty {(-1)}^n a_n\] be a \series
+    where:
     \begin{enumerate}
-        \item \(\lim_{n \to \infty} b_n = 0\);
-        \item \(\{b_n\}\) is a decreasing sequence,
+        \item \(a_n \geq 0\);
+        \item \(\lim a_n = 0\);
+        \item \(\{b_n\}\) is a decreasing sequence.
     \end{enumerate}
-    then \(\sum a_n\) is convergent.
+    Then, the \series \seriesconverges.
+    Furthermore, if \(S\) is the value of the series and \(S_n\) is its \partialsum,
+    we have that the error \(E_n = S-S_n\) satisfies:
+    \[ |E_n| \leq a_{N+1} \]
+    and the sign of \(E_N\) is the sign of \({(-1)}^{N+1}\). Thus, if \(N\) is even, \(S_N\geq S\) and
+    \(S_N \leq S\) is \(N\) is odd (the equality happens when the terms are null).
 \end{snippettheorem}
+
+\begin{snippetproof}{alternating-series-test-proof}{alternating-series-test}{Alternating series test}
+    Let's separately consider the partial sums with even indices and odd indices.
+    Note that:
+    \begin{enumerate}
+        \item \begin{align*}
+            S_{2n} &= \sum_{n=1}^{2N} {(-1)}^n a_n \\
+            &= \sum_{n=1}^{2N-1} \left({(-1)}^n a_n \right) + {(-1)}^{2N} - a_{2n} \\
+            &\geq S_{2N-1}
+        \end{align*}
+        \item \begin{align*}
+            S_{2N} &= -a_1 + a_2 -a_3 + a_4 + \cdots - a_{2N-1} + a_{2N} \\
+            &= -(a_1 - a_2) -(a_3 - a_4) - \cdots - (a_{2N-1} - a_{2N})
+        \end{align*}
+        Since \(a_n \geq a_{n+1}\), all groupings are greater than or equal to zero.
+        Therefore,
+        \begin{align*}
+            S_{2N} &\leq -(a_1 - a_2) - (a_3 - a_4) - \cdots - (a_{2N-3} - a_{2N-2}) \\
+            &= S_{2N - 2}
+        \end{align*}
+        so \(S_{2N}\) is monotonically decreasing.
+        \item Now, consider the odd indices:
+        \begin{align*}
+            S_{2N + 1} &= -a_1 + (a_2 - a_3) + \cdots + (a_{2N-2} - a_{2N-1})
+            + (a_{2N} - a_{2N+1})
+        \end{align*}
+        As before, all groupings are greater than or equal to zero (including the last one),
+        so
+        \begin{align*}
+            S_{2N + 1} &\geq -a_1 + (a_2 - a_3) + \cdots + (a_{2N-2} - a_{2N-1}) \\
+            &= S_{2N-1}
+        \end{align*}
+        quindi \(S_{2N+1}\) è monotona crescente.
+    \end{enumerate}
+    We thus obtain that \(\forall N, S_{2N} \geq S_{2N-1} \geq S_1\). Since the odd terms are increasing, the smallest of all is the first.
+    Therefore, \(S_{2N}\) is monotonically decreasing and bounded below.
+    So,
+    \[
+        \exists\, \underset{N}{\lim}\, S_{2N} = S^+
+    \]
+    which, being monotonically decreasing, converges from above.
+    Since \(S_{2N + 1} = S_{2N} - a_{2N + 1}\), where the first term tends to \(S\) and \(a_{2N+1}\) tends to zero,
+    then \(S_{2N+1}\) lso tends to \(S\). In this case, it converges from below, as \(S_{2N+1}\) is monotonically increasing.
+    Consequently, since both \(S_{2N}\) and \(S_{2N+1}\) tend to \(S\), the whole sequence converges to \(S\).
+    Additionally, as seen, all even terms are greater than \(S\) and all odd terms are less than \(S\).
+    Since \(S_{2N+1} \to S^-\) and \(S_{2N} \to S^+\), we have
+    \[
+        \forall n, M, S_{2M+1} \leq S \leq S_{2N}
+    \]
+    Now, consider the error \(E_N = S - S_N\).
+    If \(N\) is even, then \(N=2k\), so since \(S_{2k+1} \leq S \leq S_{2k}\),
+    \[E_N = S - S_{2k} \geq S_{2k + 1} - S_{2k} = {(-1)}^{2k+1} a_{2k+1}\]
+    Thus we have
+    \[
+        |E_{2k}| \leq a_{2k+1}
+    \]
+    and the sign of \(E_{2k} = -1\).
+    The other case \(N=2k+1\) is analogous.
+\end{snippetproof}
 
 \section{Ratio test}
 
