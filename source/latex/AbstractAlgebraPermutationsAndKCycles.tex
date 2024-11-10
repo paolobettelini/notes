@@ -1,0 +1,171 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{permutations-and-k-cycles}
+\genpage
+
+\section{Permutations}
+
+\begin{snippet}{permutation-notation-example}
+    Let \(\sigma \in \text{Sym}_n\), we can explicit the permutation as
+    \[
+        \sigma \triangleq \begin{pmatrix}
+            1 & 2 & \cdots & n \\
+            \sigma(1) & \sigma(2) & \cdots & \sigma(n)
+        \end{pmatrix}
+    \]
+    where \(1,2,\cdots, n\) are the letters.
+\end{snippet}
+
+\begin{snippetproposition}{permutation-group-non-abelian}{}
+    The \group \(\permgrp_n\) is an \abeliangroup \ifandonlyif \(n<3\).
+\end{snippetproposition}
+
+\begin{snippetproof}{permutation-group-non-abelian-proof}{permutation-group-non-abelian}{}
+    If \(n=1\), the case is trivial. If \(n=2\), the permutation can only exchange two letters.
+    For \(n\geq 3\), consider
+    \[
+        \sigma \triangleq \begin{pmatrix}
+            1 & 2 & 3 & \cdots & n \\
+            2 & 1 & 3 & \cdots & n
+        \end{pmatrix}
+    \]
+    and
+    \[
+        \tau \triangleq \begin{pmatrix}
+            1 & 2 & 3 & 4 & \cdots & n \\
+            3 & 2 & 1 & 4 & \cdots & n
+        \end{pmatrix}
+    \]
+    Then,
+    \begin{align*}
+        \tau(\sigma) &= \begin{pmatrix}
+            1 & 2 & 3 & 4 & \cdots & n \\
+            2 & 3 & 1 & 4 & \cdots & n
+        \end{pmatrix} \\
+        \sigma(\tau) &= \begin{pmatrix}
+            1 & 2 & 3 & 4 & \cdots & n \\
+            3 & 1 & 2 & 4 & \cdots & n
+        \end{pmatrix}
+    \end{align*}
+\end{snippetproof}
+
+\begin{snippetdefinition}{permutation-support-definition}{Support of a permutation}
+    Let \(\sigma \in \permgrp_n\). Then, the \emph{support of \(\sigma\)}
+    is defined as
+    \[
+        \text{Supp}(\sigma) \triangleq \{ i \in \{1,2,\cdots,n\} \suchthat \sigma(i) \neq i \}
+    \]
+\end{snippetdefinition}
+
+\plain{The support is the empty set if and only if the permutation is the identity function.
+Indeed, if the permutation is not the identity function, then its cycle is greater or equal than 2.}
+
+\begin{snippetproposition}{permutation-supp-closure}{}
+    Let \(\sigma \in \permgrp_n\).
+    Then,
+    \[
+        i \in \supp(\sigma) \implies \sigma(i) \in \supp(\sigma)
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{permutation-supp-closure-proof}{permutation-supp-closure}{}
+    By the hypothesis, we have \(i \neq \sigma(i)\).
+    We need to show that \(\sigma(i) \neq \sigma(\sigma(i))\).
+    However, this is true since \(\sigma\) is \injective.
+\end{snippetproof}
+
+\begin{snippetproposition}{properties-of-supp}{}
+    Let \(\sigma, \tau \in \permgrp_n\). Then:
+    \begin{enumerate}
+        \item \(\supp(\tau(\sigma)) \subseteq \supp(\sigma) \union \supp(\tau)\);
+        \item \(\supp(\sigma^{-1}) = \supp(\sigma)\).
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{properties-of-supp-proof}{properties-of-supp}{}
+    \begin{enumerate}
+        \item Let \(i\in\supp(\tau(\sigma))\) (i.e. \(\tau(\sigma(i)) \neq i\)).
+            We need to show that \(i\in\supp(\sigma)\) (meaning \(\sigma(i) \neq i\)) or
+            \(i\in \supp(\tau)\) (meaning \(\tau(i) \neq i\)).
+            Assume that this is not true, meaning \(i\notin\supp(\sigma) \land i\notin\supp(\tau)\).
+            Thus, \(\sigma(i)=i\) and \(\tau(i)=i\) implying \(\tau(\sigma(i)) = \tau(i) = i\),
+            which is a contradiction \lightning.
+        \item Let \(i\in\supp(\sigma)\), meaning \(\sigma(i) \neq i\) or \(i\neq \sigma^\inversefunction(i)\)
+            which also means \(i\in\supp(\sigma^\inversefunction)\).
+            Thus, \(\supp(\sigma)\subseteq \supp(\sigma^\inversefunction)\).
+            The reverse inclusion is obtained by swapping \(\sigma\) and \(\sigma^\inversefunction\).
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetdefinition}{disjoint-permutation-definition}{Disjoint permutations}
+    Let \(\sigma, \tau \in \permgrp_n\). Then, \(\sigma\) and \(\tau\)
+    are said to be \emph{disjoint permutations} if \(\supp(\sigma)\) and \(\supp(\tau)\)
+    are \disjoint.
+\end{snippetdefinition}
+
+\begin{snippetproposition}{disjoint-permutations-commute}{Disjoint permutations commute}
+    Let \(\sigma, \tau \in \permgrp_n\) where \(\sigma\) and \(\tau\) are \disjointperm. Then,
+    \(\sigma(\tau) = \tau(\sigma)\).
+\end{snippetproposition}
+
+\begin{snippetproof}{disjoint-permutations-commute-proof}{disjoint-permutations-commute}{Disjoint permutations commute}
+    We need to show that for every \(i\in\{1,2,\cdots. n\}\), we have \(\tau(\sigma(i)) = \sigma(\tau(i))\).
+    Consider the cases:
+    \begin{enumerate}
+        \item \(i\in\supp(\sigma) \land i\notin\supp(\tau)\): since \(i\in\supp(\sigma)\)
+            we have \(\sigma(i)\in\supp(\sigma)\) and, thus, \(\sigma(i)\notin\supp(\tau)\),
+            meaning \(\tau(\sigma(i)) \neq \sigma(i)\).
+            On the other hand, \(\tau(i) = i\) and, thus, \(\tau(\sigma(i)) = \sigma(i)\).
+            Thus, \(\tau(\sigma(i)) = \sigma(i) = \sigma(\tau(i))\);
+        \item \(i\notin\supp(\sigma) \land i\in\supp(\tau)\): analogous to the last case;
+        \item \(i\notin\supp(\sigma) \land i\notin\supp(\tau)\): we have that \(\tau(\sigma(i)) = \tau(i) = i\)
+            and \(\sigma(\tau(i))=\sigma(i)=i\).
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetproposition}{disjoint-permutation-period}{Period of disjoint permutations}
+    Let \(\sigma, \tau \in \permgrp_n\) where \(\sigma\) and \(\tau\) are \disjointperm.
+    Then,
+    \[
+        |\tau(\sigma)| = \text{lcm}(|\tau|, |\sigma|)
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{disjoint-permutation-period-proof}{disjoint-permutation-period}{Period of disjoint permutations}
+    Let \(|\sigma| = m\), \(|\tau| = n\) and \(t = \text{lmc}(m,n)\).
+    Since the permutations are \disjointperm, we know that the commute and thus
+    \({(\tau(\sigma))}^r = \tau^r(\sigma^r)\) for every \(r\in\integers\).
+    In particular, \[{(\tau(\sigma))}^t = \tau^t(\sigma^t) = \text{Id}(\text{Id}) = \text{Id}\].
+    This means that \(|\tau(\sigma)|\) is a divisor of \(t\).
+    Let \(d=|\tau(\sigma)|\). We need to show that \(d=t\).
+    In order to do this, we show that \(d\) is a multiple of \(m\) and \(n\).
+    We ave that \({(\tau(\sigma))}^d = \text{Id}\). Then, \(\tau^d(\sigma^d) = \text{Id}\),
+    from which \(\sigma^d = \tau^{-d}\). Now, \(\supp(\sigma^d) \subseteq \supp(\sigma)\)
+    and likewise \(\supp(\tau^{-d}) \subseteq \supp(\tau)\).
+    Since \(\sigma^d = \tau^{-d}\), obviously \(\supp(\sigma^d) = \supp(\tau^{-d})\),
+    but \[\supp(\sigma^d) \intersection \supp(\tau^{-d}) \subseteq \supp(\sigma) \intersection \supp(\tau) = \emptyset\]
+    Therefore, \(\supp(\sigma^d) = \supp(\tau^{-d}) = \emptyset\), meaning \(\sigma^d = \text{Id}\)
+    and \(\tau^{-d} = \text{Id}\), from which it follows that \(d\) is a multiple of \(|\sigma|\)
+    and \(-d\) is a multiple of \(|\tau|\) (and thus multiple of \(m\) and \(n\)).
+\end{snippetproof}
+
+\begin{snippetdefinition}{k-cycle-definition}{\(k\)-cycle}
+    Let \(\sigma \in \permgrp_n\). Then, \(\sigma\) is said to be a \emph{\(k\)-cycle}
+    if there exist \(a_0, a_1, \cdots, a_k\) distinct letters
+    such that \[
+        \bigwedge\limits_{i=0}^{k-1} \sigma(a_k) = a_{k+1 \bmod{k}}
+    \]
+    and \(\sigma(i) = i\) for all \(i\notin \{a_0, a_1, \cdots, a_k\}\).
+    \emph{Notation:} such permutation is denoted \((a_1 a_2 \cdots a_k)\).
+\end{snippetdefinition}
+
+\plain{Any k-cycle can be written in k different ways.}
+
+\end{document}
