@@ -4,6 +4,8 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{tikz}
+\usetikzlibrary{cd}
 
 \begin{document}
 
@@ -142,7 +144,7 @@ Indeed, if the permutation is not the identity function, then its cycle is great
     Let \(|\sigma| = m\), \(|\tau| = n\) and \(t = \text{lmc}(m,n)\).
     Since the permutations are \disjointperm, we know that the commute and thus
     \({(\tau(\sigma))}^r = \tau^r(\sigma^r)\) for every \(r\in\integers\).
-    In particular, \[{(\tau(\sigma))}^t = \tau^t(\sigma^t) = \text{Id}(\text{Id}) = \text{Id}\].
+    In particular, \[{(\tau(\sigma))}^t = \tau^t(\sigma^t) = \text{Id}(\text{Id}) = \text{Id}\]
     This means that \(|\tau(\sigma)|\) is a divisor of \(t\).
     Let \(d=|\tau(\sigma)|\). We need to show that \(d=t\).
     In order to do this, we show that \(d\) is a multiple of \(m\) and \(n\).
@@ -162,10 +164,239 @@ Indeed, if the permutation is not the identity function, then its cycle is great
     such that \[
         \bigwedge\limits_{i=0}^{k-1} \sigma(a_k) = a_{k+1 \bmod{k}}
     \]
-    and \(\sigma(i) = i\) for all \(i\notin \{a_0, a_1, \cdots, a_k\}\).
-    \emph{Notation:} such permutation is denoted \((a_1 a_2 \cdots a_k)\).
+    and \(\sigma(i) = i\) for all \(i\notin \{a_0, a_1, \cdots, a_k\}\). \\
+    \emph{Notation:} such permutation is denoted \((a_1\;a_2\;\cdots\;a_k)\).
 \end{snippetdefinition}
 
-\plain{Any k-cycle can be written in k different ways.}
+\plain{Any k-cycle can be written in k different ways and it has a period of k.}
+
+\begin{snippetproposition}{supp-of-permutation}{Support of permutation}
+    Let \(\sigma = (a_1\;a_2\;\cdots\;a_k)\). Then,
+    \[
+        \supp(\sigma) = \{a_1, a_2, \cdots, a_k\}
+    \]
+\end{snippetproposition}
+
+\begin{snippetlemma}{unique-k-cycle}{}
+    Let \(\sigma \in \permgrp_n\) and \(a \in \{1,2,\cdots, n\}\).
+    Then, there exist a unique \(k\)-cycle \(\rho = (a_1 \; a_2 \; \cdots \; a_r)\)
+    such that:
+    \begin{enumerate}
+        \item \(a\) is one of \(a_i\);
+        \item \(\rho(a_i) = \sigma(a_i)\) for \(1 \leq i \leq r\).
+    \end{enumerate}
+\end{snippetlemma}
+
+\begin{snippetproof}{unique-k-cycle-proof}{unique-k-cycle}{name}
+    Consider the the following sequence:
+    \[
+        \begin{cases}
+            a_1 \triangleq a \\
+            a_{i+1} \triangleq \sigma(a_i)
+        \end{cases}
+    \]
+    Since this sequence is defined over a finite \set,
+    it will present repretitions at some point.
+    Let \(a_i = a_j\) with \(i<j\) be the first repetition.
+    We want to show that \(i=1\).
+    Assume \(i>1\), then \(\sigma(a_{i-1}) = a_i = a_j = \sigma(a_{j-1})\)
+    and since \(\sigma\) is \injective, \(a_{i-1} = a_{j-1}\),
+    which is against the hypothesis of \(a_i = a_j\) being the first repetition \lightning.
+    We thus have that \(\rho = (a_1 \; a_2 \; \cdots \; a_j)\)
+    is a \(k\)-cycle by construction. The element \(a\) is one of \(a_i\).
+    The uniqueness of \(\rho\) follows immediately by construction.
+\end{snippetproof}
+
+\begin{snippettheorem}{permutation-factorization-theorem}{Factorization of a permutation}
+    Let \(\sigma \in \permgrp_n\). Then, \(\sigma\)
+    can be uniquely written as a product of \disjointperm \(k\)-cycles
+    up to ordering.
+\end{snippettheorem}
+
+\plain{The uniqueness is given by the fact that disjoint cycles commute.}
+
+\begin{snippetproof}{permutation-factorization-theorem-proof}{permutation-factorization-theorem}{Factorization of a permutation}
+    Take \(a \in \{1,2,\cdots,n\}\)
+    and construct the \(k\)-cycle \((a_1 \; a_2 \; \cdots \; a_r)\)
+    as in \snippetref[unique-k-cycle3][this lemma].
+    If \(\sigma = (a_1 \; a_2 \; \cdots \; a_r)\) we are done.
+    Otherwise, consider \(b\in\supp(\sigma) \difference \{a_1, a_2, \cdots, a_r\}\)
+    and construct a \(k\)-cycle \((b_1 \; b_2 \; \cdots \; b_s)\)
+    which permutes \(b\) as in \snippetref[unique-k-cycle3][this lemma].
+    The two \(k\)-cycles \((b_1 \; b_2 \; \cdots \; b_s)\) and \((a_1 \; a_2 \; \cdots \; a_r)\)
+    are \disjointperm (by \snippetref[unique-k-cycle3][this lemma], as otherwise they would be the same).
+    We proceed in the same way until we exhaust all letters in the \group.
+    The permutation \(\sigma\) is thus the product of \(k\)-cycles found in this way.
+    This permutation is unique as every letter can appear only in one \(k\)-cycle.
+\end{snippetproof}
+
+\begin{snippetexample}{permutation-as-disjoint-cyclic-product-example}{}
+    Write the permutation
+    \[
+        \sigma = \begin{pmatrix}
+            1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+            3 & 1 & 4 & 2 & 7 & 6 & 5
+        \end{pmatrix}
+    \]
+    as a product of \disjointperm \(k\)-cycles.
+    Take \(1\) and consider its image \(\sigma(1) = 3\).
+    Proceed like this with the next images.
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAEYQBfU9TXfIRTtyVWoxZsAzN14gM2PASIAmUdXrNWiEABZZfRYKJT14rWxUH5-JUOS6zmyTs5cxMKAHN4RUADMAJwgAWyQyEBwIJHYeAOCwxBFI6MQVOJAg0KQ1FKQpDKzE0zzEXXcuIA
+        \begin{tikzcd}
+            1 \arrow[r] & 3 \arrow[r] & 4 \arrow[r] & 2 \arrow[r] & 1
+        \end{tikzcd}
+    \end{center}
+    We take the next element that is not being permutates by the last \(k\)-cycle
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAFYQBfU9TXfIRQBGclVqMWbAOzdeIDNjwEiAJjHV6zVog7dxMKAHN4RUADMAThAC2SUSBwQkqnhet3EZR88TCuFFxAA
+        \begin{tikzcd}
+            5 \arrow[r] & 7 \arrow[r] & 5
+        \end{tikzcd}
+    \end{center}
+    and
+    \begin{center}
+        \begin{tikzcd}
+            6 \arrow[r] & 6
+        \end{tikzcd}
+    \end{center}
+    This gives the \(k\)-cycles \(\sigma = (1 \; 3 \; 4 \; 2)(5 \; 7)(6)= (1 \; 3 \; 4 \; 2)(5 \; 7)\).
+\end{snippetexample}
+
+\begin{snippetproposition}{product-disjoint-cycles-period}{Period of product of disjoint cycles}
+    Let \(\sigma \in \permgrp_n\) where \(\sigma=\rho1 \rho2 \cdots \rho_t\)
+    where \(\rho_i\) are \disjointperm \(k\)-cycles.
+    Then, the period of the permutation is the least common multiple
+    of the lengths of the \(k\)-cycles.
+\end{snippetproposition}
+
+\begin{snippetproof}{product-disjoint-cycles-period-proof}{product-disjoint-cycles-period}{Period of product of disjoint cycles}
+    Segue dal fatto che abbiamo già notato che il periodo del rpdotto di permutazioni distinte
+    è uguale al minimo comune multiplo dei periodi e inotlre il periodo di un ciclo è la sue lunghezza.
+\end{snippetproof}
+
+\begin{snippetexample}{period-of-non-disjoint-cycles-example}{Period of non-disjoint \(k\)-cycles}
+    Consider \(\sigma = (1 \; 3 \; 2 \; 4)(5 \; 4)(2 \; 7 \; 6)\).
+    We need to transform this permutation into a product if \disjointperm \(k\)-cycles.
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAEYQBfU9TXfIRTtyVWoxZsAzN14gM2PASIAmUdXrNWiEDJ59FgolPXit07mJhQA5vCKgAZgCcIAWyQiQOCEjVnJHQAKAFYAHTCAbgAWAEpZJ1cPRDJvX0QvBjoAIxgGAAV+JSEQBhhHHBANCW0QIPYIyKlGlUa4hJAXdz9qHyQTANqg1qiAdkaANniuCi4gA
+        \begin{tikzcd}
+            1 \arrow[r, "(1\;3\;2\;4)"] & 3 \arrow[r, "(5\;4)"] & 3 \arrow[r, "(2\;7\;6)"] & 3
+        \end{tikzcd}
+    \end{center}
+    \begin{center}
+        \begin{tikzcd}
+            3 \arrow[r] & 2 \arrow[r] & 2 \arrow[r] & 7
+        \end{tikzcd}
+        \\
+        \begin{tikzcd}
+            7 \arrow[r] & 7 \arrow[r] & 7 \arrow[r] & 6
+        \end{tikzcd}
+        \\
+        \begin{tikzcd}
+            6 \arrow[r] & 6 \arrow[r] & 6 \arrow[r] & 2
+        \end{tikzcd}
+        \\
+        \begin{tikzcd}
+            2 \arrow[r] & 4 \arrow[r] & 5 \arrow[r] & 5
+        \end{tikzcd}
+        \\
+        \begin{tikzcd}
+            5 \arrow[r] & 5 \arrow[r] & 4 \arrow[r] & 4
+        \end{tikzcd}
+        \\
+        \begin{tikzcd}
+            4 \arrow[r] & 1 \arrow[r] & 1 \arrow[r] & 1
+        \end{tikzcd}
+    \end{center}
+    Thus, \((1 \; 3 \; 2 \; 4)(5\;4)(2\;7\;6) = (1\;3\;7\;6\;2\;5\;4)\)
+    has a period of \(7\).
+\end{snippetexample}
+
+\begin{snippetexercise}{permutations-products-ex1}{}
+    Let \(\sigma = (1\;2\;3)(4\;5)\)
+    and \(\tau = (1\;4)(2\;5)\). Compute \(\tau(\sigma)\)
+    and \(\sigma(\tau)\)
+    as a product of \disjointperm \(k\)-cycles.
+\end{snippetexercise}
+
+\begin{snippetsolution}{permutations-products-ex1-sol}{}
+    We have \(\tau(\sigma) = (1\;2\;3)(4\;5)(1\;4)(2\;5) = (1\;5)\)
+    \begin{center}
+        \begin{tikzcd}
+            1 \arrow[r] & 2 \arrow[r] & 2 \arrow[r] & 2 \arrow[r] & 5
+        \end{tikzcd}
+        \\
+        \begin{tikzcd}
+            5 \arrow[r] & 5 \arrow[r] & 4 \arrow[r] & 1 \arrow[r] & 1
+        \end{tikzcd}
+        \\
+        \begin{tikzcd}
+            2 \arrow[r] & 3 \arrow[r] & 3 \arrow[r] & 3 \arrow[r] & 3
+        \end{tikzcd}
+        \\
+        \begin{tikzcd}
+            3 \arrow[r] & 1 \arrow[r] & 1 \arrow[r] & 4 \arrow[r] & 4
+        \end{tikzcd}
+        \\
+        \begin{tikzcd}
+            4 \arrow[r] & 4 \arrow[r] & 5 \arrow[r] & 5 \arrow[r] & 2
+        \end{tikzcd}
+    \end{center}
+    and \(\sigma(\tau) = (1\;4)(2\;5)(1\;2\;3)(4\;5) = (1\;5\;3)(2\;4)\).
+\end{snippetsolution}
+
+\begin{snippetdefinition}{permutation-type-definition}{Permutation type}
+    Let \(\sigma \in \permgrp_n\) where \(\sigma=\gamma1 \gamma2 \cdots \gamma_t\)
+    where \(\gamma_i\) are \disjointperm \(k\)-cycles of lengths \(r_i \geq r_j\)
+    for \(i<j\) where \(r_i >1\). Then, the \emph{type}
+    of \(\sigma\) is \((r_1, r_2, \cdots, r_t)\).
+    The type of the identity permutation is \(()\).
+\end{snippetdefinition}
+
+\begin{snippet}{permutation-amount-of-given-type}
+    We want to study the amount of permutations with a given \permtype.
+    For the type \((r)\) there are \(\binom{n}{r}\) permutations in \(\permgrp_n\)
+    with \(r>1\).
+    For \((r_1, r_2, \cdots, r_t)\) where \(r_1>r_2>\cdots r_t>1\) we have
+    \[
+        (a_1\;a_2\;\cdots\;a_{r_1})(a_{r_1+1}\;\cdots;a_{r_1+r_2})\cdots
+        (\cdots\;a_{r_1 + r_2+\cdots+r_t})
+    \]
+    However, every cycle can be written in different ways (as many as its length).
+    So we need to divide the amount by its length
+    \[
+        \frac{
+            n(n-1)\cdots(n-r_1-r_2-\cdots-r_t + 1)
+        }{
+            r_1r_2\cdots r_t
+        }
+    \]
+    In general, there could be multiple cycles with the same length.
+    In this case, the cycles of same length can be ordered in multiple ways.
+    If there are \(l\) cycles of the same length, they can be rearanged in \(l!\)
+    different ways. Thus, the amount must be divided by the product of these factorials.
+    \[
+        \frac{
+            n(n-1)\cdots(n-r_1-r_2-\cdots-r_t + 1)
+        }{
+            r_1r_2\cdots r_t \cdot l_1!l_2!\cdots l_f
+        }
+    \]
+    where \(l_i\) are the amounts of cycles with the same length.
+\end{snippet}
+
+\begin{snippet}{permutation-amount-of-given-type-small-n}
+    We study the amount of permutations of a certain \permtype in \(\permgrp_n\)
+    for small \(n\). Since being of the same \permtype is an \equivrelation,
+    we only write a representative of the class.
+    TODO
+    %TODOURGENT.
+    % Sym_1 1
+    % Sym_2 2
+    % Sym_3 6
+    % Sym_4 24
+    % Sym_5 120
+\end{snippet}
 
 \end{document}
