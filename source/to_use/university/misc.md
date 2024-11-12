@@ -3,3 +3,11 @@
 - Definizione di naturali, interi, razionali, reali
 - Definizione di lcm
 - Comando per il periodo di un gruppo ||
+- \complexabs{}
+- use \eulernumber throughout
+- \factorial
+- \complexsin
+- sinh^-1 = log(x + sqrt(x^2 + 1)) e
+  cosh^-1 = log(x \pm sqrt(x^2 - 1)) per x >= 1 (due soluzioni)
+  se invece x < 1 non ci sono soluzioni
+- f strettamente crescente (decrescente) => f^-1 strettamente crescente (decrescente)
