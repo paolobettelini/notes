@@ -1,0 +1,273 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{laterals}
+\genpage
+
+
+\section{Products of sets}
+
+\begin{snippetdefinition}{subset-product-definition}{Subset product}
+    Let \((G, \circ)\) be a \group and \(A_1,A_2,\cdots, A_n \subseteq G\),
+    the \emph{product} \(A_1A_2\cdots A_n\) is defined as
+    \[
+        A_1A_2\cdots A_n = \{ a_1\circ a_2 \cdots a_n \suchthat a_i\in A_i \}
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{subset-product-group-cardinality}{}
+    Let \((G, \circ)\) be a \group and \(A_1,A_2,\cdots, A_n \subseteq G\)
+    where \(A_i \neq \emptyset\) and \(\cardinality{A_i} < \infty\).
+    We have
+    \[
+        \max\{\cardinality{A_i}\} \leq \cardinality{A_1A_2\cdots A_n}
+        \leq \prod_i \cardinality{A_i}
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{subset-product-group-cardinality-proof}{subset-product-group-cardinality}{}
+    Consider \(A\) and \(B\).
+    The first equality follows from the cancellation law.
+    For thr second, if \(\cardinality{A} \leq \cardinality{B}\),
+    fixed \(a\in A\), the products \(a\circ b\) by varying \(x \in B\)
+    are all distinct (of magnitude \(\cardinality{B}\)).
+\end{snippetproof}
+
+\plain{This does not work in a monoid.}
+
+\section{Laterals}
+
+\begin{snippetdefinition}{right-lateral-definition}{Right lateral}
+    Let \((G, \circ)\) be a \group, \((H, \circ) \subgroupleq (G, \circ)\)
+    and \(g\in G\).
+    The \emph{right lateral} of \((H, \circ)\) in \((G,\circ)\) containing \(g\)
+    is defined as
+    \[
+        Hg \triangleq \{h\circ g \suchthat h\in H\}
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{left-lateral-definition}{Left lateral}
+    Let \((G, \circ)\) be a \group, \((H, \circ) \subgroupleq (G, \circ)\)
+    and \(g\in G\).
+    The \emph{left lateral} of \((H, \circ)\) in \((G,\circ)\) containing \(g\)
+    is defined as
+    \[
+        gH \triangleq \{g\circ h \suchthat h\in H\}
+    \]
+\end{snippetdefinition}
+
+%\begin{snippet}{properties-of-laterals}
+%    Tra i laterali destri di \(H\) c'è \(H\) stesso.
+%    Infatti, \(H1 = H\). Analogamente \(1H=H\) cioè \(H\)
+%    compare anche tra i laterali sinistri.
+%
+%    Consideriamo un gruppo non-abeliano \((G, \circ) = \permgrp_3\) and let \((H,\circ) \subgroupleq (G, \circ)\)
+%    where \[H = \gengrp{\kcycle{1,2}} = \{\text{Id}, \kcycle{1,2}\}\]
+%    I laterali sono dati da
+%    \begin{align*}
+%        H\text{Id} &= H \\
+%        H\kcycle{1,2} &= H \\
+%        H\kcycle{2,3} &= \{\kcycle{2,3}, \kcycle{1,3,2}\} \\
+%        H\kcycle{1,3} &= \{\kcycle{1,3}, \kcycle{1,3,2}\} \\
+%        H\kcycle{1,2,3} &= \{\kcycle{1,2,3}, \kcycle{1,3}\} \\
+%        H\kcycle{1,3,2} &= \{\kcycle{1,3,2}, \kcycle{2,3}\}
+%    \end{align*}
+%    Notiamo che \(H\text{Id} = H\kcycle{1,2}\),
+%    \(H\kcycle{2,3} = H\kcycle{1,3,2}\) e \(H\kcycle{1,3} = H\kcycle{1,2,3}\).
+%    Tutti i laterali sono disgiunti (salvo le ripetizioni).
+%    Ciascuno dei laterali contiene il suo elemento che lo identifica,
+%    quindi l'unione di tutti i laterali è l'insieme intero.
+%    Ogni laterale ha numero di elementi quanto il sottogruppo.
+%\end{snippet}
+
+\begin{snippetproposition}{laterals-cardinality}{Cardinality of laterals}
+    Let \((G, \circ)\) be a \group, \((H, \circ) \subgroupleq (G, \circ)\).
+    Then, for every \(g\in G\),
+    \[
+        \cardinality{H} = \cardinality{Hg} = \cardinality{gH}
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{laterals-cardinality-proof}{laterals-cardinality}{Cardinality of laterals}
+    Without loss of generality, we are going to use the right lateral.
+    Consider a \function
+    \[
+        f\colon H \fromto Hg
+    \]
+    where \(f(h) = h\circ g\).
+    By definition, it is \surjective, and by the cancellation laws it is \injective.
+    Since the \function is \bijective, every lateral has cardinality \(\cardinality{H}\).
+\end{snippetproof}
+
+\begin{snippetproposition}{laterals-partition}{Laterals form a partition}
+    Let \((G, \circ)\) be a \group, \((H, \circ) \subgroupleq (G, \circ)\).
+    The laterals of \(H\) (either right or left) form a \partition
+    of \(G\) with subsets of cardinality \(\cardinality{H}\).
+    In particular, every element \(g\in G\) is contained in exactly one lateral.
+\end{snippetproposition}
+
+\plain{If we had defined the laterals on a monoid, a partition would not necessarily
+form a partition and maintain the same cardinality within the laterals.}
+
+\begin{snippetproof}{laterals-partitionunion-proof}{laterals-partition}{Laterals form a partition}
+    Without loss of generality, we are going to use the right lateral.
+    We first show that \(g\) is contained in at least one lateral.
+    Indeed, \(g\in Hg\).
+    We now need to show that \(g\) is in only one lateral of \(H\).
+    This is equivalent to saying that, given \(Hg\) and \(Hk\) for \(g,k\in G\),
+    either \(Hg = Hk\) or \(Hg \intersection Hk = \emptyset\).
+    Assume there exist \(x\in Hg \intersection Hk\). We want to show that \(Hg = Hk\).
+    We know that \(x=hg\) for some \(h\in H\)
+    and \(x = \overline{h}k\) for some \(\overline{h}\in H\).
+    We thus have \(hg = \overline{h}k\) and by using the inverse we get
+    \(g = h^{-1} \overline{h} k \in H\).
+    The elements of \(Hg\) have the form \(\hat{h}g\) for \(\hat{h} \in H\),
+    and since \(\hat{h}h^{-1}\overline{h} \in H\), \(\hat{h}h^{-1}\overline{h} k \in Hk\).
+    Thus, \(Hg \subseteq Hk\). By symmetry, \(Hk \subseteq Hg\) and thus \(Hk=Hg\).
+\end{snippetproof}
+
+\begin{snippetdefinition}{subgroup-index-definition}{Subgroup index}
+    \todo
+\end{snippetdefinition}
+
+\begin{snippettheorem}{lagrange-theorem}{Lagrange theorem}
+    Let \((H, \circ) \subgroupleq (G, \circ)\)
+    where \(\cardinality{G} < \infty\).
+    Then, \[\cardinality{G} = |(G, \circ)\,:\,(H,\circ)| \cdot \cardinality{H}\]
+    In particular, \(\cardinality{H}\) divides \(\cardinality{G}\).
+\end{snippettheorem}
+
+\plain{In the infinite case we can still say tha that the cardinality of the right laterals
+is the same as the cardinality of the left cardinals, but without the algebraic simplification.}
+
+\begin{snippetproof}{lagrange-theorem-proof}{lagrange-theorem}{Lagrange theorem}
+    Obvious by \snippetref[laterals-partition][Laterals form a partition].
+\end{snippetproof}
+
+\begin{snippetproposition}{amount-of-right-and-left-laterals}{Amount of right and left laterals}
+    Let \((H, \circ) \subgroupleq (G, \circ)\).
+    Then, the amount of right laterals is the same as the amount of left laterals.
+\end{snippetproposition}
+
+\begin{snippetproof}{amount-of-right-and-left-laterals-proof}{amount-of-right-and-left-laterals}{Amount of right and left laterals}
+    We want to find a \bijective \function
+    \[
+        f\colon \{Hg\}_{g\in G} \fromto \{gH\}_{g\in G}
+    \]
+    It is not possible to send \(Hg\) to \(gH\).
+    We need to send \(Hg\) in \(g^{-1}H\). We need to verify that this function is well-defined.
+    Let \(Hg_1 = Hg_2\), meaning \(g_1 \in Hg_2\) or \(g_1 = hg_2\) for some \(h\in H\).
+    Now, \(g^{-1}_1 = {(hg_2)}^{-1} = g_2^{-1} h^{-1}\).
+    Thus, \(g_1^{-1} \in g_2^{-1}H\). If two elements are in the left lateral, their inverse
+    are in the right lateral (and viceversa).
+    It follows that \(g_1^{-1}H = g_2^{-1}H\), and the \function is well-defined since
+    we can easily construct the inverse \function with the same argument.
+    By composing the function with its inverse we get the identity in both direction, so it is \bijective.
+\end{snippetproof}
+
+% TODOURGENT dovrebbe essere la notazione g\circ H e H \circ g
+
+\begin{snippet}{laterals-form-congruence-class-1}{}
+    Consider the \group \((\integers, +)\)
+    and the \subgroup formed by the multiples of a positive integer \(n\integers\).
+    Consider the right laterals (or left laterals since the group is \abeliangroup[abelian])
+    \begin{align*}
+        n\integers + a = \{h + a \suchthat h\in n\integers\}
+        = \{nk + a \suchthat k \in \integers\} = {[a]}_n
+    \end{align*}
+\end{snippet}
+
+\plain{This also means that an infinite group can have finite laterals.}
+
+\begin{snippetcorollary}{generating-group-order-divides-cardinality}{}
+    Let \((G, \circ)\)
+    be a \group where \(\cardinality{G} < \infty\) and let \(g\in G\).
+    Then, the order of \(\gengrp{g}\) divides \(\cardinality{G}\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{generating-group-order-divides-cardinality-proof}{generating-group-order-divides-cardinality}{}
+    Since \(|\gengrp{g}| = |g|\), we also have that the \cyclicperiod
+    of \(g\) divides \(|G|\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{prime-order-group-is-cyclic}{Group with prime order is cyclic}
+    Let \((G, \circ)\) be a \group with order \(p\) where \(p\) is prime.
+    Then, \((G, \circ)\) is \cyclicgroup[cyclic].
+\end{snippetcorollary}
+
+\begin{snippetproof}{prime-order-group-is-cyclic-proof}{prime-order-group-is-cyclic}{Group with prime order is cyclic}
+    Let \(g\in G\) be a non trivial element. Its period divides \(\cardinality{G}\),
+    but \(|g|\) is prime, and thus \(|g| = 1\) or \(|g| = |G|\), but
+    \(|g|\neq 1\) by the choice of \(g\), and thus \(g\) generates \((G, \circ)\).
+\end{snippetproof}
+
+\begin{snippettheorem}{index-multiplication-theorem}{Index multiplication theorem}
+    Let \((K, \circ) \subgroupleq (H, \circ) \subgroupleq (G, \circ)\)
+    be \group[groups]. Then, \(|G\,:\,K|\) is finite \ifandonlyif
+    \(|G\,:\,H|\) is finite. In particular,
+    \[
+        |G\,:\,K| = |G\,:\,H| |H\,:\,K|
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{index-multiplication-proof}{index-multiplication}{Index multiplication theorem}
+    We first consider thr case where \(|G\,:\,K|\)
+    is finite, meaning \((K, \circ)\) has a finite amount of right laterals in \((G, \circ)\).
+    Consider the laters of \((H, \circ)\) in \((G, \circ)\). We now show that their amounts
+    does not exceed the amount of laterals \(|G\,:\,K|=n\). It suffices to show that
+    if we take \(Hg_1, Hg_2 \cdots Hg_{n+1}\), at least two of those
+    are the same. Consider \(Kg_1, Kg_2 \cdots Kg_{n+1}\) which are \(n+1\).
+    Assume, for instance, that \(Kg_1 = Kg_2\) are the two laterals that are the same,
+    meaning \(g_1 \in Kg_2 \subseteq Hg_2\), which implies \(Hg_1 = Hg_2\).
+    We now show that \(|H\,:\,K| \leq n\). Since the laterals
+    of \(K\) in \(H\) have form \(hk\) for some \(h\in (H, \circ)\), and they are
+    some of the laterals of \((K, \circ)\) in \((G, \circ)\).
+    Viceversa, let \(|G\,:\,H| = r\) and \(|H\,:\,K| = s\) be finite.
+    We want to show that \(|G\,:\,K| = rs\).
+    Let \(Hg_1, Hg_2 \cdots Hg_r\) the distinct laterals of \((H, \circ)\) in \((G, \circ)\)
+    and \(Kh_1,Kh_2,\cdots Kh_s\) the distinct laterals of \((K, \circ)\) in \((H, \circ)\).
+    Consider the laterals \(Kh_ig_j\), which are laterals of \((K, \circ)\) in \(K, \circ\).
+    We want to show that they are all distinct and that they are all the laterals of \((K, \circ)\)
+    in \((G, \circ)\):
+    \begin{enumerate}
+        \item let \(KH_ig_j = Kh_ug_v\).
+        This means that \(h_ig_j = kh_ug_b\) for some \(k\in K\).
+        By multiplying by the inverse we get
+        \(g_j = h_i^{-1}kh_ug_v \in Hg_v\) meaning \(Hg_j = Hg_v\) and, thus,
+        \(g_j = g_v\). From \(h_ig_j = kh_ug_v\) we get
+        \(h_i = Kh_u \in Kh_u\) meaning \(Kh_i = Kh_u\) and thus \(h_i = h_u\);
+        \item let \(Kg\) such a lateral. We know that \(g \in Hg_i\)
+        for some \(1\leq i \leq r\), meaning \(g=hg_i\) with \(h\in H\).
+        We also know that \(h \in Kh_j\) for some \(j \leq i \leq s\)
+        and thus \(h=kh_j\) with \(k\in K\).
+        Finally, \(g = hg_i = kh_j g_i \in Kh_j g_i\).
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetproposition}{laterals-two-elements-equivalences}{}
+    Let \((K, \circ) \subgroupleq (G, \circ)\)
+    be \group[groups] and let \(g_1,g_2\in G\). Then:
+    \begin{enumerate}
+        \item \(Hg_1 = Hg_2 \iff g_1g_2^{-1} \in H\);
+        \item \(g_1 H = g_2 H \iff g_1^{-1} g_2 \in H\);
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{laterals-two-elements-equivalences-proof}{laterals-two-elements-equivalences}{}
+    \begin{enumerate}
+        \item Suppose that \(Hg_1 = Hg_2\), meaning \(g_1 = hg_2\) for some \(h\in H\).
+        This menas that \(g_1g_2^{-1} = h \in H\).
+        Likewise, if \(g_1g_2^{-1} \in H\), then \(g_1 = (g_1g_2^{-1})g_2 \in Hg_2\)
+        meaning \(Hg_1 = Hg_2\);
+        \item The proof is similar.
+    \end{enumerate}
+\end{snippetproof}
+
+\end{document}

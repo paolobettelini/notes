@@ -11,3 +11,5 @@
   cosh^-1 = log(x \pm sqrt(x^2 - 1)) per x >= 1 (due soluzioni)
   se invece x < 1 non ci sono soluzioni
 - f strettamente crescente (decrescente) => f^-1 strettamente crescente (decrescente)
+- tutti i limiti notevoli e.g. (1-cos x)/cos x
+      1 - cos x asympt 1/2 x^2
