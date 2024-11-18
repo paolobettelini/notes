@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{bettelini}
 
 \begin{document}
 
@@ -268,6 +269,141 @@ is the same as the cardinality of the left cardinals, but without the algebraic 
         meaning \(Hg_1 = Hg_2\);
         \item The proof is similar.
     \end{enumerate}
+\end{snippetproof}
+
+\section{Subgroups as product of sets}
+
+\begin{snippetproposition}{union-of-subgroups-is-in-product}{}
+    Let \((H, \circ), (K, \circ) \subgroupleq (G, \circ)\) be \group[groups].
+    Then, \(HK \supseteq H \union K\)
+    and \(HK \subseteq \gengrp{H \union K}\).
+    % TODOURGENT write this better and only the general case
+    In general, if \(H_1, H_2, \cdots, H_r\) are \subgroup[subgroups]
+    of \((G, \circ)\), then
+    \[
+        \bigcup H_i \subseteq \prod H_i \subseteq \gengrp{H_1 \union H_2 \cdots H_r}
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{union-of-subgroups-is-in-product-proof}{union-of-subgroups-is-in-product}{}
+    Since \(h\in H\), we have \(h=h \circ 1 \in HK\)
+    and the same goes ofr \(K\).
+    For the second proposition if \(h\in H\),
+    if \(k \in K\) we have \(k\in \gengrp{H \union K}\)
+    and thus \(hk \in \gengrp{H \union K}\).
+\end{snippetproof}
+
+\begin{snippettheorem}{set-product-subgroup-conditions}{}
+    Let \((H, \circ), (K, \circ) \subgroupleq (G, \circ)\) be \group[groups].
+    The following are equivalent:
+    \begin{enumerate}
+        \item \(HK \subgroupleq (G, \circ)\);
+        \item \(HK = KH\);
+        \item \(HK \supseteq KH\).
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{set-product-subgroup-conditions-proof}{set-product-subgroup-conditions}{}
+    \begin{enumerate}
+        \item \((1) \implies (3)\): we know that \(HK \supseteq H\)
+        and \(HK \supseteq K\).
+        Since \(HK\) is a \subgroup of \((G, \circ)\), it contains the products of its elements.
+        In particular, if \(k \in K\) and \(h\in H\), we have that
+        \(hk \in HK\);
+        \item \((3) \implies (2)\): we need to show that if \(HK \supseteq KH\),
+        then \(HK \subseteq KH\).
+        Let \(h \in H\) and \(k\in K\). Now,
+        \[
+            hk = {({(hk)}^{-1})}^{-1} = {(k^{-1} h^{-1})}^{-1}
+        \]
+        However,
+        \[
+            k^{-1}h^{-1} \in KH \subseteq HK
+        \]
+        This means that \(k^{-1}h^{-1} = \overline{h}\overline{k}\)
+        for some \(\overline{h} \in H\) and \(\overline{k} \in K\).
+        Thus, \[ hk = {({(hk)}^{-1})}^{-1} = {\overline{h} \overline{k}}^{-1}
+        = \overline{k}^{-1} \overline{h}^{-1} \in K \]
+        \item \((2) \implies (1)\): we know that \(HK = KH\)
+        and we need to show that \(HK \subgroupleq (G, \circ)\):
+        \begin{enumerate}
+            \item \(HK \neq \emptyset\): this is trivial;
+            \item \(HK\) is closed under \(\circ\): let \(g_1, g_2 \in HK\),
+            meaning \(g_1 = h_1k_1\) and \(g_2 = h_1k_1\)
+            with \(h_1, h_2 \in H\) and \(k_1k_2 \in K\). Thus,
+            \[
+                g_1g_2 = h_1k_1h_2k_2
+            \]
+            by the hypothesis \(HK=KH\).
+            However, \(k_1h_2 \in KH = HK\)
+            from which we get \(k_1h_2 = h_3k_3\)
+            for some \(h_3 \in H\) and \(k_3 \in K\).
+            Thus,
+            \[
+                g_1g_2 = h_1h_3k_3k_2 \in HK
+            \]
+            \item \(HK\) is closed with respect to the inverse operation:
+            let \(g\in HK\), meaning \(g = hk\) for osme \(h\in H\)
+            and \(k\in K\).
+            Thus,
+            \[
+                g^{-1} = {(hk)}^{-1} = k^{-1}h^{-1} \in KH = HK
+            \]
+        \end{enumerate}
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetnote}{sets-products-commutativity}{}
+    If \(\forall h \in H, \forall k\in K, hk = kh\), then \(KH=HK\),
+    but the inverse is not guaranteed, unless the \group is \abeliangroup[abelian],
+    where every product of subsets is necessarily a subgroup.
+\end{snippetnote}
+
+% TODOURGENT da qua a sopra c'erano degli intersection che ho scritto union?
+
+\begin{snippetproposition}{id}{name}
+    Let \(H \subgroupleq G\) and \(K \subgroupleq \groupcenter(G)\) be \group[groups].
+    Then,
+    \[
+        HK \subgroupleq G
+    \]
+\end{snippetproposition}
+
+\begin{snippetproposition}{subgroup-product-cardinality-theorem}{}
+    Let \((H, \circ), (K, \circ) \subgroupleq (G, \circ)\) be \group[groups]
+    and let \(h,\overline{h}\in H\), \(k,\overline{k}\in K\).
+    Then,
+    \[
+        h\circ k = \overline{h} \circ \overline{k}
+        \iff \exists x \in H \intersection K \suchthat \overline{h} = hx
+        \land \overline{k} = x^{-1}k
+    \]
+    In particular, if \(K\) and \(H\) are finite,
+    \[
+        \cardinality{HK} = \frac{\cardinality{H} \cdot \cardinality{K}}{\cardinality{H \intersection K}}
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{subgroup-product-cardinality-theorem-proof}{subgroup-product-cardinality-theorem}{}
+    Let \(x \in H \intersection K\) and let \(\overline{h} = hx\)
+    and \(\overline{k} = x^{-1}x\).
+    \iffproof{
+        This means that \(\overline{h} \circ \overline{k} = hxx^{-1}k = hk\).
+    }{
+        Suppose that \(hk = \overline{h} \circ \overline{k}\). Thus,
+        \(\overline{h}^{-1}hk = \overline{k}\) and
+        \[
+            \overline{h}^{-1}h = \overline{k}k^{-1} \in H \intersection K
+        \]
+        But then \(\overline{k} = (\overline{k}k^{-1})k\)
+        and \(\overline{h} = h{(\overline{h}^{-1} h)}^{-1}\).
+        Denote \(x^{-1} = \overline{k}k^{-1}\)
+        and \(x = {(\overline{h}^{-1} h)}^{-1}\).
+        Assume that \(H\) and \(K\) are finite.
+        In order to compute \(HK\), we need to compute \(\cardinality{H} \cdot \cardinality{K}\)
+        multiplications.
+        However, each result appears \(\cardinality{H \intersection K}\) times.
+    }
 \end{snippetproof}
 
 \end{document}
