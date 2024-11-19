@@ -1,0 +1,240 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{isomorphisms}
+\genpage
+
+\section{Homomorphisms}
+
+% TODOURGENT: define morphism property https://proofwiki.org/wiki/Definition:Morphism_Property
+
+\begin{snippetdefinition}{monoid-homomorphism-definition}{Monoid homomorphism}
+    Let \((G, \circ)\) and \((H, \ast)\) be \monoid[monoid].
+    A \function \(\varphi\colon G \fromto H\)
+    such that:
+    \begin{enumerate}
+        \item \(\varphi(1_G) = 1_H\);
+        \item \emph{morphism property:} \(\forall a,b \in G, \varphi(a\circ b) = \varphi(a) \ast \varphi(b)\)
+    \end{enumerate}
+    is said to be a \emph{monoid homomorphism}.
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{group-homomorphism-definition}{Group homomorphism}
+    Let \((G, \circ)\) and \((H, \ast)\) be \group[groups].
+    A \function \(\varphi\colon G \fromto H\)
+    such that:
+    \begin{enumerate}
+        \item \emph{morphism property:} \(\forall a,b \in G, \varphi(a\circ b) = \varphi(a) \ast \varphi(b)\)
+    \end{enumerate}
+    is said to be a \emph{group homomorphism}.
+\end{snippetdefinition}
+
+\plain{In the case of a group, the morphism property with the cancellation law implies that property of the identity element.}
+
+\begin{snippetproposition}{group-homomorphism-preserves-identity}{Group homomorphism preserves identity}
+    Let \((G, \circ)\) and \((H, \ast)\) be \group[groups] and let
+    \(\varphi\colon G \fromto H\) be a \grouphomomorphism.
+    Then,
+    \[
+        \varphi(1_G) = 1_H
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{group-homomorphism-preserves-identity-proof}{group-homomorphism-preserves-identity}{Group homomorphism preserves identity}
+    We start by the trivial property
+    \begin{align*}
+        1_G \circ 1_G &= 1_G \\
+        \varphi(1_G \circ 1_G) &= \varphi(1_G)
+    \end{align*}
+    And since \(\varphi\) is a \grouphomomorphism,
+    \(\varphi(1_G) \circ \varphi(1_G) = \varphi(1_G)\). \\
+    This last value is an identity in \((H, \ast)\), meaning
+    \begin{align*}
+        (\varphi(1_G))\ast (\varphi(1_G)) &= (\varphi(1_G)) \circ 1_H \\
+        \varphi(1_G) &= 1_H
+    \end{align*}
+    by the cancellation law.
+\end{snippetproof}
+
+\begin{snippetproposition}{exist-homomorphism-between-groups}{There always exist homomorphism between groups}
+    Let \((G, \circ)\) and \((H, \ast)\) be \group[groups].
+    Then, there always exist a \grouphomomorphism between them.
+\end{snippetproposition}
+
+\begin{snippetproof}{exist-homomorphism-between-groups-proof}{exist-homomorphism-between-groups}{There always exist homomorphism between groups}
+    Consider the simple construction \(\varphi \colon G \fromto H\)
+    such that \(\varphi(x) = 1_H\) for every \(x\in G\).
+\end{snippetproof}
+
+\begin{snippetproposition}{group-homomorphism-composition}{}
+    Let \(\phi\colon G \fromto H\) and \(\psi\colon H \fromto K\)
+    be \grouphomomorphism[group homomorphisms].
+    Then, \(\psi(\phi)\) is a \grouphomomorphism.
+\end{snippetproposition}
+
+\begin{snippetproof}{group-homomorphism-composition-proof}{group-homomorphism-composition}{}
+    Let \(x,y \in G\). Then,
+    \[
+        \psi(\phi(xy)) = \psi(\phi(x)\phi(y)) = \psi(\phi(x)) \psi(\phi(y))
+    \]
+\end{snippetproof}
+
+\plain{The same goes for a monoid, with the addition need to check that the identity is preserved.}
+
+\section{Isomorphisms}
+
+\begin{snippetdefinition}{group-isomorphism-definition}{Group isomorphism}
+    Let \((G, \circ)\) and \((H, \ast)\) be \group[groups] and let
+    \(\varphi\colon G \fromto H\) be a \grouphomomorphism.
+    Then, \(\varphi\) is said to be a \emph{group isomorphism} if it is \bijective.
+    \[
+        (G, \circ) \simeq (H, \circ)
+    \]
+    Allora \(G \groupisomorphic H\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{group-isomorphism-inverse}{}
+    The inverse of a \groupisomorphism is a \groupisomorphism.
+\end{snippetproposition}
+
+\begin{snippetproof}{group-homomorphism-inverse-proof}{group-homomorphism-inverse}{}
+    Let \(\phi \colon G \fromto H\) be a \groupisomorphism.
+    Since the \function is \bijective, \(\phi^\inversefunction\) exists
+    and it is also \bijective.
+    Let \(x,y\in H\). By definition, \(\phi^\inversefunction(xy)\),
+    is the only \(z\in G\) such that \(\phi(z) = xy\).
+    Likewise, \(\phi^\inversefunction(x)\) is the only \(w\in G\)
+    such that \(\phi(w) = x\) and \(\phi^\inversefunction(y)\)
+    is the only \(u \in G\) such that \(\phi(w) = y\).
+    Thus, \(xy = \phi(w)\phi(u) = \phi(wu)\)
+    which implies
+    \[
+        \phi^\inversefunction(xy) = \phi^\inversefunction(\phi(wu))
+        = wu = \phi^\inversefunction(x) \phi^\inversefunction(y)
+    \]
+\end{snippetproof}
+
+% TODOURGENT
+% endomorphism = omomorfismo in sè stesso
+% endomorfismo + isomorfismo = automorfismo
+
+\begin{snippettheorem}{endomorphism-automorphism-monoid-theorem}{}
+    Let \(G\) be a \group.
+    The \set of endomorphisms of \(G\)
+    induces a \monoid with respect to composition \(\text{End}(G)\).
+    The \group of the invertibles of \(\text{End}(G)\), denoted \(\text{Aut}(G)\),
+    is formed by the automorphisms of \(G\).
+\end{snippettheorem}
+
+\begin{snippetproof}{endomorphism-automorphism-monoid-theorem-proof}{endomorphism-automorphism-monoid-theorem}{}
+    We know that the set of \function[functions]
+    from a \set to itself is a \monoid with respect to composition.
+    In particular, the \function[functions] from the \group \(G\)
+    in themselves form a \monoid. Within them, we consider
+    those who are endomorphisms \(\text{End}(G)\).
+    We have:
+    \begin{enumerate}
+        \item \(\text{Id}_G \in \text{End}(G)\);
+        \item if \(\phi\in \text{End}(G)\) and \(\psi \in \text{End}(G)\),
+        then \(\psi(\phi) \in \text{End}(G)\)
+    \end{enumerate}
+    meaning \(\text{End}(G)\) is a \submonoid of \(G^G\).
+    The invertible elements of \(\text{End}(G)\) are precisely the automorphisms
+    of \(G\).
+\end{snippetproof}
+
+\begin{snippetproposition}{group-homomorphism-preserved-exponentiation}{}
+    Let \(\phi \colon G \fromto H\) be a \grouphomomorphism.
+    For every \(n\in\integers\) and every \(x\in G\) we have
+    \[
+        \phi(x^n) = {(\phi(x))}^n
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{group-homomorphism-preserved-exponentiation-proof}{group-homomorphism-preserved-exponentiation}{}
+    We first proceed by \principleofinduction[induction] on \(n \geq 0\):
+    \begin{itemize}
+        \item the base case is trivial;
+        \item assume that the property works for the value \(k\).
+        \begin{align*}
+            \phi(x^{k+1}) = \phi(x^k \circ x) = \phi(x^k) \phi(x) = {\left(\phi(x)\right)}^{k+1}
+        \end{align*}
+    \end{itemize}
+    We now consider the case \(n < 0\).
+    We have \(-n > 0\) and, thus, \(\phi(x^{-n}) = {(\phi(x))}^{-n}\).
+    We multiply both members by \(\phi(x^n)\)
+    and we find
+    \[
+        \phi(x^n) \phi(x^{-n}) = \phi(x^n) {(\phi(x))}^{-n}
+    \]
+    from which we get
+    \[
+        \phi(x^n x^{-n}) = \phi(x^n) {(\phi(x))}^{-n}
+    \]
+    and
+    \[
+        \phi(1_G) = \phi(x^n) {(\phi(x))}^{-n}
+    \]
+    meaning that \(1_H = \phi(x^n) {(\phi(x))}^{-n}\).
+    Finally, \(\phi(x^n)\) and \({(\phi(x))}^{-n}\) are inverses of eachother
+    \[
+        \phi(x^n) = {\left({\left(\phi(x)\right)}^{-h}\right)}^{-1} =  {(\phi(x))}^{n}
+    \]
+\end{snippetproof}
+
+\begin{snippetcorollary}{group-homomorphism-period}{}
+    Let \(\phi \colon G \fromto H\) be a \grouphomomorphism.
+    If \(x\in G\) has finite period \(n\), then \(\phi(x)\)
+    has finite period \(m\) where \(m \divides n\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{group-homomorphism-period-proof}{group-homomorphism-period}{}
+    If \(x^n = 1_G\), then \(\phi(x^n) = \phi(1_G) = 1_H\), but \(\phi(x^n) = {(\phi(x))}^n\),
+    meaning \({(\phi(x))}^n = 1_H\) and, consequently, \(\phi(x)\) has a period which divides \(n\).
+\end{snippetproof}
+
+\plain{An element of finite period cannot be sent into one of infinite period. However, the opposite is possible.}
+
+\begin{snippetproposition}{group-homomorphism-preserves-subgroup}{Group homomorphism preserves subgroup}
+    Let \(\phi \colon G \fromto H\) be a \grouphomomorphism.
+    Then:
+    \begin{enumerate}
+        \item \(K \subgroupleq G \implies \phi(K) \subgroupleq H\);
+        \item \(L \subgroupleq H \implies \phi^{\inversefunction}(L) \subgroupleq G\).
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{group-homomorphism-preserves-subgroup-proof}{group-homomorphism-preserves-subgroup}{}
+    \begin{enumerate}
+        \item \begin{enumerate}
+            \item \(\phi(K) \neq \emptyset\) because \(K \neq \emptyset\);
+            \item let \(x,y \in \phi(K)\), meaning that there exist \(u,v \in K\)
+            such that \(x=\phi(u)\) and \(y = \phi(v)\).
+            But then \begin{align*}
+                xy^{-1} &= (\phi(u)){(\phi(v))}^{-1} = (\phi(u)) \phi(v^{-1}) \\
+                &= \phi(uv^{-1}) \in \phi(K)
+            \end{align*}
+        \end{enumerate}
+        \item \begin{enumerate}
+            \item we have \(\phi^\inversefunction(L) \neq \emptyset\)
+                because \(\phi(1_G) = 1_H\)
+                and \(1_H \in L\) and thus \(1_G \in \phi^\inversefunction(L)\);
+            \item let \(x,y \in \phi^\inversefunction(L)\).
+            We have
+            \[
+                \phi(xy^{-1}) = \phi(x) \phi(y^{-1}) = \phi(x) {(\phi(y))}^{-1} \in L
+            \]
+            meaning \(xy^{-1} \in \phi^\inversefunction(L)\).
+        \end{enumerate}
+    \end{enumerate}
+\end{snippetproof}
+
+\plain{This also works in a monoid as the definition requires the identity to be preserved.}
+
+\end{document}
