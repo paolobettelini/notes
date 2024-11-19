@@ -1,0 +1,218 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+\usepackage{tikz}
+
+\usetikzlibrary{cd}
+
+\begin{document}
+
+\id{settheory-cardinality}
+\genpage
+
+\section{Cardinality}
+
+\begin{snippetaxiom}{axiom-of-choice}{Axiom of choice}
+    Let \(A\) be a \set where \(A \neq \emptyset\).
+    There exist a \function
+    \[
+        f\colon \powerset(A) \fromto A
+    \]
+    such that
+    \[
+        \forall X \subset A \suchthat A \neq\emptyset, f(x) \in x
+    \]
+\end{snippetaxiom}
+
+\begin{snippetdefinition}{finite-set-definition}{Finite set}
+    Let \(A\) be a \set.
+    Then, \(A\) is \emph{finite} if
+    \[
+        \exists n\in\naturalnumbers, \exists \varphi \colon \mathbb{F}_n \fromto A
+    \]
+    where \(\mathbb{F}_n = \{1,2,\cdots, n\}\) such that \(f\) is \bijective.
+\end{snippetdefinition}
+
+% TODOURGENT F_n è univoco e esiste
+
+\begin{snippetdefinition}{cardinality-definition}{Cardinality}
+    The \textit{cardinality} of a \set \(A\) is a measure of the amount of its elements.
+    \begin{itemize}
+        \item if \(A\) is \setfinite, \(|A| = n\) where
+        \(n\in\naturalnumbers\) such that \(\exists \varphi \colon \mathbb{F}_n \fromto A\)
+        where \(\varphi\) is \bijective.
+        \item if \(A\) is not \setfinite, let \(B\) be another \set. \\
+        We say
+        \[
+            |A| = |B| \iff \exists f \colon A \fromto B \suchthat f \text{ is \bijective}
+        \]
+        We say
+        \[
+            |A| \leq |B| \iff \exists f \colon A \fromto B \suchthat f \text{ is \injective}
+        \]
+    \end{itemize}
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{set-equivalence-definition}{Set equivalence}
+    Let \(A\) and \(B\) be \set[sets].
+    Then, the \emph{set equivalence} is defined as
+    \[
+        A \sim B \iff \cardinality{A} = \cardinality{B}
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{set-cardinality-transitivity}{Cardinality transitivity}
+    Let \(X,Y,Z\) be \set[sets]. Then,
+    \[
+        \cardinality{X} \leq \cardinality{Y} \leq \cardinality{Z}
+        \implies \cardinality{X} \leq \cardinality{Z}
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{set-cardinality-transitivity-proof}{set-cardinality-transitivity}{Cardinality transitivity}
+    By definition, \(\cardinality{X} \leq \cardinality{Y}\) means that there exist an \injective
+    \function \(f\colon X \fromto Y\). \\
+    Likewise, \(\cardinality{Y} \leq \cardinality{Z}\) means that there exist an \injective
+    \function \(f\colon Y \fromto Z\). \\
+    Thus, there exist an \injective \function \(h\colon X \fromto Z\), and thus \(\cardinality{X} \leq \cardinality{Z}\).
+\end{snippetproof}
+
+\begin{snippettheorem}{cantor-schroeder-bernstein-theorem}{Cantor-Schroeder-Bernstein Theorem}
+    Let \(X,Y\) be \set[sets]. Then, assuming the \axiomofchoice
+    \[
+        \cardinality{A} \leq \cardinality{B}
+        \land
+        \cardinality{B} \leq \cardinality{A}
+        \implies A \setequivalent B
+    \]
+\end{snippettheorem}
+
+\section{Countability}
+
+\begin{snippetdefinition}{countable-set-definition}{Countable set}
+    A \set \(S\) is \textit{countable} if there exists
+    a \function \(f\colon S \fromto \naturalnumbers\) that is \injective.
+\end{snippetdefinition}
+
+\begin{snippettheorem}{infinite-sets-characterization-theorem}{Characterization of infinite sets}
+    \begin{enumerate}
+        \item \emph{Smallest cardinality:} let \(X\) be an infinite \set. Then,
+        \[
+            \exists X_0 \subseteq X \suchthat X_0 \setequivalent \naturalnumbers
+        \]
+        \item A \set \(X\) is infinite \ifandonlyif
+        \[
+            \exists X_1 \subset X \suchthat X_1 \setequivalent X
+        \]
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{infinite-sets-characterization-theorem-proof}{infinite-sets-characterization-theorem}{Characterization of infinite sets}
+    \begin{enumerate}
+        \item Let \(X\) be an infinite \set, meaning that for every \(n\in\naturalnumbers\),
+        there is no \bijective \function from \(X\) to \(\mathbb{F}_n\).
+        Let \(x_1 \in X\). We have that \(X \neq \{x_1\}\) since otherwise it would be \setfinite.
+        Thus, \(\exists x_2 \neq x_2 \suchthat x_2 \in X\).
+        Now, \(X \neq \{x_1, x_2\}\) since otherwise it would be \setfinite.
+        By \principleofinduction[induction], this iterated process does not end.
+        We now find a \sequence
+        \[
+            X_0 = \{x_1, x_2, \cdots, x_n, \cdots\} \subseteq X
+        \]
+        such that \(\forall n > m, x_n \neq x_m\). The elements are all distinct.
+        By construction we have a \bijective \function from \(X_0\) to \(\naturalnumbers\).
+        \item \iffproof{
+            If \(X\) is \setfinite, there cannot be a \bijective \function
+            from \(X\) to a propert subset of \(X\).
+        }{
+            Let \(X\) be an infinite \set. By the first point, there exist
+            \[
+                X_0 = \{x_1, x_2, \cdots, x_n, \cdots\} \setequivalent \naturalnumbers
+            \]
+            We now consider \(X_1 = \{x_2, x_4, \cdots, x_{2k}\} \subseteq X_0\) \\
+            and define \(\varphi\colon (X \difference X_0) \union X_1 \fromto X\)
+            such that
+            \[
+                \varphi(x) = \begin{cases}
+                    x & x \in X \difference X_0 \\
+                    x_k & x = x_{2k}
+                \end{cases}
+            \]
+        }
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippettheorem}{countable-union-is-countable-theorem}{Countable union is countable}
+    Let \(\{X_n\}\) be \countable \set[sets]. Then,
+    \[
+        \bigcup_{n} X_n
+    \]
+    is \countable.
+\end{snippettheorem}
+
+\begin{snippetproof}{countable-union-is-countable-theorem-proof}{countable-union-is-countable-theorem}{Countable union is countable}
+    Since \(X_n\) is \countable, consider
+    \[
+        X_n = \{x_{n,1}, x_{n,2}, \cdots\}
+    \]
+    We display every \set \(X_n\) in a matrix
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAA8B9YARlJ4C+IAaXSZc+Qij6Vq9Zq0QdufAExCRY7HgJFV5KrUYs2AHVMBjKBBwJNIDNslEAzAbnHFy3qQC2G0QdxHSkSfkN5EyUuYH1BYUDHCV1pcI8FNhj9dQStZNC4iM8zS2tbXKCnFOQ3HiKM6O59fwqkkKIyVXqo71qAvPbUrvSemLcc+zbnFGzur3MoMrtE4Oma0mGjBt6-fsr8jtIXOZKaJdbV6r5jkfnTM5tlgbX9G62e8wfyycvQtzfIncvk99oN1gAWE6NYBgXYXKoFUiQ24lKyPeEHFBkZHvLwxWHxH4Ioh8HGAzLcWETQwwKAAc3gRFAADMAE4QXxIMggHAQJCCQJsjn86i8pDg+xCzmIcGivmIAAckvZ0oVcqQAFZlcLEBr1Yh1IKVUh9Dz5S5tdK3GakAA2S12-UATgdiCd+p46goAiAA
+        \begin{tikzcd}
+            {x_{1,1}} \arrow[r]  & {x_{1,2}} \arrow[ld] & \cdots \arrow[r]  & {x_{1,m}} \arrow[ld] \\
+            {x_{2,1}} \arrow[d]  & {x_{2,2}} \arrow[ru] & \cdots \arrow[ld] & {x_{2,m}}            \\
+            {x_{3,1}} \arrow[ru] & {x_{3,2}} \arrow[ld] & \ddots            & {x_{3,m}}            \\
+            \vdots               & \vdots               & \vdots            & \vdots               \\
+            {x_{n,1}}            & {x_{n,2}}            & \cdots            & {x_{n,m}}           
+        \end{tikzcd}
+    \end{center}
+    we consider the \sequence induced by the arrow and thus the union is \countable.
+\end{snippetproof}
+
+\begin{snippetcorollary}{cartesian-prod-is-countable}{Cartesian product is countable}
+    Let \(X\) and \(Y\) be \countable \set[sets].
+    Then, \(X \cartesianprod Y\) is \countable.
+\end{snippetcorollary}
+
+\begin{snippetproof}{cartesian-prod-is-countable-proof}{cartesian-prod-is-countable}{Cartesian product is countable}
+    \todo
+\end{snippetproof}
+
+\begin{snippetcorollary}{unitary-interval-reals-bijection}{}
+    The \function \(f\colon (-1;1) \fromto \realnumbers\)
+    such that
+    \[
+        f(x) = \frac{1}{1-|x|}
+    \]
+    is \bijective.
+\end{snippetcorollary}
+
+\begin{snippettheorem}{reals-are-uncountable-theorem}{Reals are uncountable}
+    Since there is a \bijective \function between \((0,1)\) with \(\realnumbers\),
+    we will prove that \((0,1)\) is not \countable.
+    Assume that \((0,1)\) is \countable. Then,
+    \[
+        (0,1) = \{r_1, r_2, \cdots\}
+    \]
+    where each number has a numeric expansion \(r_n = 0.d_{n,1}d_{n,2}\cdots\)
+    in any base \(B\). Note that we only want to consider unique numbers, so we discard any (period)
+    representation of values which are already present.
+    We now construct a real number \(r = g_1g_2\cdots\)
+    where \(g_i = d_{i,i} + 1 \bmod{B} \in (0,1)\).
+    Now, for every \(r_i\) in the \sequence, \(g_i \neq r_i\) because they differ
+    at at the \(i\)-th decimal \lightning.
+\end{snippettheorem}
+
+\begin{snippettheorem}{continuum-hypothesis-theorem}{Continuum Hypothesis}
+    There is not \set \(X\)
+    such that
+    \[
+        \cardinality{\mathbb{N}} < \cardinality{X} < \cardinality{\mathbb{R}}
+    \]
+\end{snippettheorem}
+
+\end{document}
