@@ -4389,7 +4389,7 @@ Se invece \(x_0\in E\) è un punto di accumulazione, la definizione di continuit
     \]
 }
 
-Usando le definizioni con \(gay\) e \(\delta\) possiamo parlare di continuità da destra e sinistra.
+Usando le definizioni con \(\varepsilon\) e \(\delta\) possiamo parlare di continuità da destra e sinistra.
 
 \sdefinition{Continuità da sinistra}{
     Sia \(f\colon E \subseteq \mathbb{R} \to \mathbb{R}\) e \(x_0\in E\).
@@ -4482,6 +4482,181 @@ Tali proprietà sono analoghe per la continuità destra e sinistra.
 \sdefinition{Continuità intervallo}{
     Sia \(f\colon E \subseteq \mathbb{R} \to \mathbb{R}\).
     Diciamo che \(f\) è continua in \(E\) se è continua in ogni punto di \(E\).
+}
+
+% TODOURGENT 
+\pagebreak
+
+\section{Limiti e discontinuità di funzioni monotone}
+
+\stheorem{}{
+    Sia \(f\colon I \to \mathbb{R}\) monotona crescente su \(I\),
+    e sia \(x_0\) intorno a \(I\). Allora esistono finiti
+    \[
+        \lim_{x\to x_0^-} f(x) = \underset{x < x_0}{\sup}\, f
+        \leq f(x_0) \leq \lim_{x\to x_0^+} f(x) = 
+        \underset{x > x_0}{\inf}\, f
+    \]
+    In particolare, \(f\) è continua in \(x_0\) se e solo se
+    \[
+        \lim_{x\to x_0^-} f(x) = \lim_{x\to x_0^+} f(x)
+    \]
+    e se \(f\) non è continua in \(x_0\) allora \(x_0\)
+    è una discontinuità di salto.
+}
+
+Un analogo risultato vale per funzioni monotone decrescenti,
+e si può ricavare osservando che \(f\) è monotona decrescente se e solo se \(-f\)
+è monotona crescente.
+
+\sproof{}{
+    Dimostra che esiste
+    \[
+        \lim_{x \to x_0^-} f(x) = \underset{x < x_0}{\sup}\,f(x) \leq f(x_0)
+    \]
+    Per monotonia, per ogni \(x_1 < x < x_0\) abbiamo
+    \[
+        f(x_1) \leq f(x) \leq f(x_2)
+    \]
+    da cui
+    \[
+        \forall x_1 < x_0, f(x_1) \leq \underset{x < x_0}{\sup}\,f(x)  \leq f(x_0)
+    \]
+    Per definizione di supremum,
+    \[
+        \forall \varepsilon>0, \exists x_\varepsilon < x_0 \,|\, f(x_\varepsilon) > \underset{x < x_0}{\sup}\,f(x) - \varepsilon 
+    \]
+    Per monotonia concludiamo che \(\forall x_\varepsilon < x < x_0\) vale quindi
+    \[
+        \underset{x < x_0}{\sup}\,f(x) - \varepsilon < f(x_\varepsilon) \leq f(x) \leq \underset{x < x_0}{\sup}\,f(x) 
+    \]
+    Quindi, posto \(\delta = x_0 - x_\varepsilon\) vale che per tutte le \(x\) tali che
+    \(x_0 - \delta < x < x_0\) abbiamo
+    \[
+        \underset{x < x_0}{\sup}\,f - \varepsilon < f(x) < \underset{x < x_0}{\sup}\,f(x)
+    \]
+    e per definizione
+    \[
+        \lim_{x\to x_0} f(x) = \underset{x < x_0}{\sup}\,f
+    \]
+}
+
+\scorollary{}{
+    Sia \(f\colon I \to \mathbb{R}\) monotona. Allora, l'insieme dei punti di discontinuità
+    di \(f\) è al più numerabile.
+}
+
+\sproof{}{
+    Senza perdita di generalità, supponiamo
+    che \(f\) sia monotona crescente e siano \(x_1\) e \(x_2\)
+    due punti di discontinuità.
+    Consideriamo \(x'\), \(x''\) e \(x'''\) come punti negli intervalli definiti da \(x_1\)
+    e \(x_2\).
+    Dal teorema precedente
+    \[
+        f(x') \leq \lim_{x\to x_1^-} \leq f(x_1) \leq \lim_{x \to x_1^+} f(x)
+        \leq f(x'') \leq \lim_{x\to x_2^-} \leq f(x_2)
+        \leq \lim_{x\to x_2^+} f(x) \leq f(x''')
+    \]
+    e poiché per ipotesi \(f\) è discontinua in \(x_1\), \(x_2\)
+    almeno una delle disuguaglianza in rosso o in blu sono strette. % TODOURGENT colorare + disegno
+    Questo dice che gli intervalli di salto 
+    \[
+        \lim_{x\to x_1^-} f, \lim_{x\to x_1^+} f
+    \]
+    e
+    \[
+        \lim_{x\to x_2^-} f, \lim_{x\to x_2^+} f
+    \]
+    sono disgiunti. Dissando un razionale in ciascuno degli intervalli di salto corrispondente
+    ai punti di discontinuità in \(f\) si stabilisce quindi una corrispondenza biunivoca tra
+    \[
+        D=\{x \in I \,|\, f \text{ è discontinua in } x\}
+    \]
+    e un sottoinsieme di \(\mathbb{R}\). Poichè \(\mathbb{Q}\)
+    è numerabile, \(D\) è al più numerabile.
+}
+
+Quindi i punti di massimo forte sono al più numerabile,
+mentre quelli deboli non sono necessariamente numerabile.
+
+\sdefinition{Compattezza di successioni nei reali}{
+    Sia \(K \subseteq \mathbb{R}\). Diciamo che \(K\)
+    è compatto per successioni se
+    \[
+        \forall \{x_n\} \subseteq K
+    \]
+    esiste una sottosuccessione \(\{x_{n_k}\}\) tale che \(x_{n_k} \to x_0 \in K\),
+    cioè da ogni successione di punti di \(K\) si può estrarre una sottosuccesione convergente
+    a un punto di \(K\).
+}
+
+Se \(K\) è finito allora è compatto per successioni (un insieme finito è chiuso in quanto
+non contiene punti di accumulazione).
+
+\stheorem{Teorema di Heine Borel}{
+    Sia \(K \subseteq \mathbb{R}\), allora sono equivalenti:
+    \begin{enumerate}
+        \item \(K\) è compatto per successioni
+        \item \(K\) è chiuso e limitato.
+    \end{enumerate}
+}
+
+\sproof{Teorema di Heine Borel}{
+    \begin{itemize}
+        \item \((2) \implies (1)\).
+        Consideriamo \(\{x_n\} \subseteq K\). Siccome \(K\) è limitata,
+        \(\{x_n\}\) è limitata. Quindi, per Bolzano-Weierstrass
+        esiste \(\exists \{x_{n_k}\}\) tale che \(x_{n_k} \to \overline{x}\).
+        Poiché \(\{x_{n_k}\} \subseteq K\) e \(x_{n_k} \to \overline{x}\)
+        per la caratterizzazione dei punti di chiusura \(\overline{x} \in \overline{K} = K\)
+        perché \(K\) è chiuso, quindi \(x_{n_k} \to \overline{x} \in K\) e \(K\) è compatto.
+        \item \((1) \implies (2)\). \begin{itemize}
+            \item \(K\) \textbf{è chiuso}: Sia \(\overline{x} \in \overline{K}\).
+            Per il teorema di caratterizzazione di  \(\overline{K}\), esiste \(\{x_n\} \subseteq K\)
+            tale che \(x_n \to \overline{x}\). Poiché \(K\) è compatto,
+            esiste \(\{x_{n_k}\}\) tale che \(x_{n_k} \to x_0 \in K\).
+            Ma \(\{x_{n_k}\} \subseteq \{x_n\}\) e quindi \(x_{n_k} \to \overline{x}\)
+            e per uincitià del limite \(\overline{x} = x_0 \in K\) e \(K\) è chiuso.
+            \item \(K\) \textbf{è limitato}: Mostriamo che \(\mu = \sup K < +\infty\).
+            Abbiamo dimostrato che \(\exists \{x_n\} \subseteq K\)
+            tale che \(x_n \to \mu\). Ma \(K\) è compatto cosicché esista
+            \(\{x_{n_k}\}\) tale che \(x_{n_k} \to x_0 \in K\).
+            Per unicità \(\u = x_0 \i0n K\) e quindi \(\mu\) è finito.
+        \end{itemize}
+    \end{itemize}
+}
+
+\scorollary{Teorema di Wierstrass}{
+    Se \(K\) è compatto per successioni, allora esiste
+    \(\min\{K\}\) e \(\max\{K\}\).
+}
+
+Siccome il supremum e l'infimum appartenogno a \(K\) (dalla dimostrazione).
+
+\stheorem{Teorema di Heine-Cantor}{
+    Sia \(f\colon K \subseteq \mathbb{R} \to \mathbb{R}\) continua
+    su \(K\) compatto. Allora, \(f(K)\) è compatto.
+}
+
+\sproof{Teorema di Heine-Cantor}{
+    Data \(\{y_n\} \subseteq f(K)\), dobbiamo dimostrare che esiste \(\{y_{n_k}\} \subseteq \{y_n\}\)
+    tale che \(y_{n_k} \to y \in f(K)\).
+    Per definizione, \(y_n \in f(K)\) quindi esiste \(x_n \in K\) tale che \(f(x_n) = y_n\).
+    La successione \(\{x_n\}\) è contenuta in \(K\) compatto.
+    Esiste \(\{x_{n_k}\}\) tale che \(x_{n_k} \to x_0 \in K\).
+    Ma è continua su \(K\) e quindi in \(x_0\).
+    Quindi per il teorema su continuità e continuità per successione,
+    abbiamo che
+    \[
+        x_{n_k} \to x_0 \implies f(x_{n_k}) = y_{n_k} \to f(x_0) = y_0 \in f(K)
+    \]
+    e quindi \(f(K)\) è compatto.
+}
+
+\scorollary{Teorema di Wierstrass}{
+    Sia \(f\colon K \subseteq \mathbb{R} \to \mathbb{R}\)
+    continua su \(K\) compatto. Allora \(f\) è limitata ed assume massimo e minimo.
 }
 
 \end{document}

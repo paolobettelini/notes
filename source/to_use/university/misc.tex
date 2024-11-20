@@ -1,0 +1,131 @@
+\documentclass[a4paper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{parskip}
+\usepackage{fullpage}
+\usepackage{wrapfig}
+\usepackage{tikz}
+
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{cd}
+
+\title{Algebra I}
+\author{Paolo Bettelini}
+\date{}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+\section{Esercizi}
+
+%\[
+%    \sin(x) \sim x(1 + o(1))
+%\]
+
+\subsection{Limiti}
+
+\sexercise{}{
+    \begin{align*}
+        \lim_{x\to 0} \frac{x^2 - x\ln(1 + x) + 3x}{\sin(x) + 3x^2}
+        &= \lim_{x\to 0} \frac{x(x - \ln(1 + x) + 3)}{x(\frac{\sin x}{x} + 3x)} \\
+        &= \lim_{x\to 0} \frac{0-0+3}{1 + 0} = 3
+    \end{align*}
+}
+
+\sexercise{}{
+    \begin{align*}
+        \lim_{x\to 0} \frac{2\sin (x) \left(e^{x^2} - 1\right)}{(1-\cos(x)){\left[\ln(1 + \sqrt{x})\right]}^2}
+        &= \lim_{x\to 0} \frac{
+            2x(1 + o(1))x^2(1 + o(1))
+        }{
+            \frac{x^2}{2}(1 + o(1)) \sqrt{x}(1 + o(1))
+        } \\
+        &= \lim_{x\to 0} \frac{4(1 + 2o(1) + o^2(1))}{1 + o^2(1) + 3o(1) + o^3(1)} = 4
+    \end{align*}
+}
+
+\sexercise{}{
+    Considera \(n \in \mathbb{R}\)
+    \begin{align*}
+        \lim_{x\to 0^+} \frac{2}{x^2} \left[
+            e^{-x^n} - 1 + \ln\left(\cos(x^n)\right)
+        \right]
+        &= \lim_{x\to 0^+} \frac{2}{x^2} \left[
+            -x^n(1 + o(1)) + \ln\left(1 + \cos(x^n) - 1\right)
+        \right] \\
+        &= \lim_{x\to 0^+} \frac{2}{x^2} \left[
+            -x^n(1 + o(1)) + \ln\left(1 - \frac{x^{2n}}{2}(1 + o(1))\right)
+        \right] \\
+        &= \lim_{x\to 0^+} \frac{2}{x^2} \left[
+            -x^n(1 + o(1)) -\frac{x^{2n}}{2}(1 + o(1))
+        \right] \\
+        &= \lim_{x\to 0^+} - \frac{2}{x^2} \left[
+            x^n \left(1 + \frac{x^n}{2}\right)(1 + o(1))
+        \right]
+    \end{align*}
+    Nel caso \(n>0\) abbiamo
+    \[
+        \begin{cases}
+            0 & n>2 \\
+            -2 & n=2 \\
+            -\infty & 0 < m < 2
+        \end{cases}
+    \]
+    Nel caso \(n=0\) il limite è \(-\infty\), mentre se \(n<0\) il limite
+    non è ben definito.
+}
+
+\sexercise{}{
+    \begin{align*}
+        \lim_{x\to 0} \ln(\cos x + x^2) \frac{e^{-\frac{x^2}{2}} + 1}{1-e^{-x^2}}
+    \end{align*}
+    Sostituendo troviamo la forma di indeterminazione \(\frac{0}{0}\).
+    \begin{align*}
+        \lim_{x\to 0} ln(1 + \cos x - 1 + x^2) \frac{e^{-\frac{x^2}{2}} + 1}{\left(1-e^{-\frac{x^2}{2}}\right)\left(1+e^{-\frac{x^2}{2}}\right)}
+        &= \lim_{x\to 0} \frac{
+            \ln\left(
+                1 - \frac{x^2}{2}(1 + o(1)) + x^2
+            \right)
+        }{
+            \frac{x^2}{2}(1 + o(1))
+        } = 1
+    \end{align*}
+}
+
+\sexercise{}{
+    \begin{align*}
+        \lim_{x\to \frac{\pi}{4}} {\left(
+            \sin(2x)
+        \right)}^{\frac{1}{\ln\left(1 + \cos\left(x + \frac{\pi}{4}\right)\right)}}
+    \end{align*}
+    Sostituendo troviamo la forma di indecisione \(1^\infty\).
+    Facciamo un cambio di variabile \(t = x-\frac{\pi}{4}\)
+    \begin{align*}
+        \lim_{x\to 0} {\left(
+            \sin\left(2\left(t + \frac{\pi}{4}\right)\right)
+        \right)}^{\frac{1}{\ln\left(1 + \cos\left(x + \frac{\pi}{2}\right)\right)}}
+        &= \lim_{t\to 0} \exp\left\{\frac{1}{\ln(1 - \sin t)} \cdot \ln(\cos(2t))\right\} \\
+        &= \lim_{t\to 0} \exp\left\{\frac{\ln(1 + \cos(2t) - 1)}{\ln(1 - \sin t)}\right\} \\
+        &= \lim_{t\to 0} \exp\left\{\frac{\ln(1 - 2t^2)}{1 - t}\right\} \\
+        &= \lim_{t\to 0} \exp\left\{\frac{-2t}{t}\right\} = e^0 = 1
+    \end{align*}
+}
+
+\pagebreak
+
+\subsection{Continuità}
+
+\sexercise{}{
+    Studia la continuità di
+    \[
+        f(x) = {\left(\ln|x|\right)}^{-1}
+    \]
+}
+
+\end{document}

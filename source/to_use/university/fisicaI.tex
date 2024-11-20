@@ -1029,12 +1029,6 @@ Le forze posizionali sono conservatrici (deve dipendere solamente dalla posizion
 La forza di attrito viscoso, per esempio, non dipende solo dalla posizione e quindi non potrà mai esistere
 una funzione \(U\).
 
-\subsection{Forze conservatrici}
-
-Per la forza peso \(F_z = -mg\) abbiamo \[U(z) = mgz\]
-
-Per la forza elastica \(F_x = -kx\) abbiamo \[U(x) = \frac{1}{2}kx^2\]
-
 \pagebreak
 
 \subsection{Sistemi tridimensionali}
@@ -1068,6 +1062,106 @@ questa si può esprimere in termini come combinazione lineare delle derivate par
 %    +
 %    {f(x + h\vec{d}, y + h\vec{d}, z + h\vec{d}) - f(x,y,z)}{h}
 %\end{align*}
+
+\subsection{Forze conservatrici}
+
+\sdefinition{Forza conservativa}{
+    Si definisce la \emph{forza conservative} come una forza posizionale e tale
+    che
+    \[
+        \vec{F}(\vec{r}) = -\nabla U(\vec{r})
+    \]
+}
+
+Non tutte le forze posizionali sono conservative; la condizione del gradiente
+deve venire rispettata.
+
+\stheorem{Lavoro di una forza conservativa}{
+    Consideriamo un corpo soggetto a solamente forze conservative \(\vec{F}(\vec{r})\).
+    Allora, \(L = U(A) - U(B)\).
+}
+
+\sproof{Lavoro di una forza conservativa}{
+    Considera il lavoro
+    \begin{align*}
+        L &= \sum_{i=1}^N \vec{F_i} \cdot \Delta \vec{s_i} \\
+        &= \sum_{i=1}^N \vec{F_i} \cdot |\Delta \vec{s_i}| \frac{\Delta \vec{s_i}}{|\Delta \vec{s_i}|}
+    \end{align*}
+    L'ultimo termine è un versore, e quindi abbiamo la derivata direzionale
+    \begin{align*}
+        L &= \int_C \vec{F} \,d\vec{s} \\
+        &= - \sum_{i=1}^N \left(
+            \nabla U_i \cdot \vec{m_i}
+        \right) |\Delta \vec{s_i}| \\
+        &= - \sum_{i=1}^N \frac{
+            U(\vec{r_{i-1}} + \Delta \vec{s_i}) - (\vec{r_{i-1}})
+        }{
+            |\Delta \vec{s_i}|
+        } |\Delta \vec{s_i}| \\
+        &= - \left[
+            U(\vec{r_1}) - U(\vec{r_0}) + U(\vec{r_2}) - U(\vec{r_1})
+            + \cdots + U(\vec{r_N}) - U(\vec{r_{N-1}})
+        \right] \\
+        &= U(\vec{r_0}) - U(\vec{r_N}) \\
+        &= U(A) - U(B)
+    \end{align*}
+}
+
+Mettendo il teorema assieme a quello delle forze vive, otteniamo la conservazione dell'energia meccanica.
+
+\stheorem{Conservazione dell'energia meccanica}{
+    Per le forze conservative
+    \[
+        E_C(A) + U(A) = E_C(B) + U(B)
+    \]
+}
+
+Per la forza peso \(F_z = -mg = -\nabla U\) abbiamo \[U(z) = mgz\]
+
+Per la forza elastica \(F_x = -kx = -\nabla U\) abbiamo \[U(x) = \frac{1}{2}kx^2\]
+
+\subsection{Forze centrali}
+
+\sdefinition{Forza centrale}{
+    Le forze centrali sono delle forze posizionali il cui modulo
+    \(\vec{F}(\vec{r}) = f(r)\) dipende esclusivamente dalla distanza,
+    e sono dirette come \(\vec{r}\) (versore radiale).
+}
+
+\stheorem{}{
+    Ogni forza centrale è conservativa.
+}
+
+\sproof{}{
+    Consideriamo \(\vec{F}(\vec{r}) = -\nabla U\).
+    Vogliamo trovare
+    \[
+        \frac{\partial U}{\partial x}
+    \]
+    la componente \(x\) è presente in \(\vec{r}\).
+    Allora \(r=\sqrt{x^2 + y^2 + z^2}\). Quindi,
+    \begin{align*}
+        \frac{\partial U}{\partial x} &= \frac{dU}{dr} \frac{\partial r}{\partial x} \\
+        &= \frac{dU}{dr} \frac{x}{r}
+    \end{align*}
+    Le altre variabili sono analoghe.
+    Allora il gradiente di \(U\) è dato da
+    \begin{align*}
+        \nabla U(r) &=
+        \frac{dU}{dr} \frac{x}{r} \hat{x} +
+        \frac{dU}{dr} \frac{y}{r} \hat{y} +
+        \frac{dU}{dr} \frac{z}{r} \hat{z} \\
+        &= \frac{dU}{dt} \hat{r}
+    \end{align*}
+    La forza centrale è quindi proprio una funzione
+    \[
+        f(r) = - \frac{dU}{dr}
+    \]
+    e quindi
+    \[
+        \vec{F} = f(r) \hat{r} = -\nabla U
+    \]
+}
 
 \pagebreak
 
@@ -1890,16 +1984,16 @@ supponendo che parta a riposo, trovare inoltre la massa della goccia allo stesso
 }
 
 \sexercise{Un punto materiale di massa \(m\) è appeso tramite una molla di costante
-elastica \(k\) ad un supporto che avanza con accelerazione \(a\).
-Clcolare l'allungamento della molla.}{
+    elastica \(k\) ad un supporto che avanza con accelerazione \(a\).
+    Clcolare l'allungamento della molla.}{
     
 }
 
 \sexercise{Un piano inclinato 3-4-5 è fissato su una piattaforma rotante. Un blocco è posizionato
-a riposo sul piano e il coefficiente d'attrito statico fra il blocco e il piano è
-\(\mu_s\). Il blocco è inizialmente alla distanza di \(40\) cm dal centro della piattaforma.
-Trovare il valore minimo della velocità angolare \(\omega\) che impedisce al blocco di cadere 
-sulla piattaforma.}{
+    a riposo sul piano e il coefficiente d'attrito statico fra il blocco e il piano è
+    \(\mu_s\). Il blocco è inizialmente alla distanza di \(40\) cm dal centro della piattaforma.
+    Trovare il valore minimo della velocità angolare \(\omega\) che impedisce al blocco di cadere 
+    sulla piattaforma.}{
     XXX
 }
 \begin{figure*}[h]
