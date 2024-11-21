@@ -1,0 +1,133 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{homomorphisms-exercises}
+\genpage
+
+\section{Exercises}
+
+\begin{snippetexercise}{homomorphism-ex1}{}
+    Let \(G\) be an \abeliangroup and \(n\in\integers\).
+    Prove that \(\varphi\colon G \to G\) defined as \(\varphi_n(x) = x^n\)
+    is an endomorphism of \(G\).
+    Is it true if \(G\) is not \abeliangroup[abelian]?
+\end{snippetexercise}
+
+\begin{snippetsolution}{homomorphism-ex1-sol}{}
+    Let \(x,y\in G\). We know that \(\varphi_n(xy) = {(xy)}^n = x^n y^n = \varphi_n(x) \varphi_n(y)\).
+    This, \(\varphi_n\) is an endomorphism.
+    If \(G\) is not \abeliangroup[abelian], we note that \(\varphi_n\)
+    is clearly an endomorphism for \(n=0,1\).
+    For \(n=2\) we would need \({(xy)}^2 = xyxy\) to be equal to \(x^2y^2 = xxyy\).
+    By cancellation \(yx = xy\), so for \(n=2\), \(\varphi_n\) is not an endomorphism.
+    For \(n=3\) we get \(xyxyxy = xxxyyy\) meaning \(yxyx = xxyy\).
+    The latter (even for bigger \(n\)) is true depending on \(G\).
+    For example, if \(n=6\) and \(G = \permgrp_3\), given \(\sigma \in G\)
+    we have \(n^6 = \text{Id}\).
+\end{snippetsolution}
+
+\begin{snippetexercise}{homomorphism-ex2}{}
+    Let \(G = (\text{Inv}(\integers / 15), \cdot)\).
+    Find the kernel and image of the endomorphism \(\theta({[a]}_{15}) \triangleq {[a]}_{15}^2\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{homomorphism-ex2-sol}{}
+    Note that \(\cardinality{Inv(\integers / 15)} = \eulertotient(15) = 8\).
+    Those elements have form \({[a]}_15\) where \(\gcd(a, 15) = 1\). Thus,
+    \(a = 1,2,4,7,8,11,13,14\). Their image with respect to \(\theta\) are
+    respectively \({[1]}_{15}\), \({[4]}_{15}\), \({[1]}_{15}\), \({[4]}_{15}\), \({[4]}_{15}\), \({[1]}_{15}\), \({[4]}_{15}\), \({[1]}_{15}\).
+    Thus,
+    \[
+        \text{Im}\{\theta\} = \{{[1]}_{15}, {[4]}_{15}\}
+    \]
+    and
+    \[
+        \grpker_\theta = \{{[1]}_{15}, {[4]}_{15}, {[11]}_{15}, {[14]}_{15}\}
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{homomorphism-ex3}{}
+    Let \(m,n\) nbe positive integers
+    where \(m\) divides \(n\). Show that \(\varphi\colon \text{Inv}(\integers / n) \to \text{Inv}(\integers / m)\)
+    defined as
+    \[
+        \varphi({[x]}_n) \triangleq {[x]}_m
+    \]
+    Show that \(\varphi\) is well-defined and it is a \grouphomomorphism.
+\end{snippetexercise}
+
+\begin{snippetsolution}{homomorphism-ex3-sol}{}
+    In order to show that it is well-defined, we need to prove:
+    \begin{enumerate}
+        \item \({[x]}_n = {[y]}_n \implies {[x]}_m = {[y]}_m\):
+        let \(x \equiv y \pmod{n}\), meaning \(x-y\) is a multiple of \(n\),
+        which, in turn, is multiple of \(m\) and thus \(x-1\) is multiple of \(m\),
+        meaning \(x \equiv y \pmod{m}\) and \({[x]}_m = {[y]}_m\).
+        \item if \({[x]}_n\) is invertible, then \({[x]}_m\) is invertible:
+        we know that \({[x]}_n\) is invertible \ifandonlyif \(x\) is \coprime with \(n\).
+        Since \(m \divides n\), then \(m\) is also \coprime with \(x\).
+        Thus, \({[x]}_m\) is invertible.
+    \end{enumerate}
+    We now show that \(\varphi\) is a \grouphomomorphism.
+    \begin{align*}
+        \varphi({[x]}_n \cdot {[y]}_n) &= \varphi({[xy]}_n)
+        = {[xy]}_m = {[x]}_m {[y]}_n = \varphi({[x]}_n)\varphi({[x]}_n)
+    \end{align*}
+\end{snippetsolution}
+
+\begin{snippetexercise}{homomorphism-ex4}{}
+    Determine which of the following maps are \grouphomomorphism[group homomorphisms]:
+    \begin{enumerate}
+        \item \(\varphi\colon (\realnumbers^\exceptzero, \cdot) \fromto GL_2(\realnumbers)\)
+        defined as
+        \[
+            \varphi(a) = \begin{pmatrix}
+                a & 0 \\
+                0 & 1
+            \end{pmatrix}
+        \]
+        \item \(\varphi\colon (\realnumbers, +) \fromto GL_2(\realnumbers)\)
+        defined as
+        \[
+            \varphi(a) = \begin{pmatrix}
+                1 & 0 \\
+                a & 1
+            \end{pmatrix}
+        \]
+        \item \(\varphi\colon GL_2(\realnumbers) \fromto (\realnumbers^\exceptzero, \cdot)\)
+        defined as
+        \[
+            \varphi\left(\begin{pmatrix}
+                a & b \\
+                c & d
+            \end{pmatrix}\right) = ab
+        \]
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{homomorphism-ex4-sol}{}
+    Note that we first need to show that the maps are well-defined.
+    \begin{enumerate}
+        \item the mapping is invertible as \(\det(g) = a \neq 0\);
+        \item  TODO
+        \[
+            {\begin{pmatrix} 1 & 0 \\ a & 1\end{pmatrix}}^{-1} = \begin{pmatrix}
+                1 & 0 \\ -a & 1
+            \end{pmatrix}
+        \]
+        \item the mapping is not well-defined. Example:
+        \[
+            \varphi\left(\begin{pmatrix} 1 & 0 \\ 0 & 1\end{pmatrix}\right) = 0    
+        \]
+    \end{enumerate}
+\end{snippetsolution}
+
+
+
+\end{document}
