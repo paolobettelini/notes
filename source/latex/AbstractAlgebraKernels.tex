@@ -1,0 +1,156 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+\usepackage{enumitem}
+
+\begin{document}
+
+\id{kernels}
+\genpage
+
+\section{Kernel of a group}
+
+\begin{snippet}{group-homomorphism-preserves-subgroup-particular-cases}
+    In the trivial cases where we consider \(1_G\) and \(G\) as the \subgroup[subgroups]
+    of \(G\), we have \(\varphi(1_G)\) and \(\varphi(G)\) are \subgroup[subgroups]
+    of \(G\). The case \(\varphi(1_G) = 1_H\) is not particularly interesting.
+    The case \(\varphi(G) = \text{Im}\{\varphi\}\), meaning that the image of a \grouphomomorphism
+    is a \subgroup. Now consider \(1_H\) and \(H\) as \subgroup[subgroups]
+    of \(H\). We thus have \(\varphi^\inversefunction(1_H)\) and \(\varphi^\inversefunction(H)\),
+    which are \subgroup[subgroups] of \(G\). The second case is not interesting as
+    \(\varphi^\inversefunction(H) = G\). In the first case we only have a specific \subgroup.
+\end{snippet}
+
+\begin{snippetdefinition}{group-kernel-definition}{Kernel}
+    Let \(\varphi \colon G \fromto H\) be a \grouphomomorphism.
+    The \emph{kernel} of \(\varphi\), is defined as
+    \[
+        \text{ker}_\varphi \triangleq \{x\in G \suchthat \varphi(x) = 1_H\}
+    \]
+\end{snippetdefinition}
+
+\begin{snippettheorem}{kernel-equivalent-properties-theorem}{Kernel lateral properties}
+    Let \(\varphi \colon G \fromto H\) be a \grouphomomorphism
+    and let \(x,y \in G\). The following are equivalent:
+    \begin{enumerate}[label=(\arabic*)]
+        \item \(\varphi(x) = \varphi(y)\);
+        \item \(\grpker_\varphi x = \grpker_\varphi y\);
+        \item \(x\,\grpker_\varphi = y\,\grpker_\varphi\).
+    \end{enumerate}
+\end{snippettheorem}
+
+\plain{In the kernel, the right and left laterals are the same.}
+
+\begin{snippetproof}{kernel-equivalent-properties-theorem-proof}{kernel-equivalent-properties-theorem}{Kernel lateral properties}
+    \begin{itemize}
+        \item \((1) \implies (2)\): consider \(k = xy^{-1}\). We have that
+        \[\varphi(k) = \varphi(xy^{-1}) = \varphi(x)\varphi(y^{-1}) = (\varphi(x)){(\varphi(x))}^{-1}\]
+        and thus \(k \in \grpker_\varphi\). Now, \(x = xy^{-1}y = ky \in \grpker_\varphi y\).
+        and thus \(\grpker_\varphi x = \grpker_\varphi y\).
+        \item \((2) \implies (1)\): we know that \(\grpker_\varphi x = \grpker_\varphi y\) and thus
+        \(x = ky\) for some \(k\in \grpker_\varphi\). But then,
+        \[
+            \varphi(x) = \varphi(ky) = \varphi(k) \varphi(y) = 1_H \varphi(y) = \varphi(y)
+        \]
+        \item \((1) \implies (3)\): analogous;
+        \item \((3) \implies (1)\): analogous.
+    \end{itemize}
+\end{snippetproof}
+
+\begin{snippetcorollary}{homomorphism-injectivity-equivalence}{Homomorphism injectivity}
+    Let \(\varphi \colon G \fromto H\) be a \grouphomomorphism.
+    Then, \(\varphi\) is \injective \ifandonlyif \(\grpker_\varphi\) is trivial.
+\end{snippetcorollary}
+
+\begin{snippetproof}{homomorphism-injectivity-equivalence-proof}{homomorphism-injectivity-equivalence}{Homomorphism injectivity}
+    \iffproof{
+        Let \(x \in \grpker_\varphi\). We have that
+        \(\varphi(x) = 1_H = \varphi(1_G)\), since the \grouphomomorphism is \injective
+        we find \(x = 1_G\).
+    }{
+        Let \(x,y \in G\) such that \(\varphi(x) = \varphi(y)\).
+        By \snippetref[kernel-equivalent-properties-theorem][this theorem],
+        they are both in the same (right) lateral. Since \(\grpker_\varphi\)
+        is trivial, there is only one element in the lateral, meaning \(x=y\).
+    }
+\end{snippetproof}
+
+\plain{We do not define the kernel of a monoid analogously to the one of a group.
+Such a definition would still be a submonoid, but if the kernel only contained the identity,
+that would not imply that the homomorphism is injective (only the other way around).}
+
+\begin{snippetexample}{monoid-homomorphism-kernel-example}{}
+    Consider \((\integers \difference \{-1\}, \cdot)\)
+    and the \monoidhomomorphism to the integers where \(\varphi(x) \triangleq x^2\).
+    We have that \(\varphi(xy) = \varphi(x) \varphi(y)\).
+    However, \(\varphi\) is not \injective. Only the element \(1\) goes into the identity,
+    but the \function is not \injective like it would be in a \group.
+\end{snippetexample}
+
+\begin{snippettheorem}{generated-subgroup-homomorphism-theorem}{Generated subgroup homomorphism}
+    Let \(\varphi \colon G \fromto H\) be a \grouphomomorphism
+    and let \(X \subseteq G\). Then,
+    \[
+        \varphi(\gengrp{X}) = \gengrp{\varphi(X)}
+    \]
+    If \(Y \subseteq H\), it is not guaranteed that
+    \[
+        \varphi^\inversefunction(\gengrp{Y}) = \gengrp{\varphi^\inversefunction(Y)}
+    \]
+\end{snippettheorem}
+
+\plain{The same with the inverse operation is not necessarily true.}
+
+\begin{snippetproof}{generated-subgroup-homomorphism-theorem-proof}{generated-subgroup-homomorphism-theorem}{Generated subgroup homomorphism}
+    If \(X = \emptyset\), we know \(\gengrp{X} = 1_G\) and, thus,
+    \(\varphi(\gengrp{X}) = 1_H\). On the other hand, \(\gengrp{\varphi(X)} = 1_H\).
+    Otheriwse, \(X \neq \emptyset\). We know that the element of \(\gengrp{X}\)
+    have the form \(x_1\circ x_2 \cdots x_r\) where \(x_i \in X\) or \(x_i^{-1} \in X\).
+    Now,
+    \begin{align*}
+        \varphi(\gengrp{X}) &= \{\varphi(x_1 \circ x_2 \cdots x_r) \suchthat
+        x_i \in X \lor x_i^{-1} \in X\} \\
+        &= \{ \varphi(x_1) \circ \varphi(x_2) \circ \varphi(x_r) \suchthat
+        \varphi(x_i) \in \varphi(X) \lor \varphi(x_i^{-1}) \in \varphi(X) \} \\
+        &= \{ \varphi(x_1) \circ \varphi(x_2) \circ \varphi(x_r) \suchthat
+        \varphi(x_i) \in \varphi(X) \lor {(\varphi(x_i))}^{-1} \in \varphi(X) \} \\
+        &= \gengrp{\varphi(X)}
+    \end{align*}
+    Let now \(Y \subseteq H\). We construct an example to show that the property does not hold
+    necessarily. Consider
+    \[
+        \varphi\colon (\integers, +) \fromto \permgrp_3
+    \]
+    defined as \(\varphi(n) \triangleq {\kcycle{1, 2, 3}}^n\) which is a \grouphomomorphism.
+    Also, consider \(Y = \{\kcycle{1,2}\}\).
+    Thus, \(\gengrp{Y} = \{\text{Id}, \kcycle{1,2}\}\).
+    On the other hand, \(\varphi^\inversefunction(Y) = \emptyset\)
+    as now 3-cycle raised to a power will result in a \permswap.
+    Thus, \(\gengrp{\varphi^\inversefunction(Y)} = \emptyset\).
+    However, \(\varphi^\inversefunction(\gengrp{Y}) = 3\integers\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{generated-subgroup-homomorphism-particular-case}{}
+    Let \(\varphi \colon G \fromto H\) be a \grouphomomorphism
+    and let \(g\in G\). Then,
+    \[
+        \varphi(\gengrp{g}) = \gengrp{\varphi(g)}
+    \]
+    Furthermore, if \(g\) has finite period, \(|\varphi(\gengrp{g})|\) divides
+    \(|\gengrp{g}|\).
+\end{snippetcorollary}
+
+\begin{snippetproposition}{generated-subgroup-homomorphism-reverse}{}
+    Let \(\varphi \colon G \fromto H\) be a \grouphomomorphism
+    and let \(Y \subseteq H\). Then,
+    \[
+        \gengrp{\varphi^\inversefunction(Y)} \subgroupleq
+        \varphi^\inversefunction(\gengrp{Y})
+    \]
+\end{snippetproposition}
+
+\end{document}

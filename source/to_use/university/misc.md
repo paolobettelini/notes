@@ -13,3 +13,4 @@
 - f strettamente crescente (decrescente) => f^-1 strettamente crescente (decrescente)
 - tutti i limiti notevoli e.g. (1-cos x)/cos x
       1 - cos x asympt 1/2 x^2
+\text{Id} def
