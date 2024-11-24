@@ -15,8 +15,23 @@
 \author{Paolo Bettelini}
 \date{}
 
-% libri
-% Rosati
+% Integral command
+\ExplSyntaxOn
+\DeclareDocumentCommand{\integral}{d[] d[] d[] d[]}
+{
+    \IfNoValueTF { #4 }
+    {
+        \IfNoValueTF { #3 }
+        { \int #1\,d#2 }
+        { \text{Either\,\,2\,\,or\,\,4\,\,arguments\,\,must\,\,be\,\,passed} }
+    }
+    {
+        \int\limits\c_math_subscript_token{#1}^{#2} #3 \,d#4
+        % In Expl Syntax characters as '_' or ':' are used as letters in command names
+        % hence the \c_math_subscript_token{#1} rather than _{#1}
+    }
+}
+\ExplSyntaxOff
 
 \begin{document}
 
@@ -1168,23 +1183,23 @@ questa si può esprimere in termini come combinazione lineare delle derivate par
 
 \subsection{17 ottobre}
 
-\sexercise{Un corpo viene lasciato cadere da una certa altezza
-con velocità iniziale nulla: quanto tempo \(t\) si deve attendere perché
-a parte da quell'istante il corpo percorra uno spazio di \(s= 20m\)
-nel tempo \(\tau = 1s\)}{
-    La funzione di caduta è data da \(s = \frac{1}{2}at^2 + v_0t + s_0\).
-    Abbiamo allora 
-    \begin{align*}
-        20 &= \integral[t][t+1][v_0 + ax][x] \\
-        20 &= \frac{1}{2}a{(t+1)}^2 - \frac{1}{2}at^2 \\
-        40 &= a{(t+1)}^2 - at^2 \\
-        40 &= a(t^2 + 2t + 1) - at^2 \\
-        40 &= at^2 + 2at + a - at^2 \\
-        40 &= 2at + a \\
-        40 - a &= 2at \\
-        t &= \frac{40 - a}{2a}
-    \end{align*}
-}
+%\sexercise{Un corpo viene lasciato cadere da una certa altezza
+%con velocità iniziale nulla: quanto tempo \(t\) si deve attendere perché
+%a parte da quell'istante il corpo percorra uno spazio di \(s= 20m\)
+%nel tempo \(\tau = 1s\)}{
+%    La funzione di caduta è data da \(s = \frac{1}{2}at^2 + v_0t + s_0\).
+%    Abbiamo allora 
+%    \begin{align*}
+%        20 &= \integral[t][t+1][v_0 + ax][x] \\
+%        20 &= \frac{1}{2}a{(t+1)}^2 - \frac{1}{2}at^2 \\
+%        40 &= a{(t+1)}^2 - at^2 \\
+%        40 &= a(t^2 + 2t + 1) - at^2 \\
+%        40 &= at^2 + 2at + a - at^2 \\
+%        40 &= 2at + a \\
+%        40 - a &= 2at \\
+%        t &= \frac{40 - a}{2a}
+%    \end{align*}
+%}
 
 \sexercise{Il moto nel piano \(x\), \(y\) di una particella è definito da
 \[
@@ -1632,15 +1647,15 @@ Suggerimento: provare a risolvere il problema in due modi:
     XXX
 }
 
-\sexercise{Una piattaforma ruota con velocità angolare
-\(\omega\) intorno a un asse centrale verticale.
-All'istante \(t = 0\), una pallina viene lanciata orizzontalmente con velocità \(v_0\)
-dal centro della piattaforma; l'attrito che la pallina incontra è trascurabile,
-cosiché essa si muova rispetto alla terra di moto rettilineo uniforme con velocità \(v_0\).
-Si determini l'accelerazione della pallina, a un generico istante, rispetto a un sistema di riferimento
-solidale alla piattaforma.}{
-    XXX
-}
+%\sexercise{Una piattaforma ruota con velocità angolare
+%\(\omega\) intorno a un asse centrale verticale.
+%All'istante \(t = 0\), una pallina viene lanciata orizzontalmente con velocità \(v_0\)
+%dal centro della piattaforma; l'attrito che la pallina incontra è trascurabile,
+%cosiché essa si muova rispetto alla terra di moto rettilineo uniforme con velocità \(v_0\).
+%Si determini l'accelerazione della pallina, a un generico istante, rispetto a un sistema di riferimento
+%solidale alla piattaforma.}{
+%    XXX
+%}
 
 \sexercise{Sia \(\vec{g_0}\) l'accelerazione di gravità che si misurerebbe in corrispondenza
 di un punto \(P\) della superficie terrestre qualore la Terra non fosse in rotazione;
@@ -1929,58 +1944,40 @@ approssimando la pallina a un punto materiale. Si discuta la soluzione nel caso
     Quindi se \(\omega\) è grande domina la forza centrifuga e la pallina viene sparata fuori.
 }
 
-% Integral command
-\ExplSyntaxOn
-\DeclareDocumentCommand{\integral}{d[] d[] d[] d[]}
-{
-    \IfNoValueTF { #4 }
-    {
-        \IfNoValueTF { #3 }
-        { \int #1\,d#2 }
-        { \text{Either\,\,2\,\,or\,\,4\,\,arguments\,\,must\,\,be\,\,passed} }
-    }
-    {
-        \int\limits\c_math_subscript_token{#1}^{#2} #3 \,d#4
-        % In Expl Syntax characters as '_' or ':' are used as letters in command names
-        % hence the \c_math_subscript_token{#1} rather than _{#1}
-    }
-}
-\ExplSyntaxOff
-
-\sexercise{Si supponga che una goccia di pioggia cadendo attraverso una nuvola accumuli massa ad un rate \(kmv\),
-dove \(k > 0\) è una costante, \(m\) è la massa della goccia e \(v\) la sua velocità.
-Si trovi la velocità della goccia a un generico tempo \(t\)
-supponendo che parta a riposo, trovare inoltre la massa della goccia allo stesso tempo.}{
-    Abbiamo che
-    \[
-        \frac{dm}{dt} = kmv
-    \]
-    e 
-    \begin{align*}
-        m(t)g &= \frac{d}{dt}\left(m(t)v(t)\right) \\
-        &= m(t)\frac{dv(t)}{dt} + v\frac{dm(t)}{dt}
-    \end{align*}
-    Allora troviamo l'equazione differenziale
-    \begin{align*}
-        m(t)g &= m(t) \frac{dv}{dt} + km(t)v^2 \\
-        g &= \frac{dv}{dt} + kv^2
-    \end{align*}
-    che si risolve integrando
-    \begin{align*}
-        \integral[0][v][\frac{1}{g-kv^2}][v]
-        = \integral[0][t][][t]
-    \end{align*}
-    da cui troviamo
-    \[
-        v(t)= \sqrt{\frac{g}{k}} \tanh(\sqrt{kg}t)
-    \]
-    Per trovare la massa
-    \[
-        \integral[m_0][m][\frac{1}{m}][m]
-        = \integral[0][t][\sqrt{kg}\tanh(\sqrt{kg}t)][t]
-        = m_0 \cosh(\sqrt{kg}t)
-    \]
-}
+%\sexercise{Si supponga che una goccia di pioggia cadendo attraverso una nuvola accumuli massa ad un rate \(kmv\),
+%dove \(k > 0\) è una costante, \(m\) è la massa della goccia e \(v\) la sua velocità.
+%Si trovi la velocità della goccia a un generico tempo \(t\)
+%supponendo che parta a riposo, trovare inoltre la massa della goccia allo stesso tempo.}{
+%    Abbiamo che
+%    \[
+%        \frac{dm}{dt} = kmv
+%    \]
+%    e 
+%    \begin{align*}
+%        m(t)g &= \frac{d}{dt}\left(m(t)v(t)\right) \\
+%        &= m(t)\frac{dv(t)}{dt} + v\frac{dm(t)}{dt}
+%    \end{align*}
+%    Allora troviamo l'equazione differenziale
+%    \begin{align*}
+%        m(t)g &= m(t) \frac{dv}{dt} + km(t)v^2 \\
+%        g &= \frac{dv}{dt} + kv^2
+%    \end{align*}
+%    che si risolve integrando
+%    \begin{align*}
+%        \integral[0][v][\frac{1}{g-kv^2}][v]
+%        = \integral[0][t][][t]
+%    \end{align*}
+%    da cui troviamo
+%    \[
+%        v(t)= \sqrt{\frac{g}{k}} \tanh(\sqrt{kg}t)
+%    \]
+%    Per trovare la massa
+%    \[
+%        \integral[m_0][m][\frac{1}{m}][m]
+%        = \integral[0][t][\sqrt{kg}\tanh(\sqrt{kg}t)][t]
+%        = m_0 \cosh(\sqrt{kg}t)
+%    \]
+%}
 
 \sexercise{Un punto materiale di massa \(m\) è appeso tramite una molla di costante
     elastica \(k\) ad un supporto che avanza con accelerazione \(a\).

@@ -13,7 +13,28 @@
 
 \section{Exercises}
 
-\begin{snippetexercise}{mechanics-ex-1}{Orbital Path Length}
+\begin{snippetexercise}{mechanics-ex-free-fall}{Free fall}
+    A body is dropped from a certain height with zero initial velocity: how much time
+    \(\tau\) must be expected for the body to travel a distance of \(s = 20m\) in time from that instant
+    \(\tau = 1s\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{mechanics-ex-free-fall-sol}{Free fall}
+    The falling function is given by \(s = \frac{1}{2}at^2 + v_0t + s_0\).
+    We thus have
+    \begin{align*}
+        20 &= \integral[t][t+\tau][v_0 + ax][x] \\
+        20 &= \frac{1}{2}a{(t+1)}^2 - \frac{1}{2}at^2 \\
+        40 &= a{(t+1)}^2 - at^2 \\
+        40 &= a(t^2 + 2t + 1) - at^2 \\
+        40 &= at^2 + 2at + a - at^2 \\
+        40 &= 2at + a \\
+        40 - a &= 2at \\
+        t &= \frac{40 - a}{2a}
+    \end{align*}
+\end{snippetsolution}
+
+\begin{snippetexercise}{mechanics-ex-orbital-path}{Orbital Path Length}
     A particle moves in the plane along a path described by 
     \[
     \vec{R}(t) = 
@@ -25,7 +46,7 @@
     Show that this is an elliptical orbit, calculate the time required for a complete orbit, and express its length as a definite integral (without solving it).
 \end{snippetexercise}
 
-\begin{snippetsolution}{mechanics-ex-1-sol}{Orbital Path Length}
+\begin{snippetsolution}{mechanics-ex-orbital-path-sol}{Orbital Path Length}
     We can rewrite the trajectory in terms of its components:
     \[
         x(t) = a \cos(\omega t), \quad y(t) = b \sin(\omega t)
@@ -55,5 +76,129 @@
     \(a=b\) (circular trajectory) for which \(\ell = 2\picircle a\).
 \end{snippetsolution}
 
+\begin{snippetexercise}{mechanics-ex-rotating-platform}{Rotating platform}
+    A platform rotates with angular velocity
+    \(\omega\) around a vertical central axis.
+    At the instant \(t = 0\), a ball is launched horizontally with velocity \(v_0\)
+    from the centre of the platform; the friction the ball encounters is negligible,
+    so that it moves with respect to the earth in uniform rectilinear motion with velocity \(v_0\).
+    Determine the acceleration of the ball, at a generic instant, with respect to a reference system
+    integral with the platform.
+\end{snippetexercise}
+
+\begin{snippetsolution}{mechanics-ex-rotating-platform-sol}{Rotating platform}
+    The position is given by
+    \[
+        \vec{R}(t) = \begin{pmatrix}
+            v_0t\cos(\omega t) \\
+            v_0t\sin(\omega t)
+        \end{pmatrix}
+    \]
+    The velocity is given by
+    \[
+        \vec{v}(t) = v_0 \begin{pmatrix}
+            -\omega t \sin(\omega t) + \cos(\omega t) \\
+            \omega t \cos(\omega t) + \sin(\omega t)
+        \end{pmatrix}
+    \]
+    The acceleration is given by
+    \[
+        \vec{a}(t) = v_0 \omega \begin{pmatrix}
+            -\omega t \cos(\omega t) - 2\sin(\omega t) \\
+            -\omega t \sin(\omega t) + 2\cos(\omega t)
+        \end{pmatrix}
+    \]
+    and its module
+    \begin{align*}
+        |\vec{a}(t)| &= v_0 \omega \sqrt{
+            {(-\omega t \cos(\omega t) - 2\sin(\omega t))}^2 + {(-\omega t \sin(\omega t) + 2\cos(\omega t))}^2
+        } \\
+        &= v_0 \omega \sqrt{4 + \omega^2t^2}
+    \end{align*}
+\end{snippetsolution}
+
+\begin{snippetexercise}{mechanics-ex-falling-raindrop}{Falling raindrop}
+    Suppose that a raindrop falling through a cloud accumulates mass at a rate \(kmv\),
+    where \(k > 0\) is a constant, \(m\) is the mass of the droplet and \(v\) its velocity.
+    Find the speed of the drop at a generic time \(t\)
+    assuming it starts at rest, also find the mass of the drop at the same time.
+\end{snippetexercise}
+
+\begin{snippetsolution}{mechanics-ex-falling-raindrop-sol}{Falling raindrop}
+    We have that
+    \[
+        \frac{dm(t)}{dt} = km(t)v(t)
+    \]
+    Since the mass is not constant,
+    \[
+        F = \frac{dQ}{dt} = \frac{dm}{dt}v + \frac{dv}{dt}m = gm
+    \]
+    By substituting we get
+    \begin{align*}
+        gm &= kmv^2 + \frac{dv}{dt} m \\
+        g - kv^2&= \frac{dv}{dt}
+    \end{align*}
+    The equation is separable
+    \begin{align*}
+        \int \frac{dv}{g-kv^2} &= \int dt \\
+        \frac{1}{g} \int \frac{dv}{1 - \frac{k}{g}v^2} &= t + C \\
+    \end{align*}
+    We use the substituting \(\varphi = \frac{\frac{k}{g}}v\) and thus \(d\varphi = \frac{\frac{k}{g}} dv\).
+    \begin{align*}
+        t + C &= \frac{1}{\sqrt{kg}} \int \frac{d\varphi}{1 - \varphi^2} \\
+        t + C &= \frac{1}{\sqrt{kg}} \tanh^{-1}\left(\sqrt{\frac{k}{g}}v\right) \\
+        (t + C) \sqrt{kg} &= \tanh^{-1}\left(\sqrt{\frac{k}{g}}v\right) \\
+        v(t) = \sqrt{\frac{g}{k}} \tanh((t + C)\sqrt{kg})
+    \end{align*}
+    Since \(v(0) = 0\), we have that \(tanh\left(C\sqrt{kg}\right)\) and thus \(C=0\), so
+    \[
+        v(t) = \sqrt{\frac{g}{k}} \tanh(t\sqrt{kg})
+    \]
+    To find the mass, we separate the initial equation
+    \begin{align*}
+        \int \frac{dm}{m} &= \integral[kv(t)][t] \\
+        \ln m &= \integral[k\sqrt{\frac{g}{k}} \tanh(t\sqrt{kg})][t] \\
+        \ln m & \ln(\cosh(t + \sqrt{kg})) + C \\
+        m(t) &= m_0 \cosh(t\sqrt{kg})
+    \end{align*}
+\end{snippetsolution}
+
+\begin{snippetexercise}{mechanics-ex-snowplough}{Snowplough}
+    At a certain time in the morning it starts
+    snowing, and at noon a snowplough leaves to clear the roads. The snow continues
+    falling with constant intensity. It is known that the speed at which the snowplough proceeds is
+    inversely proportional to the height of the snow.
+    In the first two hours of work the snowplough manages to clear 4 km of road. In the following two
+    following two hours, however, only 2 km are cleared. One wants to know at what time it started to
+    it started snowing.
+\end{snippetexercise}
+
+\begin{snippetsolution}{mechanics-ex-snowplough-sol}{Snowplough}
+    Let \(t=0\) be noon. The height of the snow follows
+    \[
+        h \propto t-t_0
+    \]
+    The velocity of the snowplough is given by
+    \[
+        v = \frac{\xi}{t-t_0}
+    \]
+    for some \(\xi\) which we don't know.
+    The space cleared in the first two hours is given by
+    \[
+        s_1 = \integral[0][\tau][\frac{\xi}{t-t_0}][t] = \xi\ln\frac{t_0-\tau}{t_0}
+    \]
+    where \(\tau = 2\text{h}\). In the following two hours we have
+    \[
+        s_2 = \integral[\tau][2\tau][\frac{\xi}{t-t_0}][t] = \xi\ln\frac{t_0-2\tau}{t_0-\tau}
+    \]
+    By putting these together we get 
+    \begin{align*}
+        \frac{\xi\ln\frac{t_0-\tau}{t_0}}{\xi\ln\frac{t_0-2\tau}{t_0-\tau}} &= \frac{s_1}{s_2} \\
+        \ln\frac{t_0-\tau}{t_0} &= 2\ln\frac{t_0-2\tau}{t_0-\tau} \\
+        t_0^2\tau - t_0\tau^2 - \tau^3 &= 0 \\
+        t_0 = \frac{1\pm\sqrt{5}}{2}\tau
+    \end{align*}
+    We consider the negative solution, meaning that it started snowing at \(10:45:50\).
+\end{snippetsolution}
 
 \end{document}
