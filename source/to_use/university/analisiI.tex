@@ -4586,6 +4586,8 @@ e si può ricavare osservando che \(f\) è monotona decrescente se e solo se \(-
     è numerabile, \(D\) è al più numerabile.
 }
 
+\subsection{Compattezza}
+
 Quindi i punti di massimo forte sono al più numerabile,
 mentre quelli deboli non sono necessariamente numerabile.
 
@@ -4779,7 +4781,9 @@ cioè \(f(x) \geq m = f(x_1)\) per tutte le \(x\in [\delta, R]\).
 In particolare, \(m=f(x_1) \leq f(x_0) < M\).
 Se \(x\in [\delta, R], f(x) \geq f(x_1) = m\).
 Se \(x\in (0, \delta) \cup (R, +\infty)\), \(f(x) > M > m = f(x_1)\).
-Quindi, \(m = f(x_1)\) p il min assoluto di \(f\) in \((0, +\infty)\).
+Quindi, \(m = f(x_1)\) è il min assoluto di \(f\) in \((0, +\infty)\).
+
+\subsection{Continuità uniforme}
 
 \sdefinition{Continuità uniforme}{
     Una funzione \(f\) si dice \emph{uniformemente continua} in \(E\)
@@ -4863,6 +4867,128 @@ Se \(L = 1\) si dice espansiva. Se \(L < 1\) si dice contrazione.
     \(M{|x-x'|}^\alpha < \varepsilon\), cioè
     \[
         |x-x'| < {\left(\frac{\varepsilon}{M}\right)}^{1/d} = d
+    \]
+}
+
+\sproposition{Proprietà di funzioni uniformemente continue}{
+    Siano \(f,g\colon I \to \mathbb{R}\) uniformemente continue. Allora
+    \begin{enumerate}
+        \item \(f+g\) è uniformemente continue. Per dimostrarlo basta considerare \(\delta = \min\{\delta_1, \delta_2\}\);
+        \item se \(f\) e \(g\) sono anche entrambe limitate su \(I\), allora \(fg\) è uniformemente continua;
+        \item se \(\frac{1}{f}\) è definitiva è uniformemente continua.
+        \item se \(f\colon E\subseteq \mathbb{R} \to \mathbb{R}\) è uniformemente continue, allora
+            \(\forall E_1 \subseteq E\), \(f\) è uniformemente continua su \(E_1\).
+            % Se è unif continua in E_1 e E_2 non è necessaria unif continua in E_1 union E_2
+    \end{enumerate}
+}
+
+\stheorem{}{
+    Se \(f\colon I \to \mathbb{R}\) è continua su \(I\) e uniformemente continua in \(I\cap(-\infty, c)\)
+    e \(I\cap(c, +\infty)\), allora è uniformemente continua su tutto \(I\).
+}
+
+\sproof{}{
+    Dato \(\varepsilon > 0\) bisogna trovare \(\delta\) tale che \(\forall x_1, x_2 \in I\) se \(|x_2-x_1|<\delta\)
+    allora vale \(|f(x_2) - f(x_1)| < \varepsilon\).
+    Poiché \(f\) è uniformemente continua su \(I\cap(-\infty, c)\)
+    e \(I\cap(c, +\infty)\), esistono \(\delta_1>0\) tale che \(\forall x_1, x_2 \in I\cap(-\infty, c)\)
+    con \(|x_2-x_1|<\delta\) si ha \(|f(x_2) - f(x_1)| < \varepsilon\) e analogamente \(\delta_2\).
+    Poiché \(f\) è continua in \(c\), \(\exists \delta_3\) tale che \(\forall x \in I\) con \(|x-c|<\delta_3\),
+    abbiamo \(|f(x) - f(c)| < \frac{\varepsilon}{2}\).
+    Quindi se \(x_1 < c < x_2\) e \(|x_2 - x_1| < \delta\), allora la distanza \(|c-x_1| \leq |x_2-x_1| < \delta_3\)
+    e \(|x_2 - c| \leq |x_2 - x_1| < \delta_3\).
+    E quindi
+    \[
+        |f(x_2) - f(x_1)| \leq |f(x_2) - f(x)| + f(c) - f(x_1)| < \frac{\varepsilon}{2} + \frac{\varepsilon}{2} < \varepsilon
+    \]
+    Allora posto \(\delta = \min\{\delta_1, \delta_2, \delta_3\}\) si ha la tesi.
+}
+
+\sproposition{}{
+    Siano \(f,g\colon [a, +\infty) \to \mathbb{R}\) dove \(f\) è continua nel dominio
+    e \(g\) è uniformemente continua nel dominio
+    e \(f\sim g\) per \(x\to\infty\).
+    Allora, \(f\) è uniformemente continua nel dominio.
+    In particolare, se \(f\) è continua su \([A, +\infty)\) e
+    \[
+        \exists\, \lim_{x\to\infty} f(x)
+    \]
+    allora \(f\) è uniformemente continua.
+}
+
+Per dimostrarlo, stimiamo la differenza fra \(|f(x_1) - f(x_2)|\)
+per \(x\) molto grande intercalando la funzione \(g\). Troviamo quindi che il \(\delta\) che va
+bene per \(g\) va bene anche per \(f\).
+
+\sproposition{}{
+    Se \(f\colon (a,b) \to \mathbb{R}\) è uniformemente continua nel dominio, allora
+    esistono finiti
+    \[
+        \lim_{x\to a^+}f(x) \qquad \lim_{x\to b^-} f(x)
+    \]
+}
+
+Per dimostriamo mostriamo che \(f(x)\) soddisfa la condizione di Cauchy per \(x\) che tende
+ad \(a^+\) o \(b^-\) (cosa che deriva naturalmente dalla definizione di continuità uniforme).
+
+Se una funzione è continua e invertibile, ciò non implica necessariamente che l'inversa sia continua.
+
+\slemma{Lemma 1}{
+    Sia \(f\colon I \mathbb{R}\) continua e invertibile su \(I\) intervallo.
+    Allora, \(f\) è strettamente monotona.
+}
+
+\sproof{Lemma 1}{
+    Supponiamo per assurdo che non sia strettamente monotona.
+    Esistono quindi \(x_1 < x_2 < x_3\) in \(I\).
+    Quindi (uguaglianze non strette), o \(f(x_1) = f(x_2)\) oppure \(f(x_1) < f(x_2)\) e \(f(x_2) \geq f(x_3)\) o viceversa
+    (o prima cresce e poi decresce o viceversa o rimane uguale).
+    Chiaramente, se vale una di questi casi (tutti i casi), \(f\) non è iniettiva e quindi non invertibile.
+    Se invece valgono le disuguaglianza stretta, allora per il teorema dei valori intermedi,
+    applicato agli intervalli \([x_1; x_2]\) e \([x_2; x_3]\) si trova che
+    \[
+        \forall \max\{f(x_1), f(x_3)\} \leq \xi < f(x_2)
+    \]
+    esistono almeno 2 valori di \(x\) tali che \(f(x) = \xi\). Quindi, la funzione non è iniettiva.
+}
+
+\slemma{Lemma 2}{
+    Sia \(f\colon I \mathbb{R}\) monotona su \(I\) intervallo.
+    Se \(f(I)\) è un intervallo, allora \(f\) è continua.
+
+}
+
+\sproof{Lemma 2}{
+    Assumiamo che \(x_0\in I\) sia un punto di discontinuità di \(f\).
+    Allora, sarebbe una discontinuità di salto, e \(f(I)\) non sarebbe un intervallo.
+}
+
+\stheorem{Continuità dell'inversa}{
+    Sia \(f\colon I \mathbb{R}\) continua e invertibile su \(I\) che è un intervallo.
+    Allora, \(f^{-1}\) è continua.
+}
+
+\sproof{Continuità dell'inversa}{
+    Per il Lemma 1 \(f\) è strettamente monontona. Quindi, \(f^{-1} \colon f(I) \to I\) è strettamente monotona.
+    Per il teorema dei valori intermedi \(f(I)\) è un intervallo e \(f^{-1}\colon f(I)\to I\) è monotona definita su un intervallo
+    e la sua immagine è l'intervallo \(I\). Per il Lemma 2, \(f^{-1}\) è continua.
+}
+
+\pagebreak
+
+\section{Derivate}
+
+\sdefinition{Derivabilità}{
+    Una funzione \(f\colon I \to \mathbb{R}\) è derivabile in \(x_0\) se esistono finito il limite del rapporto incrementale.
+    \[
+        \lim_{x\to x_0} \frac{f(x) - f(x_0)}{x-x_0}
+    \]
+}
+
+\sdefinition{Retta tangente}{
+    La retta tangente è definita come
+    \[
+        y = f(a) + f'(a)(x-a)
     \]
 }
 
