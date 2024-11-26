@@ -1,0 +1,137 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{homomorphisms-from-cyclic-groups}
+\genpage
+
+\section{Homomorphism and generators}
+
+\begin{snippetproposition}{equal-maps-subgroup}{}
+    Let \(\varphi\) and \(\phi\) be \grouphomomorphism
+    from \(G\) to \(H\). The subset \(S\) of \(G\)
+    in which \(\varphi\) and \(\phi\) coincide is a \subgroup of \(G\)
+\end{snippetproposition}
+
+\begin{snippetproof}{equal-maps-subgroup-proof}{equal-maps-subgroup}{}
+    \begin{enumerate}
+        \item \(1_G \in S\): Indeed, \(\varphi(1_G) = 1_H = \psi(1_G) = 1_H\);
+        \item if \(x\) and \(y\) are in \(S\), meaning \(\varphi(x) = \psi(x)\)
+        and \(\varphi(y) = \psi(y)\), then
+        \[
+            \varphi(xy) = \varphi(x) \psi(y) = \psi(xy)    
+        \]
+        meaning \(xy \in S\);
+        \item if \(x\in S\), meaning \(\varphi(x) = \psi(x)\), then
+        \[
+            \varphi(x^{-1}) = {(\varphi(x))}^{-1} = \psi(x^{-1})    
+        \]
+        meaning \(x^{-1} \in S\).
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetcorollary}{equal-maps-on-generated-subgroup}{}
+    Let \(\varphi\) and \(\phi\) be \grouphomomorphism
+    from \(G\) to \(H\) and let \(X\) be a subset
+    of \(G\) in which  \(\varphi\) and \(\phi\) coincide.
+    Then, \(\varphi\) and \(\psi\) coincide in \(\gengrp{X}\).
+    In particular, if \(G = \gengrp{X}\), then \(\varphi = \psi\).
+\end{snippetcorollary}
+
+\plain{If we know how the homomorphisms behave on the generators, we can reconstruct the entire homomorphism.
+This does not mean that we can randomly associate images to the generators, but sometimes we can.}
+
+\section{Homomorphism from cyclic groups}
+
+\begin{snippet}{homomorphisms-from-cyclic-group-expl}
+    Let \(G = \gengrp{g}\) a \cyclicgroup. We want to define a \grouphomomorphism
+    from \(G\) to \(H\).
+    We know that \(\varphi \colon G \to H\)
+    is defined by the information of \(\varphi(g)\).
+    Since the elements of \(G\) are the powers of \(g\),
+    we can say that \(\varphi(g^n) = {(\varphi(g))}^n\).
+    If \(h\in H\) and we define \(\varphi(g) = h\),
+    we cannot just say that \(\varphi(g^n) = h^n\). We need to make sure that if \(|G| =d\),
+    the other period \(|H| = f\) divides \(d\).\\
+    If \(d\) is infinite, this \function is well-defined (\(g^n = g^m \iff m=n\)). \\
+    If \(d\) is finite, this \function might not be (\(g^n = g^m \iff m \equiv n \pmod{d}\))
+    and thus \(m-n\) must be a multiple of \(f\) (the period of \(H\) must diivde the period of \(G\)).
+    If the \function is well-defined, it is also a \grouphomomorphism:
+    two elements of \(G\) have form \(g^n\) and \(g^m\) for some \(n,m\in\integers\)
+    and we have \(h^n = \varphi(g^n)\), \(h^m = \varphi(g^m)\)
+    and \(\varphi(g^n g^m) = \varphi(g^{m+n})\).
+\end{snippet}
+
+\begin{snippettheorem}{infinite-ciclicgroup-homomorphism-theorem}{}
+    Let \(G = \gengrp{g}\) an infinite \cyclicgroup
+    and \(H\) be a \group.
+    Given \(h\in H\), there exist a unique
+    \grouphomomorphism \(\varphi \colon G \to H\)
+    such that \(\varphi(g) = h\).
+\end{snippettheorem}
+
+\begin{snippettheorem}{finite-ciclicgroup-homomorphism-theorem}{}
+    Let \(G = \gengrp{g}\) a finite \cyclicgroup
+    and \(H\) be a \group.
+    Given \(h\in H\), there exist a \grouphomomorphism
+    \(\varphi\colon G \to H\) such that \(\varphi(g) = h\)
+    \ifandonlyif \(|H|\) is finite and it divides \(|G|\).
+    In such case, \(\varphi\) is unique.
+\end{snippettheorem}
+
+\begin{snippetcorollary}{cyclic-group-isomorphism}{Isomorphism between cyclic groups}
+    Two \cyclicgroup[cyclic groups] are isomorphic
+    \ifandonlyif \(|G| = |H|\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{cyclic-group-isomorphism-proof}{cyclic-group-isomorphism}{isomorphism between cyclic groups}
+    \iffproof{
+        If \(G\) and \(H\) are isomorphic, then \(|G| = |H|\).
+    }{
+        If \(|G| = |H|\), let \(G = \gengrp{g}\)
+        and \(H = \gengrp{h}\).
+        If \(G\) and \(H\) are infinite we have a \grouphomomorphism \(\varphi \colon G \to H\)
+        which sends \(g\) to \(h\) and a \grouphomomorphism \(\psi\colon H \to G\)
+        that sends \(h\) to \(g\). Clearly, \(\varphi\) and \(\psi\)
+        are inverses of eachtoher.
+        If \(G\) and \(H\) are finite, we can do the same:
+        there is a \group \(\varphi \colon G \to H\) which sends \(g\) in \(h\)
+        (\(|h|\) divides \(|g|\)) and there exist a \grouphomomorphism
+        \(\psi \colon H \to G\) which sends \(h\) in \(g\). The same goes for this case.
+    }
+\end{snippetproof}
+
+\subsection{Cyclic endomorphisms and automorphisms}
+
+\plain{For a finite cyclic group, we have as many endomorphisms as there are elements of the group.}
+
+% C_n = gruppo ciclico arbitrario di ordine n
+% e \varphi_n come endomorphismo
+
+% La funzione da Z in End(G) come \varphi_n(g) = g^n
+% è un omomorfismo dal monoide moltiplicativo degli interi, nel monoide degli endomorfismi di G.
+% poiché ogni endomorfismo di G è un elevamento a una potenza fissata questo omomorfismo è suriettivo.
+% Se il gruppo dell'ordine è finito, non è un isomorfismo in quanto non è iniettivo
+% Se invece il gruppo è infinito, la funzione è anche iniettiva e quindi automorphism
+% Possiamo notare ciò dicendo che se m \neq n, \varphi_n manda g in g^n e \varphi_m
+% manda g in g_m. Tuttavia, g ha periodo infinito, quindi g^n \neq g^m, cioè \varphi_n \neq \varphi_m.
+
+% Conslusione: Se G è ciclico infinito, End(G) è isomorfo come monoide a
+% (Z, +). E Aut(G) sarà isomorfo al gruppo Inv(Z, *) = {1,-1}, cioè
+% Aut(G) è formato dai due automorfismi: identità e inverso.
+
+% Per studiare il caso infinito End(G) serve un po' di lavoro.
+% G = \gengrp{g} con |g| = d, occorre stabilire quando \varphi_n = \varphi_m
+% ciò avviene se e solo se g^n = g^m, quindi m \equiv n \pmod{d}
+% Abbiamo (verifiche facili) un isomorfismo fra (\integers / d, *) e End(G).
+% quindi {[m]}_d \to \varphi_m.
+% Inoltre, Aut(G) è isomorfo al gruppo degli invertibili Inv(Z/d. *),
+% che contiene \eulertotient(d) = |Aut(G)|.
+
+\end{document}
