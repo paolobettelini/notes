@@ -1,0 +1,425 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{group-actions}
+\genpage
+
+\section{Group actions}
+
+\begin{snippetdefinition}{right-group-action-definition}{(Right) group action}
+    Let \(\Omega\) be a non-empty \set and let \((G, \circ)\) be a \group.
+    A \emph{right action} of \(G\) on \(\Omega\) is a \function
+    \[
+        \Omega \times G \fromto \Omega
+    \]
+    such that:
+    \begin{enumerate}
+        \item \(\forall x\in \Omega, x1_G = x\);
+        \item \(\forall x\in \Omega, \forall h \in G, (xg)h = x(gh)\).
+    \end{enumerate}
+    \emph{Syntax:} \(xg\) denoted the image of the pair \((x, g)\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{left-group-action-definition}{(Left) group action}
+    Let \(\Omega\) be a non-empty \set and let \((G, \circ)\) be a \group.
+    A \emph{left action} of \(G\) on \(\Omega\) is a \function
+    \[
+        G \times \Omega \fromto \Omega
+    \]
+    such that:
+    \begin{enumerate}
+        \item \(\forall x\in \Omega, 1_Gx = x\);
+        \item \(\forall x\in \Omega, \forall h \in G, g(hx) = (gh)x\).
+    \end{enumerate}
+    \emph{Syntax:} \(gx\) denoted the image of the pair \((g, x)\).
+\end{snippetdefinition}
+
+\plain{Translations, isometries, rotations with fixed center are all examples of group actions on a plane.}
+\plain{The action that sends the tuple to the first element of the tuple, discarding the other, is a right action.}
+
+\begin{snippet}{group-action-restrictions}
+    \textbf{Subgroup restriction:} let \(G\) be a \group with an action on a \set \(\Omega\)
+    and let \(H \subgroupleq G\). Then,
+    an action of \(H\) on \(\Omega\) is naturally induced. \\
+    \textbf{Subset restriction:} let \(G\) be a \group with an action on a \set \(\Omega\)
+    and let \(\Theta \subseteq \Omega\). Then,
+    it is not guaranteed that an action of \(G\) on \(\Theta\) can be induced.
+    If the action is closed, then an action is induced.
+\end{snippet}
+
+\begin{snippetproposition}{group-action-properties-1}{Group action properties}
+    Let \(G\) be a \group with an action on a \set \(\Omega\)
+    and let \(g\in G\). Consider the \function \(\varphi_G\)
+    from \(\Omega\) to itself which sends \(x\) to \(xg\).
+    Then, \(\varphi_g\) is \bijective and
+    \({(\varphi_g)}^{-1} = \varphi_{g^{-1}}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{group-action-properties-1-proof}{group-action-properties-1}{Group action properties}
+    We wanto to show that \(\varphi_g\) and \(\varphi_{g^{-1}}\) are inverses:
+    \begin{align*}
+        x(\varphi_g \varphi_{g^{-1}}) &= (x\varphi_g)\varphi_{g^{-1}} = (xg)g^{-1} \\
+        &= x(gg^{-1}) = x1_G = x = x\text{Id}
+    \end{align*}
+    The other direction is analogous.
+\end{snippetproof}
+
+\section{Examples}
+
+\begin{snippetdefinition}{regular-right-group-action}{Regular right action}
+    Let \(\Omega\) be a non-empty \set and let \((G, \circ)\) be a \group.
+    The \function
+    \[
+        (x, g) \fromto x \circ g
+    \]
+    is a right group action on the \group itself called \emph{regular right action}.
+\end{snippetdefinition}
+
+\plain{This is an automorphism if and only if the fixed element is the identity.}
+
+\begin{snippetdefinition}{conjugate-action-definition}{Conjugate action}
+    Let \(G\) be a \group.
+    \[
+        x^g \triangleq (x, g) \fromto g^{-1}xg
+    \]
+\end{snippetdefinition}
+
+\plain{This action is always an automorphism.} %TODOURGENT proofs, 28 nov
+
+\plain{In such case, we have a function thar associaites an element of the group
+to an automorphism. Such function is a group homomorphism. Thus, the image of this
+homomorphism forms a subgroup of the automorphisms of the group.}
+
+\begin{snippetproposition}{conjugate-group-properties}{Properties of conjugate group}
+    Let \(G\) be a \group.
+    \begin{enumerate}
+        \item \(x^{1_G} = x\);
+        \item \({(x^g)}^h = (h^{-1}g^{-1})x(gh)\).
+    \end{enumerate}
+\end{snippetproposition}
+
+\section{Action orbits}
+
+\begin{snippetproposition}{bin-relation-group-action-is-equiv}{}
+    Let \(G\) be a \group with an action on a \set \(\Omega\).
+    Let \(\sim_G\) be a \binrelation in \(\Omega\) such that
+    \(x \sim_G y\) \ifandonlyif there exist \(g\in G\)
+    such that \(x=yg\). Then, \(\sim_G\) is an \equivrelation.
+\end{snippetproposition}
+
+\begin{snippetproof}{bin-relation-group-action-is-equiv-proof}{bin-relation-group-action-is-equiv}{}
+    The \binrelation is an \equivrelation:
+    \begin{enumerate}
+        \item \emph{reflexive:} \(x \sim_G x\), indeed \(x1_G = x\);
+        \item \emph{symmetric:} if \(x \sim_G y\), meaning there exist \(g\in G\)
+        such that \(x=yg\), then \(xg^{-1} = (yg)g^{-1} = y(gg^{-1}) = y\).
+        Thus, \(y \sim_G x\).
+        \item \emph{transitivity:} if \(x \sim_G y\) and \(y\sim_G z\),
+        there exist \(h,g \in G\) such that \(x=yg\) and \(y=zh\).
+        Thus,
+        \[
+            x = yg = (zh)g = z(hg)
+        \]
+        and thus \(x \sim_G z\).
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetdefinition}{group-action-orbit-definition}{Orbit}
+    Let \(G\) be a \group with an action on a \set \(\Omega\).
+    The \equivclass[equivalence classes] of \(\sim_G\) defined
+    as \(y \sim_G y\) \ifandonlyif there exist \(g\in G\)
+    such that \(x=yg\), are called \emph{orbits}. \\
+    \emph{Syntax:} let \(y\in G\). The \equivclass of \(y\)
+    is formed by the elements of the form \(yg\) for \(g\in G\)
+    and denoted \(yG\).
+\end{snippetdefinition}
+
+\begin{snippet}{group-action-orbit-expl}
+    Given a fixed \(g\in G\), the elements of form \(yg\)
+    are all the elements of \(\Omega\) as the function \(y \to yg\)
+    is \bijective. \\
+    Given a fixed \(y\in \Omega\), the elements of form \(yg\)
+    are the ones of an orbit (could be all the elements of \(\Omega\) if there is only an orbit).
+\end{snippet}
+
+\subsection{Orbits of actions on groupselves}
+
+\begin{snippetproposition}{regular-right-action-orbit}{Orbits of regualr right action}
+    Let \(G\) be a \group and consider the regular action on itself.
+    Given \(x\in G\), its orbit is formed by the elements of \(xg\) for \(g\in G\).
+    By the cancellation laws, there exist only one orbit.
+\end{snippetproposition}
+
+\plain{Thus, every element cn be send into any other element.}
+
+\begin{snippetproposition}{conjugate-action-orbit}{Orbits of conjugate action}
+    Let \(G\) be a \group and consider the conjugate action on itself.
+    There is always an orbit containing only \(1_G\).
+    If the \group is not trivial, there are always more orbits,
+    which are called \emph{conjugate classes} \(x^G\).
+\end{snippetproposition}
+
+\begin{snippetproposition}{group-center-conjugate-class}{Group center conjugate class}
+    Let \(G\) be a \group.
+    \(X \in \groupcenter(G)\) \ifandonlyif its conjugate class
+    contains only \(X\).
+\end{snippetproposition}
+
+\section{Stabilizer}
+
+\begin{snippetdefinition}{stabilizer-definition}{Stabilizer}
+    Let \(G\) be a \group with an action on \(\Omega\)
+    and let \(x\in\Omega\).
+    The \emph{stabilizer} of \(x\) is the subset
+    \[
+        \text{Stab}_G(x) \triangleq \{
+            g\in G \suchthat xg = x    
+        \}
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{stabilizer-is-subgroup}{}
+    Let \(G\) be a \group. Then,
+    \[
+        \text{Stab}_G(x) \subgroupleq G
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{stabilizer-is-subgroup-proof}{stabilizer-is-subgroup}{}
+    \begin{enumerate}
+        \item \(1_G \in \text{Stab}_G(x)\) as \(x1_G = x\);
+        \item if \(g \in \text{Stab}_G(x)\) and \(h \in \text{Stab}_G(x)\),
+        meaning \(xg=x\) ahd \(xh=x\), then \(x(gh) = (xg)h = xh = x\),
+        meaning \(gh \in \text{Stab}_G(x)\);
+        \item if \(g\in\text{Stab}_G(x)\), meaning \(xg = x\), then
+        \(xgg^{-1} = xg^{-1}\) and \(xg^{-1} = x\) meaning \(g^{-1} \in \text{Stab}_G(x)\).
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetproposition}{stabilizer-right-lateral-equivalence}{}
+    Let \(G\) be a \group with an action on \(\Omega\)
+    and let \(x\in\Omega\). The following are equivalent
+    \begin{enumerate}
+        \item \(xg = xh\);
+        \item \(\text{Stab}_G(x)g = \text{Stab}_G(x)h\) meaning \(h\) and \(g\)
+        are in the same right lateral of the stabilizer.
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{stabilizer-right-lateral-equivalence-proof}{stabilizer-right-lateral-equivalence}{}
+    \iffproof{
+        From \(xg=xh\) we get \(xgh^{-1} = x\), meaning \(gh^{-1} \in \text{Stab}_G(x)\)
+        and thus \[
+            g = {(gh^{-1})}h \in \text{Stab}_G(x)h
+            \implies \text{Stab}_G(x)g = \text{Stab}_G(x)h
+        \]
+    }{
+        Let \(g = sh\) with \(s\in\text{Stable}_G(x)\).
+        Then, \(xg = x(sh) = (xs)h = xh\).
+    }
+\end{snippetproof}
+
+\begin{snippetcorollary}{stabilizer-index-size}{}
+    Let \(G\) be a \group with an action on \(\Omega\)
+    and let \(x\in\Omega\). Then,
+    \[
+        |G\,:\,\text{Stab}_G(x)| = |xG|
+    \]
+\end{snippetcorollary}
+
+\plain{The bigger the index, the bigger the orbit.}
+
+\begin{snippetproposition}{stabilizer-cardinality-finite-group}{}
+    Let \(G\) be a \group with an action on \(\Omega\)
+    where \(G\) is finite. Then,
+    \(|xG|\) divides \(|G|\).
+\end{snippetproposition}
+
+\begin{snippet}{stabilizer-of-conjugate-action}
+    Consider the conjugate action on a \group \(G\).
+    We have that
+    \[
+        \text{Stab}_G(x) = \{g \in G \suchthat g^{-1} x g = x\}
+    \]
+    Note that \(g^{-1} x g = x\) \ifandonlyif \(xg = gx\).
+    Thus,
+    \[
+        \text{Stab}_G(x) = \groupcentralizer_G(x)
+    \]
+    and
+    \[
+        |x^G| = |G \,:\, \groupcentralizer_G(x)|
+    \]
+    In particular, \(|x^G| = 1\) \ifandonlyif \(\groupcentralizer_G(x) = G\),
+    meaning \(x \in \groupcenter(G)\).
+\end{snippet}
+
+\plain{The more elements commute, the more classes we have, and the closer the group is to being abelian.}
+
+\begin{snippettheorem}{conjugate-classes-equations-theorem}{}
+    Let \(G\) be a finite group. We have
+    \[
+        |G| = |\groupcenter(G)| + \sum_i C_i
+    \]
+    where \(C_i\) are divisors of \(|G|\), greater than \(1\),
+    and are precisely the orders of the conjugate classes
+    of non-central elements.
+\end{snippettheorem}
+
+\begin{snippetproof}{conjugate-classes-equations-theorem-proof}{conjugate-classes-equations-theorem}{}
+    Note that \(|G|\) is the sum of the orders
+    of the conjugate classes, as they form a partition since they are \equivclass[equivalent classes].
+    These cardinalities divide \(|G|\).
+    The classes with only one element are the ones in the center,
+    and thus the amount of indexes for which \(C_i = 1\) is \( |\groupcenter(G)|\).
+\end{snippetproof}
+
+\begin{snippetdefinition}{p-group-definition}{P-groups}
+    Let \(G\) be a finite \group whose order is a power of a \primen.
+    Then, \(G\) is a \emph{p-group}.
+\end{snippetdefinition}
+
+\begin{snippettheorem}{center-of-p-group-not-trivial-theorem}{Center of p-group is not trivial}
+    Let \(G\) be a non-trivial p-group. Then,
+    \(\groupcenter(G)\) is not trivial.
+\end{snippettheorem}
+
+\begin{snippetproof}{center-of-p-group-not-trivial-theorem-proof}{center-of-p-group-not-trivial-theorem}{Center of p-group is not trivial}
+    We have the equation
+    \[
+        |G| = |\groupcenter(G)| + \sum_i C_i
+    \]
+    Now, \(|G| = p^n\) for some \(n \geq 1\).
+    In particlar, \(|G|\) is a multiple of \(p\).
+    Furthermore, \(C_i\) is a divisor of \(p^n\) greater than \(1\)
+    and thus \(C_i\) are all multiples of \(p\).
+    Thus,
+    \[
+        |\groupcenter(G)| = |G| - \sum_i C_i
+    \]
+    is a multiple of \(p\) and \(|\groupcenter(G)| \neq 0\) impliest that \(|\groupcenter(G)| \geq p\).
+    In particular, \(|\groupcenter(G)| \neq 1\). 
+\end{snippetproof}
+
+\section{Conjugate subgroup}
+
+\begin{snippetdefinition}{conjugate-subgroup-definition}{The conjugate subgroup}
+    Let \(H \subgroupleq G\) be \group[groups]. Then, the \textit{conjugate subgroup} is defined as
+    \[
+        H^g = \{
+            g^{-1}hg \suchthat h \in H
+        \}
+    \]
+\end{snippetdefinition}
+
+\begin{snippettheorem}{conjugate-subgroup-is-subgroup}{}
+    Let \(H \subgroupleq G\), then \(g^{-1}Hg \subgroupleq G\).
+\end{snippettheorem}
+
+\begin{snippetproof}{conjugate-subgroup-is-subgroup-proof}{conjugate-subgroup-is-subgroup}{}
+    Suppose \(a,b \in g^{-1}Hg\).
+    We want to show \(ab^{-1} \in g^{-1}Hg\).\\
+    Note that \(a = g^{-1}h_1g\) and \(b = g^{-1}h_2g\)
+    for some \(h_1, h_2 \in H\). \\
+    This means that \(ab^{-1}=a{(g^{-1}h_2g)}^{-1} = a(g^{-1}h_2^{-1}g)
+    =g^{-1}h_1gg^{-1}h_2^{-1}g = g^{-1} (h_1h_2) g \in g^{-1}Hg \)
+    because \(h_1h_2 \in H\).
+\end{snippetproof}
+
+\begin{snippetdefinition}{normal-subgroup-definition}{Normal subgroup}
+    Let \(H \subgroupleq G\) be \group[groups]. Then, \(H\)
+    is said to be \emph{normal}
+    \[
+        H \unlhd G
+    \]
+    if \(h^g \in H\) per all \(h\in H\) and \(g\in G\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{subgroups-of-center-are-normal}{}
+    If \(H \subgroupleq \groupcenter(G)\), then \(H \unlhd G\).
+    In particular, \(\groupcenter(G) \unlhd G\).
+\end{snippetproposition}
+
+\begin{snippetcorollary}{abelian-subgroups-are-normal}{}
+    If \(G\) is an \abeliangroup, every \subgroup of \(G\)
+    is normal in \(G\)
+\end{snippetcorollary}
+
+\plain{We are now going to characterize normal groups}
+
+\begin{snippettheorem}{normal-subgroup-equivalences-theorem}{}
+    Let \(H \subgroupleq G\) be \group[groups].
+    The following are equivalent:
+    \begin{enumerate}
+        \item \(H \unlhd G\);
+        \item \(H^g \subgroupleq H\) for all \(g\in G\);
+        \item \(H^g = H\) for all \(g\in G\);
+        \item \(Hg \subseteq gH\) for all \(g\in G\);
+        \item \(Hg = hG\) for all \(g\in G\).
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{normal-subgroup-equivalences-theorem-proof}{normal-subgroup-equivalences-theorem}{}
+    \begin{itemize}
+        \item \((1) \implies (2)\): trivial;
+        \item \((3) \implies (2)\): trivial;
+        \item \((2) \implies (3)\): we need to show that \(H \subgroupleq H^g\)
+        per every \(g\in G\). We know that \(H^g \subgroupleq H\) per every \(g \in G\).
+        In particular, \(H^{g{-1}} \subgroupleq H\) for every \(g \in G\).
+        But then
+        \[
+            {\left(H^{g^{-1}}\right)}^g \subgroupleq H^g
+        \]
+        for every \(g\in G\). However, clearly \({\left(H^{g^{-1}}\right)}^g = H\),
+        from which \(H \subgroupleq H^g\) for every \(g\in G\);
+        \item \((2) \implies (4)\): we know that \(H^g \subgroupleq H\) for every \(g\in G\),
+        meaning \(g^{-1}Hg \subgroupleq H\), from which \(gg^{-1} H g \subseteq gH\),
+        meaning \(Hg \subseteq gH\) for every \(g\in G\).
+        \item \((4) \implies (5)\): we know that \(Hg\ subseteq gH\) for every \(g\in G\).
+        We want to show that \(gH \subseteq Hg\) for every \(g\in G\).
+        We need to show that given \(g\in G\) and \(h\in H\),
+        we have \(gh \in Hg\), meaning \(gh = h'g\) for some \(h' \in H\).
+        Now \begin{align*}
+            gh = {({(gh)}^{-1})}^{-1} = {(h^{-1} g^{-1})}^{-1}
+        \end{align*}
+        However, \(h^{-1} g^{-1}\) and \(Hg^{-1} \subseteq g^{-1} H\),
+        meaning \(h^{-1}g^{-1} = g^{-1} h''\) for some \(h'' \in H\).
+        Thus, \[gh = {(h^{-1}g^{-1})}^{-1} = {(g^{-1}h'')}^{-1} = {(h'')}^{-1} g \in Hg\]
+        \item \((4) \implies (2)\): if \(Hg \subseteq gH\) we have \(g^{-1}hg \in g^{-1} g H = H\),
+        meaning \(H^g \subgroupleq H\) for very \(g \in G\).
+    \end{itemize}
+\end{snippetproof}
+
+\begin{snippetcorollary}{kernel-group-homomorphism-normal-subgroup}{}
+    Let \(\varphi \colon G \to H\) be a \grouphomomorphism.
+    Then,
+    \[
+        \grpker_\varphi \unlhd G
+    \]
+\end{snippetcorollary}
+
+\plain{Indeed, we proved that the right and left laterals of the kernel coincide.}
+
+% Esercizio: mostrare che il nucleo di phi è normale in G senza usare i laterali, ma solo al def. di normalità
+
+% i sottogruppi normali sono tutti e solo i sottogruppi di omomorfismi
+
+\begin{snippetcorollary}{index-two-implies-normal-subgroups}{}
+    Let \(H \subgroupleq G\) and \(|G \,:\, H| = 2\).
+    Then, \(H \unlhd G\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{index-two-implies-normal-subgroups-proof}{index-two-implies-normal-subgroups}{}
+    \(H\) itself is one of the two right laterals of \(G\).
+    The other right lateral is \(G \difference H\).
+    The same goes for the left laterals.
+\end{snippetproof}
+
+\end{document}

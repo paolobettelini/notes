@@ -14,3 +14,6 @@
 - tutti i limiti notevoli e.g. (1-cos x)/cos x
       1 - cos x asympt 1/2 x^2
 \text{Id} def
+- 1_G identity element of s group/monoid and such
+- \text{Stab}
+- \text{Id}

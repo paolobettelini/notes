@@ -5434,20 +5434,235 @@ Inoltre, la forza implica la debolezza.
     e quindi \(f'(x_0) = 0\).
 }
 
-\snote{}{
-    La funzione che porta un naturale nella sua fattorizzazione è
-    \[
-        f\colon \mathbb{N} \to \mathcal{P}(\mathbb{P} \times \mathbb{N}^*)
+\sdefinition{Punto critico o stazionario}{
+    Sia \(f\colon I \subseteq \mathbb{R} \to \mathbb{R}\) e \(x_0 \in I\).
+    Allora \(x_0\) è un \emph{punto critico o stazionario}
+    se \(f'(x_0) = 0\).
+}
+
+\scorollary{}{
+    Sia \(f\colon I \subseteq \mathbb{R} \to \mathbb{R}\).
+    Allora, gli eventuali punti estremanti di \(f\) in \(I\)
+    vanno ricercati tra:
+    \begin{itemize}
+        \item i punti interni stazionari;
+        \item i punti interni dove \(f\) non è derivabile (cioè è punti singolari);
+        \item gli estremi di \(I\) che appartengono a \(I\).
+    \end{itemize}
+}
+
+\sexercise{Tra tutti i contenitori cilindrici di volume fissato \(V\),
+trovare quello che ha superficie minima.}{
+    Abbiamo che \[
+        V = r^2 \pi h
     \]
-    dove \(\mathbb{P}\) è l'insieme dei primi, definita da
+    e
     \[
-        f(n) = \bigcup_{i\in I} \{(p_i, \alpha_i)\}
+        S = 2 r^2 \pi h + 2r\pi h
     \]
+    Vogliamo minimizzare \(S\) con \(V\) costante.
+    Troviamo \(h = \frac{V}{\pi r^2}\), e allora
+    \[
+        \frac{S}{2} = \pi r^2 + \frac{V}{r}
+    \]
+    I vincoli sono \(r>0\). Minimizziamo allora \(f(r) = \frac{S}{2}\).
+    La funzione è derivabile e quindi continua in \((0, +\infty)\).
+    Notiamo che \(f(r) \to \infty\) per \(x \to 0^+\) e \(x\to\infty\).
+    Per estensione del teorema di Weierstrass al caso di funzioni definite
+    su intervalli aperti che tendono ad infinito agli estremi, esiste un minimo assoluto in tale intervallo.
+    Poiché \(f\) è derivabile in \((0, +\infty)\), tale minimo è assunto in un punto stazionario,
+    per il teorema di Fermat. Abbiamo
+    \[
+        f'(r) = 2\pi r - \frac{V}{r^2} = \frac{1}{r^2}(2\pi r^3 - V)
+    \]
+    Risolviamo quindi \(f'(r) = 0\) e quindi
+    \[
+        r = {\left(\frac{V}{2\pi}\right)}^{1/2}
+    \]
+    Vi è un unico punto stazionario nell'intervallo, e quindi questo è il minimo assoluto.
+}
+
+\stheorem{Teorema di Rolle}{
+    Sia \(f\colon [a;b] \to \mathbb{R}\) e supponiamo che \(f\)
+    sia:
+    \begin{enumerate}
+        \item continua in \([a,b)\);
+        \item derivabile in \((a,b)\);
+        \item \(f(a) = f(b)\).
+    \end{enumerate}
+    Allora, esiste almeno un \(c \in (a;b)\) tale che \(f'(c) = 0\).
+}
+
+\sproof{Teorema di Rolle}{
+    Poiché \(f\) è continua in \([a;b]\) chiuso e limitato, per Weierstrass ammette
+    minimo \(m\) e massimo \(M\) assoluti in \([a,b]\).
+    Per definizione, \(\forall x\in [a,b], m \leq f(x) \leq M\)
+    Consideriamo due casi:
+    \begin{itemize}
+        \item \(m=M\), allora \(f\) è costante e \(f'(c) = 0\) per ogni \(c\) in \([a,b]\);
+        \item \(m<M\), allora se \(x_m\) e \(X_M\) sono i punti dove \(f\)
+        assume minimo e massimo rispettivamente, cioè \(m=f(x_m)\) e \(M=f(x_M)\)
+        poiché \(f(a) = f(b)\) e \(m<M\) almeno uno dei due punti
+        deve essere interno. Tale punto è estremamente interno dove \(f\) è derivabile.
+        Quindi per Fermat, \(f'(c) = 0\).
+    \end{itemize}
+}
+
+Le ipotesi di Rolle sono strettamente necessarie. Se manca la derivabilità
+il controesempio è \(|x|\). Se manca la continuità l'esempio è
+\[
+    \begin{cases}
+        x & 0 \leq x < 1 \\
+        0 & x = 1
+    \end{cases}
+\]
+
+\stheorem{Teorema di Lagrange}{
+    Sia \(f \colon [a,b] \to \mathbb{R}\) dove
+    \begin{enumerate}
+        \item continua in \([a,b)\);
+        \item derivabile in \((a,b)\);
+    \end{enumerate}
+    Allora, esite \(c\in(a,b)\) tale che
+    \[
+        \frac{f(b) - f(a)}{b-a} = f'(c)
+    \]
+}
+
+La retta tangente esiste sempre in quanto la funzione è derivabile.
+
+\sproof{Teorema di Lagrange}{
+    Vogliamo applicare il teorema di Rolle, ma la condizione che \(f(a)=f(b)\).
+    Allora, sottraiamo ad \(f\) la della corda
+    \[
+        \varphi(x) = f(x) - \left[
+            f(a) + \frac{f(b) - f(a)}{b-a}(x-a)
+        \right]
+    \]
+    che è una funzione affine.
+    Tale funzione è continua in \([a,b)\), in quanto viene mantenuta la derivabilità,
+    è quindi anche derivabile, e \(\varphi(a) = \varphi(b) = 0\).
+    Allora, per il teorema di Rolle, esiste \(c\in (a,b)\)
     tale che
     \[
-        n=\prod_{i\in I} p_i^{\alpha_i}, \quad i \neq j \implies p_i \neq p_j
+        \varphi(c) = f'(c) - \frac{f(b) - f(a)}{b-a} = 0
     \]
-    Per il teorema fondamentale dell'aritmentica, \(f\) è biettiva.
+    da cui \(f'(c) = \frac{f(b) - f(a)}{b-a}\)
+}
+
+Notiamo che Rolle è un casino particle di Lagrange. Infatti, le due sono equivalenti,
+e le condizioni sono strettamente necessarie.
+
+\stheorem{Teorema di Cauchy dei valori intermedi}{
+    Siano \(f,g\colon [a,b] \to \mathbb{R}\) dove
+    \begin{enumerate}
+        \item \(f,g\) siano continue in \([a,b]\);
+        \item \(f,g\) siano derivabili in \([a,b]\).
+    \end{enumerate}
+    Allora, esiste \(c \in (a,b)\) tale che
+    \[
+        f'(c) (g(b)-g(a)) = g'(c) (f(b) - f(a))
+    \]
+    In particolare, se \(\forall x \in (a,b), g'(x) \neq 0\) cosicché \(g(a) = g(b)\)
+    per Rolle, allora dividendo si ottiene
+    \[
+        \frac{f'(c)}{g'(c)} = \frac{f(b) - f(a)}{g(b) - g(a)}
+    \]
+}
+
+Se \(g(x) = x\), allora l'espressione dats diventa
+\[
+    f'(c)(b-a) = f(b) - f(a)
+\]
+e quindi Lagrange è un caso particolare di Cauchy.
+
+\sproof{Teorema di Cauchy dei valori intermedi}{
+    Consideriamo la funzione ausiliaria
+    \[
+        \varphi(x) = f(x) [g(b) - g(a)] - g(x)[f(b)-f(a)]
+    \]
+    Allora \(\varphi\) è continua in \([a,b]\), derivabile
+    in \((a,b)\) come combinazione lienare di funzioni con queste proprietà-
+    Inoltre,
+    \(\varphi(a) = \varphi(b)\). Quindi, per il teorema di Rolle,
+    esiste \(c \in (a,b)\) tale che
+    \[
+        \varphi'(c) = f'(c)[g(b) - g(a)] - g'(c)[f(b) - f(a)] = 0
+    \]
+    da cui la tesi.
+}
+
+Come funzione ausiliaria si sarebbe potuta scegliere, più in generale,
+una combinazione lineare di \(f\) e \(g\) tale che \(\varphi(a) = \varphi(b)\)
+
+In sintesi abbiamo che siccome il teorema di Cauchy implica quello di Rolle,
+allora i 3 teoremi sono tutti equivalenti.
+
+\subsection{Conseguenze del teorema di Lagrange}
+
+\stheorem{}{
+    Sia \(f\colon I \to \mathbb{R}\) con \(I\) intervallo e derivabile nell'interno \(\overset{\circ}{I}\).
+    Allora:
+    \begin{enumerate}
+        \item \(f\) è costante su \(I\) se e solo se \(\forall x\in \overset{\circ}{I}, f'(x) = 0\);
+        \item \(f\) è monotona crescente se e solo se \(f'(x) \geq 0\), e analogamente decrescente,
+        \item Se \(\forall x \in \overset{\circ}{I}, f'(x) > 0\), allora \(f\)
+        è strettamente crescente in \(I\). Nota che il fatto che \(f\) sia strettamente crescente in \(\overset{\circ}{I}\)
+        non implica che \(f'(x)>0\) in \( \overset{\circ}{I}\).
+        Per esempio, \(f(x) x^3\) si annulla in un punto solo. 
+        \item Posto \(Z = \{x \in \overset{\circ}{I} \,|\, f'(x) = 0\}\), allora \(f\)
+        è strettamente crescente in \(I\) se e solo se:
+        \begin{enumerate}
+            \item \(\forall x \in \overset{\circ}{I}, f'(x) \geq 0\);
+            \item \(Z\) non ha punti interni (non contiene intervalli).
+        \end{enumerate}
+    \end{enumerate}
+}
+
+\sproof{}{
+    Poiché \(f\) è derivabile in \(\overset{\circ}{I}\) e continua in \(I\),
+    \(\forall a < b \in I\), \(f\) è continua in \([a,b] \subseteq I\)
+    e \(f\) è derivabile in \((a,b) \in \overset{\circ}{I}\).
+    Per Lagrange, risulta quindi che esiste \(c \in (a,b)\) tale che
+    \[
+        \frac{f(b) - f(a)}{b-a} = f'(c)
+    \]
+    \begin{enumerate}
+        \item è chiaro che se \(f\) è costante in \(I\), \(\forall x \in I, f'(x) = 0\)
+        in particolare \(\forall x \in \overset{\circ}{I}\).
+        Viceversa, supponiamo che \(\forall x \in \overset{\circ}{I}, f'(x) = 0\).
+        Per quanto detto sopra \(\forall a<b \in I, \exists c\) tale che
+        \[
+            \frac{f(b) - f(a)}{b-a} = f'(c) = 0
+        \]
+        cioè \(\forall a<b \in I\) risulta \(f(a) = f(b)\)
+        e \(f\) è quindi costante.
+        \item supponiamo che \(f\) sia monotona crescente in \(I\) e sia \(x_0\)
+        interno ad \(I\). Allora, \(\forall x > x_0\), \(x\in I\), risulta
+        che \[
+            \frac{f(x) - f(x_0)}{x-x_0} \geq 0
+        \]
+        da cui facendo tendere \(x\) a \(x_0^+\) e usando la monotonia del limite, si deduce che
+        \[
+            \lim_{x\to x_0^+} \frac{f(x) - f(x_0)}{x-x_0} = D_+f(x_0) = f'(x_0)
+        \]
+        in quanto la funzione è derivabile. Viceversa, se \(\forall x, f'(x) \geq 0\)
+        allora \(\forall a<b \in I\) dalla conclusione di Lagrange segue che esiste \(c\in (a,b)\)
+        tale che \[
+            \frac{f(b) - f(a)}{b-a} = f'(c) \geq 0
+        \]
+        da cui \(f(b) \geq f(a)\), e quindi \(f\) è monotona crescente.
+        \item Se \(\forall x \in \overset{\circ}{I}, f'(x) > 0\) dal ragionamento fatto nel precedente punti,
+        deduciamo che \(\forall a<b \in I, f(a) < f(b)\) e quindi \(f\) è strettamente crescente.
+        \item Supponiamo che \(f\) sia strettamente crescente, per il secondo punto abbiamo
+        che è \(\forall \in \overset{\circ}{I}, f'(x) \geq 0\).
+        Se \(Z\) contenesse un intervallo \((a,b)\), allora per il primo punto \(f\) sarebbe costante
+        in \((a,b)\), equindi non monotona crescente. % lightning
+        Viceversa, \(f\) è monotona crescente, e \(Z\) non contiene intervalli.
+        Supponiamo che \(f\) non sia strettamente crescente, esistono \(a<b \in I\)
+        tale che \(f(a) \geq f(b)\) ma poiché \(f\) è monotona crescente, \(f(a) = f(b)\),
+        e quindi in tale intervallo è costante. Quindi, \((a,b) \in Z\), contro l'ipotesi. % lightning
+    \end{enumerate}
 }
 
 \end{document}
