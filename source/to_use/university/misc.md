@@ -17,3 +17,6 @@
 - 1_G identity element of s group/monoid and such
 - \text{Stab}
 - \text{Id}
+- normal subgroup command
+
+- 
