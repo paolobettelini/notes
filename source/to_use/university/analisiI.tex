@@ -5911,4 +5911,212 @@ se esiste un intorno \(I_1\) di \(x_0\) tale che le derivate di ordine
     \]
 }
 
+Il prossimo teorema estende le proprietà delle funzioni differenziabili,
+permettendo di approssimarle con polinomio di grado superiore.
+
+\stheorem{Teorema di Taylor}{
+    Sia \(f\colon I \to \mathbb{R}\) derivabile
+    \(n\) volte in \(x_0\) interno ad \(I\) e sia
+    \[
+        P_n(x) = \sum_{k=0}^n \frac{f^{(n)}(x_0){(x-x_0)}^n}{k!}
+    \]
+    il suo polinomio di Taylor di orinde \(n\)
+    centrato in \(x_0\).
+    Allora,
+    \begin{enumerate}
+        \item \emph{formula di Taylor con resto in forma di Peano:} \[
+            f(x) = P_n(x) + r_n(x), \quad \frac{r_n(x)}{{(x-x_0)}^n} \to 0 \text{ con } x\to \infty
+        \]
+        \item \emph{formula di Taylor con resto in forma di Lagrange:} se si suppone anche che \(f\) sia derivabile \(n+1\) volte
+        in tutto \(I\), allora
+        \[
+            f(x) = P_n(x) + r_n(x)
+        \]
+        dove \(r_n\) si rappresenta nel modo seguente:
+        \(\forall x\in I\), esiste \(c_x\) compreso tra \(x_0\) e \(x\)
+        (che dipende in generale sia da \(x\) che da \(n\) e di cui non si può preditare altro che il fatto che sia
+        compreso tra \(x\) e \(x_0\)), tale che
+        \[
+            r_n(x) = \frac{f^{(n+1)}(c_x)}{(n+1)!} (x-x_0)^{n+1}
+        \]
+    \end{enumerate}
+}
+
+\sproof{}{
+    \begin{enumerate}
+        \item Abbiamo
+        \begin{align*}
+            \lim_{x\to x_0} \frac{r_n(x)}{{(x-x_0)}^n} &=
+            \lim_{x\to x_0} \frac{f(x) - P_n(x)}{{(x-x_0)}^n} \\
+            &\overset{H}{=} \lim_{x\to x_0} \frac{f'(x) - P_n'(x)}{n{(x-x_0)}^{n-1}} \\
+        \end{align*}
+        Siccome \(\forall k \leq n, D^k P(x_0) = D^k f(x_0)\) possiamo applicare nuovamente
+        il teormea de l'Hôpital iterativamente.
+        \begin{align*}
+            &\overset{H}{=}\lim_{x\to x_0} \frac{
+                D^2f(x) - D^2P_n(x)
+            }{
+                n(n-1){(x-x_0)}^{n-1}
+            } \\
+            &\overset{H}{=}\lim_{x\to x_0} \frac{
+                D^{n-1}f(x) - D^{n-1}P_n(x)
+            }{
+                n(n-1) \cdots 2(x-x_0)
+            }
+        \end{align*}
+        A questo punto non possiamo più applicare il teorema in quanto
+        si necessiti che la funzione sia derivabiel in un intorno, ma
+        possiamo necessariamente derivarla solo in \(x_0\).
+        Tuttavia, \(D^n(f(x_0)) = D^n P_n(x_0)\). Quindi,
+        \begin{align*}
+            \frac{1}{n!} &= \lim_{x\to x_0}
+            \frac{D^{n-1}f(x) - D^{n-1} f(x_0)}{x-x_0}
+            - \frac{D^{n-1}P_n(x) - D^{n-1}P_n(x_0)}{x-x_0} \\
+            &= \frac{1}{n!} \left\{
+                D^n f(x_0) - D^n P_n(x_0)
+            \right\} \\
+            &= 0
+        \end{align*}
+        \item Mostriamo che per tutte le \(x\) esiste \(c\)
+        compreso tra \(x_0\) e \(x\) tale che
+        \[
+            r_n(x) = f(x) - P_n(x) = \frac{1}{(n+1)!} D^{n+1}f(c)(x-x_0)^{n+1}
+        \]
+        equivalentemente
+        \[
+            \frac{f(x) - P_n(x)}{{(x-x_0)}^{n+1}} = \frac{1}{(n+1)!} D^{n+1}f(c)
+        \]
+        Vogliamo applicare il teorema di Cauchy. Poniamo \(F(x) = f(x) - P_n(x)\)
+        e \(G(x) = {(x-x_0)}^{n+1}\) e notiamo che
+        \(F(0) = 0\) e infatti \(\forall k \leq n, D^k F(x_0) = 0\),
+        e analogamente \(G(x_0) = 0\) e infatti \[\forall k \leq n, D^k {(x-x_0)}^{n+1} = (n+1)n\cdots(n-k){(x-x_0)}^{n-k+1} = 0\]
+        in \(x=x_0\).
+        Allora,
+        \[
+            \frac{f(x) - P_n(x)}{{(x-x_0)}^{n+1}} = \frac{F(x) - F(x_0)}{G(x) - G(x_0)}
+        \]
+        notando che \(F,G\) sono derivabili \(n+1\) volte in \(I\)
+        e \(G(x) - G(x_0) \neq 0\), e \(D^k G(x) \neq 0\) per \(x\neq x_0\)
+        per ogni \(t = 1 \cdots n+1\).
+        Esiste quindi \(x_1\) compreso fra \(x\) e \(x_0\) tale che
+        \[
+            \frac{F(x) - F(x_0)}{x-x_0} = \frac{F'(x_1)}{G'(x_1)}
+            = \frac{F'(x_1) - F'(x_0)}{G'(x_1) - G'(x_0)}
+        \]
+        Usiamo allora il teorema di Cauchy nuovamente: esiste un \(x_2\)
+        fra \(x_1\) e \(x\)
+        \begin{align*}
+            = \frac{D^2 F(x_2)}{D^2 G(x_2)} = \frac{D^2 F(x_0) - D^2 F(x_0)}{D^2 G(x_2) - D^2 G(x_0)}
+        \end{align*}
+        e ripetiamo iterativamente quanto possiamo: esiste \(c\)
+        compreso tra \(x_n\) e \(x_0\)
+        \begin{align*}
+            = \frac{D^{n+1} F(c)}{D^{n+1} G(c)}
+            = \frac{1}{(n+1)} D^{n+1}F(c) = (n+1)!
+        \end{align*}
+        Abbiamo quindi
+        \[
+            \frac{1}{(n+1)!} \left\{
+                D^{n+1}f(c) - D^{n+1}P_n(c)
+            \right\} = \frac{1}{(n+1)!} D^{n+1}f(c)
+        \]
+    \end{enumerate}
+}
+
+\sproposition{Serie di MacLaurin dell'esponenziale}{
+    \begin{align*}
+        e^x &= \sum_{k=0}^n \frac{D^kf(0)}{k!} x^k + o(x^n) \\
+        &= \sum_{k=0}^n \frac{x^k}{k!} + o(x^n) \\
+        &= \sum_{k=0}^n\frac{x^k}{k!} + \left(\frac{x^{n+1}}{(n+1)!} + o(x^{n+1})\right) \\
+        &= \sum_{k=0}^n\frac{x^k}{k!} + O(x^{n+1})
+    \end{align*}
+}
+
+\sproposition{Serie di MacLaurin del seno}{
+    \begin{align*}
+        \sin(x) &= \sum_{k=0}^n \frac{D^{2k+1}\sin(0)}{(2k+1)!} x^{2k+1} + o(x^{2n+1}) \\
+        &= \sum_{k=0}^n \frac{{(-1)}^k}{(2k+1)!} x^{2k+1} + o(x^{2n+1}) \\
+        &= \sum_{k=0}^n \frac{{(-1)}^k}{(2k+1)!} x^{2k+1} + {(-1)}^{n+1}
+        \frac{x^{2n+3}}{(2n+3)!} + o(x^{2n+3}) \\
+        &= \sum_{k=0}^n \frac{{(-1)}^k}{(2k+1)!} x^{2k+1} + \begin{cases}
+            o(x^{2n+1}) \\
+            o(x^{2n+2}) \\
+            O(x^{2n+3})
+        \end{cases}
+    \end{align*}
+}
+
+\sproposition{Serie di MacLaurin del coseno}{
+    \begin{align*}
+        \cos(x) &= \sum_{k=0}^n \frac{{(-1)}^k}{(2k)!} x^{2k}
+        + \begin{cases}
+            o(x^{2n}) \\
+            o(x^{2n+1}) \\
+            O(x^{2n+2})
+        \end{cases}
+    \end{align*}
+}
+
+\sproposition{Serie di MacLaurin di \(\log(1-x)\)}{
+    Abbiamo che
+    \[
+        D^k \log(1-x) = -(k-1)!{(1-x)}^{-k}
+    \]
+    Allora
+    \begin{align*}
+        \log(1-x) &= -\sum_{k=1}^n \frac{{(k-1)!}}{k!}
+        + \begin{cases}
+            o(x^{n}) \\
+            O(x^{n+1})
+        \end{cases}
+    \end{align*}
+}
+
+\sproposition{Serie di MacLaurin di \(\log(1+x)\)}{
+    Abbiamo che
+    \[
+        \log(1+x) = \sum_{k=1}^n \frac{{(-1)}^{k-1}}{k} x^k +
+        \begin{cases}
+            o(x^n) \\
+            O(x^{n+1})
+        \end{cases}
+    \]
+}
+
+\sproposition{Serie di MacLaurin di \({(1+x)}^\alpha\)}{
+    Notiamo che se \(\alpha = n\), allora è un polinomio di grado \(n\),
+    quindi lui stesso è il suo Polinomio di Taylor
+    \[
+        {(1+x)}^n = \sum_{k=0}^n \binom{n}{k} x^{k} \cdot 1^{n-k}
+    \]
+    Altrimenti,
+    \[
+        D^k {(1+x)}^\alpha = \alpha(\alpha - 1) \cdots (\alpha - k + 1) {(1 + x)}^{\alpha - k}
+    \]
+    e allora
+    \[
+        {(1+x)}^\alpha = \sum_{k=0}^n \binom{\alpha}{k} x^k + \begin{cases}
+            o(x^n) \\
+            O(x^{n+1})
+        \end{cases}
+    \]
+    con i coefficienti binomiali generalizzati.
+}
+
+\stheorem{Teorema di Unicità}{
+    Sia \(f\colon I \to \mathbb{R}\) derivabile \(n\) volte in \(x_0\)
+    interno ad \(I\).
+    Supponiamo che
+    \[
+        P(x) = \sum_{k=0}^n a_k {(x-x_0)}^k
+    \]
+    sia un polinomio di grado minore o uguale a \(n\)
+    tale che \(f(x) = P(x) + o({(x-x_0)}^n)\).
+    Allora, \(P(x) P_n(x)\).
+    In particolare, per il principio di identità dei polinomi,
+    \[
+        \frac{D^k f(x_0)}{k!}
+    \]
+}
+
 \end{document}
