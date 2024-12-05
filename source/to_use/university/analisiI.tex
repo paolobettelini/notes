@@ -6119,4 +6119,134 @@ permettendo di approssimarle con polinomio di grado superiore.
     \]
 }
 
+\sproof{}{
+    Poiché \(f\) è derivabile \(n\) volte in \(x_0\)
+    dalla Fromula di Taylor conr esto Peano risulta che
+    \[
+        f(x) = P_n(x) +o({(x-x_0)}^n)
+    \]
+    risulta quindi
+    \[
+        P(x) - P_n(x) = [f(x) -P_n(x)]
+        - [f(x) - P(x)] = o({(x-x_0)}^n)
+    \]
+    Posto \(Q(x) = P(x) - P_n(x)\) la dimostrazione si riduce a mostrare che se \(Q(x)\)
+    è un polinomio in \((x-x_0)\) di grado minore o uguale a \(n\)
+    e \(Q(x) = o({(x-x_0)}^n)\) allora \(Q(x) = 0\)
+    cioè tutti i coefficienti di \(Q\) sono nulli.
+    Scriviamo
+    \[
+        Q(x) = \sum_{k=0}^n b_k{(x-x_0)}^k
+    \]
+    e supponiamo per assurdo che
+    \[
+        \frac{Q(x)}{{(x-x_0)}^n} \to 0
+    \]
+    ma \(Q(x) \neq 0\).
+    Tra tutti i coefficienti non nulli, ce n'è uno con indice più piccolo \(k_0\),
+    quindi tutti quelli prima sono nulli.
+    Abbiamo quindi che \[
+        Q(x) = \sum_{k=k_0}^n b_k {(x-x_0)}^k
+    \]
+    Siccome il termine tende a zero, raccogliamo la potenza più piccola
+    \[
+        Q(x) = {(x-x_0)}^{k_0}\sum_{k=k_0}^n b_k {(x-x_0)}^{t-t_0}
+    \]
+    da cui
+    \[
+        \frac{Q(x)}{{(x-x_0)}^n} = {(x-x_0)}^{k_0 - n}
+        \sum_{k=k_0}^n b_k {(x-x_0)}^{k-k_0}
+    \]
+    la sommatoria tende a \(b_{k_0}\) e il termine esterno
+    \(\pm \infty\) per \(k_0 < n\), altrimenti \(1\) (o magari non esiste il limite).
+    Quindi, \(Q(x)\) non tende a zero \lightning.
+}
+
+\sexample{Espansione di MacLaurin del seno iperbolico}{
+    \[
+        \sum_{k=0}^n \frac{x^{2k+1}}{(2k+1)!} + \begin{cases}
+            o(x^{2n+1}) \\
+            o(x^{2n+2}) \\
+            O(x^{2n+3})
+        \end{cases}
+    \]
+}
+
+\sexample{Espansione di MacLaurin del coseno iperbolico}{
+    \[
+        \sum_{k=0}^n \frac{x^{2k}}{(2k)!} + XX
+    \]
+}
+
+% log 1-x (converge -1 \leq x \leq 1)
+% log 1+x (converge -1 < x \leq 1)
+% (1+x)^a (converge almeno per |x|<1)
+% 1/{1+x} 
+
+\sexercise{}{
+    Verificare per induzione che
+    per ogni \(k\),
+    \[
+        D^k e^{-\frac{1}{x^2}} = P_k(x) e^{-\frac{1}{x^2}}
+    \]
+    con \(x\neq 0\), dove \(P_k\) è un polinomio di grado minore o uguale a \(k\)
+    in \(\frac{1}{x^3}\).
+    Dedurre inoltre che per tutte le \(k\),
+    \[
+        \lim_{x\to 0} D^k \left(e^{-\frac{1}{x^2}}\right) = 0
+        = D^k\left(e^{-\frac{1}{x^2}}\right)(0)
+    \]
+}
+
+Sia \(f\colon I \to \mathbb{R}\) in \(C^\infty\)
+e sia
+\[
+    \sum_{k=0}^\infty \frac{D^kf(x_0)}{k!}{(x-x_0)}^k
+\]
+la sue serie di Taylor in \(x_0\).
+Poiché è infinitamente differenziabile, soddisfa le ipotesi di Teorema di Taylor per tutte
+le \(n\) e quindi
+\[
+    f(x) = \sum_{k=0}^n \frac{D^kf(x_0)}{k!}{(x-x_0)}^n + R_n(x)
+    = P_n(x) + R_n(x)
+\]
+Notiamo che \(P_n(x)\) è la somma parziale della serie di Taylor.
+
+\stheorem{}{
+    La serie di Taylor di \(f\) calcolata in \(x\) converge a \(f(x)\)
+    se e solo se
+    \(R_n(x) \to 0\) per \(n \to \infty\).
+}
+
+Tale uguaglianza vale per le funzioni viste.
+Per \(e^x\) abbiamo il resto in forma di Lagrange
+\[
+    R(x) = \frac{D^{n+1}f(\xi)}{(n+1)!} x^{n+1}
+\]
+dove \(\xi\) è compreso fra \(0\) e \(x\).
+Abbiamo allora
+\[
+    R(x) = \frac{e^\xi}{(n+1)!}x^{n+1}
+\]
+in ogni caso \(e^\xi \leq \text{max}\{e^\xi, 1\} \leq e^{|x|}\)
+Quindi,
+\[
+    |R_n(x)| \leq \frac{e^{|x|}}{(n+1)!} x^{n+1} \to 0
+\]
+per gerarchia degli infiniti.
+Quindi, \(e^x\) è pari alla sue serie di MacLaurin.
+
+Per il seno abbiamo
+\[
+    R_{2n+1}(x) = \frac{(D^{2n+2}\sin)(\xi)}{(2n+2)!}
+\]
+e siccome le derivate pari del seno sono o il seno o il seno negativo, abbiamo
+\[
+    |R_{2n+1}(x)| \leq \frac{|\pm\sin(\xi)|}{(2n+2)!}x^{2n+2}
+    \leq \frac{x^{2n+2}}{(2n+2)!} \to 0
+\]
+
+% Per dimostrare la formula di eulero, dobbiamo notare che la serie di e^ix
+% converge assolutamente e quindi posso muovere i termini.
+
 \end{document}
