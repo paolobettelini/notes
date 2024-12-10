@@ -18,5 +18,4 @@
 - \text{Stab}
 - \text{Id}
 - normal subgroup command
-
-- 
+- % \derivativeD (math) % TODOURGENT
