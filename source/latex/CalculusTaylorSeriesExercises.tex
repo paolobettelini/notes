@@ -1,0 +1,217 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{taylor-series-exercises}
+\genpage
+
+\section{Exercises}
+
+\begin{snippetexercise}{taylor-series-ex-1}{}
+    Find the Taylor polynomial centered at \(x = \frac{\pi}{4}\)
+    up to order \(n=3\) of \(f(x) = \sin(x)\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{taylor-series-ex-1-sol}{}
+    We have
+    \[
+        \sin(x) = \sum_{k=0}^3 \frac{\derivativeD^k \sin(\frac{\pi}{4})}{k!} {\left(x - \frac{\pi}{4}\right)}^k +
+        \littleO\left({\left(x - \frac{\pi}{4}\right)}^3\right)
+    \]
+    The derivatives are given by
+    \begin{itemize}
+        \item for \(k=0\), \(\sin\left(\frac{\pi}{4}\right) = \frac{\sqrt{2}}{2}\);
+        \item for \(k=1\), \(\cos\left(\frac{\pi}{4}\right) = \frac{\sqrt{2}}{2}\);
+        \item for \(k=2\), \(-\sin\left(\frac{\pi}{4}\right) = -\frac{\sqrt{2}}{2}\);
+        \item for \(k=3\), \(-\cos\left(\frac{\pi}{4}\right) = -\frac{\sqrt{2}}{2}\);
+    \end{itemize}
+    and thus
+    \[
+        \sin x = \frac{\sqrt{2}}{2}
+        + \frac{\sqrt{2}}{2}\left(x - \frac{\pi}{4}\right)
+        - \frac{1}{2}\frac{\sqrt{2}}{2}{\left(x - \frac{\pi}{4}\right)}^2
+        - \frac{1}{6}\frac{\sqrt{2}}{2}{\left(x - \frac{\pi}{4}\right)}^3
+        + \littleO\left({\left(x - \frac{\pi}{4}\right)}^3\right)
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{taylor-series-ex-2}{}
+    Find the MacLaurin expansion
+    up to order \(n=5\) of \(f(x) = x\cos\left(\frac{x}{2}\right)\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{taylor-series-ex-2-sol}{}
+    We have
+    \begin{align*}
+        \cos\left(\frac{x}{2}\right)
+        = 1 - \frac{1}{2} {\left(\frac{x}{2}\right)}^2 + \frac{1}{4!}
+        {\left(\frac{x}{2}\right)}^4 + \littleO(x^4)
+    \end{align*}
+    and thus we can jsut multiply the terms by \(x\)
+    \[
+        f(x) = x\cos\left(\frac{x}{2}\right)
+        =  x - \frac{x^3}{8} + \frac{x^5}{384} + \littleO(x^5)
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{taylor-series-ex-3}{}
+    Find the MacLaurin expansion
+    up to order \(n=5\) of \(f(x) = \ln(1+x) - \frac{x}{x+1}\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{taylor-series-ex-3-sol}{}
+    We have
+    \[
+        \ln(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3}
+        - \frac{x^4}{4} + \frac{x^5}{5} + \littleO(x^5)
+    \]
+    and
+    \[
+        \frac{1}{1+x} = 1 - x + x^2 - x^3 + x^4 - x^5 + \littleO(x^5)
+    \]
+    Together, we get
+    \begin{align*}
+        f(x) &= \frac{x^2}{2} - \frac{2}{3}x^3 + \frac{3}{4} x^4
+        - \frac{4}{5}x^5 - x^6 + \littleO(x^6) + \littleO(x^5) \\
+        &= \frac{x^2}{2} - \frac{2}{3}x^3 + \frac{3}{4} x^4
+        - \frac{4}{5}x^5 + \littleO(x^5)
+    \end{align*}
+\end{snippetsolution}
+
+\begin{snippetexercise}{taylor-series-ex-4}{}
+    Find
+    \[
+        \lim_{x\to 0^+} \frac{x-\sin x}{x - \ln(1+x)}
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{taylor-series-ex-4-sol}{}
+    The limit presents a \(0/0\) form. Consider the Taylor expansions
+    \[
+        \sin(x) = x - \frac{x^3}{3!} + \littleO(x^3)
+    \]
+    and
+    \[
+        \ln(1+x) = x - \frac{x^2}{2} + \littleO(x^2)
+    \]
+    The limit becomes
+    \begin{align*}
+        \lim_{x\to 0^+} \frac{x-\sin x}{x - \ln(1+x)} &=
+        \lim_{x\to 0^+} \frac{
+            \frac{x^3}{3!} + \littleO(x^3)  
+        }{
+            \frac{x^2}{2} + \littleO(x^2)
+        } \\
+        &= \lim_{x\to 0^+} \frac{x^3 \left(\frac{1}{6} + \littleO(1)\right)}{x^2 \left(\frac{1}{2} + \littleO(1)\right)} = 0
+    \end{align*}
+\end{snippetsolution}
+
+\begin{snippetexercise}{taylor-series-ex-5-ex}{}
+    Find the MacLaurin expansion
+    up to order \(n=5\) of
+    \[
+        f(x) = \sqrt[3]{1 - 2x^2} + \frac{2}{3} x \ln(1 + x)
+    \]
+    and find
+    \[
+        \lim_{x \to 0^+} \frac{f(x) - 1}{x\cos x - \sin x}
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{taylor-series-ex-5-ex-sol}{}
+    We first consider the expansion of \(\sqrt[3]{1 - 2x^2}\)
+    which has form \({(1 + x)}^\alpha\)
+    \begin{align*}
+        \sqrt[3]{1 - 2x^2} &= 1 + \frac{1}{3}(-2x^2)
+        + \frac{\frac{1}{3}}{\frac{1}{3} - 1}{2}{(-2x^2)}^2 + \littleO(x^5) \\
+        &= 1 - \frac{2}{3}x^2 - \frac{4}{9}x^4 + \littleO(x^5)
+    \end{align*}
+    the other ter has expansion
+    \[
+        \ln(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \littleO(x^5)
+    \]
+    and thus
+    \begin{align*}
+        f(x) &= 1 - \frac{1}{3}x^3 - \frac{2}{9}x^4 - \frac{1}{6}x^5 + \littleO(x^5)
+    \end{align*}
+    Note that the derivatives evaluated at \(0\) are precisely the coefficients of the expansion.
+    The first non-zero derivative is the third one. Thus,
+    \[
+        \frac{\derivativeD^3 f(0)}{3!} = -\frac{1}{3} \implies
+        \derivativeD^3 f(0) \neq 0
+    \]
+    Since \(n=3\) is odd, \(x_0=0\) is not a maximum or minimum. \\
+    The limit is given by
+    \begin{align*}
+        \lim_{x \to 0^+} \frac{f(x) - 1}{x\cos x - \sin x} &=
+        \lim_{x \to 0^+} \frac{
+            1 - \frac{x^3}{3} + \littleO(x^3) - 1
+        }{
+            x\cos x - \sin x
+        } \\
+        &=  \lim_{x \to 0^+} \frac{
+            - \frac{x^3}{3} + \littleO(x^3) 
+        }{
+            -\frac{x^3}{3} + \littleO(x^3)
+        } = 1
+    \end{align*}
+\end{snippetsolution}
+
+\begin{snippetexercise}{taylor-series-ex-6-ex}{}
+    Find the MacLaurin expansion
+    up to order \(n=5\) of
+    \[
+        f(x) = x\eulernumber^{-\frac{x^2}{6}} - \sin x
+    \]
+    and find
+    \[
+        \derivativeD^5 f(0)
+    \]
+    and
+    \[
+        \lim_{x \to 0} \frac{f(x)}{(\ln(1+x) - x) \tan\left(\frac{x^3}{x+3}\right)}
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{taylor-series-ex-6-ex-sol}{}
+    The expansion of the first term is given by
+    \begin{align*}
+        x\eulernumber^{-\frac{x^2}{6}} &= x\left[
+        1 - \frac{x^2}{6} + \frac{1}{2} {\left(-\frac{x^2}{6}\right)}^2 + \littleO(x^4)
+        \right] \\
+        &= x - \frac{x^3}{6} + \frac{x^5}{5!} + \littleO(x^5)
+    \end{align*}
+    Together with \(\sin (x)\) we get
+    \begin{align*}
+        f(x) = \left(
+            \frac{1}{72} - \frac{1}{5!}
+        \right)x^5 + \littleO(x^5)
+    \end{align*}
+    Thus,
+    \[
+        \derivativeD^5 f(0) = 5!\left( \frac{1}{72} - \frac{1}{5!}\right) = \frac{2}{3}
+    \]
+    The limit is given by
+    \begin{align*}
+        \lim_{x \to 0} \frac{f(x)}{(\ln(1+x) - x) \tan\left(\frac{x^3}{x+3}\right)}
+        &= \lim_{x \to 0} \frac{
+            \left(
+                \frac{1}{72} - \frac{1}{5!}
+            \right)x^5 + \littleO(x^5)
+        }{
+            \left[x - \frac{x^2}{2} + \littleO(x^2) - x\right] \frac{x^3}{x+3}
+        } \\
+        &= \lim_{x \to 0} \frac{
+            \frac{1}{180}x^5 + \littleO(x^5)
+        }{
+            -\frac{x^5}{6} + \littleO(x^5)
+        } = - \frac{1}{30}
+    \end{align*}
+\end{snippetsolution}
+
+\end{document}

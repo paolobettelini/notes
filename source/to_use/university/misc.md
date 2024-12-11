@@ -15,7 +15,5 @@
       1 - cos x asympt 1/2 x^2
 \text{Id} def
 - 1_G identity element of s group/monoid and such
-- \text{Stab}
 - \text{Id}
-- normal subgroup command
-- % \derivativeD (math) % TODOURGENT
+- definizione di differentiable
