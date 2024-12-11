@@ -17,3 +17,4 @@
 - 1_G identity element of s group/monoid and such
 - \text{Id}
 - definizione di differentiable
+- Syntax nel gruppo \in è come dire nell'insieme. No per struttura algebrica in generale
