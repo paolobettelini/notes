@@ -1,0 +1,130 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{indefinite-integrals}
+\genpage
+
+\section{Indefinite integrals}
+
+\begin{snippetdefinition}{primitive-function-definition}{Primitive function}
+    Given a \function \(f(x)\colon I \to \mathbb{R}\)
+    where \(I\) is an interval, an \textit{anti-derivative} or \textit{primitive}
+    is any \function \(F(x)\) differentiable in \(I\) such that
+    \[
+        \frac{dF}{dx} = f(x)
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{indefinite-integral-definition}{Indefinite integral}
+    The \set of all \primitivefunc[primitive functions] of a \function \(f(x)\)
+    is the \emph{indefinite integral} of \(f(x)\) with respect to \(x\)
+    \[
+        \integral[f(x)][x]
+    \]
+    The \function \(f(x)\) is the \emph{integrand} an the variable \(x\) is the \emph{variable of integration}.
+\end{snippetdefinition}
+
+\begin{snippetproposition}{primitive-functions-relation}{Primitive functions relation}
+    Let \(F(x)\) be the \primitivefunc[primitive function] of a \function \(f(x)\) on an interval \(I\).
+    Then,
+    \[
+        \integral[f(x)][x] = F(x) + C, \quad C\in\realnumbers
+    \]
+\end{snippetproposition}
+
+\begin{snippet}{infinite-antiderivatives-expl}
+    If a \function has a \primitivefunc, then it has an infinite amount of \primitivefunc[primitives].
+    This means that the derivative of a \function is the same when the function is shifted
+    up or down: the rate of change is the same. By reversing the process (taking the derivative) we don't know
+    the up or down shift of the original function.
+\end{snippet}
+
+\begin{snippetproof}{primitive-functions-relation-proof}{primitive-functions-relation}{Primitive functions relation}
+    We will first prove that if \(F(x)\) is a \primitivefunc of \(f(x)\), then so is \(F(x) + C\)
+    for \(C\in\realnumbers\). We have
+    \[
+        \derivativeD \left(F(x) + C\right)
+        = \derivativeD F(x) + \derivativeD c
+        = f(x)
+    \]
+    We will now prove that all \primitivefunc[primitives] of \(f(x)\) are of the form \(F(x) + C\).
+    Let \(G(x)\) be a \primitivefunc of \(f(x)\) and let \(H(x) = G(x) - F(x)\).
+    Since \(\derivativeD G(x) = f(x)\) and \(\derivativeD F(x) = f(x)\),
+    \[
+        \derivativeD H(x) = \derivativeD G(x) - \derivativeD F(x) = f(x) - f(x) = 0
+    \]
+    in some interval \(I\). By Lagrange's theorem, there exist some
+    \(C\in\realnumbers\) such that \(G(x) - F(x) = C\) meaning \(G(x) = F(x) + C\).
+\end{snippetproof}
+
+\subsection{Properties}
+
+\begin{snippetproposition}{indefinite-integral-linearity}{Integral linearity}
+    Let \(f(x)\) and \(g(x)\) be integrable \function[functions]
+    \[
+        \integral[\alpha f(x) + \beta g(x)][x] = \alpha\integral[f(x)][x] + \beta\integral[g(x)][x]
+    \]
+\end{snippetproposition}
+
+\begin{snippettheorem}{integral-substitution-rule-theorem}{Substitution rule}
+    Let \(f(x)\) and \(g(x)\) be \function[functions] such that \(f(g(x))g'(x)\) is integrable on
+    an interval \(I\). Suppose \(u = g(x)\) is a differentiable function whose range corresponds to the
+    interval where \(f(u)\) is defined. Then,
+    \[
+        \integral[f(g(x))g'(x)][x] = \integral[f(u)][u]
+    \]
+    where \(du = g'(x) dx\).
+\end{snippettheorem}
+
+\begin{snippetproof}{integral-substitution-rule-theorem-proof}{integral-substitution-rule-theorem}{Substitution rule}
+    We start from the chain rule
+    \[
+        \derivativeD (F \circ g)(x) = \derivativeD F(g(x)) \cdot \derivativeD g(x)
+    \]
+    and thus
+    \[
+        \integral[\derivativeD F(g(x))\cdot g'(x)][x]
+        = \integral[\derivativeD (F \circ g)][x] = F(g(x)) + C
+    \]
+    By letting \(\derivativeD F = f\) the identity becomes
+    \[
+        \integral[f(g(x))g'(x)][x] = F(g(x)) + C
+    \]
+\end{snippetproof}
+
+\begin{snippettheorem}{integration-by-parts}{Integration by parts}
+    Let \(f(x)\) and \(g(x)\) be \function[functions]
+    \[
+        \integral[f(x)g'(x)][x] = f(x)g(x) - \integral[f'(x)g(x)][x]
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{integration-by-parts-proof}{integration-by-parts}{Integration by parts}
+    Starting from the product rule
+    \[
+        \frac{d}{dx}\big(f(x)g(x)\big)=f'(x)g(x)+f(x)g'(x)
+    \]
+    If we integrate both parts we get
+    \begin{align*}
+        f(x)g(x)+C&=\integral[f'(x)g(x)][x]+\integral[f(x)g'(x)][x] \\
+        \integral[f(x)g'(x)][x] &= f(x)g(x)+C - \integral[f'(x)g(x)][x]
+    \end{align*}
+    Since the indefinite integral of \(f'(x)g(x)\) is equal to some function plus an arbitrary constant, we can ignore the \(+C\) term.
+    \[
+        \integral[f(x)g'(x)][x] = f(x)g(x) - \integral[f'(x)g(x)][x]
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{continuous-functions-have-primitive}{Continuous functions have primitives}
+    Let \(f\colon I \to \realnumbers\) be a \function that is continuous
+    on \(I\). Then, \(f\) has a \primitivefunc[primitive function].
+\end{snippetproposition}
+
+\end{document}
