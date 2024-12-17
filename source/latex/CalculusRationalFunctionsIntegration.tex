@@ -1,0 +1,75 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{rational-functions-integration}
+\genpage
+
+\section{Rational functions}
+
+\begin{snippettheorem}{rational-function-integration}{Integration of rational function}
+    Let \(\frac{P(x)}{Q(x)}\) be a \rationalfunc[rational function].
+    Then, it is always possible to find
+    \[
+        \integral[\frac{P(x)}{Q(x)}][x]
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{rational-function-integration-proof}{rational-function-integration}{Integration of rational function}
+    The following list details the process of finding the integral:
+    \begin{enumerate}
+        \item Let \(\polynomialdeg P(x) = m\) and \(\polynomialdeg Q(x) = n\).
+        If \(m \geq n\), perform polynomial long division
+        \[
+            \frac{P(x)}{Q(x)} = R(x) + \frac{P_r(x)}{Q(x)}
+        \]
+        where \(R(x)\) is the quotient and \(\frac{P_r(x)}{Q(x)}\) is the remainder with
+        \(\polynomialdeg P_r(x) < \polynomialdeg Q(x)\). The integral now becomes
+        \[
+            \integral[\frac{P(x)}{Q(x)}][x]
+            = \integral[R(x)][x]
+             + \integral[\frac{P_r(x)}{Q(x)}][x]
+        \]
+        \item Factor \(Q(x)\) into irreducible components over \(\mathbb{R}\) (linear or irreducible quadratic factors)
+        \[
+            Q(x) = A \prod_i {(x-a_i)}^{k_i}
+            \prod_i {(x^2 + b_ix+c_i)}^{m_i}
+        \]
+        \item Express \(\frac{P(x)}{Q(x)}\) in terms of partial fractions. The decomposition depends on the
+        factors of \(Q(x)\). \\
+        For each \({(x-a)}^k\), include terms:
+        \[
+            \frac{A_1}{x-a} + \frac{A_2}{{(x-a)}^2} + \cdots + \frac{A_k}{{(x-a)}^k}
+        \]
+        For each \({(x^2 + bx + c)}^m\), include terms:
+        \[
+            \frac{B_1x + C_1}{x^2 + bx + c}
+            + \frac{B_2x + C_2}{{(x^2 + bx + c)}^2}
+            + \cdots +
+            \frac{B_mx + C_m}{{(x^2 + bx + c)}^m}
+        \]
+        and combining all terms we get
+        \[
+            \frac{P_r(x)}{Q(x)}
+            = \sum_i \frac{A_i}{{(x-a_i)}^{k_i}}
+            + \sum_i \frac{B_i x + C_i}{{(x^2 + b_i x + c_i)}^{m_j}}
+        \]
+        \item Multiply through by \(Q(x)\) to eliminate the denominators, and match coefficients of powers
+        of \(x\) to solve for \(A_i, B_j, C_j\).
+        \item Integrate each term
+        \[
+            \integral[\frac{P(x)}{Q(x)}][x] =
+            \integral[R(x)][x] +
+            \sum_i \integral[\frac{A_i}{{(x-a_i)}^{k_i}}][x] +
+            \sum_i \integral[\frac{B_i x + C_i}{{(x^2 + b_i x + c_i)}^{m_i}}][x]
+        \]
+    \end{enumerate}
+\end{snippetproof}
+
+\end{document}
