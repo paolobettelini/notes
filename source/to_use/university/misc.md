@@ -19,3 +19,8 @@
 - definition of sine,cosine,tangent + inverses + hyperbolic inverses.
 - definition of simple group$
 - turing complete
+- il comando di debug in JS l'ho messo?
+- fix urint e lrint
+- step-function (text)
+- stepfunctionset Set of step functions (same id)
+- upperpart lowerpart

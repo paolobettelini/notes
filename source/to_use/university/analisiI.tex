@@ -18,6 +18,28 @@
 \usetikzlibrary{arrows}
 \usetikzlibrary{decorations.pathreplacing}
 
+% Lower and upper Riemann integral sign
+% https://tex.stackexchange.com/questions/211101/bar-over-under-integral-symbol
+\makeatletter
+\newcommand\upperint{\mathop{\mathpalette\tb@int{t}}\!\int}
+\newcommand\lowerint{\mathop{\mathpalette\tb@int{b}}\!\int}
+\newcommand\tb@int[2]{%
+  \sbox\z@{$\m@th#1\int$}%
+  \if#2t%
+    \rlap{\hbox to\wd\z@{%
+      \hfil
+      \vrule width .35em height \dimexpr\ht\z@+1.4pt\relax depth -\dimexpr\ht\z@+1pt\relax
+      \kern.05em % a small correction on the top
+    }}
+  \else
+    \rlap{\hbox to\wd\z@{%
+      \vrule width .35em height -\dimexpr\dp\z@+1pt\relax depth \dimexpr\dp\z@+1.4pt\relax
+      \hfil
+    }}
+  \fi
+}
+\makeatother
+
 \title{Analisi I}
 \author{Paolo Bettelini}
 \date{}
@@ -7070,20 +7092,20 @@ ottenute mediante le partizioni indotte. Si può usare una qualunque partizione 
     Sia \(f \colon I \to \mathbb{R}\) limitata su \(I\) intervallo limitato.
     L'integrale inferiore di \(f\) su \(I\)
     \[
-        s(f, I) = \sup \left\{
-            \int_I \varphi \mid \varphi \text{ a scala e } \varphi \leq f \text{ in } I
+        \lowerint_I f = \sup \left\{
+            \int_I \varphi \mid \varphi \in \mathcal{S} \land \varphi \leq f \text{ in } I
         \right\}
     \]
     e superiore
     \[
-        S(f, I) = \inf \left\{
-            \int_I \varphi \mid \varphi \text{ a scala e } \varphi \geq f \text{ in } I
+        \upperint_I f = \inf \left\{
+            \int_I \varphi \mid \varphi \in \mathcal{S} \land \varphi \geq f \text{ in } I
         \right\}
     \]
     % TODOURGENT
-    Ovviamente \(s(f, I) \leq S(f, I)\).
+    Ovviamente \(\lowerint_I f \leq \upperint_I f\).
     Diciamo che \(f\) è integrabile nel senso di Riemann se
-    \(s(f, I) \leq S(f, I)\). In tal caso, il valore comune è l'\emph{integrale di Riemann}
+    \(\lowerint_I f \leq \upperint_I f\). In tal caso, il valore comune è l'\emph{integrale di Riemann}
     \[
         R-\hspace{-0.1cm}\int_I f
     \]
@@ -7094,7 +7116,7 @@ ottenute mediante le partizioni indotte. Si può usare una qualunque partizione 
 Quindi per ogni funzione \(\varphi, \psi\) a sclaa dove \(\varphi \leq f \leq \psi\)
 vale
 \[
-    \int_I \varphi \leq s(f, I) \leq S(f, I) \leq \int_I \psi
+    \int_I \varphi \leq \lowerint_I f \leq \upperint_I f \leq \int_I \psi
 \]
 Se \(s = S\) allora la funzione è Riemann integrabile
 \[
@@ -7112,10 +7134,10 @@ Se \(s = S\) allora la funzione è Riemann integrabile
     Basta dimostra che se \(f\) è a scala vale
     \begin{align*}
         \int_I f &= \sup\left\{
-            \int_I \varphi \mid \varphi \text{ a scala e } \varphi \leq f \text{ in } I
+            \int_I \varphi \mid \varphi \in \mathcal{S} \land \varphi \leq f \text{ in } I
         \right\} \\
         &= \inf\left\{
-            \int_I \varphi \mid \varphi \text{ a scala e } \varphi \geq f \text{ in } I
+            \int_I \varphi \mid \varphi \in \mathcal{S} \land \varphi \geq f \text{ in } I
         \right\}
     \end{align*}
     Ci limitiamo a verificare la prima uguaglianza. Per tutte le \(\varphi\)
@@ -7126,14 +7148,14 @@ Se \(s = S\) allora la funzione è Riemann integrabile
     e passando al suo su \(\varphi\) a scala \(\varphi \leq f\) otteniamo
     \[
         \sup\left\{
-            \int_I \varphi \mid \varphi \text{ a scala e } \varphi \leq f \text{ in } I
+            \int_I \varphi \mid \varphi \in \mathcal{S} \land \varphi \leq f \text{ in } I
         \right\} \leq \int_I f
     \]
     D'altra parte poiché \(f\) è a scala, \(f\) stessa
     è una delle funzioni a scala, quindi per definizione di supremum
     \[
         \int_I f \leq \sup\left\{
-            \int_I \varphi \mid \varphi \text{ a scala e } \varphi \leq f \text{ in } I
+            \int_I \varphi \mid \varphi \in \mathcal{S} \land \varphi \leq f \text{ in } I
         \right\} \leq \int_I f
     \]
     Quindi vige l'uguaglianza.
@@ -7151,7 +7173,7 @@ Abbiamo che
 Per mostrare ciò cominciamo con \(1_\mathbb{Q} \geq 0\) e per definizione di integrale inferiore
 \[
     s(1_\mathbb{Q}, [a,b]) = \sup\left\{
-        \int_I \varphi \mid \varphi \text{ a scala e } \varphi \leq 1_\mathbb{Q} \text{ in } I
+        \int_I \varphi \mid \varphi \in \mathcal{S} \land \varphi \leq 1_\mathbb{Q} \text{ in } I
     \right\} \leq \int_I f \geq \int_I 0 = 0
 \]
 D'altra parte, sia
@@ -7194,7 +7216,7 @@ La dimostrazione per il fatto che \(S(1_\mathbb{Q}, I) = \ell(I)\) è simile:
 Abbiamo che \(1_\mathbb{Q} \leq 1\) su \(I\), il che implica che
 \[
     S(1_\mathbb{Q}, I) = \inf\left\{
-        \int_I \psi \mid \psi \text{ a scala e } \psi \geq 1_\mathbb{Q} \text{ in } I
+        \int_I \psi \mid \psi \in \mathcal{S} \land \psi \geq 1_\mathbb{Q} \text{ in } I
     \right\} \leq \int_I 1 = l(I)
 \]
 Il viceversa è come sopra: per la disuglianza inversa, supponiamo che \(1_\mathbb{Q}\)
@@ -7259,24 +7281,24 @@ e passando all'infimum abbiamo
         \item \((1) \implies (2)\): sia \(f\) integrabile nel senso di Riemann.
         Per definizione, 
         \begin{align*}
-            s(f, I) &= \sup\left\{
-                \int_I \varphi \mid \varphi \text{ a scala e } \varphi \leq f \text{ in } I
+            \lowerint_I f &= \sup\left\{
+                \int_I \varphi \mid \varphi \in \mathcal{S} \land \varphi \leq f \text{ in } I
             \right\} \\
             &= \inf\left\{
-                \int_I \varphi \mid \varphi \text{ a scala e } \varphi \geq f \text{ in } I
+                \int_I \varphi \mid \varphi \in \mathcal{S} \land \varphi \geq f \text{ in } I
             \right\} \\
-            &= S(f, I) = \int_I f
+            &= \upperint_I f = \int_I f
         \end{align*}
         Per definizione di infimum e supremum (finiti) \(\forall \varepsilon>0\)
         esiste \(\varphi_\varepsilon\) a scala con \(\varphi_\varepsilon \leq f\) su \(I\)
         tale che
         \[
-            \int_I \varphi_\varepsilon > s(f, I) - \frac{\varepsilon}{2} = \int_I f - \frac{\varepsilon}{2}
+            \int_I \varphi_\varepsilon > \lowerint_I f - \frac{\varepsilon}{2} = \int_I f - \frac{\varepsilon}{2}
         \]
         e analogamente esiste \(\psi_\varepsilon\) a scala con \(\psi_\varepsilon \geq f\) su \(I\)
         tale che
         \[
-            \int_I \psi_\varepsilon < S(f, I) + \frac{\varepsilon}{2} = \int_I f + \frac{\varepsilon}{2}
+            \int_I \psi_\varepsilon < \upperint_I f + \frac{\varepsilon}{2} = \int_I f + \frac{\varepsilon}{2}
         \]
         Da questo segue quindi
         \[
@@ -7310,25 +7332,25 @@ e passando all'infimum abbiamo
         \]
         Ancora per definizione, per tutte le \(n\) abbiamo
         \[
-            s(f, I) = \sup\left\{
-                \int_I \varphi \mid \varphi \text{ a scala e } \varphi \leq f \text{ in } I
+            \lowerint_I f = \sup\left\{
+                \int_I \varphi \mid \varphi \in \mathcal{S} \land \varphi \leq f \text{ in } I
             \right\} \geq \int_I \varphi_n
         \]
         e
         \[
-            S(f, I) = \int\left\{
-                \int_I \varphi \mid \varphi \text{ a scala e } \varphi \geq f \text{ in } I
+            \upperint_I f = \int\left\{
+                \int_I \varphi \mid \varphi \in \mathcal{S} \land \varphi \geq f \text{ in } I
             \right\} \leq \int_I \varphi_n
         \]
         da cui
         \[
-            0 \leq S(f, I) - s(f, I) \leq
+            0 \leq \upperint_I f - \lowerint_I f \leq
             \int_I \psi_n - \int_I \varphi \to 0
         \]
-        cosicché \(S(f, I)\) non può che non essere uguale a \(s(f, I)\) e quindi \(f\)
+        cosicché \(\upperint_I f\) non può che non essere uguale a \(\lowerint_I f\) e quindi \(f\)
         è integrabile nel senso di Riemann. Inoltre, otteniamo che
         \[
-            0 \leq s(f, I) - \int_I \varphi_n = \int_i f - \int_I \varphi_n
+            0 \leq \lowerint_I f - \int_I \varphi_n = \int_i f - \int_I \varphi_n
             \leq \int_I \psi_n - \int_I \varphi_n \to 0
         \]
         e questo dimostra che esiste
