@@ -17,4 +17,5 @@
 - Syntax nel gruppo \in è come dire nell'insieme. No per struttura algebrica in generale
 - normalizer
 - definition of sine,cosine,tangent + inverses + hyperbolic inverses.
-- definition of simple group
+- definition of simple group$
+- turing complete

@@ -1,7 +1,5 @@
 # Source
 
-# Pure math
-
 Measure Theory:
     - https://www.youtube.com/playlist?list=PLBh2i93oe2qvMVqAzsX1Kuv6-4fjazZ8j
       Done 1-4
@@ -54,8 +52,6 @@ Differentiable Manifolds
 Complex analysis:
     - Murray R. Spiegel
 
-# More niche subjects for me
-
 Theory of computation
     - https://cglab.ca/~michiel/TheoryOfComputation/TheoryOfComputation.pdf
     - pag 71
@@ -68,3 +64,4 @@ Quantum computing:
 # Misc
 
 Chemistry visualizations: https://kut.ai/research/web-molecules/
+Function table sign: https://tex.stackexchange.com/questions/335583/how-to-create-a-table-of-signs
