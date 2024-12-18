@@ -15,12 +15,12 @@
 - 1_G identity element of s group/monoid and such
 - definizione di differentiable
 - Syntax nel gruppo \in è come dire nell'insieme. No per struttura algebrica in generale
-- normalizer
 - definition of sine,cosine,tangent + inverses + hyperbolic inverses.
 - definition of simple group$
 - turing complete
-- il comando di debug in JS l'ho messo?
+- document.querySelectorAll('.snippet-link').forEach(link => link.style.border = '3px solid red');
 - fix urint e lrint
 - step-function (text)
 - stepfunctionset Set of step functions (same id)
 - upperpart lowerpart
+- \def\int{\mathop{\fam\z@ int}\limits}
