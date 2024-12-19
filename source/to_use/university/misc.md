@@ -24,3 +24,6 @@
 - stepfunctionset Set of step functions (same id)
 - upperpart lowerpart
 - \def\int{\mathop{\fam\z@ int}\limits}
+- semidirect product \ltimes and replace \ltimes + \rtimes
+- generic cyclc group C_n command
+- derivazione 2 pendolo con momenti

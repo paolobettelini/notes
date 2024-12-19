@@ -1176,7 +1176,7 @@ una funzione \(U\).
 
 Trovare l'equazione del pendolo usando il momento angolare.
 
-\section{Problema sei due corpi}
+\section{Problema dei due corpi}
 
 Sappiamo che \(\vec{F_{12}} = m_1\vec{a_1}\), \(\vec{F_{21}} = m_2\vec{a_2}\)
 e che \(\vec{F_{12}} = -\vec{F_{21}}\).
@@ -1467,45 +1467,168 @@ TODO e quindi
 
 \pagebreak
 
-\section{Urti}
+\section{Dinamica dei sistemi}
 
-Consideriamo un urto e quindi
-\[
-    \frac{d\vec{Q}}{dt} = m_1\vec{a}_1 + m_2\vec{a}_2 = \vec{f}_1 + \vec{f}_2
-\]
-Integrando troviamo
-\[
-    \integral[t_0][t_1][\frac{d\vec{Q}}{dt}][t] = \vec{Q}(t_1) - \vec{Q}(t_0) =
-    \integral[t_0][t_1][\vec{f}_1 + \vec{f}_2][t] \approx 0
-\]
-che si conserva (approssimativamente) se consideriamo il tempo dell'urto come istantaneo.
+Consideriamo \(n\) particelle con masse \(m_1, m_2, \cdots, m_n\)
+mutualmente interagenti e in presenza di forze esterne.
 
-Ipotizziamo che esista \(U(r_1, r_2)\) tale che
+L'equazione di Newton è data da
 \[
-    \begin{cases}
-        \vec{F}_{1,2} = -\nabla_1 U \\
-        \vec{F}_{2,1} = -\nabla_2 U
-    \end{cases}
+    m_i\vec{a}_i = \sum_{j \neq i} \vec{F}_{i,j} + \vec{f}_{i}
 \]
-Quindi \(E = E_{c1} + E_{c2} + U\) la cui derivata è
-\begin{align*}
-    \frac{dE}{dt} &= \vec{v}_1 \left[\vec{F}_{1,2} + \vec{f}_1\right]
-    + \vec{v}_2 \left[\vec{F}_{2,1} + \vec{f}_2\right]
-    + \nabla_1 U\cdot \vec{v}_1 + + \nabla_2 U\cdot \vec{v}_2 \\
-    &= \vec{v}_1 \cdot \vec{f}_1 + \vec{v}_2 \cdot \vec{f}_2
-\end{align*}
-Integriamo tale valore
+dove \(\vec{f}_i\) sono le forze esterne.
+
+Un metodo si risolvere l'equazione è quello di scrivere
 \[
-    \integral[t_0][t_1][\frac{dE}{dt}][t] = E(t_0) - E(t_1) =
-    \integral[t_0][t_1][\vec{v}_1 \cdot \vec{f}_1 + \vec{v}_2 \cdot \vec{f}_2][t] \approx 0
+    \sum_i m_i\vec{a}_i = \sum_i \sum_{j \neq i} \vec{F}_{i,j} + \sum_i \vec{f}_i
 \]
-Quindi \(E(t_1) = E(t_0)\), cioè un momento prima dell'urto e un momento dopo.
-Possiamo togliere le componenti potenziali in quanto le posizioni sono praticamente le medesime
+Siccome \(\vec{F}_{i,j} = -\vec{F}_{j,i}\), possiamo semplificare la doppia sommatoria
+\[
+    \sum_i \sum_{j \neq i} \vec{F}_{i,j} = 0
+\]
+Possiamo definire la quantità di moto totale
+\[
+    \vec{Q} = \sum_i m_i\vec{v}_i \qquad \frac{d\vec{Q}}{dt} = \sum_i m_i\vec{a}_i
+\]
+Mettendo assieme quest informazioni possiamo notare che la variazione di quantità di moto
+è solamente la somma delle forze esterne
+\stheorem{Prima legge cardinale}{
+    In un sistema di \(n\) particelle
+    \[
+        \frac{d\vec{Q}}{dt} = \sum_i \vec{f}_i
+    \]
+}
+
+\sdefinition{Centro di massa}{
+    In un sistema di \(n\) particelle, il \emph{centro di massa} è definito come
+    \[
+        \vec{R} = \frac{\sum_i m_1\vec{r}_i}{\sum_i m_i}
+    \]
+}
+
+La derivata del centro di massa è data da
 \begin{align*}
-    E_{c1}(t_1) + E_{c2}(t_1) + U(t_1) &= E_{c2}(t_2) + E_{c2}(t_2) + U(t_2) \\
-    E_{c1}(t_1) + E_{c2}(t_1) &= E_{c2}(t_2) + E_{c2}(t_2)
+    \vec{V} = \frac{d\vec{R}}{dt} &= \frac{\sum_i m_1\vec{v}_i}{\sum_i m_i} = \frac{\vec{Q}}{M}
 \end{align*}
-Tale è chiamato \emph{urto elastico}.
+Un'altra cosa che si può fare è partire dall'equazione di Newton e moltiplicare per
+\(\vec{r}_i\) a sinistra e poi sommare rispetto a \(i\)
+\begin{align*}
+    m_i\vec{a}_i &= \sum_{j \neq i} \vec{F}_{i,j} + \vec{f}_{i} \\
+    \sum_i \vec{r}_i \wedge (m_i\vec{a}_i) &= \sum_i \sum_{j \neq i} \vec{r}_i \wedge \vec{F}_{i,j} + \sum_i \vec{r}_i \wedge \vec{f}_{i}
+\end{align*}
+Possiamo considerare il momento angolare
+\[
+    \vec{L}_i = \vec{r}_i \wedge m_1 \vec{v}_i
+\]
+la cui derivata è data da
+\begin{align*}
+    \frac{d\vec{L}_i}{dt} = \vec{v}_i \wedge m_i\vec{v}_i + \vec{r}_i \wedge m_1\vec{a}_i
+\end{align*}
+Il primo termine è nullo e rimane il momento angolare della \(i\)-esima particella.
+Definiamo allora il momento angolare totale del sistema
+\[
+    \vec{L} = \sum_i \vec{L}_i = \sum_i \vec{r}_i \wedge m_1\vec{v}_i
+\]
+Consideriamo ora il termine
+\[
+    \sum_i \sum_{j\neq i} \vec{r}_i \wedge \vec{F}_{i,j}
+\]
+Prendendo due particelle \(a\) e \(b\) abbiamo
+\begin{align*}
+    \vec{r}_a \wedge \vec{F}_{a,b} - \vec{r}_b \wedge \vec{F}_{a,b}
+    &= (\vec{r}_a - \vec{r}_b) \wedge \vec{F}_{a,b}
+\end{align*}
+Se imponiamo la condizione che una forza tra una coppia di particelle sia orientata
+verso la congiungente delle due (il che vale per una grande classi di forze),
+allora il prodotto è nullo.
+In tal caso,
+\[
+    \sum_i \sum_{j\neq i} \vec{r}_i \wedge \vec{F}_{i,j} = 0
+\]
+\stheorem{Seconda legge cardinale}{
+    In un sistema di \(n\) particelle
+    \[
+        \frac{d\vec{L}}{dt} = \sum_i \vec{r}_i \wedge \vec{f}_i
+    \]
+    che è il momento delle forze esterne.
+}
+In particolare, se non vi sono forze esterne, il momento angolare totale si conserva.
+Ciò è dipendente dall'origine in quanto se avessi \(\vec{r}_i + \vec{T}\)
+al posto di \(\vec{r}_i\), il nuovo momento angolare sarebbe
+% https://tex.stackexchange.com/questions/120029/how-to-typeset-a-primed-vector
+\newcommand{\pvec}[1]{\vec{#1}\mkern2mu\vphantom{#1}}
+\begin{align*}
+    \pvec{L}' &= \sum_i \pvec{F}_i' \wedge m_i \vec{v_i} \\
+    &= \sum_i (\vec{r}_i + \vec{T}) \wedge m_i \vec{v_i} \\
+    &= \vec{L} + \vec{T} \wedge \sum_i m_i \vec{v_i} \\
+    &= \vec{L} + \vec{T} \wedge \vec{Q}
+\end{align*}
+La sua derivata sarebbe
+\begin{align*}
+    \frac{d\pvec{L}'}{dt} &= \frac{d\vec{L}}{dt} + \vec{T} \wedge \frac{d\vec{Q}}{dt} \\
+    &= \frac{d\vec{L}}{dt} - \vec{T} \wedge \sum_i \vec{f}_i \\
+    &= \sum_i \vec{r}_i \wedge \vec{f}_i + \vec{T} \wedge \sum_i \vec{f}_i \\
+    &= \sum_i \pvec{r}_i' \wedge \vec{f}_i
+\end{align*}
+per la prima legge cardinale. Quindi la derivata è indipendente dal sistema di riferimento.
+\\ Notiamo che \(\pvec{r}_i' = \vec{r}_i + \vec{R}\).
+Allora la velocità anche cambia per il centro di massa, quindi
+\(\vec{v_i} = \pvec{v}_i + \vec{V}\).
+Abbiamo allora
+\begin{align*}
+    \vec{L} &= \sum_i \vec{r}_i \wedge m_1\vec{v}_i = \sum_i (\pvec{r}_i' + \vec{R}) \wedge m_1 (\pvec{v}_i' + \vec{V}) \\
+    &= \pvec{L}' + \left(
+        \sum_i m_1 \pvec{r}_i'
+    \right) \wedge \vec{V} + \vec{R} \wedge
+    \sum_i m_i \pvec{v}_i' + \sum_i m_i \vec{R} \times \vec{V}
+\end{align*}
+Se ora valutiamo la quantità di moto nel centro di massa otteniamo
+\begin{align*}
+    \pvec{Q}' &= \sum_i m_i \pvec{v}_i' = \sum_i (\vec{v}_i - \vec{V})m_i \\
+    &= \vec{Q} - \vec{V} \sum_i m_i = 0
+\end{align*}
+che è nulla per definizione. La quantità di moto del centro di massa vista dal centro di massa è zero.
+Allora, abbiamo dimostrato che il termine
+\[
+    \sum_i m_i \pvec{v}_i' = 0
+\]
+Ora valutiamo
+\begin{align*}
+    \sum_i m_i \pvec{r}_i' &= \sum_i (\vec{r}_i - \vec{R}) m_i \\
+    &= \sum_i m_i\vec{r}_i - \vec{R} \sum_i m_i = 0
+\end{align*}
+Di nuovo, dalla definizione di \(\vec{R}\), tale termine è zero.
+Siccome questi due termini sono nulli, in definitiva abbiamo
+\[
+    \vec{L} = \pvec{L}' + M\vec{R} \wedge \vec{V}
+\]
+e la variazione
+\begin{align*}
+    \frac{d\vec{L}}{dt} &= \frac{d\pvec{L}'}{dt} + M\frac{d\vec{R}}{dt} \wedge \vec{V}
+    + M \vec{R} \wedge \frac{d\vec{V}}{dt} \\
+    &= \frac{d\pvec{L}'}{dt} + \vec{R} \wedge \frac{d\vec{Q}}{dt} \\
+    &= \frac{d\pvec{L}'}{dt} + \vec{R} \wedge \sum_i \vec{f}_i
+\end{align*}
+usando la prima e la seconda legge cardinale della dinamica.
+Allora troviamo
+\begin{align*}
+    \frac{d\pvec{L}'}{dt} &= \sum_i \vec{r}_i \wedge \vec{f}_i
+    - \vec{R} \wedge \sum_i \vec{f}_i \\
+    &= \sum_i (\vec{r}_i - \vec{R}) \wedge \vec{f}_i \\
+    &= \sum_i \pvec{r}_i' \wedge \vec{f}_i
+\end{align*}
+Quindi la seconda legge cardinale della dinamica vale anche nel sistema non inerziale
+del centro di massa.
+\\
+Se consideriamo la variazione dell'energia cinetica di tutte le particelle otteniamo
+\begin{align*}
+    \frac{dE_c}{dt} &= \sum_i \frac{1}{2} \cdot 2 m_i \vec{v}_i \cdot \vec{a}_i \\
+    &= \sum_i \vec{v}_i \cdot \left[
+        \sum_{j\neq i} \vec{F}_{i,j} + \vec{f}_i
+    \right] \\
+    &= \sum_i \sum_{j\neq i} \vec{v}_i \cdot \vec{F}_{i,j} + \sum_i \vec{v}_i \cdot \vec{f}_i
+\end{align*}
+che non si semplifica come nell'altro caso.
 
 \pagebreak
 
