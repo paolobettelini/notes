@@ -27,3 +27,4 @@
 - semidirect product \ltimes and replace \ltimes + \rtimes
 - generic cyclc group C_n command
 - derivazione 2 pendolo con momenti
+- per i gruppi non semplici è possibile fare il quoziente (non banale) e quindi possibile carpire più informazioni.

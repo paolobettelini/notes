@@ -7481,6 +7481,287 @@ e passando all'infimum abbiamo
     \end{itemize}
 }
 
-% usare integrale con trattino sopra o sotto al posto di s() e S()
+\stheorem{Classi di funzioni integrabili}{
+    Sia \(f\colon I \to \mathbb{R}\) con \(I\) intervallo limitato
+    \begin{enumerate}
+        \item se \(I=[a,b]\) e \(f\) è
+            \begin{enumerate}
+                \item monotona su \(I\);
+                \item continua su \(I\);
+            \end{enumerate}
+            allora \(f\) è limitata su \(I\) (o perché è monotona e quindi compresa fra \(f(b)\) e \(f(a)\),
+            o perché è continua su un chiuso limitato per Weierstrass)
+            ed è integrabile su \(I=[a,b]\);
+        \item se \(I = [a,b)\) e \(f\) è limitata in \(I\) e
+            \begin{enumerate}
+                \item monotona su \(I\);
+                \item conotinua su \(I\);
+            \end{enumerate}
+            allora \(f\) è Riemann integrabile. (Questo punto contiene anche quello precedente).
+        \item se \(I\) è un intervallo limitato e \(f\) è limitata e continua
+        eccetto che in un numero finito di punti, allora \(f\) è integrabile
+        \item se \(I\) è un intervallo, \(f\) è limitata su \(I\), e l'insieme
+        \[
+            B = \{ x\in I \,|\, f \text{ non è continua in } I\}
+        \]
+        ha un numero finito di punti di accumulazione, allora \(f\) è Riemann integrabile su \(I\).
+    \end{enumerate}
+}
+
+In effetti si dimostra che \(f\colon I \to \mathbb{R}\) limitata su \(I\)
+limitato è Riemann integrabile se e solo se l'insieme \(B\) ha misura di Lebesgue nulla.
+Cioè \(\forall \varepsilon > 0\) esiste \(\{I_n\}\) successione di intervalli aperti tale che
+\[
+    B \subseteq \bigcup_n I_n \land \sum_n \ell(I_n) < \varepsilon
+\]
+
+\sproof{}{
+    \begin{enumerate}
+        \item \begin{enumerate}
+            \item Suddividiamo l'intervallo \([a,b]\) in punti \(x_0,x_1,\cdots, x_n\).
+            I punti \(x_k\) hanno forma \(a + k \frac{b-a}{n}\) con \(0 \leq k \leq n\).
+            La partizione di \([a,b]\) è data da \(I_k = [x_{k-1}, x_k]\) con \(0 < k < n\).
+            Per ogni \(k\) siano
+            \[
+                m_k = \underset{[x_{k-1},x_k]}{\inf}\,f
+                \qquad
+                M_k = \underset{[x_{k-1},x_k]}{\sup}\,f
+            \]
+            e siano per ogni \(n\)
+            \[
+                \varphi_n = \sum_{k=1}^n m_k \chi_{I_k}
+            \]
+            e
+            \[
+                \psi_n = \sum_{k=1}^n M_k \chi_{I_k}
+            \]
+            cosicché \(\varphi_n\) e \(\psi_n\) sono a scala, \(\varphi_n \leq f \leq \psi_n\)
+            su \(I = [a,b]\) e
+            \[
+                \int_I \varphi_n = \sum_{k=1}^n m_k \cdot \ell(I_k) = \sum_{k=1}^n m_k \frac{b-a}{n}
+            \]
+            e rispettivamente
+            \[
+                \int_I \psi_n = \sum_{k=1}^n M_k \frac{b-a}{n}
+            \]
+            Dal teorema CNS per l'integrabilità risulta che se
+            \[
+                0 \leq \int_I \psi_n - \int_I \varphi_n \sum_{k=1}^n (M_k - m_k)\frac{b-a}{n} \to 0
+            \]
+            allora \(f\) è Riemann integrabile su \(I\). \\
+            Sia \(f\) monotona in \(I = [a,b]\).
+            Senza perdita di generalità supponiamo che \(f\) sia monotona crescente (altrimenti applichiamo a \(-f\) e l'opposto di una funzione integrabile è integrabile).
+            Cosicché
+            \[
+                m_k = \underset{x_{k-1} \leq x \leq x_k}{\inf}\, f = f(x_{k-1})
+            \]
+            e
+            \[
+                M_k = \underset{x_{k-1} \leq x \leq x_k}{\sup}\, f = f(x_k)
+            \]
+            (qua sup e inf corrispondono a max e min siccome è monotona).
+            Sostituendo ciò nell'equazione CNS dell'integrabilità abbiamo
+            \begin{align*}
+                \frac{b-a}{n} \sum_{k=1}^n (M_k - m_k) &= \frac{b-a}{n} \sum_{k=1}^n \left[f(x_k) - f(x_{k-1})\right] \\
+                &= \frac{b-a}{n} \left[f(b) - f(a)\right] \to 0
+            \end{align*}
+            per \(n \to \infty\).
+            \item Sia \(f\) continua su \([a,b]\).
+            Mostriamo che
+            \[
+                0 \leq \int_I \psi_n - \int_I \varphi_n = \sum_{k=1}^n (M_k - m_k) \frac{b-a}{n} \to 0
+            \]
+            facendo vedere che \(\forall \varepsilon > 0\) esiste \(N\) tale che \(\forall n \geq N\)
+            \[
+                0 \leq \sum_{k=1}^n (M_k - m_k) \frac{b-a}{n} < \varepsilon
+            \]
+            Usiamo la definizione di limite per \(n \to\infty\).
+            Poiché \(f\) è continua su \([a,b]\) chiuso e limitato, \(f\) è uniformemente continua
+            su \([a,b]\), e quindi esiste \(\delta > 0\) tale che \(\forall x,x' \in [a,b]\)
+            con \(|x-x'| < \varepsilon\) si ha che \(|f(x) - f(x')| < \varepsilon\).
+            In questo caso sostituiamo \(\varepsilon\) con \(\frac{\varepsilon}{b-a}\).
+            L'idea è quella di stimare \(M_k - m_k\). La distanza fra i punti dove assumono
+            il massimo \(M_k\) e il minimo \(m_k\) non può essere maggiore della lunghezza dell'intervallo.
+            Sia allora \(n\) tale che \(\frac{b-a}{n} < \varepsilon\). Per ogni \(k\), \(f\) è continua
+            su \([x_{k-1}, x_k]\) chiuso e limitato, e quindi per Weierstrass \(\exists x_k, x_k' \in [x_{k-1}, x_k]\) tale che
+            \[
+                M_k = \underset{[x_{k-a}, x_k]}{\max}\, f = f(x_k')
+                \qquad
+                m_k = \underset{[x_{k-a}, x_k]}{\min}\, f = f(x_k)
+            \]
+            cosicché
+            \[
+                M_k - m_k = f(x_k') - f(x_k) = |f(x_k') - f(x_k)| < \frac{\varepsilon}{b-a}
+            \]
+            poiché \(|x_k' - x_k| \leq \frac{b-a}{n} < \delta\).
+            Quindi, sostituendo questo nella solita disuguaglianza otteniamo che
+            \[
+                0 \leq \int_I \psi_n - \int_I \varphi_n = \frac{b-a}{n} \sum_{k=1}^n (M_k - m_k)
+                < \frac{b-a}{n} \sum_{k=1}^n \frac{\varepsilon}{b-a} = \varepsilon
+            \]
+        \end{enumerate}
+        \item \begin{enumerate}
+            \item Sia \(f\colon [a,b) \to \mathbb{R}\) limitata e monotona.
+            Per monotonia, esiste
+            \[
+                \lim_{x \to b^-} f(x) = L
+            \]
+            che è finito in quanto \(f\) è limitata.
+            Posto \(\overline{f} \colon [a,b] \to \mathbb{R}\)
+            \[
+                \overline{f} = \begin{cases}
+                    f(x) & x \in [a,b] \\
+                    L & x = b
+                \end{cases}
+            \]
+            \(\overline{f}\) è monotona su \([a,b]\)
+            e quindi ivi integrabile e quindi \(\overline{f} = f\) è integrabile
+            nel sottoinsieme \([a,b)\).
+            \item sia \(f\colon [a,b) \to \mathbb{R}\) limitata e continua.
+            Per dimsotrare che \(f\) è integrabile su \([a,b)\),
+            costruiamo una funziona a scala sopra e sotto. \(\forall \varepsilon > 0\)
+            costruiamo \(\varphi_\varepsilon, \psi_\varepsilon\) a scala tale che \(\varphi_\varepsilon \leq f \leq \psi_\varepsilon\)
+            e
+            \[
+                0 \leq \int_I \psi_\varepsilon - \int_I \varphi_\varepsilon < \varepsilon
+            \]
+            Osserviamo che \(f\) è continua su \([a,b-\delta]\) per tutti \(\delta > 0\).
+            Per il punto precedente \(f\) è quindi integrabile su
+            \([a,b-\delta]\) per tutte \(\delta>0\).
+            Ci rimane allora da considerare l'intervallo \([b-\delta, b)\).
+            Per ipotesi \(f\) è limitata su \([a,b]\), quindi \(\exists M\)
+            tale che \(-M \leq f(x) \leq M\) per tutte le \(x\in [a,b]\).
+            Scegliamo \(\delta\) tale che
+            \[
+                2M\delta < \frac{\varepsilon}{2}
+            \]
+            poiché \(f\) è integrabile su \([a,b-\delta]\), dato \(\varepsilon\) esistono
+            funzioni a scala (che scegliamo costanti)
+            \(\varphi_\varepsilon', \psi_\varepsilon'\) tale che \(\varphi_\varepsilon' \leq f \leq \psi_\varepsilon'\)
+            su \([a,b-\delta]\) e
+            \[
+                0 \leq \int\limits_{[a,b-\delta]} \psi_\varepsilon' - \int\limits_{[a,b-\delta]} \varphi_\varepsilon' < \frac{\varepsilon}{2}
+            \]
+            Definiamo allora
+            \[
+                \varphi_\varepsilon = \begin{cases}
+                    \varphi_\varepsilon' & x\in[a,b-\delta] \\
+                    -M & x\in [b-\delta, b)
+                \end{cases}
+            \]
+            e
+            \[
+                \psi_\varepsilon = \begin{cases}
+                    \psi_\varepsilon' & x\in[a,b-\delta] \\
+                    M & x\in [b-\delta, b)
+                \end{cases}
+            \]
+            Siccome \(\varphi_\varepsilon, \psi_\varepsilon\) sono a scala, \(\varphi_\varepsilon \leq f \leq \psi_\varepsilon\)
+            in \([a,b]\) e
+            \begin{align*}
+                0 \leq \int\limits_{[a,b)} \psi_\varepsilon - \int\limits_{[a,b)} \varphi_\varepsilon
+                &= \left(\,
+                    \int\limits_{[a,b-\delta]} \psi_\varepsilon' -
+                    \int\limits_{[a,b-\delta]} \varphi_\varepsilon'
+                \right) \\
+                 &+ \left(\,
+                    \int\limits_{[b-\delta, b)} M - \int\limits_{[b-\delta, b)} (-M)
+                 \right) \\
+                 &= \left(\,
+                    \int\limits_{[a,b-\delta]} \psi_\varepsilon' -
+                    \int\limits_{[a,b-\delta]} \varphi_\varepsilon'
+                \right) + 2M\delta \\
+                &< \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon
+            \end{align*}
+        \end{enumerate}
+        \item Si deduce facilmente che se \(f\colon (a,b) \to \mathbb{R}\) è limitata e continua allora è Riemann integrabile
+        (al posto che il ragionamento solo a destra lo faccio da ambo le parti)
+        e quindi se \(f\colon (a,b) \to \mathbb{R}\) è limitata e continua eccetto che in \(c\in (a,b)\),
+        poiché \((a,b) = (a,c) \cup \{c\} \cup (c,b)\) e \(f\) è integrabile su ciascuno dei \(3\)
+        sottointervalli \(f\) è integrabile su \((a,b)\).
+        In generale, con molteplici punti mancanti, si fa lo stesso procedimento isolandoli.
+        \item Esercizio: nell'intorno 
+    \end{enumerate}
+}
+
+\scorollary{}{
+    Sia \(f\colon I \to \mathbb{R}\) limitata su \(I\) limitato e supponiamo che esista una partizione
+    \(\{I_k\}_{k=1}^n\) tale che \(f\) è o continua o monotona in ciascun \(I_k\).
+    Allora \(f\) è integrabile su \(I\).
+}
+
+Sia \(f\colon (a,b) \to \mathbb{R}\) integrabile su \((a,b)\).
+Allora, comunque essa venga estesa a \([a,b]\) rimane integrabile e l'integrale ha lo stesso valore
+siccome
+\[
+    \int\limits_{\{a\}} f = 0
+\]
+Possiamo quindi scrivere
+\[
+    \int_a^b f
+\]
+senza ambiguità.
+Osserviamo poi che dalla proprietà di additività dell'integrale rispetto all'intervallo di integrazione,
+l'integrale si può spezzare.
+
+\sdefinition{}{
+    Sia \(f\colon I \to \mathbb{R}\) integrabile su \(I\) (quindi \(I\) è limitato e \(f\) è limitata su \(I\)).
+    Allora \(\forall a,b\in\mathbb{R}\) poniamo
+    \[
+        \int\limits_a^b f = \begin{cases}
+            \int\limits_{(a,b)} f & a<b \\
+            0 & a=b \\
+            - \int\limits_b^a f & b<a
+        \end{cases}
+    \]
+}
+
+\sdefinition{}{
+    Sia \(f\colon I \to \mathbb{R}\) integrabile su ogni sottointervallo limitato di \(I\).
+    Fissato \(a\in I\) definiamo la \emph{funzione integrale} di \(f\) centrata in \(a\)
+    \[
+        F_a (x) = \int\limits_{a}^x f = \begin{cases}
+            \int\limits_{(a,x)} f & a<x \\
+            0 & a=x \\
+            - \int\limits_{(x,a)} & a>x
+        \end{cases}
+    \]
+}
+
+\sexercise{}{
+    Scrivere la relazione fra \(F_a(x)\) e \(F_b(x)\)
+    per \(a \neq b\).
+}
+
+\slemma{}{
+    Sia \(f\colon I \to \mathbb{R}\) integrabile su ogni sottointervallo di \(I\)
+    e siano \(a,b,c \in I\). Allora,
+    \[
+        \int\limits_a^b f = \int\limits_a^c f + \int\limits_c^b f
+    \]
+}
+
+\sproof{}{
+    La dimostrazione si fa a casi e ne diamo solo due.
+    Se \(a<c<b\) il risultato segue dall'additività rispetto all'insieme di integrazione.
+    Supponiamo \(a<b<c\). Allora, sempre per l'additività rispetto all'insieme di integrazione
+    \[
+        \int\limits_a^c f = \int\limits_a^b f + \int\limits_b^c f
+    \]
+    da cui
+    \[
+        \int\limits_a^b f = \int\limits_a^c f - \int\limits_b^c f
+        = \int\limits_a^c f + \int\limits_c^b f
+    \]
+}
+
+\stheorem{Teorema fondamentale del calcolo integrale}{
+    Sia \(f\colon [a,b] \to \mathbb{R}\) integrabile su \([a,b]\)
+    e sia
+    \[
+        F(x) = \int\limits_a^x f(t)\,dt
+    \]
+    TODO
+}
 
 \end{document}
