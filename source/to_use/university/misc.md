@@ -28,3 +28,5 @@
 - generic cyclc group C_n command
 - derivazione 2 pendolo con momenti
 - per i gruppi non semplici è possibile fare il quoziente (non banale) e quindi possibile carpire più informazioni.
+- la cosa F_n = F_m se e solo se n=m
+- esiste iniettiva X->Y se e solo se esiste Y-> X suriettiva.

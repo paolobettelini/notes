@@ -7761,7 +7761,233 @@ l'integrale si può spezzare.
     \[
         F(x) = \int\limits_a^x f(t)\,dt
     \]
-    TODO
+    la sua funzione integrale centrata in \(a\).
+    Allora:
+    \begin{enumerate}
+        \item \(F\) è Lipschiziana in \([a,b]\) (in particolare continua su \([a,b)\));
+        \item Se \(f\) è continua in \(x_0 \in [a,b]\) allora \(F\)
+        è derivabile in \(x_0\) e vale
+        \[
+            F'(x_0) = f(x_0)
+        \]
+        \item Se \(f\) è continua in \([a,b]\) allora \(F\) è una primitiva di \(f\) in \([a,b]\);
+        \item Se \(f\) è continua in \([a,b]\) e \(G\) è una sua primitiva (che per il punto precedente esiste, quindi qua stiamo dimostrando che se è continua esiste la primitiva)
+        allora \(\forall x \in [a,b]\)
+        \[
+            F(x) = \int\limits_a^x f(t)\,dt = G(x) - G(a)
+        \]
+        e in particolare
+        \[
+            F(b) = \int\limits_a^b f(t)\,dt = G(b) - G(a)
+        \]
+    \end{enumerate}
+}
+
+\sproof{}{
+    \begin{enumerate}
+        \item per ipotesi \(f\) è integrabile su \([a,b]\) e quindi in particolare
+        è limitata, cioè \(\exists M\) tale che \(|f(t)| \leq M\) per tutte le \(t\in [a,b]\).
+        Dati \(x,x' \in [a,b]\), supponendo senza perdere la generalità che \(x<x'\)
+        (il modulo nella definizione di Lipschiziana ce lo permette), abbiamo
+        \begin{align*}
+            |F(x') - F(x)| &= \left|
+                \int\limits_a^{x'} f(t)\,dt -
+                \int\limits_a^x f(t)\,dt
+            \right| \\
+            &= \left|
+                \int\limits_a^x f(t)\,dt +
+                \int\limits_x^{x'} f(t)\,dt -
+                \int\limits_a^x f(t)\,dt
+            \right| \\
+            &= \left|
+                \int\limits_x^{x'} f(t)\,dt
+            \right| \\
+            &= \left|\,
+                \int\limits_{[x,x']} f(t)\,dt
+            \right| \\
+            &\leq \int\limits_{[x,x']} f(t)\,dt \\
+            &\leq M \cdot \int\limits_{[x,x']} 1\,dt = M(x'-x) = M|x'-x|
+        \end{align*}
+        \item Sia \(f\) continua in \(x_0 \in [a,b]\). Mostriamo che \(F\) è derivabile in \(x_0\)
+        con \(F'(x_0) = f(x_0)\) cioè che
+        \[
+            \frac{F(x_0 + h) - F(x_0)}{h} \to f(x_0)
+        \]
+        per \(h\to 0\) cioè che
+        \[
+            \left|
+                \frac{F(x_0 + h) - F(x_0)}{h} - f(x_0)
+            \right| \to 0
+        \]
+        per \(h \to 0\).
+        Possiamo scrivere \(\forall h \neq 0\)
+        \begin{align*}
+            \left|
+                \frac{F(x_0 + h) - F(x_0)}{h} - f(x_0)
+            \right| &= \left|
+                \frac{1}{h} \cdot \left(
+                    \int\limits_a^{x_0 + h} f(t) \,dt -
+                    \int\limits_a^{x_0} f(t) \,dt
+                \right) - f(x_0)
+            \right| \\
+            &= \left|
+                \frac{1}{h} \cdot \left(
+                    \int\limits_{x_0}^{x_0 + h} f(t) \,dt -
+                    hf(x_0)
+                \right)
+            \right| \\
+            &= \left|
+                \frac{1}{h} \cdot \left(
+                    \int\limits_{x_0}^{x_0 + h} f(t) \,dt -
+                    \int\limits_{x_0}^{x_0 + h} f(x_0)\,dt
+                \right)
+            \right| \\
+            &= \left|
+                \frac{1}{h}
+                \int\limits_{x_0}^{x_0 + h} f(t) - f(x_0) \,dt
+            \right|
+        \end{align*}
+        Se \(h>0\) (la disuglianza triangolare vale quando l'estremo superiore è maggiore a quello inferiore),
+        allora
+        \begin{align*}
+            \left|
+                \frac{1}{h}
+                \int\limits_{x_0}^{x_0 + h} f(t) - f(x_0) \,dt
+            \right| &\leq \frac{1}{h} \int\limits_{x_0}^{x_0 + h} |f(t) - f(x_0)| \,dt
+        \end{align*}
+        Per ipotesi, \(f\) è continua in \(x_0\) quindi dato \(\varepsilon>0\) esiste \(\delta\)
+        tale che \(\forall t \in (x_0 - \delta, x_0 + \delta)\) vale
+        \[
+            |f(t) - f(x_0)| < \varepsilon
+        \]
+        Quindi se \(0 < h < \delta\), per tutte le \(t\in[x_0, x_0 + h]\)
+        \[
+            |t-x_0| < \delta
+        \]
+        e sostituendo e usando la monotonia dell'integrale ottemiamo
+        \begin{align*}
+            \left|\frac{F(x_0 + h) - F(x_0)}{h} - f(x) \right| &=
+            \left|
+                \frac{1}{h}
+                \int\limits_{x_0}^{x_0 + h} f(t) - f(x_0) \,dt
+            \right| \leq \frac{1}{h} \int\limits_{x_0}^{x_0 + h} |f(t) - f(x_0)| \,dt \\
+            &< \frac{1}{h} \int\limits_{x_0}^{x_0 + h} \varepsilon = \frac{1}{h} h \varepsilon = \varepsilon,
+            \quad \forall 0<h<\delta
+        \end{align*}
+        Per definizione
+        \[
+            \lim_{h\to0^+}\left|\frac{F(x_0 + h) - F(x_0)}{h} - f(x) \right| 
+            = 0
+        \]
+        cioè \(D_+F(x_0) = f(x_0)\). \\
+        Se invece \(h<0\) vale ancora 
+        \begin{align*}
+            \left|\frac{F(x_0 + h) - F(x_0)}{h} - f(x) \right| &=
+            \left|
+                \frac{1}{h}
+                \int\limits_{x_0}^{x_0 + h} f(t) - f(x_0) \,dt
+            \right|
+        \end{align*}
+        Per usare la disuglianza triangolare dobbiamo invertire il segno
+        \begin{align*}
+            \left|
+                \frac{1}{-h}
+                \int\limits_{x_0}^{x_0 + h} f(t) - f(x_0) \,dt
+            \right| &=
+            -\frac{1}{h} \int\limits_{x_0}^{x_0 + h} |f(t) - f(x_0)| \,dt
+        \end{align*}
+        Come prima, \(|f(t) - f(x_0)| < \varepsilon\) se \(-\delta < h < 0\).
+        Quindi,
+        \begin{align*}
+            -\frac{1}{h} \int\limits_{x_0}^{x_0 + h} |f(t) - f(x_0)| \,dt
+            & \leq -\frac{1}{h} \int\limits_{x_0}^{x_0 + h} \varepsilon \,dt \\
+            &= -\frac{1}{h} (-h \varepsilon) = \varepsilon
+        \end{align*}
+        Quindi \(D_-F(x_0) = f(x_0)\).
+        \item Se \(f\) è continua in \(x_0\, \forall x_0\) allora per il punto 2 \(F\)
+        è derivabile in \(x_0\) con \(F'(x_0) = f(x_0)\). \(\forall x_0 \in [a,b]\)
+        e \(F\) è una primitiva di \(f\).
+        \item Sia \(G\) una primitiva di \(f\). Per il punto 3,
+        \[
+            F(x) = \int\limits_a^x f(t)\,dt
+        \]
+        è una primitiva. Quindi per il teorema di caratterizzazione delle primitive esiste \(C\)
+        tale che \(G(x) = F(x) + C\) per tutte le \(x\in [a,b]\).
+        Possiamo dire qualcosa della funzione integrale solo per \(x=a\)
+        \[
+            G(a) = F(x) +C = C = \int\limits_a^a f(t)\,dt = 0
+        \]
+        Quindi \(C = G(a)\) e si ottiene \(G(x) = F(x) + G(a)\)
+        cioè
+        \[
+            F(x) = G (x) - G(a)
+        \]
+    \end{enumerate}
+}
+
+\scorollary{}{
+    Sia \(f \colon I \to \mathbb{R}\) e supponiamo che \(f\)
+    sia integrabile nel senso di Riemann su ogni sottointervallo limitato.
+    Fissati \(ain I\) sia
+    \[
+        F(x) = \int\limits_a^x f(t) \, dt
+    \]
+    Allora, 
+    \begin{enumerate}
+        \item \(F\) è Lipschitziana su ogni sottointervallo limitato che contiene \(a\) (non possiamo dire che sia Lipschitziana su tutto).
+        Infati se \(a\in [\alpha,\beta] \subseteq I\) applichiamo il punto 1 del teorema a tale intervallo.
+        In particolare, \(F\) è continua su tutto \(I\), in quanto Lipschitziana su tutti i sottointervalli;
+        \item Se \(f\) è continua in \(x_0 \in I\), allora \(F\) è derivabile in \(x_0\)
+        e \(F'(x_0) = f(x_0)\);
+        \item se \(f\) è continua in \(I\), \(F\) è una primitiva di \(f\) in \(I\);
+        \item se \(G\) è una primtiiva di \(f\) in \(I\), \(\forall x \in I\)
+        \[
+            F(x) = G(x) - G(a)
+        \]
+    \end{enumerate}
+}
+
+\scorollary{Formula di derivazione delle funzioni integrali}{
+    Sia \(f\colon J \to \mathbb{R}\) integrabile su ogni sottointervallo limitato di \(J\)
+    e siano \(\alpha,\beta \colon I \to J\) continue. Definiamo
+    \[
+        H(x) = \int\limits_{\alpha(x)}^{\beta(x)}f(y)\,dy
+    \]
+    che è ben posto.
+    Allora:
+    \begin{enumerate}
+        \item \(H\) è continua su \(I\). 
+        \item Se \(f\) è continua su \(J\)
+        e \(\alpha,\beta\) sono derivabili in \(I\), \(H\) è derivabile in \(I\) e vale
+        \[
+            H'(x) = f(\beta(x))\beta'(x) - f(\alpha(x))\alpha'(x)
+        \]
+    \end{enumerate}
+}
+
+\sproof{}{
+    Scelto \(y_0 \in J\), possiamo scrivere, \(\forall x\in I\)
+    \begin{align*}
+        H(x) &= \int\limits_{\alpha(x)}^{\beta(x)}f(y)\,dy =
+        \int\limits_{\alpha(x)}^{y_0}f(y)\,dy +  \int\limits_{y_0}^{\beta(x)}f(y)\,dy \\
+        &= F(\beta(x)) - F(\alpha(x))
+    \end{align*}
+    dove
+    \[
+        F(y) = \int\limits_{y_0}^y f(t)\,dt
+    \]
+    è la funzione integrale di \(f\) centrata in \(y_0\).
+    \begin{enumerate}
+        \item Per il teorema fondamentale del calcolo integrale, \(F\) è continua su \(J\)
+        e quindi \(H\) è continua come composizione di funzioni continue.
+        \item Se \(f\) è continua in \(J\), \(F\) è derivabile in \(J\)
+        con \(F'(y) = f(y)\) e se inoltre \(\alpha, \beta\) sono derivabili dal teormea di derivazione delle funzioni composte,
+        \(H\) è derivabile e
+        \begin{align*}
+            H'(x) &= F'(\beta(x)) \beta'(x) - F'(\alpha(x)) \alpha'(x) \\
+            &= f(\beta(x))\beta'(x) - f(\alpha(x))\alpha'(x)
+        \end{align*}
+    \end{enumerate}
 }
 
 \end{document}
