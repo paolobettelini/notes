@@ -104,10 +104,15 @@
 \end{snippetproof}
 
 \begin{snippetproposition}{cosets-partition}{Cosets form a partition}
-    Let \((G, \circ)\) be a \group, \((H, \circ) \subgroupleq (G, \circ)\).
-    The cosets of \(H\) (either right or left) form a \partition
+    Let \((H, \circ) \subgroupleq (G, \circ)\) be a \group[groups].
+    \begin{enumerate}
+        \item \(\forall g\in G, g\in Hg\);
+        \item if \(l\in Hg\), then \(Hl = Hg\);
+        \item if \(Hg \intersection Hk \neq \emptyset\) for some \(g,k\in G\); then \(Hg = Hk\);
+    \end{enumerate}
+    In particular, the cosets of \(H\) form a \partition
     of \(G\) with subsets of cardinality \(\cardinality{H}\).
-    In particular, every element \(g\in G\) is contained in exactly one coset.
+    The same properties are true for the left cosets.
 \end{snippetproposition}
 
 \plain{If we had defined the cosets on a monoid, a partition would not necessarily
@@ -130,26 +135,29 @@ form a partition and maintain the same cardinality within the cosets.}
     Thus, \(Hg \subseteq Hk\). By symmetry, \(Hk \subseteq Hg\) and thus \(Hk=Hg\).
 \end{snippetproof}
 
-\begin{snippetdefinition}{subgroup-index-definition}{Subgroup index}
-    \todo
-\end{snippetdefinition}
+\plain{The only coset containing the identity is the subgroup itself, meaning that it is also the only coset that is a subgroup.}
 
-\begin{snippettheorem}{lagrange-theorem}{Lagrange theorem}
-    Let \((H, \circ) \subgroupleq (G, \circ)\)
-    where \(\cardinality{G} < \infty\).
-    Then, \[\cardinality{G} = |(G, \circ)\,:\,(H,\circ)| \cdot \cardinality{H}\]
-    In particular, \(\cardinality{H}\) divides \(\cardinality{G}\).
-\end{snippettheorem}
+\begin{snippetproposition}{cosets-two-elements-equivalences}{}
+    Let \((K, \circ) \subgroupleq (G, \circ)\)
+    be \group[groups] and let \(g_1,g_2\in G\). Then:
+    \begin{enumerate}
+        \item \(Hg_1 = Hg_2 \iff g_1g_2^{-1} \in H\);
+        \item \(g_1 H = g_2 H \iff g_1^{-1} g_2 \in H\);
+    \end{enumerate}
+\end{snippetproposition}
 
-\plain{In the infinite case we can still say tha that the cardinality of the right cosets
-is the same as the cardinality of the left cardinals, but without the algebraic simplification.}
-
-\begin{snippetproof}{lagrange-theorem-proof}{lagrange-theorem}{Lagrange theorem}
-    Obvious by \snippetref[cosets-partition][Cosets form a partition].
+\begin{snippetproof}{cosets-two-elements-equivalences-proof}{cosets-two-elements-equivalences}{}
+    \begin{enumerate}
+        \item Suppose that \(Hg_1 = Hg_2\), meaning \(g_1 = hg_2\) for some \(h\in H\).
+        This means that \(g_1g_2^{-1} = h \in H\).
+        Likewise, if \(g_1g_2^{-1} \in H\), then \(g_1 = (g_1g_2^{-1})g_2 \in Hg_2\)
+        meaning \(Hg_1 = Hg_2\);
+        \item The proof is similar.
+    \end{enumerate}
 \end{snippetproof}
 
 \begin{snippetproposition}{amount-of-right-and-left-cosets}{Amount of right and left cosets}
-    Let \((H, \circ) \subgroupleq (G, \circ)\).
+    Let \((H, \circ) \subgroupleq (G, \circ)\) be \group[groups].
     Then, the amount of right cosets is the same as the amount of left cosets.
 \end{snippetproposition}
 
@@ -169,7 +177,27 @@ is the same as the cardinality of the left cardinals, but without the algebraic 
     By composing the function with its inverse we get the identity in both direction, so it is \bijective.
 \end{snippetproof}
 
-% TODOURGENT dovrebbe essere la notazione g\circ H e H \circ g
+\begin{snippetdefinition}{subgroup-index-definition}{Subgroup index}
+    Let \(G \subgroupleq H\) be \group[groups].
+    The \emph{index} of \(H\) in \(G\) is the amount of right (or left) cosets of \(H\) in \(G\)
+    \[
+        |G\,:\, H| = |\{Hg \suchthat g\in G\}|
+    \]
+\end{snippetdefinition}
+
+\begin{snippettheorem}{lagrange-theorem}{Lagrange theorem}
+    Let \((H, \circ) \subgroupleq (G, \circ)\)
+    where \(\cardinality{G} < \infty\).
+    Then, \[\cardinality{G} = |(G, \circ)\,:\,(H,\circ)| \cdot \cardinality{H}\]
+    In particular, \(\cardinality{H}\) divides \(\cardinality{G}\).
+\end{snippettheorem}
+
+\plain{In the infinite case we can still say tha that the cardinality of the right cosets
+is the same as the cardinality of the left cardinals, but without the algebraic simplification.}
+
+\begin{snippetproof}{lagrange-theorem-proof}{lagrange-theorem}{Lagrange theorem}
+    Obvious since \snippetref[cosets-partition][cosets form a partition] with same cardinality.
+\end{snippetproof}
 
 \begin{snippet}{cosets-form-congruence-class-1}{}
     Consider the \group \((\integers, +)\)
@@ -187,30 +215,31 @@ is the same as the cardinality of the left cardinals, but without the algebraic 
     Let \((G, \circ)\)
     be a \group where \(\cardinality{G} < \infty\) and let \(g\in G\).
     Then, the order of \(\gengrp{g}\) divides \(\cardinality{G}\).
+    In particular, \(g^{|G|} = 1_G\).
 \end{snippetcorollary}
 
 \begin{snippetproof}{generating-group-order-divides-cardinality-proof}{generating-group-order-divides-cardinality}{}
-    Since \(|\gengrp{g}| = |g|\), we also have that the \elementperiodtext
+    Since \(|\gengrp{g}| = \elementperiod{g}\), we also have that the \elementperiodtext
     of \(g\) divides \(|G|\).
 \end{snippetproof}
 
 \begin{snippetcorollary}{prime-order-group-is-cyclic}{Group with prime order is cyclic}
-    Let \((G, \circ)\) be a \group with order \(p\) where \(p\) is prime.
+    Let \((G, \circ)\) be a \group with order \(p\) where \(p\) is \primen.
     Then, \((G, \circ)\) is \cyclicgroup[cyclic].
 \end{snippetcorollary}
 
 \begin{snippetproof}{prime-order-group-is-cyclic-proof}{prime-order-group-is-cyclic}{Group with prime order is cyclic}
-    Let \(g\in G\) be a non trivial element. Its period divides \(\cardinality{G}\),
-    but \(|g|\) is prime, and thus \(|g| = 1\) or \(|g| = |G|\), but
-    \(|g|\neq 1\) by the choice of \(g\), and thus \(g\) generates \((G, \circ)\).
+    Let \(g \neq 1_G \in G\). Its \elementperiodtext divides \(\cardinality{G}\),
+    but \(\elementperiod{g}\) is \primen, and thus \(\elementperiod{g} = 1\) or \(\elementperiod{g} = |G|\), but
+    \(\elementperiod{g}\neq 1\) by the choice of \(g\), and thus \(g\) generates \((G, \circ)\).
 \end{snippetproof}
 
 \begin{snippettheorem}{index-multiplication-theorem}{Index multiplication theorem}
     Let \((K, \circ) \subgroupleq (H, \circ) \subgroupleq (G, \circ)\)
     be \group[groups]. Then, \(|G\,:\,K|\) is finite \ifandonlyif
-    \(|G\,:\,H|\) is finite. In particular,
+    \(|G\,:\,H|\) and \(|H\,:\,K|\) are finite. In such case,
     \[
-        |G\,:\,K| = |G\,:\,H| |H\,:\,K|
+        |G\,:\,K| = |G\,:\,H| \cdot |H\,:\,K|
     \]
 \end{snippettheorem}
 
@@ -226,7 +255,7 @@ is the same as the cardinality of the left cardinals, but without the algebraic 
     We now show that \(|H\,:\,K| \leq n\). Since the cosets
     of \(K\) in \(H\) have form \(hk\) for some \(h\in (H, \circ)\), and they are
     some of the cosets of \((K, \circ)\) in \((G, \circ)\).
-    Viceversa, let \(|G\,:\,H| = r\) and \(|H\,:\,K| = s\) be finite.
+    Likewise, let \(|G\,:\,H| = r\) and \(|H\,:\,K| = s\) be finite.
     We want to show that \(|G\,:\,K| = rs\).
     Let \(Hg_1, Hg_2 \cdots Hg_r\) the distinct cosets of \((H, \circ)\) in \((G, \circ)\)
     and \(Kh_1,Kh_2,\cdots Kh_s\) the distinct cosets of \((K, \circ)\) in \((H, \circ)\).
@@ -248,45 +277,59 @@ is the same as the cardinality of the left cardinals, but without the algebraic 
     \end{enumerate}
 \end{snippetproof}
 
-\begin{snippetproposition}{cosets-two-elements-equivalences}{}
-    Let \((K, \circ) \subgroupleq (G, \circ)\)
-    be \group[groups] and let \(g_1,g_2\in G\). Then:
-    \begin{enumerate}
-        \item \(Hg_1 = Hg_2 \iff g_1g_2^{-1} \in H\);
-        \item \(g_1 H = g_2 H \iff g_1^{-1} g_2 \in H\);
-    \end{enumerate}
-\end{snippetproposition}
-
-\begin{snippetproof}{cosets-two-elements-equivalences-proof}{cosets-two-elements-equivalences}{}
-    \begin{enumerate}
-        \item Suppose that \(Hg_1 = Hg_2\), meaning \(g_1 = hg_2\) for some \(h\in H\).
-        This menas that \(g_1g_2^{-1} = h \in H\).
-        Likewise, if \(g_1g_2^{-1} \in H\), then \(g_1 = (g_1g_2^{-1})g_2 \in Hg_2\)
-        meaning \(Hg_1 = Hg_2\);
-        \item The proof is similar.
-    \end{enumerate}
-\end{snippetproof}
-
 \section{Subgroups as product of sets}
 
 \begin{snippetproposition}{union-of-subgroups-is-in-product}{}
-    Let \((H, \circ), (K, \circ) \subgroupleq (G, \circ)\) be \group[groups].
-    Then, \(HK \supseteq H \union K\)
-    and \(HK \subseteq \gengrp{H \union K}\).
-    % TODOURGENT write this better and only the general case
-    In general, if \(H_1, H_2, \cdots, H_r\) are \subgroup[subgroups]
-    of \((G, \circ)\), then
+    Let \(H_1, H_2, \cdots, H_n \subgroupleq G\) be \group[groups]. Then,
     \[
-        \bigcup H_i \subseteq \prod H_i \subseteq \gengrp{H_1 \union H_2 \cdots H_r}
+        \bigcup_{i=1}^n H_i \subseteq \prod_{i=1}^n H_i \subseteq \gengrp{\bigcup_{i=1}^n H_i}
     \]
 \end{snippetproposition}
 
 \begin{snippetproof}{union-of-subgroups-is-in-product-proof}{union-of-subgroups-is-in-product}{}
+    Consider the case with two \subgroup[subgroups] \(H, K\).
     Since \(h\in H\), we have \(h=h \circ 1 \in HK\)
     and the same goes ofr \(K\).
-    For the second proposition if \(h\in H\),
-    if \(k \in K\) we have \(k\in \gengrp{H \union K}\)
+    For the second proposition if \(h\in H\)
+    and \(k \in K\), we have \(k\in \gengrp{H \union K}\)
     and thus \(hk \in \gengrp{H \union K}\).
+\end{snippetproof}
+
+\begin{snippetproposition}{subgroup-product-cardinality-theorem}{}
+    Let \((H, \circ), (K, \circ) \subgroupleq (G, \circ)\) be \group[groups]
+    and let \(h,\overline{h}\in H\), \(k,\overline{k}\in K\).
+    Then,
+    \[
+        h\circ k = \overline{h} \circ \overline{k}
+        \iff \exists x \in H \intersection K \suchthat \overline{h} = hx
+        \land \overline{k} = x^{-1}k
+    \]
+    In particular, if \(K\) and \(H\) are finite,
+    \[
+        \cardinality{HK} = \frac{\cardinality{H} \cdot \cardinality{K}}{\cardinality{H \intersection K}}
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{subgroup-product-cardinality-theorem-proof}{subgroup-product-cardinality-theorem}{}
+    Let \(x \in H \intersection K\) and let \(\overline{h} = hx\)
+    and \(\overline{k} = x^{-1}k\). \\
+    \iffproof{
+        This means that \(\overline{h} \circ \overline{k} = hxx^{-1}k = hk\).
+    }{
+        Suppose that \(hk = \overline{h} \circ \overline{k}\). Thus,
+        \(\overline{h}^{-1}hk = \overline{k}\) and
+        \[
+            \overline{h}^{-1}h = \overline{k}k^{-1} \in H \intersection K
+        \]
+        But then \(\overline{k} = (\overline{k}k^{-1})k\)
+        and \(\overline{h} = h{(\overline{h}^{-1} h)}^{-1}\).
+        Denote \(x^{-1} = \overline{k}k^{-1}\)
+        and \(x = {(\overline{h}^{-1} h)}^{-1}\).
+    }
+    Assume that \(H\) and \(K\) are finite.
+    In order to compute \(HK\), we need to compute \(\cardinality{H} \cdot \cardinality{K}\)
+    multiplications.
+    However, each result appears \(\cardinality{H \intersection K}\) times.
 \end{snippetproof}
 
 \begin{snippettheorem}{set-product-subgroup-conditions}{}
@@ -352,7 +395,7 @@ is the same as the cardinality of the left cardinals, but without the algebraic 
 \begin{snippetnote}{sets-products-commutativity}{}
     If \(\forall h \in H, \forall k\in K, hk = kh\), then \(KH=HK\),
     but the inverse is not guaranteed, unless the \group is \abeliangroup[abelian],
-    where every product of subsets is necessarily a subgroup.
+    where every product of subsets is necessarily a \subgroup.
 \end{snippetnote}
 
 \begin{snippetproposition}{subgroup-center-product}{}
@@ -361,43 +404,10 @@ is the same as the cardinality of the left cardinals, but without the algebraic 
     \[
         HK \subgroupleq G
     \]
-\end{snippetproposition}
-
-\begin{snippetproposition}{subgroup-product-cardinality-theorem}{}
-    Let \((H, \circ), (K, \circ) \subgroupleq (G, \circ)\) be \group[groups]
-    and let \(h,\overline{h}\in H\), \(k,\overline{k}\in K\).
-    Then,
+    and
     \[
-        h\circ k = \overline{h} \circ \overline{k}
-        \iff \exists x \in H \intersection K \suchthat \overline{h} = hx
-        \land \overline{k} = x^{-1}k
-    \]
-    In particular, if \(K\) and \(H\) are finite,
-    \[
-        \cardinality{HK} = \frac{\cardinality{H} \cdot \cardinality{K}}{\cardinality{H \intersection K}}
+        HK = KH
     \]
 \end{snippetproposition}
-
-\begin{snippetproof}{subgroup-product-cardinality-theorem-proof}{subgroup-product-cardinality-theorem}{}
-    Let \(x \in H \intersection K\) and let \(\overline{h} = hx\)
-    and \(\overline{k} = x^{-1}x\). \\
-    \iffproof{
-        This means that \(\overline{h} \circ \overline{k} = hxx^{-1}k = hk\).
-    }{
-        Suppose that \(hk = \overline{h} \circ \overline{k}\). Thus,
-        \(\overline{h}^{-1}hk = \overline{k}\) and
-        \[
-            \overline{h}^{-1}h = \overline{k}k^{-1} \in H \intersection K
-        \]
-        But then \(\overline{k} = (\overline{k}k^{-1})k\)
-        and \(\overline{h} = h{(\overline{h}^{-1} h)}^{-1}\).
-        Denote \(x^{-1} = \overline{k}k^{-1}\)
-        and \(x = {(\overline{h}^{-1} h)}^{-1}\).
-    }
-    Assume that \(H\) and \(K\) are finite.
-    In order to compute \(HK\), we need to compute \(\cardinality{H} \cdot \cardinality{K}\)
-    multiplications.
-    However, each result appears \(\cardinality{H \intersection K}\) times.
-\end{snippetproof}
 
 \end{document}
