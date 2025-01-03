@@ -1,0 +1,34 @@
+<div id="lvlcurvecalculator" style="width: 1000px; height: 750px;"></div>
+<script>
+    function waitForObject(objectName, callback, timeout = 5000, interval = 50) {
+        const startTime = Date.now();
+
+        const poll = setInterval(() => {
+            if (typeof window[objectName] !== 'undefined') {
+                clearInterval(poll);
+                callback(window[objectName]);
+            } else if (Date.now() - startTime > timeout) {
+                clearInterval(poll);
+                console.error(`${objectName} did not load within the timeout period.`);
+            }
+        }, interval);
+    }
+
+    waitForObject('Desmos', (Desmos) => {
+        let lvlcurvecalculator = Desmos.Calculator3D(document.getElementById('lvlcurvecalculator'));
+    
+        lvlcurvecalculator.updateSettings({
+            //invertedColors: true,
+            keypad: false,
+            settingsMenu: false,
+            zoomButtons: false,
+            expressionsCollapsed: true
+        });
+    
+        lvlcurvecalculator.setExpression({ id: 'f', latex: 'f(x,y)=\\frac{x^2}{2} + \\frac{y^2}{2}' });
+        lvlcurvecalculator.setExpression({ id: 'a', latex: 'a=2' });
+        lvlcurvecalculator.setExpression({ id: 'c', latex: 'f(x,y)=a' });
+        lvlcurvecalculator.setExpression({ id: 'p', latex: '\\frac{x^2}{2} + \\frac{y^2}{2}=a' });
+    });
+</script>
+
