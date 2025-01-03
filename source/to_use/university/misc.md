@@ -33,7 +33,7 @@
 - group index & \elementperiodtext
 - desmos 3d lib
 - \boundary, \interior etc. senza il secondo argomento
-- i \cartesianprod i direct/semidirect products, dovrebbero linkare al direct inernal/external product
+- i \cartesianprod i direct/semidirect products, dovrebbero linkare al direct inner/outer product
 
 # AI promps
 - Translate this LaTeX code from italian to english.
