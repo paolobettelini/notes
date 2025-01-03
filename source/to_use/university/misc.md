@@ -31,3 +31,18 @@
 - la cosa F_n = F_m se e solo se n=m
 - esiste iniettiva X->Y se e solo se esiste Y-> X suriettiva.
 - group index & \elementperiodtext
+- desmos 3d lib
+- \boundary, \interior etc. senza il secondo argomento
+- i \cartesianprod i direct/semidirect products, dovrebbero linkare al direct inernal/external product
+
+# AI promps
+- Translate this LaTeX code from italian to english.
+Maintain the same content and commands used. Just give me the translated code.
+Here is the snippet:
+
+- Read this math proposition and generate a coincide ID describing it.
+Also generate a title for it with the same information.
+Your response must only contain the ID written in lower kebab case and the title.
+The ID and the title must be in english.
+For example: "internal-direct-external-product-isomorphism-theorem Isomorphism between internal and external direct product".
+Here is the proposition:
