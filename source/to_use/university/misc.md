@@ -34,6 +34,7 @@
 - desmos 3d lib
 - \boundary, \interior etc. senza il secondo argomento
 - i \cartesianprod i direct/semidirect products, dovrebbero linkare al direct inner/outer product
+- \integers to \integernumbers ?
 
 # AI promps
 - Translate this LaTeX code from italian to english.

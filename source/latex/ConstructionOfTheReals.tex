@@ -15,7 +15,7 @@
 \plain{There are subsets in the rationals without a supremum.}
 
 \begin{snippetproposition}{no-supremum-in-subset-of-rationals}{No supremum in subsets of rationals}
-    Consider the set
+    Consider the \set
     \[
         E = \{ r \in \rationalnumbers \suchthat r \geq 0 \land r^2 \leq 2 \}
     \]
@@ -31,21 +31,37 @@
     \begin{enumerate}
         \item To show that \(E \neq \emptyset\) we can simply explicitly give an element of \(E\).
             For example, \(1 \in E\) because \(1 \in \rationalnumbers\) and \(0 \leq 1^2 = 1\leq 2\).
-        \item The set is trivially bounded by all values \(x\geq 2\).
-        \item \todo
+        \item The \set is trivially bounded by all values \(x\geq 2\).
+        \item Assume that \(\exists \mu = \sup E\). Note that \(\mu > 0\).
+            Also, \(\mu^2 = 2\) is impossible.
+            Thus, either \(\mu^2>2\) or \(\mu^2<2\).
+            Suppose \(\mu^2<2\), we want to show that \(\exists x\in E\) such that
+            \(x>\mu\) meaning that \(\mu\) is not an \upperbound\,\lightning. Consider the rationals of the form
+            \[
+                \mu + \frac{1}{n}
+            \]
+            We want to find an \(n\in \naturalnumbers\) sufficiently big such that
+            \[
+                2-{\left(\mu + \frac{1}{n}\right)}^2 > 0
+            \]
+            We have
+            \begin{align*}
+                2 - {\left(\mu + \frac{1}{n}\right)}^2 &= (2 - \mu^2) + \frac{2\mu}{n} + \frac{1}{n^2} \\
+                &> (2-\mu^2) - \frac{2\mu}{n} - \frac{1}{n}
+            \end{align*}
+            since \(1/n > 1/n^2\). We can now solve the inequality:
+            \begin{align*}
+                2-{\left(\mu + \frac{1}{n}\right)}^2 &> 0 \\
+                (2-\mu^2) - \frac{2\mu + 1}{n} &> 0 \\
+                \frac{2\mu + 1}{2 - \mu^2} &< n
+            \end{align*}
+            Likewise, we can prove the same if \(\mu^2>2\).
     \end{enumerate}
 \end{snippetproof}
 
 \section{Construction of the reals}
 
-\begin{snippetdefinition}{totally-ordered-field-definition}{Totally ordered field}
-    A \field \((F, +, \cdot)\) together with a \totalorder \(\leq\) on \(R\) is a
-    \textit{totally ordered field} if it satisfies the following properties:
-    \begin{enumerate}
-        \item \(\forall a,b,c \in F, a \leq b \implies a+c \leq b+c\);
-        \item \(\forall a,b,c \in F, 0 \leq a \land 0 \leq b \implies 0 \leq a \cdot b\).
-    \end{enumerate}
-\end{snippetdefinition}
+\includesnpt{totally-ordered-field-definition}
 
 \begin{snippetaxiom}{completness-axiom}{Completness axiom}
     For every \(E\subseteq \mathbb{R}\) where \(E\neq \emptyset\) and where \(E\) is \upperbound[bounded above],
@@ -53,42 +69,133 @@
 \end{snippetaxiom}
 
 \begin{snippetdefinition}{real-numbers-definition}{Real numbers}
-    The \textit{real numbers} and their properties can be defined
+    The \textit{real numbers} are defined
     as a \field \((\mathbb{R}, +, \cdot)\) with a
     \snippetref[totally-ordered-field-definition|Total order on a field][total order] \(\leq\)
-    and the \snippetref[completness-axiom|Completness axiom][completness axiom].
+    and the \completnessaxiom.
 \end{snippetdefinition}
 
-\section{Uniqueness of the reals}
+\section{Existence and uniqueness of the reals}
 
 \begin{snippettheorem}{uniqueness-reals-ordered-field-theorem}{Uniqueness of the reals as a complete ordered field}
     Let \((F_1, +_1, \circ_1)\) and \((F_2, +_2, \circ_2)\) be \field[fields] with
     \snippetref[totally-ordered-field-definition|Total order on a field][total orders] \(\leq_1\) and
-    \(\leq_2\) on them and the \snippetref[completness-axiom|Completness axiom][completness axiom].
-    Then, there exists a unique isomorfism \(\varphi\colon F_1 \fromto F_2 \)
+    \(\leq_2\) on them and the \completnessaxiom.
+    Then, there exists a unique \fieldisomorphism \(\varphi\colon F_1 \fromto F_2 \)
     such that
     \begin{enumerate}
-        \item \(\varphi(a+_1b) = \varphi(a)+_2\varphi(b)\);
-        \item \(\varphi(a\circ_1b) = \varphi(a)\circ_2\varphi(b)\);
         \item \(a \leq_1 b \iff \varphi(a) \leq_2 \varphi(b)\).
     \end{enumerate}
 \end{snippettheorem}
 
-%\section{Continuity axiom}
-%
-%\begin{snippetaxiom}{continuity-axiom}{Continuity axiom}
-%    Let \(\{I_n\}\) be a sequence of closed intervals of the form
-%    \(I_n = [a_n; b_n]\) such that
-%    \begin{enumerate}
-%        \item \(I_{n+1} \subseteq I_n\);
-%        \item \(l(I_{n+1}) = b_{n+1}-a_{n+1} = \frac{1}{2}l(I_n)\).
-%    \end{enumerate}
-%    e quindi \[l(I_n) = \frac{1}{2^{n-1}}l(I_i)\] allora esiste \(c\in \mathbb{R}\)
-%    tale che
-%    \[
-%        \bigcup_{n\in\mathbb{N}} I_n = \{c\}
-%    \]
-%\end{snippetaxiom}
+\begin{snippetproof}{uniqueness-reals-ordered-field-theorem-proof}{uniqueness-reals-ordered-field-theorem}{Uniqueness of the reals as a complete ordered field (partial proof)}
+    Given the properties of a \field, a \field can generate a \set of rationals \(\rationalnumbers\).
+    Clearly, different \field[fields] generate different \set[sets] but with the same elements in some way.
+    We can construct a map between \(\mathbb{Q}_1\) and \(\mathbb{Q}_2\) of two different \field[fields].
+    We can easily define \(\phi_0\colon \mathbb{Q}_1 \subseteq F_1 \to \mathbb{Q}_2 \subseteq F_2\).
+    We can achieve our mapping using the \completnessaxiom.
+    Given \(x\in F_1\), we have \(x = \sup \{ r \in \mathbb{Q}_1 \suchthat r \leq x \} = \sup E_x\).
+    We thus define \(\phi (x) = \sup \{ \phi_0(r) \suchthat r \in E_x \}\) to extend
+    \(\phi_0\) to every element. We still need to prove that the classical properties are preserved.
+\end{snippetproof}
+
+\begin{snippettheorem}{real-numbers-existence-theorem}{Existence of the real numbers}
+    The \field \((\realnumbers, +, \cdot)\) exists.
+\end{snippettheorem}
+
+\begin{snippetproof}{real-numbers-existence-theorem-proof}{real-numbers-existence-theorem}{Existence of the real numbers}
+    We will prove a simple construction of such \field using decimal expansions (or any other base).
+    We will construct an element of the reals as a decimal expansion \(x=n.a_1a_2\cdots a_k\cdots\)
+    with \(n,a_i\in\integers\). Consider another element \(y=m.b_1b_2\cdots b_k\cdots\).
+    Note that two distinct decimal expansions can represent the same element (E.g. \(0.\overline{9}=1\)).
+    Thus, we let \(n,a_1, a_2, a_3, \cdots, a_k, \overline{9} = n, a_1, \cdots, a_{k-1}, (a_k+1)\).
+    We will assume that \(x,y\) do not admit such a pattern.
+    \begin{itemize}
+        \item \emph{equality:} \[ x=y \iff m=n\land \forall i, a_i = b_i \]
+        \item \emph{inequality:} \[ x<y \iff m<n \lor (m = n \land a_i = b_i \land a_k < b_k), \quad 1\leq i < k \]
+        \item \emph{addition:} defined by aligning their decimal expansions and adding corresponding digits, adjusting for carries as necessary;
+        \item \emph{multiplication:} similar;
+        \item \emph{\completnessaxiom:} let \(E\subseteq \mathbb{R}\) where \(E\neq \emptyset\) and where \(E\) is \upperbound[bounded above].
+            We want to show that \(\mu = \sup E\) exists. Clearly,
+            \[
+                \forall x \in E, \exists x = n_x.\alpha_1(x)\alpha_2(x)\cdots
+            \]
+            Likewise,
+            \[
+                \mu = n.\alpha_1\alpha_2\cdots\alpha_k\cdots
+            \]
+            Let \[ N = \max\{n_x \suchthat x \in E\} \]
+            which exists since \(E\neq\emptyset\) and it is \upperbound[bounded above].
+            We now consider the \set
+            \[
+                E_0 = \{x \in E \suchthat n_x = N\} \neq \emptyset
+            \]
+            Let \(a_1 = \max\{\alpha_1(x) \suchthat x\in E_0\}\). We then have
+            \[
+                E_1 = \{x \in E_0 \suchthat \alpha_1(x) = a_1\} \neq \emptyset
+            \]
+            We now let \(a_2 = \max\{\alpha_2(x) \suchthat x\in E_1\}\). By iterating, we find \(a_3, a_4, \cdots\) meaning
+            \[
+                a_k = \max\{\alpha_k(x) \suchthat x \in E_{k-1}\}
+                \qquad
+                a_{k+1} = \max\{\alpha_{k+1}(x) \suchthat x \in E_k\}
+            \]
+            We now need to show that \(\mu\) is
+            an \upperbound. Let \(\overline{x} \in E = n_{\overline{x}}\alpha_1(\overline{x})\alpha_2(\overline{x})\cdots\).
+            By the definition of \(\mu\), every digit of \(x\) is less than or equal to every corresponding digit of \(\mu\).
+            By definition, this means that \(x\leq \mu\). In particular, if \(\mu \in E\), then \(\mu = \max E\).
+            We now need to show that \(\mu\) is the smallest of the \upperbound[upper bounds].
+            In order to some \(z\) to be less than \(\mu\) for some \(z\), there must be a digit in \(z\)
+            that is less than the corresponding digit in \(\mu\). By the definition of \(\mu\), this is not possible.
+    \end{itemize}
+\end{snippetproof}
+
+\plain{The reals can also be defined using Cauchy sequences or Dedekind cuts}
+
+\subsection{Consequences of the completness axiom}
+
+\begin{snippetproposition}{archimedean-property}{Archimedean property}
+    \[
+        \forall x \in \realnumbers, \forall a>0, \exists n \in \naturalnumbers
+        \suchthat na > x
+    \]
+\end{snippetproposition}
+
+\plain{Between every two reals, there exist (infinite) rationals. This means that the rationals are dense in the reals.}
+
+\begin{snippettheorem}{real-nth-roots-existence-theorem}{Existence of real nth roots}
+    \[
+        \forall y>0, \forall n\geq 1 \in \naturalnumbers, \exists_{=1} x > 0 \suchthat x^n = y
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{real-nth-roots-existence-theorem-proof}{real-nth-roots-existence-theorem}{Existence of real nth roots}
+    Let \[ E = \{ z \in \realnumbers \suchthat z>0 \land z^n \leq y \} \]
+    We need to show that \(E\) is not empty and is bounded above.
+    Define \(x = \sup E\) and show that \(x^n = y\).
+    \begin{itemize}
+        \item \textbf{Not empty:} if \(y \geq 1\), we can choose \(x=1\) since \(x^n=1 \leq y\).
+        Otherwise, if \(y < 1\), set \(x=y\) and note that, because \(y < 1\), it follows that
+        \(y^n < y\), and hence \(y \in E\).
+        \item \textbf{Bounded above:} \(E\) is bounded above, as \(1+y\)
+        is an \upperbound of \(E\). If \(z \geq (1+y)\), since the function \(t\to t^n\) is increasing for \(t > 0\),
+        we have \(z^n \geq {(1+y)}^n > {(1+y)} > y \implies z \notin E\).
+        Let \(x =\sup E\). I claim that \(x^n = y\). I prove this by contradiction: if we suppose \(x^n > y\),
+        then for sufficiently large \(k\),
+        \[
+            {\left(x- \frac{1}{k}\right)}^n > y
+        \]
+        and therefore \(x-\frac{1}{k}\) is still an \upperbound of \(E\), contradicting the assumption that \(x\), which is the \(\sup E\), is the smallest upper bound.
+        Conversely, if \(x^n < y\), then for sufficiently large \(k\),
+        \[
+            {\left(x + \frac{1}{k}\right)}^n < y
+        \]
+        so \(x+\frac{1}{k}\in E\) and is greater than \(x\), contradicting that \(x\) is an \upperbound\,\lightning.
+        Since \(x\) can neither be greater nor smaller, \(x^n=y\).
+        \item \textbf{Uniqueness:} Note that if \(0 < t_1 < t_2 \implies t_1^n < t_2^n\).
+    \end{itemize}
+    We can also set \(z \geq 0\) to make proving that \(E \neq \emptyset\) easier.
+\end{snippetproof}
 
 \section{Extended real line}
 
@@ -98,5 +205,10 @@
         \overline{\realnumbers} = \realnumbers \union \{+\infty, -\infty\}
     \] 
 \end{snippetdefinition}
+
+\begin{snippetproposition}{infimum-supremum-empty-set-extended-reals}{Infimum and supremum of empty set}
+    Consider \((\extendedrealnumbers, \leq)\) where \(\leq\) is the classical ordering.
+    Then, \(\inf\emptyset = +\infty\) and \(\sup\emptyset = -\infty\).
+\end{snippetproposition}
 
 \end{document}
