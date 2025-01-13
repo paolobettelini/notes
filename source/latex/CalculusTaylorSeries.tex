@@ -95,11 +95,197 @@
 \section{Taylor Polynomial}
 
 \begin{snippetdefinition}{taylor-polynomial-definition}{Taylor polynomial}
-    
+    Let \(f\colon I \fromto \realnumbers\) where \(f\)
+    is differentiable \(n\) times in \(x_0\) where \(x_0\) is an internal point of \(I\).
+    The \emph{Taylor polynomial of order \(n\) centered in \(x_0\)}
+    is defined as
+    \[
+        P_n(f, x_0, x) \triangleq \sum_{k=0}^n
+        \frac{f^{(k)}(x_0) \cdot {(x-x_0)}^k}{k!}
+    \]
 \end{snippetdefinition}
 
 \begin{snippetdefinition}{maclaurin-polynomial-definition}{MacLaurin polynomial}
-    
+    A \emph{MacLaurin polynomial} is a Taylor polynomial centered around \(x_0 = 0\).
 \end{snippetdefinition}
+
+\begin{snippetproposition}{taylor-polynomial-unique-property}{}
+    The Taylor polynomial of \(f\) centered around \(x_0\)
+    up to the order \(n\) is the only \polynomial such that
+    \(\forall k \leq n\),
+    \[
+        \derivativeD^k P_n(x_0) = \derivativeD^kf(x_0)
+    \]
+\end{snippetproposition}
+
+\plain{The next theorem extends the properties of differentiable functions, allowing them to be approximated with
+higher degree polynomial}
+
+\begin{snippettheorem}{taylor-theorem}{Taylor's theorem}
+    Let \(f\colon I \to \realnumbers\) be differentiable
+    \(n\) times in \(x_0\) whre \(x_0\) is an internal point of \(I\) and let
+    \[
+        P_n(x) = \sum_{k=0}^n \frac{f^{(n)}(x_0){(x-x_0)}^n}{k!}
+    \]
+    be its Taylor polynomial of order \(n\)
+    centered around \(x_0\).
+    Then,
+    \begin{enumerate}
+        \item \emph{Taylor formula with Peano form of the remainder:} \[
+            f(x) = P_n(x) + r_n(x), \quad \littleO({(x-x_0)}^n) \to 0 \text{ for } x\to \infty
+        \]
+        \item \emph{Taylor formula with Lagrange form of the remainder:} assume that \(f\) is differentiable \(n+1\) times
+        in \(I\), then
+        \[
+            f(x) = P_n(x) + r_n(x)
+        \]
+        where \(r_n\) is represented as follows:
+        \(\forall x\in I\), there exist \(c_x\) between \(x_0\) and \(x\)
+        (which generally both depends on \(x\) and \(n\)), such that
+        \[
+            r_n(x) = \frac{f^{(n+1)}(c_x)}{(n+1)!} (x-x_0)^{n+1}
+        \]
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{taylor-theorem-proof}{taylor-theorem}{Taylor's theorem}
+    \begin{enumerate}
+        \item Abbiamo
+        \begin{align*}
+            \lim_{x\to x_0} \frac{r_n(x)}{{(x-x_0)}^n} &=
+            \lim_{x\to x_0} \frac{f(x) - P_n(x)}{{(x-x_0)}^n} \\
+            &\overset{H}{=} \lim_{x\to x_0} \frac{f'(x) - P_n'(x)}{n{(x-x_0)}^{n-1}} \\
+        \end{align*}
+        Siccome \(\forall k \leq n, \derivativeD^k P(x_0) = \derivativeD^k f(x_0)\) possiamo applicare nuovamente
+        il teormea de l'Hôpital iterativamente.
+        \begin{align*}
+            &\overset{H}{=}\lim_{x\to x_0} \frac{
+                \derivativeD^2f(x) - \derivativeD^2P_n(x)
+            }{
+                n(n-1){(x-x_0)}^{n-1}
+            } \\
+            &\overset{H}{=}\lim_{x\to x_0} \frac{
+                \derivativeD^{n-1}f(x) - \derivativeD^{n-1}P_n(x)
+            }{
+                n(n-1) \cdots 2(x-x_0)
+            }
+        \end{align*}
+        A questo punto non possiamo più applicare il teorema in quanto
+        si necessiti che la funzione sia derivabiel in un intorno, ma
+        possiamo necessariamente derivarla solo in \(x_0\).
+        Tuttavia, \(\derivativeD^n(f(x_0)) = \derivativeD^n P_n(x_0)\). Quindi,
+        \begin{align*}
+            \frac{1}{n!} &= \lim_{x\to x_0}
+            \frac{\derivativeD^{n-1}f(x) - \derivativeD^{n-1} f(x_0)}{x-x_0}
+            - \frac{\derivativeD^{n-1}P_n(x) - \derivativeD^{n-1}P_n(x_0)}{x-x_0} \\
+            &= \frac{1}{n!} \left\{
+                \derivativeD^n f(x_0) - \derivativeD^n P_n(x_0)
+            \right\} \\
+            &= 0
+        \end{align*}
+        \item Mostriamo che per tutte le \(x\) esiste \(c\)
+        compreso tra \(x_0\) e \(x\) tale che
+        \[
+            r_n(x) = f(x) - P_n(x) = \frac{1}{(n+1)!} \derivativeD^{n+1}f(c)(x-x_0)^{n+1}
+        \]
+        equivalentemente
+        \[
+            \frac{f(x) - P_n(x)}{{(x-x_0)}^{n+1}} = \frac{1}{(n+1)!} \derivativeD^{n+1}f(c)
+        \]
+        Vogliamo applicare il teorema di Cauchy. Poniamo \(F(x) = f(x) - P_n(x)\)
+        e \(G(x) = {(x-x_0)}^{n+1}\) e notiamo che
+        \(F(0) = 0\) e infatti \(\forall k \leq n, \derivativeD^k F(x_0) = 0\),
+        e analogamente \(G(x_0) = 0\) e infatti \[\forall k \leq n, D^k {(x-x_0)}^{n+1} = (n+1)n\cdots(n-k){(x-x_0)}^{n-k+1} = 0\]
+        in \(x=x_0\).
+        Allora,
+        \[
+            \frac{f(x) - P_n(x)}{{(x-x_0)}^{n+1}} = \frac{F(x) - F(x_0)}{G(x) - G(x_0)}
+        \]
+        notando che \(F,G\) sono derivabili \(n+1\) volte in \(I\)
+        e \(G(x) - G(x_0) \neq 0\), e \(\derivativeD^k G(x) \neq 0\) per \(x\neq x_0\)
+        per ogni \(t = 1 \cdots n+1\).
+        Esiste quindi \(x_1\) compreso fra \(x\) e \(x_0\) tale che
+        \[
+            \frac{F(x) - F(x_0)}{x-x_0} = \frac{F'(x_1)}{G'(x_1)}
+            = \frac{F'(x_1) - F'(x_0)}{G'(x_1) - G'(x_0)}
+        \]
+        Usiamo allora il teorema di Cauchy nuovamente: esiste un \(x_2\)
+        fra \(x_1\) e \(x\)
+        \begin{align*}
+            = \frac{\derivativeD^2 F(x_2)}{\derivativeD^2 G(x_2)} = \frac{\derivativeD^2 F(x_0) - \derivativeD^2 F(x_0)}{\derivativeD^2 G(x_2) - \derivativeD^2 G(x_0)}
+        \end{align*}
+        e ripetiamo iterativamente quanto possiamo: esiste \(c\)
+        compreso tra \(x_n\) e \(x_0\)
+        \begin{align*}
+            = \frac{\derivativeD^{n+1} F(c)}{\derivativeD^{n+1} G(c)}
+            = \frac{1}{(n+1)} \derivativeD^{n+1}F(c) = (n+1)!
+        \end{align*}
+        Abbiamo quindi
+        \[
+            \frac{1}{(n+1)!} \left\{
+                \derivativeD^{n+1}f(c) - \derivativeD^{n+1}P_n(c)
+            \right\} = \frac{1}{(n+1)!} \derivativeD^{n+1}f(c)
+        \]
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippettheorem}{taylor-uniqueness-theorem}{Taylor uniqueness theorem}
+    Sia \(f\colon I \to \realnumbers\) derivabile \(n\) volte in \(x_0\)
+    interno ad \(I\).
+    Supponiamo che
+    \[
+        P(x) = \sum_{k=0}^n a_k {(x-x_0)}^k
+    \]
+    sia un polinomio di grado minore o uguale a \(n\)
+    tale che \(f(x) = P(x) + \littleO({(x-x_0)}^n)\).
+    Allora, \(P(x) = P_n(x)\).
+    In particolare,
+    \[
+        \forall k \leq n, a_k = \frac{\derivativeD^k f(x_0)}{k!}
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{taylor-uniqueness-proof}{taylor-uniqueness}{Taylor uniqueness theorem}
+    Poiché \(f\) è derivabile \(n\) volte in \(x_0\)
+    dalla Fromula di Taylor conr esto Peano risulta che
+    \[
+        f(x) = P_n(x) +\littleO({(x-x_0)}^n)
+    \]
+    risulta quindi
+    \[
+        P(x) - P_n(x) = [f(x) -P_n(x)]
+        - [f(x) - P(x)] = \littleO({(x-x_0)}^n)
+    \]
+    Posto \(Q(x) = P(x) - P_n(x)\) la dimostrazione si riduce a mostrare che se \(Q(x)\)
+    è un polinomio in \((x-x_0)\) di grado minore o uguale a \(n\)
+    e \(Q(x) = \littleO({(x-x_0)}^n)\) allora \(Q(x) = 0\)
+    cioè tutti i coefficienti di \(Q\) sono nulli.
+    Scriviamo
+    \[
+        Q(x) = \sum_{k=0}^n b_k{(x-x_0)}^k
+    \]
+    e supponiamo per assurdo che
+    \[
+        \frac{Q(x)}{{(x-x_0)}^n} \to 0
+    \]
+    ma \(Q(x) \neq 0\).
+    Tra tutti i coefficienti non nulli, ce n'è uno con indice più piccolo \(k_0\),
+    quindi tutti quelli prima sono nulli.
+    Abbiamo quindi che \[
+        Q(x) = \sum_{k=k_0}^n b_k {(x-x_0)}^k
+    \]
+    Siccome il termine tende a zero, raccogliamo la potenza più piccola
+    \[
+        Q(x) = {(x-x_0)}^{k_0}\sum_{k=k_0}^n b_k {(x-x_0)}^{t-t_0}
+    \]
+    da cui
+    \[
+        \frac{Q(x)}{{(x-x_0)}^n} = {(x-x_0)}^{k_0 - n}
+        \sum_{k=k_0}^n b_k {(x-x_0)}^{k-k_0}
+    \]
+    la sommatoria tende a \(b_{k_0}\) e il termine esterno
+    \(\pm \infty\) per \(k_0 < n\), altrimenti \(1\) (o magari non esiste il limite).
+    Quindi, \(Q(x)\) non tende a zero \lightning.
+\end{snippetproof}
 
 \end{document}
