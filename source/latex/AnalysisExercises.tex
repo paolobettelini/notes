@@ -1,0 +1,67 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{analysis-exercises}
+\genpage
+
+\section{Exercises}
+
+\begin{snippetexercise}{analysis-misc-ex1}{}
+    Find the value of
+    \[
+        \lim_{x\to0} \frac{1}{\sqrt{\ln(x)}} \integral[0][x][\frac{e^{-1/t}\arctan(t^\alpha)}{t^{1+\alpha}{\left[\ln(1+t)\right]}^{2+\alpha}}][t]
+    \]
+    for \(\alpha\in\realnumbers\).
+\end{snippetexercise}
+
+\begin{snippetproof}{analysis-misc-ex1-proof}{analysis-misc-ex1}{}
+    We first study the integrand \(f_\alpha(t)\).
+    In the interval \((0, +\infty)\), \(f_\alpha(t)\) is continuous and positive, meaning that the integral
+    exists.
+    \begin{itemize}
+        \item for \(t\to0^+\), \[
+            f_\alpha(t)
+            \asymptotic \frac{t^\alpha e^{-1/t}}{t^{1+\alpha}\cdot t^{2 + \alpha}}
+        \]
+        meaning that for all \(\alpha\in\realnumbers\), \(f_\alpha(t)\) is integrable in \((0, \varepsilon)\)
+        for some \(\varepsilon > 0\).
+        \item for \(t\to+\infty\), \[
+            f_\alpha(t) \asymptotic \begin{cases}
+                \frac{\pi/2}{t^{1+\alpha}{(\ln t)}^{2+\alpha}} & \alpha>0 \\
+                \frac{\pi/4}{t{(\ln t)}^2} & \alpha=0 \\
+                \frac{t^\alpha}{t^{1+\alpha}{(\ln t)}^{2+\alpha}} & \alpha<0
+            \end{cases}
+        \]
+        We will determine convergence using \(p-q\)-integrals.
+        In the first case, we need \(\alpha\geq 0\) for the integral to converge, so it always converges.
+        If \(\alpha = 0\), we have the \(p=1\) and \(q=2\), so it does converge.
+        If \(\alpha<0\), we need \(\alpha>-1\), meaning the integral converges for \(-1<\alpha<0\).
+        In conclusion, the integral converges for \(\alpha>-1\).
+    \end{itemize}
+    If \(\alpha>-1\), the limit becomes
+    \[
+        \lim_{x\to+\infty} \frac{I}{\sqrt{\ln x}} = 0
+    \]
+    where \(I\) is the value on the integral, which is finite.
+    Otherwise, let \(a\leq -1\). We have
+    \begin{align*}
+        \lim_{x\to+\infty} \frac{\integral[0][x][f_\alpha(t)][t]}{\sqrt{\ln x}}
+        &\overset{H}{=} \lim_{x\to+\infty} \frac{f_\alpha(x)}{\frac{1}{2} \frac{1}{\sqrt{\ln x}} \cdot \frac{1}{x}} \\
+        &= \lim_{x\to+\infty} \frac{e^{-1/x}\arctan(x^\alpha)}{x^{1+\alpha} {[\ln(1+x)]}^{2+\alpha}} 2x{(\ln x)}^{1/2} \\
+        &= \lim_{x\to+\infty} \frac{2}{{(\ln x)}^{\alpha + 3/2}}
+        = \begin{cases}
+            0 & -\frac{3}{2} < \alpha \leq -1 \\
+            2 & \alpha = -\frac{3}{2} \\
+            + \infty & \alpha<-\frac{3}{2}
+        \end{cases}
+    \end{align*}
+\end{snippetproof}
+
+\end{document}
