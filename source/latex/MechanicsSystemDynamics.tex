@@ -6,11 +6,103 @@
 \usepackage{definitions}
 \usepackage{bettelini}
 
+% https://tex.stackexchange.com/questions/120029/how-to-typeset-a-primed-vector
+\newcommand{\pvec}[1]{\vec{#1}\mkern2mu\vphantom{#1}}
+
 \begin{document}
 
 \id{system-dynamics}
 \genpage
 
 \section{System dynamics}
+
+\begin{snippetdefinition}{center-of-mass-n-particles-definition}{Center of mass}
+    Consider \(n\) particles with masses \(m_1, m_2, \cdots, m_n\).
+    The \emph{center of mass} is defined as
+    \[
+        \vec{R} \triangleq \frac{\sum_i m_1\vec{r}_i}{\sum_i m_i}
+    \]
+\end{snippetdefinition}
+
+\begin{snippettheorem}{system-dynamics-first-cardinal-law-theorem}{First cardinal law}
+    Consider \(n\) particles with masses \(m_1, m_2, \cdots, m_n\) mutually interacting and in the presence of
+    external forces. Then,
+    \[
+        \frac{d\vec{p}}{dt} = \sum_i \vec{f}_i
+    \]
+    where \(\vec{f}_i\) are the external forces.
+\end{snippettheorem}
+
+\begin{snippetproof}{system-dynamics-first-cardinal-law-theorem-proof}{system-dynamics-first-cardinal-law-theorem}{First cardinal law}
+    The Newton equation is given by
+    \[
+        m_i\vec{a}_i = \sum_{j \neq i} \vec{F}_{i,j} + \vec{f}_{i}
+    \]
+    We now write
+    \[
+        \sum_i m_i\vec{a}_i = \sum_i \sum_{j \neq i} \vec{F}_{i,j} + \sum_i \vec{f}_i
+    \]
+    Since \(\vec{F}_{i,j} = -\vec{F}_{j,i}\), we can simplify
+    \[
+        \sum_i \sum_{j \neq i} \vec{F}_{i,j} = 0
+    \]
+    We can define the total momentum
+    \[
+        \vec{p} = \sum_i m_i\vec{v}_i \qquad \frac{d\vec{p}}{dt} = \sum_i m_i\vec{a}_i
+    \]
+    Given these two facts we can note that the variation of the momentum is just the sum
+    of the external forces.
+\end{snippetproof}
+
+\begin{snippettheorem}{system-dynamics-second-cardinal-law-theorem}{Second cardinal law}
+    Consider \(n\) particles with masses \(m_1, m_2, \cdots, m_n\) mutually interacting and in the presence of
+    external forces. Then,
+    \[
+        \frac{d\vec{L}}{dt} = \sum_i \vec{r}_i \wedge \vec{f}_i
+    \]
+    which is the momentum of the external forces
+\end{snippettheorem}
+
+\begin{snippetproof}{system-dynamics-second-cardinal-law-theorem-proof}{system-dynamics-second-cardinal-law-theorem}{Second cardinal law}
+    The derivative of the center of mass is
+    \begin{align*}
+        \vec{V} = \frac{d\vec{R}}{dt} &= \frac{\sum_i m_1\vec{v}_i}{\sum_i m_i} = \frac{\vec{p}}{M}
+    \end{align*}
+    We now start with the Newton equation and multiply by \(\vec{r}_i\) on the left
+    and sum with respect to \(i\)
+    \begin{align*}
+        m_i\vec{a}_i &= \sum_{j \neq i} \vec{F}_{i,j} + \vec{f}_{i} \\
+        \sum_i \vec{r}_i \wedge (m_i\vec{a}_i) &= \sum_i \sum_{j \neq i} \vec{r}_i \wedge \vec{F}_{i,j} + \sum_i \vec{r}_i \wedge \vec{f}_{i}
+    \end{align*}
+    We now consider the angular momentum
+    \[
+        \vec{L}_i = \vec{r}_i \wedge m_1 \vec{v}_i
+    \]
+    whose derivative is
+    \begin{align*}
+        \frac{d\vec{L}_i}{dt} = \vec{v}_i \wedge m_i\vec{v}_i + \vec{r}_i \wedge m_1\vec{a}_i
+    \end{align*}
+    The first term is null and the angular momentum of the \(i\)-nth particle remans.
+    We thus define the total angular momentum of the system
+    \[
+        \vec{L} = \sum_i \vec{L}_i = \sum_i \vec{r}_i \wedge m_1\vec{v}_i
+    \]
+    We now consider the term
+    \[
+        \sum_i \sum_{j\neq i} \vec{r}_i \wedge \vec{F}_{i,j}
+    \]
+    Given two particles \(a\) and \(b\) we have
+    \begin{align*}
+        \vec{r}_a \wedge \vec{F}_{a,b} - \vec{r}_b \wedge \vec{F}_{a,b}
+        &= (\vec{r}_a - \vec{r}_b) \wedge \vec{F}_{a,b}
+    \end{align*}
+    If we impose the condition that a force between a pair of particles is oriented
+    towards the joining of the two (which is valid for a large class of forces),
+    then the product is zero.
+    In such case,
+    \[
+        \sum_i \sum_{j\neq i} \vec{r}_i \wedge \vec{F}_{i,j} = 0
+    \]
+\end{snippetproof}
 
 \end{document}
