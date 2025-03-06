@@ -44,7 +44,7 @@ si uniscono nella struttura quaternionale.
 I sistemi lineari possono essere interpretati come trovare l'intersezione delle varie rette,
 oppure possiamo vederlo come trovare i coefficienti lineari tali che la combinazione lineare
 (con tali coefficienti) dei vettori sia il vettore risultante.
-Possiamo quindi anche vederlo cmoe trovare il vettore che moltiplicato dalla matrice del sistema
+Possiamo quindi anche vederlo come trovare il vettore che moltiplicato dalla matrice del sistema
 ci restituisce il vettore voluto.
 
 \section{Algoritmo di eliminazione di Gauss}
@@ -67,9 +67,93 @@ ci restituisce il vettore voluto.
 Nell'eliminazionne di gauss vogliamo raggiungere la matrice triangolare superiore.
 Distinguiamo i casi dove ci sono righe con tutti zero includendo o senza includere il termine noto.
 In tali casi abbiamo infiniti o finite soluzioni.
-Ne caso non è possibile raggiungere la row echelon form, bisogna studiare i termini noti.
+Nel caso non sia possibile raggiungere la row echelon form, bisogna studiare i termini noti.
 
 L'operazione della moltiplicazione scalare di una matrice ne modifica il determinante.
 Usando solo le altre due operazioni non è quindi facile giungere alla reduced row echelon form.
+
+Le matrici elementari \(E_{i,j}(\lambda)\) sono triangolari alte se \(i<j\) e basse \(i<j\).
+Il valore non deve essere sulla diagonale.
+Ripetere tale matrice \(E_1E_2E_3 \cdots A = U\) è come moltiplicare \(A\) per una singola matrice
+(se non servono swap è triangolare inferiore). Se raggiunge la fine dell'eliminazione di gauss il risultato \(U\)
+è triangolare superiore.
+Il prodotto delle elementari è sostanzialmente le loro sovrapposizioni.
+
+\sexercise{}{
+    Dimostrare che il prodotto di matrici superiori o inferiori è superiore o inferiore.
+}
+
+\sexercise{}{
+    Se \(A\) è invertibile, l'inverso è unico.
+}
+
+\sexercise{}{
+    Le matrixi elementari sono invertibili e l'inversa di \(E_{i,j}(\lambda)\) è \(E_{i,j}(-\lambda)\)
+}
+
+\sexercise{}{
+    Se \(A, B \in M_n(\mathbb{F})\) sono invertibili, allora \(AB\) e \(BA\)
+    sono invertibili.
+}
+
+Siccome in \(E_1E_2E_3 \cdots A = U\) il prodotto delle elementari è invertibili, possiamo portarlo a destra.
+Tale inversa è una matrice triangolare bassa. Abbiamo così dimostrato il
+
+\stheorem{Fattorizzazione LU}{
+    Sia \(Ax = B\) un sistema lineare non singolare dove non servono scambi.
+    Allora il sistema è equivalente a
+    \[
+        LUx = B
+    \]
+    dove \(L\) è una matrice triangolare bassa con tutti \(1\) sulla diagonale principalmente,
+    mentre \(U\) è una matrice triangolare alta con tutti i pivot sulla diagonale principale.
+}
+
+La fattorizazzione \(A=LU\) permette di trasformare la soluzione di un sistema
+non singolare quadrato nelle soluzioni di due sistemi triangolari.
+Sia \(y \triangleq Ux\). Allora dobbiamo risolvere
+\(Ly = b\) che è un sistema triangolare inferiore nelle indeterminate \(y\),
+e poi \(Ux = y\) che è un sistema triangolare superiore nelle indeterminate \(x\).
+Se otteniamo \(LU\) allora il resto è banale.
+
+Per eseguire gli scambi di righe possiamo costruire una matrice che è come la matrice
+identità ma le righe dell'identità sono scambiate.
+Questa è detta matrice di permutazione elementare \(P_{i,j}\).
+Tale matrice è invertibile e la sua inversa è sè stessa.
+
+Quindi l'eliminazione di Gauss usa \(E_{i,j}(\lambda)\) e \(P_{i,j}\).
+
+\subsection{Algoritmi di Gauß-Jordan}
+
+Dopo aver ridotto la matrice a scalini, è possibile usare una versione dell'algoritmo di
+Gauss in senso inverso, cioè dal basso verso l'alto,
+per ottenere una matrice che in ogni colonna contenente un pivot abbia solo il pivot come
+numero non nullo, (questa matrice risultante è anche detta matrice a scalini in forma ridotta):
+basta usare ogni riga, partendo dall'ultima, per eliminare tutte le
+cifre diverse da zero che stanno sopra al pivot di questa riga.
+Infine, sempre con mosse di Gauss (moltiplicando righe),
+si può ottenere che ogni pivot abbia valore 1.
+
+... Sia \(\hat{E}DE\) è l'inversa di \(A\). Se eseguo \(\hat{E}DE\) sull'identità ottengo
+\[
+    \hat{E}DEI_n = \hat{E}DE = A^{-1}
+\]
+sto quindi trasformando l'identità nell'inversa di \(A\).
+Questa osservazione dà un metodo per il calcolo dell'inversa di una matrice non singolare
+(Metodo di Gauss-Jordan)
+
+\stheorem{}{
+    Una matrice quadrata è non singolare se e solo se è invertibile.
+}
+
+\sproof{}{
+    \iffproof{
+        Se non è singolare, è invertibile per l'algoritmo di Gauß-Jordan.
+    }{
+        \(A\) invertibile, allora non esiste \(A^{-1}\) tale che \(A^{-1}A = I_n\).
+        Sappiamo \(Ax = b\) implica \(A^{-1}(Ax) = A^{-1}b\) e quindi \(x = A^{-1}b\)
+        è l'unica soluzione di \(Ax=b\), e quindi \(A\) è singolare.
+    }
+}
 
 \end{document}

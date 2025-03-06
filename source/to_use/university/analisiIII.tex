@@ -133,4 +133,334 @@ e per \(p=\infty\)
     ||f||_\infty = \underset{x\in D}{\sup} |f(x)|
 \]
 
+% 6
+
+\stheorem{}{
+    Sia \((X, \Sigma, \mu)\) uno spazio di misura e
+    \[
+        f_n \colon X \to [0; +\infty)
+    \] con \(f_n \geq f_{n+1}\)
+    Allora
+    \[
+        \underset{n}{\lim} \int_X f_n\,d\mu = \int_X (\underset{n}{\lim} f_n)\,d\mu
+    \]
+}
+
+Sia per esempio \(f_n = \chi_{\{1\}} + \chi_{\{n\}}\).
+Allora la funzione converge puntualmente in quanto l'1 si sposta sempre più a destra.
+Abbiamo
+\[
+    \int_{\mathbb{N}} f_n \,d\mu = 2 \to 2
+\]
+
+Se invece \(f_n \geq f_{n+1}\) allora \(f_n = \chi_{\{n, n+1, \cdots\}}\), allora tende a zero.
+Tuttavia, l'integrale di \(f_n\) è infinito in quanto la misura dell'insieme è infinita.
+
+\sproof{}{
+    Abbiamo
+    \[
+        f_n \leq f_{n+1} \cdots \leq f, \quad f = \underset{n}{f_n}
+    \]
+    Quindi
+    \[
+        \int_X f_n \,d\mu \leq \int_X f_{n+1}\,d\mu \leq \int_X f\,d\mu
+    \]
+    quindi anchde la successione degli integrali è monotona e ammette limite.
+    Il limite sarà sempre più piccolo dell'ultimo valore.
+    \[
+        \lim_n \int_X f_n\,d\mu \leq \int_X f\,d\mu
+    \]
+    Facciamo ora il caso \(\geq\). Sia \(0 \leq \varphi \leq f\) una funzione semplice
+    \[
+        \varphi = \sum_{i=1}^N \alpha_i \chi_{E_i}, \quad a_i \geq 0
+    \]
+    e prendiamo \(c\in (0,1)\). Considegliamo gli insiemi
+    \[
+        A_n = \{f_n \geq c\varphi\}
+    \]
+    Tali insiemi sono misurabili, in quanto sto moltiplicando una funzione misurabile per una costante
+    e l'insieme \(\{f\geq g\}\) è come dire \(\{f-g \geq 0\}\).
+    Sappiamo 
+    \begin{enumerate}
+        \item \(A_n \in A_{n+1}\) in quanto \(c\varphi(x) \leq f_n(x) \leq f_{n+1}(x)\);
+        \item \(\bigcup A_n = X\). Sia \(x\in X\). Se \(\varphi(x) = 0\) allora è in \(A_n\).
+        Se invece \(\varphi(x) > 0\), ma siccome \(\varphi \leq f\), e \(c<1\), allora 
+        \[
+            c\varphi(x) < \varphi(x) \leq f(x)
+        \]
+        La succesione, da un certo posto in poi, è più grande di \(c\varphi(x)\) (ne basta uno),
+        quindi \(x\in A_n\).
+    \end{enumerate}
+    Osserviamo che
+    \begin{align*}
+        E_i &= E_i \cap X \\
+        &= E_i \cap (\bigcup A_n) \\
+        &= \bigcup_n (E_i \cap A_n)
+    \end{align*}
+    Quindi \(E_i \cap A_n \subseteq E_i \cap A_{n+1}\) è una successione di insiemi che si sta allargando.
+    Quindi, la misura dell'union è il limite.
+    \[
+        \mu(E_i) = \lim_{n\to\infty} E_i \cap A_n
+    \]
+    Consideriamo
+    \begin{align*}
+        \int_X f_n \, d\mu &\geq \int_{A_n} f_n \, d\mu \geq c \int_{A_n} \varphi \,d\mu \\
+        &= c \int_X \varphi \chi_{A_n} \,d\mu = c\sum_{i=1}^N \alpha_i \mu(E_i \cap A_n)
+    \end{align*}
+    Facciamo ora il limite
+    \begin{align*}
+        \lim_n \int_X f_n \,d\mu &\geq c\lim_n \sum_{i=1}^N \alpha_i \mu(E_i \cap A_n) \\
+        &= c\sum_{i=1}^N \alpha_i \mu(E_i) = c\int_X \varphi\,d\mu
+    \end{align*}
+    Abbiamo quindi ottenuto che
+    \[
+        \lim_n \int_X f_n \,d\mu \geq c\int_X \varphi\,d\mu
+    \]
+    vale per tutti i \(c\in(0,1)\), e allora possiamo usare il supremum
+    \[
+        \lim_n \int_X f_n \,d\mu \geq \int_X \varphi\,d\mu
+    \]
+    Non solo vale per ogni \(c\), ma per ogni funzione semplice tale che \(0\leq \varphi \leq f\).
+    In particolare anche per il supremum. Il supremum di questi integrali al variare di tutte le funzioni semplici
+    minori di \(f\) è l'integrale di \(f\), cioè la definizione
+    \[
+        \lim_n \int_X f_n \,d\mu \geq \int_X f\,d\mu
+    \]
+}
+
+Mettendo assieme le due cose otteniamo l'uguaglianza
+
+\[
+    \lim_n \int_X f_n \,d\mu = \int_X f\,d\mu
+\]
+
+\scorollary{}{
+    Allora
+    \[
+        \sum_{n=1}^\infty \int_X f_n\,d\mu = \int_X \sum_{n=1}^\infty f_n\,d\mu
+    \]
+}
+
+Siccome i termini sono tutti positivi, la successione delle serie parziale è monotona.
+
+% def di lim inf, lim sup
+
+\sproposition{}{
+    \[
+        \underline{\lim} \,a_n = \underset{n}{\sup} \, (\underset{k \geq u}{\inf} a_k)
+    \]
+}
+Siccome \[
+    b_n = \underset{k \geq u}{\inf} a_k
+\]
+è monotona crescente, abbiamo allora
+\[
+    \underline{\lim}\, a_n = \lim_n b_n = \lim_n \left( \underset{k \geq n}{\inf} a_k\right)
+\]
+
+\sproposition{Proprietà lim inf e sup}{
+    \begin{enumerate}
+        \item \[
+            \underline{\lim}\, -a_n = - \overline{\lim}\, a_n
+        \]
+        \item \[
+            \underline{\lim}\, (a_n + b) = b + \underline{\lim}\, a_n
+        \]
+    \end{enumerate}
+}
+
+\slemma{Lemma di Fatou}{
+    Sia \(f_n \colon X \to [0, +\infty)\) misurabili, allora
+    \[
+        \int_X \underline{\lim}\, f_n\,d\mu \leq \underline{\lim}\, \int_X f_n\,d\mu
+    \]
+    (l'integrale esiste sempre)
+}
+
+\sproof{}{
+    Consideriamo
+    \[
+        g_n = \underset{k\geq n}{\inf}\, f_k
+    \]
+    chiaramente \(g_n \leq g_{n+1} \to \underline{\lim}\, f_n\) e sono misurabili.
+    Consideriamo allora l'integrale
+    \begin{align*}
+        \lim \int_X g_n \,d\mu = \int_X \underline{\lim} f_n\,d\mu
+    \end{align*}
+    e per il teorema della convergenza monotona e definizione di lim inf
+    \begin{align*}
+        \int_X \underline{\lim}\, f_n\,d\mu &= \lim_n \int_X (\underset{k\geq n}{\inf}\, f_k)\,d\mu \\
+        &\leq \underline{\lim} \int_X f_n\,d\mu
+    \end{align*}
+}
+
+\sdefinition{Integrabilità di una funzione positiva}{
+    Sia \(f\colon X \to [0; +\infty)\) misurabile.
+    Allora \(f\) è \emph{integrabile} su \(X\) se
+    \[
+        \int_X f\,d\mu \leq \infty
+    \]
+}
+
+Diciamo che \(f \in L^1(\{X, \Sigma, \mu\})\).
+Per esempio \(\{1/n^2\} \in L^1(\mathbb{N})\) ma \(\{1/n\} \notin L^1(\mathbb{N})\)
+
+\sdefinition{Integrabilità di una funzione}{
+    Sia \(f\colon X \to \mathbb{R}\) misurabile.
+    Allora \(f\) è \emph{integrabile} se \(f^+\) e \(f^-\) sono integrabili (che sono entrambe funzioni positive).
+}
+
+Dobbiamo tuttavia definire l'integrale di una funzione di segno arbitraria. Sia allora
+\[
+    \int_X f\,d\mu = \int_X f^+\,d\mu - \int_X f^-\,d\mu
+\]
+
+Consideriamo per esempio
+\[
+    f = (1,-\frac{1}{2}, \frac{1}{3}, -\frac{1}{4})
+\]
+Allora
+\[
+    f^+ = (1,0, \frac{1}{3}, 0)
+\]
+e
+\[
+    f^- = (0,\frac{1}{2}, 0, \frac{1}{4})
+\]
+L'integrale non converge in quanto i due integrali non convergono (le serie divergono per confronto asintotico).
+
+\sproposition{}{
+    Siano \(f,g \in L^1\).
+    \begin{enumerate}
+        \item \(\alpha f + \beta b \in L^1\) e \[
+            \int_X (\alpha f + \beta g)\,d\mu = \alpha \int_X f\,d\mu + \beta \int_X g\,d\mu
+        \]
+        Quindi lo spazio delle funzioni integrabili è uno spazio vettoriale.
+        \item  \[
+            f \leq g \implies \int_X f\,d\mu \leq \int_X g\,d\mu
+        \]
+        \item \(f \in L^1 \iff |f| \in L^1\). Infatti \(f^+ f^- = |f|\) e per la direzione inserva
+        abbiamo \(0 \leq f^+ \leq |f|\). Ma se l'integrale del modulo è finito allora lo sarà anche quello
+        di \(f^+\) che è più piccolo. Lo stesso vale per la parte negativa.
+        \item Se \(f\) è misurabile allora lo è anche \(|f|\), ma il viceversa non è vero.
+        Per esempio sia \(X = \{a,b,c\}\) e \(\Sigma = \{X, \emptyset, \{a\}, \{b, c\}\}\).
+        Sia allora
+        \[
+            f = \begin{cases}
+                1 & x=a \lor x=b \\
+                -1 & x = c
+            \end{cases}
+        \]
+        Chiaramente \(\{f < 0\} = \{c\}\) non è misurabile, ma \(|f| = 1\) per tutte le \(x\)
+        e le funzioni costanti sono sempre misurabili.
+        \item \[
+            \left|\int_X f\,d\mu\right| \leq \int_X |f|\,d\mu
+        \]
+        Infatti
+        \begin{align*}
+            \left|\int_X (f^+ - f^-)\,d\mu\right| &= \left|\int_X f^+\,d\mu - \int_X f^-\,d\mu\right| \\
+            &\leq \left|\int_X f^+\,d\mu\right| + \left|\int_X f^-\,d\mu\right| \\
+            &= \int_X f^+ \,d\mu + \int_X f^- \,d\mu \\
+            &= \int_X (f^+ + f^-)\,d\mu \\
+            &= \int_X |f| \,d\mu 
+        \end{align*}
+    \end{enumerate}
+}
+
+\stheorem{Teorema della convergenza dominante}{
+    Sia \(f_n \colon X \to \mathbb{R}\) misurabile e sia \(f = \lim_n f_n\).
+    Supponiamo che ci sia \(g\in L^1\) tale che \(|f_n| \leq g\) in \(X\).
+    Allora
+    \[
+        \lim_n \int_X f_n\,d\mu = \int_X f\,d\mu
+    \]
+}
+
+\sproof{}{
+    \(f_n\) sono integrabili in quanto \(|f_n| \leq g\) che è integrabili, quindi sarà finito anche
+    l'integrale del modulo, e \(f\) è integrabile perché ciò vale anche per il limite.
+    Allora \(|f-f_n| \leq 2g\) quindi \(2g - |f-f_n| \geq 0\). Siccome quest'ultima è una successione positiva
+    posso applicare il lemma di Fatou
+    \[
+        \int_X \underline{\lim}\, (2g - |f-f_n|)\,d\mu \leq \underline{\lim}
+        \int_X (2g - |f-f_n|)\,d\mu
+    \]
+    Ma per le proprietà dei lim inf possiamo estrarre la costante
+    \begin{align*}
+        \int_X 2g - \lim|f-f_n| &= \int_X 2g \\
+        &\leq \underline{\lim} \left( \int_X 2g\,d\mu - \int_X |f-f_n|\,d\mu \right) \\
+        &= \int_X 2g \,d\mu - \overline{\lim} \int_X |f-f_n|\,d\mu
+    \end{align*}
+    Abbiamo quindi
+    \begin{align*}
+        \int_X 2g\,d\mu &\leq \int_X 2g\,d\mu - \overline{\lim} \int_X |f-f_n|\,d\mu \\
+        \overline{\lim} \int_X |f-f_n|\,d\mu &\leq 0
+    \end{align*}
+    Ma quindi questo limite deve essere ed essere uguale a zero
+    \[
+        \int_X |f-f_n|\,d\mu = 0
+    \]
+    Infine, usando il modulo
+    \begin{align*}
+        \lim \left|
+            \int_X f_n \,d\mu - \int_X f \,d\mu
+        \right| \leq \lim \int_X |f_n-f|\,d\mu = 0
+    \end{align*}
+    siccome è tutto positivo deve essere 
+    \[
+        \lim \left|
+            \int_X f_n \,d\mu - \int_X f \,d\mu
+        \right| = 0
+    \]
+}
+
+Se \(A \subset X\) con \(A\) integrabile e \(f\colon X \to \mathbb{R}\)
+misurabile, \(f\) è integrabile in \(A\) se \(f\chi_A\) è integrabile.
+Chiaramente definiamo
+\[
+    \int_A f\,d\mu = \int_X f\chi_A\,d\mu
+\]
+Quindi per vedere se è integrabile nel sottoinsieme la estendiamo su tutto lo spazio con
+la funzione caratteristica e integriamo.
+
+Costruiamo ora una misura su \(R\) (la misura di Lebesuge).
+Vogliamo che sia invariante per traslazione \(\mu(A) = \mu(A + c)\) dove \(c\) è una costante.
+Vorremmo anche che \(\mu([b,a]) = b-a\). Tuttavia, non è possibile costruire tale misura su tutto
+\(\mathbb{R}\). Sia allora \(I=(a,b)\) (non cambia se incluso o meno)
+e denotiamo \(l(I) = b-a\). Sia anche \(E \subset \mathbb{R}\). Diamo la \emph{misura esterna}
+\[
+    \mu^*(E) = \inf \left\{
+        \sum_{n=1}^\infty l(I_n) \,|\, E \subset \bigcup_n I_n
+    \right\}
+\]
+Alcune proprietà di questa ipotetica misura
+\begin{enumerate}
+    \item \(\mu^*(\emptyset) = 0\);
+    \item \(\mu^*(\{x\}) = 0\) dove \(\{x\} \subset (x-\varepsilon, x + \varepsilon)\);
+    \item se \(E\) numerabile, allora \(\mu^*(E) = 0\)
+    \[
+        E \subset \{x_n\}
+    \]
+    \[
+        I_n = \left(x_n - \frac{\varepsilon}{2^n}, x_n + \frac{\varepsilon}{2^n}\right)
+    \]
+    \[
+        E \subset \bigcup I_n
+    \]
+    \begin{align*}
+        \sum_{n=1}^\infty l(I_n) &= \sum_{n=1}^\infty \frac{\varepsilon}{2^{n-1}} \\
+        &= \varepsilon \sum_{n=0}^\infty \frac{1}{2^n} = 2\varepsilon
+    \end{align*}
+    \item \(\mu^*(E + x) = \mu^*(E)\) (invariante per traslazione).
+    \item subadditività \[
+        \mu^*\left(\bigcup E_n\right) \leq \sum_n \mu(E_n)
+    \]
+    \item \(\mu^*(I) = b-a\)
+\end{enumerate}
+Se tutto fosse vero, abbiamo quello che cerchiamo, ma in realtà quando gli insiemi sono disgiunti
+l'ugualgianza non vale, quindi non esiste tale misura.
+
+Vale sempre \(\mu^*(I) \leq b-a\) perché c'è l'inf, c'è sempre un ricoprimento.
+La misura esterna è almeno quel valore, magari più piccolo, vale lo stesso.
+
 \end{document}
