@@ -36,6 +36,8 @@
 - i \cartesianprod i direct/semidirect products, dovrebbero linkare al direct inner/outer product
 - \integers to \integernumbers ?
 - hopital H =
+- MOLTO IMPORTANTE: bisogna racchiudere molte def in \mathop{...}, come ho fatto per sup, inf. Così
+  possiamo anche non usare underset su lim e sup ma direttamente \sup_
 
 # AI promps
 - Translate this LaTeX code from italian to english.
