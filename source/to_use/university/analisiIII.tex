@@ -50,7 +50,13 @@ Quindi la successione converge in ogni punto, ma la velocità di convergenza pu�
     per \(n\to\infty\).
 }
 
-Quindi la velocità di convergenza è la stessa in ogni punto.
+Oppure possiamo dire che la condizione è che
+\[
+    \forall \varepsilon > 0, \exists N \,|\, \forall n>N, ||f_n-f||_{\infty, E} < \varepsilon
+\]
+
+Quindi la velocità di convergenza è la stessa in ogni punto. 
+Ogni cosa che converge uniformemente converge puntualmente.
 
 \sdefinition{Convergenza uniformemente di Cauchy}{
     Sia \(\{f_n\}_{n\in\mathbb{N}}\) una successione di funzioni.
@@ -72,6 +78,54 @@ indipendentemente dalla funzione limite.
 }
 
 \stheorem{}{
+    Sia \(\{f_n\}\) convergente uniformemente a \(f\) in \(E\) e sia \(x_0\in E\) un punto di accumulazione di \(E\).
+    Supponiamo che esista
+    \[
+        \exists\, \lim_{x\to x_0} f_n(x) = \lambda_n
+    \]
+    per ogni \(n\), allora
+    \begin{enumerate}
+        \item \(\lambda_n \to \lambda\),
+        \item \[
+            \lim_{x\to x_0} f(x) = \lambda
+        \]
+    \end{enumerate}
+}
+
+\sproof{}{
+    \begin{enumerate}
+        \item \[
+            |\lambda_n - \lambda_m| = \lim_{x\to x_0} |f_n(x) - f_n(x)| \leq \lim_{x\to x_0}
+            ||f_n-f_m||_{\infty, E} < \varepsilon
+        \]
+        dunque è di Cauchy e converge al limite \(\lambda_n \to \lambda\).
+        \item \begin{align*}
+            |f(x) - \lambda| &\leq |f(x) - f_n(x)| + |f_n(x) - \lambda_n| + |\lambda_n - \lambda| \\
+            &\leq ||f-f_n||_{\infty, E} + |f_n(x) - \lambda_n|
+        \end{align*}
+        dunque se \(\overline{n} = \max\{N_1, N_2\}\)
+        \[
+            |f(x) - \lambda| \leq 2\varepsilon + |f_{\overline{n}}(x) - \lambda_{\overline{n}}| \leq 3\varepsilon
+        \]
+        quindi
+        \[
+            f_{\overline{n}}(x) - \lambda_{\overline{n}} \leq \varepsilon
+        \]
+    \end{enumerate}
+}
+
+Quindi, se abbiamo convergenza uniforme,
+\begin{align*}
+    \lim_{x\to x_0} f(x) &= \lim_{x\to x_0} \left(\lim_{x\to\infty} f_n(x) \right) \\
+    &= \lambda = \lim_{n\to\infty} \lambda_n = \lim_{n\to\infty} \left(\lim_{x\to x_0} f_n(x)\right)
+\end{align*}
+possiamo scambiare l'ordine.
+
+\scorollary{}{
+    Se \(f_n\) sono continue e \(f_n\to f\), allora \(f\) è continua.
+}
+
+\stheorem{}{
     Sia \(f_n\colon [a,b] \to \mathbb{R}\) una successione di funzioni R-integrabili
     dove \(f_n \to f\) in \([a,b]\). Allora \(f\) è R-integrabile e
     \[
@@ -79,6 +133,20 @@ indipendentemente dalla funzione limite.
         = \integral[a][b][\lim_{n\to\infty} f_n(x)][x]
         = \integral[a][b][f(x)][x]
     \]
+}
+
+\sproof{}{
+    Supponiamo anche che \(f_n\) siano continue.
+    \begin{enumerate}
+        \item \(f\) è continua e quindi R-integrabile;
+        \item mostriamo che vale l'uguale, cioè \(\forall m,n \geq N\),
+        \begin{align*}
+            \left|\integral[a][b][f_n(x)][x] - \integral[a][b][f(x)][x]\right| &\leq
+            \integral[a][b][f_n(x) - f(x)][x] \\
+            &\leq \integral[a][b][||f_n - f||_{\infty, [a,b]}][x] \leq \varepsilon(b-a)
+        \end{align*}
+        (cioè tende a zero) per \(n\geq N\).
+    \end{enumerate}
 }
 
 \stheorem{}{
@@ -128,19 +196,27 @@ Ricordiamo che in generale la norma
         \integral[a][b][|f(x)|^p][x]
     \right)}^{\frac{1}{p}}, \quad 1 \leq p < \infty
 \]
-e per \(p=\infty\)
+e per \(p=\infty\) con \(f\) limitata
 \[
     ||f||_\infty = \sup_{x\in D} |f(x)|
 \]
+che è un numero siccome \(f\) è limitata
+
+\stheorem{}{
+    XXXX. Se ho la convergenza uniforme posso invertire integrale e serie.
+}
 
 % 6
 
-\stheorem{}{
-    Sia \((X, \Sigma, \mu)\) uno spazio di misura e
+\section{Integrazione}
+
+%%%%%%%%%
+\stheorem{Monotone convergence theorem for non-negative measurable functions}{
+    Let \((X, \Sigma, \mu)\) be a measurable space and let
     \[
         f_n \colon X \to [0; +\infty)
-    \] con \(f_n \geq f_{n+1}\)
-    Allora
+    \] be measurable
+    such that \(f_n \leq f_{n+1}\). Then,
     \[
         \lim_n \int_X f_n\,d\mu = \int_X (\lim_n f_n)\,d\mu
     \]
@@ -172,7 +248,7 @@ Tuttavia, l'integrale di \(f_n\) è infinito in quanto la misura dell'insieme è
     \]
     Facciamo ora il caso \(\geq\). Sia \(0 \leq \varphi \leq f\) una funzione semplice
     \[
-        \varphi = \sum_{i=1}^N \alpha_i \chi_{E_i}, \quad a_i \geq 0
+        \varphi = \sum_{i=1}^N \alpha_i \chi_{E_i}, \quad \alpha_i \geq 0
     \]
     e prendiamo \(c\in (0,1)\). Considegliamo gli insiemi
     \[
@@ -226,13 +302,12 @@ Tuttavia, l'integrale di \(f_n\) è infinito in quanto la misura dell'insieme è
     \[
         \lim_n \int_X f_n \,d\mu \geq \int_X f\,d\mu
     \]
+    Mettendo assieme le due cose otteniamo l'uguaglianza
+    
+    \[
+        \lim_n \int_X f_n \,d\mu = \int_X f\,d\mu
+    \]
 }
-
-Mettendo assieme le due cose otteniamo l'uguaglianza
-
-\[
-    \lim_n \int_X f_n \,d\mu = \int_X f\,d\mu
-\]
 
 \scorollary{}{
     Allora
@@ -241,8 +316,11 @@ Mettendo assieme le due cose otteniamo l'uguaglianza
     \]
 }
 
-Siccome i termini sono tutti positivi, la successione delle serie parziale è monotona.
+\sproof{}{
+    Siccome i termini sono tutti positivi, la successione delle serie parziale è monotona.
+}
 
+%%%%%%%
 \slemma{Lemma di Fatou}{
     Sia \(f_n \colon X \to [0, +\infty)\) misurabili, allora
     \[
