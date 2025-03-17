@@ -85,7 +85,7 @@ Per trovare il numero di operazioni abbiamo
 \end{align*}
 Quindi servono
 \[
-    \lceil \log2 \left(\frac{|b-a|}{\varepsilon}\right) \rceil
+    \left\lceil \log2 \left(\frac{|b-a|}{\varepsilon}\right) \right\rceil
 \]
 Il pro di questo metodo è quindi una convergenza globale ma come contro
 abbiamo una convergenza lenta se l'intervallo è grande.
@@ -121,11 +121,90 @@ La condizione necessaria è
 }
 \sproof{}{
     \[
-        \alpha = \lim_k x_k = \lim_k {x_k+1} = \lim_k g(x_k)
+        \alpha = \lim_k x_k = \lim_k x_{k+1} = \lim_k g(x_k)
     \]
 }
-La condizione sufficiente è il teorema delle contrazioni.
-% serve C^1
+La condizione sufficiente è il teorema delle contrazioni, per la quale serve \(f\in C^1\).
+\stheorem{Teorema delle contrazioni semplificato}{
+    Sia \(g\in C^1(I_\delta(\alpha))\) dove \(g(\alpha) = \alpha\).
+    Sia \(x_0 \in I_\delta(\alpha)\) e
+    \[
+        |g'(x)| < 1, \quad \forall x \in I_\delta(\alpha)
+    \]
+    Allora per la \(\{x_k\}\) tale che \(x_{k+1} = g(x_k)\) vale
+    \begin{enumerate}
+        \item \(x_k \in I_\delta(\alpha)\);
+        \item \[
+            \lim_{k} x_k = \alpha
+        \]
+        \item \(\alpha\) è l'unico punto fisso.
+    \end{enumerate}
+}
+
+\sproof{Teorema delle contrazioni semplificato}{
+    \begin{enumerate}
+        \item Per induzione su \(k\)
+        \begin{itemize}
+            \item il caso base \(k=0\) è banale per ipotesi;
+            \item assumendo che \(x_k\) dimostriamo che \(x_{k+1}\) sta nell'intorno.
+            \begin{align*}
+                x_{k+1} \in I_\delta(\alpha) \iff |x_{k+1} - \alpha| \leq \delta
+            \end{align*}
+            Per il teorema di Lagrange sul punto \(\xi_k\)
+            \begin{align*}
+                |x_{k+1} - \alpha| = |g(x_k) - g(\alpha)| &= |g'(\xi_k)(x_k - \alpha)| \\
+                &= \underbrace{|g'(\xi_k)|}_{< 1} \cdot \underbrace{|x_k - \alpha|}_{\leq \delta} \\
+                &< \delta
+            \end{align*}
+            con \(|\xi_k - \alpha| < |x_k - \alpha|\).
+            Quindi appartiene all'intervallo.
+        \end{itemize}
+        \item Sia
+        \[
+            \lambda = \max_{x\in I_\delta(\alpha)} |g'(x)|<1
+        \]
+        Sia anche \(e_k = |x_k - \alpha|\) l'errore.
+        Siccome \(e_{k+1} \leq \lambda e_k\) abbiamo
+        \begin{align*}
+            \lim_k x_k = \alpha &\iff \lim_k e_k = 0
+        \end{align*}
+        e quindi
+        \begin{align*}
+            0 \leq e_{k+1} \leq \lambda e_k \leq \lambda\lambda e_{k-1} \leq \cdots
+            \leq \lambda^{k+1} e_0
+        \end{align*}
+        per il teorema dei due carabinieri tende a zero
+        \[
+            \lim_k e_k = 0
+        \]
+        \item Per assurdo sia \(\beta \neq \alpha\) tale che \(\beta = g(\beta)\).
+        Abbiamo \(|\alpha - \beta| > 0\). Quindi \(|g(\beta) - g(\alpha)| > 0\).
+        Per il teorema di Lagrange ciò è uguale a
+        \begin{align*}
+            \underbrace{|g'(\xi)|}_{<1} \cdot |\beta-\alpha| &< |\beta-\alpha|
+        \end{align*}
+        che è assurdo %\lightning.
+    \end{enumerate}
+}
+
+Possiamo rilassare l'ipotesi escludendo \(\alpha\) dall'intervallo.
+%Posso anche rilassarlo fino a richiedere che \(g'=1\).
+Per avere una contrazione non è necessaria \(C^1\), basta che la funzione di Lipschitz con \(L<1\)
+(ulteriore rilassamento).
+
+Se la convergenza è monotona (che non sappiamo), potrebbe considerare solo un intervallo
+sinistro o destro. Sia infatti \(-1 < g'(x) < 0\).
+Disegnino costante di Dottie convergenza. Salto a destra e a sinistra, quindi in questo caso
+non poso prendere l'intervallo solo destro o solo sinistro (convergenza alternata).
+Se invece non cambia segno \(g'(x) < -1\) possiamo considerare solo una parte dell'intervallo
+in quanto la convergenza è monotona.
+Se invece \(g'(x)>1\) abbiamo una divergenza.
+
+Vediamo ora come scegliere \(x_0\). Se \(0 < g'(x) < 1\), quindi convergenza monotona,
+possiamo scegliere \(x_0 = a\) o \(x_0 = b\) che sono gli estremi.
+Il problema sussiste quando \(-1 < g'(x) < 0\) dove abbiamo una convergenza alternata
+nell'intervallo simmetrico \(I_\delta(\alpha) \subseteq [a,b]\). Dobbiamo sapere qual'è il più vicino.
+
 
 % x = -f/f' -x_{k-1}
 
