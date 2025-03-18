@@ -472,7 +472,7 @@ L'integrale non converge in quanto i due integrali non convergono (le serie dive
     \]
 }
 
-Se \(A \subset X\) con \(A\) integrabile e \(f\colon X \to \mathbb{R}\)
+Se \(A \subseteq X\) con \(A\) integrabile e \(f\colon X \to \mathbb{R}\)
 misurabile, \(f\) è integrabile in \(A\) se \(f\chi_A\) è integrabile.
 Chiaramente definiamo
 \[
@@ -510,7 +510,7 @@ Alcune proprietà di questa ipotetica misura
         &= \varepsilon \sum_{n=0}^\infty \frac{1}{2^n} = 2\varepsilon
     \end{align*}
     \item \(\mu^*(E + x) = \mu^*(E)\) (invariante per traslazione).
-    \item subadditività \[
+    \item subadditività (numerabile) \[
         \mu^*\left(\bigcup E_n\right) \leq \sum_n \mu(E_n)
     \]
     \item \(\mu^*(I) = b-a\)
@@ -521,6 +521,414 @@ l'ugualgianza non vale, quindi non esiste tale misura.
 
 Vale sempre \(\mu^*(I) \leq b-a\) perché c'è l'inf, c'è sempre un ricoprimento.
 La misura esterna è almeno quel valore, magari più piccolo, vale lo stesso.
+
+Vogliamo mostrare la subadditività (numerabile).
+Per definizione possiamo prendere \(E_n\) come un'unione di intervalli numerati
+\[
+    E_n \subseteq \bigcup_k I^n_k
+\]
+quindi, per avvicinarsi alla misura
+\begin{align*}
+    \sum_{k=1} l(I^n_k) \leq \mu^*(E_n) + \frac{\varepsilon}{2^n}
+\end{align*}
+Chairamente l'unione di \(E_n\) è ricoperta da un unione di unioni
+\[
+    \bigcup E_n \subseteq \bigcup_n \left(\bigcup_k I_k^n\right)
+\]
+E per definizione la misura di tale unione
+\begin{align*}
+    \mu^*\left(\bigcup E_n\right) &\leq \sum_n \left(\sum_k l(I_k^n)\right) \\
+    &\leq \sum_n \left(\mu^* (E_n) + \frac{\varepsilon}{2^n}\right) \\
+    &= \sum_n \mu^*(E_n) + \varepsilon
+\end{align*}
+Siccome \([a,b] \subset (a-\varepsilon, b + \varepsilon)\) è una possibile ricopritura,
+abbiamo
+\[
+    \mu^*([b,a]) \leq b-a + 2\varepsilon
+\]
+Ora facciamo il contrario; mostriamo che per ogni ricoprimento
+\([a,b] \subseteq \bigcup I_n\), la serie di tutte quelle lunghezze è almeno \(b-a\).
+L'insieme \(\bigcup I_n\) è compatto e quindi ha un ricoprimento finito. Possiamo
+estrarre un sottoricoprimento finito che lo ricopre ancora.
+Quindi possiamo immaginarci
+\[
+    [a,b] \subseteq I_1 \cup \cdots \cup I_n
+\]
+Vogliamo mostrare che se i ricoprimenti finiti hanno lunghezza almeno \(b-a\), quindi anche quelli infiniti.
+Siccome usiamo intervalli aperti, vogliamo che gli altri intervalli si sovrappongano per coprire anche gli estremi,
+che non sono coperti.
+Impostiamo allora la condizione che \(a_1 < a\), \(a_2 < b_1\), \(a_3 < b_2\).
+Quindi in generale ci spostiamo verso destra con \(a_k - b_{k-1}\). L'ultimo intervallo
+deve contenere \(b\) quindi \(b_n > b\).
+Quindi, dato un ricoprimento qualsiasi, possiamo sempre trovare un sottoricoprimento in questa maniera.
+Abbiamo allora la sommatoria
+\begin{align*}
+    \sum_{k=1}^n l(I_k) &= b_n - a_n + b_{n-1} - a_{n-1} + \cdots + b_2 - a_2 + b_1 - a_1 \\
+    &= b_n + (b_{n-1} - a_n) + (b_{n-2} - a_{n-1}) + \cdots + (b_1 - a_2) - a_1
+\end{align*}
+Siccome \(a_k - b_{k-1}\), tutte le parentesi sono strettamente positive.
+Se buttiamo via tali termini ci rimane un valore maggiore di \(b_n - a_1\).
+\begin{align*}
+    \sum_{k=1}^n l(I_k) > b_n - a_1 > b-a
+\end{align*}
+Abbiamo quindi trovato che \(\mu^*([a,b]) = b-a\).
+Possiamo trovare la misura dell'intervallo aperto facendo
+\begin{align*}
+    b-a = \mu^*([a,b]) &= \mu^*\left((a,b) \cup \{a\} \cup \{b\}\right) \\
+    &\leq \mu^*\left((a,b)\right) + \mu^*(\{a\}) + \mu^*(\{b\}) \\
+    &= \mu^*\left((a,b)\right) \leq b-a
+\end{align*}
+
+\sdefinition{Misurabile secondo Lebesgue}{
+    Un insieme \(E \subseteq \mathbb{R}\) è \emph{misurabile secondo Lebesgue}
+    se \(\forall A \subseteq \mathbb{R}\),
+    \[
+        \mu^*(A) = \mu^*(A \cap E) + \mu^*(A \cap E^c)
+    \]
+}
+
+Questa definizione è data dal fatto che vogliamo che la misura si scomponga in due parti disgiunte
+per tutti gli \(A\), quella che si sovrappone con \(E\) e quella che non si sovrappone con \(E\).
+
+\stheorem{}{
+    Gli insiemi misurabili secondo Lebesgue sono una \(\sigma\)-algebra.
+}
+
+\sproof{}{
+    Sia \(\mathcal{M}\) tale insieme.
+    \begin{enumerate}
+        \item Notiamo un paio di cose. Se \(\mu^*(E) = 0\), allora \(E \in \mathcal{M}\).
+        Questo è dato dal fatto che
+        \begin{align*}
+            0 + \mu^*(A \cap E^c) &= \mu^*(A \cap E) + \mu^*(A \cap E^c) \\
+            &\leq \mu^*(A)
+        \end{align*}
+        Quindi anche tutti gli insiemi misurabili hanno misura zero.
+        \item Abbiamo anche che se \(E \in \mathcal{M}\) allora \(E^C \in \mathcal{M}\).
+        Questo è dato dalla definizione simmetrica di misura di Lebesgue.
+        \item Mostriamo che se \(E_1, E_2 \in \mathcal{M}\), allora \(E_1 \cup E_2 \in \mathcal{M}\).
+        Per fare ciò mostriamo \(E_1 \cap E_2 \in \mathcal{M}\), e poi usiamo il complementare due volte
+        per tornare al primo caso. Siccome \(E_2\) è misurabile possiamo scomporre
+        \begin{align*}
+            \mu^*(A) &= \mu^*(A \cap E_1) + \mu^*(A \cap E_1^c) \\
+            &= \mu^*(A \cap E_1 \cap E_2) + \mu^*(A \cap E_1 \cap E_2^c) + \mu^*(A \cap E_1^c) \\
+            &\geq \mu^*(A \cap (E_1 \cap E_2)) + \mu^*((A \cap E_1 \cap E_2^c) \cup A \cap E_1^c) \\
+            &= \mu^*(A \cap (E_1 \cap E_2)) + \mu^*(A \cap (E_1 \cap E_2^c))
+        \end{align*}
+        il terzo passaggio usa la subadditività per maggiorare. Chiaramente se ciò vale per due insiemi,
+        banalmente vale per \(n\) insiemi \(E_1, E_2, \cdots, E_n \in \mathcal{M}\),
+        e quindi \(\bigcup_i E_i \in \mathcal{M}\).
+        Se quindi \(E_1, E_2, \cdots, E_n\) sono misurabili e sono disgiunti, allora
+        % TODO: \subseteq
+        \(\forall A \subseteq \mathbb{R}\),
+        \begin{align*}
+            \mu^*\left(
+                A \cap \left(
+                    \bigcup_{k=1}^n E_k
+                \right)
+            \right)
+            = \sum_{k=1}^n \mu^*(A \cap E_k)
+        \end{align*}
+        Per esempio, per \(A= \mathbb{R}\)
+        \[
+            \mu^*\left(\bigcup_{k=1}^n E_k\right)
+            = \sum_{k=1}^n \mu^*(E_k)
+        \]
+        Per induzione abbiamo \(n+1 \implies n\)
+        \begin{align*}
+            \mu^*\left(A \cap \left(\bigcup_{k=1}^n E_k\right)\right)
+            &= \mu^*\left(A \cap \left(\bigcup_{k=1}^n E_k\right) \cup E_n\right)
+            + \mu^*\left(
+                A \cap \left(\bigcup_{k=1}^n E_k\right) \cap E_n^c
+            \right) \\
+            &= \mu^*(A \cap E_n) + \mu^*\left(A \cap \left(\bigcup_{k=1}^{n-1} E _k\right) \right) \\
+            &= \mu^*\left(
+                A \cap E_n
+            \right)
+            + \sum_{k=1}^{n-1} \mu^*(A \cap E_k) \\
+            &= \sum_{k=1}^n \mu^*(A \cap E_k)
+        \end{align*}
+        Mostriamo ora il caso infinito. Sia \(\{E_n\}\) con \(E_n \in \mathcal{M}\),
+        allora \(\bigcup I_n \in \mathcal{M}\). Sia
+        \begin{align*}
+            E &= \bigcup E_n = E_1 \cap (E_2 \backslash E_1) \cup (E_3 \backslash (E_1 \cup E_2)) \cup \cdots \\
+            &= G_1 \cup G_2 \cup G_3 \cup \cdots
+        \end{align*}
+        siccome l'intersezione di insiemi misurabili è misurabile, e i \(G_i\) sono una collezione finita
+        di quest'ultimi, allora i \(G_i\) sono misurabili.
+        Abbiamo allora \(E = \bigcup G_n\) dove \(G_n \in \mathcal{M}\) sono disgiunti.
+        Sia
+        \[
+            F_n = \bigcup_{k=1}^n G_k
+        \]
+        Chiaramente \(F_n \subseteq E\) e \(F_n^c \supseteq E^c\).
+        Abbiamo allora
+        \begin{align*}
+            \mu^*(A) &= \mu^*(A \cap F_n) + \mu^*(A \cap F_n^c) \\
+            &\geq \mu^*\left(A \cap \left(\bigcup_{k=1}^n G_k\right)\right)
+             + \mu^*(A \cap E^c) \\
+             &= \sum_{k=1}^n \mu^*\left(A \cap G_k\right)
+             + \mu^*(A \cap E^c)
+        \end{align*}
+        Abbiamo quindi questa maggiorazione per ogni \(n\), quindi vale anche per il limite.
+        Il limite delle successioni delle somme parziali è la serie.
+        \begin{align*}
+            \mu^*(A) &\geq \sum_{k=1}^\infty \mu^*(A \cap G_k) + \mu^*(A \cap E^c) \\
+            &\geq \mu^*\left(\bigcup_k^\infty (A \cap G_k)\right)
+            + \mu^*(A \cap E^c) \\
+            &= \mu^*(A \cap E) + \mu^*(A \cap E^c)
+        \end{align*}
+        per la subadditività.
+    \end{enumerate}
+}
+
+La \(\sigma\)-algebra \(\mathcal{M}\) viene detta \emph{\(\sigma\)-algebra di Lebesgue}.
+
+\sdefinition{Misura di Lebesgue}{
+    Sia \(E\) misurabile secondo Lebesgue.
+    Allora
+    \[
+        \mu(E) \triangleq \mu^*(E)
+    \]
+    dove \(\mu^*\) è la misura esterna.
+}
+
+Dobbiamo assicurarsi che data una collezione \(\{E_n\}\) misurabili secondo Lebesgue e disgiunti,
+\[
+    \mu\left(\bigcup E_n\right) = \sum_{n=1}^\infty \mu(E_n)
+\]
+Sicuramente il primo termine è minore o uguale al secondo.
+Per il maggiore o uguale abbiamo
+\begin{align*}
+    \mu\left(\bigcup^\infty E_n\right) &\geq \mu\left(\bigcup_{k=1}^n E_k\right) \\
+    &= \mu^*\left(\bigcup_{k=1}^n E_k\right) \\
+    &= \sum_{k=1}^n \mu^*(E_k) = \sum_{k=1}^n \mu(E_k)
+\end{align*}
+che vale siccome vale la subadditività su insiemi finiti disgiunti.
+Sicocme ciò vale per ogni \(n\), allora vale anche il limite
+\[
+    \mu\left(
+        \bigcup_{n=1}^\infty E_n
+    \right)
+     \geq \sum_{n=1}^\infty \mu(E_n)
+\]
+
+La misura esterna è additiva per un numero finiti di insiemi disgiunti, ma non è vero nel caso infinito.
+La \(\sigma\)-algebra che abbiamo creato è la più grande che gode delle proprietà della misura che vogliamo.
+
+Abbiamo quindi l'algebra \((\mathbb{R}, \mathcal{M}, \mu)\). Abbiamo pronta la teoria dell'integrazione
+per definire l'integrale di Legesbue. Dobbiamo tuttavia capire quali insiemi sono misurabili.
+
+\sproposition{}{
+    \((a, +\infty)\) è misurabile.
+}
+
+\sproof{}{
+    Abbiamo
+    \begin{align*}
+        \mu^*(A) = \mu^*(A \cap (a, +\infty)) + \mu^*(A \cap (-\infty, a])
+    \end{align*}
+    e \(A \subseteq \bigcup I_n\)
+    Siano \[
+        I_n^- = I_n \cap (-\infty, a], \quad I_n^+ = I_n \cap (a, +\infty)
+    \]
+    ovviamente valgono
+    \[
+        I_n = I_n^- \cup I_n^+, \quad I_n^- \cap I_n^+ = \emptyset
+    \]
+    quindi
+    \(l(I_n) = l(I_n^-) + l(I_n^+)\). Inoltre
+    \[
+        A \cap (-\infty, a] \subseteq \bigcup I_n^-, \quad
+        A \cap (a, +\infty) \subseteq \bigcup I_n^+
+    \]
+    E per definizione abbiamo
+    \begin{align*}
+        \mu^*(A \cap (a, +\infty)) + \mu^*(A \cap (-\infty, a])
+        &\leq \sum_n l(I_n^+) + \sum_n l(I_n^-) \\
+        &= \sum_n l(I_n) \leq \mu^*(A) + \varepsilon
+    \end{align*}
+}
+
+Quindi tutti anche gli intervalli sono misurabili.
+Anche \([a, b)\) è misurabile in quanto
+
+\[
+    [a,b) = \bigcap_{n=1}^\infty \left(a-\frac{1}{n}, \infty\right) \cap (-\infty, b)
+\]
+e \((-\infty, b)\) è misurabile in quanto è il complemento di
+\[
+    [b, +\infty) = \bigcap (b-\frac{1}{n}, +\infty)
+\]
+In generale \((a,b) \in \mathcal{M}\).
+Se \(A\) è aperto allora è misurabile.
+\(\mathbb{R}\) con la misura di Lebesgue è uno spazio di misura completo.
+
+\sproposition{}{
+    Sia \(A \subseteq \mathbb{R}\) aperto. Allora
+    \(A\) è unione numerabile di intervalli disgiunti.
+}
+
+Quindi sono misurabili (non serve nemmeno che siano disgiunti).
+
+\sproof{}{
+    Sia \(x\in A\) e consideriamo
+    \[
+        I_x = \left\{\bigcup I \,|\, x\in I\right\} \subseteq A
+    \]
+    chiaramente \(I_x\) è un intervallo, il più grande intervallo contenente \(x\).
+    Se \(I_x = A\), allora abbiamo finito altrimenti \(I_x \subset A\)
+    e consideriamo dunque \(y\in A \backslash I_x\) e \(I_y\).
+    Chiaramente \(I_x \cap I_y = \emptyset\). Adesso abbiamo altri due casi,
+    o \(I_x \cup I_y = A\), e allora abbiamo scritto l'aperto come unione di intervalli disgiunti,
+    oppure c'è \(z \in A \backslash (I_y \cup I_x)\). Consideriando \(I_z\) possiamo fare
+    lo stesso ragionamento. Possiamo andare avanti finché non ho consumato tutti i punti di \(A\).
+    Dobbiamo tuttavia mostrare che \(A = \bigcup I_{x_i}\) è unione numerabile.
+    Per fare ciò consideriamo tutti i razionali \(\{r_n\}\) che stanno in \(A\).
+    Ognuno dei \(I_{x_i}\) deve contenere almeno un razionale, ma siccome i razionali sono numerabili,
+    ci sarebbero intervalli \(I_{x_i}\) senza razionali, che è impossibile.
+}
+
+\saxiom{Assioma della scelta}{
+    Sia \(\mathcal{F}\) una collezione di sottoinsieme di \(X\)
+    esiste una funzione di scelta \(\varphi\colon \mathcal{F} \to X\)
+    tale che \(\forall G \in \mathcal{F}, \varphi(G) \in G\).
+}
+
+Vediamo ora un insieme che non è misurabile usando l'assioma della scelta.
+In \(\mathbb{R}\) con la misura di Lebesgue, sia \(X = [0, 1)\)
+e definiamo \[
+    x \overset{\circ}{+} y = \begin{cases}
+        x + y & x + y < 1 \\
+        x + y - 1 & x + y \geq 1
+    \end{cases}
+\]
+per \(x,y\in X\). Usiamo la relazione di equivalenza \(x \sim y \iff x-y\in\mathbb{Q}\).
+Indichiamo con \(P\) tutti gli elementi che estraiamo con la funzione della scelta dalle classi di equivalenza,
+cioè i rappresentanti delle varie classi.
+Consideriamo ora i razionali \(\{r_n\}\) di \([0, 1)\) e sia
+\[
+    P_n \triangleq P \overset{\circ}{+} r_n
+\]
+Abbiamo alcune proprietà:
+\begin{enumerate}
+    \item \(n \neq m \implies P_n \cap P_m = \emptyset\).
+    Se \(z \in P_n \cap P_m\), allora \(z = p \overset{\circ}{+} r_n = q \overset{\circ}{+} r_m\).
+    Quindi \(p-q = r_m - r_n\), ma quindi \(p-q\) è razionale, e quindi sono nella stessa classe di equivalenza,
+    contro l'ipotesi che sono di classi distinte.
+    \item \[
+        \bigcup P_n = [0,1)
+    \]
+    Chiaramente \(\bigcup P_n \subseteq [0,1)\). Sia ora \(x\in [0,1)\) e mostriamo che appartiene
+    ad un certo \(P_n\). Ovviamente \(x\in {[x]}_\sim = {[p]}_\sim\), quindi \(p-x\in\mathbb{Q}\).
+    \begin{itemize}
+        \item se \(x > p\) allora \(x-p = r_{\overline{n}} \in [0,1)\), quindi
+        \(x = p + r_{\overline{n}}\) o in altre parole \(x \in ü_{r_{\overline{n}}}\)
+        \item TODO:
+    \end{itemize}
+\end{enumerate}
+Supponiamo ora che \(P\) sia misurabile, e quindi \(P_n\) è misurabile.
+Allora \(\mu(P) = \mu(P_n)\)
+\begin{align*}
+    1 = \mu([0,1)) &= \mu\left(\bigcup P_n\right) = \sum_{n=1}^\infty \mu(P_n) \\
+    &= \sum_{n=1}^\infty \mu(P)
+\end{align*}
+quindi la serie di termini costanti o è zero, o diverge, il che è assurdo.
+Quindi l'insieme non è misurabile.
+
+Ricordiamo che una funzione è misurabile quando \(\{f < \alpha\} \in \mathcal{M}\).
+La funzione \(1_{\mathbb{Q}}\) è misurabile e
+\[
+    \int_{\mathbb{R}} 1_{\mathbb{Q}}\,d\mu = \mu(\mathbb{Q}) = 0
+\]
+
+\stheorem{}{
+    Sia \(f\colon [a,b] \to \mathbb{R}\) Riemann-integrabile. Allora
+    \begin{enumerate}
+        \item \(f\) è misurabile secondo Lebesgue;
+        \item \(f\) è Lebesgue-integrabile;
+        \item \[
+            \integral[a][b][f(x)][x] = \int_{[a,b]} f\,d\mu
+        \]
+    \end{enumerate}
+}
+
+\sproof{}{
+    Sia \(f\) misurabile. Vogliamo vedere se
+    \[
+        \int_{[a,b]} |f|\,d\mu < \infty
+    \]
+    Ma
+    \begin{align*}
+        \int_{[a,b]} |f|\,d\mu &\leq \int_{[a,b]} M\,d\mu = M(b-a)
+    \end{align*}
+    Siccome \(f\) è R-integrabile, sappiamo che \(\forall \varepsilon > 0\),
+    esiste una partizione \(P\) di \([a,b]\) tale che
+    \[
+        |S(f, P) - s(f, P)| < \varepsilon
+    \]
+    TODO: usare i simboli di integrale superiore e inferiore.
+    Ricordiamo che
+    \[
+        S(f, P) = \sum_{i=1}^n M_i(x_i - x_{i-1})
+    \]
+    e
+    \[
+        s(f, P) = \sum_{i=1}^n m_i(x_i - x_{i-1})
+    \]
+    Prendiamo
+    \[
+        \varphi_1 = \sum_{i=1}^n m_i 1_{(x_{i-1}, x_i)}
+    \]
+    e
+    \[
+        \varphi_2 = \sum_{i=1}^n M_i 1_{(x_{i-1}, x_i)}
+    \]
+    Una prende l'inf e l'altra prende il sup, quindi \(\varphi_1 \leq f \leq \varphi_2\).
+    Allora
+    \[
+        S(f, P) = \int_{[a,b]} \varphi_2\,d\mu,\quad 
+        s(f, P) = \int_{[a,b]} \varphi_1\,d\mu
+    \]
+    Quindi possiamo rimpiazzare la condizione con gli integrali di Lebesgue
+    \[
+        \left|
+            \int_{[a,b]} \varphi_2\,d\mu -
+            \int_{[a,b]} \varphi_1\,d\mu
+        \right| < \varepsilon
+    \]
+    Al posto di \(\varepsilon\) prendiamo \(1/n\). Per ogni \(n\) ci saranno le funzioni semplici
+    \(\varphi_1^n \leq f \leq \varphi_2^n\). Possiamo anche fare in modo che
+    \(\varphi_1^n \leq \varphi_1^{n+1} \leq f \leq \varphi_2^{n+1} \leq \varphi_2^n\).
+    Chiaramente \(\{\varphi_1^n\}\) e \(\{\varphi_2^n\}\) sono monotone e quindi convergono
+    a \(\overline{\varphi}_1\) e \(\overline{\varphi}_2\), quindi \(\overline{\varphi}_1 \leq f \leq \overline{\varphi}_2\).
+    Vale sempre che \(|\varphi_1^n|, |\varphi_2^n| \leq M\) sono limitate da qualche costante,
+    ma allora possiamo applicare il teorema della convergenza dominante
+    \begin{align*}
+        \int_{[a,b]} (\overline{\varphi}_2-\overline{\varphi}_1)\,d\mu = 0
+    \end{align*}
+    ma quindi siccome l'integranda \(\overline{\varphi}_2-\overline{\varphi}_1\) è non negativa,
+    allora deve essere quasi ovunque uguale a zero, oppure che le due sono uguali quasi ovunque,
+    e siccome \(\overline{\varphi}_1 \leq f \leq \overline{\varphi}_2\), allora
+    \(\overline{\varphi}_2=f=\overline{\varphi}_1\) quasi ovunque.
+    Allora, siccome \(\mathcal{M}\) è completa, \(f\) è misurabile.
+    Il terzo punto è immediato in quanto l'integrale rimane monotono e quindi
+    \begin{align*}
+        \int_{[a,b]} \overline{\varphi}_1 \,d\mu
+        \leq
+        \int_{[a,b]} f \,d\mu
+        \int_{[a,b]} \overline{\varphi}_2 \,d\mu
+    \end{align*}
+    ma il primo è uguale all'ultimo.
+    Per definizione di integrale di Riemann,
+    \[
+        \int_{[a,b]} \overline{\varphi}_2 \,d\mu
+    \]
+    è l'integrale di Riemann di \(f\), e quindi
+    \[
+        \integral[a][b][f(x)][x] = \int_{[a,b]}f\,d\mu
+    \]
+}
 
 \pagebreak
 
