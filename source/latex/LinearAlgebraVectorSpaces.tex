@@ -92,9 +92,123 @@ containing two subspaces.}
     \]
 \end{snippetdefinition}
 
+\begin{snippetproposition}{vector-space-sum-is-smallest-vector-space}{}
+    Let \(U_1, U_2, \cdots, U_n\) be subsets of
+    a \vectorspace \(V\). Then, \(U_1 + U_2 + \cdots + U_n\)
+    is the smallest \vectorspace containing each \(U_i\).
+\end{snippetproposition}
+
+\begin{snippetproof}{vector-space-sum-is-smallest-vector-space-proof}{vector-space-sum-is-smallest-vector-space}{}
+    We first show that the sum is a linear subspace:
+    \begin{enumerate}
+        \item since \(U_i\) is a linear subspace, \(0_V \in U_i\).
+        Thus,
+        \[
+            0_V = 0_V \in U_1 + 0_V \in U_2 + \cdots + 0_V \in U_n
+        \]
+        \item given \(u,v \in U_1 + U_2 + \cdots + U_n\), we have
+        \(u=u_1 + u_2 + \cdots + u_n\) and \(v=v_1 + v_2 + \cdots + v_n\). Together we have
+        \begin{align*}
+            u + v = (u_1 + v_1) + (u_2 + v_2) + \cdots + (u_n + v_n)
+        \end{align*}
+        and since \(u_i + v_i \in U_i\), \(u+v \in U_1 + U_2 + \cdots + U_n\).
+        \item \(u \in U_1 + U_2 + \cdots + U_n \iff u = u_1 + \cdots + u_n\).
+        Let \(\lambda \in \mathbb{F}\). Then,
+        \begin{align*}
+            \lambda i = \lambda (u_1 + \cdots + u_n) = \lambda u_1 + \cdots \lambda u_n \in
+            U_1 + U_2 + \cdots + U_n
+        \end{align*}
+    \end{enumerate}
+    We now need to prove that such construction is the smallest \vectorspace containing \(U_1, U_2, \cdots, U_n\).
+    We start by noting that \(U_i \subseteq U_1, U_2, \cdots, U_n\).
+    Consider another linear subspace \(\hat{U}\) containing \(U_1, U_2, \cdots, U_n\).
+    We need to show that \(\hat{U} \supseteq U_1, U_2, \cdots, U_n\).
+    Let \(u_i \in U_i\). Then, \(u_1 + \cdots + u_n \in U_1, U_2, \cdots, U_n\)
+    but \(u_i \in U_i \subseteq \hat{U}\), which is a linear subspace, which is closed under addition,
+    meaning that \(u_1 + \cdots + u_n \in \hat{U}\).
+\end{snippetproof}
+
+\plain{Linear subspaces can never be disjoint. However, something close can happen.
+Note that elements of the sum do not have a unique representation, and can be obtained
+by adding different terms. We want to restrict ourselves to the case where the sum is uniquely represented.}
+
+\begin{snippetdefinition}{vector-space-direct-sum-definition}{Vector space direct sum}
+    Let \(U_1, U_2, \cdots, U_n\) be linear subsets of a \vectorspace \(V\)
+    over a \field \(\mathbb{F}\). Then, the sum \(U_1 + U_2 + \cdots + U_n\)
+    is said to be a \emph{direct sum} if every element cannot be written as the sum of different elements.
+    \[
+        U_1 \oplus U_2 \oplus \cdots \oplus U_n
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{vector-space-direct-sum-identity}{}
+    Let \(U_1, U_2, \cdots, U_n\) be linear subsets of a \vectorspace \(V\)
+    over a \field \(\mathbb{F}\). Then, the sum \(U_1 + U_2 + \cdots + U_n\)
+    is a direct sum \ifandonlyif \(0_V\) cannot be written as the sum of different terms.
+\end{snippetproposition}
+
+\begin{snippetproof}{vector-space-direct-sum-identity-proof}{vector-space-direct-sum-identity}{}
+    \iffproof{
+        Given by the definition of direct sum.
+    }{
+        Let \(v \in V\) and consider the representations \(v = v_1 + \cdots v_n\)
+        and \(v = w_1 + \cdots + w_n\). We want to show that \(w_i = v_i\) for every \(i\).
+        \begin{align*}
+            v_1 + \cdots v_n - w_1 - \cdots w_n &= 0_V \\
+            (v_1 - w_1) + \cdots + (v_n - w_n) &= 0_V
+        \end{align*}
+        But since \(0_V\) can only be written as
+        \(0_V = 0_V + \cdots + 0_V\), we must have \(v_i - w_i = 0_V\),
+        meaning \(v_i = w_i\).
+    }
+\end{snippetproof}
+
+\begin{snippetproposition}{vector-space-sum-is-direct-iff-intersection-is-trivial}{}
+    Let \(U, W\) be linear subspaces of a \vectorspace \(V\).
+    Then, \(U + W\) is a direct sum \ifandonlyif \(U \intersection W = \{0_V\}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{vector-space-sum-is-direct-iff-intersection-is-trivial-proof}{vector-space-sum-is-direct-iff-intersection-is-trivial}{}
+    \iffproof{
+        Let \(v \in U \intersection W\). Consider the representation \(0 = v + (-v)\)
+        where \(v\in U\) and \(-v \in W\). Since the sum is direct, \(v = -v\) meaning \(v = 0_V\).
+    }{
+        We need to show that the only representation of \(0_V\) is the trivial one.
+        Assume that \(0 = u + w\) for some \(u\in U\) and \(w\in W\).
+        Since \(u=-w\), and \(u\in U\land -w \in W\), we must have that \(u, w \in U \intersection W\),
+        and since \(U \intersection W = \{0_V\}\), \(u = w = 0_V\). 
+    }
+\end{snippetproof}
+
 \includesnpt{linear-combination-definition}
 
 \includesnpt{span-definition}
+
+\begin{snippetproposition}{span-is-linear-subspace}{Span is linear subspace}
+    Let \(V\) be a \vectorspace over a \field \(K\) and \(S\) a \set of \vector[vectors] in \(V\).
+    Then, \(\linearspan(S)\) is the smallest linear subspace of \(V\) containing
+    every element of \(S\).
+\end{snippetproposition}
+
+\begin{snippetproof}{span-is-linear-subspace-proof}{span-is-linear-subspace}{Span is linear subspace}
+    \begin{enumerate}
+        \item If \(S = \emptyset\), then \(0_V \in \linearspan(S)\). Otherwise,
+        we can construct \(0_V\) as a linear combination where the scalars are \(0\).
+        \item Let \(u = a_1v_1 + \cdots + a_nv_n\) and \(w = b_1v_1 + \cdots + b_nv_n\)
+        with \(v_i \in S\) such that \(u, w \in \linearspan(S)\). Then,
+        \begin{align*}
+            u+w &= a_1v_1 + \cdots + a_nv_n + b_1v_1 + \cdots + b_nv_n \\
+            &= (a_1 + b_1)v_1 + \cdots + (a_n + b_n)v_n \in \linearspan(S)
+        \end{align*}
+        \item Let \(u = a_1v_1 + \cdots + a_nv_n\). We have
+        \begin{align*}
+            \lambda u &= \lambda(a_1v_1 + \cdots + a_nv_n) \\
+            &= (\lambda a_1)v_1 + \cdots + (\lambda a_n)v_n \in \linearspan(S)
+        \end{align*}
+    \end{enumerate}
+\end{snippetproof}
+
+% TODO: linear subspaces are closed under linear combination
 
 \includesnpt{linear-independence-definition}
 
