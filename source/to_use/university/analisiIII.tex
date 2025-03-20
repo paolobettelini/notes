@@ -824,7 +824,8 @@ Abbiamo alcune proprietà:
     \begin{itemize}
         \item se \(x > p\) allora \(x-p = r_{\overline{n}} \in [0,1)\), quindi
         \(x = p + r_{\overline{n}}\) o in altre parole \(x \in ü_{r_{\overline{n}}}\)
-        \item TODO:
+        \item se \(x < p\) allora \(x-p+1 \in \mathbb{Q} \cap [0,1)\) e
+        \(x-p+1 = r_{\hat{n}} \in [0,1) = x = p + r_{\hat{n}} - 1 = p \overset{\circ}{+} r_{\hat{n}}\)
     \end{itemize}
 \end{enumerate}
 Supponiamo ora che \(P\) sia misurabile, e quindi \(P_n\) è misurabile.
@@ -929,6 +930,302 @@ La funzione \(1_{\mathbb{Q}}\) è misurabile e
         \integral[a][b][f(x)][x] = \int_{[a,b]}f\,d\mu
     \]
 }
+
+\stheorem{}{
+    Sia \(f\colon \mathbb{R} \to [0, +\infty)\) misurabile tale che
+    \(f\) sia R-integrabile in \([a,c]\) per \(c>a\).
+    Allora,
+    \[
+        \lim_{c\to\infty} \integral[a][c][f(x)][c]
+        = \int_{[a, +\infty)} f\,d\mu
+    \]
+}
+
+L'ipotesi garantisce che l'integrale esiste per ogni \(c\).
+Siccome la funzione è positiva, l'integrale è monotono crescente (potrebbe essere \(+\infty\)).
+Quindi, nel caso dell'integrale di Lebesgue non è necessario usare il limite per estendere
+l'integrale nell'intervallo illimitato, a differenza dell'integrale di Riemann.
+
+\sproof{}{
+    Consideriamo una generica successione \(c_n \to \infty\) e consideriamo
+    \[
+        f_n(x) = f(x) 1_{[a, c_n]}
+    \]
+    Chiaramente \(0 \leq f_n \leq f_{n+1}\) è monotona crescente.
+    Inoltre, \(f_n \to f\) in \([a, +\infty)\).
+    Usiamo il teorema della convergenza monotona che si dice
+    \[
+        \lim \int_X f_n\,d\mu = \int_X f\,d\mu
+    \]
+    Quindi
+    \begin{align*}
+        \lim_n \int_{\mathbb{R}} f_n\,d\mu
+        &= \lim_n \int_{\mathbb{R}} f1_{[a, c_n]}\,d\mu \\ 
+        &= \lim \int_{[a, c_n]} f\,d\mu \\
+        &= \lim \integral[a][c_n][f][\mu] \\
+        &= \lim \integral[a][c_n][f(x)][x] \\
+        &= \lim \int_{\mathbb{R}} f1_{[a, +\infty)}\,d\mu \\
+        &= \int_{[a, +\infty)} \,d\mu
+    \end{align*}
+}
+
+\pagebreak
+
+\sexample{}{
+    La funzione \[\frac{\cos\pi x}{x} \notin L^1((1, +\infty))\]
+    Una funzione è integrabile secondo Lebesgue se e solo se lo è il suo modulo.
+    Possiamo anche utilizzare il fatto che
+    \[
+        \int_{\bigcup E_n} f\,d\mu = \sum_n \int_{E_n} f\,d\mu
+    \]
+    per insiemi \(E_n\) disgiunti se \(f\) è positiva, come in questo caso.
+    Consideriamo quindi
+    \[
+        [1, +\infty) = \bigcup_{k=1}^\infty [k, k+1)
+    \]
+    che sono disgiunti. E quindi
+    \begin{align*}
+        \int_{[1, +\infty)} \frac{|\cos\pi x|}{x}\,d\mu
+        &= \sum_{k=1}^\infty \int_{[k,k+1)} \frac{|\cos\pi x|}{x}\,d\mu \\
+        &= \sum_{k=1}^\infty \integral[k][k+1][\frac{|\cos\pi x|}{x}][x] \\
+        &\geq \sum_{k=1}^\infty \integral[k][k+1][\frac{|\cos\pi x|}{k+1}][x] \\
+        &= \sum_{k=1}^\infty \frac{1}{k+1} \integral[0][1][|\cos\pi x|][x] = +\infty
+    \end{align*}
+    che diverge.
+    Questa funzione non è integrabile secondo Lebesgue ma lo è secondo Riemann.
+}
+
+\sexample{}{
+    Studiare, al variare di \(\alpha\), quando
+    \[
+        f(x) = \frac{x^\alpha \sin\pi x}{(\ln x) \ln(1 + \sqrt{x})}
+        \in L^1((0, +\infty))
+    \]
+    Abbiamo dei problemi in \(x=0, 1, +\infty\).
+    In un intorno di zero abbiamo
+    \[
+        f \sim \frac{C}{x^{-\alpha - \frac{1}{2}} \ln x}
+    \]
+    quindi è integrabile per \(\alpha> - 3/2\).
+    In un intorno di \(1\) abbiamo
+    \[
+        f \sim C\frac{\sim \pi x}{\ln x}
+    \]
+    che è ha limite
+    \[
+        \lim_{x\to 1} C x \cos(\pi x) = 0
+    \]
+    quindi la nostra funzione è sempre integrabile in un intorno di \(1\).
+    In un intorno di infinito abbiamo la maggiorazione
+    \[
+        |f| \leq \frac{Cx^\alpha}{\ln^2(x)}
+    \]
+    siccome per \(x\) grande togliamo il \(+1\).
+    Quindi la funzione è del tipo 
+    \[
+        \frac{C}{x^{-\alpha} \ln^2 x}
+    \]
+    che è integrabile per \(\alpha \leq -1\).
+    Quindi la funzione è integrabile per \(-3/2<\alpha \leq -1\).
+    Dobbiamo tuttavia capire che cosa succede se \(\alpha \leq -1\), siccome
+    abbiamo usato una maggiorazione.
+    Dividiamo l'integrale in diversi integrali secondo il periodo
+    \begin{align*}
+        \integral[a=2][+\infty][\frac{x^\alpha |\sin\pi x|}{(\ln x) \ln(1 + \sqrt{x})}][x]
+        &= \sum_{k=2}^\infty \integral[k][k+1][\frac{x^\alpha |\sin\pi x|}{(\ln x) \ln(1 + \sqrt{x})}][x] \\
+        &\geq \sum_{k=1}^\infty \frac{1}{{(k+1)}^{-\alpha}\ln(k+1)\ln(1 + \sqrt{k+1})}
+        \integral[0][1][|\sin\pi x|][x] 
+    \end{align*}
+    dove \(a=2\) è quasi arbitrario.
+    Della parte periodica sappiamo che l'integrale è costante, del resto della funzione
+    abbiamo preso il minimo. Cominciamo guardando \(-1 \leq \alpha \leq 0\).
+    Il termine ora ha forma
+    \[
+        \frac{1}{k^{-\alpha}\ln^2k}
+    \]
+    allora diverge per \(a > -1\).
+    In conclusione, la funzione è integrabile se e solo se
+    \[
+        -\frac{3}{2} < \alpha \leq -1
+    \]
+}
+
+Quindi per \(\alpha \leq -1\) abbiamo fatto una maggiorazione,
+mentre per il resto abbiamo fatto una minorazione.
+
+\sexample{}{
+    Studiare quando
+    \[
+        f(x) = \frac{\sin^2x^2}{x^\alpha}
+        \in L^1((0, +\infty))
+    \]
+    al variare di \(\alpha\).
+    Abbiamo problemi in \(x=0, +\infty\).
+    In un intorno di \(0\) abbiamo
+    \[
+        f\sim \frac{1}{x^{\alpha - 4}}
+    \]
+    quindi è integrabile per \(\alpha < 5\).
+    In un intorno di infinito notiamo che
+    \[
+        f \leq \frac{1}{x^\alpha}
+    \]
+    quindi è integrabile se \(\alpha > 1\). Dobbiamo tuttavia studiare
+    il caso \(\alpha \leq 1\). Dobbiamo cambiare la variabile in maniera tale da fare diventare
+    la funzione periodica \(x^2 = t\). Allora,
+    \begin{align*}
+        \frac{1}{2} \integral[1][+\infty][\frac{\sin^2t}{t^{\frac{\alpha + 1}{2}}}][t]
+        &\geq \frac{1}{2} \sum_{k=1}^\infty \integral[k\pi][(k+1)\pi][
+            \frac{\sin^2 t}{t^{\frac{\alpha + 1}{2}}}][t] \\
+        &\geq \frac{1}{2} \sum_{k=1}^\infty \frac{1}{{[(k+1)\pi]}^{\frac{\alpha + 1}{2}}}
+        \integral[0][\pi][\sin^2t][t]
+    \end{align*}
+    che non è integrabile \(\frac{\alpha + 2}{2} \leq 1 \iff \alpha \leq 1\).
+    Quindi, \(f\in L^1((0, +\infty))\) se e solo se \(1 < \alpha < 5\).
+}
+
+\pagebreak
+
+\sexample{}{
+    Studiare quando
+    \[
+        f(x) = \frac{x^\alpha}{(1 + x^2) \sqrt[3]{\sin x}}
+        \in L^1((0, +\infty))
+    \]
+    al variare di \(\alpha\).
+    Abbiamo problemi ad infinito ed sicuramente illimitata in quanto il seno si annulla
+    periodicamente.
+    Tuttavia, i punti critici periodici dipendono solo da
+    \[
+        \frac{1}{\sqrt[3]{x}}
+    \]
+    In un intorno di zero abbiamo
+    \[
+        f \sim \frac{1}{x^{\frac{1}{3} - \alpha}}
+    \]
+    che è integrabile per \(\alpha > - 2/3\).
+    Guardiamo ora cosa succede in un intorno di \(k\pi\)
+    \[
+        \frac{1}{{|x-k\pi|}^\alpha} \sim f \frac{1}{\sqrt[3]{\sin x}}
+    \]
+    Dobbiamo fare uno sviluppo per studiare il seno negli intorni di \(k\pi\).
+    \[
+        \sin(x) = 0 \pm (x-k\pi) + o((x-k\pi))
+    \]
+    quindi si comporta come
+    \[
+        \frac{1}{{|x-k\pi|}^{1/3}}
+    \]
+    che è integrabile. Quindi, non ci sono problemi di integrabilità in tali punti per quel pezzo della funzione.
+    In un intorno di infinito
+    \begin{align*}
+        \integral[0][\infty][|f|][\mu]
+        &\geq \integral[\pi][\infty][|f|][\mu] \\
+        &= \sum_{k=1}^\infty \integral[k\pi][(k+1)\pi][\frac{x^\alpha}{(1 + x^2) \sqrt[3]{\sin x}}][x] \\
+        &\geq \sum_{k=1}^\infty \frac{{(k\pi)}^\alpha}{1 + {(k\pi)}^2}
+        \integral[0][\pi][\frac{1}{\sqrt[3]{\sin x}}][x]
+    \end{align*}
+    quindi il carattere è lo stesso di
+    \[
+        \frac{1}{k^{2-\alpha}}
+    \]
+    che diverge per \(\alpha \geq 1\).
+    Analogamente minoriamo
+    \begin{align*}
+        \leq \sum_{k=1}^\infty \frac{{((k+1) \pi)}^\alpha}{1 + \pi^2 {(k + 1)}^2}
+        \integral[0][\pi][\frac{1}{\sqrt[3]{\sin x}}][x]
+    \end{align*}
+    che converge per \(\alpha < 1\).
+    Quindi, \(f\in L^1 \iff -2/3 < \alpha < 1\).
+}
+
+\pagebreak
+
+\sexercise{}{
+    Calcolare
+    \[
+        \lim_n \integral[0][\infty][\frac{e^x + x^n}{1 + x^ne^{2x}}][x]
+    \]
+    Calcoliamo il limite (per \(x > 0\)) delle funzioni che stiamo integrando
+    \begin{align*}
+        \lim_n \frac{e^x + x^n}{1 + x^ne^{2x}}
+        &= \begin{cases}
+            e^x 0 < x < 1 \\
+            e^{-2x}
+        \end{cases}
+    \end{align*}
+    il caso \(x=1\) non ci interessa in quanto per ciò che concerne l'integrale un singolo
+    punto è irrilevante.
+    Vogliamo applicare il teorema di convergenza dominante.
+    Vogliamo trovare una maggiorante integrabile \(g\).
+    Per \(x\in (0,1)\) possiamo usare
+    \[
+        \frac{e^x + x^n}{1 + x^ne^{2x}} \leq e^x + 1
+    \]
+    Invece, per \(x\in (1, +\infty)\)
+    \[
+        \frac{e^x + x^n}{1 + x^ne^{2x}} \leq 
+        \frac{e^x}{x^n e^{2x}} + \frac{x^n}{x^ne^{2x}}
+        = \frac{e^-x}{x^n} + e^{-2x}
+        \leq e^{-x} + e^{-2x}
+    \]
+    Quindi,
+    \[
+        f_n \leq \begin{cases}
+            e^x + 1 & x\in(0,1) \\
+            e^{-2x} + e^{-x} & x>1
+        \end{cases}
+    \]
+    allora il limite degli integrali è l'integrale del limite
+}
+
+\sexercise{}{
+    Calcolare
+    \[
+        \lim_n \integral[0][n][\frac{n^2 e^{-n/t}}{t^2 \sqrt{1 + t^3}}][t]
+    \]
+    Il problema è l'intervallo di integazione, ma possiamo sistemarlo
+    \begin{align*}
+        \lim_n \integral[0][n][\frac{n^2 e^{-n/t}}{t^2 \sqrt{1 + t^3}}][t]
+        &= \lim_n \integral[0][\infty][\frac{n^2 e^{-n/t}}{t^2 \sqrt{1 + t^3}}1_{[0, n]}][t]
+    \end{align*}
+    Il limite è dato da
+    \begin{align*}
+        \lim_n f_n(t) = \begin{cases}
+            \to 0
+        \end{cases}
+    \end{align*}
+    Quindi per dimostrare che l'integrare è nullo dobbiamo trovare una maggiorante integrabile.
+    Potrei maggiorare con una constante
+    \[
+        \frac{n^2 e^{-n/t}}{t^2 \sqrt{1 + t^3}} \leq
+        \frac{C}{t^2 \sqrt{1 + t^3}}
+    \]
+    che tuttavia non è integrabile quando \(t\) è piccolo.
+    Consideriamo allora il termine
+    \[
+        \frac{n^2}{t^2}e^{-n/t} = y^2e^{-y}
+    \]
+    con \(y = n/t\). Di tale funziona, controlliamo se è veramente limitata superiormente, ha un massimo
+    \begin{align*}
+        2ye^{-y} - y^2 e^{-y} = ye^{-y}(2-y)
+    \end{align*}
+    Quindi è sempre limitata da \(4e^{-2}\)
+    \[
+        \left(
+            \frac{n^2}{t^2}e^{-n/t}
+        \right)
+        \cdot \frac{1}{\sqrt{1 + t^3}}
+        \leq \frac{4e^{-2}}{\sqrt{1 + t^3}}
+    \]
+    che è integrabile sia in zero che in infinito.
+}
+
+%l'integrabilità di
+%\[
+%    \frac{1}{{x-a}^\alpha}
+%\]
+%che è integrabile per \(\alpha < 1\).
 
 \pagebreak
 
