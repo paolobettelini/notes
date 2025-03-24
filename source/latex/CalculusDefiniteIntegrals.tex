@@ -56,19 +56,435 @@
 
 \begin{snippetdefinition}{step-function-definition}{Step function}
     Let \(f\colon \realnumbers \fromto \realnumbers\) be a \function. Then, \(f\) is a \emph{step function}
-    if it can be wrriten as
+    if it can be written as
     \[
         f(x) = \sum_{i=0}^n \alpha_i \indicator_{A_i}(x)
     \]
-    where \(\alpha_i\in\realnumbers\) and \(A_i\) are intervals.
+    where \(\alpha_i\in\realnumbers\) and \(A_i\) is a partition of intervals.
+    Such a partition is called an \emph{adapted partition} of \(f\).
+    If the partition assumes different values in consecutive intervals, the partition is called
+    an \emph{induced partition} of \(f\).
 \end{snippetdefinition}
+
+\plain{The induced partition is the minimal partition that can be used to represent a step function.}
+
+\begin{snippetproposition}{step-functions-properties}{Step function properties}
+    Let \(\varphi, \psi\colon I \fromto \realnumbers\) be \stepfunction[step functions].
+    Then,
+    \begin{enumerate}
+        \item there exist a partition that is an adapted partition of both \(\varphi\) and \(\psi\),
+        \item \(\alpha\varphi + \beta\psi\) is a \stepfunction for any \(\alpha, \beta \in \realnumbers\),
+        \item given a family of subintervals \(\{J_l\}\) of \(I\) and \(\gamma_l \in \realnumbers\),
+        \[
+            \sum_{l=1}^n \gamma_l \indicator_{J_l}
+        \]
+        is a \stepfunction.
+        \item \(\varphi\psi\) and \(\varphi/\psi\) if \(\psi(x) \neq 0\) are \stepfunction[step functions].
+        \item let \(F\colon A \subseteq \realnumbers \fromto \realnumbers\) be a \function
+        such that \(\varphi(I) \subseteq A\), then \(F\circ\varphi\) is a \stepfunction.
+        In particular, \(\varphi^+\) and \(\varphi^-\) are \stepfunction[step functions].
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetdefinition}{integral-of-step-function-definition}{Integral of step function}
+    Let \(\varphi\colon \Omega \fromto \realnumbers\) be a \stepfunction[step function]
+    and \(\{I_k\}\) be an adapted partition of \(\varphi\) such that
+    \[
+        \varphi = \sum_{k=1}^n \alpha_k \indicator_{I_k}
+    \]
+    Then,
+    \[
+        \int_\Omega \varphi = \sum_{k=1}^n \alpha_k \mu(I_k)
+    \]
+    where \(\mu\) is the length of the interval.
+\end{snippetdefinition}
+
+\begin{snippet}{integral-of-step-function-induced-partition}
+    It is not necessary to choose a partition induced by \(\varphi\) but any adapted partition
+    suffices. The adapted partition is created by dividing the intervals in the induced partition.
+    Let \(\{I_k\}\) be an adapted partition of \(\varphi\) and \(\{J_i\}\) be an induced partition of \(\varphi\)
+    such that
+    \[
+        I_k = \bigcup_{i=1}^{n_k} J_{k_i}
+    \]
+    and \(\varphi(x) = \alpha_k\) on \(I_k\) where \(J_i\) are disjoint intervals.
+    Then,
+    \[
+        \alpha_k \cdot \mu(I_k) = \sum_{i=1}^{n_k} \alpha_k \mu(J_{k_i})
+    \]
+    and \(\{J_{k_i}\}\) is an adapted partition of \(\varphi\) and
+    \[
+        \varphi(x) = \sum_{i=1} \alpha_i 1_{J_{k_i}}
+    \]
+    which means that
+    \[
+        \sum_{i=1} \alpha_i \mu(J_{k_i}) = \sum_{k=1} \alpha_k \mu(I_k)
+    \]
+    and the integral remains the same.
+\end{snippet}
+
+\begin{snippetproposition}{step-function-integral-properties}{Step function integral properties}
+    Let \(\varphi, \psi\colon \Omega \fromto \realnumbers\) be \stepfunction[step functions].
+    Then,
+    \begin{enumerate}
+        \item \emph{linearity:}
+            \[
+                \int_\Omega \left( \alpha\varphi + \beta\psi \right) = \alpha\int_\Omega \varphi + \beta\int_\Omega \psi
+            \]
+            for any \(\alpha, \beta \in \realnumbers\).
+        \item \emph{monotonicity:}
+            \[
+                \varphi \leq \psi \implies \int_\Omega \varphi \leq \int_\Omega \psi
+            \]
+        \item \emph{triangular inequality:}
+            \[
+                \left| \int_\Omega \varphi \right| \leq \int_\Omega |\varphi|
+            \]
+        \item let \(\Omega = \Omega_1 \union \Omega_2\) where \(\Omega_1 \intersection \Omega_2 = \emptyset\). Then,
+            \[
+                \int_\Omega \varphi = \int_{\Omega_1} \varphi + \int_{\Omega_2} \varphi
+            \]
+        \item if \(\varphi(x) = \psi(x)\) except in a finite number of points, then
+            \[
+                \int_\Omega \varphi = \int_\Omega \psi
+            \]
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{step-function-integral-properties-proof}{step-function-integral-properties}{Step function integral properties}
+    \begin{enumerate}
+        \item \emph{linearity:} let \(\{J_i\}\) be a partition adapted to both \(\varphi\) and \(\psi\)
+        such that
+        \[
+            \varphi = \sum_{i=1}^n \alpha_i \indicator_{J_i}, \qquad
+            \psi = \sum_{i=1}^n \beta_i \indicator_{J_i}
+        \]
+        Then,
+        \[
+            \alpha\varphi + \beta\psi = \sum_{i=1}^n (\alpha\alpha_i + \beta\beta_i) \indicator_{J_i}
+        \]
+        and the integrals are given by splitting the sum and applying the integral of a \stepfunction.
+        \item \emph{monotonicity:} let \(\{J_i\}\) be a partition adapted to both \(\varphi\) and \(\psi\)
+        such that
+        \[
+            \varphi = \sum_{i=1}^n \alpha_i \indicator_{J_i}, \qquad
+            \psi = \sum_{i=1}^n \beta_i \indicator_{J_i}
+        \]
+        We have that \(\varphi(x) \leq \psi(x)\) for \(x\in\Omega\) \ifandonlyif \(\alpha_k \leq \beta_k\) for all \(k\).
+        Thus, the integral of \(\varphi\) is less than the integral of \(\psi\)
+        \[
+            \int_\Omega \varphi = \sum_{i=1}^n \alpha_i \mu(J_i) \leq \sum_{i=1}^n \beta_i \mu(J_i) = \int_\Omega \psi
+        \]
+        In particular, if \(\psi \geq 0\) on \(\Omega\) then
+        \[
+            \int_\Omega \psi \geq 0
+        \]
+        \item 
+    \end{enumerate}
+\end{snippetproof}
 
 \begin{snippetdefinition}{dirichlet-function-definition}{Dirichlet function}
     The \emph{Dirichlet function} is defined as \(\indicator_{\rationalnumbers}\).
 \end{snippetdefinition}
 
 \begin{snippetdefinition}{riemann-integral-definition}{Riemann integral}
+    Let \(\varphi\colon \Omega \fromto \realnumbers\) be a bounded \function
+    on a \bounded interval \(\Omega\).
+    The \emph{lower Riemann integral} is defined as
+    \[
+        \lrint_\Omega \varphi = \sup\left\{ \int_\Omega \psi \suchthat \psi \leq \varphi \text{ on } \Omega \land \varphi \in \setofstepfunctions \right\}
+    \]
+    The \emph{upper Riemann integral} is defined as
+    \[
+        \urint_\Omega \varphi = \inf\left\{ \int_\Omega \psi \suchthat \psi \geq \varphi \text{ on } \Omega \land \varphi \in \setofstepfunctions \right\}
+    \]
+    Then, \(\varphi\) is \emph{Riemann integrable} on \(\Omega\) if
+    \[
+        \urint_\Omega \varphi = \lrint_\Omega \varphi
+    \]
+    and we define
+    \[
+        R-\hspace{-0.1cm}\int_\Omega \varphi \triangleq \lrint_\Omega \varphi = \urint_\Omega \varphi
+    \]
 \end{snippetdefinition}
+
+\begin{snippetlemma}{step-functions-are-riemann-integrable}{}
+    Let \(f\colon \Omega \fromto \realnumbers\) be a \stepfunction[step function].
+    Then, \(f\) is Riemann integrable on \(\Omega\) and
+    \[
+        R-\hspace{-0.1cm}\int_\Omega f = \int_\Omega f
+    \]
+\end{snippetlemma}
+
+\begin{snippetproof}{step-functions-are-riemann-integrable-proof}{step-functions-are-riemann-integrable}{}
+    We need to show that if \(f\) is a \stepfunction then
+    \[
+        \int_\Omega f
+        = \sup\left\{ \int_\Omega \psi \suchthat \psi \leq f \text{ on } \Omega \land f \in \setofstepfunctions \right\}
+        = \inf\left\{ \int_\Omega \psi \suchthat \psi \geq f \text{ on } \Omega \land f \in \setofstepfunctions \right\}
+    \]
+    Without loss of generality, we will verify the first equality.
+    For every \stepfunction \(\psi\) such that \(\psi \leq f\), we have that
+    \[
+        \int_\Omega \psi \leq \int_\Omega f
+    \]
+    and by using the supremum on \(\psi\) we have
+    \[
+        \sup\left\{ \int_\Omega \psi \suchthat \psi \leq f \text{ on } \Omega \land f \in \setofstepfunctions \right\}
+        \leq \int_\Omega f
+    \]
+    On the other hand, since \(f\) is a \stepfunction, \(f\) is one of the \stepfunction[step functions]
+    that we are considering, meaning
+    \[
+        \int_\Omega f \leq
+        \sup\left\{ \int_\Omega \psi \suchthat \psi \leq f \text{ on } \Omega \land f \in \setofstepfunctions \right\}
+        \leq \int_\Omega f
+    \]
+    which gives the equality.
+\end{snippetproof}
+
+\begin{snippettheorem}{dirichlet-function-not-riemann-integrable-theorem}{}
+    The Dirichlet function \(1_{\rationalnumbers}\) is not Riemann integrable on \([a,b]\).
+\end{snippettheorem}
+
+\begin{snippetproof}{dirichlet-function-not-riemann-integrable-theorem-proof}{dirichlet-function-not-riemann-integrable-theorem}{}
+    We will separately compute the upper and lower Riemann integrals.
+    \begin{itemize}
+        \item we know that \(1_{\rationalnumbers} \geq 0\) and by definition of lower Riemann integral
+        \[
+            \lrint_{[a,b]} 1_{\rationalnumbers} = \sup\left\{ \int_{[a,b]} \varphi \suchthat \varphi \leq 1_{\rationalnumbers} \land \varphi \in \setofstepfunctions \right\}
+            \leq \int_\Omega 1_{\rationalnumbers} \geq \int_\Omega 0 = 0
+        \]
+        On the other hand, let
+        \[
+            \varphi = \sum_{k=1}^n \alpha_k \indicator_{\Omega_k}
+        \]
+        be a \stepfunction such that \(\varphi \leq 1_{\rationalnumbers}\) on \([a,b]\)
+        where \(\{\Omega_k\}\) is a partition of \(\Omega = [a,b]\), meaning
+        \[
+            \bigcup_k \Omega_k = \Omega = [a,b]
+        \]
+        where \(\Omega_i\) are \disjoint. By definition we have
+        \begin{align*}
+            \int_\Omega \varphi &=
+            \sum_{k=1}^n \alpha_k \mu(\Omega_k) \\
+            &= \sum_{\substack{k=1 \\ \mu(\Omega_k) > 0}}^n \alpha_k \mu(\Omega_k)
+            + \sum_{\substack{k=1 \\ \mu(\Omega_k) = 0}}^n \alpha_k \mu(\Omega_k) \\
+            &= \sum_{\substack{k=1 \\ \mu(\Omega_k) > 0}}^n \alpha_k \mu(\Omega_k)
+        \end{align*}
+        Since \(\realnumbers\) and \(\realnumbers \difference \rationalnumbers\) are dense in \(\mathbb{R}\),
+        every interval \(\Omega_k\) such that \(\mu(\Omega_k) > 0\) contains infinite rational and irrational numbers.
+        In particular, there exist \(x_k\in \Omega_k\) such that \(x_k \in \realnumbers \difference \rationalnumbers\)
+        and since \(\varphi\leq 1_{\rationalnumbers}\) we have that
+        \[
+            \varphi(x_n) \leq 1_{\rationalnumbers}(x_n) = 0
+        \]
+        Thus, for every \(k\), \(\mu(\Omega_k) \geq 0\) and \(\alpha_k \leq 0\) and by substituting in the integral
+        we have
+        \[
+            \int_\Omega \varphi \leq 0
+        \]
+        for every \stepfunction \(\varphi\) such that \(\varphi \leq 1_{\rationalnumbers}\) on \([a,b]\).
+        We then use the supremum
+        \[
+            \lrint_{[a,b]} 1_{\rationalnumbers} \leq 0 \implies \lrint_{[a,b]} 1_{\rationalnumbers} = 0
+        \]
+        \item we know that \(1_{\rationalnumbers} \leq 1\) and by definition of upper Riemann integral
+        \[
+            \urint_{[a,b]} 1_{\rationalnumbers} = \inf\left\{ \int_{[a,b]} \psi \suchthat \psi \geq 1_{\rationalnumbers} \land \psi \in \setofstepfunctions \right\}
+            \leq \int_\Omega 1_{\rationalnumbers} = \mu(\Omega)
+        \]
+        On the other hand, let
+        \[
+            \psi = \sum_{k=1}^n \beta_k \indicator_{\Omega_k}
+        \]
+        be a \stepfunction like before. Then,
+        \[
+            \int_\Omega \psi = \sum_{k=1}^n \beta_k \mu(\Omega_k) =
+            \sum_{\substack{k=1 \\ \mu(\Omega_k) > 0}}^n \beta_k \mu(\Omega_k)
+        \]
+        meaning that for each \(k\) we have \(\mu(\Omega_k) > 0\) there exist
+        \(x_k'\in \Omega_k\) such that \(x_k' \in \rationalnumbers\) from which
+        \[
+            \beta_k = \psi(x_k') \geq 1_{\rationalnumbers}(x_k') = 1
+        \]
+        and by substituting in the definition we have
+        \begin{align*}
+            \int_\Omega \psi &= \sum_{\substack{k=1 \\ \mu(\Omega_k) > 0}}^n \beta_k \mu(\Omega_k) \\
+            &\geq \sum_{\substack{k=1 \\ \mu(\Omega_k) > 0}}^n \beta_k \mu(\Omega_k) 
+            = \sum_{k=1}^n \beta_k \mu(\Omega_k) = \mu(\Omega_k)
+        \end{align*}
+        which means that \(\forall \psi \geq 1_{\rationalnumbers}\) \stepfunction[step function] on \([a,b]\)
+        \[
+            \int_\Omega \psi \geq \mu(\Omega)
+        \]
+        and by using the infimum we have
+        \[
+            \urint_{[a,b]} 1_{\rationalnumbers}
+            = \inf\left\{ \int_{[a,b]} \psi \suchthat \psi \geq 1_{\rationalnumbers} \land \psi \in \setofstepfunctions \right\}
+            \geq \mu(\Omega) = \mu(\Omega)
+        \]
+    \end{itemize}
+    Thus, such a \function is not Riemann integrable on \([a,b]\).
+\end{snippetproof}
+
+\begin{snippettheorem}{riemann-integrability-equivalence-theorem}{Riemann integrability equivalences}
+    Let \(f\colon \Omega \fromto \realnumbers\) bounded on \(\Omega\) bounded interval.
+    The following are equivalent:
+    \begin{enumerate}
+        \item \(f\) is Riemann integrable on \(\Omega\);
+        \item \(\forall \varepsilon > 0, \exists \varphi_\varepsilon, \psi_\varepsilon\)
+        \stepfunction[step functions] such that \(\varphi_\varepsilon \leq f \leq \psi_\varepsilon\) and
+        \[
+            0 \leq =
+            \int_\Omega (\psi_\varepsilon - \varphi_\varepsilon)
+            < \epsilon
+        \]
+        \item There exist \sequence[sequences] of \stepfunction[step functions] \(\{\varphi_n\}\)
+        and \(\{\psi_n\}\) such that for every \(n\), \(\varphi_n \leq f \leq \psi_n\) on \(\Omega\)
+        and
+        \[
+            0 \leq \int_\Omega (\psi_n - \varphi_n) \to 0
+        \]
+        for \(n\to \infty\).
+        Furthermore, there exist
+        \[
+            \lim_n \int_\Omega \varphi_n = \lim_n
+            \int_\Omega \psi_n = \int_\Omega f
+        \]
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{riemann-integrability-equivalence-theorem-proof}{riemann-integrability-equivalence-theorem}{Riemann integrability equivalences}
+    \begin{enumerate}
+        \item \((1) \implies (2)\): let \(f\) be Riemann integrable.
+        By definition,
+        \begin{align*}
+            \lrint_\Omega f &= \sup\left\{
+                \int_\Omega \varphi \mid \varphi \in \setofstepfunctions \land \varphi \leq f \text{ on } \Omega
+            \right\} \\
+            &= \inf\left\{
+                \int_\Omega \varphi \mid \varphi \in \setofstepfunctions \land \varphi \geq f \text{ on } \Omega
+            \right\} \\
+            &= \urint_\Omega f = \int_\Omega f
+        \end{align*}
+        By defintion of (finite) infimum and supremum \(\forall \varepsilon>0\)
+        there exist \(\varphi_\varepsilon\) \stepfunction with \(\varphi_\varepsilon \leq f\) on \(\Omega\)
+        such that
+        \[
+            \int_\Omega \varphi_\varepsilon > \lrint_\Omega f - \frac{\varepsilon}{2} = \int_\Omega f - \frac{\varepsilon}{2}
+        \]
+        and likewise there exist \(\psi_\varepsilon\) \stepfunction with \(\psi_\varepsilon \geq f\) on \(\Omega\)
+        such that
+        \[
+            \int_\Omega \psi_\varepsilon < \urint_\Omega f + \frac{\varepsilon}{2} = \int_\Omega f + \frac{\varepsilon}{2}
+        \]
+        From this it follows
+        \[
+            0 \leq \int_\Omega \psi_\varepsilon - \int_\Omega \varphi_\varepsilon <
+            \left(
+                \int_\Omega f + \frac{\varepsilon}{2}
+            \right) -
+            \left(
+                \int_\Omega f - \frac{\varepsilon}{2}
+            \right)
+            = \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon
+        \]
+        \item \((2) \implies (3)\): by hypothesis \(\forall \varepsilon > 0, \exists \varphi_\varepsilon, \psi_\varepsilon\)
+        \stepfunction[step functions] such that \(\varphi_\varepsilon \leq f \leq \psi_\varepsilon\) on \(\Omega\) and
+        \[
+            0 \leq \int_\Omega \psi_\varepsilon - \int_\Omega \varphi_\varepsilon < \varepsilon
+        \]
+        Let \(\varepsilon = \frac{1}{n}\), for every \(n\) there exist
+        \(\varphi_\varepsilon, \psi_\varepsilon\) \stepfunction[step functions] where \(\varphi_n \leq f \leq \psi_n\)
+        on \(\Omega\) and
+        \[
+            0 \leq \int_\Omega \psi_n - \int_I \varphi_n < \frac{1}{n} \to 0
+        \]
+        \item \((3) \implies (1)\): By hypothesis there exist
+        \(\{\varphi_n\}\) and \(\{\psi_n\}\) \sequence of \stepfunction[step functions] such that for every \(n\),
+        \(\varphi_n \leq f \leq \psi_n\) and
+        \[
+            0 \leq \int_\Omega \psi_n - \int_\Omega \varphi_n \to 0
+        \]
+        By definition, for every \(n\) we have
+        \[
+            \lrint_\Omega f = \sup\left\{
+                \int_\Omega \varphi \mid \varphi \in \setofstepfunctions \land \varphi \leq f \text{ on } \Omega
+            \right\} \geq \int_\Omega \varphi_n
+        \]
+        and
+        \[
+            \urint_\Omega f = \inf\left\{
+                \int_\Omega \varphi \mid \varphi \in \setofstepfunctions \land \varphi \geq f \text{ on } \Omega
+            \right\} \leq \int_\Omega \psi_n
+        \]
+        from which
+        \[
+            0 \leq \urint_\Omega f - \lrint_\Omega f \leq
+            \int_\Omega \psi_n - \int_\Omega \varphi \to 0
+        \]
+        meaning that \(\urint_\Omega f\) must be equal to \(\lrint_\Omega f\) and thus \(f\)
+        is Riemann integrable. Furthermore, we have that
+        \[
+            0 \leq \lrint_\Omega f - \int_\Omega \varphi_n = \int_\Omega f - \int_\Omega \varphi_n
+            \leq \int_\Omega \psi_n - \int_\Omega \varphi_n \to 0
+        \]
+        which proves that the following exists
+        \[
+            \lim_{n} \int_\Omega \varphi_n = \int_\Omega f
+        \]
+        and likewise for \(\psi_n\).
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetproposition}{riemann-integral-properties}{Riemann integral properties}
+    Let \(f,g\colon \Omega \fromto \realnumbers\) bounded on a bounded interval \(\Omega\). Then,
+    \begin{enumerate}
+        \item if \(f\) and \(g\) are Riemann integrable, then
+        \begin{enumerate}
+            \item \emph{linearity} \(\forall \alpha,\beta\), \(\alpha f+\beta g\) is Riemann integrable and
+            \[
+                \int_\Omega \alpha f+\beta g = \alpha\int_\Omega f + \beta\int_\Omega g
+            \]
+            \item \(fg\) is Riemann integrable and if \(1/g\) is bounded on \(\Omega\),
+            \(f/g\) is also Riemann integrable on \(\Omega\).
+        \end{enumerate}
+        \item if \(f,g\) are Riemann integrable on \(\Omega\) and \(f \leq g\) on \(\Omega\), then
+        \[
+            \int_\Omega f \leq \int_\Omega g
+        \]
+        In particular, if \(g \geq 0\) on \(\Omega\),
+        \[
+            \int_\Omega g \geq 0
+        \]
+        \item \emph{triangular inequality} if \(f\) is Riemann integrable on \(\Omega\)
+        then \(f^+\), \(f^-\) and \(|f|\) are Riemann integrable and
+        \[
+            \left|\int_\Omega f\right| \leq \int_\Omega |f|
+        \]
+        \item \emph{additivity with respect to the domain of integration}
+        If \(\Omega = \Omega_1 \cup \Omega_2\) \disjoint, then \(f\) is Riemann integrable on \(\Omega\)
+        \ifandonlyif it is Riemann integrable on \(\Omega_1\) and \(\Omega_2\), in which case
+        \[
+            \int_\Omega f = \int_{\Omega_1} f + \int_{\Omega_2} f
+        \]
+        In the case where \(\Omega = \Omega_1 \cup \Omega_2\) but the intervals are not necessarily
+        \disjoint, then the riemann Integrability equivalence is still valid but
+        \[
+            \int_\Omega f = \int_{\Omega_1} f + \int_{\Omega_2} f - \int_{\Omega_1 \cap \Omega_2} f
+        \]
+        \item If \(f=g\) except in a finite amount of points, then \(f\)
+        it is Riemann integrable \ifandonlyif \(g\) if Riemann integrable, in which case
+        \[
+            \int_\Omega f = \int_\Omega g
+        \]
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{riemann-integral-properties-proof}{riemann-integral-properties}{Riemann integral properties}
+    \todo
+\end{snippetproof}
 
 \section{Definite integrals}
 
