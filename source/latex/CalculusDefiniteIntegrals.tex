@@ -336,7 +336,7 @@
         \item \(\forall \varepsilon > 0, \exists \varphi_\varepsilon, \psi_\varepsilon\)
         \stepfunction[step functions] such that \(\varphi_\varepsilon \leq f \leq \psi_\varepsilon\) and
         \[
-            0 \leq =
+            0 \leq
             \int_\Omega (\psi_\varepsilon - \varphi_\varepsilon)
             < \epsilon
         \]
@@ -399,7 +399,7 @@
         \(\varphi_\varepsilon, \psi_\varepsilon\) \stepfunction[step functions] where \(\varphi_n \leq f \leq \psi_n\)
         on \(\Omega\) and
         \[
-            0 \leq \int_\Omega \psi_n - \int_I \varphi_n < \frac{1}{n} \to 0
+            0 \leq \int_\Omega \psi_n - \int_\Omega \varphi_n < \frac{1}{n} \to 0
         \]
         \item \((3) \implies (1)\): By hypothesis there exist
         \(\{\varphi_n\}\) and \(\{\psi_n\}\) \sequence of \stepfunction[step functions] such that for every \(n\),
@@ -483,7 +483,76 @@
 \end{snippetproposition}
 
 \begin{snippetproof}{riemann-integral-properties-proof}{riemann-integral-properties}{Riemann integral properties}
-    \todo
+    \begin{itemize}
+        \item We prove that the addition is still Riemann integrable. For every \(\varepsilon>0\)
+        there exist \stepfunction[step functions] \(\varphi_\varepsilon^f \leq f \leq \psi_\varepsilon^f\) on \(\Omega\)
+        such that
+        \[
+            0 \leq \int_\Omega \psi_\varepsilon^f - \int_\Omega \varphi_\varepsilon^f < \frac{\varepsilon}{2}
+        \]
+        and \(\varphi_\varepsilon^g \leq g \leq \psi_\varepsilon^g\) on \(\Omega\) such that
+        \[
+            0 \leq \int_\Omega \psi_\varepsilon^g - \int_\Omega \varphi_\varepsilon^g < \frac{\varepsilon}{2}
+        \]
+        Consider their sum \(\varphi_\varepsilon = \varphi_\varepsilon^f + \varphi_\varepsilon^g\) and \(\psi_\varepsilon = \psi_\varepsilon^f + \psi_\varepsilon^g\)
+        it follows that \(\varphi_\varepsilon\) and \(\psi_\varepsilon\) are \stepfunction[step functions] and
+        \[
+            \varphi_\varepsilon = \varphi_\varepsilon^f + \varphi_\varepsilon^g \leq f+g\leq \psi_\varepsilon^f + \psi_\varepsilon^g = \psi_\varepsilon
+        \]
+        and
+        \begin{align*}
+            0 \leq \int_\Omega \psi_\varepsilon - \int_\Omega \varphi_\varepsilon &< \int_\Omega \psi_\varepsilon^f + \int_\Omega \psi_\varepsilon^g - \int_\Omega \varphi_\varepsilon^f - \int_\Omega \varphi_\varepsilon^g \\
+            &< \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon
+        \end{align*}
+        and thus \(f+g\) is Riemann integrable. Furthermore, for every \(\varepsilon >0\)
+        \[
+            \int_\Omega (\varphi_\varepsilon^f + \varphi_\varepsilon^g) \leq \int_\Omega f+g \leq \int_\Omega (\psi_\varepsilon^f + \psi_\varepsilon^g)
+        \]
+        \[
+            \int_\Omega \varphi_\varepsilon^f +\int_\Omega \varphi_\varepsilon^g \leq \int_\Omega f + \int_\Omega g \leq \int_\Omega \psi_\varepsilon^f + \int_\Omega\psi_\varepsilon^g
+        \]
+        da cui deduciamo che
+        \begin{align*}
+            \int_\Omega (f + g) - \left(
+                \int_\Omega f + \int_\Omega g
+            \right)
+            \leq \int_\Omega \psi_\varepsilon^f + \int_\Omega \psi_\varepsilon^g
+            - \left(
+                \int_\Omega \varphi_\varepsilon^f + \int_\Omega \varphi_\varepsilon^g
+            \right) = \varepsilon
+        \end{align*}
+        da cui concludiamo che
+        \[
+            \left|\int_\Omega (f+g) - \left(\int_\Omega f + \int_\Omega g\right)\right| < \varepsilon
+        \]
+        for every \(\varepsilon>0\).
+        \item We now show that \(f^+\) is Riemann integrable.
+        For every \(\varepsilon>0\) there exist \(\varphi_\varepsilon,\psi_\varepsilon\)
+        \stepfunction[step functions] such that \(\varphi_\varepsilon \leq f \leq \psi_\varepsilon\) and
+        \[
+            0 \leq \int_\Omega \psi_\varepsilon - \int_\Omega \varphi_\varepsilon < \varepsilon
+        \]
+        Clearly, \(\varphi_\varepsilon^+ \leq f^+ \leq \psi_\varepsilon^+\)
+        and thus
+        \[
+            0\leq \int_\Omega \psi_\varepsilon^+ - \int_\Omega \varphi_\varepsilon^+ \leq \int_\Omega \psi_\varepsilon - \int_\Omega \varphi_\varepsilon < \varepsilon
+        \]
+        Which means that it is Riemann integrable.
+        Likewise, we can show that \(f^-\) is Riemann integrable.
+        \item Since \(|f| = f^+ - f^-\)
+        \[
+            \left|\int_\Omega f\right|
+            = \left|\int_\Omega (f^+ - f^-)\right|
+            = \left|\int_\Omega f^+ - \int_\Omega f^-\right|
+        \]
+        and by the triangular inequality it is less than or equal to
+        \begin{align*}
+            \leq \left|\int_\Omega f^+\right|
+            + \left|\int_\Omega f^-\right|
+            = \int_\Omega f^+ + \int_\Omega f^- = \int (f^+ + f^-)
+            = \int_\Omega |f|
+        \end{align*}
+    \end{itemize}
 \end{snippetproof}
 
 \section{Definite integrals}

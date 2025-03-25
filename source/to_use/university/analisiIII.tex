@@ -356,7 +356,7 @@ Tuttavia, l'integrale di \(f_n\) è infinito in quanto la misura dell'insieme è
     Sia \(f\colon X \to [0; +\infty)\) misurabile.
     Allora \(f\) è \emph{integrabile} su \(X\) se
     \[
-        \int_X f\,d\mu \leq \infty
+        \int_X f\,d\mu < \infty
     \]
 }
 
@@ -1221,6 +1221,157 @@ mentre per il resto abbiamo fatto una minorazione.
     che è integrabile sia in zero che in infinito.
 }
 
+Lo spazio di probabilità è una misura \((\mathbb{R}, \mathcal{B}, \mathbb{P})\)
+dove \(\mathcal{B}\) è la misura generata dagli aperti (di Borel), quindi \(\mathcal{B} \subseteq \mathcal{M}\)
+in quanto gli aperti sono nelle \(\sigma\)-algebra di Lebesgue.
+Si può mostrare che la misura di Lebesgue è strettamente contenuta in \(\mathcal{M}\) ma è più complicato.
+La misura ha la proprietà che \(\mathbb{P}(\mathbb{R}) = 1\).
+Se prendiamo \(x\in \mathbb{R}\), \(\delta_x(\mathbb{R}) = 1\) (misura di Dirac).
+
+Costruiamo una funzione \(F \colon \mathbb{R} \to [0,1]\) tale che
+\[
+    F_{\mathbb{P}}(x) = \mathbb{P}((-\infty, x])
+\]
+Se prendiamo \(\mathbb{P} = \delta_x\), allora
+\(F_{\delta_a}\) vale \(1\) per \(x\geq 1\), altrimenti \(0\).
+
+Prendiamo ora \(\mathbb{P} = \mu(A \cap [0,1])\) che viene chiamata la misura di Lebesgue concentrata in \(1\).
+Scriviamo
+\[
+    F_{\mathbb{P}}(x) = \mu((-\infty, x] \cap [0,1])
+\]
+fino a zero, la funzione è nulla in quanto l'intersezione è vuota.
+La funzione è \(1\) per \(x\geq1\) e una retta in \([0,1]\).
+Tale funzioni ha delle proprietà molto importanti:
+\begin{enumerate}
+    \item \(x<y \implies F(x) \leq F(y)\)
+    \item \[
+        \lim_{x\to-\infty} F(x) = 0,\qquad \lim_{x\to\infty} F(x) = 1
+    \]
+    Per dimostrare che il limite tende ad \(1\) prendiamo una successione \(x_n \to \infty\) e consideriamo
+    gli intervalli \(I_n = (-\infty, x_n]\).
+    Abbiamo che \(I_n \subseteq I_{n+1}\) e
+    \[
+        \bigcup I_n = \mathbb{R}
+    \]
+    quindi la probabilità (misura) dell'unione è data dal limite
+    \[
+        \mathbb{P} \left(
+            \bigcup I_n
+        \right) = \lim_n \mathbb{P}(I_n) = \mathbb{P}(\mathbb{R})
+        = \lim_n F(x_n) = 1
+    \]
+    \item \emph{continua da destra} \[
+        \lim_{x\to x_0^+} F(x) = F(x_0)
+    \]
+\end{enumerate}
+
+Una funzione \(F \colon \mathbb{R} \to [0,]\) che soddisfa \((1), (2), (3)\) è detta
+una funzione di distribuzione (anche funzione di ripartizione della probabilità \(\mathbb{P}\)).
+Sia dunque \(F\) una tale funzione. Allora esiste una probabilità \(\mathbb{P}\) su \(\mathbb{R}\)
+tale che \(F = F_{\mathbb{P}}\), cioè partendo da \(\mathbb{P}\) posso ritrovare la stessa \(F\).
+Quindi, avere una probabiltà o una funzione di distribuzione è la stessa cosa.
+Per costruire tale probabilità prendiamo intervalli \(I = (a, b]\) e diciamo che la lunghezza
+di tale intervallo relativa alla funzione la calcolo così:
+\[
+    l_F(I) = F(b) - F(a)
+\]
+e poi costruiamo
+\[
+    \mu^*_F(E) = \inf\left\{
+        \sum_{n=1}^\infty l_F(I_n), E \subseteq \bigcup_{n=1}^\infty I_n
+    \right\}
+\]
+Un sottoinsieme \(E \subseteq \mathbb{R}\) è \(F\)-misurabile
+se
+\[
+    \forall A \subseteq \mathbb{R}, \mu_F^*(A) = \mu_F^*(A \cap E) + \mu^*_F(A \cap E^c)
+\]
+esattamente come prima.
+Se \(E\) è \(F\)-misurabile allora definiamo
+\[
+    \mu_F(E) = \mu_F^*(E)
+\]
+che in realtà è una probabilità, la cui funzione di distribuzione è quella da cui siamo partiti.
+
+\section{Misura di Lebesgue su \(\mathbb{R}^n\)}
+
+Consideriamo ora un insieme della forma (che chiamiamo per semplicità rettangolo)
+\[
+    J = (a_1, b_1) \times (a_2, b_2) \times \cdots \times (a_n, b_n) \subseteq {\mathbb{R}}^n
+\]
+Definiamo l'area come
+\[
+    \text{area}_n(J) = \prod_{i=1}^n (b_i-a_i)
+\]
+Consideriamo quindi \(E \subseteq \mathbb{R}^n\) e definiamo la misura n-dimensionale
+\[
+    \mu_n^*(E) = \inf\left\{
+        \sum_{n=1}^\infty \text{area}_n (J_h), E \subseteq \bigcup_{h=1}^\infty J_h
+    \right\}
+\]
+Analogamente abbiamo le:
+\begin{enumerate}
+    \item Proprietà di \(\mu_n^*\)
+    \item Definizione di insieme misurabile
+    \item Gli insiemi misurabili sono una \(\sigma\)-algebra.
+    \item Tale \(\sigma\)-algebra contiene gli aperti.
+    \item Se \(E \in \mathcal{M}_n\), allora definiamo
+    \[
+        \mu_n(E) = \mu_n^*(E)
+    \]
+    che è la misura di Lebesgue in \({\mathbb{R}}^n\)
+\end{enumerate}
+è la stessa cosa ma siamo partiti dall'area piuttosto che dalla lunghezza.
+Quindi, \(({\mathbb{R}}^n, {\mathcal{M}}_n, \mu_n)\) è l'oggetto con cui abbiamo a che fare,
+e abbiamo quindi la teoria dell'integrazione.
+
+Una funzione \(f\in L^1({\mathbb{R}}^n)\),
+cioè una funzione integrabile in \({\mathbb{R}}^n\).
+
+\pagebreak
+
+Per calcolare un integrale \(n\)-dimensionale, vogliamo ricondurci al caso unidimensionale. Abbiamo allora il
+\stheorem{Teorema di Fubini}{
+    Sia \(f \colon {\mathbb{R}}^n = {\mathbb{R}}^k \times {\mathbb{R}}^{n-k} \to {\mathbb{R}}\)
+    misurabile e integrabile.
+    \begin{enumerate}
+        \item \(f_x(y) \colon {\mathbb{R}}^{n-k} \to {\mathbb{R}}^n\)
+        è integrabile per quasi ogni \(x\in {\mathbb{R}}^k\).
+        \item
+        \[
+            G(x) = \int_{{\mathbb{R}}^{n-k}} f_x(y)\,d\mu_{n-k}(y)
+        \]
+        è definita quasi ovunque, è integrabile in \({\mathbb{R}}^{k}\).
+        \item \begin{align*}
+            \int_{{\mathbb{R}}^{k}} G(x)\,d\mu_n(x) &= \int_{{\mathbb{R}}^{n}} f\,d\mu_n \\
+            &= \int_{{\mathbb{R}}^{k}} \left(
+                \int_{{\mathbb{R}}^{n-k}}
+                f(x,y)\,d\mu_{n-k}(y)
+            \right)\,d\mu_k(x)
+        \end{align*}
+    \end{enumerate}
+}
+
+bisogna tuttavia capire quando la funzione è integrabile.
+
+\stheorem{Teorema di Tonelli}{
+    Sia \(f \colon {\mathbb{R}}^n = {\mathbb{R}}^k \times {\mathbb{R}}^{n-k} \to [0, +\infty)\) misurabile.
+    Allora
+    \[
+        G(x) = \int_{{\mathbb{R}}^{n-k}} f_x(y)\,d\mu_{n-k}(y)
+    \]
+    (che potrebbe assumere valore infinito)
+    è misurabile in \({\mathbb{R}}^k\) e
+    \begin{align*}
+        \int_{{\mathbb{R}}^{k}} G(x)\d\mu_k(x) = \int_{{\mathbb{R}}^{n}} f\,d\mu_n
+    \end{align*}
+}
+È importante notare che la funzione debba essere positiva.
+Esempio con i quadratini \(\pm 1\), gli integrali unidimensionali fanno zero ma l'integrale bidimensionale non è integrabile.
+Se prendiamo il valore assoluto, gli integrali unidimensionali fanno \(2\), e l'integrale doppio diverge a \(+\infty\),
+che è corretto nel caso di \(|f|\).
+
 %l'integrabilità di
 %\[
 %    \frac{1}{{x-a}^\alpha}
@@ -1490,16 +1641,33 @@ mentre per il resto abbiamo fatto una minorazione.
         \[
             \sum_{n=1}^\infty \frac{2|x|}{n^{\alpha - 1 /2}}
         \]
-        TODO: non finito ci manda le note lei :)
+        converge se e solo se \(\alpha > 3/2\) per confronto asintotico.
+        Per \(x<0\), basta notare che \(\arctan(t)\) è simmetrica rispetto all'origine,
+        il ché implica convergenza puntiale per \(\alpha > 3/2\).
         \item Stabilire per quali \(\alpha\in\mathbb{R}\) la somma della serie è continua in \(\mathbb{R}\).
         Dobbiamo utilizzare il teorema. Dobbiamo trovare per quali \(\alpha\) converge totale
-        per applicare il teorema. Mimimimi mi mi mi mi mi. Prendiamo \(E = [-a, a]\), \(\alpha>0\).
+        per applicare il teorema che dice che se \(f_n\) è continua in \(E\), allora la sua serie converge
+        uniformemente a \(S(x)\) in \(E\) e \(S(x)\) è continua.
+        Studiamo la convergenza totale in \(E = [-a, a]\), \(a>0\).
         Abbiamo allora
         \begin{align*}
             ||f_n||_{\infty, [-a, a]} &= \sup_{x\in[-a,a]}
             \frac{\arctan\left(\frac{x}{n^\alpha + 1}\right)}{\sqrt{n+1} - \sqrt{n}} \\
-            &\leq \cdots
+            &\leq \sup_{x\in[-a,a]} \frac{|x|}{n^\alpha + 1}2\sqrt{n}
+            = \frac{2a\sqrt{n}}{n^{\alpha} + 1} \sim \frac{C}{n^{\alpha - 1/2}}
         \end{align*}
+        in quanto \(\arctan(t) \leq t\).
+        Ciò implica che
+        \[
+            \sum_{n=1}^\infty ||f_n||_{\infty, [-a, a]} \leq
+            \sum_{n=1}^\infty \frac{C}{n^{\alpha - 1/2}}
+        \]
+        che converge se e solo se \(\alpha > 3/2\).
+        Quindi per confronto la serie converge totalmente, e quindi uniformemente per \(\alpha > 3/2\).
+        Poiché la convergenza uniforme implica la convergenza puntuale e la serie converge puntualmente
+        per \(\alpha > 3/2\), abbiamo convergenza uniformemente se e solo se \(\alpha > 3/2\).
+        Poiché \(f_n\) è continua e la serie converge uniformemente in \([-a, a]\), la serie risulta continua in tale intervallo.
+        Poiché \(a\) è arbitrario, possiamo amplificato e la serie è continua su tutto \(\mathbb{R}\).
     \end{enumerate}
 }
 
