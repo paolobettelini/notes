@@ -220,8 +220,8 @@ by adding different terms. We want to restrict ourselves to the case where the s
 
 \begin{snippetdefinition}{basis-definition}{Basis}
     Let \(A=(V, F, +, \cdot)\) be a \vectorspace.
-    A \textit{basis} \(\mathcal{B}\) is a \linearlyindependent
-    generating set.
+    A \textit{basis} \(\mathcal{B}\) is a finite \linearlyindependent
+    generating set of \(V\).
 \end{snippetdefinition}
 
 \plain{The basis cannot be redundant.}
@@ -276,9 +276,151 @@ by adding different terms. We want to restrict ourselves to the case where the s
 \end{snippettheorem}
 
 \begin{snippetproof}{vector-space-generative-set-cardinality-inequality-proof}{vector-space-generative-set-cardinality-inequality}{}
+    Let \(A = \{v_1, v_2, \cdots, v_n\}\)
+    and \(B = \{w_1, w_2, \cdots, w_n\}\).
+    We iterate the following process:
+    add a vector \(\vec{v}_j\) to \(B\), which produces a linearly dependent set.
+    By \snippetref[linearly-dependent-set-reduction][this lemma]
+    one of the vectors of this collection is in the span of the other vectors,
+    remove such vector from \(B\). Eventually, we will repreat this process for every vector of \(A\),
+    meaning that at the beginning there are at least many elements in \(A\)
+    as there are in \(B\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{finite-vector-space-subspace-is-finite}{}
+    Let \(V\) be a finite \vectorspace. Then,
+    a linear subspace of \(V\) is finite.
+\end{snippetcorollary}
+
+\begin{snippetproof}{finite-vector-space-subspace-is-finite-proof}{finite-vector-space-subspace-is-finite}{}
     \todo
 \end{snippetproof}
 
-% corollario
+\begin{snippetproposition}{vector-space-basis-criterion}{}
+    Let \(A=(V, F, +, \cdot)\) be a \vectorspace.
+    A \set \(\mathcal{B} = \{v_1, v_2, \cdots, v_n\}\)
+    of vectors in \(V\) is a \basis \ifandonlyif
+    for every \(v\in V\), \(v\) can be written uniquely as a linear combination of the vectors
+    in \(\mathcal{B}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{vector-space-basis-criterion-proof}{vector-space-basis-criterion}{}
+    \iffproof{
+        Since \(\mathcal{B}\) generates \(V\),
+        let \[
+            v = \sum_{i=1}^n \alpha_i v_i
+        \]
+        or
+        \[
+            v = \sum_{i=1}^n \beta_i v_i
+        \]
+        for some \(\alpha_i,\beta_is \in F\).
+        But then,
+        \begin{align*}
+            \sum_{i=1}^n (\alpha_i - \beta_i) v_i = 0 \implies \alpha_i = \beta_i
+        \end{align*}
+        since \(\mathcal{B}\) is linearly independent.
+    }{
+        Since every element can be written as a linear combination,
+        \[
+            \linearspan(\mathcal{B}) = V
+        \]
+        Assume there exist \(\alpha_i \in F\) such that
+        \[
+            0 = \sum_{i=1}^n \alpha_i v_i
+        \]
+        since \[
+            0 = \sum_{i=1}^n 0 \cdot v_i
+        \]
+        by the uniqueness of the linear combination we conclude that
+        \(\alpha_i = 0\), meaning that \(\mathcal{B}\) is linearly independent.
+    }
+\end{snippetproof}
+
+\begin{snippetproposition}{vector-space-generating-set-reduction}{Generating set reduction}
+    Let \(A=(V, F, +, \cdot)\) be a \vectorspace.
+    Every generating set of \(V\) can be reduced to a \basis of the \vectorspace.
+\end{snippetproposition}
+
+\begin{snippetproof}{vector-space-generating-set-reduction-proof}{vector-space-generating-set-reduction}{Generating set reduction}
+    Let \(S = \{v_1, v_2, \cdots, v_n\}\) be such a generating set of \(V\).
+    We want to iteratively remove an element until \(S\) is a \basis.
+    \begin{itemize}
+        \item \emph{step zero} if \(v_1 = 0\), we remove \(v_1\) from \(S\).
+        \item \emph{step j} if \(v_j = \linearspan(S \difference v_j)\), we remove \(v_j\) from \(S\).
+    \end{itemize}
+    After \(n\) steps we have a linearly independent set which generates \(V\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{every-finite-vector-space-has-basis}{}
+    A \vectorspace \(A=(V, F, +, \cdot)\) has a \basis.
+\end{snippetcorollary}
+
+\begin{snippetproof}{every-finite-vector-space-has-basis-proof}{every-finite-vector-space-has-basis}{}
+    The \set \(V\) is a generator set of \(V\). This \set can be reduced into a \basis.
+\end{snippetproof}
+
+\begin{snippetproposition}{linearly-independent-set-basis-expansion}{}
+    Let \(A=(V, F, +, \cdot)\) be a finitely dimensional \vectorspace.
+    Every \set of vectors that is linearly independent
+    in a \vectorspace can be expanded into a \basis.
+\end{snippetproposition}
+
+\begin{snippetproof}{linearly-independent-set-basis-expansion-proof}{linearly-independent-set-basis-expansion}{}
+    Let \(\mathcal{B} = \{w_1, w_2, \cdots, w_n\}\) be a \basis of \(A\)
+    and let \(U = \{u_1, u_2, \cdots, u_m\}\) be a \set of linearly independent vectors.
+    Consider the \set \(U \union \mathcal{B}\) and apply a reduction until it is a \basis. 
+\end{snippetproof}
+
+\begin{snippetdefinition}{linear-subspace-complement-definition}{Linear subspace complement}
+    Let \(V\) be a finitely dimensional \vectorspace and \(W\) a linear subspace of \(V\).
+    Then, a \emph{complement} of \(W\) in \(V\) is a linear subspace
+    \(U\) of \(V\) such that \(V = W \oplus U\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{linear-subspace-complement-existance}{}
+    Let \(V\) be a finitely dimensional \vectorspace and \(W\) a linear subspace of \(V\).
+    Then, \(W\) has a complement.
+\end{snippetproposition}
+
+\begin{snippetproof}{linear-subspace-complement-existance-proof}{linear-subspace-complement-existance}{}
+    We know that \(V\) and \(W\) are both finitely dimensional
+    and \(W\) admits a \basis \(\mathcal{B}\) and \(V\) admits a \basis
+    \[
+        \mathcal{L} = \mathcal{B} \union U, \quad U = \bigcup_i u_i
+    \]
+    We want to show that \(W+U=V\) and \(W \intersection U = \{0\}\).
+    Let \(v\in V\). \(\mathcal{L}\) generates \(V\) since it is a \basis
+    \[
+        v = \sum_{i=1}^n \alpha_i w_i \in W + U
+    \]
+    Let now \(v \in U \intersection W\), meaning
+    \begin{align*}
+        b &= \sum_{i=1}^n \alpha_i u_i = \sum_{i=1}^n \beta_i w_i \\
+        0 &= \sum_{i=1}^n \alpha_i u_i + \sum_{i=1}^m (-\beta_i)w_i
+    \end{align*}
+    for some \(\alpha_i, \beta_i \in \mathbb{F}\).
+    But \(\mathcal{L}\) is linearly independent, meaning \(\alpha, \beta = 0\)
+    and \(v=0\).
+\end{snippetproof}
+
+\begin{snippetproposition}{basis-have-same-cardinality}{Basis have same cardinality}
+    Let \(V\) be a \vectorspace and \(\mathcal{B}_1, \mathcal{B}_2\) be two \basis
+    of \(V\). Then, \(\cardinality{\mathcal{B}_1} = \cardinality{\mathcal{B}_2}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{basis-have-same-cardinality-proof}{basis-have-same-cardinality}{Basis have same cardinality}
+    Since \(\mathcal{B}_1\) is linearly independent and \(\mathcal{B}_2\)
+    generates the \vectorspace, \(\cardinality{\mathcal{B}_1} \leq \cardinality{\mathcal{B}_2}\).
+    Likewise, \(\cardinality{\mathcal{B}_1} \geq \cardinality{\mathcal{B}_2}\) meaning that they are equal.
+\end{snippetproof}
+
+\begin{snippetdefinition}{vector-space-dimension-definition}{Vector space dimension}
+    Let \(V\) be a \vectorspace. Then, its \emph{dimension} is defined as
+    \[
+        \text{dim}(V) \triangleq \cardinality{\mathcal{B}}
+    \]
+    where \(\mathcal{B}\) is a \basis.
+\end{snippetdefinition}
 
 \end{document}
