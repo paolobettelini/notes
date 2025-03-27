@@ -1478,6 +1478,159 @@ che è corretto nel caso di \(|f|\).
     \end{enumerate}
 }
 
+\sexercise{}{
+    Consideriamo
+    \[
+        \sum \arctan\left(\frac{x}{n}\right) e^{-nx^2}
+    \]
+    Mostrare che converge uniformrmente in \(\mathbb{R}\) (non fatto qui).
+    Mostriamo che \(S \in L^1(\mathbb{R})\). Notiamo che il termine è una funzione dispari,
+    quindi anche \(S\), e l'integrabilità è simmetrica. Quindi dobbiamo studiare
+    \begin{align*}
+        \integral[0][\infty][\sum \arctan\left(\frac{x}{n}\right) e^{-nx^2}][x]
+        &= \sum \integral[0][\infty][\arctan\left(\frac{x}{n}\right) e^{-nx^2}][x] \\
+        &\leq \frac{1}{n}\integral[0][\infty][xe^{-nx^2}][x] \\
+        &= \frac{1}{2n^2}
+    \end{align*}
+    siccome la funzione è positiva e le somma parziali sono positive possiamo scambiare integrale e serie.
+    Quindi, la serie converge in quanto è maggiorata una serie convergente.
+}
+
+\sexercise{}{
+    Studiare
+    \[
+        \sum \ln\left(1 + x^{2n}\right)
+    \]
+    iniziamo con la convergenza puntuale.
+    Essa converge in \(E = (-1,1)\).
+    Studiamo ora l'integrabilità. I termini e la somma sono funzioni pari positivi.
+    \begin{align*}
+        \integral[0][1][\sum \ln\left(1 + x^{2n}\right)][x]
+        &= \sum \integral[0][1][1 + x^{2n}][x] \\
+        &\leq \integral[0][1][x^{2n}][x] = \frac{1}{2n + 1}
+    \end{align*}
+    siccome \(\ln(1 + t) \leq t\). Ciò non ci porta da nessuna parte,
+    ma possiamo aggiustarsi. Proviamo a maggiorare con la retta che congiunge \(0\) e \(\ln2\).
+    Inoltre il grafico è concavo, tutte le secanti stanno sotto. \(\ln(1 + t) \geq ln2t\) in \((0,1)\).
+    \begin{align*}
+        \sum \integral[0][1][1 + x^{2n}][x]
+        &\geq \frac{\ln 2}{2n + 1}
+    \end{align*}
+    che diverge e quindi la somma non è integrabile.
+}
+
+\sexercise{}{
+    Sia \[
+        f(x,y) = \frac{1}{{(1-x)}^\alpha}
+    \]
+    e
+    \[
+        E = \{x^6 + y^4 < 1\}
+    \]
+    Determinare per quali \(\alpha\) vale \(f \in L^1(E)\), ovviamente rispetto alla misura di Lebesgue bidimensionale.
+    Possiamo notare che l'insieme è limitata in un cerchio unitario. Se la funzione è limitata
+    e l'insieme, come in questo caso, ha misura finita, allora è integrabile. Dobbiamo
+    controllare se la funzione è integrabile, in tal caso potremmo applicre il Teorema di Fubini.
+    Tuttavia, grazie al teorema di Tonelli, la funzione è positiva e misurabile e quindi
+    l'integrabile è pari alla decomposizione dei due integrali successivi, che hanno valore finito se è integrabile.
+    \begin{align*}
+        \int_E f\,d\mu_2 &= \int_{{\mathbb{R}}^2} f\chi_E \,d\mu_2 \\
+        &= \int_{{\mathbb{R}}} \left(
+            \int_{{\mathbb{R}}} f(x,y)\chi_E(x,y)\,d\mu(y)
+        \right)\,d\mu(x) \\
+        &= \int_{{\mathbb{R}}} \left(
+            \int_{{\mathbb{R}}} f(x,y)\chi_{E_x}(y)\,d\mu(y)
+        \right)\,d\mu(x) \\
+        &= \int_{{\mathbb{R}}} \left(
+            \int_{E_x} f(x,y)\,d\mu(y)
+        \right)\,d\mu(x) \\
+        &= \int_{A} \left(
+            \int_{E_x} f(x,y)\,d\mu(y)
+        \right)\,d\mu(x)
+    \end{align*}
+    Chiamiamo la \(x\)-sezione \(E_x = \{ y\in \mathbb{R} \,|\, (x,y) \in E\}\).
+    Siccome \(E_x\) è spesso vuoto (fuori dall'area), definiamo
+    \[
+        A = \{x\in \mathbb{R} \,|\, E_x \neq \varnothing\}
+    \]
+    Quindi
+    \begin{align*}
+        \int_E \frac{1}{{(1-x)}^\alpha}\,d\mu_2
+        &= \integral[-1][1][
+            \left(
+            \integral[-\sqrt[4]{1-x^6}][\sqrt[4]{1-x^6}][\frac{1}{{(1-x)}^\alpha}][y]
+            \right)
+        ][x] \\
+        &= \integral[-1][1][
+            \left(
+            \integral[-\sqrt[6]{1-y^4}][\sqrt[6]{1-y^4}][\frac{1}{{(1-x)}^\alpha}][x]
+            \right)
+        ][y]
+    \end{align*}
+    Ma i problemi sono vicino a \(1\), il resto della funzione è continua e non ci serve per studiare
+    l'integrabilità
+    \begin{align*}
+        \integral[0][1][
+            \left(
+            \integral[0][\sqrt[6]{1-y^4}][\frac{1}{{(1-x)}^\alpha}][x]
+            \right)
+        ][y]
+        &= \integral[0][1][\frac{\sqrt[4][1-x^6]}{{(1-x^6)}^\alpha}][x]
+    \end{align*}
+    In un intorno sinistro di \(1\) l'integranda è 
+    \[
+        \frac{\sqrt[4]{1-x^6}}{{(1-x^6)}^\alpha}
+        \sim \frac{C}{{(1-x)}^\beta}
+    \]
+    e in questo caso
+    \[
+        \beta = \alpha - 1/4
+    \]
+    siccome \[
+        1 - x^6 = (1-x^3)(1+x^3) = (1-x)(1+x+x^2)(1+x^3)
+        \sim 6(1-x)
+    \]
+    Quindi la funzione è integrabile per \(\alpha < 5/4\).
+}
+
+\sexercise{}{
+    Studiare l'integrabilità al variare di \(\alpha\) di
+    \[
+        f(x,y) = \frac{1}{(x^2 + y^\alpha)(1 - y^2)}
+    \]
+    in
+    \[
+        E = \{
+            (x,y) \,|\, x > 0, y < 0 < 1-x^2    
+        \}
+    \]
+    che è l'intersezione del pirmo quadrante con \(1-x^2\).
+    La funzione ha dei problemi vicino a \(y=1\) e nell'origine.
+    La scomposizione degli integrali deve rappresentare tali problemi, quindi usiamo una \(y\)-sezione.
+    \begin{align*}
+        \int_E f\,d\mu_2 &=
+        \integral[0][1][
+            \integral[0][\sqrt{1 - y}][\frac{1}{y^\alpha + x^2}][x]
+        ][y] \\
+        &= \integral[0][1][
+            \frac{1}{1-y^2} \cdot \frac{1}{y^{\alpha / 2}}
+            \arctan \left(
+                \frac{\sqrt{1-y}}{y^{\alpha/2}}
+            \right)
+        ][y]
+    \end{align*}
+    In un intorno di zero
+    \[
+        f \sim \frac{C}{y^{\alpha / 2}}
+    \]
+    quindi deve essere \(\alpha < 2\). In un intorno di uno
+    \[
+        f \sim \frac{\sqrt{1 - y}}{(1-y^2)}
+        \sim \frac{C}{y^{1/2}}
+    \]
+    quindi è integrabile per ogni \(\alpha\).
+}
+
 \pagebreak
 
 \section{Esercizi}
