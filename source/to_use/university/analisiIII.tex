@@ -2184,6 +2184,384 @@ Quindi non è nemmeno totalmente limitato.
     \end{align*}
 }
 
+\sdefinition{Sottoinsieme equicontinuo}{
+    Un sottoinsieme \(\mathcal{F}(K) = \{f\colon K \to \mathbb{R}\} \subseteq C(K)\)
+    del sottospazio normato delle funzioni continue su spazio metrico \(K\)
+    è detto \emph{equicontinuo} se \(\forall \varepsilon > 0, \exists \delta > 0\)
+    tale che
+    \[
+        \forall x,y\in K, d(x,y) < \delta
+        \implies |f(x) - f(y)| < \varepsilon, \forall f \in \mathcal{F}
+    \]
+}
+
+Analogamente,
+
+\sdefinition{Sottoinsieme equilipschitziano}{
+    Un sottoinsieme \(\mathcal{F}(K) = \{f\colon K \to \mathbb{R}\} \subseteq C(K)\)
+    del sottospazio normato delle funzioni continue su spazio metrico \(K\)
+    è detto \emph{equilipschitziano} se \(\exists M > 0\)
+    tale che
+    \[
+        \forall x,y\in K,
+        |f(x) - f(y)| \leq Md(x,y), \forall f \in \mathcal{F}
+    \]
+}
+
+\sproposition{}{
+    Se \(\mathcal{F}\) è equilipschitziano, allora è equicontinuo.
+}
+
+\sexample{}{
+    Fra due spazi di Banach \(X,Y\), \(T \colon X \to Y\) è equilipschitziano
+    se esiste \(M\) tale che
+    \[
+        ||T_x - T_y||_y \leq M ||x-y||_x
+    \]
+}
+
+\sexample{}{
+    Le funzioni \(f_n \colon [0, 2\pi] \to \mathbb{R}\).
+    \[
+        f_n(x) = \frac{\sin(nx)}{n}
+    \]
+    è un insieme equilipschitziano.
+    Infatti \(f'_n = \cos(nx)\) e quindi \(|f'_n| \leq 1\),e quindi
+    \[
+        \left|
+            \frac{\sin(nx)}{n} - \frac{\sin(ny)}{n}
+        \right| \leq |x-y|
+    \]
+}
+
+\stheorem{Teorema di Ascoli - Arzelà}{
+    Sia \(\mathcal{F} \subseteq C(K)\) chiuso e limitato su un compatto metrico, non vuoto.
+    Allora \(\mathcal{F}\) è compatto se e solo se
+    è equicontinuo.
+}
+
+\pagebreak
+
+\sproof{Teorema di Ascoli - Arzelà}{
+    \iffproof{
+        \(\mathcal{F}\) è compatto, quindi è totalmente limitato.
+        Quindi, \(\forall \varepsilon > 0, \exists \{f_1, f_2, \cdots, f_n\}\)
+        dove \(f_i \in \mathcal{F}\) tale che
+        \[
+            \mathcal{F} \subseteq \bigcup_{i=1}^n B_\varepsilon(f_i)
+        \]
+        Le funzioni \(f_i\) sono tutte uniformemente continue, quindi \(\forall \varepsilon > 0, \exists \delta_i > 0\)
+        tale che per \(d(x,y) < \delta_i\) allora
+        \[
+            |f_i (x) - f_j(y)| < \varepsilon
+        \]
+        per \(x,y \in K\). Se prendiamo il più piccolo dei delta
+        \[
+            \delta = \min_{i=1,2,\cdots, n}\{\delta_i\}
+        \]
+        allora vale per tuti, quindi \(\forall \varepsilon>0\) se \(d(x,y) < \delta\)
+        vale
+        \[
+            |f_i(x) - f_i(y)| < \varepsilon
+        \]
+        \(f\in\mathcal{F}\) e quindi appartiene almeno ad una bolla, quindi
+        \(\exists f_j\) tale che
+        \[
+            ||f-f_j||_\infty < \varepsilon
+        \]
+        Quindi
+        \begin{align*}
+            |f(x) - f(y)| \leq |f(x) - f_j(x)| + |f_j(x) - f_j(y)|
+            + |f_j(y) - f(y)|
+            \leq 3\varepsilon
+        \end{align*}
+    }{
+        \(\mathcal{F}\) è equicontinuo. Vogliamo mostrare che
+        data \(\{f_n\}\) in \(\mathcal{F}\) allora esiste una sottosuccessione convergente (in maniera uniforme)
+        ad un elemento di \(\mathcal{F}\). Basta mostrare che \(\{f_n\}\) abbia una sottosuccessione
+        di Cauchy in quanto:
+        \begin{enumerate}
+            \item implica che la sottosuccessione converge;
+            \item il limite è in \(\mathcal{F}\) perché è chiuso.
+        \end{enumerate}
+        Sia quindi una successione \(\{f_n\}\) in \(\mathcal{F}\). Siccome \(K\) è compatto,
+        è totalmente limitato, quindi \(\forall \varepsilon > 0\)
+        esistono \(\{k_1, k_2, \cdots, k_m\}\) tali che
+        \[
+            K \subseteq \bigcup_{i=1}^m B_\varepsilon(k_j)
+        \]
+        Mostriamo ora che \(\{f_n\}\) ha una sottosuccessione puntualmente convergente
+        in \(\{k_1, k_2, \cdots, k_m\}\). Vediamo che siccome \(\mathcal{F}\) è limitata per
+        una qualche \(M\)
+        \begin{align*}
+            |f_n(k_1)| \leq ||f_n||_\infty \leq M
+        \end{align*}
+        Come tutte le successioni limitate, contiene una sottosuccessione convergente
+        \(f_n^1\) su \(k_1\).
+        Adesso guardiamo
+        \[
+            |f_n^1(k_2)| \leq M
+        \]
+        che quindi contiene una sottosuccessione convergente \(f^2_n\) su \(k_2\),
+        ma converge anche in \(k_1\). L'ultimo passaggio
+        è la sottosuccessione \(f_n^m = g_n\) converge per tutti i \(k_i\), in quanto
+        sottosuccessione di tutti i precedenti.
+        Dalle ipotesi \(\forall \varepsilon > 0\) esiste \(\delta > 0\)
+        tale che per \(d(x,y) < \delta\) allora
+        \[
+            |f(x) - f(y)| < \varepsilon
+        \]
+        per tutte le \(f\in\mathcal{F}\).
+        Allora \(\exists \{k_1, \cdots, k_m\}\) tale che
+        \[
+            K \subseteq \bigcup_{i=1}^m B_\delta(k_j)
+        \]
+        dove abbiamo scelto \(\delta\) come \(\varepsilon\).
+        Il fatto che \(g_n\) converga su \(k_1, k_2, \cdots, k_m\)
+        significa che \(\forall \varepsilon > 0\) esiste \(N_j\)
+        tale che
+        \[
+            \forall n,m \geq N_j, |g_n(k_j) - g_m(k_j)| < \varepsilon
+        \]
+        Prendiamo allora il più grande di tutti
+        \[
+            N = \max_{i=1,2,\cdots, N}\{N_j\}
+        \]
+        che vale per tutti quindi
+        \[
+            \forall n,m \geq N, |g_n(k_j) - g_m(k_j)| < \varepsilon
+        \]
+        Esiste un certo \(k_j\) tale che \(d(x,k_j) < \delta\) per la bolla.
+        Adesso scriviamo
+        \begin{align*}
+            |g_n(x) - g_m(x)| &\leq
+            |g_n(x) - g_n(k_j)| +
+            |g_n(k_j) - g_m(k_j)|
+            + |g_m(k_j) - g_m(x)| \\
+            &= 3\varepsilon
+        \end{align*}
+        Il primo e l'ultimo sono piccoli per definizione di equicontinuità,
+        mentre quello in mezzo perché \(g_n\) converge per tutti i \(k_i\).
+        Siccome questo vale (per \(N\) sufficiente grande) per ogni \(x\in K\), e quindi
+        \[
+            ||g_n - g_m||_\infty < 3\varepsilon
+        \]
+        che è la successione uniformemente di Cauchy.
+    }
+}
+
+\sexample{}{
+    Consideriamo \(C([0,1)]\)
+    e \(f_n(x) = x^n\), converge puntualmente a
+    \[
+        \begin{cases}
+            0 & 0 \leq x < 1  \\
+            1 & x = 1
+        \end{cases}
+    \]
+    ma per converge uniformemente il limite dovrebbe essere continuo, e quindi
+    non converge uniformemente in quanto tutte le sottosuccessioni convergono alla stessa funzione.
+}
+
+\pagebreak
+
+\section{Equazioni differenziali}
+
+\sdefinition{Equazione differenziale di primo ordine in forma normale}{
+    Una equazione differenziale del primo ordine in forma normale
+    è
+    \[
+        y' = f(x,y)
+    \]
+    con \(f\colon A \subseteq \mathbb{R}^2 \to \mathbb{R}\)
+    dove \(A\) è aperto, \(f\) continua.
+}
+
+Una soluzione di tale equazione è una coppia \((\varphi, I)\)
+dove \(I\) è un intervallo e \(\varphi: I \to \mathbb{R}\)
+tale che
+\begin{enumerate}
+    \item \((t, \varphi(t)) \in A\) per \(t\in I\);
+    \item \(\varphi \in C^1(I)\);
+    \item \(\varphi'(t) = f(t, \varphi(t))\) per \(t\in I\).
+\end{enumerate}
+
+Un problema di Cauchy ha forma
+\[
+    \begin{cases}
+        y' = f(x,y) \\
+        y(x_0) = y_0
+    \end{cases}
+\]
+con una condizione iniziale \((x_0, y_0) \in A\)
+tale che velgano le 3 precedenti condizioni e, ulteriormente, \(\varphi(x_0) = y_0\).
+
+\sdefinition{}{
+    Diciamo che \(f\) definita come sopra è
+    \emph{lipschitziana in \(y\) uniformemente rispetto ad \(x\) nel punto \((x_0, y_0)\)}
+    se \(\exists L > 0\) ed esiste un intorno \(I_\alpha = [x_0 - \alpha, x_0 + \alpha]\)
+    e un intorno \(J_\beta = [y_0 - \beta, y_0 + \beta]\) tale che
+    \[
+        |f(x, y_1) - f(x, y_2)| \leq L |y_1 - y_2|
+    \]
+    per ogni \(y_1, y_2 \in J_\beta\) e per ogni \(x_1, x_2 \in I_\alpha\).
+}
+
+\stheorem{Teorema fondamentale}{
+    Se \(f\) è lipschitziana in \((x_0, y_0)\)
+    allora esiste una ed una sola soluzione del problema di Cauchy.
+}
+
+Con unicità si intende che date due soluzioni, per esempio \((e^x, [-1,-1])\)
+e \((e^x, [-2,-2])\), dove sono definite entrambe (cioè l'intersezione)
+in tali punti devono coincidere.
+
+Per dimostrarlo usiamo l'operatore
+\[
+    T_\varphi(x) = y_0 +
+    \integral[x_0][x][f(t, \varphi(t))][t]
+\]
+Basta derivare questa espressione per mostrare l'equivalenza con il problema di Cauchy
+al punto fisso. La parte di destra è derivabile in quanto
+la è una funzione integrale di una funzione continua \(f\).
+
+\stheorem{Teorema di Peano}{
+    Ogni problema di Cauchy ha almeno una soluzione.
+}
+
+Notiamo che avere più soluzioni significa che siano diverse dove sono entrambe definite.
+
+\sdefinition{Compattezza relativa}{
+    Uno spazio \(D \subseteq\) metrico è relativamente compatto se la sua chiusura
+    è compatta.
+}
+
+\stheorem{Teorema di Schauder}{
+    Sia \(X\) uno spazio di Banach e prendiamo \(C \subseteq X\) chiuso,
+    limitato, non vuoto, convesso.
+    Diciamo che un operatore \(T \colon C \to C\) è compatto se
+    l'immagine \(T(C)\) è relativamente compatta.
+    Se \(T\) è continua e compatta allora \(T\) ha almeno un punto fisso.
+}
+
+Applichiamo questo teorema all'operatore integrale per mostrare l'esistenza di un punto fisso.
+
+\sproof{Teorema di Peano}{
+    Notiamo che \(I\alpha \times J_\beta \subseteq A\) è un rettangolo compatto.
+    Siccome la funzione è continua in \(A\) sul rettangolo è anche uniformemente continua.
+    Il massimo è
+    \[
+        M = \sup_{(x,y) \in I_\alpha\times J_\beta} |f(x,y)|
+    \]
+    quindi è limitata. Inoltre è uniformemente continua, quindi
+    \(\forall \varepsilon>0, \exists \delta > 0\)
+    tale che \(\forall (x_1, y_1), (x_2, y_2) \in I_\alpha \times J_\beta\)
+    \[
+        |x_1 - x_2| + |y_1 - y_2| < \delta \implies
+        |f(x_1, y_1) - f(x_2, y_2)| < \varepsilon
+    \]
+    oppure qualsiasi norma e quindi sono equivalenti. Scegliamo ora
+    \[
+        0 \leq \delta \leq \min \left\{\alpha, \frac{\beta}{M}\right\}
+    \]
+    e consideriamo \(I_\delta = [x_0 - \delta, x_0 + \delta]\)
+    e
+    \begin{align*}
+        C &= \{\varphi \in \mathcal{C}(I_\delta) \,|\, ||\varphi - y_0||_\infty \leq \beta\} \\
+        &= B_\beta(y_0)
+    \end{align*}
+    \(y_0\) diventa la funzione costante. Quindi tutte le funzioni la cui distanza da \(y_0\)
+    è minore di \(\beta\).
+    Tale insieme è chiuso, limitato, convesso, e non vuoto. La concessità è data
+    dal fatto che stiamo trattando una bolla in uno spazio normato, quindi (con bolle centrate in zero)
+    \[
+        ||\lambda x + (1-\lambda)y|| \leq \lambda||x|| + (1-\lambda)||y|| \leq r
+    \]
+    Abbiamo ora la mappa \(T \colon C \to \mathcal{C}(I_\delta)\) tale che dato \(\varphi \in C\) vale
+    \begin{align*}
+        (T\varphi)(x) = y_0 + \integral[x_0][x][f(t, \varphi(t))][t]
+    \end{align*}
+    \begin{enumerate}
+        \item \(T \colon C \to C\). Infatti
+        \[
+            |T\varphi(x) - y_0| \leq \cdots \leq \beta
+        \]
+        \item \(T\) è uniformemente continua, quindi \(\forall \varepsilon > 0\),
+        \(\exists \delta > 0\) tale che \(\forall \varphi_1, \varphi_2 \in C\)
+        \[
+            ||\varphi_1 - \varphi_2||_\infty < \delta
+            \implies
+            ||T\varphi_1 - T\varphi_2||_\infty < \delta
+        \]
+        Abbiamo
+        \begin{align*}
+            ||T\varphi_1(x) - T\varphi_2(x)|| &\leq
+            \left|\,
+                \integral[x_0][x][
+                    |f(t, \varphi_1(t)) - f(t, \varphi_2(t))| 
+                ][t]
+            \right|
+        \end{align*}
+        Il modulo dentro l'integrale è perché non sappiamo se \(x\) è prima o dopo \(x_0\).
+        Prendendo \(||\varphi_1 - \varphi_2|| < \overline{\delta}\) dove tale delta è quello dell'inizio
+        allora vale \(|\varphi_1(x) - \varphi_2(x)| < \delta\) per tutte le \(x\in I_\delta\)
+        che implica
+        \[
+            |T\varphi_1(x) - T\varphi_2(x)| \leq
+            \left|\,\integral[x_0][x][\varepsilon][t]\right| = \varepsilon|x-x_0| < \varepsilon\delta
+        \]
+        quindi è uniformemente continua.
+        \item \(T(C)\) è relativamente compatto. Notiamo che tale immagine è sicuramente limitata,
+        ma è anche equicontinuo. Possiamo trovare una sottosuccessione di Cauchy convergente
+        a una funzione in \(\overline{T(C)}\), che è quindi compatto.
+        Mostriamo quindi che è equicontinuo. Quindi, \(\forall \varepsilon > 0, \exists \eta > 0\)
+        tale che \(\forall x_1, x_2 \in I_\delta\)
+        per \(|x_1 - x_2| < \eta\)
+        \begin{align*}
+            |g(x_1) - g(x_2)| < \varepsilon, \quad \forall g \in T(C)
+        \end{align*}
+        \begin{align*}
+            |T\varphi(x_1) - T\varphi(x_2)| < \varepsilon, \quad \forall \varphi \in T(C)
+        \end{align*}
+        \begin{align*}
+            \left|\,
+            \integral[x_0][x_1][
+                f(t, \varphi(t))
+            ][t]
+            - 
+            \integral[x_0][x_2][
+                f(t, \varphi(t))
+            ][t]
+            \right|
+            &\leq \integral[x_1][x_2][|f(t, \varphi(t))|][t] \\
+            &\leq M|x_2 - x_1| = M\eta = \varepsilon
+        \end{align*}
+        prendendo \(\eta = \varepsilon / M\)
+    \end{enumerate}
+    Possiamo quindi applicare il teorema di Schauder, quindi \(T\) ha almeno un punto fisso
+    \(\overline{\varphi} \in \mathcal{C}(I_\delta)\) tale che \(T \overline{\varphi} = \overline{\varphi}\)
+    e quindi esiste una soluzione di Cauchy.
+}
+
+Dobbiamo ora verificare l'unicità.
+
+Consideriamo per esempio
+\[
+    \begin{cases}
+        y' = y \\
+        y(0) = 1
+    \end{cases}
+\]
+la cui unica soluzione è \(\varphi(x) = e^x\).
+Prendendo \(\varphi_1 \equiv 1\) possiamo iterare l'operatore
+\[
+    \varphi_2 = T\varphi_1 = 1 + \integral[0][x][][t] = 1 + x
+\]
+\[
+    \varphi_3 = T\varphi_2 = 1 + \integral[0][x][1 + t][t] = 1 + x + \frac{x^2}{2}
+\]
+E in generale questa successione tende allo sviluppo di \(e^x\).
+
 \pagebreak
 
 \section{Esercizi}
