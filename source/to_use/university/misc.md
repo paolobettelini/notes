@@ -19,10 +19,6 @@
 - definition of simple group$
 - turing complete
 - document.querySelectorAll('.snippet-link').forEach(link => link.style.border = '3px solid red');
-- fix urint e lrint
-- step-function (text)
-- stepfunctionset Set of step functions (same id)
-- upperpart lowerpart
 - \def\int{\mathop{\fam\z@ int}\limits}
 - semidirect product \ltimes and replace \ltimes + \rtimes
 - generic cyclc group C_n command
@@ -39,7 +35,6 @@
 - mettere il comando per linear subspace
 - MOLTO IMPORTANTE: bisogna racchiudere molte def in \mathop{...}, come ho fatto per sup, inf. Così
   possiamo anche non usare underset su lim e sup ma direttamente \sup_
-- \lineardimension
 
 # AI promps
 - Translate this LaTeX code from italian to english.

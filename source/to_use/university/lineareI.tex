@@ -6,6 +6,10 @@
 \usepackage{parskip}
 \usepackage{fullpage}
 \usepackage{wrapfig}
+\usepackage{tikz}
+\usepackage{graphicx}
+
+\usetikzlibrary{cd}
 
 \title{Algebra lineare I}
 \author{Paolo Bettelini}
@@ -323,5 +327,123 @@ di \(W^V\). Inoltre, \((\text{Env}(V), +, \circ)\) è un anello
 e \((\text{Env}(V), +, \circ, \cdot)\) è una \(\mathbb{F}\)-algebra non necessariamente commutativa.
 Una trasformazione è iniettiva se e solo se \(\ker f = \{0\}\).
 Anche l'immagine di \(f \in \mathcal{L}(V, W)\) è un sottospazio.
+
+\section{Isomorfismi fra spazi vettoriali}
+
+\sdefinition{Isomorfismi fra spazi vettoriali}{
+    Fra \(V\) e \(W\) è un'applicazione lineare invertibile fra \(V\) e \(W\).
+}
+
+Dato uno spazio \(V\) finito dimensionale con base \(\mathcal{B} = \{v_1, \cdots, v_n\}\)
+la mappa \(\Phi_\mathcal{B} \colon V \to \mathbb{F}^n\) che porta un vettore
+alla sua tupla delle coordinate è un isomorfismo.
+Infatti, il suo kernel sono i vettori che vanno nelle coordinate nulle.
+Siccome la base è linearmente indipendente, l'ultimo tale vettore è quello nullo.
+Quindi, contiene solo un elemento ed è quindi iniettivo.
+Inoltre, dato un elemento \((a_1, \cdots, a_n)\), la preimmagine è \(v_1a_1 + \cdots + v_na_n\).
+Ogni scelta di base fornisce un diverso isomorfismo.
+
+\stheorem{}{
+    Siano \(V, W\) due \(\mathbb{F}\)-spazi vettoriali finito dimensionali.
+    Allora, \(V\) e \(W\) sono isomorfismi se e solo se hanno la stessa dimensione.
+}
+
+\sproof{}{
+    \iffproof{
+        Sia \(f\colon V \to W\) un isomorfismo. Allora \(f\) è invertibile quindi iniettiva e suriettiva.
+        \[
+            \text{dim} V = \text{dim ker} f + \text{dim Im} f = \text{dim} W
+        \]
+    }{
+        Let \(n = \text{dim} V = \text{dim W}\). Sia \(\mathcal{B} = \{v_1, \cdots, v_n\}\)
+        una base per \(V\) e \(\mathcal{L} = \{w_1, \cdots, w_n\}\) una base per \(W\). Abbiamo isomorfismi
+        \(\Phi_\mathcal{B}\colon V \to \mathcal{F}^n\) e \(\Phi_\mathcal{L}\colon W \to \mathcal{F}^n\)
+    }
+    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRADUQBfU9TXfIRQAmclVqMWbAOrdeIDNjwEiARlKrx9Zq0QgAOvoC2dHAAsARheAAxLgD1CXcTCgBzeEVAAzAE4QjJHUQHAgkUQkdNkMABTMsAH1gQxNzAGNGYAAZLi45H39AxAjQpDJIqT1Y+KSU0zMMhmAAIVz8kD8AsupSxGDtSoN9OMTk43rG7Nz7YABaVS4AAkM0rF805eGasdSGzNa8ngKu4p6wvuoLGDAoJFmAFgBOagY6K4YY-mUhEF8sNzMOBA1AGuiGI1q43SmRyDjmC24FC4QA
+}
+\begin{center}
+    \begin{tikzpicture}
+        \node[scale=1.25] {
+            \begin{tikzcd}
+                V \arrow[rr, "\Phi_{\mathcal{L}}^{-1} \circ \Phi_{\mathcal{B}}"] &                                                                                                     & W \arrow[ld, "\Phi_{\mathcal{L}}"] \\
+                                                                                & \mathbb{F}^n \arrow[lu, "\Phi_{\mathcal{B}}"] \arrow[ru, "\Phi_{\mathcal{L}}^{-1}"', bend right=49] &                                   
+                \end{tikzcd}
+        };
+        \end{tikzpicture}
+\end{center}
+
+\stheorem{}{
+    Siano \(V, W\) spazi vettoriali \(n\) dimensionali su un campo \(\mathbb{F}\) e sia
+    \(f \in \mathcal{L}(V, W)\). Sono equivalenti:
+    \begin{enumerate}
+        \item \(f\) è invertibile
+        \item \(f\) è iniettiva
+        \item \(f\) è suriettività
+    \end{enumerate}
+}
+
+\sproof{}{
+    \begin{itemize}
+        \item \((1) \implies (2)\): se è invrtibile è anche iniettiva.
+        \item \((2) \implies (3)\): siccome \(f\) è iniettiva, \(\text{ker} f\) è ridotto
+        al vettore nullo. Abbiamo
+        \[
+            \text{dim Im} f = \text{dim} V - \text{dim ker} f
+            = \text{dim} V = \text{dim} W
+        \]
+        Ma allora \(\text{Im} f = W\) e quindi è suriettiva.
+        \item \((3) \implies (1)\): basta mostrare che \(f\) è iniettiva.
+        \[
+            \text{Im} f = W \implies \text{dim Im} f = \text{dim} W = \text{dim} V
+        \]
+        quindi
+        \[
+            \text{dim ker} f = \text{dim} V - \text{dim Im} f = 0
+        \]
+        il che implica che il kernel sia nullo e quindi \(f\) è iniettiva.
+    \end{itemize}
+}
+
+\subsection{Sistemi lineari non quadrati}
+
+\sproof{Rouché-Capelli}{
+    \iffproof{
+        Supponiamo che \(Ax = b\) abbia soluzione e mostriamo che il rango
+        della matrice completa è pari al rango della matrice \(\text{rank} A|b = \text{rank} A\).
+        Sia \(\overline{x} \in \mathbb{F}^n\) una soluzione di  \(Ax = b\).
+        Allora \(A\overline{x} = b\) è equivalente a
+        \[
+            \sum_i \overline{x}_i A^i = b \iff b \in \text{span}(A^1, \cdots, A^n)
+        \]
+        but then
+        \[
+            \text{rank}(A|b) = \text{dim span}(A^1, \cdots, A^n, b) = \text{dim span}(A^1, \cdots, A^n)
+            = \text{rank} A
+        \]
+    }{
+        Supponiamo che i due ranghi siano uguali. Ma allora il sottospazio generato dalle colonne di \(A\)
+        coincide con il sottospazio generato dalle colonne di \(A|b\). In particolare esistono scalari
+        \(\overline{x}_i\) tali che
+        \[
+            b = \sum_i \overline{x}_i A^i \iff A\overline{x} = b
+        \]
+        Quindi \(ax = b\) ammette soluzioni.
+        Sappiamo già che l'insieme delle soluzioni è un sottospazio affine di \(\mathbb{A}^n(\mathbb{F})\)
+        diretto da \(\text{ker} A\). Osserviamo che
+        \[
+            \text{ker} A = \{x \in \mathbb{F}^n \,|\, Ax = 0\} = \text{ker} L_A
+        \]
+        dove \(L_A \colon \mathbb{F}^n \to \mathbb{F}^n\).
+        \begin{align*}
+            n = \text{dim} \mathbb{F}^n &= \text{dim ker} L_A + \text{dim Im} L_A
+            = \text{dim ker} A + \text{rank} L_A \\
+            &= \text{dim ker} A + \text{rank} A \implies \text{dim ker} A = n-\text{rank} A
+        \end{align*}
+    }
+}
+
+\sproposition{}{
+    L'eliminazione di Gauss non varia il rango di una matrice
+}
 
 \end{document}
