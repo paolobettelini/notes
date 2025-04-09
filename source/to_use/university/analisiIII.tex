@@ -3377,4 +3377,347 @@ E in generale questa successione tende allo sviluppo di \(e^x\).
     Quindi \(f(x,y)\) è integrabile in \(E\) se e solo se \(\alpha > -1\).
 }
 
+\pagebreak
+
+\sexercise{}{
+    Studiare la convergenza puntuale, uniforme e integrabilità della somma
+    \[
+        \sum_{n=1}^\infty \integral[x][x+1][
+            \frac{\arctan t}{n^2 + t^2}
+        ][t]
+    \]
+    In \(x\in (0,+\infty)\). In un intorno di infinito
+    \[
+        \frac{\arctan t}{n^2 + t^2} \sim \frac{\pi/2}{n^2 + t^2} \sim \frac{1}{t^2}
+    \]
+    In un intorno di zero abbiamo
+    \[
+        \frac{\arctan t}{n^2 + t^2} \sim \frac{t}{n^2 + t^2} \sim t
+    \]
+    La funzione integrale è ben definita in quanto l'integranda è sempre integrabile.
+    Fissiamo allora \(x\) e abbiamo una serie a termini positivi.
+    \begin{align*}
+        a_n &= \integral[x][x+1][
+            \frac{\arctan t}{n^2 + t^2}
+        ][t]
+        \leq \frac{\pi}{2n^2}
+        \integral[x][x+1][
+            \frac{1/n}{1 + {\left(\frac{t}{n}\right)}^2}
+        ][t] \\
+        &= \frac{\pi}{2n}
+        {\left[
+            \arctan\left(\frac{t}{n}\right)
+        \right]}^{x+1}_x \\
+        &= \frac{\pi}{2n}\left(
+            \arctan\left(\frac{x+1}{n}\right)
+            - \arctan\left(\frac{x}{n}\right)
+        \right) \\
+        &\to \frac{\pi}{2n^2}
+    \end{align*}
+    Quindi
+    \[
+        \sum_{n=1}^\infty a_n \leq \frac{\pi}{2} \sum_{n=1}^\infty \frac{1}{n^2} = \frac{\pi^3}{12}
+    \]
+    converge puntualmente. Per la convergenza uniforme, la stima è la medesima in quanto
+    è indipendente da \(x\). Studiamo ora
+    \[
+        \integral[0][\infty][
+            \sum_{n=1}^\infty \integral[x][x+1][
+                \frac{\arctan t}{n^2 + t^2}
+            ][t]
+        ][x]
+    \]
+    Abbiamo che \(f_n(x) \geq 0\) e che la successione delle serie è monotona crescente,
+    quindi possiamo scambiare l'integrale e la serie per il teorema di convergenza monotona.
+    \begin{align*}
+        \integral[0][\infty][
+            \sum_{n=1}^\infty \integral[x][x+1][
+                \frac{\arctan t}{n^2 + t^2}
+            ][t]
+        ][x]
+        &= 
+        \sum_{n=1}^\infty \integral[0][\infty][
+            \integral[x][x+1][
+                \frac{\arctan t}{n^2 + t^2}
+            ][t]
+        ][x] \\
+        &\leq \sum_{n=1}^\infty
+        \integral[0][+\infty][
+            \frac{\pi}{2}\frac{1}{n}
+            \left(
+                \arctan\left(\frac{x+1}{n}\right)
+                - \arctan\left(\frac{x}{n}\right)
+            \right)
+        ][x]
+    \end{align*}
+    Sostituiamo \(t = x/n\) e successivamente \(y = t + 1/n\).
+    \begin{align*}
+        \frac{\pi}{2}
+        \sum_{n=1}^\infty
+        \integral[0][\infty][
+            \arctan\left(t + \frac{1}{n}\right) - \arctan t
+        ][t]
+        &= \frac{\pi}{2}
+        \sum_{n=1}^\infty
+        \left[
+        \integral[0][\infty][
+            \arctan\left(t + \frac{1}{n}\right)
+        ][t]
+        -
+        \integral[0][\infty][
+            \arctan t
+        ][t]
+        \right] \\
+        &= \frac{\pi}{2} \sum_{n=1}^\infty
+        \left[
+            \integral[1/n][\infty][\arctan(t)][t]
+            -
+            \integral[0][\infty][\arctan(t)][t]
+        \right] \\
+        &= -\frac{\pi}{2} \sum_{n=1}^\infty
+        \integral[0][1/n][\arctan t][t] \\
+        &\leq -\frac{\pi}{2} \sum_{n=1}^\infty
+        \left(
+            \frac{1}{n} \arctan\left(\frac{1}{n}\right)
+            - \frac{1}{2} \ln\left( 1 + \frac{1}{n^2}\right)
+        \right)
+    \end{align*}
+    che converge per confronto asintotico.
+}
+
+\pagebreak
+
+\sexercise{}{
+    Studiare l'integrabilità di
+    \[
+        f(x,y,z) = \frac{1}{\sqrt{|1 - (x^2 + y^2)z^2|}}
+    \]
+    su
+    \[
+        \Omega = \{(x,y,z) \in \mathbb{R}^3 \,|\, x^2 + y^2 \leq 1\}
+    \]
+    che è un cilindro infinito.
+    Usiamo le coordinate cilindriche
+    \[
+        \begin{cases}
+            x = \rho \cos\theta \\
+            y = \rho \sin\theta \\
+            z = z
+        \end{cases}
+    \]
+    Il determinare della Jacobiana è \(\rho\).
+    Quindi
+    \[
+        \Omega(\rho,\theta, z) = \{
+            0\leq \rho \leq 1 \land 0 \leq \theta \leq 2\pi \land z\in \mathbb{R}    
+        \}
+    \]
+    e la funzione diventa
+    \[
+        f(\rho,\theta, z) = \frac{1}{\sqrt{|1-\rho^2z^2|}}
+    \]
+    e l'integrale diventa
+    \begin{align*}
+        \int_\Omega f &= \integral[-\infty][\infty][
+            \integral[0][1][
+                \integral[0][2\pi][
+                    \frac{\rho}{\sqrt{|1-\rho^2z^2|}}
+                ][\theta]
+            ][\rho]
+        ][z] \\
+        &= 2\pi
+        \integral[-1][1][
+            \frac{1}{-2z^2}
+            \integral[0][1][
+                \frac{\rho}{\sqrt{1-\rho^2z^2}}
+            ][\rho]
+        ][z]
+        + 2\pi \int_{|z|>1}
+        \frac{1}{-2z^2} \left(
+            \integral[0][1/|z|][
+                \frac{-2z^2\rho}{\sqrt{1-\rho^2z^2}}
+            ][\rho]
+            -
+            \integral[1/|z|][1][
+                \frac{-\rho(-2z^2)}{\sqrt{\rho^2z^2 - 1}}
+            ][\rho]
+        \right)\,dz \\
+        &= -\pi \integral[-1][1][
+            \frac{1}{z^2} \left[
+                \sqrt{1-\rho^2z^2}
+            \right]^1_0
+        ][z]
+        + 2\pi\int_{|z|>1}
+        \frac{1}{-2z^2} \left(
+            \left[\sqrt{1 - \rho^2z^2}\right]^{1/|z|}_0
+            - \left[\sqrt{\rho^2z^2 - 1}\right]^1_{1/|z|}
+        \right)
+        \,dz \\
+        &= -\pi\integral[-1][1][
+            \frac{1}{z^2}\left(
+                \sqrt{1-z^2} - 1
+            \right)
+        ][z]
+        - \pi \int_{|z|>1}
+        \frac{1}{z^2} \left(-1-\sqrt{z^2 - 1}\right)
+        \,dz
+    \end{align*}
+    dove abbiamo notare che la funzione era simile a
+    \[
+        \frac{d}{d\rho} \left(\sqrt{|1 - \rho^2z^2|}\right)
+        = \frac{-2\rho z^2}{2\sqrt{|1 - \rho^2z^2|}}
+    \]
+    e studiato il segno per separare gli integrali.
+    In un intorno di zero
+    \[
+        \frac{1}{z^2}\left(
+                \sqrt{1-z^2} - 1
+            \right) \sim C
+    \]
+    che quindi è integrabile in zero.
+    In un intorno di di \(\pm\infty\) abbiamo
+    \[
+        \frac{1}{z^2} \left(-1-\sqrt{z^2 - 1}\right)
+        \sim -\frac{1}{z^2} - \frac{|z|}{z^2} \sim \frac{1}{|z|}
+    \]
+    che non è integrabile.
+}
+
+\sexercise{}{
+    Studiare per \(\alpha \in \mathbb{R}\) l'integrabilità di
+    \[
+        f(x,y) = {(2-x^2-y^2)}^\alpha
+    \]
+    su
+    \[
+        \Omega = \{ \max\{|x|, |y|\}\}
+    \]
+    che è un quadrato aperto. La funzione ha problemi per \(x^2 + y^2 = \sqrt{2}\),
+    che è la circonferenza di raggio \(2\). La circonferenza viene toccata solo agli angoli del quadrato.
+    L'insieme è anche simmetrico quindi possiamo studiare il problema solo nel primo quadrante.
+    In coordinate polari abbiamo
+    \[
+        f(r, \theta) = {(2-\rho^2)}^\alpha
+    \]
+    Se \(\alpha\geq 0\) non ho problemi. Scrivere l'insieme in coordinate polari è difficile,
+    ma possiamo studiarne uno più facile che includa comunque il punto di interesse
+    \[
+        \Omega' = \{(x,y) \in \mathbb{R}^2 \,|\, 0 < {(x-1)}^2 + {(y-1)}^2 < 2\}
+        \subset \Omega \cap \{(x,y) \in \mathbb{R}^2 \,|\, x>0 \land y>0\}
+    \]
+    Per scrivere tale insieme in coordinate polari prima sostituiamo \(x=x+1\) e \(y=y+1\) (che non cambia il Jacobiano).
+    Quindi
+    \[
+        f(x,y) = {(2- {(x+1)}^2 - {(y+1)}^2 )}^\alpha
+        = {(-x^2 - 2x - y^2 - 2y)}^\alpha
+    \]
+    e allora sostiuiamo in coordinate polari
+    \[
+        f(\rho, \theta) =  {(-\rho^2 - \rho(\cos\theta + \sin\theta))}^\alpha
+    \]
+    e
+    \[
+        \Omega' = \{0 < \rho < 2\}
+    \]
+    Abbiamo quindi l'integrale
+    \begin{align*}
+        \int_{\Omega'} f &=
+        \integral[0][2\pi][
+            \integral[0][2][
+                -\rho^3 - \rho^2(\cos\theta + \sin\theta)
+            ][\rho]
+        ][\theta]
+    \end{align*}
+    In un intorno di zero di \(\rho\) abbiamo
+    \[
+        g \sim \rho^{2\alpha + 1}
+    \]
+    che è integrabile per \(\alpha > -1\).
+}
+
+\pagebreak
+
+\sexercise{}{
+    Studiare l'integrabilità di
+    \[
+        f(x,y,z) = \frac{xze^{-z}}{{(x^2 + y^2)}^\alpha}
+    \]
+    sull'insieme
+    \[
+        E = \{(x,y) \in \mathbb{R}^2 \,|\, (x^2 + y^2)z^2 \leq 1 \land y>0 \land z>0 \land y>-x\}
+    \]
+    Usiamo le coordinate cilindriche
+    \[
+        E = \{\rho^2 \leq \frac{1}{z^2} \land 0 < \theta < \frac{3}{4} \pi \land z>0\}
+    \]
+    e l'integrale diventa
+    \begin{align*}
+        \integral[0][\infty][
+            \integral[0][3\pi/4][
+                \integral[0][1/z][
+                    \frac{z\rho\cos\theta e^{-z}}{\rho^{2\alpha}}\rho
+                ][\rho]
+            ][\theta]
+        ][z]
+        &= - \frac{\sqrt{2}}{2} \integral[0][\infty][
+            \left[
+                ze^{-z} \frac{1}{2-2\alpha + 1} \rho^{2-2\alpha + 1}
+            \right]_0^{1/z}
+        ][z] \\
+        &= - \frac{\sqrt{2}}{2} \integral[0][\infty][
+            \frac{1}{3-2\alpha} \frac{ze^{-z}}{z^{3-2\alpha}}
+        ][z] \\
+        &= - \frac{\sqrt{2}}{2} \frac{1}{3-2\alpha}
+        \integral[0][\infty][
+            z^{2\alpha - 2} e^{-z}
+        ][z]
+    \end{align*}
+    con \(2-2\alpha > -1\) quindi \(\alpha < 3/2\).
+    In un intorno di zero la funzione è integrabile per \(\alpha > 1/2\).
+    Quindi, la funzione è integrabile per \(1/2 < \alpha < 3/2\).
+}
+
+\sexercise{}{
+    Studiare l'integrabilità di
+    \[
+        F(x) = \integral[x][x+1/x][
+            \frac{y^2}{1 + y^\alpha}
+        ][y]
+    \]
+    in \((1,+\infty)\). Abbiamo quindi
+    \begin{align*}
+        \integral[1][\infty][
+            \integral[x][x+1/x][
+                \frac{y^2}{1 + y^\alpha}
+            ][y]
+        ][x]
+    \end{align*}
+    L'insieme di integrazione è quindi
+    \[
+        \Omega = \{x<y<x + 1/x \land x>1\}
+        = \{1 < x < y \land 1< y < 2\} \cup
+        \{1/y < x < y \land y>2\}
+    \]
+    Per il teorema di tonelli possiamo scambiare gli integrali
+    \begin{align*}
+        \integral[1][\infty][
+            \integral[x][x+1/x][
+                \frac{y^2}{1 + y^\alpha}
+            ][y]
+        ][x]
+        &= \integral[1][2][
+            \integral[1][y][\frac{y}{1 + y^\alpha}][x]
+        ][y]
+        + \integral[2][\infty][
+            \integral[1/y][y][\frac{y^2}{1 + y^\alpha}][x]
+        ][y] \\
+        &= \integral[1][2][\frac{(y-1)y^\alpha}{1 + y^2}][y]
+        + \integral[2][\infty][\frac{y^3}{1 + y^\alpha}][y]
+        - \integral[2][\infty][
+            \frac{y}{1 + y^\alpha}
+        ][y]
+    \end{align*}
+    che converge per \(\alpha > 4\).
+}
+
 \end{document}
