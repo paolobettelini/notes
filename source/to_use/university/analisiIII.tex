@@ -2562,6 +2562,233 @@ Prendendo \(\varphi_1 \equiv 1\) possiamo iterare l'operatore
 \]
 E in generale questa successione tende allo sviluppo di \(e^x\).
 
+Consideriamo sempre \(f\colon A \subseteq \mathbb{R}^2 \to \mathbb{R}\) da un aperto, continua.
+Se \(f\) è localmente lipschitziana (in \(y\) uniformemente rispetto ad \(x\)) in \(A\),
+quindi
+\[
+    \forall (x_0, y_0) \in A, \exists L > 0, \exists I_\alpha, J_\beta
+    \,|\, |f(x,y_1) - f(x, y_2)| \leq L|y_1 - y_2|,
+    \quad \forall x \in I_\alpha, y_1, y_2 \in J_\beta
+\]
+dove chiaramente
+\[
+    I_\alpha = [x_0 - \alpha, x_0 + \alpha], \quad
+    J_\beta = [y_0 - \beta, y_0 + \beta]
+\]
+e quindi esiste una sola soluzione al problema di Cauchy
+\[
+    \begin{cases}
+        y' = f(x,y) \\
+        y(x_0) = y_0
+    \end{cases}
+\]
+
+\pagebreak
+
+\sdefinition{Prolungamento}{
+    Date due soluzioni \((\varphi_1, I_1)\) e \((\varphi_2, I_2)\) dell'equazione differenziale scritta sopra,
+    diremo che \((\varphi_1, I_1)\) è un \emph{prolungamenti}
+    di \((\varphi_2, I_2)\) se:
+    \begin{enumerate}
+        \item \(I_2 \subseteq I_1\);
+        \item \(\varphi_1(x) = \varphi_2(x)\) per ogni \(x\in I_2\).
+    \end{enumerate}
+}
+
+\sdefinition{Soluzione massimale}{
+    Una soluzione \((\varphi, I)\) è una \emph{soluzione massimale}
+    se non ammette prolungamenti propri.
+}
+
+Chiaramente gli initial value points devono essere nell'intervallo della soluzione.
+Per esempio \(f(x,y) = y^2\) è lipschitziana in quanto
+\[
+    |f(x, y_1) - f(x, y_2)| = |y_1^2 - y_2^2| < (2y_0 + 1)|y_1 - y_2| 
+\]
+dove il termine \(2y_0+1\) è dato dalla derivata.
+
+\sproposition{Proprietà della soluzione massimale}{
+    \begin{enumerate}
+        \item esiste;
+        \item è definita su un intervallo aperto;
+        \item esce da ogni compatto contenuto in \(A\).
+        Quindi se \((\varphi, (a,b))\) è soluzione massimale, \(\forall K \subseteq A\)
+        dove \(K\) è compatto,
+        \[
+            \exists \delta >0 \,|\, \forall x \in (a, a+\delta) \text{ e } (b-\delta, b)
+        \]
+        si ha che \((x, \varphi(x)) \notin K\).
+        % Quindi i casi sono solamente \pm\infty che ovviamente escono dal compatto, altrimenti
+        % asintoti (perché sono continue?) (?) dove escono dai compatti.
+    \end{enumerate}
+}
+
+\sexample{}{
+    Per esempio
+    \[
+        \begin{cases}
+            y = \frac{1}{y} \\
+            y(0) = 1
+        \end{cases}
+    \]
+    ha come \(A = \{y \neq 0\}\) e la funzione che soddisfa il problema è
+    \(\varphi(x) = \sqrt{2x + 1}\). La soluzione massimale è \((\varphi, -1/2)\).
+    Il punto \(-1/2\) non va bene perché la soluzione deve essere derivabile.
+    Quando prendiamo un compatto serve \(y>0\), ma un compatto è chiuso e quindi non può contenere il punto \(0\).
+    Quindi la soluzione massimale esce dal compatto.
+}
+
+\stheorem{}{
+    Sia \(f \colon A \subseteq \mathbb{R}^2 \to \mathbb{R}\) continua e localmente
+    lipschitziana in \(A\) aperto.
+    Sia \((a,b) \times \mathbb{R} \subseteq A\). Se
+    \[
+        \forall [\alpha, \beta] \subseteq (a,b), \exists A,B>0 \,|\,
+        |f(x,y)| \leq A + B|y|, \forall x\in [\alpha, \beta], \forall y \in \mathbb{R}
+    \]
+    allora ogni soluzione massimale è definita in almeno \((a,b)\).
+    La proprietà di esistenza viene denotata come \(f\) \emph{sublineare}.
+}
+
+\sexample{}{
+    Sia \(y' = \log x + \arctan y\). Abbiamo \(A = \{x>0\}\). È continua, localmente lipschitziana.
+    L'equazione non è risolvibile. Tuttavia, prendiamo \([\alpha, \beta]\)
+    tale che \([\alpha, \beta] \times \mathbb{R} \subseteq A\).
+    Vogliamo verificare se è sublineare. Basta trovare
+    \begin{align*}
+        |f(x,y)| \leq |\log x| + |\arctan y| \leq \max\{|\log \beta|, |\log \alpha|\} + |y|
+    \end{align*}
+    Quindi è sublineare. Visto che possiamo prendere \((\alpha, \beta) \subseteq (0, \infty)\).
+    Nonostante non conosciamo la soluzione, sappiamo che è definita in \((0, \infty)\).
+}
+
+\sexample{}{
+    Prendiamo \(y' = x + y^3 / (1 + y^2)\) allora \(A = \mathbb{R}^2\).
+    Possiamo quindi prendere \([\alpha, \beta] \subseteq (-\infty, +\infty)\). La funzione è continua, localmente lipschitziana.
+    Vogliamo verificare se è sublineare. Allora
+    \begin{align*}
+        |f(x,y)| \leq |x| + \frac{|y|^3}{1 + y^3} \\
+        \leq \max\{|\alpha|, |\beta|\} + |y|
+    \end{align*}
+    \(B=1\) è stato preso in quanto
+    \[
+        y^3 / (1 + y^2) < B|y| \iff y^2 / (1 + y^2) < B
+    \]
+    il cui massimo è \(1\). Quindi la soluzione massimale è definita in \((-\infty, \infty)\).
+}
+
+\sexample{}{
+    Sia \(y' = a(x)y + b(x)\) con \(a,b \colon I \to \mathbb{R}\) continue.
+    La funzione \(f(x,y)\) è definita in \(I \times \mathbb{R} \to \mathbb{R}\).
+    Tale funzione è sublineare perché
+    \begin{align*}
+        |a(x)y + b(y)| &\leq |b(x)| + |a(x)| \cdot |y| \\
+        &\leq A + B|y|
+    \end{align*}
+    e siccome \(I\) è sempre un intervallo, contiene \([\alpha, \beta]\), e \(a,b\) sono continue
+    allora \(A\) e \(B\) sono dati dai massimi.
+}
+
+Quindi per esempio \(y' = y\log x + \sqrt{1-x}\) ha soluzione in \((0,1)\),
+cioè l'intersezione di \((0, \infty)\) e \((-\infty, 1)\). (Non prendo il valore \(1\) altrimenti
+la radice non è derivabile).
+
+\slemma{Lemma di Gronwall}{
+    Sia \(\varphi \colon I \to \mathbb{R}\) continua, \(\varphi(x) \geq 0\)
+    e sia \(x_0 \in I\). Supponiamo che esistano \(A, B > 0\) tali che
+    \[
+        \varphi(x) \leq A + B \left|\,
+            \integral[x_0][x][\varphi(t)][t]
+        \right|, \quad \forall x\in I
+    \]
+    Allora \(\varphi(x) \leq A e^{B|x-x_0|}\) per tutte le \(x\in I\).
+}
+
+\pagebreak
+
+\sproof{Lemma}{
+    Sia \(x>x_0\) e \(z\in (x_0, x)\). Allora
+    \begin{align*}
+        y(z) &\leq A + B\integral[x_0][z][\varphi(t)][t] \\
+        \varphi(z) e^{-B(z-x_0)} &\leq Ae^{-B(z-x_0)}
+        + Be^{-B(z-x_0)} \integral[x_0][z][\varphi(t)][t] \\
+        \varphi(z) e^{-B(z-x_0)} - Be^{-B(z-x_0)} \integral[x_0][z][\varphi(t)][t] &\leq Ae^{-B(z-x_0)} \\
+        \frac{d}{dz} \left(
+            e^{-B(z-x_0)} \integral[x_0][z][\varphi(t)][t]
+        \right) &\leq Ae^{-B(z-x_0)} \\
+        \integral[x_0][x][
+            \frac{d}{dz} \left(
+                e^{-B(z-x_0)} \integral[x_0][z][\varphi(t)][t]
+            \right)   
+        ][z] &\leq \integral[x_0][x][Ae^{-B(z-x_0)}][z] \\
+        e^{-B(x-x_0)} \integral[x_0][x][\varphi(t)][t] &\leq
+        - \frac{A}{B} e^{-B(x-x_0)} + \frac{A}{B} \\
+        B \integral[x_0][x][\varphi(t)][t] \leq -A + Ae^{B(x-x_0)} \\
+        A + B\integral[x_0][x][\varphi(t)][t] \leq A e^{B(x-x_0)}
+    \end{align*}
+    e quindi
+    \[
+        \varphi(x) \leq A e^{B(x-x_0)}
+    \]
+    Per \(x<x_0\) la dimostrazione è analoga.
+}
+
+\pagebreak
+
+\sproof{Teorema sublinearità}{
+    Abbiamo \((a, b) \times \mathbb{R} \subseteq A\) e abbiamo una soluzione massimale
+    \(\varphi\) che non è definita su \((a,b)\) (per contraddizione).
+    Supponiamo che sia definita in \((a, \gamma)\) con \(\gamma < b\).
+    Notiamo che \([\alpha, \gamma] \times [-R, R] \subseteq A\) con \(\alpha > a\).
+    Tuttavia, \([\alpha, \gamma] \times [-R, R]\) è un compatto \(K \subset A\).
+    Quindi, la soluzione massimale esce da questo compatto. Quindi
+    \[
+        \exists \delta \,|\, \forall x\in (\gamma - \delta, \gamma),
+        (x, \varphi(x)) \notin K
+    \]
+    Quello che sta fuori è l'immagine, quindi \(\varphi(x)\) esce da \([-R, R]\).
+    Quindi \( \forall x\in (\gamma - \delta, \gamma)\) abbiamo
+    \[
+        |\varphi(x)| > R
+    \]
+    Sia \(x_0 \in (a, \gamma)\) e consideriamo il problema di Cauchy
+    \[
+        \begin{cases}
+            y' = f(x,y) \\
+            y(x_0) = \varphi(x_0)
+        \end{cases}
+    \]
+    La soluzione di questo problema è \(\varphi\), che è l'unica soluzione passante per \(x_0\).
+    Quindi
+    \[
+        \varphi(x) = \varphi(x_0) + \integral[x_0][x][f(t, \varphi(t))][t]
+    \]
+    per tutti i \(x \in (a, \gamma)\). Abbiamo allora
+    \begin{align*}
+        |\varphi(x)| &\leq |\varphi(x_0)| + \left|\,
+            \integral[x_0][x][|f(t, \varphi(t))|][t]
+        \right| \\
+        &\leq |\varphi(x_0)| + \left|\,
+            \integral[x_0][x][A + B|\varphi(t)|][t]
+        \right|  \\
+        &\leq |\varphi(x_0)| + A |x-x_0| + B \left|\,
+            \integral[x_0][x][|\varphi(t)|][t]
+        \right| \\
+        &\leq M + B \left|\,
+            \integral[x_0][x][|\varphi(t)|][t]
+        \right| \\
+        &\leq Me^{B|x-x_0|} \leq C
+    \end{align*}
+    Abbiamo usato il lemma e il fatto che \(x-x_0\) è limitato per l'ultimo passaggio.
+    Ma siccome \(|\varphi(x)| > R\) e vogliamo che \(R\) stia fuori, possiamo prendere per esempio
+    \(R = C+1\). Tuttavia, abbiamo supposto che l'intervallo della soluzione massimale fosse più piccolo,
+    assurdo. %\lightning
+    Se quella è la soluzione massimale, deve uscire dai compatti, ma vediamo allora che
+    la funzione è sempre limitata da \(C\). Ma allora scegliamo per esempio \(R = C+1\)
+    ma non può essere più grande di \(C+1\) perché deve essere più piccola di \(C\), quindi non esce da tutti i compatti.
+    Le soluzioni massimali vanno all'infinito ma questa no, quindi non è masismale.
+}
+
 \pagebreak
 
 \section{Esercizi}
