@@ -1,0 +1,233 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{diffeq-exercises}
+\genpage
+
+\begin{snippetexercise}{cauchy-problem-ex1}{}
+    Solve the Cauchy problem
+    \[
+        \begin{cases}
+            y = xy' - \log y' \\
+            y(1) = 1
+        \end{cases}
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{cauchy-problem-ex1-sol}{}
+    è un equazione di Clairaut. Deriviamo e otteniamo
+    \begin{align*}
+        y' &= y' + xy'' - \frac{y''}{y'} \\
+        0 &= y''\left(x- \frac{1}{y'}\right)
+    \end{align*}
+    La prima soluzione è data da \(y' = C\) e \(y = cx - \log c\) sostituendo.
+    Sostituendo il punto abbiamo \(1 = c - \log c\). Non possiamo risolverla analiticamente,
+    ma considerando il grafico \(t=\log c\) e \(t=c-1\) essi si incontrano solo per \(x=1\).
+    Quindi abbiamo \(y = x\).
+    La seconda soluzione è data da \(y' = 1/x\) che è sepabile e \(y = \log x + c\).
+    Usando il punto iniziale abbiamo \(1 = c\) quindi \(y = \log x + 1\).
+\end{snippetsolution}
+
+\begin{snippetexercise}{cauchy-problem-ex2}{}
+    \[
+        \begin{cases}
+            y' = y^2 - \frac{y}{x} - \frac{1}{x^2}     \\
+            y(1) = 2
+        \end{cases}
+    \]
+    Suggerimento: una soluzione particolare è \(1/x\) per \(x>0\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{cauchy-problem-ex2-sol}{}
+    Cerchiamo una solzione del tipo \(y(x) = z(x) + 1/x\).
+    Derivando otteniamo
+    \begin{align*}
+        y' &= z' - \frac{1}{x^2} \\
+        z' - \frac{1}{x^2} &= z^2 + \frac{1}{x^2} + \frac{2}{x}z - \frac{1}{x}z - \frac{1}{x^2} - \frac{1}{x^2} \\
+        z' &= z^2 + \frac{1}{x}z
+    \end{align*}
+    che è un'equazione di Bernoulli
+    \begin{align*}
+        \frac{z'}{z^2} &= 1 + \frac{1}{x} \cdot \frac{1}{z} \\
+        w' + \frac{w}{x} &= - 1
+    \end{align*}
+    con \(w = 1/z\) e \(w' = -z'/z^2\).
+    Adesso abbiamo una equazione lineare del primo ordine.
+    Quindi
+    \begin{align*}
+        w(x) &= e^{-\log x} \left[
+            C- \frac{x^2}{2}
+        \right] \\
+        &= \frac{2C-x^2}{2x}
+    \end{align*}
+    e quindi
+    \[
+        z(x) = \frac{2x}{2C-x^2}
+    \]
+    e
+    \[
+        y(x) = \frac{2x}{2C - x^2} + \frac{1}{x}
+    \]
+    Usando la condizione iniziale troviamo \(C = 3/2\).
+\end{snippetsolution}
+
+\begin{snippetexercise}{cauchy-problem-ex3}{}
+    Risolvere
+    \[
+        \begin{cases}
+            y'' - \frac{{(y')}^2}{y} - yy' = 0 \\
+            y(1) = 1 \\
+            y'(1) = 2
+        \end{cases}
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{cauchy-problem-ex3-sol}{}
+    Sostituiamo \(z(y) = y'\) quindi \(y'' = z'y' = z'z\).
+    \begin{align*}
+        z'z - \frac{z^2}{y} - yz &= 0 \\
+        z\left(z' - \frac{z}{y} - y\right) &= 0
+    \end{align*}
+    Quindi la prima soluzione è data da \(z=0\) quindi \(y' = 0\). Ma dal punto iniziale ciò non va bene
+    quindi la scartiamo. Allora rimane
+    \begin{align*}
+        z' - \frac{z}{y} - y = 0
+    \end{align*}
+    che è lineare del primo ordine
+    \[
+        z(y) = y\left[
+            C + y
+        \right] = cy + y^2
+    \]
+    Usando il punto inizaile abbiamo \(2 = C+1\) quindi \(C = 1\).
+    Risostituendo otteniamo \(y' = y + y^2\)
+    quindi
+    \begin{align*}
+        \integral[1][y][
+            \frac{1}{t+t^2}
+        ][t]
+        &= \integral[1][x][1][t] \\
+        \log \left(\frac{2y}{1 + y}\right)
+        &= x-1 \\
+        y &= \frac{e^{x-1}}{2-e^{x-1}}
+    \end{align*}
+\end{snippetsolution}
+
+\begin{snippetexercise}{cauchy-problem-ex4}{}
+    Risolvere
+    \[
+        \begin{cases}
+            y' (x\cos y + \sin(2y)) = 1\\
+            y(-2) = \pi
+        \end{cases}
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{cauchy-problem-ex4-sol}{}
+    consideriamo \(x\) come variabile dipendente da \(y\) per risolverla più facilmente.
+    Quindi
+    \[
+        x'(y) = \frac{1}{y'(x)}
+    \]
+    Abbiamo quindi
+    \begin{align*}
+        \frac{1}{x'} \left(x\cos y + \sin(2y)\right) &= 1 \\
+        x\cos y +\sin(2x) &= x'
+    \end{align*}
+    che è lineare
+    \begin{align*}
+        x(y) &= e^{\int \cos y \,dy} \left[
+            C + \int\sin(2y) e^{-\int \cos y\,dy}\,dy
+        \right]
+        x(y) &= e^{\sin y} \left[
+            C -2\sin y e^{-\sin y} - 2e^{-\sin y}
+        \right] \\
+        &= Ce^{\sin y} - 2\sin y e^{-\sin y} - 2e^{-\sin y}
+    \end{align*}
+    Dove abbiamo usato l'integrale
+    \begin{align*}
+        \integral[\sin(2y)e^{-\sin y}][y]
+        &= 2\integral[\sin y \cos y e^{-\sin y}][y] \\
+        &= 2 \integral[te^{-t}][t] = -2 e^{-t}(t + 1) \\
+        &= -2\sin y e^{-\sin y} - 2e^{-\sin y}
+    \end{align*}
+    Usiamo ora il punto iniziale \(x(\pi) = -2\) quindi  \(C = 0\).
+\end{snippetsolution}
+
+\begin{snippetexercise}{cauchy-problem-ex5}{}
+    Dopo aver determinare un polinomio soluzione particolare risolvi
+    \[
+        \begin{cases}
+            y' - y^2 - \frac{y}{x} + 9x^2 = 0 \\
+            y(1) = \alpha
+        \end{cases}
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{cauchy-problem-ex5-sol}{}
+    È un equazione di Riccati e ci serve quindi la soluzione particolare.
+    Cerchiamo una soluzione particolare. Il nostro polinomio dovrà essere di grado \(1\)
+    e quindi \(y(x) = ax +b\).
+    Sfruttando il punto iniziale prendiamo \(a = \alpha\)
+    Sostituendo otteniamo
+    \begin{align*}
+        \alpha - \alpha^2x^2 - 2\alpha bx - b^2 - \alpha - \frac{b}{x} + 9x^2 &= 0
+    \end{align*}
+    e \(\alpha = \alpha + b\) quindi \(b = 0\)
+    \begin{align*}
+        -\alpha^2 x^2 + 9x^2 &= 0 \\
+        x^2(9-\alpha^2) &= 0
+    \end{align*}
+    quindi \(\alpha = \pm 3\).
+    Allora una soluzione particolare è \(y(x) = \pm 3x\).
+    Sostituiamo allora \(y(x) = z(x) + 3x\) e se deriviamo
+    \(y' = z' + 3\). Sostituendo otteniamo
+    \begin{align*}
+        z' + 3 - z^2 - 9x^2 - 6xz - \frac{z}{x} - 3 + 9x^2 &= 0 \\
+        z' - z^2 - \left(6x + \frac{1}{x}\right)z &= 0
+    \end{align*}
+    che è un equazione di Bernoulli. Dividiamo allora per \(z^2\)
+    \begin{align*}
+        \frac{z'}{z^2} &= 1 + \left(6x + \frac{1}{x}\right) \frac{1}{z} \\
+        w' &= -1-\left(6x + \frac{1}{x}\right) w
+    \end{align*}
+    con \(w = 1/z\) e \(w' = -z'/z^2\).
+    Quindi
+    \begin{align*}
+        w(x) &= e^{-3x^2 - \log x} \left[
+            C - e^{3x^2 + \log x}
+        \right] \\
+        &= \frac{e^{-3x^2}}{x}\left[
+            C - \frac{1}{6}e^{3x^2}
+        \right] \\
+        &= \frac{6Ce^{-3x^2} - 1}{6x}
+    \end{align*}
+    Risostituendo troviamo
+    \begin{align*}
+        z(x) &= \frac{6x}{6Ce^{-3x^2} - 1} \\
+        y(x) &= \frac{6x}{6Ce^{-3x^2}-1} + 3x
+    \end{align*}
+    Usando il punto iniziale troviamo
+    \[
+        C = \frac{e^3}{\alpha - 3} + \frac{e^3}{6}
+    \]
+    Troviamo ora per quali \(\alpha\) la soluzione è definita in \((0, \infty)\).
+    Siccome abiamo già la soluzione finale, basta studiare il dominio.
+    Abbiamo problemi per \(\alpha = 3\) e serve anche
+    \begin{align*}
+        6Ce^{-3x^2} - 1 \neq 0 \\
+        e^{-3x^2} \neq \frac{1}{6C}, \forall x \in (0,\infty)
+    \end{align*}
+    Se \(C\) è negativo, allora \(e^{-3x^2}\) non lo incontrerà mai.
+    Anche se \(1/(6C) > 1\) la condizione è sempre vera, quindi oer \(C < 1/6\).
+    Sostituendo troviamo la condizione su \(\alpha\).
+\end{snippetsolution}
+
+\end{document}
