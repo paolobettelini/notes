@@ -37,7 +37,7 @@
 # AI promps
 - Translate this LaTeX code from italian to english.
 Maintain the same content and commands used. Just give me the translated code.
-Here is the snippet:
+Here is/are the snippet/snippets:
 
 - Read this math proposition and generate a coincide ID describing it.
 Also generate a title for it with the same information.
@@ -45,3 +45,9 @@ Your response must only contain the ID written in lower kebab case and the title
 The ID and the title must be in english.
 For example: "internal-direct-external-product-isomorphism-theorem Isomorphism between internal and external direct product".
 Here is the proposition:
+
+# Replaces
+
+\,|\,           \suchthat
+\mathbb{N}      \naturalnumbers
+\mathbb{R}      \realnumbers
