@@ -16,189 +16,9 @@
 \id{diffeq-first-order}
 \genpage
 
-\section{First-Order Differential Equations}
+\section{Linear equations}
 
-\begin{snippet}{diffeq-first-order-defintion}
-    A first-order differential equation is a differential equation in the form
-    \[
-        y'(t)=f(t,y(t))
-    \]
-    where \(f\) is given.
-
-    The equation is said to be \textit{linear}
-    if \(f\) is linear on the second argument.
-    \[
-        y'(t)=a(t)y(t) + b(t)
-    \]
-    The equation is also said to be \textit{constant}
-    if \(a\) and \(b\) are also constant.
-\end{snippet}
-
-\section{Constant Coefficient Differential Equation}
-
-\begin{snippettheorem}{diffeq-constant-coeff-sol}{Constant Coefficients Differential Equations}
-    The general solution to the constant differential equation
-    \[
-        y' = ay+b,
-        \quad a \neq 0
-    \]
-    is given by
-    \[
-        y(t)=Ce^{at}-\frac{b}{a}, \quad C \in \realnumbers
-    \]
-\end{snippettheorem}
-
-\begin{snippetproof}{diffeq-constant-coeff-sol-proof-1}{diffeq-constant-coeff-sol}{Constant Coefficients Differential Equations}
-    Let's first consider the case when \(b=0\),
-    \[
-        y'=ay
-    \]
-    We divide both sides by \(y\) and simplify
-    \[
-        \frac{y'}{y}=a
-        \implies
-        \ln|y|'=a
-        \implies
-        \ln|y|=at+c_0
-    \]
-    concluding that
-    \[
-        y = \pm e^{at+c_0}=\pm e^{c_0} \cdot e^{at} = Ce^{at}
-    \]
-    Now let's consider \(b \in \realnumbers\)
-    \[
-        y'=a\left(y+\frac{b}{a}\right)
-        \implies
-        \left(y + \frac{b}{a}\right)' = a\left(y + \frac{b}{a}\right)
-    \]
-    Note that \(\frac{d}{dx}\left(\frac{b}{a}\right)=0\) \\
-    Denoting \(\tilde{y}=y+\frac{b}{a}\), we have
-    \[
-        \tilde{y}=a\tilde{y}
-    \]
-    which has solution \(Ce^{at}\), hence
-    \begin{align*}
-        y+\frac{b}{a}&=Ce^{at} \\
-        y &= Ce^{at} - \frac{b}{a}
-    \end{align*}
-\end{snippetproof}
-
-\begin{snippet}{diffeq-potential-function}
-It is important to note that we solved the equation by turning
-it into a total derivative, which is simple to integrate \((\ln|y|'=a)\).
-This function is called a \textit{potential function} \((\psi)\) and it's how
-the equation is transformed into a total derivative
-\[
-    y'=ay+b \rightarrow \psi(t, y(t))'=0
-\]
-In this case
-\[
-    \psi = \ln|y| - at
-\]
-
-\paragraph{The Integrating Factor Method}
-The integrating factor method is a method for solving linear
-differential equations.
-\\
-We will prove the theorem again using this method.
-\end{snippet}
-
-\begin{snippetproof}{diffeq-constant-coeff-sol-proof-2}{diffeq-constant-coeff-sol}{Constant Coefficients Differential Equations}
-    We choose an integrating factor to be a \function \(\mu\) such that
-    \[
-        \mu'=-a\mu
-    \]
-    By solving this differential equation we get
-    \[
-        \frac{\mu'}{\mu} = -a
-        \implies
-        \ln|\mu| = -at+C
-        \implies
-        \mu(t) = Ce^{-at}
-    \]
-    Now we multiply the equation by \(\mu\)
-    \begin{align*}
-        y'-ay&=b \\
-        y'\mu - \mu ay &= b\mu \\
-        y'\mu + \mu' y &= b \mu \\
-        (\mu y)' &= \mu b
-    \end{align*}
-    Now choosing \(C=1\)
-    \begin{align*}
-        \left(e^{-at}y\right)'&=be^{-at} \\
-        \left(e^{-at}y\right)'&=\left(-\frac{b}{a}e^{-at}\right)' \\
-        \left(e^{-at}y+\frac{b}{a}e^{-at}\right)' &= 0 \\
-        \left[\left(\frac{b}{a} + y\right)e^{-at}\right]' &= 0
-    \end{align*}
-    Now the differential equation is a total derivative of the potential function,
-    which in this case in
-    \[
-        \psi(t, y) = \left(\frac{b}{a} + y\right)e^{-at}
-    \]
-    This is easy to integrate
-    \[
-        \left(\frac{b}{a} + y\right)e^{-at} = C
-        \implies
-        y = Ce^{at} - \frac{b}{a}
-    \]
-\end{snippetproof}
-
-\subsection{Constant Coefficients Differential Equations with Initial Point}
-
-\begin{snippet}{diffeq-ivp-motivation}
-We want to constraint the equation such that it has an unique solution
-rather than infinite solutions.
-\[
-    y' = ay + b, \quad y(t_0) = y_0
-\]
-\end{snippet}
-
-\begin{snippettheorem}{diffeq-constant-coeff-ivp-sol}{Ordinary Constant Differential Equation with IV}
-    The general solution to the ordinary constant differential equation
-    \[
-        y' = ay + b,
-    \]
-    with a given point
-    \[
-        y(t_0) = y_0
-    \]
-    is given by
-    \[
-        y(t)=\left(y_0 + \frac{b}{a}\right) e^{a(t-t_0)}- \frac{b}{a},
-        \quad a \neq 0
-    \]
-\end{snippettheorem}
-
-\begin{snippetproof}{diffeq-constant-coeff-ivp-sol}{diffeq-constant-coeff-ivp}{Ordinary Constant Differential Equation with IV}
-    Starting from the general solution of a constant ordinary differential equation
-    \[
-        y(t_0) = y_0 = Ce^{at_0} - \frac{b}{a}
-    \]
-    meaning that
-    \[
-        C = \left(y_0 + \frac{b}{a}\right) e^{-at_0}
-    \]
-    this constraints out result to
-    \begin{align*}
-        y(t) &= Ce^{at} - \frac{b}{a} \\
-             &= \left(y_0 + \frac{b}{a}\right) e^{-at_0} e^{at} - \frac{b}{a} \\
-             &= \left(y_0 + \frac{b}{a}\right) e^{a(t-t_0)} - \frac{b}{a}
-    \end{align*}
-\end{snippetproof}
-
-\subsection{Linear Coefficients Differential Equations}
-
-\begin{snippetdefinition}{diffeq-linear-diffeq}{Linear Differential Equation}
-    An ordinary linear differential equation with variable coefficients is defined as
-    \[
-        y' = a(t)y(t) + b(t)
-    \]
-    Where \(a\) and \(b\) are continuous functions.
-    The solution to the linear equation with constant coefficients still applies
-    if \(\frac{b}{a}\) is constant.
-\end{snippetdefinition}
-
-\begin{snippettheorem}{diffeq-linear-coeff-sol}{Theorem}
+\begin{snippettheorem}{linear-first-order-differential-equation-solution}{Solution to a linear first-order differential equation}
     The general solution to the differential equation
     \[
         y' = a(t)y(t) + b(t)
@@ -208,10 +28,10 @@ rather than infinite solutions.
         y(t)=Ce^{A(t)} + e^{A(t)} \int e^{-A(t)} b(t)\, dt
     \]
     where \(A(t)=\int a\,dt\), \(c\in\realnumbers\) and \(a\) and \(b\) are
-    continuous.
+    continuous \function[functions].
 \end{snippettheorem}
     
-\begin{snippetproof}{diffeq-linear-coeff-sol-proof}{diffeq-linear-coeff-sol}{Theorem}
+\begin{snippetproof}{linear-first-order-differential-equation-solution-proof}{linear-first-order-differential-equation-solution}{Solution to a linear first-order differential equation}
     Let's start by letting \(b(t)=0\)
     \[
         y' = ay
@@ -228,7 +48,7 @@ rather than infinite solutions.
     \]
     where \(A=\int a\, dt\).
     \\
-    As previosuly, we choose an integrating factor \(\mu\) such that
+    We choose an integrating factor \(\mu\) such that
     \[
         -a\mu = \mu'
     \]
@@ -256,37 +76,7 @@ rather than infinite solutions.
     \end{align*}
 \end{snippetproof}
 
-\subsection{Linear Coefficients Differential Equations with Initial Point}
-
-\begin{snippet}{diffeq-linear-var-coeff-ivp}
-    A linear differential equation with variable coefficients and an initial point is given by
-    \[
-        y'(t) = a(t)y(t) + b(t), \quad
-        y(t_0) = y_0
-    \]
-\end{snippet}
-
-\begin{snippettheorem}{diffeq-linear-var-coeff-sol}{Theorem}
-    The general solution to the differential equation
-    \[
-        y'=a(t)y(t)+b(t)
-    \]
-    where \(a\) and \(b\) are continuous functions, with a given point
-    \[
-        y(t_0)=y_0
-    \]
-    is given by
-    \[
-        y(t)=y_0 e^{A(t)}+e^{A(t)} \integral[t_0][t][e^{-A(s)}b(s)][s]
-    \]
-
-\end{snippettheorem}
-
-\begin{snippetproof}{diffeq-linear-var-coeff-sol-proof}{diffeq-linear-var-coeff-sol}{Theorem}
-    \todo
-\end{snippetproof}
-
-\subsection{Bernoulli Equation}
+\section{Bernoulli Equation}
 
 \begin{snippetdefinition}{bernoulli-equation-definition}{Bernoulli Equation}
     The Bernoulli equation has the form
@@ -331,18 +121,18 @@ rather than infinite solutions.
     \end{align*}
 \end{snippetproof}
 
-\subsection{Separable equations}
+\section{Separable equations}
+
+\plain{Separable equations are equations that can be solved by integrating both sides.}
 
 \begin{snippetdefinition}{separale-equation-definition}{Separable Equation}
-    Separable equations are equations that can be solved by integrating both sides.
-    This doesn't generally work with first-order linear equations.
-    A separable equation has the form
+    A \emph{separable equation} has the form
     \[
         h(y)y'=g(t)
     \]
 \end{snippetdefinition}
 
-\begin{snippettheorem}{separale-equation-sol}{Theorem}
+\begin{snippettheorem}{separale-equation-sol}{Solution to a separable equation}
     A separable differential equation has an implicit solution
     \[
         H(y(t)) = G(t) + C
@@ -355,7 +145,7 @@ rather than infinite solutions.
     \end{align*}
 \end{snippettheorem}
 
-\begin{snippetproof}{separale-equation-sol-proof}{separale-equation-sol}{Theorem}
+\begin{snippetproof}{separale-equation-sol-proof}{separale-equation-sol}{Solution to a separable equation}}
     Start by integrating both sides of the equation
     \[
         \int h(y(t))y'(t)\,dt =
@@ -378,7 +168,7 @@ rather than infinite solutions.
     \]
 \end{snippetproof}
 
-\subsection{Exact equations}
+\section{Exact equations}
 
 \begin{snippetdefinition}{exact-equation-definition}{Exact Equation}
     Consider a differential equation with the form
@@ -410,7 +200,7 @@ rather than infinite solutions.
     \]
 \end{snippet}
 
-\subsection{Homogeneous equations}
+\section{Homogeneous equations}
 
 \begin{snippetdefinition}{homogenous-equation-definition}{Homogeneous Equation}
     A \textit{homogenous} equation has the form
@@ -442,7 +232,7 @@ rather than infinite solutions.
     \]
 \end{snippet}
 
-\subsection{Slope Field}
+\section{Slope Field}
 
 \begin{snippetdefinition}{slope-field-definition}{Slope Field}
     A slope field or directional field is a field to visualize
