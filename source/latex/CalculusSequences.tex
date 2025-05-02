@@ -22,27 +22,120 @@
     for some \set X.
     A sequence may be written as
     \[
-        \{a_n\} \quad \quad {\{a_n\}}_{n=0}^\infty
+        \{a_n\} \quad \quad {\{a_n\}}_{n=k}^\infty
     \]
+    for some \(k\in\naturalnumbers\).
 \end{snippetdefinition}
 
-\begin{snippetdefinition}{sequence-convergence-definition}{Sequence convergence}
-    Let \({\{a_n\}}_{n=1}^\infty\) be a \sequence.
-    If \(\lim_{n \to \infty}a_n=L\) exists and is finite
-    we say that the sequence is \textit{convergent} to \(L\) (\(a_n \to L\)). If 
-    \(\lim_{n \to \infty}a_n\) doesn't exist or is infinite
-    we say that the sequence \textit{diverges}.
-\end{snippetdefinition}
-
-\begin{snippetcorollary}{function-sequence-limit-equivalence}{}
-    If \(f(x)\) is a \function such that \(f(n)=a_n\)
+\begin{snippetdefinition}{sequence-limit-definition}{Limit of a sequence}
+    Let \({\{a_n\}}\) be a \sequence and let \(\xi \in \extendedrealnumbers\).
+    Then, the \emph{limit} of \({\{a_n\}}\) is defnied as
     \[
-        \lim_{x\to\infty}f(x)=L \implies
-        \lim_{n\to\infty}a_n=L
+        \lim a_n = \xi \iff
+        \exists N \in \naturalnumbers \suchthat
+        \forall n>N, x_n \in I(\xi, \varepsilon, M)
     \]
-\end{snippetcorollary}
+    where
+    \[
+        I(\xi, \varepsilon, M) = \begin{cases}
+            (\xi-\varepsilon, \xi+\varepsilon) & \xi \in \realnumbers \\
+            (M, +\infty) & \xi = +\infty \\
+            (-\infty, -M) & \xi = -\infty
+        \end{cases}
+    \]
+    for all \(M>0\) and \(\varepsilon>0\).
+    \begin{enumerate}
+        \item the limit \emph{converges} to \(\xi\) if \(\xi\in\realnumbers\) and \(\lim a_n = \xi\);
+        \item the limit \emph{diverges} to \(\xi\) if \(\xi=\pm\infty\) and \(\lim a_n = \xi\);
+        \item the limit \emph{exists} if \(\exists \xi \in \extendedrealnumbers\) such that
+            \(\lim a_n = \xi\);
+    \end{enumerate}
+    \emph{Syntax:} we write \(a_n \to \xi\) if the limit exists.
+\end{snippetdefinition}
+
+\begin{snippetlemma}{extended-real-topology-disjoint-neighborhoods}{}
+    Let \(\lambda, \mu \in \extendedrealnumbers\) such that \(\lambda \neq \mu\).
+    Then, there exist \neighborhood[neighborhoods] \(I\) and \(J\) of \(\lambda\) and \(\mu\) respectively such that
+    \[
+        I \cap J = \emptyset
+    \]
+\end{snippetlemma}
+
+\begin{snippetproof}{extended-real-topology-disjoint-neighborhoods-proof}{extended-real-topology-disjoint-neighborhoods}{}
+    Let \(\lambda, \mu \in \realnumbers\) such that \(\lambda < \mu\).
+    Then,
+    \[
+        I = (\lambda - r, \lambda + r) \quad \text{and} \quad
+        J = (\mu - r, \mu + r)
+    \]
+    are \disjoint for
+    \[
+        0 < r \leq \frac{\mu - \lambda}{2}
+    \]
+    Let \(\mu = \pm\infty\). Then,
+    \[
+        I = (\lambda - r, \lambda + r) \quad \text{and} \quad
+        J = \begin{cases}
+            (-\infty, -M) & \text{if } \mu = -\infty \\
+            (M, +\infty) & \text{if } \mu = +\infty
+        \end{cases}
+    \]
+    are \disjoint for \(r>0\) and \(M < \lambda + r\).
+\end{snippetproof}
+
+%\begin{snippetcorollary}{function-sequence-limit-equivalence}{}
+%    If \(f(x)\) is a \function such that \(f(n)=a_n\)
+%    \[
+%        \lim_{x\to\infty}f(x)=L \implies
+%        \lim_{n\to\infty}a_n=L
+%    \]
+%\end{snippetcorollary}
 
 \subsection{Properties}
+
+\begin{snippetproposition}{limit-sequence-uniqueness}{Uniqueness of sequence limit}
+    Let \(\{x_n\}\) be a \sequence such that \(x_n \seqconverges \xi\)
+    and \(x_n \seqconverges \mu\).
+    Then, \(\xi = \mu\).
+\end{snippetproposition}
+
+\begin{snippetproof}{limit-sequence-uniqueness-proof}{limit-sequence-uniqueness}{Uniquenes of sequence limit}
+    By \snippetref[this lemma][extended-real-topology-disjoint-neighborhoods] there exist
+    \neighborhood[neighborhoods] \(I\) and \(J\) of \(\xi\) and \(\mu\) respectively such that
+    \[
+        I \cap J = \emptyset
+    \]
+    Thus, there exist \(N_1\) and \(N_2\) such that
+    \[
+        \forall n>N_1, x_n \in I \quad \text{and} \quad
+        \forall n>N_2, x_n \in J
+    \]
+    Let \(N = \max\{N_1, N_2\}\). Then, for all \(n>N\) we have
+    \(x_n \in I \cap J\) \lightning.
+\end{snippetproof}
+
+\begin{snippetproposition}{convergent-sequence-is-bounded}{}
+    Let \(\{x_n\}\) be a \sequence such that \(x_n \seqconverges \xi \in \realnumbers\).
+    Then, there exists \(m, M \in \realnumbers\) such that \(m \leq x_n \leq M\) for all \(n\in\naturalnumbers\).
+\end{snippetproposition}
+
+\begin{snippetproof}{convergent-sequence-is-bounded-proof}{convergent-sequence-is-bounded}{}
+    Let \(\varepsilon > 0\). By the definition of limit, there exists \(N\) such that
+    \[
+        \forall n>N, x_n \in (\xi - \varepsilon, \xi + \varepsilon)
+    \]
+    This means that \(-\varepsilon \leq x_n \leq \varepsilon\) for \(n>N\). We still need to consider
+    the finite number of terms \(x_1, x_2, \ldots, x_N\).
+    Let \(m = \min\{x_1, x_2, \ldots, x_{N-1}\}\) and \(M = \max\{x_1, x_2, \ldots, x_{N-1}\}\).
+    Then, for all \(n\) we have
+    \[
+        \min\{x_1, x_2, \cdots, x_{N-1}, \xi - \varepsilon\}
+        \leq x_n \leq
+        \max\{x_1, x_2, \cdots, x_{N-1}, \xi + \varepsilon\}
+    \]
+\end{snippetproof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{snippet}{sequences-properties}
     if \(\{a_n\}\) and \(\{b_n\}\) are convergent sequences, then
@@ -110,22 +203,22 @@ We conclude that if \(\lim_{n\to\infty} |a_n|=0\) then
 \end{snippettheorem}
 
 \begin{snippetproof}{convergence-of-even-and-odd-indexes-proof}{convergence-of-even-and-odd-indexes}{}
-    Let \(\epsilon>0\). \\
+    Let \(\varepsilon>0\). \\
     Since \(\lim_{n\to\infty}a_{2n}=L\) there exists an \(N_1\) such that
     if \(n>N_1\) then
     \[
-        |a_{2n}-L|<\epsilon
+        |a_{2n}-L|<\varepsilon
     \]
     Also, since \(\lim_{n\to\infty}a_{2n+1}=L\) there exists an \(N_2\) such that
     if \(n>N_2\) then
     \[
-        |a_{2n+1}-L|<\epsilon
+        |a_{2n+1}-L|<\varepsilon
     \]
     Let \(N=\max(2N_1, 2N_2+1)\) and let \(n>N\).
     Then either \(a_n=a_{2k}\) for some \(k>N_1\) or \(a_n=a_{2k+1}\)
     for some \(k>N_2\). Either way we have
     \[
-        |a_n-L|<\epsilon
+        |a_n-L|<\varepsilon
     \]
     which satisfies the convergence of \(\{a_n\}\).
 \end{snippetproof}
