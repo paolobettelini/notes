@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{bettelini}
 
 \begin{document}
 
@@ -12,8 +13,93 @@
 
 \section{Cauchy Condition}
 
-\begin{snippetdefinition}{real-function-cauchy-definition}{name}
-    \todo
+\begin{snippetdefinition}{real-function-cauchy-definition}{Cauchy Condition}
+    Let \(f\colon E \subseteq \realnumbers \fromto \realnumbers\) be a \function
+    and let \(\xi \in \extendedrealnumbers\) be an extended accumulation point of \(E\).
+    Then, \(f\) satisfies the \emph{Cauchy condition} for \(x \tendsto \xi\) if
+    \(\forall \epsilon > 0\) there exist a \neighborhood \(J\) of \(\xi\) such that
+    \[
+        \forall x, x' \in (E \intersection J) \difference \{\xi\},
+        | f(x) - f(x') | < \epsilon
+    \]
 \end{snippetdefinition}
+
+\begin{snippettheorem}{finite-limit-cauchy-condition-equivalence-theorem}{}
+    Let \(f\colon E \subseteq \realnumbers \fromto \realnumbers\) be a \function
+    and let \(\xi \in \extendedrealnumbers\) be an extended accumulation point of \(E\).
+    Then, the following statements are equivalent:
+    \begin{enumerate}
+        \item \[
+            \lim_{x \tendsto \xi} f(x) = L \in \realnumbers
+        \]
+        \item \(f(x)\) satisfies the Cauchy condition for \(x \tendsto \xi\).
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{finite-limit-cauchy-condition-equivalence-theorem-proof}{finite-limit-cauchy-condition-equivalence-theorem}{}
+    \iffproof{
+        By definition, \(\forall \epsilon > 0\) there exists a \neighborhood \(J\) of \(\xi\) such that
+        \[
+            \forall x \in (E \intersection J) \difference \{\xi\},
+            | f(x) - L | < \frac{\epsilon}{2}
+        \]
+        For \(\forall x,x' \in (E \intersection J) \difference \{\xi\}\), we have
+        \[
+            | f(x) - f(x') | = |f(x) - f(x') - L + L|
+            \triangleineqleq |f(x) - L| + |f(x') - L| < \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon
+        \]
+    }{
+        Suppose that \(f\) satisfies the Cauchy condition.
+        We have that
+        \[
+            \forall \{x_n\} \subseteq E \,|\, \forall n, x_n \neq \xi \land x_n \to \xi, f(x_n) \to L
+        \]
+        (we use the analogous sequence).
+        We show that:
+        \begin{enumerate}
+            \item there exists \(L\) such that \(f(x) \to L\).
+            For all \(\{x_n\} \subseteq E\) such that \(\forall n,x_n \to \xi \land x_n\neq\xi\),
+            \(f(x_n)\) is Cauchy, and therefore
+            \[
+                \exists\,\lim_n f(x_n) = L
+            \]
+            Let \(\{x_n\} \subseteq E\) with \(x_n \to \xi\) and \(x_n \neq \xi\) for all \(n\).
+            We show that given \(\varepsilon>0\), there exists \(N\) such that \(\forall n,m \geq N, |f(x_n) - f(x_m)| < \varepsilon\),
+            hence \(f(x_n)\) is Cauchy. Since \(f\) satisfies the Cauchy condition,
+            given \(\varepsilon>0\), there exists a neighborhood \(J\) of \(\xi\)
+            such that \(\forall x,x'\in (E\intersection J) \difference \{\xi\}, |f(x) - f(x')| < \varepsilon\).
+            By assumption, \(x_n \in E\) and \(x_n \neq \xi\) for all \(n\),
+            and \(x_n \to \xi\), so there exists \(N\) such that \(\forall n \geq N, x_n \in (J \intersection E) \difference \{\xi\}\).
+            Therefore, \(\forall n,m \geq N\), \(x_n,x_m \in (J \intersection E) \difference \{\xi\}\),
+            from which \(|f(x_n) - f(x_m)| < \varepsilon\) as desired;
+            
+            \item the limit is the same for all sequences.
+            Let \(\{x_n'\} \subseteq E\) be another sequence such that
+            \(x_n' \neq \xi\) for all \(n\) and \(x_n' \to \xi\).
+            Then \(\{f(x_n')\}\) is Cauchy and therefore has a finite limit
+            \[
+                \lim_n f(x_n') = L'
+            \]
+            The claim is that \(L=L'\), and to prove it we construct
+            a sequence that interleaves the two:
+            \[
+                x_n'' = \begin{cases}
+                    x_n & n \text{ even} \\
+                    x_n' & n \text{ odd}
+                \end{cases}
+            \]
+            So \(\forall n, x_n'' \neq \xi\) and \(x_n'' \to \xi\).
+            We have that \(\{f(x_n'')\}\) is Cauchy, so it has a finite limit
+            \[
+                \lim_n f(x_n'') = L''
+            \]
+            But \(f(x_{2k}'') = f(x_{2k}) \to L\) because it is a subsequence of \(\{f(x_n)\}\).
+            However, this also tends to \(L''\) because it is a subsequence of \(\{f(x_n'')\}\).
+            Therefore, \(L = L''\).
+            Similarly, using the odd indices, we show that \(L' = L''\),
+            and hence \(L = L'\).
+        \end{enumerate}
+    }
+\end{snippetproof}
 
 \end{document}
