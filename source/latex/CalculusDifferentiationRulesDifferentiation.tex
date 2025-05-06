@@ -35,47 +35,82 @@
 
 \subsection{Chain Rule}
 
-\begin{snippettheorem}{chain-rule}{Chain Rule}
-    If \(z\) depends on \(y\), and \(y\) depends on \(x\), then \(z\) also depends on \(x\).
+\begin{snippettheorem}{real-function-chain-rule}{Chain Rule}
+    Let \(f\colon I \subseteq \realnumbers \fromto \realnumbers\) and \(g\colon J \subseteq \realnumbers \fromto \realnumbers\)
+    be \function[functions] and let \(x_0\) internal such that
+    \(f\) is \differentiable in \(x_0\) and \(g\) is \differentiable in \(y_0 = f(x_0)\).
+    Then,
     \[
-        \frac{dz}{dx}=\frac{dz}{dy}\cdot\frac{dy}{dx}
-    \]
-    which is equivalent to
-    \[
-        \frac{d}{dx}(f(g(x)))=f'(g(x))\cdot g'(x)
+        (g\circ f)'(x_0) = g'(y_0)f'(x_0)
     \]
 \end{snippettheorem}
 
 \begin{snippetproof}{chain-rule-proof}{chain-rule}{Chain Rule}
-    Assuming that \(z\) and \(y\) are differentiable in \(x\)
-    
+    We want to show that the following limit exists and is finite
+    \[
+        \lim_{x\to x_0} \frac{g(f(x)) - g(f(x_0))}{x-x_0}
+        = \derivativeD g(f(x_0)) \cdot \derivativeD f(x_0)
+    \]
+    Let \(\varphi \colon J \fromto \realnumbers\) defined as
+    \[
+        \varphi(y) \triangleq \begin{cases}
+            \frac{g(y) - g(y_0)}{y-y_0} & y \neq y_0 \\
+            g'(y_0) & y = y_0
+        \end{cases}
+    \]
+    By definition of derivative, we have
+    \[
+        \lim_{y\to y_0} \varphi(y) = \varphi(y_0) = g'(y_0)
+    \]
+    Note that
+    \[
+        \forall x \in I,
+        \frac{g(f(x)) - g(f(x_0))}{x-x_0}
+        = \varphi(f(x)) \cdot \frac{f(x) - f(x_0)}{x-x_0}  
+    \]
+    Since \differentiable[differentiability] implies \realcontinuous[continuity], we have
+    \[
+        \varphi(f(x)) \to \varphi(y_0) = \derivativeD g(f(x_0))
+    \]
+    from which
+    \[
+        \lim_{x\to x_0} \frac{g(f(x)) - g(f(x_0))}{x-x_0}
+        = \lim_{x\to x_0} \varphi(f(x)) \cdot \frac{f(x) - f(x_0)}{x-x_0}
+    \]
+    which is the thesis.
+\end{snippetproof}
+
+\subsection{Inverse}
+
+\begin{snippetproposition}{real-function-inverse-derivative}{Derivative of inverse}
+    Let \(f\colon I \fromto \realnumbers\) be a \function[function]
+    and \(x_0\) internal point of \(I\) such that \(f\) is invertible in \(I\) and \differentiable in \(x_0\).
+    Suppose that:
+    \begin{enumerate}
+        \item \(\derivativeD f(x_0) \neq 0\);
+        \item \(f^{-1}\) is \realcontinuous in \(y_0 = f(x_0)\);
+    \end{enumerate}
+    Then, the inverse function \(f^{-1}\colon f(I) \fromto I\) is \differentiable in \(y_0 = f(x_0)\) and
+    \[
+        \derivativeD f^{-1}(y_0) = \frac{1}{\derivativeD f(x_0)}
+        = \frac{1}{\derivativeD f(f^{-1}(y_0))}
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{real-function-inverse-derivative-proof}{real-function-inverse-derivative}{Derivative of inverse}
+    We study the limit
     \begin{align*}
-        \frac{dz}{dx}
-        &= \lim_{\Delta x \to 0} \frac{\Delta z}{\Delta x}
-        = \lim_{\Delta x \to 0} \frac{\Delta z}{\Delta y} \cdot \frac{\Delta y}{\Delta x} \\
-        &= \left(
-            \lim_{\Delta x \to 0} \frac{\Delta z}{\Delta y}
-        \right)
-        \left(
-            \lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x}
-        \right) \\
-        &= \left(
-            \lim_{\Delta x \to 0} \frac{\Delta z}{\Delta y}
-        \right)
-        \cdot
-        \frac{dy}{dx}
+        \lim_{y\to y_0} \frac{f^{-1}(y) - f^{-1}(y_0)}{y-y_0}
     \end{align*}
-    
-    As \(\Delta x \to 0\) also \(\Delta y \to 0\), so we can replace \(\Delta x\) with \(\Delta y\)
-    
+    We let \(f^{-1}(y) = x\) and \(f^{-1}(y_0) = x_0\),
+    we have \(f(x) = y\) and \(f(x_0) = y\) and by \realcontinuous[continuity]
+    of \(f^{-1}\) in \(y_0\) if \(y\to y_0\),
+    then \(f^{-1}(y) = x \to f^{y_0} = x_0\).
+    hence, we can apply the change of variable
     \begin{align*}
-        \frac{dz}{dx}
-        &= \left(
-            \lim_{\Delta y \to 0} \frac{\Delta z}{\Delta y}
-        \right)
-        \cdot
-        \frac{dy}{dx} \\
-        &= \frac{dz}{dy} \cdot \frac{dy}{dx}
+        \lim_{x\to x_0} \frac{x-x_0}{f(x) - f(x_0)}
+        &= \lim_{x\to x_0} = \frac{1}{\frac{f(x) - f(x_0)}{x-x_0}} \\
+        &= \frac{1}{Df(x_0)}
     \end{align*}
 \end{snippetproof}
 
