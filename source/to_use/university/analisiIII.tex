@@ -3730,7 +3730,261 @@ iniziale e dal punto finale, allora il differenziale è esatto.
         \frac{\partial F}{\partial x_k}(x) &= \alpha_k (x)
     \end{align*}
     in quanto per tale direzione rimane solo la coordinata \(k\)-esima.
-}   Quindi tale funzione è una primitiva, e tutte le primitive differiscono per costante.
+}
+
+Quindi tale funzione è una primitiva, e tutte le primitive differiscono per costante.
+
+\scorollary{}{
+    Con le stesse ipotesi di prima. Allora \(\omega\) è esatta se e solo se
+    \[
+        \int_\varphi \omega = 0
+    \]
+    per ogni curva regolare chiusa \(\varphi\) in \(\Omega\).
+}
+
+Prendendo due punti \(p, q\) possiamo considerare due cammini da \(p\) a \(q\).
+Uno dei due cammini, lo riparametrizziamo in senso opposto, in maniera tale da ottenere
+un cammino chiuso.
+\begin{align*}
+    0 = \int_{\varphi_1 \cup \varphi_2} \omega
+    &= \int_{\varphi_1} \omega - \int_{\varphi_2}
+\end{align*}
+quindi i due integrali sono uguali.
+Quindi, per mostrare che una forma differenziale è esatta possiamo
+mostrare che il suo integrale su ogni cammino chiuso è nullo.
+
+Supponiamo ora di avere una forma differenziale esatta \(\omega \in \mathcal{C}^1(\Omega)\),
+quindi tutte le componenti \(\alpha_j \colon \Omega \to \mathbb{R}\)
+sono di classe \(\mathcal{C}^1(\Omega)\), quindi tutte le derivate parziali sono di tale classe.
+\[
+    \frac{\partial F}{\partial x_k}(x) = \alpha_k(x) \qquad (\text{d}F = \omega)
+\]
+ma siccome hanno le derivate continue
+\[
+    \frac{\partial^2 F}{\partial x_k \partial x_j}(x)
+    =
+    \frac{\partial^2 F}{\partial x_j \partial x_k}(x)
+\]
+ma quindi
+\[
+    \frac{\partial \alpha_k}{\partial x_j} =
+    \frac{\partial \alpha_j}{\partial x_k}
+\]
+per ogni \(j\) e \(k\).
+
+\sexample{}{
+    Sia \(\omega = X\text{d}x + Y\text{d}y\). Se la forma differenziale è esatta e della classe \(\mathcal{C}^1\)
+    allora
+    \[
+        \frac{\partial X}{\partial Y}(x,y)
+        = \frac{\partial Y}{\partial X}(x,y)
+    \]
+}
+
+\sdefinition{Forma differenziale chiusa}{
+    Sia \(\omega \in \mathcal{C}^1(\Omega)\) tale che
+    \[
+        \frac{\partial \alpha_k}{\partial x_j} =
+        \frac{\partial \alpha_j}{\partial x_k}, \quad \forall x\forall i,j
+    \]
+    allora la forma è detta \emph{chiusa}.
+}
+
+Quindi ogni forma esatta è anche chiusa. Il converso non è vero
+
+\sexample{}{
+    Sia
+    \[
+        \omega = - \frac{y}{x^2 + y^2}\text{d}x + \frac{x}{x^2 + y^2}\text{d}y
+    \]
+    con \(\Omega = \mathbb{R}^2 \backslash \{(0,0)\}\).
+    Allora
+    \[
+        \frac{\partial X}{\partial y} = \frac{y^2 - x^2}{{(x^2 + y^2)}^2}
+    \]
+    e
+    \[
+        \frac{\partial Y}{\partial x} = \frac{y^2 - x^2}{{(x^2 + y^2)}^2}
+    \]
+    quindi \(\omega\) è chiusa. Tuttavia, prendiamo ora \(\varphi(\theta) = (\cos\theta,\sin\theta)\)
+    con \(\theta \in [0, 2\pi]\). Calcoliamo ora
+    \begin{align*}
+        \int_\varphi \omega = \integral[0][2\pi][
+            \left(
+                \frac{\sin^2\theta}{\cos^2\theta + \sin^2\theta}
+                + \frac{\cos^2\theta}{\cos^2\theta + \sin^2\theta}
+            \right)
+        ][\theta] = 2\pi \neq 0
+    \end{align*}
+    quindi non è esatta.
+}
+
+\sdefinition{Insiemi stellati}{
+    Sono sottoinsiemi \(\Omega \subseteq \mathbb{R}^n\) dove
+    \[
+        \exists \overline{x} \in \Omega \,|\,
+        \forall x \in \Omega, [\overline{x}, x] \subseteq \Omega
+    \]
+    dove \([\overline{x}, x]\) è un segmento.
+}
+
+Ogni insieme convesso è stellato, in quanto è una condizione più forte.
+
+\stheorem{}{
+    Sia \(\omega\colon \Omega \to (\mathbb{R})'\) in \(\mathcal{C}^1(\Omega)\)
+    e \(\Omega\) sia stellato. Se \(\omega\) è chiusa, allora è esatta.
+}
+
+\sproposition{}{
+    Sia \(f\colon [a,b] \times A\) con \(A \subseteq \mathbb{R}^n\) aperto
+    tale che \(f \in \mathcal{C}^1([a,b] \times A)\).
+    Allora, \[
+        F(x) = \integral[a][b][f(t,x)][t] \in \mathcal{C}^1(A)
+    \]
+    e
+    \[
+        \frac{\partial F}{\partial x_k} = \integral[a][b][
+            \frac{\partial f}{\partial x_k}(t,x)
+        ][t]
+    \]
+}
+
+\sproof{Del teorema}{
+    Siccome \(\Omega\) è stellato, esiste \(\overline{x}\)
+    tale che la condizione di stellarità è soddisfatta, e
+    \[
+        \varphi(t) = \overline{x} + (x-\overline{x})t, \quad t\in[0,1]
+    \]
+    dove \(\varphi\colon [0,1] \to \Omega\), che quindi unisce i punti.
+    Abbiamo allora
+    \begin{align*}
+        F(x) &= \int_\varphi \omega \\
+        &= \integral[0][1][
+            \sum_{j=1}^n \alpha_j (\overline{x} + (x-\overline{x})t) (x_j - \overline{x_j})
+        ][t] \\
+        \frac{\partial F}{\partial x_k}(x) &=
+        \integral[0][1][
+            \frac{\partial \alpha_j}{\partial x_k}
+            \left(
+                \sum_{j=1}^n \alpha_j (\overline{x} + (x-\overline{x})t) (x_j - \overline{x_j})
+            \right)
+        ][t] \\
+        &= \integral[0][1][
+            \sum_{j=1}^n \left(\frac{\partial \alpha_j}{\partial x_k}
+            \left(
+                \alpha_j (\overline{x} + (x-\overline{x})t) (x_j - \overline{x_j})
+            \right)\right)
+        ][t] \\
+        &= \integral[0][1][
+            \sum_{j=1}^n \left(\frac{\partial \alpha_j}{\partial x_k}
+            \left(
+                %\frac{\partial \alpha_j}{\partial x_k}
+                (\overline{x} + (x-\overline{x})t)t(x_j - \overline{x_j})
+            \right)\right)
+        ][t] \\
+        &= \integral[0][1][
+            \sum_{j=1}^n
+            \frac{\partial \alpha_j}{\partial x_k}
+            (\overline{x} + (x-\overline{x})t)t(x_j - \overline{x_j})
+            + \alpha_k(\overline{x} + (x-\overline{x})t)
+        ][t] \\
+        &= \integral[0][1][
+            \sum_{j=1}^n
+            \frac{\partial \alpha_k}{\partial x_j}
+            (\overline{x} + (x-\overline{x})t)t(x_j - \overline{x_j})
+            + \alpha_k(\overline{x} + (x-\overline{x})t)
+        ][t] \\
+        &= \integral[0][1][
+            \frac{d}{dt} \left(t\alpha_k (\overline{x} + (x-\overline{x})t)\right)
+        ][t] \\
+        &= \left[t\alpha_k (\overline{x} + (x-\overline{x})t)\right]^1_0 \\
+        &= \alpha_k(x)
+    \end{align*}
+    quindi la forma differenziale è esatta.
+}
+
+\sexample{}{
+    Consideriamo
+    \[
+        \omega = (y^2 + y\cos z)\text{d}x +
+        (2xy + x\cos z)\text{d}y +
+        (x - xy \sin z)\text{d}z
+        = X\text{d}x + Y\text{d}y + Z\text{d}z
+    \]
+    e la curva \(\varph(t) = (t^3, t^2, t)\) con \(t \in [0,\pi]\).
+    Vogliamo calcolare
+    \[
+        \int_\varphi \omega
+    \]
+    Cominciamo verificando se \(\omega\) è chiusa. Abbiamo
+    \begin{align*}
+        \frac{\partial X}{\partial y} &= 2y + \cos z \\
+        \frac{\partial X}{\partial z} &= -y\sin z \\
+        \frac{\partial Y}{\partial x} &= 2y + \cos z \\
+        \frac{\partial Y}{\partial z} &= -x\sin z \\
+        \frac{\partial Z}{\partial x} &= 1-y\sin z \\
+        \frac{\partial Z}{\partial y} &= -x\sin z
+    \end{align*}
+    per colpa di quell'1 non è chiusa, e quindi non è esatta. Tuttavia, spezziamo
+    la forma come
+    \(\omega = \omega_1 + \omega_2\)
+    con
+    \[
+        \omega_1 = (y^2 + y\cos z)\text{d}x +
+        (2xy + x\cos z)\text{d}y +
+        (- xy \sin z)\text{d}z
+    \]
+    e
+    \[
+        \omega_2 = x\text{d}z
+    \]
+    Allora \(\omega_1\) è chiusa (e quindi esatta siccome l'insieme è puntato).
+    Abbiamo quindi
+    \begin{align*}
+        \int_\varphi \omega &= \int_\varphi \omega_1 + \int_\varphi \omega_2
+    \end{align*}
+    Il secondo integrale è dato da
+    \[
+        \integral[0][\pi][t^3][t]
+    \]
+    Per il primo, visto che la forma è esatta, ci basta trovare una primitiva
+    \[
+        \frac{\partial F}{\partial x}(x,y,z) = X(x,y,z) = y^2 + y\cos z
+    \]
+    quindi integrando troviamo
+    \[
+        F(x,y,z) = xy^2 + xy\cos z + h(y,z)
+    \]
+    Analogamente
+    \[
+        \frac{\partial F}{\partial y} = Y(x,y,z) = 2xy + x\cos z + \frac{\partial h}{\partial y}(y,z)
+    \]
+    ma per confronto
+    \[
+        \frac{\partial h}{\partial y}(y,z) = 0
+    \]
+    quindi
+    \[
+        h(x,z) = C + k(z)
+    \]
+    Allora,
+    \[
+        \frac{\partial F}{\partial z} = -xy\sin z + k'(z) = -xy\sin z
+    \]
+    e allora 
+    \[
+        k'(z) = 0
+    \]
+    cioè \(k = C\). Quindi,
+    \[
+        F(x,y,z) = xy^2 + xy\cos z
+    \]
+    dove abbiamo preso costante nulla.
+    In conclusione,
+    \begin{align*}
+        \int_\varphi \omega_1 = F(\pi^3, \pi^2, \pi) - F(0,0,0)
+    \end{align*}
+}
 
 \pagebreak
 
