@@ -1,0 +1,159 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+\usepackage{tikz}
+
+\begin{document}
+
+\id{curves-definitions}
+\genpage
+
+\section{Definitions}
+
+\begin{snippetdefinition}{curve-definition}{Curve}
+    A \emph{curve} is a continuous \function
+    \(\varphi \colon [a,b] \subseteq \realnumbers \fromto \realnumbers^n\).
+    The image \(\varphi([a,b])\) is said to be the
+    \emph{support} of the curve. 
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{closed-curve-definition}{Closed curve}
+    A \curve \(\varphi\colon [a,b] \subseteq \realnumbers \fromto \realnumbers^n\) is said to
+    be \emph{closed} if \(\varphi(a) = \varphi(b)\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{simple-curve-definition}{Simple curve}
+    A \curve \(\varphi\colon [a,b] \subseteq \realnumbers \fromto \realnumbers^n\)
+    is said to be \emph{simple} if
+    \[
+        a \leq t_1 < t_2 \leq b \land \varphi(t_1) = \varphi(t_2)
+        \implies t_1 = a \land t_2 = b
+    \]
+\end{snippetdefinition}
+
+\plain{This means that the curve can only intersect at the ends.}
+
+\begin{snippetdefinition}{regular-curve-definition}{Regular curve}
+    A \curve \(\varphi\colon I \subseteq \realnumbers \fromto \realnumbers^n\)
+    is said to be \emph{regular} if
+    \(\varphi \in continuityclass^1(I)\)
+    and \(||\varphi'(t)|| \neq 0\) for every \(t\in I\).
+\end{snippetdefinition}
+
+\plain{This means that all the components are diferentiable and with a continuous derivative,
+and the derivative (or the norm) is never null.}
+
+\begin{snippetdefinition}{curve-tangent-definition}{Tangent of a curve}
+    A line \(r(t)\) is \emph{tangent} to a \curve \(\varphi\) at \(x_0 = \varphi(t_0)\)
+    if
+    \[
+        \varphi(t) - r(t) = \littleO(t-t_0)
+    \]
+\end{snippetdefinition}
+
+\plain{This is an approximation of the curve of the first order.}
+
+\begin{snippet}{curve-c1-class-expl}
+    If the \curve is in \(\continuityclass^1(I)\) then \[
+        \varphi(t) = \varphi(t_0) + \varphi'(t_0)(t-t_0) + \littleO(t-t_0)
+    \]
+\end{snippet}
+
+\begin{snippetdefinition}{piecewise regular curve-definition}{Piecewise regular curve}
+    A \curve \(\varphi \colon [a,b] \fromto \realnumbers^n\) is said to be \emph{piecewise regular}
+    if there exist a \partition \(P\) of the interval \([a,b]\) such that
+    \(\varphi\) is \regularcurve on every interval of \(P\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{curve-equivalence-definition}{Curve equivalence}
+    Let \(\varphi_1 \colon I_1 \fromto \realnumbers^n\)
+    and \(\varphi_2 \colon I_2 \fromto \realnumbers^n\) be two \curve[curves].
+    We say that \(\varphi_1\)
+    is \emph{equivalent} to \(\varphi_2\) (\(\varphi_1 \sim \varphi_2\)) if there exist
+    a \function \(\sigma \colon I_2 \fromto I_1\) such that:
+    \begin{enumerate}
+        \item \(\sigma\) is \surjective;
+        \item \(\sigma \in \continuityclass^1(I_2)\);
+        \item \(\forall t \in I_2, \sigma'(t) \neq 0\);
+        \item \(\varphi_2(t) = \varphi_1(\sigma(t))\).
+    \end{enumerate}
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{curve-orientation-definition}{Curve orientation}
+    let \(\varphi_1\), \(\varphi_2\) be two \curve[curves] such that \(\varphi_1 \curveequivalent \varphi_2\)
+    with \(\sigma(t)\).
+    \begin{enumerate}
+        \item if \(\sigma'(t) > 0\) then \(\varphi_1\) and \(\varphi_2\) have the same \emph{orientation}.
+        \item if \(\sigma'(t) < 0\) then \(\varphi_1\) and \(\varphi_2\) have the opposite \emph{orientation}.
+    \end{enumerate}
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{curve-length-definition}{Length of a curve}
+    let \(\varphi \colon [a,b] \fromto \realnumbers^n\) and let \(P\) be a \partition of \([a,b]\)
+    and let
+    \[
+        L(\varphi, P) = \sum_{i=1}^n ||\varphi(t_i) - \varphi(t_{i-2})||
+    \]
+    with the euclidean norm.
+    Then, \(\varphi\) is said to be \emph{rectifiable} if
+    \[
+        \xi = \sup_P L(\varphi, P) < \infty
+    \]
+    where \(P\) is the \set of all \partition[partitions] of \([a,b]\).
+    In such case, we will call \(\xi\)
+    the \emph{length of the curve \(\varphi\)}, denoted \(L(\varphi)\).
+\end{snippetdefinition}
+
+\section{Examples}
+
+\begin{snippetexample}{tangent-curve-example1}{Tangent curve}
+    let \(\varphi(t) = (t^2, t^3)\) from \([0,1] \fromto \realnumbers^2\) with \(t_0 = \frac{1}{2}\).
+    The \curve is \regularcurve meaning that the tangent is
+    \begin{align*}
+        r(t) &= \varphi(t_0) + \varphi'(t_0)(t-t_0) \\
+        &= \begin{pmatrix} \frac{1}{4} \\ \frac{1}{8} \end{pmatrix}
+        + \begin{pmatrix} 2t_0 \\ 3t_0^2 \end{pmatrix}\left(t-\frac{1}{2}\right) \\
+        &= \begin{pmatrix} \frac{1}{4} \\ \frac{1}{8} \end{pmatrix}
+        + \begin{pmatrix} t - \frac{1}{4} \\ \frac{3}{4}t - \frac{1}{4} \end{pmatrix}
+    \end{align*}
+\end{snippetexample}
+
+\begin{snippetexample}{curve-example1-example}{}
+    Let \(\sigma \colon [0,1] \fromto [a,b]\) such that \(\sigma(t) = a + (b-a)t\)
+    which is a line that maps \([0,1]\) into \([a,b]\).
+    Let now \(\varphi \colon [a,b] \fromto \realnumbers^n\)
+    and
+    \[
+        \hat{\varphi} = \varphi(\sigma(t)) = \varphi(a + (b-a)t)
+    \]
+    Clearly, \(\varphi \curveequivalent \hat{\varphi}\).
+    Thus, the second curve is equivalent to the first but defined on \([0,1]\) rather than \([a,b]\).
+\end{snippetexample}
+
+\begin{snippetexample}{curve-example2-example}{}
+    Consider \(\varphi(t) = (\cos t, \sin t)\) defined in
+    \begin{enumerate}
+        \item \([0, \pi]\) semplice, non chiusa;
+        \item \([0, 2\pi]\) semplice, chiusa;
+        \item \([0, 3\pi]\) non semplice, non chiusa;
+        \item \([0, 4\pi]\) non semplice, chiusa;
+    \end{enumerate}
+    the last three have the same \curve[support].
+\end{snippetexample}
+
+\begin{snippetexample}{curve-example3-example}{}
+    Let \(\varphi_1(t) = (t, \sqrt{1-t^2})\) in \([1/2, 1]\)
+    and \(\varphi_2(t) = (\cos t, \sin t)\) in \([0, \pi/3]\).
+    Clearly, \(\varphi_1 \curveequivalent \varphi_2\) with \(\sigma(t) \colon [0, \pi/3] \fromto [1/2, 1]\)
+    given by \(\sigma(t) = \cos t\), thus
+    \[
+        \varphi_2(t) = \varphi_1(\sigma(t))
+        = \varphi_2(\cos t)
+    \]
+\end{snippetexample}
+
+\end{document}
