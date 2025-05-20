@@ -6,6 +6,9 @@
 \usepackage{parskip}
 \usepackage{fullpage}
 \usepackage{wrapfig}
+\usepackage{tikz}
+
+\usetikzlibrary{cd}
 
 \title{Analisi III}
 \author{Paolo Bettelini}
@@ -2998,7 +3001,7 @@ TODO: da recuperare le cose prime dell'8 inclusa la mattina
     La soluzione dovrebbe essere \(y = 2x-x^2\).
 }
 
-\subsection{13 maggio}
+\section{13 maggio}
 
 \sdefinition{Curva}{
     Una \emph{curva} è una funzione
@@ -3304,6 +3307,386 @@ Nel caso bidimensionale \(\varphi(t) = (t, f(t))\) vale allora
     \end{align*}
     che diverge per \(n \to \infty\).
 }
+
+\pagebreak
+
+\section{20 maggio}
+
+\sproposition{Curva parametrica in forma polare}{
+    Se la curva è data in forma polare come
+    \(\rho(\theta)\) per \(\theta \in [0,2\pi]\)
+    vale
+    \[
+        \varphi(\theta) = (\rho(\theta)\cos\theta, \rho(\theta)\sin\theta)
+    \]
+    quindi assumendo che sia differenziabile
+    \[
+        \varphi' = (\rho'(\theta)\cos\theta - \rho(\theta) \sin\theta, \rho'(\theta)\sin\theta + \rho(\theta)\cos\theta)
+    \]
+    Allora la norma è data da
+    \begin{align*}
+        ||\varphi'|| =
+        {\left(
+            (\rho^2)'(\theta) + \rho^2(\theta)
+        \right)}^{1/2}
+    \end{align*}
+}
+
+\sexercise{}{
+    Consideriamo la curva \(\rho(\theta) = e^{-\theta}\)
+    con \(\theta \in [0, \lambda]\).
+    La sua lunghezza è data da
+    \begin{align*}
+        \integral[0][\lambda][{\left(e^{-2\theta} + e^{-2\theta}\right)}^{1/2}][\theta] 
+        &= \sqrt{2} \integral[0][\lambda][e^{-\theta}][\theta] \\
+        &= \sqrt{2} \left(1 - e^{-\lambda}\right)
+    \end{align*}
+    Chiaramente la lunghezza tende a \(\sqrt{2}\), cioè quando la spirale
+    tende verso l'origine.
+}
+
+\sexercise{}{
+    Calcolare la lunghezza di
+    \(y=x^2\) con \(x\in [0,1]\).
+}
+
+\pagebreak
+
+\subsection{Differenziali}
+
+\sdefinition{Spazio duale di \({\mathbb{R}^n}\)}{
+    Lo spazio \(\left(\mathbb{R}^n\right)'\)
+    è lo \emph{spazio duale} di \(\mathbb{R}^n\),
+    ossia l'insieme dei funzionali lineare da \(\mathbb{R}^n\)
+    a \(\mathbb{R}\).
+}
+
+Chiaramente tutti i funzionali lineari di tali spazio sono un caso particolare
+delle matrici, cioè vettori. Ogni tale funzionale può essere scritta come
+\begin{align*}
+    f(x) &= (x,y), \quad y\in \mathbb{R}^n \\
+    &= \sum x_i y_i
+\end{align*}
+che è il prodotto interno fra due vettori di \(\mathbb{R}^n\).
+In particolare, in tale spazio vi è
+\[
+    \text{d}x_i \in \left(\mathbb{R}^n\right)'
+\]
+definita da
+\[
+    \text{d}x_i(x) \triangleq x_i = (x, e_i)
+\]
+ossia un operatore che mi restituisce la componente \(i\)-esima.
+Tale operatore è equivalente alla moltiplicazione per il vettore della base
+canonina della coordinata \(i\).
+Tali funzionali rappresentano una base dello spazio duale, che è a sua volta uno spazio vettoriale.
+Quindi ogni funzionale lineare può essere espresso come
+\[
+    f = \sum_{i=1}^n \alpha_i \,\text{d}x_i
+\]
+
+\sdefinition{Forma differenziale}{
+    Sia \(\Omega \subseteq \mathbb{R}^n\).
+    Allora una funzione \(\omega \colon \Omega \to (\mathbb{R})'\)
+    che è continua è detta \emph{forma differenziale lineare}.
+}
+
+Rappresentiamo un differenziale
+\[
+    \omega(x) = \sum_{i=1}^n \alpha_i(x) \,\text{d}x_i
+\]
+dove \(\alpha_i \colon \Omega \to \mathbb{R}\) che devono essere continue.
+
+\sexample{Forma differenziale}{
+    La funzione
+    \[
+        \omega(x,y,z) = x^2\text{d}x - e^z \text{d}y + (xyz)\text{d}z
+    \]
+    è una forma differenziale da \(\mathbb{R}^3\) a \((\mathbb{R}^3)'\).
+    La forma differenziale calcola in un punto mi restituisce un funzionale lineare.
+    \[
+        \omega(1,1,0) = \text{d}x - \text{d}y
+    \]
+    Tale funzionale, applicato ad un vettore diventa
+    \[
+        \omega(1,1,0)(\alpha, \beta, \gamma) = \alpha - \beta
+    \]
+    è equivalente all'oggetto \((x^2, -e^z, xyz)\), che è anche un campo vettoriale.
+    Infatti, nel punto \((1,1,0)\) il campo vettoriale ha \((1, -1, 0)\).
+}
+
+\pagebreak
+
+\sexample{Forme differenziali indotte da funzioni differenziabili}{
+    Possiamo ottenere una forma differenziale prendendo una funzione
+    \(F \colon \Omega \to \mathbb{R}\) che sia differenziabile.
+    Allora il differenziale \(\text{dF}\) è una forma lineare.
+    Questo funzionale lineare è rappresentato dal gradiente
+    \[
+        \text{dF} \equiv
+        \left(
+            \frac{\partial F}{\partial x_1},
+            \cdots,
+            \frac{\partial F}{\partial x_n}
+        \right)
+    \]
+    quindi
+    \begin{align*}
+        \omega(x) = \sum_{i=1}^n
+        \frac{\partial F}{\partial x_i}(x) \,\text{d}x_i
+    \end{align*}
+}
+
+Per esempio sia \(F(x,y) = x^2y + \ln x\)
+per \(\Omega = \{ x>0\}\).
+Allora \(\omega(x,y) = (2xy + 1/x)\text{d}x +x^2\text{d}y\).
+
+\sdefinition{Differenziale esatto}{
+    Una forma differenziale \(\omega \colon \Omega \to (\mathbb{R}^n)'\)
+    è detta \emph{esatta} se esiste una funzione
+    \(F \colon \Omega \to \mathbb{R}\) differenziabile
+    tale che \(\omega = \text{d} F\).
+    Una tale funzione \(F\) viene detta \emph{primitiva} di \(\omega\).
+}
+
+Chiaramente \(F + C\) con \(C\) costante è ancora una primitiva.
+Se due funzioni hanno la medesima derivata, allora le funzioni
+non differiscono necessariamente di una costante - solo se sono
+definite su insiemi connessi.
+Per esempio
+\[
+    f(x) = \begin{cases}
+        1 & x\in [0,1] \\
+        0 & x\in[3,4]
+    \end{cases}
+\]
+gli insiemi connessi in \(\mathbb{R}\) sono solo gli intervalli.
+In \(\mathbb{R}^n\) al posto degli intervalli usiamo gli insiemi connessi.
+
+\sdefinition{Insieme connesso}{
+    Un insieme aperto \(\Omega\) è connesso se
+    \[
+        \Omega = A \cup B
+    \]
+    con \(A,B\) aperti, disgiunti, allora \(A\) o \(B\) è vuoto.
+}
+
+\sproposition{}{
+    Sia \(F\colon \Omega \to \mathbb{R}\) differenziabile
+    e \(\Omega\) connesso.
+    Se \(\text{d}F = 0\), allora \(F\) è costante in \(\Omega\).
+}
+
+\sdefinition{Integrale su curva}{
+    Consideriamo \(\omega \colon \Omega \to (\mathbb{R}^n)'\)
+    e una curva \(\varphi \colon [a,b] \to \Omega\) regolare.
+    Allora
+    \[
+        \int_\varphi \omega \triangleq \integral[a][b][
+            \sum_{i=1}^n \alpha_i(\varphi(t)) \varphi_i'(t)
+        ][t]
+    \]
+}
+Chiaramente \(\alpha_i(\varphi(t))\) è un prodotto interno.
+È come se la forma differenziale agisse sulla derivata
+(sul vettore delle derivate).
+
+\sexample{}{
+    Supponiamo che
+    \[
+        \varphi(t) = (t,t^2), \quad t\in[0,1]
+    \]
+    e
+    \[
+        \omega(x,y) = y\text{d}x - xy\text{d}y
+    \]
+    Allora \(\)
+    \begin{align*}
+        \int_\varphi \omega
+        &= \integral[0][1][
+            (t^2 - t\cdot t^3)
+            \cdot \varphi'(t)
+        ][t] \\
+        &= \integral[0][1][
+            (t^2  - t\cdot t^3)
+            \cdot (1,2t)
+        ][t] \\
+        &= \integral[0][1][
+            t^2 \cdot 1 - t^3(2t)
+        ][t]
+    \end{align*}
+}
+
+\sexample{Integrale con forma differenziale esatta}{
+    \begin{align*}
+        \int_\varphi \text{d}F
+        &= \integral[a][b][
+            \sum_{j=1}^m
+            \frac{\partial F}{\partial x_i}(\varphi(t))
+            \varphi'_j(t)
+        ][t]
+    \end{align*}
+}
+
+Consideriamo \(H(t) = F(\varphi(t))\)
+funzione composta
+
+\begin{center}
+% https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRGTtICMKQBfUuky58hFAEZyVWoxZsAOvIDyAWxgBzOv0EgM2PASIAmKdXrNWiEIpV0cACy5dgAJT79pMKOvhFQAMwAnCBUkMhAcCCRJEC4YMCgkAGZw8zkrRXpAtHssbQDg0MQYyKQTWPjExBTqBjo4hgAFYQMxEAYYfxwQM1lLEAAxfJAgkLDqUsRyuISkAFoa9vqYJpbRNkCsdXtu3os2AAkPPiA
+\begin{tikzcd}
+{[a,b]} \arrow[r, "\varphi", bend left] \arrow[rr, "H"', bend right] & \Omega \arrow[r, "F", bend left] & \mathbb{R}
+\end{tikzcd}
+\end{center}
+
+allora
+\begin{align*}
+    H'(t) &=
+    \left(
+        \frac{\partial F}{\partial x_i}(\varphi(t)),
+        \cdots,
+        \frac{\partial F}{\partial x_i}(\varphi(t)),
+    \right)
+    \begin{pmatrix}
+        \varphi_1'(t) \\ \cdots \\ \varphi_n'(t)
+    \end{pmatrix} \\
+    &= \integral[a][b][H'(t)][t] = H(b) - H(a)
+\end{align*}
+Quindi,
+\[
+    \int_\varphi \text{d}F = F(\varphi(b)) - F(\varphi(a))
+\]
+Quindi quando la forma differenziale è esatta, tale integrale
+è esattamente la differenza di \(F\) fra il punto finale e quello iniziale
+della curva, quindi non dipende dal percorso.
+
+\sproposition{Proprietà}{
+    \begin{enumerate}
+        \item \emph{linearità}
+        \[
+            \int_\varphi (\alpha\omega_1 + \beta\omega_2)
+            = \alpha\int_\varphi \omega_1
+            + \beta\int_\varphi \omega_2
+        \]
+        \item questo integrale è anch'esso un funzionale lineare
+        definito sull'insieme delle forme differenziali.
+        \item se \(\tilde{\varphi} = \varphi\), cioè \(\varphi(t) = \varphi(\sigma(t))\),
+        allora
+        \[
+            \int_{\tilde{\varphi}} = \pm \int_{\varphi} \omega
+        \]
+        dove \(\pm\) è il segno di \(\sigma'\). Infatti
+        \begin{align*}
+            \int_{\tilde{\varphi}} \omega &=
+            \integral[a][b][
+                \sum_{j=1}^n \alpha_j (\tilde{\varphi}(t))
+                \hat{\varphi}_j'(t)
+            ][t] \\
+            &= \integral[a][b][
+                \sum_{j=1}^n \alpha_j
+                (\varphi(\sigma(t)))\varphi_j'(\sigma(t))
+                \sigma'(t)
+            ][t] \\
+            &=
+            \integral[c \text{ o } d][d\text{ o } c][
+                \sum_{j=1}^n \alpha_i (\varphi(s))\varphi_j'(s)
+            ][s]
+            \quad s = \sigma(t) \\
+            &= \pm \int_\varphi\omega
+        \end{align*}
+        quindi a seconda del segno della derivata di omega otteniamo
+        il verso di integrazione.
+        \item siano \(\varphi_i \colon [a,b] \to \mathbb{R}^n\)
+        e \(\varphi_2 \colon [c,d] \to \mathbb{R}^n\)
+        tale che \(\varphi_1(b) = \varphi_2(c)\).
+        Allora definiamo \(\varphi_1 \cup \varphi_2 \colon I \to \mathbb{R}\)
+        con \(I\) intervallo siccome l'intervallo posso sceglierlo a piacimento
+        a meno di curve equivalenti. Allora
+        \[
+            \int_{\varphi_1 \cup \varphi_2} \omega =
+            \int_{\varphi_1} \omega +
+            \int_{\varphi_2} \omega
+        \]
+        Queste unioni sono curve regolari a tratti.
+    \end{enumerate}
+}
+
+\sdefinition{Insieme connesso per archi}{
+    Un sottoinsieme \(\Omega \subseteq \mathbb{R}^n\) aperto è detto
+    \emph{connesso per archi} se \(\forall p, q \in \Omega\),
+    esiste una curva regolare a tratti
+    \(\varphi\colon [a,b] \to \Omega\)
+    tale che \(\varphi(a) = p \land \varphi(b) = q\).
+}
+
+\stheorem{}{
+    Un insieme \(\Omega \subseteq \mathbb{R}^n\)
+    è connesso per archi se e solo se è connesso.
+}
+
+\stheorem{}{
+    Sia \(\Omega\) un insieme connesso e \(\omega\)
+    una forma differenziale in \(\Omega\).
+    Se \(\forall p, q \in \Omega\),
+    \[
+        \int_{\varphi_1} \omega = \int_{\varphi_2} \omega
+    \]
+    per ogni \(\varphi_1, \varphi_2 \to \Omega\)
+    tali che \(\varphi_1(a) = \varphi_2(c) = p\)
+    e \(\varphi_1(b) = \varphi_2(d) = q\),
+    allora \(\omega\) è esatta.
+}
+
+Quindi vale anche il converso - se l'integrale dipende solo dal punto
+iniziale e dal punto finale, allora il differenziale è esatto.
+
+\sproof{}{
+    Sia \[S_{p,q} = \left\{\varphi\colon I \to \Omega \,|\, \varphi(a) = p \land \varphi(b) = q\right\}\]
+    Fissiamo \(p\) e prendiamo \(x\in\Omega\) e sia \(\varphi \in S_{p,x}\).
+    Allora coincidono
+    \begin{align*}
+        F(x) = \int_\varphi \omega
+    \end{align*}
+    Mostriamo che \(F\) è la primitiva.
+    Partiamo dal punto \(x\) e prendiamo un versore \(v\),
+    quindi giungiamo ad un punto \(x + vh\) per qualche \(h\) (sempre rimanente dell'insieme).
+    Allora, chiamando tale segmento \(r\)
+    \begin{align*}
+        F(x + vh) - F(x) &=
+        \int_{\varphi \cup r} \omega - \int_\varphi \omega \\
+        &= \int_r \omega
+    \end{align*}
+    Parametrizziamo quest'ultimo in qualsiasi modo, per esempio
+    \begin{align*}
+        \int_r \omega
+        &= \integral[b][b+1][
+            \sum_{j=1}^n \alpha_j(r(t)) r_j'(t)
+        ][t] \\
+        &= \integral[b][b+1][
+            \sum_{j=1}^n \alpha_j(x + hv(t-b))v_j h
+        ][t] \\
+        &= \integral[0][h][
+            \sum_{j=1}^n \alpha_j (x + vs)v_j
+        ][s]
+    \end{align*}
+    dove abbiamo usato \(s = h(t-b)\).
+    Abbiamo allora la derivata direzionale di \(F\)
+    \begin{align*}
+        \frac{F(x + hv) - F(x)}{h}
+        &= \frac{1}{h} \integral[0][h][
+            \sum_{j=1}^n \alpha_j (x + vs)v_j
+        ][s] \\
+        &= \frac{h}{h} \sum_{j=1}^n \alpha_k (x + vc)v_j
+    \end{align*}
+    per il teorema del valor medio con qualche \(c \in (0,h)\).
+    Quando \(h\to 0\), \(c\to 0\), e siccome la funzione è continua
+    vale il secondo limite, e quindi anche la derivata direzionale
+    \begin{align*}
+        \frac{\partial F}{\partial v}(x)
+        &= \sum_{j=1}^n \alpha_j(x) v_j \\
+        \frac{\partial F}{\partial x_k}(x) &= \alpha_k (x)
+    \end{align*}
+    in quanto per tale direzione rimane solo la coordinata \(k\)-esima.
+}   Quindi tale funzione è una primitiva, e tutte le primitive differiscono per costante.
 
 \pagebreak
 
