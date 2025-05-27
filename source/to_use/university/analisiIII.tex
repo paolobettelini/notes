@@ -14,6 +14,8 @@
 \author{Paolo Bettelini}
 \date{}
 
+% 17 luglio, 2 e 18 sett
+
 \begin{document}
 
 \maketitle
@@ -3911,7 +3913,7 @@ Ogni insieme convesso è stellato, in quanto è una condizione più forte.
         (x - xy \sin z)\text{d}z
         = X\text{d}x + Y\text{d}y + Z\text{d}z
     \]
-    e la curva \(\varph(t) = (t^3, t^2, t)\) con \(t \in [0,\pi]\).
+    e la curva \(\varphi(t) = (t^3, t^2, t)\) con \(t \in [0,\pi]\).
     Vogliamo calcolare
     \[
         \int_\varphi \omega
@@ -3985,6 +3987,9 @@ Ogni insieme convesso è stellato, in quanto è una condizione più forte.
         \int_\varphi \omega_1 = F(\pi^3, \pi^2, \pi) - F(0,0,0)
     \end{align*}
 }
+
+Quando calcoliamo un integrale su forma esatta possiamo classicamente prendere un cammino
+lineare che congiunge i due punti oppure un cammino a segmenti per ogni componente.
 
 \pagebreak
 
@@ -5479,6 +5484,231 @@ Ogni insieme convesso è stellato, in quanto è una condizione più forte.
         \frac{2}{x_p} y &= 1 + y'(x_p) \\
         y' &= \frac{2}{x}y - 1 \\
         y &= Cx^2 - x
+    \end{align*}
+}
+
+\subsection{Forme differenziali}
+
+\sexercise{}{
+    Sia
+    \[
+        \omega = (x^4 - y)\,dx + (x + y^2)\,dy
+    \]
+    e calcolare il suo integrale su: disegnigno
+    con percorso chiuso anti clockwise, la parte sopra è un semicerchio, poi va all'origine,
+    poi va dritto a \((0, -1)\) e poi va dritto a \((0, 1)\).
+    Osserviamo che la curva è regolare a tratti e chiuso.
+    Quindi spezziamo l'integrale in 4 cammini ovvi.
+    Siccome è chiuso, se la forma differenziale è esatta allora l'integrale è nullo.
+    Siccome siamo in \(\mathbb{R}^2\) (stellato) controlliamo se è chiusa. Abbiamo
+    \begin{align*}
+        \frac{\partial X}{\partial y} &= -1 \quad \frac{\partial Y}{\partial x} = 1
+    \end{align*}
+    Chiaramente non è chiusa ma possiamo riscriverla come
+    \[
+        \omega = (x^4 - y)\,dx + (x +y^2)\,dy = (x^4 + y)\,dy + (x + y^2)\,dy - 2x\,dx
+    \]
+    Quindi \(\omega_1\) è una forma esatta e ci rimane l'integrale su \(\omega_2\).
+    Possiamo parametrizzare (possibilmente nello stesso intervallo)
+    \[
+        \varphi_1(t) = (\cos(\pi t), \sin(\pi t)) \\
+        \varphi_2(t) = (t-1, 0) \\
+        \varphi_3(t) = (0, -1 -t) \\
+        \varphi_4(t) = (t, t-1)
+    \]
+    con \(t\in[0,1]\).
+    Rimane
+    \begin{align*}
+        \int_{\varphi} &= \int_\varphi \omega_2 = -2\int_\varphi y\,dx \\
+        &= \integral[0][1][
+            -\pi \sin^2 (\pi t) + 0 + 0 + (t-1)
+        ][t]
+    \end{align*}
+}
+
+\sexample{}{
+    Sia
+    \[
+        \omega = y(y + \ln(1 + x^2))\,dx + x(g(x) + 2y)\,dy
+    \]
+    E si dimostri che esiste \(g \in \mathcal{C}^1(\mathbb{R})\)
+    tale che \(\omega\) è esatta in \(\mathbb{R}\).
+    Controlliamo se è chiusa
+    \begin{align*}
+        \frac{\partial X}{\partial y} &= 2y + \ln(1 + x^2) \quad
+        \frac{\partial Y}{\partial x} = g(x) + xg'(x) + 2x
+    \end{align*}
+    la forma differenziale è chiusa se e solo se
+    \[
+        \ln(1 + x^2) = xg'(x) + g(x)
+    \]
+    Chiaramente la parte di \(y\) come è successo deve sparire (condizione necessaria).
+    Questa equazione è lineare e sappiamo che la soluzione è definita
+    per \(x>0\) oppure per tutti \(x<0\). Questo è dato dal fatto che l'insieme di definizione
+    di queste funzioni è diversi sta zero, e a noi serve un intervallo, dove le funzioni sono anche
+    definite ovunue. Dobbiamo verificare cosa succede in zero, ossia se le due soluzioni
+    possono essere unite
+    \begin{align*}
+        g(x) &= \frac{1}{x}\left(
+            C + \integral[\ln(1 + x^2)][x]
+        \right) \\
+        &= \frac{1}{2}\left(
+            C + x\ln(1 + x^2) - \integral[\frac{2x^2}{1 + x^2}][x]
+        \right) \\
+        &= \frac{1}{x} \left(
+            C + x\ln(1 + x^2) - 2x + 2\arctan(x)
+        \right) \\
+        &= \frac{C}{x} + \ln(1 + x^2) - 2 + 2\frac{\arctan x}{x}
+    \end{align*}
+    è la soluzione dove basta cambiare il segno per avere l'altra.
+    Nel limite verso zero, il limite tende a \(C/x\) che va all'infinito.
+    Quindi per avere soluzioni unite serve necessariamente \(C=0\).
+    Quindi,
+    \[
+        g(x) = \ln(1 + x^2) - 2 + \frac{2}{x}\arctan x
+    \]
+    che è definita per \(x\geq 0\) ponendo \(g(0) = 0\), ed è quindi cosifacendo continua.
+    Dobbiamo tuttavia vedere se esiste la derivata, per essere \(\mathcal{C}^1\), quindi
+    se esiste il rapporto incrementale nell'origine
+    \begin{align*}
+        \lim_{x\to 0^+} \frac{g(x) - g(0)}{x}
+        &= \lim_{x\to 0^+} - \frac{2}{x} + \frac{2\arctan(x)}{x^2} \\
+        &= \lim_{x\to 0^+} - \frac{x^2}{2x} \to 0
+    \end{align*}
+    Analogamente possiamo fare la parte negativa dalla soluzione dell'equazione, e verificare
+    il limite.
+}
+
+\sexercise{}{
+    Cerchiamo \(g \in \mathcal{C}^1((0, +\infty))\)
+    tale che la forma differenziale
+    \[
+        \omega = (ye^{xy} + yg(xy))\,dx + 2xg(xy)\,dy    
+    \]
+    sia esatta in \(\Omega = \{x > 0 \land y>0\}\) e tale che
+    \[
+        \int_\varphi \omega = 0
+    \]
+    dove \(\varphi(t) = (t,t^2)\) quando \(t\in [1,2]\).
+    L'argomento \(xy\) di \(g\) è positivo, quindi è definita.
+    Controlliamo se è chiusa
+    \begin{align*}
+        \frac{\partial X}{\partial y} &= e^{xy} + xye^{xy} + g(xy) + xyg'(xy) \quad
+        \frac{\partial Y}{\partial x} = 2g(xy) + 2x^2yg'(xy)
+    \end{align*}
+    Vale l'uguaglianza quando (ponendo \(x = xy\))
+    \begin{align*}
+        g(xy) + xy y'(xy) &= e^{xy}(1 + xy) \\
+        g(z) + zg'(z) &= e^z(1 + z) \\
+        g'(z) &= - \frac{g(z)}{z} + \frac{1}{z} e^z(1 + z) \\
+        g(z) &= \frac{1}{z} \left(
+            C + \integral[
+                e^z(1 +z)
+            ][z]
+        \right) \\
+        &= \frac{1}{z} \left(
+            C + ze^z
+        \right) \\
+        &= \frac{C}{z} + e^z
+    \end{align*}
+    quindi
+    \[
+        \omega = \left(
+            ye^{xy} + \frac{C}{x} + ye^{xy}
+        \right) \,dx + 2\left(
+            \frac{C}{y} + xe^{xy}
+        \right) \,dy
+    \]
+    Quindi sul dato cammino abbiamo
+    \[
+        \int_\varphi \omega = F(2,4) - F(1,1)
+    \]
+    dove \(F\) è una primitiva. La primitiva è data da
+    \[
+        F(x,y) = 2e^{xy} + C\ln(x) + h(y)
+    \]
+    e adesso vogliamo che
+    \begin{align*}
+        \frac{\partial F}{\partial y}
+        = 2xe^{xy} + h'(y) = \frac{2C}{y} + 2xe^{xy}
+    \end{align*}
+    quindi (dove chiaramente esce solo la \(y\))
+    \[
+        h = C\log y^2 + D
+    \]
+    Quindi siccome l'integrale deve fare zero
+    \[
+        F(2,4) - F(1,1)
+        = 2e^8 + C\log(32) - 2e = 0
+    \]
+    da cui troviamo \(C\).    
+}
+
+
+\sexercise{Non è un esercizio}{
+    Supponiamo ora di avere una equazione differenziale del tipo
+    \[
+        y' = \frac{X(x,y)}{Y(x,y)}
+    \]
+    e supponiamo di avere la forma differenziale esatta
+    \[
+        \omega = X\,dx - Y\,dy
+    \]
+    siccome è esatta esiste il potenziale \(F\).
+    Supponiamo anche che esiste una funzione \(y(x)\) tale che
+    \[
+        \forall x\in I \, F(x, y(x)) = 0
+    \]
+    su qualche intervallo.
+    Allora
+    \begin{align*}
+        y'(x) &= - \frac{
+            \frac{\partial F}{\partial x}(x,y(x))
+        }{
+            \frac{\partial F}{\partial y}(x,y(x))
+        } \\
+        &= - \frac{X(x,y(x))}{Y(x,y(x))}
+    \end{align*}
+    quindi la funzione esplicita descritta da \(F = 0\) è una soluzione dell'equazione differenziale.
+}
+
+\sexercise{}{
+    Risolvere
+    \[
+        \begin{cases}
+            y' = -\frac{4xy}{2x^2 + 2x^2 + 2e^y} \\
+            y(0) = 2
+        \end{cases}
+    \]
+    La forma differenziale è
+    \[
+        \omega = 4xy\,dx + (2x^2 + 2y^2 + 2e^y)\,dy
+    \]
+    Verifichiamo che è esatta
+    \begin{align*}
+        \frac{\partial X}{\partial y} &= 4x \quad
+        \frac{\partial Y}{\partial x} = 4x
+    \end{align*}
+    Cerchiamo allora una primitiva
+    \[
+        F = 2x^2y + h(y)
+    \]
+    dove deve essere
+    \begin{align*}
+        \frac{\partial F}{\partial y} = 2x^2 + h'(y) = 2x^2 + 2y^2 + 2e^y
+    \end{align*}
+    allora
+    \[
+        h(y) = \frac{2}{3}y^3 + 2e^y + C
+    \]
+    E quindi
+    \[
+        F = 2x^2 y + \frac{2}{3}y^3 + 2e^y + C
+    \]
+    Dal punto iniziale \[F(0, 2) = 0 = \frac{16}{3} + 2e^2 + C\]
+    da cui
+    \begin{align*}
+        2x^2 y + \frac{2}{3}y^3 + 2y^2 - 2e^2 - \frac{16}{3} = 0
     \end{align*}
 }
 
