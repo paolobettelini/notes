@@ -1,12 +1,5 @@
 # TODO
 
-IMPORTANTE:
-integral-mean-value-theorem-proof
-non-rectifiable-curve-example1
-L'extractor filtra solo le rige che cominciano con !
-Se dopo il begin snippet ci sono degli !... lui li aggiunge al nome
-Ma è roba che non ci dovrebbe essere
-
 - Definizione di naturali, interi, razionali, reali
 - LCM : controllare e usare ^\exceptzero sia in lcm che gcd
 - Comando per il periodo di un gruppo ||

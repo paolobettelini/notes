@@ -1,0 +1,113 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{norms}
+\genpage
+
+\section{Definition}
+
+\begin{snippetdefinition}{norm-definition}{Norm}
+    Let \(X\) be a \vectorspace over a subfield \(F\) of \(\complexnumbers\).
+    Then, a \emph{norm} is a \function \(p\colon X \fromto \realnumbers\) such that
+    \begin{enumerate}
+        \item \emph{triangle inequality}: \(\forall x,y\in X\colon p(x+y) \leq p(x) + p(y)\);
+        \item \emph{absolute homogeneity}: \(\forall x\in X,\forall \lambda\in F\colon p(\lambda x) = |\lambda|p(x)\).
+        \item \emph{positivity}: \(\forall x\in X\colon p(x) \geq 0\) and \(p(x) = 0\) \ifandonlyif \(x = 0\);
+    \end{enumerate}
+\end{snippetdefinition}
+
+\begin{snippetproposition}{norm-is-uniformely-continuous}{}
+    A \norm is uniformely continuous.
+\end{snippetproposition}
+
+\begin{snippetdefinition}{little-l-p-norm-definition}{\(l^p\) norm}
+    Let \(X = F^n\) where \(F\) is a subfield of \(\complexnumbers\) and \(n\in\naturalnumbers\).
+    Then, the \emph{\(l^p\) norm} is \norm
+    \[
+        ||x||_p = \begin{cases}
+            \left( \sum_{i=1}^n |x_i|^p \right)^{1/p} & p < \infty\\
+            \max_{i=1,\ldots,n} |x_i| & p = \infty
+        \end{cases}
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{norms-equivalence}{Norms equivalence}
+    Let \(||\cdot||_*\) and \(||\cdot||_{**}\) be two \norm[norms] over a finitely dimensional \(X\). Then,
+    \(\exists 0 < \alpha \leq \beta < \infty\) such that
+    \[
+        \forall x\in X\colon \alpha ||x||_* \leq ||x||_{**} \leq \beta ||x||_*
+    \]
+\end{snippetproposition}
+
+\begin{snippetdefinition}{matrix-norm-definition}{Matrix norm}
+    Let \(F\) be a subfield of \(\complexnumbers\) and \(\matrices_{m\times n}(F)\)
+    be the \(F\)-\vectorspace of \(m\times n\) \matrix[matrices] over \(F\).
+    Then, a \emph{matrix norm} is a \norm on \(\matrices_{m\times n}(F)\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{sub-multiplicative-matrix-norm-definition}{Sub-multiplicative matrix norm}
+    A \mnorm on \(\matrices_{n\times n}(F)\) is said to be \emph{sub-multiplicative} if
+    \[
+        ||AB|| \leq ||A|| \cdot ||B||
+    \]
+    for all \(A,B\in \matrices_{n\times n}(F)\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{l-p-q-matrix-norm-definition}{\(L_{p,q}\) matrix norm}
+    The \mnorm \(L_{p,q}\) on \(\matrices_{m\times n}(F)\) is defined as
+    \[
+        ||A||_{p,q} \triangleq {\left(
+            \sum_{j=1}^n {\left(
+                \sum_{i=1}^m |A_{i,j}|^p
+            \right)}^{\frac{q}{p}}
+        \right)}^{\frac{1}{q}}
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{induced-matrix-norm-definition}{Induced matrix norm}
+    Let \(||\cdot||_*\) be a \norm on \(F^n\). The \emph{induced matrix norm}
+    on \(\matrices_{m\times n}(F)\) is defined as
+    \[
+        ||A|| \triangleq \sup_{\underset{x\in F^n}{x \neq 0}} \frac{||Ax||_*}{||x||_*}
+    \]
+\end{snippetdefinition}
+
+\begin{snippettheorem}{induced-matrix-norm-alternate-form-theorem}{}
+    \[
+        ||A|| = \sup_{\underset{x\in F^n}{||x||_* = 1}} ||Ax||_*
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{induced-matrix-norm-alternate-form-theorem-proof}{induced-matrix-norm-alternate-form-theorem}{}
+    \begin{align*}
+        ||A|| &= \sup_{\underset{x\in F^n}{x \neq 0}} \frac{||Ax||_*}{||x||_*} \\
+        &= \sup_{\underset{x\in F^n}{x \neq 0}} \frac{\left|\left|A \left(||x||_* \cdot \frac{x}{||x||_*}\right)\right|\right|}{||x||_*} \\
+        &= \sup_{\underset{x\in F^n}{x \neq 0}} \frac{||x|| \left|\left| A \left(\frac{x}{||x||_*}\right)\right|\right|}{||x||_*} \\
+        &= \sup_{\underset{x\in F^n}{x \neq 0}} \left|\left|A \left(\frac{x}{||x||_*}\right)\right|\right| \\
+        &= \sup_{\underset{x\in F^n}{||x||_* = 1}} ||Ax||_*
+    \end{align*}
+\end{snippetproof}
+
+\begin{snippetdefinition}{spectral-radius-definition}{Spectral radius}
+    Let \(A \in \matrices_{n\times n}(F)\) and \(\sigma\) be the \set of \eigenvalue[eigenvalues] of \(A\).
+    The \emph{spectral radius} of \(A\) is defined as
+    \[
+        \rho(A) \triangleq \max_{\lambda\in\sigma} |\lambda|
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{induced-matrix-norm-properties}{}
+    \begin{enumerate}
+        \item \(||\identmatrix{n}|| = 1\);
+        \item \(\spectralradius(A) \leq ||A||\);
+        \item \(||Ax|| \leq ||A|| \cdot ||x||\).
+    \end{enumerate}
+\end{snippetproposition}
+
+\end{document}
