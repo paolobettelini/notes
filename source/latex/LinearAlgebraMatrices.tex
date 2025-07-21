@@ -14,15 +14,18 @@
 
 \includesnpt{matrix-definition}
 
-\begin{snippetdefinition}{set-of-matrices-definition}{Set of matrices}
-    Let \(R\) be a \commutativering. The set of \matrix[matrices]
-    of size \(n\times m\) over \(R\) is denoted
-    \[M_{n\times m}(R)\]
-\end{snippetdefinition}
-
-% the properties like commutativity and associativity (+)
-% associative product
-% are there only if the elements have it
+\begin{snippetexample}{matrix-notation-example}{Matrix notation}
+    A \matrix with size \(n \times m\) can be represented as
+    \[
+    A \equiv \begin{bmatrix} 
+            a_{1,1} & a_{1,2} & \cdots & a_{1,m} \\
+            a_{2,1} & a_{2,2} & \cdots & a_{2,m} \\
+            \vdots  & \vdots  & \ddots & \vdots  \\
+            a_{n,1} & a_{n,2} & \cdots & a_{n,m} 
+        \end{bmatrix}
+    \]
+    where \(a_{i,j} \triangleq A((i,j))\).
+\end{snippetexample}
 
 \includesnpt{linearalgebra-zero-matrix-definition}
 
@@ -30,47 +33,66 @@
 
 \includesnpt{linearalgebra-matrix-scalar-multiplication-definition}
 
-% TODO properties of addition
-% A+0_{m,n} = A
-% A+B = B + A
-% 0A = 0_{m,n}
-% A+(-A)= 0_{m,n}
-% (A+B)+C = A + (B + C)
-% 1A=A
-% (a+b) A = aA + bA
-% a(A+B) = aA+aB
-% a(bA) = (ab)A
-
 \includesnpt{linearalgebra-matrix-multiplication-definition}
 
 \begin{snippet}{linearalgebra-expl3}
-This means applying a `dot product' between every row and every column. \\
+    This means applying a `dot product' between every row and every column. \\
 
-\[
-    \begin{bmatrix} 
-        a_1 && a_2 && a_3 && a_4 \\
-        \mathbf{b_1} && \mathbf{b_2} && \mathbf{b_3} && \mathbf{b_4} \\
-        c_1 && c_2 && c_3 && c_4
-    \end{bmatrix}
-    \cdot
-    \begin{bmatrix} 
-        d_1 && \mathbf{e_1} \\
-        d_2 && \mathbf{e_2} \\
-        d_3 && \mathbf{e_3} \\
-        d_4 && \mathbf{e_4}
-    \end{bmatrix}
-    =
-    \begin{bmatrix} 
-        a \cdot d && a \cdot e \\
-        b \cdot d && \mathbf{b \cdot e} \\
-        c \cdot d && c \cdot e
-    \end{bmatrix}
-\]
+    \[
+        \begin{bmatrix} 
+            a_1 && a_2 && a_3 && a_4 \\
+            \mathbf{b_1} && \mathbf{b_2} && \mathbf{b_3} && \mathbf{b_4} \\
+            c_1 && c_2 && c_3 && c_4
+        \end{bmatrix}
+        \cdot
+        \begin{bmatrix} 
+            d_1 && \mathbf{e_1} \\
+            d_2 && \mathbf{e_2} \\
+            d_3 && \mathbf{e_3} \\
+            d_4 && \mathbf{e_4}
+        \end{bmatrix}
+        =
+        \begin{bmatrix} 
+            a \cdot d && a \cdot e \\
+            b \cdot d && \mathbf{b \cdot e} \\
+            c \cdot d && c \cdot e
+        \end{bmatrix}
+    \]
 
-Where \(a \cdot b\) denotes the `dot product' between a row and a column.
+    Where \(a \cdot b\) denotes the `dot product' between a row and a column.
 
-This operation is not commutative, but it is associative.
+    This operation is not commutative, but it is associative.
 \end{snippet}
+
+\begin{snippetproposition}{matrix-multiplication-associative}{Associativity of matrix multiplication}
+    Let \(A \in \matrices_{m,n}(\mathbb{F})\) e \(B \in \matrices_{n,p}(\mathbb{F})\) e \(C \in \matrices_{p,r} (\mathbb{F})\),
+    then 
+    \[
+        (AB)C = A(BC)
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{matrix-multiplication-associative-proof}{matrix-multiplication-associative}{Associativity of matrix multiplication}
+    \(AB\) has dimension \(m \times p\). The element at the position \((i,j)\) is given by
+    
+    \[
+        \sum_{k=1}^n A_{i,j}B_{k,j} = D_{i,j}
+    \]
+    The \matrix \((AB)C\) has dimension \(m \times r\). The element at the position \((i,l)\) is
+    \begin{align*}
+        \sum_{j=1}^p D_{i,j}C_{j,l} &= \sum_{j=1}^p \left( \sum_{k=1}^n A_{i,k}B_{k,j} \right) C_{j,l} \\
+        &= \sum_{j=1}^p \sum_{k=1}^n A_{i,k} B_{k,j} C_{j,l}
+    \end{align*}
+    \(BC\) has dimension \(n \times r\). The element at the position \((k,l)\) is
+    \[
+        \sum_{j=1}^p B_{k,j} C_{j,e} = E_{k,e}
+    \]
+    \(A(BC)\) has dimension \(m \times r\). The element at the position \((i,l)\) is
+    \begin{align*}
+        \sum_{k=1}^n A_{i,k}E_{k,l} &= \sum_{k=1}^n A_{i,k} \left( \sum_{j=1}^p B_{k,j}C_{j,e} \right)\\
+        &= \sum_{k=1}^n \sum_{j=1}^p A_{i,k} B_{k,j} C_{j,e}
+    \end{align*}
+\end{snippetproof}
 
 \includesnpt{kronecker-delta-definition}
 
@@ -81,7 +103,7 @@ This operation is not commutative, but it is associative.
 \includesnpt{kronecker-delta-sifting-property}
 
 \begin{snippet}{linearalgebra-expl4}
-This is given by the fact that \(\delta_{i,k}\)
+This is given by the fact that \(\kronecker_{i,k}\)
 will be \(1\) only when \(i = k\).
 \end{snippet}
 
