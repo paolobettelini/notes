@@ -82,7 +82,7 @@
 containing two subspaces.}
 
 \begin{snippetdefinition}{vector-space-sum-definition}{Vector space sum}
-    Let \(U_1, U_2, \cdots, U_n\) be subsets of
+    Let \(U_1, U_2, \cdots, U_n\) be linear subspaces of
     a \vectorspace \(V\). Then, their \emph{sum}
     is given by
     \[
@@ -93,7 +93,7 @@ containing two subspaces.}
 \end{snippetdefinition}
 
 \begin{snippetproposition}{vector-space-sum-is-smallest-vector-space}{}
-    Let \(U_1, U_2, \cdots, U_n\) be subsets of
+    Let \(U_1, U_2, \cdots, U_n\) be linear subspaces of
     a \vectorspace \(V\). Then, \(U_1 + U_2 + \cdots + U_n\)
     is the smallest \vectorspace containing each \(U_i\).
 \end{snippetproposition}
@@ -115,17 +115,19 @@ containing two subspaces.}
         \item \(u \in U_1 + U_2 + \cdots + U_n \iff u = u_1 + \cdots + u_n\).
         Let \(\lambda \in \mathbb{F}\). Then,
         \begin{align*}
-            \lambda i = \lambda (u_1 + \cdots + u_n) = \lambda u_1 + \cdots \lambda u_n \in
+            \lambda u = \lambda (u_1 + \cdots + u_n) = \lambda u_1 + \cdots \lambda u_n \in
             U_1 + U_2 + \cdots + U_n
         \end{align*}
     \end{enumerate}
     We now need to prove that such construction is the smallest \vectorspace containing \(U_1, U_2, \cdots, U_n\).
-    We start by noting that \(U_i \subseteq U_1, U_2, \cdots, U_n\).
-    Consider another linear subspace \(\hat{U}\) containing \(U_1, U_2, \cdots, U_n\).
-    We need to show that \(\hat{U} \supseteq U_1, U_2, \cdots, U_n\).
-    Let \(u_i \in U_i\). Then, \(u_1 + \cdots + u_n \in U_1, U_2, \cdots, U_n\)
-    but \(u_i \in U_i \subseteq \hat{U}\), which is a linear subspace, which is closed under addition,
-    meaning that \(u_1 + \cdots + u_n \in \hat{U}\).
+    Let \(W\) be a \vectorspace containing \(U_1, U_2, \cdots, U_n\),
+    meaning that \(U_i \subseteq W\) for every \(i\).
+    Since \(W\) is closed under addition and scalar multiplication,
+    we have that \(u_1 + u_2 + \cdots + u_n \in W\) for every \(u_i \in U_i\).
+    Thus, every \vectorspace containing \(U_1, U_2, \cdots, U_n\)
+    contains \(U_1 + U_2 + \cdots + U_n\).
+    Since \(U_1 + U_2 + \cdots + U_n\) is a \vectorspace containing \(U_1, U_2, \cdots, U_n\),
+    it is the smallest \vectorspace containing \(U_1, U_2, \cdots, U_n\).
 \end{snippetproof}
 
 \plain{Linear subspaces can never be disjoint. However, something close can happen.
@@ -288,12 +290,16 @@ by adding different terms. We want to restrict ourselves to the case where the s
 \end{snippetproof}
 
 \begin{snippetcorollary}{finite-vector-space-subspace-is-finite}{}
-    Let \(V\) be a finite \vectorspace. Then,
+    Let \(V\) be a finitely dimensional \vectorspace. Then,
     a linear subspace of \(V\) is finite.
 \end{snippetcorollary}
 
 \begin{snippetproof}{finite-vector-space-subspace-is-finite-proof}{finite-vector-space-subspace-is-finite}{}
-    \todo
+    Let \(U\) be a linear subspace of \(V\).
+    If \(U={0_V}\) we are done. Otherwise, there exist \(u_1 \in U\) that is not null.
+    We can keep adding vectors to \(U\) that are not in the span of the previous ones,
+    this is always a linearly independent set.
+    This collection cannot have more elements than a generating set, thus it is finite. 
 \end{snippetproof}
 
 \begin{snippetproposition}{vector-space-basis-criterion}{}
@@ -314,7 +320,7 @@ by adding different terms. We want to restrict ourselves to the case where the s
         \[
             v = \sum_{i=1}^n \beta_i v_i
         \]
-        for some \(\alpha_i,\beta_is \in F\).
+        for some \(\alpha_i,\beta_i \in F\).
         But then,
         \begin{align*}
             \sum_{i=1}^n (\alpha_i - \beta_i) v_i = 0 \implies \alpha_i = \beta_i
@@ -396,7 +402,7 @@ by adding different terms. We want to restrict ourselves to the case where the s
     \]
     Let now \(v \in U \intersection W\), meaning
     \begin{align*}
-        b &= \sum_{i=1}^n \alpha_i u_i = \sum_{i=1}^n \beta_i w_i \\
+        v &= \sum_{i=1}^n \alpha_i u_i = \sum_{i=1}^n \beta_i w_i \\
         0 &= \sum_{i=1}^n \alpha_i u_i + \sum_{i=1}^m (-\beta_i)w_i
     \end{align*}
     for some \(\alpha_i, \beta_i \in \mathbb{F}\).
@@ -405,7 +411,7 @@ by adding different terms. We want to restrict ourselves to the case where the s
 \end{snippetproof}
 
 \begin{snippetproposition}{basis-have-same-cardinality}{Basis have same cardinality}
-    Let \(V\) be a \vectorspace and \(\mathcal{B}_1, \mathcal{B}_2\) be two \basis
+    Let \(V\) be a finitely dimensional \vectorspace and \(\mathcal{B}_1, \mathcal{B}_2\) be two \basis
     of \(V\). Then, \(\cardinality{\mathcal{B}_1} = \cardinality{\mathcal{B}_2}\).
 \end{snippetproposition}
 
@@ -432,11 +438,12 @@ by adding different terms. We want to restrict ourselves to the case where the s
 \end{snippetproposition}
 
 \begin{snippetproof}{linear-subspace-has-lower-dimension-proof}{linear-subspace-has-lower-dimension}{}
-    \todo % lezione 9
+    A \basis of \(U\) is linearly independent on \(V\), a \basis of \(V\) generates \(V\),
+    meaning that a \basis of \(U\) has at most as many elements as a \basis of \(V\).
 \end{snippetproof}
 
 \begin{snippetproposition}{linearly-independent-set-of-dim-is-basis}{}
-    Let \(V\) be a \vectorspace where \(\lineardim(V) = n\).
+    Let \(V\) be a finitely dimensional \vectorspace where \(\lineardim(V) = n\).
     Then, if \(\{v_1, v_2, \cdots, v_n\}\) is \linearlyindependent,
     it is also a \basis.
 \end{snippetproposition}
@@ -487,15 +494,26 @@ by adding different terms. We want to restrict ourselves to the case where the s
     We note that \(\mathcal{B}\) generates \(U + W\). Let \(u+w \in U+ W\)
     \begin{align*}
         u &= \sum_i^n \alpha_i v_i
-        + \sum_i^j \beta u_j \\
-        w &= \sum_i^n \alpha_i v_i
-        + \sum_i^k \gamma_i w_k \\
+        + \sum_i^j \beta_i u_i \\
+        w &= \sum_i^n \gamma_i v_i
+        + \sum_i^k \delta_i w_i \\
         u+v &= \sum_i^n (\alpha_i + \gamma_i) v_i
-        + \sum_i^j \beta u_j
-        + \sum_i^k \gamma_i w_k
+        + \sum_i^j \beta u_i
+        + \sum_i^k \delta_i w_i
     \end{align*}
-    % lezione 10
-    TODO. We now need to show that it is \linearlyindependent
+    We now need to show that it is \linearlyindependent.
+    Suppose
+    \begin{align*}
+        \sum_{i=1}^n \alpha_i v_i
+        + \sum_{i=1}^j \beta_i u_i
+        + \sum_{i=1}^k \delta_i w_i &= 0 \\
+        \underbrace{\sum_{i=1}^n \alpha_i v_i
+        + \sum_{i=1}^j \beta_i u_i}_{\in U}
+        + \underbrace{\sum_{i=1}^k \delta_i w_i}_{\in W} &= 0
+    \end{align*}
+    so both sides lie in \(U \intersection W = \linearspan(\mathcal{B}_1)\).
+    We know that \(\{v_i, u_i\}\) and \(\{v_i, w_i\}\) are linearly independent in \(U\) and \(W\) respectively,
+    meaning that \(\alpha_i = 0, \beta_i = 0\) and \(\delta_i = 0\) for every \(i\).
     Since \(\mathcal{B}\) is a \basis,
     \begin{align*}
         \lineardim(U + W) &= n + j + k \\
