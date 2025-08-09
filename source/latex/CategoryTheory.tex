@@ -27,16 +27,35 @@
 \section{Category}
 
 \begin{snippetdefinition}{category-definition}{Category Definition}
-    A \textit{category} is a tuple \(C=(\text{ob}(C), \text{hom}(C), \circ)\) where:
-    \begin{itemize}
-        \item \(\text{ob}(C)\) is a class of \textit{objects};
-        \item \(\text{hom}(C)\) is a class of \textit{morphisms} or \textit{arrows};
-        \item \(\circ\) a \binoperation called \textit{composition}.
-    \end{itemize}
-    where \(\circ\) is transitive, reflexive and associative.
+    A \emph{category} is a triple \(C=(\text{ob}(C), \text{Hom}_C, \circ)\) where
+    \begin{enumerate}
+        \item \(\text{ob}(C)\) is a class of \emph{objects};
+        \item for any \(a,b\in\text{ob}(C)\), \(\text{Hom}_C(a,b)\) is a class of \emph{morphisms} or \emph{arrows}
+        from \(a\) to \(b\);
+        \item \(\circ\) a \binoperation called \emph{composition}.
+        For any \(a,b,c\in \text{ob}(C)\),
+        \[
+            \circ \colon \text{Hom}_C(a,b) \cartesianprod \text{Hom}_C(b,c) \fromto \text{Hom}_C(a,c)
+        \]
+        denoted \((f,g) \fromto g \circ f\),
+    \end{enumerate}
+    satisfying the following properties:
+    \begin{enumerate}
+        \item \emph{associativity of composition}: for all
+        \(a,b,c,d\in \text{ob}(C)\) and
+        \(f \in \text{Hom}_C(a,b), g \in \text{Hom}_C(b,c), h \in \text{Hom}_C(c,d)\),
+        \[
+            (h \circ g) = f = h \circ (g \circ f)
+        \]
+        \item \emph{identity morphism}: for every object \(a\in \text{ob}(C)\),
+        there exists a morphism \(\text{id}_a \in \text{Hom}_C(a,a)\) such that for all \(f \in \text{Hom}_C(a,b)\) and \(g \in \text{Hom}_C(b,a)\),
+        \[
+            f \circ \text{id}_a = f \land \text{id}_a \circ g = g.
+        \]
+    \end{enumerate}
 \end{snippetdefinition}
 
-\begin{snippet}{category-example-illustration}
+\begin{snippetexample}{category-example-illustration}{Category illustration}
     \[
         \begin{tikzcd}
             a \arrow[r, bend left] \arrow[r, bend left=49, shift left] \arrow[loop, distance=2em, in=215, out=145] & b \arrow[loop, distance=2em, in=35, out=325] \arrow[l, bend left]
@@ -48,80 +67,36 @@
             \text{objects and morphisms}
         }
     \]
-\end{snippet}
+\end{snippetexample}
 
-%The set of morphisms of a category \(C\) is denoted \(\text{hom}(C)\)
-%and the set of objects \(\text{ob}(C)\).
-
-%\subsection{Composition or Transitivity}
-
-Composition is a property that says that if there is an arrow from
-\(a\) to \(b\), and an arrow from \(b\) to \(c\), there must exist an arrow
-from \(a\) to \(c\).
-
-\begin{center}
-    \begin{tikzcd}
-        a \arrow[r, "f"]
-        \arrow[rr, "f \circ g", bend left=49] & b
-        \arrow[r, "g"] & c
-    \end{tikzcd}
-\end{center}
-
-%\subsection{Identity or Reflexivity}
-
-For every object there is an identity arrow.
-
-\begin{center}
-    \begin{tikzcd}
-        a \arrow["\text{id}_a"', loop, distance=2em, in=35, out=325]
-    \end{tikzcd}
-\end{center}
-
-The composition of an arrow with an identity is the arrow itself
-
-\begin{center}
-    \begin{tikzcd}
-        a \arrow[r, "f"] &
-        b \arrow["\text{id}_b"', loop, distance=2em, in=35, out=325]
-    \end{tikzcd}
-\end{center}
-
-\[
-    f \circ \text{id}_b = f
-\]
-
-and also vice versa
-
-\[
-    \text{id}_b \circ f = f
-\]
-
-%\subsection{Associativity}
-
-Compositions have the associative property
-
-\begin{center}
-    \begin{tikzcd}
-        a \arrow[r, "f"]
-        \arrow[rr, "g \circ f", bend left, shift left=2]
-        \arrow[rrr, "h \circ (g \circ f)", bend left=49, shift left=2]
-        \arrow[rrr, "(h \circ g) \circ f", bend right=49, shift right=2] & b
-        \arrow[r, "g"] \arrow[rr, "h \circ g", bend right, shift right=2] & c
-        \arrow[r, "h"] & d
-    \end{tikzcd}
-\end{center}
-
-\[
-    h \circ (g \circ f) = (h \circ g) \circ f
-\]
-
-\section{Homomorphisms}
-
-\begin{snippetdefinition}{homomorphism-definition}{Homomorphism}
-    A homomorphism is a map between two structures of the same type.
+\begin{snippetdefinition}{dual-category-definition}{Dual Category}
+    Let \(C = (\catob(C), \cathom_C, \circ_C)\) be a \category. The \emph{dual category} or \emph{opposite category} of \(C\)
+    is defined as
+    \[
+        C^\text{op} = (\catob(C), \cathom_C^{\text{op}}, \circ_C^{\text{op}})
+    \]
+    where \(\forall a,b,c\in \catob(C)\), \[\cathom_C^{\text{op}}(a,b) = \cathom_C(b,a)\]
+    and \(\forall f \in \cathom_C^{\text{op}}(a,b), \forall g \in \cathom_C^{\text{op}}(b,c)\),
+    \[
+        g \circ_C^{\text{op}} f = f \circ_C g.
+    \]
 \end{snippetdefinition}
 
-\subsection{Epimorphisms}
+\plain{The dual category is the same category but with every morphism inverted.}
+
+\begin{snippetexample}{dual-category-example}{Dual category}
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRDpAF9T1Nd9CKMgEYqtRizYAjLjxAZseAkWGlR1es1aIQAY1m9FAogGZyYzZJ0duh-spRn14rdIPy+SwcgAsaixLaelxiMFAA5vBEoABmAE4QALZIZCA4EEiqLlYgMSDUDHRSMAwACp7GOnFY4QAWOO7xSZnU6UgATBqBbOH5IIXFZRUOINV1Dba5CcmIqW2IndlB4QAEADprulhxuit5k00zfmkZiGZLbDEAesAbODAAHjjAEGicnI3TSACsrafnliC11ua3uTxeb046022124Rud0ez1e7wAvMAABSrDZbHZ7ACUnARoKREPefQGJXKRhGY3qfTgtSwMQaswOX0QvxOSGOgJ6xLByMhn2aiCy83anAonCAA
+        \begin{tikzcd}
+        a \arrow[d, "f"'] \arrow[rd, "g \circ f"] &   &  & a                            &                                                                                                         \\
+        b \arrow[r, "g"'] \arrow[r]               & c &  & b \arrow[u, "f^{\text{op}}"] & c \arrow[lu, "f^{\text{op}} \circ g^{\text{op}}={(g \circ f)}^{\text{op}}"'] \arrow[l, "g^{\text{op}}"]
+        \end{tikzcd}
+    \end{center}
+\end{snippetexample}
+
+\section{Types of morphisms}
+
+%\plain{<hr>}
 
 \begin{snippetdefinition}{epimorphism-definition}{Epimorphism}
     An epimorphism is a \textit{surjective} morphism.
@@ -153,8 +128,6 @@ Compositions have the associative property
         \end{tikzcd}
     \end{center}
 \end{snippetdefinition}
-
-\subsection{Monomorphisms}
 
 \begin{snippetdefinition}{monomorphism-definition}{Monomorphism}
     An monomorphism is an \textit{injective} morphism.
@@ -312,27 +285,6 @@ is an isomorphism).}
 % from a to b (a and b are objects in C) which represent
 % a morphism from a to (b, T)
 % in the category C.
-
-\subsection{Monad}
-
-% A monad is this mapping from a to (b, T)
-
-\subsection{Opposite Category}
-
-\begin{snippetdefinition}{opposite-category}{Opposite Category}
-    Given a category \(C\) we can defined an \textit{opposite category} \(\opp{C}\)
-    where the objects are the same and the morphisms are inverted.
-    
-    \begin{center}
-    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRDpAF9T1Nd9CKMgEYqtRizYAjLjxAZseAkWGlR1es1aIQAY1m9FAogGZyYzZJ0duh-spRn14rdIPy+SwcgAsaixLaelxiMFAA5vBEoABmAE4QALZIZCA4EEiqLlYgMSDUDHRSMAwACp7GOnFY4QAWOO7xSZnU6UgATBqBbOH5IIXFZRUOINV1Dba5CcmIqW2IndlB4QAEADprulhxuit5k00zfmkZiGZLbDEAesAbODAAHjjAEGicnI3TSACsrafnliC11ua3uTxeb046022124Rud0ez1e7wAvMAABSrDZbHZ7ACUnARoKREPefQGJXKRhGY3qfTgtSwMQaswOX0QvxOSGOgJ6xLByMhn2anL+SBM7NFXPmPilR3FZ3lKUV7WViCy8zVckOKu5Gs4FE4QA
-    \begin{tikzcd}
-        a \arrow[d, "f"'] \arrow[rd, "g \circ f"] \arrow[rd] \arrow[d] &   &  & a                                      &                                                                                                                              \\
-        b \arrow[r, "g"'] \arrow[r]                                    & c &  & b \arrow[u, "f^{\text{op}}"] \arrow[u] & c \arrow[lu, "f^{\text{op}} \circ g^{\text{op}}={(g \circ f)}^{\text{op}}"'] \arrow[l, "g^{\text{op}}"] \arrow[lu] \arrow[l]
-    \end{tikzcd}
-    \end{center}
-    % REDO this picture because there are two arrows overlapping
-\end{snippetdefinition}
-
 
 \section{Universal Construction}
 
