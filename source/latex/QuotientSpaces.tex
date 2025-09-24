@@ -1,0 +1,138 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{quotient-spaces}
+\genpage
+
+\section{Quotient spaces}
+
+\begin{snippetdefinition}{vector-space-quotient-definition}{Quotient space}
+    Let \(V\) be a \vectorspace on a \field \(\mathbb{K}\)
+    of dimension \(n\) and let \(W\) be a linear subspace of \(V\).
+    Consider an \equivrelation \(\sim\) on \(V\) defined as
+    \(v_1 \sim v_2 \iff v_1 - v_2 \in W\).
+    The \equivclass is given by
+    \[
+        {[v]}_\sim = \{v + w \suchthat w \in W\} = v + W
+    \]
+    The \emph{quotient space} \(V/W\) is defined as \((V/_\sim, \mathbb{K}, +, \cdot)\)
+    where
+    \[
+        \alpha {[x]}_\sim \triangleq {[\alpha x]}_\sim, \quad \forall \alpha \in \mathbb{K}
+    \]
+    and
+    \[
+        {[x]}_\sim + {[y]}_\sim \triangleq {[x + y]}_\sim
+    \]
+\end{snippetdefinition}
+
+\plain{This is analogous to the quotient group: the difference is the inverse,
+just like in the condition of membership on the normal subgroup.}
+
+\plain{The subspace is collpased to zero.}
+
+\begin{snippetproposition}{vector-space-quotient-is-vector-space}{Vector space quotient is a vector space}
+    The quotient space is a \vectorspace.
+\end{snippetproposition}
+
+\begin{snippetproof}{vector-space-quotient-is-vector-space-proof}{vector-space-quotient-is-vector-space}{Vector space quotient is a vector space}
+    We first show that the sum of the cosets is well-defined.
+    Consider \(v_1, v_2 \in V\) and \(v_1' \in v_1 + W\) and \(v_2' \in v_2 + W\).
+    We want to verify that
+    \begin{align*}
+        \left(v_1' + W\right) + 
+        \left(v_2' + W\right)
+        = (v_1' + v_2') + W = (v_1 + v_2) + W
+    \end{align*}
+    By expressing \(v_1'\) and \(v_2'\) as a sum with \(w_1\) and \(w_2\) respectively we get
+    \begin{align*}
+        v_1' + v_2' = (v_1 + w_1) + (v_2 + w_2) &= (v_1 + v_2) + \underbrace{(w_1 + w_2)}_{\in W}
+    \end{align*}
+    This means that \(v_1' + v_2' \in (v_1 + v_2) + W\)
+    and thus \((v_1' + v_2') + W = (v_1 + v_2) + W\). \\
+    We now show that the scalar product is well-defined.
+    Consider \(v' \in v + W\), meaning that \(v' = v + w\) with \(w \in W\).
+    \begin{align*}
+        \alpha \cdot (v' + W) &= (\alpha \cdot v') + W = (\alpha v + \underbrace{\alpha w}_{\in W}) + W \\
+        &= \alpha v + W = \alpha \cdot \left(v + W\right)
+    \end{align*}
+    We now prove the properties of the addition:
+    \begin{enumerate}
+        \item the \(+\) operator inherites the commutative property;
+        \item the identity element is the coset of \(0_V\) meaning \(0_V + W\).
+        Indeed, \((v + W) + (0_V + W) = (v + 0_V) + W = v + W\) for all \(v \in V\);
+        \item the inverse element of a coset is \(-(v+W) = (-v) + W\) for all \(v \in V\).
+        Indeed, \((v + W) + \left((-v) + W\right) = 0_V + W = 0_{V/W}\);
+    \end{enumerate}
+    We now prove the properties of the scalar multiplication:
+    \begin{align*}
+        \alpha \cdot \left((v_1 + W) + (v_2 + W)\right)
+        &= \alpha \cdot (v_1 + W) + \alpha \cdot (v_2 + W) \\
+        &= \alpha \left((v_1 + v_2) + W\right)
+        = \left(\alpha(v_1 + v_2)\right) + W \\
+        &= \left(\alpha v_1 + W\right)
+        + \left(\alpha v_2 + W\right) = \alpha \cdot (v_1 + W) + \alpha \cdot (v_2 + W)
+    \end{align*}
+    for all \(\alpha \in \mathbb{K}\) and for all \(v_1 + W, v_2 + W \in V/W\)
+    (the other is distributivity property analogous).
+\end{snippetproof}
+
+\begin{snippetproposition}{dimension-of-quotient-space}{Dimension of quotient space}
+    Let \(V\) be a \vectorspace on a \field \(\mathbb{K}\)
+    and let \(W\) be a linear subspace of \(V\).
+    Then,
+    \[
+        \lineardim V/W = \lineardim V - \lineardim W
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{dimension-of-quotient-space-proof}{dimension-of-quotient-space}{Dimension of quotient space}
+    Let \(\lineardim V = n\) and \(\lineardim W = r\).
+    Consider the \basis \(\mathcal{B}_W = \{w_1, w_2, \cdots, w_r\}\) of \(W\) and \(\mathcal{B} = \mathcal{B}_W \union \{v1, v_2, \cdots, v_{n-r}\}\).
+    By \linearlyindependent[linear dependency],
+    we know that \(v_i + W \neq w_j + W\) if \(i \neq j\).
+    We want to show that
+    \[
+        \mathcal{B}_{V/W} = \left\{v_1 + W, \cdots, v_{n-r} + W\right\}
+    \]
+    is a \basis for \(V/W\).
+    \begin{enumerate} % TODOURGENT
+        \item \emph{linear independence:} we have
+        \begin{align*}
+            \sum_i^{n-r} \alpha_i (v_i + W) &= 0_{V/W} = 0_V + W = (\sum_i^{n-r} v_i ) + W
+        \end{align*}
+        this means that \[
+            \sum_{i}^{n-r} \alpha_i v_i \in 0_V + W = W
+        \]
+        meaning that \(\exists \beta_1, \cdots, \beta_r \in \mathbb{K}\) such that
+        \[
+            \sum_{i}^{n-r} \alpha_i v_i = \sum_{i}^{r} \beta_i v_i
+        \]
+        which clearly shows that 
+        \[
+            \sum_{i}^{n-r} \alpha_i(v_i + W)
+        \]
+        is \linearlyindependent and thus \(\mathcal{B}_{V/W}\) is aswell.
+        \item \(\mathcal{B}_{V/W}\) generates \(V/W\).
+        Take \(v + W \in V/W\) with \(v \in V\).
+        We have
+        \[
+            v = \beta_1 w_1 + \cdots + \alpha_{n-r} v_{n-r}
+        \] 
+        for \(\alpha_i, \beta_i \in \mathbb{K}\). Thus,
+        \begin{align*}
+            v + W &= \left(b_1w_1 + \cdots + b_rw_r + \alpha_1 v_1 + \cdots + \alpha_{n-r} v_{n-r}\right) + W
+            = \sum_i^{n-r} \alpha_i v_i + W \\
+            &= \sum_i^{n-r} \alpha_i \left(v_i + W\right)
+        \end{align*}
+        which is a linear combination.
+    \end{enumerate}
+\end{snippetproof}
+
+\end{document}
