@@ -49,8 +49,8 @@ Tutti i punti di accumulazione sono dei punti aderenti.
 Tutti i punti di un sottoinsieme sono aderenti per il sottoinsieme.
 Ogni punto o è di accumulazione o è isolato.
 
-Se x_0 è aderente ad E, x_0 può essere un punto di E oppure no.
-Se x_0 è punto di accumulazione per E, in ogni bolla centrata in x_0 cadono inifniti punti.
+Se \(x_0\) è aderente ad E, \(x_0\) può essere un punto di E oppure no.
+Se \(x_0\) è punto di accumulazione per E, in ogni bolla centrata in \(x_0\) cadono inifniti punti.
 
 \sproposition{}{
     \(E^\circ\) è aperto. \(E\) è aperto se e solo se \(E = E^\circ\).
@@ -227,6 +227,236 @@ Se \(F\subseteq X\) è chiuso, ed \(E\subseteq X\) è compatto, allora \(F \cap 
     Quindi, \(x \leq b_i\) per ogni \(i\). Allora
     \[
         x \in I_n \implies x \in \bigcap I_k
+    \]
+}
+
+\sdefinition{}{
+    Siano \(a,b \in \mathbb{R}^n\) con \(a_i < b_i\) per ogni \(i=1,\ldots,n\).
+    Un rettangolo chiuso è il prodotto cartesiano
+    \[
+        [a_1, b_1] \times [a_2, b_2] \times \ldots \times [a_n, b_n]
+    \]
+    che indichiamo con \([a,b]\).
+}
+
+\slemma{}{
+    Sia \(\{R_k\}_{k\in \mathbb{N}}\) una famiglia di rettangoli chiusi
+    tali che \(R_k \supseteq R_{k+1}\) per ogni \(k\).
+    Allora
+    \[
+        \bigcap_{k\in \mathbb{N}} R_k \neq \emptyset
+    \]
+}
+
+\sproof{}{
+    Siccome
+    \[
+        R_k = I_{k,1} \times I_{k,2} \times \ldots \times I_{k,n}
+    \]
+    possiamo applicare il primo lemma e quindi
+    \[
+        \exists y_i \in \bigcap_{k\in \mathbb{N}} I_{k,i}
+    \]
+    Il punto \(y = (y_1, \ldots, y_n)\) è in ogni \(R_k\).
+}
+
+\slemma{Lemma 3}{
+    In \(\mathbb{R}^n\) con la metrica euclidea
+    ogni rettangolo è compatto.
+}
+
+\sproof{Lemma 3}{
+    Sia \(R = [a,b]\) un rettangolo e supponiamo che non sia compatto.
+    Sia \(\{G_\alpha\}_{\alpha \in A}\) un ricoprimento aperto di \(R\)
+    che non ammette sottoricoprimento finito.
+    Vogliamo adesso dimezzare ambo i lati (quindi \(n\) tagli).
+    Abbiamo adesso \(2^n\) rettangoli.
+    \[
+        [a_i, b_i] = [a_i, c_i] \cup [c_i, b_i], \quad
+        c_i = \frac{a_i + b_i}{2}
+    \]
+    Il diametro di \(R\) è \(||b-a||\).
+    Il diametro di ogni rettangolo ottenuto è la metà.
+    Almeno uno di questi rettangoli ha la proprietà di non ammettere sottoricoprimento finito.
+    Lo chiamiamo \(R_1\).
+    Iterando il procedimento otteniamo una successione di rettangoli
+    \[
+        R \supseteq R_1 \supseteq R_2 \supseteq \ldots
+    \]
+    con diametro che tende a zero e che non ammettono sottoricoprimento finito, il diametro
+    di \(R^k\) è dato da \(\frac{1}{2^k} ||b-a||\).
+    Per il lemma precedente esiste \(x \in \bigcap_{k\in \mathbb{N}} R_k\).
+    Siccome \(R_k \subseteq R\) per ogni \(k\), \(x \in R\).
+    Siccome \(\{G_\alpha\}_{\alpha \in A}\) è un ricoprimento di \(R\),
+    esiste \(\alpha_0 \in A\) tale che \(x \in G_{\alpha_0}\).
+    \(G_{\alpha_0}\) è aperto, quindi esiste \(r > 0\) tale che
+    \(B_r(x) \subseteq G_{\alpha_0}\).
+    Scegliamo \(k\) sufficientemente grande tale che \(2^{-k} ||b-a|| < r\).
+    Ma il diametro di \(R_k\) è minore di \(r\), quindi \(R_k \subseteq B_r(x)\).
+    Quindi \(R_k \subseteq G_{\alpha_0}\), assurdo perchè \(R_k\) non ammette sottoricoprimento finito.
+}
+
+\sproof{Heine-Borel}{
+    Dobbiamo dimostrare solo che se \(E\) è chiuso e limitato allora è compatto.
+    Siccome \(E\) è limitato esiste \(M\) tale che \(||x|| < M\) per ogni \(x \in E\).
+    Quindi,
+    \[
+        E \subseteq [-M, M] \times [-M, M] \times \ldots \times [-M, M] = R
+    \]
+    \(E\) è un chiuso contenuto in un compatto, quindi è compatto.
+}
+
+\stheorem{Teorema di Bolzano-Weierstrass}{
+    Ogni sottoinsieme infinito e limitato di \(\mathbb{R}^n\) ha almeno un punto di accumulazione.
+}
+
+\sproof{Teorema di Bolzano-Weierstrass}{
+    % todo semplice una riga
+}
+
+\sdefinition{Insiemi separati}{
+    Sia \((X, d)\) uno spazio metrico e \(A,B\subseteq X\) due sottoinsiemi.
+    Diciamo che \(A\) e \(B\) sono separati se
+    \[
+        A \cap \overline{B} = \emptyset \land \overline{A} \cap B = \emptyset
+    \]
+}
+
+Devono sicuramente essere disgiunti, ma non basta.
+Serve che non ci siano punti di accumulazione in comune.
+
+\sdefinition{}{
+    Sia \((X, d)\) uno spazio metrico e \(E\subseteq X\). \(E\) è connesso
+    se non può essere scritto come unione di due sottoinsiemi non vuoti e separati.
+}
+
+I sottoinsiemi connessi di \(\mathbb{R}\) sono tutti e soli gli intervalli.
+
+Uno spazio metrico è connesso se e solo se l'unico sottoinsieme non vuoto
+di \(X\) che è anche aperto e chiuso è \(X\) stesso. (Dimostrazione per esercizio).
+
+\(R^n\) con la metrica euclidea è connesso. (Dimostrazione per esercizio non proprio banale).
+
+\subsection{Successioni in spazi metrici}
+
+Mettere la definizione di convergenza ma con \(d(x_m,y) < \varepsilon\).
+Oppure \(x_m \in B_\varepsilon(y)\).
+
+In particolare la successione metrica converge se e solo se \(d(x_m, y) \to 0\)
+secondo la convergenza reale.
+
+Il limite è unico per proprietà di Hausdorff.
+
+\sproposition{}{
+    Sia \((X,d)\) uno spazio metrico e \(E \subseteq X\) e sia \(y\) un punto di accumulazione
+    per \(E\). Allora esiste una successione \(\{x_n\} \subseteq E \setminus \{y\}\)
+    che converge ad \(y\).
+    In particolare, \(E\) è chiuso se e solo se per ogni successione \(\{x_n\} \subseteq E\)
+    che converge ad \(y\) allora \(y \in E\).
+}
+
+\sproof{}{
+    Dato che \(y\in E'\), \(\forall x_m \in \mathbb{N}\), esiste \(x_m\) tale che
+    \(x_m \in B_{\frac{1}{m}}(y) \cap E\) e \(x_m \neq y\).
+    La successione così costruita converge ad \(y\).
+    Infatti, \(d(x_m, y) < \frac{1}{m} \to 0\).
+}
+
+\sproposition{}{
+    Sia \((X,d)\) uno spazio metrico e sia \(\{x_n\}\) una successione convergente in \(X\).
+    Una condizione necessaria per la convergenza è che ogni sottosuccesione converga allo stesso limite.
+    La condizione sufficiente è che ogni sottosuccessione ammetta una sottosuccessione
+    che converge allo stesso limite.
+}
+
+\sdefinition{Compattezza sequenziale}{
+    Uno spazio metrico \(X\) è sequenzialmente compatto se ogni successione in \(X\)
+    a valori in \(E\) ammette una sottosuccessione convergente ad un punto di \(E\). 
+}
+
+\sproposition{Equivalenza compattezza}{
+    \(E\) is compact is and only if \(E\) is sequentially compact.
+}
+
+Questa c'è solo negli spazi metrici.
+
+\sproof{}{
+    \iffproof{
+        Sia \(\{x_n\}\) una successione in \(E\).
+        Consideriamo \(F = \{x_n \,|\, n\in \mathbb{N}\}\).
+        Se \(F\) è finito, esiste un elemento che compare infiniti volte
+        e la successione costante converge a tale elemento.
+        Se \(F\) è infinito, per la compattezza \(F\) ammette un punto di accumulazione, \(y\in E\).
+        Costruiamo una sottosuccessione che converga ad \(y\).
+        Scegliamo \(x_m\) tale che \(d(x_m, y) < 1\).
+        Scegliamo \(x_{m_2}\) tale che \(d(x_{m_2}, y) < \frac{1}{2}\) e \(m_2 > m_1\), e così via.
+        La sottosuccessione così costruita converge ad \(y\) in quanto \(d(x_{m_k}, y) < \frac{1}{k} \to 0\).
+    }{
+        XXX
+    }
+}
+
+Ogni successione convergente è di Cauchy.
+
+Per esempio con la metrica discreta una successione è convergente se e solo se è definitamente costante,
+che è equivalente ad essere di Cauchy, quindi è completo.
+
+Nel caso dei razionali nei reali con metrica euclidea, consideriamo la radice di due che è un punto di accumulazione
+per i razionali. Esiste una successione di razionali che converge a radice di due, quindi è di Cauchy.
+Ma essa non può convergere in Q, altrimenti convergerebbe anche in R e avrebbe due limiti.
+Tuttavia è una successione di Cauchy in Q perché è convergente in R e quindi è di Cauchy in R.
+(La condizione è la medesima). Quindi Q non è completo.
+
+\sdefinition{Spazio completo}{
+    Uno spazio metrico \((X,d)\) è completo se ogni successione di Cauchy in \(X\)
+    converge ad un punto di \(X\).
+}
+
+\stheorem{}{
+    \(R^n\) con la metrica euclidea è completo.
+}
+
+\sproof{}{
+    Sia \(\{x_n\}\) una successione di Cauchy in \(R^n\).
+    Scriviamo \(E_n = \{x_k \,|\, k \geq n\}\).
+    Notiamo che \(E_n \supseteq E_{n+1}\).
+    Ponendo la chiusura \(\overline{E_n} \supseteq \overline{E_{n+1}}\).
+    Inoltre, \(E_n\) è limitato e \(\text{diam} E_n \to 0\).
+    Infatti, dato \(\varepsilon > 0\) esiste \(N\) tale che per ogni \(m,n \geq N\)
+    \(d(x_n, x_m) < \varepsilon\).
+    Notiamo inoltre che
+    \[
+        \text{diam} E_n = \sup\{d(x_m,x_k)\} < \varepsilon
+    \]
+    Dimostrazione per esercizio vale che \(\text{diam} F = \text{diam} \overline{F}\).
+    Quindi, \(\text{diam} \overline{E_n} \to 0\).
+    Adesso \(\{\overline{E_n}\}\) è una successione di compatti in quanto chiusi e limitati, annidati.
+    Quindi \[
+        E \triangleq \bigcap_{n\in \mathbb{N}} \overline{E_n} \neq \emptyset
+    \]
+    Siccome \(\text{diam} E = 0\) o è vuoto o contiene un solo punto, quindi contiene un solo punto \(E = \{y\}\).
+    Mostriamo che \(x_n \to y\).
+    Abbiamo \(d(x_n, y) \leq \text{diam} \overline{E_n} \to 0\).
+}
+
+\stheorem{}{
+    Sia \((X, d)\) uno spazio metrico compatto.
+    Allora \(X\) è completo.
+}
+
+\sproof{}{
+    Sia \(\{x_n\}\) una successione di Cauchy in \(X\).
+    Siccome è compatto è compatto per successioni, quindi esiste una sottosuccessione
+    \(\{x_{n_k}\}\) che converge ad un punto \(y \in X\).
+    Mostriamo che \(x_n \to y\).
+    Dato \(\varepsilon > 0\) esiste \(N_0\) tale che per ogni \(m,n \geq N_0\)
+    \(d(x_n, x_m) < \frac{1}{2}\varepsilon\).
+    Per la convergenza di \(\{x_{n_k}\}\) esiste \(K\) tale che per ogni \(k \geq K\)
+    \(d(x_{n_k}, y) < \frac{1}{2}\varepsilon\).
+    Scegliamo \(\overline{N} = \max\{N_0, n_K\}\).
+    Allora per ogni \(n \geq \overline{N}\) si ha
+    \[
+        d(x_n, y) \leq d(x_n, x_{n_K}) + d(x_{n_K}, y) < \frac{1}{2}\varepsilon + \frac{1}{2}\varepsilon = \varepsilon
     \]
 }
 
