@@ -21,6 +21,164 @@
 \maketitle
 \tableofcontents
 
-\section{XXX}
+\section{Teoremi di isomorfismo su quozienti di spazi vettoriali}
+
+Let \(V\) be a vector space over \(\mathbb{K}\)
+and \(W\) be a linear subspace of \(V\).
+
+We have a map
+\[
+    \pi \colon V \to V/W
+\]
+defined as
+\[
+    \pi(v) \triangleq v + W \in V/W
+\]
+which is a linear map.
+
+Indeed,
+\begin{enumerate}
+    \item \[
+        \pi(0_V) = 0_V + W = w + W
+    \]
+    \item \begin{align*}
+        \pi(v_1 + v_2) &= \pi(v_1) + \pi(v_2) \\
+        (v_1 + v_2) + W &= (v_1 + W) + (v_2 + W) \\
+    \end{align*}
+    \item \[
+        \pi(\lambda v) = (\lambda v) + W = \lambda \left(v + W\right)
+    \]
+\end{enumerate}
+
+We now consider a morphism \(\varphi \colon V_1 \to V_2\)
+between vector spaces. We know that its kernel is a subspace of \(V_1\).
+We now construct a new morphism
+\[
+    \overline{\varphi} \colon V_1 / \text{ker}_\varphi \to V_2
+\]
+such that
+\[
+    \overline{\varphi}(v + \text{ker}_\varphi) \triangleq \varphi(v)
+\]
+We need to ensure that such mapping is well-defined.
+Let \(v' \in v + \text{ker}_\varphi\), meaning that \(v' = v + w\) with \(w \in \text{ker}_\varphi\).
+\begin{align*}
+    \overline{\varphi}(v' + \text{ker}_\varphi)
+    &= \varphi(v') = \varphi(v + w) = \varphi(v) + \varphi(w) \\
+    &= \varphi(v) = \overline{\varphi}(v + \text{ker}_\varphi)
+\end{align*}
+We now show that it is also linear:
+\begin{enumerate}
+    \item \[
+        \overline{\varphi}(0_{V_1} + \text{ker}_\varphi) = \varphi(0_{V_1}) = 0_{V_2}
+    \]
+    \item \begin{align*}
+        \overline{\varphi}((v_1 + \text{ker}_\varphi) + (v_2 + \text{ker}_\varphi))
+        &= \overline{\varphi}((v_1 + v_2) + \text{ker}_\varphi) \\
+        &= \varphi(v_1 + v_2) = \varphi(v_1 + v_2) \\
+        &= \overline{\varphi}(v_1 + \text{ker}_\varphi)
+        + \overline{\varphi}(v_2 + \text{ker}_\varphi)
+    \end{align*}
+    \item \[
+        \overline{\varphi}(\lambda (v + \text{ker}_\varphi)) =
+        \lambda \left(\overline{\varphi}(v + \text{ker}_\varphi)\right)
+    \]
+\end{enumerate}
+
+Il seguente diagramma commuta e \(\pi\) è suriettiva in quanto \(v+\text{ker}_\varphi = \pi(v)\).
+% https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRADUB9ARhAF9S6TLnyEU3clVqMWbLgCZ+gkBmx4CRMtyn1mrRBx4ACAPRGAOuZwwAHjmABrGACc+nS-WdoAFln5SYKABzeCJQADNnCABbJDIQHAgkCWk9Ng86L18lCKjYxHjEpHlqbxg6KDYcAHcIMoqEal1ZA0s0P2oGOgAjGAYABWF1MRBnLCDvHByQSJji6iLEFN6wSsQAWgBmeOb9EEsIGhcGLDAYYAysrD4QTp6+wbVRNjGJqb4KPiA
+\begin{tikzcd}
+V_1 \arrow[r, "\varphi"] \arrow[d, "\pi"', two heads]                  & V_2 \\
+V_1 / \text{ker}_\varphi \arrow[ru, "\overline{\varphi}"', bend right] &    
+\end{tikzcd}
+
+Quindi \(\varphi = \overline{\varphi} \circ \pi\).
+
+\stheorem{First isomorphism theorem}{
+    Let \(\varphi \colon V_1 \to V_2\) be a morphism between vector spaces.
+    \[
+        \overline{\varphi} \colon V_1 / \text{ker}_\varphi \to \text{im}_\varphi
+    \]
+    is an isomorphism of vector spaces, meaning
+    \[
+        V_1 / \text{ker} \cong \text{im}_{\varphi}
+    \]
+}
+
+\sproof{First isomorphism theorem}{
+    We need to show that the morphism is both surjective and injective:
+    \begin{enumerate}
+        \item let \(v_2 \in \text{im}_\varphi\).
+        We want to find a \(v_1 \in V_1\) such that \(v_2 = \varphi(v_1)\).
+        This is precisely
+        \[
+            \overline{\varphi}(v_1 + \text{ker}_\varphi)
+        \]
+        \item we want to show that the kernel is trivial.
+        \begin{align*}
+            \text{ker}_{\overline{\varphi}} &= \{
+                v + \text{ker}_\varphi \,|\,
+                \overline{\varphi}(v + \text{ker}_\varphi) = 0_{V_2}
+            \} \\
+            &= \{v + \text{ker}_\varphi \,|\, v \in \text{ker}_\varphi\} \\
+            &= 0_{V_1} + \text{ker}_\varphi
+        \end{align*}
+        since \(v + \text{ker}_\varphi = \text{ker}_\varphi\) and we can just choose \(0_{V_1}\).
+    \end{enumerate}
+}
+
+\sexample{}{
+    Consider a vector space \(V = W_1 \oplus W_2\) with \(W_1, W_2 \leq V\)
+    and consider the mappings
+    \[
+        p_1 \colon V \to W_1, \quad p_2 \colon V \to W_2
+    \]
+    Using the diagrams with \(\overline{p_1},\pi_1\) and \(\overline{p_2},\pi_2\),
+    we have 
+    \[
+        W_1 \cong V/W_2, \quad W_2 \cong V/W_1
+    \]
+    since \(W_2 = \text{ker}_{p_1}\) and \(W_1 = \text{ker}_{p_2}\).
+}
+
+\stheorem{Second isomorphism theorem}{
+    Let \(V\) be a vector space over \(\mathbb{K}\) and \(U, W \leq V\).
+    Then,
+    \[
+        \frac{W}{W \cap U} \cong \frac{W + U}{U}
+    \]
+}
+
+\sproof{Second isomorphism theorem}{
+    We apply the first isomoprhism theorem. Construct a surjective mapping
+    \[
+        \varphi \colon \frac{W}{W \cap U} \to W + U
+    \]
+    such that \(\text{ker}_\varphi = U\).
+    We first note that \[ \frac{W}{W \cap U} \leq V/U \]
+    and so we define
+    \[
+        \varphi(w) \triangleq w + U \in V/U
+    \]
+    We need to show that it is linear (todo).
+    It is surjective as 
+    \[
+        \text{Im}_\varphi = \frac{W + U}{U}
+    \]
+    since \(w + u + U = w+ U = \varphi(w)\).
+    We now need to study that it is injective
+    \begin{align*}
+        \text{ker}_\varphi &= \{
+            w \in W \,|\, w + U = 0_{V/U} = 0_V + U    
+        \} \\
+        &= \{
+            w \in W \,|\,  w \in U    
+        \} = W \cap U
+    \end{align*}
+    since \(w + U = 0_V + U\) means that \(w \in U\).
+}
+
+Notiamo che \(U\) potrebbe non essere sottospazio di \(W\) quindi
+non possiamo rimpiazzare \(W + U\) con \(W / U\).
 
 \end{document}
