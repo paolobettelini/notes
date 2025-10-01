@@ -16,12 +16,18 @@
 \author{Paolo Bettelini}
 \date{}
 
+% libri
+% pagani-salsa
+% fusco-marcellini-sbordone 
+
 \begin{document}
 
 \maketitle
 \tableofcontents
 
-\section{Bolle}
+\section{Spazi metrici}
+
+\subsection{Definizioni}
 
 L'insieme vuoto e l'insieme \(X\) sono aperti e chiusi.
 
@@ -484,5 +490,300 @@ Tuttavia è una successione di Cauchy in Q perché è convergente in R e quindi 
         d(x_n, y) \leq d(x_n, x_{n_K}) + d(x_{n_K}, y) < \frac{1}{2}\varepsilon + \frac{1}{2}\varepsilon = \varepsilon
     \]
 }
+
+%%%% 1 ott
+
+
+%%% ????
+Sia \(X\) uno spazio metrico completo, \(Y \subseteq X\).
+\(Y\) è completo se e solo se \(Y\) è chiuso in \(X\).
+
+\stheorem{}{
+    \(E\) sequenzialmente comaptto implica \(E\) compatto.
+}
+
+\sproof{}{
+    Sia \(\{G_\alpha\}_{\alpha \in A}\) un ricoprimento aperto di \(E\).
+    Esiste \(\delta > 0\) tale che \(\forall x \in E\) esiste \(\overline{\alpha}\)
+    tale che \(B_\delta(x) \subseteq G_{\overline{\alpha}}\).
+    \begin{enumerate}
+        \item \emph{claim 1:} \(\forall m \in \mathbb{N}\), esiste \(x_m\) tale che
+            \(B_{1/m}(x_m)\) non è sottoinsieme di \(G_\alpha\) per tutte le \(\alpha\).
+            \(\{x_m\}\) è una successione in \(E\) e quindi posso estrarre una sottosuccessione convrgente
+            \(x_{m_k} \to p \in E\). Esiste \(\hat{\alpha}\) tale che \(p \in G_{\hat{\alpha}}\).
+            \(G_{\hat{\alpha}}\) è aperto e quindi esiste una \(\varepsilon > 0\)
+            tale che \(B_\varepsilon(p) \in G_{\hat{\alpha}}\).
+            Ma \(x_{m_k} \to p\) quindi con \(k\) sufficientemente grande
+            \[B_{1/m_k}(x_{m_k}) \subseteq B_\varepsilon(p) \subseteq G_{\hat{\alpha}}\]
+            che è assurdo lightning.
+        \item \emph{claim 2:} \(E\) è contenuto nel'unione di un numero finito di bolle di raggio
+            \(\delta\) centrate in punto di \(E\).
+            Per assurdo, sia \(x_1 \in E\). Sicuramente \(B_\delta(x_1)\)
+            non ricopre \(E\) quindi esiste \(x_2 \in E \backslash B_\delta(x_1)\).
+            Ma assieme \(B_\delta(x_1) \cup B_\delta(x_2)\) non ricoprono \(E\),
+            quindi esiste un \(x_3 \in E \backslash (B_\delta(x_1) \cup B_\delta(x_2))\)
+            e così via. La successione \(\{x_m\}\) deve ammettere una sottosuccessione
+            convergente. Ma \(d(x_i, x_j) \geq \delta\) se \(i \neq j\) quindi la sucessione
+            \(\{x_m\}\) non è di Cauchy Lightning.
+            Quindi \(E \subseteq B_\delta(x_1) \cup B_\delta(x_2) \cup \cdots\).
+    \end{enumerate}
+}
+
+In realtà abbiamo mostrato anche la terza.
+
+\stheorem{}{
+    Sia \(X\) uno spazio metrico. Sono equivalenti:
+    \begin{enumerate}
+        \item \(X\) è compatto;
+        \item \(X\) è sequenzialmente compatto;
+        \item \emph{limit point compact:} ogni sottoinsieme infinito
+        di \(X\) ha almeno un punto di accumulazione.
+    \end{enumerate}
+}
+
+Solo negli spazi metrici.
+
+\subsection{Funzioni}
+
+\sdefinition{}{
+    Siano \((X_1, d_1), (X_2, d_2)\) due spazi metrici e sia \(E \subseteq X_1\).
+    Sia \(f \colon E \to X_2\) e \(p \in E'\).
+    Diciamo che \(l\in X_2\) è limite di \(f(x)\) per \(x\to p\) e diciamo
+    \[
+        \forall \varepsilon > 0, \exists \delta > 0 \,|\, x \in E
+        \land 0 < d_1(x_1, p) < \delta \implies d_2(f(x), l) < \varepsilon
+    \]
+    Equivalentemente \(\forall \varepsilon >0\) esiste \(\delta > 0\)
+    tale che \[f((B_\delta(p) \cap E) \backslash \{p\}) \subseteq B_\varepsilon(l)\]
+}
+
+\sproposition{}{
+    Sia \(f\colon E \subseteq X_1 \to X_2\).
+    Allora \(f(x) \to l\) per \(x\to p\) se e solo se \(f(x_n) = l\)
+    per ogni successione \(\{x_n\}\) tale che \(x_n \in E\)e \(x_n \neq p\)
+    per tutte le \(n\) e \(x_n \to p\).
+}
+
+Valgono i medesimi teoremi tipo l'unicità del limite e i teoremi di permanenza del segno, confronto etc.
+
+\sproposition{}{
+    Sia \(f \colon E \subseteq X \to \mathbb{R}^n\) per \(n > 1\).
+    Allora
+    \[
+        f(x) \to l \iff f_i(x) \to l_i
+    \]
+    per \(x \to p\).
+}
+
+\sproof{Sketch}{
+    Conderiamo la norma per tutte le \(i\)
+    \begin{align*}
+        |f_i(x)-l_i| \leq ||f(x) - l|| \leq \sum_k |f_k(x) - l_k|
+    \end{align*}
+}
+
+\sdefinition{Continuità}{
+    Siano \((X_1, d_1), (X_2, d_2)\) due spazi metrici,
+    \(f \colon E \subseteq X_1 \to X_2\), \(p \in E\).
+    Diciamo che \(f\) è \emph{continua} in \(p\)
+    se \(\forall \varepsilon > 0\) esiste \(\delta > 0\) tale che
+    \[\forall x \in E \cap B_\delta(p) \implies f(x) \in B_\varepsilon((f(p)))\]
+    Euivalentemente \(\forall \varepsilon > 0\) esiste \(\delta > 0\)
+    tale che \(x\in E\) e \(d_1(x,p) <\delta\) implica che \(d_2(f(x), f(p)) < \varepsilon\).
+    Oppure ancora \((f(B_\delta(p) \cap E)) \subseteq B_\varepsilon(f(p))\).
+}
+
+Se \(p\) è un punto isolato di \(E\) allora \(\exists r > 0\)
+tale che \(B_r(p) \cap E = \{p\}\). Scegliendo \(\delta \leq r\)
+la definizione di continuità è automaticamente soddisfatta.
+Se \(p\) non è i solato, allora è un punto di accumulazione per \(E\).
+In questo caso \(f\) è continua in \(p\) e vale che \(f(x) \to f(p)\) per \(x\to p\).
+
+\sproposition{}{
+    \(f\) è continua in \(p\) se e solo se
+    \[
+        \lim_{x\to p} f(x_n) = f(p)
+    \]
+    per ogni successione \(\{x_n\}\) tale che \(x_n \in E\)
+    per tutte le \(n\) e \(x_n \to p\).
+}
+
+\sdefinition{}{
+    Sia \(f \colon E \subseteq X_1 \to X_2\). Diciamo che \(f\) è continua nell'insieme \(E\)
+    se \(f\) è continua in ogni punto di \(E\).
+}
+
+\sproposition{}{
+    Siano \((X_1, d_1), (X_2, d_2)\) spazi metrici e sia \(f \colon X_1 \to X_2\).
+    Allora \(f\) è continua in \(X\) se e solo se \(f^{-1}(V)\) è aperto in \(X_1\)
+    per tutti i \(V\) aperti in \(X_2\).
+}
+
+\sproof{}{
+    \iffproof{
+        Sia \(V\) un aperto di \(X_2\). Se \(f^{-1}(V) = \emptyset\)
+        in questo caso abbiamo finito. Altrimenti,
+        sia \(p \in f^{-1}(V)\), cioè \(f(p) \in V\).
+        Essendo \(V\) aperto, riesco a trovare \[ B_\varepsilon(f(p)) \in V \]
+        Ma \(f\) è continua quindi riesco anche a trovare \(\delta>0\) tale che
+        \[
+            f(B_\delta(p)) \subseteq B_\varepsilon(f(p))
+        \]
+        Quindi \(B_\delta(p) \subseteq f^{-1}(V)\) quindi \(p\) è un punto interno a
+        \(f^{-1}(V)\). Per l'arbitrarietà di \(p\) segue che \(f^{-1}(V)\) è aperto.
+    }{
+        Sia \(p \in X\) e dimostriamo che \(f\) è continua in \(p\).
+        Sia \(\varepsilon > 0\) fissato. \(B_\varepsilon(f(p))\)
+        è un aperto di \(X_2\). \(f^{-1}(B_\varepsilon(f(p)))\) è un aperto di \(X_1\)
+        e \(p \in f^{-1}(B_\varepsilon(f(p)))\) e quindi esiste \(\delta > 0\)
+        tale che
+        \[
+            B_\delta(p) \subseteq f^{-1}(B_\varepsilon(f(p)))
+        \]
+        cioè
+        \[
+            f(B_\varepsilon(p)) \subset B_\varepsilon(f(p))
+        \]
+        che è la definizione di continuità.
+    }
+}
+
+Siccome \(f^{-1}(E^c) = \left(f^{-1}(E)\right)^c\) allora \(f\)
+è continua se e solo se \(f^{-1}(C)\) è chiuso in \(X_1\)
+per ogni chiuso in \(C \in X_2\). Molto utile.
+
+In generale le funzioni continue non mandano aperti in aperti.
+Per esempio \(f \colon \mathbb{R} \to \mathbb{R}\)
+data da \(x \to x^2\).
+Abbiamo che
+\[
+    f((-1,1)) = [0,1)
+\]
+
+\sdefinition{Funzione aperta}{
+    Una funzione viene detta \emph{aperta}
+    se \(f(U)\) è aperto in \(X_2\) per tutti gli insiemi \(U\) aperto om \(X_1\).
+    Analogamente funzione chiusa.
+}
+
+Sia \(f \colon (X, d) \to \mathbb{R}^n\) con \(n>1\)
+è continua se e solo se tutte le sue componenti sono continue.
+
+\sproposition{}{
+    Siano \((X_1, d_1), (X_2, d_2)\)
+    spazi metrici, \(f \colon X_1 \to X_2\) una funzione continua.
+    Se \(X_1\) è compatto, allora \(f(X_1)\) è compatto.
+}
+
+\sproof{}{
+    Sia \(\{G_\alpha\}_{\alpha \in A}\) un ricoprimento aperto di \(f(X_1)\).
+    Consideriamo \(\{f^{-1}(G_\alpha)\}_{\alpha \in A}\) che sono degli aperti.
+    Queste preimmagini sono un ricoprimento di \(X_1\),
+    che è compatto e quindi posso estrarre un sottoricoprimento finito
+    \(f^{-1}(G_{\alpha_1}), \cdots, f^{-1}(G_{\alpha_n})\).
+    Vogliamo mostrare che \(\{G_{\alpha_1}, \cdots, G_{\alpha_n}\}\)
+    sono un ricoprimento di \(f(X_1)\).
+    \[
+        f(X_1) = f \left(
+            \bigcup_{i=1}^n f^{-1}( G_{\alpha_i})
+        \right)
+        = \bigcup_{i=1}^n f\left(
+            f^{-1}(G_{\alpha_i})
+        \right)
+        \subseteq \bigcup_{i=1}^n G_{\alpha_i}
+    \]
+}
+
+\stheorem{Teorema di Weierstrass}{
+    Sia \((X,d)\) uno spazio metrico compatto e sia
+    \(f \colon X \to \mathbb{R}\) una funzione continua.
+    Allora, \(\exists x_1, x_2 \in X\) tali che
+    \[
+        f(x_1) \leq f(x) \leq f(x_2), \quad \forall x \in X
+    \]
+    cioè \(f\) possiede massimo e minimo assoluto.
+}
+
+\sproof{Teorema di Weierstrass}{
+    \(f(X)\) è compatto in \(\mathbb{R}\), quindi è chiuso e limitato.
+    Siccome limitato, \(f(X)\) ammette infimum e supremum reali.
+    Siccome \(\inf f(x)\) e \(\sup f(x)\)
+    appartengono a \(\overline{f(x)}\) e \(f(x)\) è chiuso, appartengono allora ad \(f(X)\)
+    e quindi sono massimi e minimi.
+}
+
+\stheorem{Teorema da compatto ad Hausdorff}{
+    Siano \((X_1, d_1), (X_2, d_2)\) spazi metrici
+    con \(X_1\) compatto e \(f \colon X_1 \to X_2\) continua.
+    Allora, \(f\) è chiusa.
+}
+
+In realtà questo funziona con domini compatti e codomini di Hausdorff.
+
+\sproof{Teorema da compatto ad Hausdorff}{
+    Sia \(C\) un chiuso di \(X_1\).
+    Voglio dimostrare che \(f(C)\) è un chiuso di \(X_2\).
+    Sappiamo che \(C\) è chiuso in un compatto, quindi è compatto.
+    La funzione è continua e quindi \(f(C)\) è compatto.
+    Siccome i compatti sono chiusi allora è chiuso.
+}
+
+\scorollary{}{
+    Sia \(f \colon (X_1, d_1) \to (X_2, d_2)\) continua, \(X_1\) compatto e
+    \(f\) biunivoca. Allora, \(f^{-1}\) è continua.
+}
+
+\sproof{}{
+    Dobbiamo mostrare che \((f^{-1})^{-1}(C)\) è chiuso per ogni \(C\) chiuso di \(X_2\).
+    Ma questo coincide con \(f(C)\) che è chiusa per il teroema da compatto ad Hausdorff.
+}
+
+\stheorem{}{
+    Sia \(f\colon (X_1, d_1) \to (X_2, d_2)\) continua e sia \(E \subseteq X\) connesso.
+    Allora \(f(E)\) è connesso.
+}
+
+\sproof{}{
+    Supponiamo che \(f(E)\) non sia connesso. Esistono quindi
+    due sottoinsiemi non vuoti disgiunti e separati tali che
+    \[
+        f(E) = A \cup B
+    \]
+    Poniamo \(F = f^{-1}(A) \cap E\) e \(G = f^{-1}(B) \cap E\).
+    Sicuramente \(F,G \neq \emptyset\) e \(E = F\cup G\). Vogliamo mostrare che \(E\) e \(G\)
+    sono separati.
+    Siccome \(A \subseteq \overline{A}\) vale anche \(f^{-1}(A) \subseteq f^{-1}(\overline{\overline{A}})\).
+    L'applicazione \(f\) è continua e la chiusura di \(A\) è un chiuso.
+    Quindi la preimmagine del chiuso \(\overline{A}\) è un chiuso.
+    Consideriamo ora \[\overline{F} \subseteq \overline{f^{-1}(A)} = f^{-1}(\overline{A})\]
+    perché \(f\) è continua se \(\overline{A}\) è chiuso.
+    Quindi \(\overline{F} \subseteq f^{-1}(\overline{A})\) che implica
+    \(f(\overline{F}) \subseteq \overline{A}\). D'altro canto \(f(G) \subseteq B\)
+    e \(\overline{A} \cap B \neq 0\), e quindi \(\overline{F} \cap G \neq 0\)
+    perché altrimenti vi sarebbe un elemento sia in \(\overline{A}\) che in \(B\).
+    Dovrebbe essere \(f(x) \in \overline{A}\) e \(f(x) \in B\) lightinng.
+    Analogamente si dimostra che \(F \cap \overline{G} = \emptyset\)
+    cioè abbiamo scritto \(E\) come unione di due sottoinsiemi non vuoti e separati.
+    Ma \(E\) è connesso lightning.
+}
+
+\sdefinition{}{
+    Siano \((X_1, d_1),(X_2, d_2)\) spazi metrici e \(f\colon X_1 \to X_2\).
+    Allora \(f\) è uniformemente continua se
+    \(\forall \varepsilon > 0\), esiste \(\delta > 0\)
+    tale che \(\forall x,y \in X_1\)
+    \[
+        d_1(x, y) < \delta \implies d_2(f(x), f(y)) < \varepsilon
+    \]
+}
+
+\stheorem{Theorema di Heine-Cantor}{
+    Siano \((X_1, d_1),(X_2, d_2)\) spazi metrici e 
+    \(f\colon (X_1, d_1) \to (X_2, d_2)\)
+    continua e \(X_1\) compatto.
+    Alorra, \(f\) è uniformemente continua.
+}
+
+La dimostrazione è la medesima rispetto al caso banale.
 
 \end{document}
