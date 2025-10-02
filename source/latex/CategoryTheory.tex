@@ -90,6 +90,8 @@
 
 \plain{The dual category is the same category but with every morphism inverted.}
 
+\plain{A statement is valid in all categories if and only if its dual is.}
+
 \begin{snippetexample}{dual-category-example}{Dual category}
     \begin{center}
         % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRDpAF9T1Nd9CKMgEYqtRizYAjLjxAZseAkWGlR1es1aIQAY1m9FAogGZyYzZJ0duh-spRn14rdIPy+SwcgAsaixLaelxiMFAA5vBEoABmAE4QALZIZCA4EEiqLlYgMSDUDHRSMAwACp7GOnFY4QAWOO7xSZnU6UgATBqBbOH5IIXFZRUOINV1Dba5CcmIqW2IndlB4QAEADprulhxuit5k00zfmkZiGZLbDEAesAbODAAHjjAEGicnI3TSACsrafnliC11ua3uTxeb046022124Rud0ez1e7wAvMAABSrDZbHZ7ACUnARoKREPefQGJXKRhGY3qfTgtSwMQaswOX0QvxOSGOgJ6xLByMhn2aiCy83anAonCAA
@@ -109,16 +111,6 @@
     An epimorphism is labelled with \(\twoheadrightarrow\).
 \end{snippetdefinition}
 
-\begin{snippet}{surjectivity-from-morphisms-expl}
-    Consider a morphism \(f\colon a \rightarrow b\) which maps elements of \(a\) onto \(b\).
-    Let's also define the morphisms \(g_1\) and \(g_2\) which map elements from \(b\) to \(c\).
-    The domain of \(g_1\) and \(g_2\) is the codomain of \(f\). These two functions act
-    as \(f\) for object in the image of \(f\), but may map objects differently
-    for objects in the codomain of \(f\) but outside the image of \(f\).
-    If the morphism is surjective, hence if the codomain and the image of \(f\) are the same,
-    then \(g_1\) and \(g_2\) will always act as \(f\).
-\end{snippet}
-
 \begin{snippetdefinition}{surjectivity-from-morphisms}{Surjectivity from morphisms}
     A morphism \(f\colon a \rightarrow b\) is a epimorphism if
 
@@ -134,6 +126,16 @@
         \end{tikzcd}
     \end{center}
 \end{snippetdefinition}
+
+\begin{snippet}{surjectivity-from-morphisms-expl}
+    Consider a morphism \(f\colon a \rightarrow b\) which maps elements of \(a\) onto \(b\).
+    Let's also define the morphisms \(g_1\) and \(g_2\) which map elements from \(b\) to \(c\).
+    The domain of \(g_1\) and \(g_2\) is the codomain of \(f\). These two functions act
+    as \(f\) for object in the image of \(f\), but may map objects differently
+    for objects in the codomain of \(f\) but outside the image of \(f\).
+    If the morphism is surjective, hence if the codomain and the image of \(f\) are the same,
+    then \(g_1\) and \(g_2\) will always act as \(f\).
+\end{snippet}
 
 \begin{snippetdefinition}{monomorphism-definition}{Monomorphism}
     An monomorphism is an \textit{injective} morphism.
@@ -159,7 +161,7 @@
 
 \subsection{Isomorphisms}
 
-\begin{snippetdefinition}{cat-theory-invertible-morphism-definition}{Invertible morphism}
+\begin{snippetdefinition}{cat-theory-isomorphism-definition}{Invertible morphism}
     A morphism \(f\colon a \rightarrow b\) is \textit{invertible} if there
     is a \function \(g\) that goes from \(b\) to \(a\)
     
@@ -183,12 +185,51 @@
 \end{snippetdefinition}
 
 \begin{snippetdefinition}{cat-theory-isomorphism-definition}{Isomorphism}
-    An \textit{isomorphism} is a bijective morphism.
+    An \textit{isomorphism} is a \bijective morphism.
     An isomorphism is labelled with \(\xrightarrow{\sim}\).
 \end{snippetdefinition}
 
 \plain{(mono and epic, but not every mono and epic
 is an isomorphism).}
+
+\section{Functors}
+
+\begin{snippetdefinition}{functor-definition}{Functor}
+    Let \(\mathcal{C}, \mathcal{C'}\) be two \category[categories].
+    A \emph{functor} from \(\mathcal{C}\) to \(\mathcal{C'}\)
+    consists of a map
+    \[
+        F \colon \catob(\mathcal{C}) \fromto \catob(\mathcal{C'})
+    \]
+    and of maps
+    \[
+        F \colon \cathom_{\mathcal{C}}(a,b) \fromto \cathom_{\mathcal{C'}}(F(a), F(b))
+    \]
+    for all \(a,b \in \catob(\mathcal{C})\) such that:
+    \begin{enumerate}
+        \item \(F(\text{id}_a) = \text{id}_{F(a)}\) for all \(a \in \catob(\mathcal{C})\);
+        \item \(F(g \circ f) = F(g) \circ F(f)\) for all \(f\colon a \fromto b, g\colon b \to c\).
+    \end{enumerate}
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{presheave-definition-definition}{Presheave}
+    Let \(\mathcal{C}\) be a \category.
+    A \emph{presheave} on \(\mathcal{C}\)
+    % todo link dualcat
+    is a \functor from \({\mathcal{C}}^{\text{op}}\) to \(\mathcal{C}\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{natural-transformation-definition}{Natural transformation}
+    Let \(\mathcal{C}, \mathcal{C'}\) be two \category[categories].
+    % TODO
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRADEB9ARgAo6AlCAC+pdJlz5CKMtyq1GLNlz4AjIaPHY8BIt1Jzq9Zq0QdOAJl7qRYkBm1S95ecaVmuVwSPkwoAc3giUAAzACcIAFskMhAcCCQAZiNFUxAAHXTGNAALOn4NO3CopOp4pAsUk2VLXhDC0IjoxFjyxH0Fao8eOqFqBjpVGAYABQkdaRAwrH8cnFtGkvayhMRKzvcMrIZc-Jt+weGxx10zadn54QphIA
+        \begin{tikzcd}
+        F_1(a) \arrow[r, "\alpha(a)"] \arrow[d, "F_1(f)"'] & F_2(a) \arrow[d, "F_2(f)"] \\
+        F_1(b) \arrow[r, "\alpha(b)"']                     & F_2(b)                    
+        \end{tikzcd}
+    \end{center}
+\end{snippetdefinition}
 
 \section{Types of elements}
 
@@ -213,32 +254,6 @@ is an isomorphism).}
         \forall X\in \text{ob}(C) \,\exists_{=1}f\colon X\fromto T
     \]
 \end{snippetdefinition}
-
-\subsection{Void}
-
-\begin{snippetdefinition}{cat-theory-void-definition}{Void}
-    The \textit{void} element is equivalent to the logical \textbf{false}.
-    It is impossible to construct. Thus, functions that take void
-    as an argument are impossible to call.
-    It is impossible to map a set of the empty set, because
-    any object canot have an image.
-\end{snippetdefinition}
-
-\plain{In the category of sets, the singleton is the only terminal initial object, as there exists}
-\plain{a unique function (the empty function) from the empty set into any other given set.}
-
-\subsection{Singleton}
-
-\begin{snippetdefinition}{cat-theory-singleton-definition}{Singleton}
-    A singleton is a set with one element (e.g. \(\{0\}\)) and
-    is equivalent to the logical \textbf{true}.
-    It can be constructed from nothing.
-\end{snippetdefinition}
-
-\plain{In the category of sets, any singleton is a terminal object, as there exists a unique}
-\plain{function (the constant function) from any given set into the singleton.}
-
-% \subsection{Bool}
 
 \section{Types of categories}
 
@@ -277,13 +292,6 @@ is an isomorphism).}
     The relations may for example be preorders, partial orders
     or total orders.
 \end{snippetexample}
-
-\subsection{Monoid}
-
-\begin{snippetdefinition}{cat-theory-monoid-defintion}{Monoid}
-    A \textit{monoid} is a category with a single object.
-    It is equivalent to a set closed under an associative \binoperation.
-\end{snippetdefinition}
 
 \subsection{Kleisli category}
 

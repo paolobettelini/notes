@@ -786,4 +786,247 @@ In realtà questo funziona con domini compatti e codomini di Hausdorff.
 
 La dimostrazione è la medesima rispetto al caso banale.
 
+\sdefinition{Funzione di Lipschitz}{
+    Siano \((X_1, d_1),(X_2, d_2)\) spazi metrici,
+    \(f\colon X_1 \to X_2\).
+    Diciamo che \(f\) è \emph{lipschitz-continua} o \emph{lipschitziana}
+    se \(\exists \alpha > 0\) tale che
+    \[
+        d_2(f(x), f(y)) \leq \alpha d_1(x,y)
+    \]
+    per tutte le \(x,y \in X_1\).
+}
+
+\sproposition{}{
+    Se \(f\) è Lipschitz-continua, allora è uniformemente continua.
+}
+
+\sdefinition{}{
+    Siano \((X_1, d_1),(X_2, d_2)\) spazi metrici e 
+    \(f\colon (X_1, d_1) \to (X_2, d_2)\).
+    Diciamo che \(f\) è una \emph{contrazione} se
+    \(f \in \text{Lip}_\alpha(X_1, X_2)\) con \(\alpha < 1\).
+}
+
+Se il supremum è finito, allora questa è la miglior costante di Lipschitz (in generale)
+\begin{align*}
+    \sup_{x\neq y} \frac{|f(x)-f(y)|}{|x-y|}
+\end{align*}
+
+\sexample{}{
+    Consideriamo \(f \colon \mathbb{R} \to \mathbb{R}\)
+    data da \(f(x) = x^2\). Non è di lipschitz inquanto non è uniformemente continua.
+    Per mostrarlo possiamo dire
+    \begin{align*}
+        |f(x)-f(y)| &= |x^2 - y^2| = |x+y| \cdot |x-y|
+    \end{align*}
+    Se restringessimo il dominio di questa funzione ad un intervallo limitato,
+    allora sarebbe di Lipschitz, per il supremum.
+}
+
+\sproposition{}{
+    Sia \(f\colon I \subseteq \mathbb{R} \to \mathbb{R}\) differenziabile.
+    Allora, \(f \in \text{Lip}_\alpha(I, \mathbb{R})\)
+    se e solo se \(|f'(x)| \leq \alpha\) per tutte le \(x\).
+}
+
+\sproof{}{
+    \iffproof{
+        Cominciamo con
+        \begin{align*}
+            |f'(x)| &= \left| \lim_{t\to 0} \frac{f(x+t)-f(x)}{t}\right| \\
+            &= \lim_{t\to 0} \left| \frac{f(x+t)-f(x)}{t}\right| \\
+            &= \lim_{t\to 0} \frac{|f(x+t)-f(x)|}{|t|} \\
+            &\leq \lim_{t\to 0} \frac{\alpha |x+t-x|}{|t|} = \alpha
+        \end{align*}
+        Possiamo togliere il limite dal modulo in quanto il modulo è una funzione continua.
+    }{
+        Per il teorema di Lagrange esiste \(\theta \in (\min\{x,y\}, \max\{x,y\})\)
+        \begin{align*}
+            f(x) - f(y) &= f'(\theta) (x-y) \\
+            |f(x) - f(y)| &= |f'(\theta)|\cdot |x-y| \\
+            &\leq \alpha|x-y|
+        \end{align*}
+    }
+}
+
+\sexercise{}{
+    Per quali \(a \leq b\) la funzione \(f(t) = 1 + t - \arctan(t)\)
+    è una contradizione in \([a,b]\).
+    Stabiliamo quindi se la derivata è limitata
+    \begin{align*}
+        f'(t) = 1 + \frac{1}{1 + t^2} = \frac{t^2}{1 + t^2}
+    \end{align*}
+    notiamo quindi che \(0 \leq f'(t) \leq 1\). Quindi è sicuramente lipschitziana.
+    Notiamo allora che
+    \[
+        \sup_{\mathbb{R}} |f'(t)| = 1 = \alpha
+    \]
+    Quindi per far sì che \(\alpha < 1\) dobbiamo limitare il dominio ad un intervallo limitato.
+    Quindi \(-\infty < a \leq b < \infty\).
+    Porta l'intervallo \([a,b]\) in sè?
+    Siccome la funzione è crescente porta intervalli a intervalli
+    di estremi \(f(a)\) e \(f(b)\). Mi basta quindi imporre
+    che \(f(a) \geq a\) e \(f(b) \leq b\). Abbiamo quindi
+    \begin{align*}
+        \begin{cases}
+            1 + a - \arctan a \geq a \\
+            1 + b - \arctan b \leq b
+        \end{cases}
+        =
+        \begin{cases}
+            \arctan a \leq 1 \\
+            \arctan b \geq 1
+        \end{cases}
+    \end{align*}
+    e quindi \(a \leq \tan 1 \leq b\).
+    Notiamo che \(f(\tan 1) = \tan 1\) quindi è un punto fisso
+    per il teorema delle contrazioni.
+}
+
+\sexample{}{
+    Sia \(v \in \mathbb{R}^n\) e consideriamo
+    \(f\colon \mathbb{R}^n \to \mathbb{R}\) data da
+    \(f(x) = v \cdot x\).
+    Dobbiamo studiare \(|f(x) - f(y) = |v\cdot x - v \cdot y|\)
+    usando la bilinearità del prodotto scalare ottengo
+    \(|v\cdot (x-y)|\). Per Cacuhy-Schwarz
+    \[
+        |v\cdot (x-y)| \leq ||v|| \cdot ||x-y||
+    \]
+    che è quindi di Lipschitz.
+}
+
+\stheorem{Teorema di Banach-Cacciopoli o delle contrazioni}{
+    Sia \((X, d)\) uno spazio metrico completo
+    e sia \(f \colon X \to X\) una contrazione.
+    Allora \(\exists_{=1}\, x \in X\) tale che \(f(x) = x\).
+}
+
+Le ipotesi sono necessarie.
+Togliamo per esempio la completezza e consideriamo quindi \(X=(0, +\infty)\)
+con la contrazione \(f(x) = x/2\). Questa contrazione non ha punti fissi.
+Togliamo invece l'ipotesi che sia una contrazione.
+Richiediamo solamente che sia una contrazione debole, cioè
+\[
+    d_2(f(x), f(y)) \leq f_1(x,y)
+\]
+Consideriamo \(X = [0, +\infty)\) e prendiamo
+\(f(t) = t + e^{-t}\). 
+La derivata è \(f'(t) = 1-e^{-t}\) che è nulla nell'origine
+e poi tende ad \(1\) dal sotto.
+Chiaramente non ci sono punti fissi in quanto \(f(t)=t\) è come dire \(e^{-t} = 0\).
+
+\sproof{}{
+    Cominciamo mostrando l'esistenza del punto fisso.
+    Sia \(x_0 \in X\) un punto fissato e
+    consideriamo la successione \(x_{n+1} = f(x_n)\).
+    \begin{enumerate}
+        \item Mostriamo che \(\{x_n\}\) è di Cauchy, quindi siccome lo spazio è completo
+        converge. Dobbiamo mostrare che \(d(x_n, x_m)\) tende a zero quando \(n,m\) crescono.
+        Consideriamo inizialmente
+        \begin{align*}
+            d(x_{n+1}, x_n) &= d(f(x_n), f(x-{n-1})) \leq \alpha d(x_n, x_{n-1}) \\
+            &= \alpha d(f(x_{n-1}), f(x_{n-2})) \leq \alpha^2 d(x_{n-1}, x_{n-2}) \\
+            &\leq \alpha^n d(x_1, x_0)
+        \end{align*}
+        Calcoliamo ora la distanza generica e usiamo la disuguaglianza triangolare
+        ripetutamente per ogni step
+        \begin{align*}
+            d(x_{n+k}, d_n) &\leq \sum_{i=0}^{k-1} d(x_{n+k-i}, d_{n+k-i-1}) \\
+            &\leq d(x_1, x_0) \sum_{i=0}^{k-1} \alpha^{n+k-i} \\
+            &= \alpha^n d(x_1, x_0) \sum_{i=0}^{k-1} \alpha^{n+k-i-1} \\
+            &= \alpha^n \frac{\alpha^k - 1}{\alpha - 1} d(x_1, x_0) \\
+            &= \frac{\alpha^n}{1 - \alpha} d(x_1, x_0) \to 0
+        \end{align*}
+        Per sbarazzarci di \(k\) (siccome vogliamo \(k\) arbitrario e il \(\varepsilon\)
+        nella definizione di Cauchy deve essere uniforme rispetto ad esso)
+        maggioriamo la somma parziale della serie geometrica
+        con il valore della serie geometrica. Siccome \(0 < \alpha < 1\) il termine non esplode
+        e la serie geometrica converge.
+        \item Detto \(x\) il limite di \(\{x_n\}\) mostriamo che è un punto fisso di \(f\).
+        Consideriamo il limite per \(n\to \infty\)
+        \[
+            \lim_{n \to \infty} f(x_n) = f\left(\lim_{n \to \infty} x_n\right)
+            = f(x)
+        \]
+        perché \(f\) è continua.
+    \end{enumerate}
+    Mostriamo ora l'unicità del punto.
+    Supponiamo che \(x,y\) siano due punti fissi. Vogliamo mostrare che \(d(x,y) = 0\).
+    Abbiamo
+    \begin{align*}
+        d(x,y) &= d(f(x), f(y)) \leq \alpha d(x,y)
+        (1-\alpha) d(x,y) &\leq 0
+    \end{align*}
+    siccome \(1-\alpha > 0\) ciò succede solo se \(d(x,y) = 0\).
+}
+
+Abbiamo notato che
+\[
+    d(x_{n+k}, x_n) \leq \frac{\alpha^n}{1 - \alpha} d(x_1, x_0)
+\]
+Con \(k \to \infty\) otteniamo
+\[
+    d(x, x_n) \leq \frac{\alpha^n}{1 - \alpha} d(x_1, x_0)
+\]
+quindi tende al punto fisso in maniera esponenziale.
+
+Denotiamo \(f^n = f \circ f \cdots f\).
+Se \(f\) è una contrazione, una qualsiasi sua iterazione è anch'essa una contrazione.
+\begin{align*}
+    d(f(f(x)), f(f(y))) \leq \alpha d(f(x), f(y)) \leq \alpha^2 d(x,y)
+\end{align*}
+Per induzione segue il resto. In generale la costante è \(\alpha^n\).
+Ci chiediamo se nel caso in cui \(f\) non sia una contrazione, una sua iterata lo possa essere.
+
+\sexample{}{
+    Per esempio \(f(x) = \cos x\), che non è una contrazione in quanto il supremum
+    della derivata è \(1\). Invece, \(\cos(\cos(x))\) ha derivata
+    \[
+        \sin(\cos(x)) \cdot \sin
+    \]
+    Il suo modulo è dato da
+    \[
+        |\sin(\cos(x))| \cdot |\sin x|
+        \leq \sin(1) < 1
+    \]
+    Il secondo termine può solamente essere maggiorato da \(1\), mentre il secondo,
+    siccome \(-1 \leq \cos(x) \leq 1\), può essere maggiorato da \(\sin 1\).
+    Quindi è una contrazione.
+
+    Con questo possiamo per esempio mostrare che il coseno ha un punto fisso,
+    siccome una sua iterata è una contrazione.
+}
+
+
+\scorollary{Indebolimento del teorema delle contrazioni: teorema delle iterate contrazioni}{
+    Sia \((X, d)\) uno spazio metrico completo e sia
+    \(f \colon X \to X\) un'applicazione tale che \(\exists n \in \mathbb{N}\)
+    tale che \(f^n\) sia una contrazione. Allora \(\exists_{=1}\, x\in X\)
+    tale che \(f(x)=x\).
+}
+
+\sproof{}{
+    Mostriamo che i punti fissi di \(f\) (che sono uno solo) sono i punti fissi di \(f^n\).
+    Sia \(x\) un punto fisso di \(f\). Allora \(f^n(x) = f(f(\cdots(x)) = f(x) = x\).
+    Quindi tutti i punti fissi di \(f\) sono anche punti fissi di \(f^n\).
+    Sia ora \(x\) tale che \(f^n(x)=x\). Componendo otteniamo
+    \begin{align*}
+        f(f^n(x)) &= f(x) \\
+        f^n(f(x)) &= f(x) \\
+    \end{align*}
+    quindi \(f(x)\) è un punto fisso di \(f^n\), ma siccome \(f\) è una contrazione
+    ha solo un punto fisso, quindi coincidono \(f(x)=x\).
+    Quindi tutti i punti fissi di \(f^n\) sono anche punti fissi di \(f\).
+}
+
+Parametrizziamo ora la funzione
+
+Consideriamo \(T \colon X \times Y \to X\) come operatore parametrizzato dai valori di \(Y\).
+Fissato \(y\) imponiamo che \(T(-, y): X \to X\) sia una contrazione.
+Per tutte le \(y\) esiste un solo \(x\in X\) tale che \(T(x,y) = x\).
+Data la diepndenza funzionale \(x=\varphi(y)\) vogliamo capire come il punto fisso dipende dal parametro.
+In particolare, vogliamo mostrare che \(\varphi\) è costante sotto alcune ipotesi.
+
 \end{document}
