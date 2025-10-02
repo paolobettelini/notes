@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{bettelini}
 
 \begin{document}
 
@@ -26,7 +27,31 @@
 \end{snippetproposition}
 
 \begin{snippetproof}{metric-topology-is-topology-proof}{metric-topology-is-topology}{Metric topology is a topology}
-    \todo
+    \begin{enumerate}
+        \item the empty set is always open, \(\emptyset \in \mathcal{T}\);
+        \item the set itself is always open, \(X \in \mathcal{T}\);
+        \item let \(x \in A \intersection B\).
+        Using the metric we have \(r,s > 0\) such that \(\ball_r(x) \subseteq A\)
+        and \(\ball_s(x) \subseteq B\).
+        Let \(t = \min\{r,s\}\). We thus have
+        \begin{align*}
+            \ball_t(x) &\subseteq \ball_r(x) \subseteq A \\
+                   &\subseteq \ball_s(x) \subseteq B \\
+                   &\subseteq A \intersection B
+        \end{align*}
+        \item consider the union of an arbitrary family and let
+        \[
+            x \in \bigcup_{i\in I} A_i
+        \]
+        this is equivalent to saying that there exist an \(i\in I\)
+        such that \(x \in A_i\), and thus there exist an \(r>0\) such that
+        \(\ball_r(x) \subseteq A_i\). But
+        \[ A_i \subseteq \bigcup_{i\in I} A_i \]
+        and thus
+        \[
+            \ball_r(x) \subseteq \bigcup_{i\in I} A_i
+        \]
+    \end{enumerate}
 \end{snippetproof}
 
 \begin{snippetdefinition}{standard-real-topology-definition}{Standard real topology}
@@ -34,5 +59,78 @@
     \((\realnumbers, d)\) where \(d(x,y) = |x - y|\).
     The open sets of the standard topology are called \textit{open intervals}.
 \end{snippetdefinition}
+
+\begin{snippetproposition}{metric-topology-open-classification}{}
+    Let \((X, d)\) be a \metricspace and \(\mathcal{T}_d\) the topology induced by \(d\). Then,
+    \begin{enumerate}
+        \item every \openball is open in \(\mathcal{T}_d\);
+        \item the \topologicalspace[open sets][Open set] of \(\mathcal{T}_d\)
+        are exactly the subsets of \(X\) which can be written as open unions of \openball[open balls];
+        \item for every \(x\in X\), a subset \(U \subseteq X\)
+        is a \neighborhood of \(x\) (for the \(\mathcal{T}_d\) topology) \ifandonlyif
+        \(\exists \ball_r(x)\) entirely contained in \(U\).
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{metric-topology-open-classification-proof}{metric-topology-open-classification}{}
+    \begin{enumerate}
+        \item Let \(x\in X\) and \(y \in \ball_r(x)\).
+        Since \(y\) is in the ball, we have the inequality
+        \(d(x,y) < r\). Let \(s = r - d(x,y)\).
+        We want to show that the ball is completely included \(B_s(y) \subseteq B_r(x)\).
+        To prove this, let \(z \in B_s(y)\). We know that \(d(z, y) < s\).
+        Using the triangular inequality, we can estimate
+        \[
+            d(z,x) \leq d(z,y) + d(x, y) < d(x,y) + s
+            = r- d(x,y) + d(x,y) = r
+        \]
+        This proves the inclusion.
+        \item We know that every \openball is \topologicalspace[open][Open set]
+        in \(\mathcal{T}_d\). Viceversa, let \(A\) be an \topologicalspace[open set][Open set]
+        of \(\mathcal{T}_d\). We want to express this as a union of \openball[open balls].
+        For all \(x \in A\), there exist \(r(x) > 0\) such that \(\ball_{r(x)}(x) \subseteq A\).
+        We can thus just consider
+        \[
+            A = \bigcup_{x\in A} B_{r(x)}(x)
+        \]
+        \item \iffproof{
+            Since \(A\) is \topologicalspace[open][Open set]
+            in \(\mathcal{T}_d\), by its definition, \(A \supseteq \ball_r(x)\).
+            This means that \(U \supseteq A \supseteq \ball_r(x)\).
+        }{
+            Let \(U \supseteq \ball_r(x) \ni x\). The \openball[ball] is open
+            by the first point. \(U\) is a \neighborhood of \(x\).
+        }
+    \end{enumerate}
+\end{snippetproof}
+
+\subsection{Different metrics, same topology}
+
+\begin{snippetproposition}{equivalent-topology-from-different-metrics}{}
+    Let \((X, d), (X, d')\) be \metricspace[metric spaces] on the same \set.
+    Suppose that there exist constants \(c_1, c_2>0\) such that
+    \[
+        d(x,y) \leq c_1 d'(x,y), \quad \land \quad
+        d'(x,y) \leq c_2d(x,y)
+    \]
+    Then, the induced topologies are the same \(\mathcal{T}_d = \mathcal{T}_{d'}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{equivalent-topology-from-different-metrics-proof}{equivalent-topology-from-different-metrics}{}
+    We compare the \topologicalspace[open balls][Open sets]
+    of \(\mathcal{T}_d\) and \(\mathcal{T}_{d'}\).
+    Consider
+    \begin{align*}
+        \ball^{d}_r(x) &= \{y \in X \suchthat d(x,y) < r\} \\
+        &\supseteq \left\{y \in X \suchthat \frac{d'(x,y)}{c_2} < r\right\} \\
+        &= \ball^{d'}_{r c_2}(x)
+    \end{align*}
+    since \(d'(x,y) < rc_2\). Likewise, we get the other inclusion.
+\end{snippetproof}
+
+\plain{This clearly shows that we lose the quantitative aspects of a metric space when inducing a topological space,
+but the qualitative aspects are preserved.}
+
+\plain{All the metrics induced by the p-norms induce the same topology.}
 
 \end{document}
