@@ -1,0 +1,116 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{tikz}
+
+\usetikzlibrary{cd}
+
+\begin{document}
+
+\id{categorytheory-vector-spaces}
+\genpage
+
+\section{Category of vector spaces}
+
+\begin{snippetdefinition}{vect-category-definition}{\(\mathbf{Vect}_\mathbb{K}\) category}
+    Let \(\mathbb{K}\) be a \field.
+    The \category \(\mathbf{Vect}_\mathbb{K}\) is the category such that:
+    \begin{itemize}
+        \item its objects are the \(\mathbb{K}\)-\vectorspace[vector spaces] \(V\);
+        \item for each object \(V, W \in \catob(\mathbf{Vect}_\mathbb{K})\),
+        the \set of morphisms is
+        \[
+            \cathom_{\mathbf{Vect}_\mathbb{K}}(V, W)
+            = \{ f \colon V \fromto W \mid f \text{ is \lineartransformation[linear]} \}
+        \]
+        \item for each \(f \colon V \fromto W\) and \(g \colon W \fromto U\),
+        the composition is given by the usual composition of functions:
+        \(g \circ f \colon V \fromto U\).
+    \end{itemize}
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{vect-category-dual-functor-definition}{Dual functor for \(\mathbf{Vect}_\mathbb{K}\)}
+    Let \(\mathbb{K}\) be a \field. The \emph{duality functor} of \(\mathbf{Vect}_\mathbb{K}\)
+    is defined as the contravariant \functor
+    \[
+        {(-)}^* \colon \mathbf{Vect}_\mathbb{K}^\text{op} \to \mathbf{Vect}_\mathbb{K}
+    \]
+    where
+    \begin{enumerate}
+        \item each object \(V \in \catob(\mathbf{Vect}_\mathbb{K})\)
+        is mapped to its dual space \(V^* = \cathom_\mathbb{K}(V, \mathbb{K})\);
+        \item each morphism \(f \colon V \fromto W\) is mapped to
+        the morphism \(f^* \colon W^* \fromto V^*\) defined as
+        \[
+            f^*(\varphi) = \varphi \circ f
+        \]
+        for all \(\varphi \in W^*\).
+    \end{enumerate}
+\end{snippetdefinition}
+
+\begin{snippet}{vect-category-dual-functor-expl}
+    Note that the duality functor is contravariant because
+    if \(f \colon V \fromto W\) is a morphism in \(\mathbf{Vect}_\mathbb{K}\),
+    then \(f^* \colon W^* \fromto V^*\) goes in the opposite direction.
+    To understand this, consider the duality \functor from \(\mathbf{Vect}_\mathbb{K}\) to \(\mathbf{Vect}_\mathbb{K}\).
+    How do we map a morphism \(f \colon V \fromto W\)?
+    We can try to construct a morphism \(f^* \colon V^* \fromto W^*\),
+    but this is not possible in general.
+    Consider \((\psi \colon V \fromto \mathbb{K}) \in V^*\) and
+    \((\varphi \colon W \fromto \mathbb{K}) \in W^*\).
+    We need to construct \(f^*(\psi) = \varphi\).
+    The \function \(\varphi\) takes as input an element \(w \in W\),
+    meaning that we have to use \(w\) with \(f \colon V \to W\) and \(\psi \colon V \to \mathbb{K}\).
+    But since \(w\in W\), we cannot use it with \(f\) nor with \(\psi\).
+    We would need to use \(f^\inversefunction\) to take \(w\) to \(V\), and then apply \(\psi\).
+    But \(f^\inversefunction\) does not exist in general so we cannot do this.
+    On the other hand, consider \(f^* \colon W^* \fromto V^*\).
+    We need to construct \(f^*(\varphi) = \psi\).
+    The \function \(\psi \in V^*\) takes \(v\in V\) as input,
+    and we can use \(f\) to take \(v\) to \(W\),
+    and then apply \(\varphi\).
+    This is why the duality functor is contravariant.
+\end{snippet}
+
+\begin{snippetproposition}{double-dual-functor-natural-transformation}{}
+    Let \(\mathbb{K}\) be a \field and consider the duality functor
+    \[
+        {(-)}^* \colon \mathbf{Vect}_\mathbb{K}^\text{op} \to \mathbf{Vect}_\mathbb{K}
+    \]
+    Then, \(\alpha \colon \text{Id}_{\mathbf{Vect}_\mathbb{K}} \fromto {(-)}^{**}\)
+    is a natural transformation from \(\mathbf{Vect}_\mathbb{K}\) to itself.
+\end{snippetproposition}
+
+\begin{snippetproof}{double-dual-functor-natural-transformation-proof}{double-dual-functor-natural-transformation}{}
+    We need to verify that the following diagram commutes
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRADUQBfU9TXfIRQBGclVqMWbdgD1gAKnlduvEBmx4CRUcPH1mrRCADqcxcp58NgomV3V9Uo8e7iYUAObwioAGYAnCABbJABmahwIJAAmB0lDEAAdRMY0AAs6AApjAEoQagY6ACMYBgAFfk0hEH8sDzScFT9AkMRREEiYuIM2XzMlJpAA4KQyDqi27qcklIZ0rPY8yyGW0YiJ8Ikeo198kEKS8sqbI1r6xq4KLiA
+        \begin{tikzcd}
+        V \arrow[r, "\alpha(V)"] \arrow[d, "f"'] & V^{**} \arrow[d, "f^{**}"] \\
+        W \arrow[r, "\alpha(W)"']                & W^{**}                    
+        \end{tikzcd}
+    \end{center}
+    Note that since the functor is contravariant, we have
+    \(f\colon V \fromto W\), \(f^* \colon W^* \fromto V^*\)
+    and \(f^{**} \colon V^{**} \fromto W^{**}\).
+    We need to verify that \(\forall v \in V\),
+    \[
+        \alpha(W)(f(v)) = f^{**}(\alpha(V)(v))
+    \]
+    These are both elements of \(W^{**}\), meaning that they are \function[functions]
+    taking as input an element of \(W^*\). So let \(\varphi \in W^*\)
+    and let us evaluate both sides on \(\varphi\):
+    \begin{align*}
+        \alpha(W)(f(v))(\varphi) &= f^{**}(\alpha(V)(v))(\varphi) \\
+        \varphi(f(v)) &= (\alpha(V)(v) \circ (f^*))(\varphi) \\
+        \varphi(f(v)) &= \alpha(V)(v) (f^*(\varphi)) \\
+        &= f^*(\varphi)(v) \\
+        &= (\varphi \circ f)(v) \\
+        &= \varphi(f(v))
+    \end{align*}
+\end{snippetproof}
+
+\end{document}
