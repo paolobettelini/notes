@@ -4,6 +4,12 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{tikz}
+\usepackage{makecell}
+\usepackage{adjustbox}
+\usepackage{bettelini}
+
+\usetikzlibrary{cd}
 
 \begin{document}
 
@@ -12,13 +18,108 @@
 
 \section{Functors}
 
-\section{Representable functor}
+\subsection{Definitions}
+
+\begin{snippetdefinition}{functor-definition}{Functor}
+    Let \(\mathcal{C}, \mathcal{C'}\) be two \category[categories].
+    A \emph{functor} from \(\mathcal{C}\) to \(\mathcal{C'}\)
+    consists of a map
+    \[
+        F \colon \catob(\mathcal{C}) \fromto \catob(\mathcal{C'})
+    \]
+    and of maps
+    \[
+        F \colon \cathom_{\mathcal{C}}(a,b) \fromto \cathom_{\mathcal{C'}}(F(a), F(b))
+    \]
+    for all \(a,b \in \catob(\mathcal{C})\) such that:
+    \begin{enumerate}
+        \item \(F(\text{id}_a) = \text{id}_{F(a)}\) for all \(a \in \catob(\mathcal{C})\);
+        \item \(F(g \circ f) = F(g) \circ F(f)\) for all \(f\colon a \fromto b, g\colon b \to c\).
+    \end{enumerate}
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{presheave-definition-definition}{Presheave}
+    Let \(\mathcal{C}\) be a \category.
+    A \emph{presheave} on \(\mathcal{C}\)
+    % todo link dualcat
+    is a \functor from \({\mathcal{C}}^{\text{op}}\) to \(\mathcal{C}\).
+\end{snippetdefinition}
+
+\subsection{Natural transformations}
+
+\begin{snippetdefinition}{natural-transformation-definition}{Natural transformation}
+    Let \(\mathcal{C}, \mathcal{C'}\) be two \category[categories]
+    and let \(F_1, F_2 \colon \mathcal{C} \fromto \mathcal{C'}\) be two \functor[functors].
+    A \emph{natural transformation} \(\alpha\colon F_1 \fromto F_2\)
+    is a \function assigning to each object \(a \in \catob(\mathcal{C})\)
+    a morphism \(\alpha(a) \colon F_1(a) \fromto F_2(a)\) in \(\mathcal{C'}\)
+    such that for all morphisms \(f \colon a \fromto b\) in \(\mathcal{C}\)
+    the following diagram commutes:
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRADEB9ARgAo6AlCAC+pdJlz5CKMtyq1GLNlz4AjIaPHY8BIt1Jzq9Zq0QdOAJl7qRYkBm1S95ecaVmuVwSPkwoAc3giUAAzACcIAFskMhAcCCQAZiNFUxAAHXTGNAALOn4NO3CopOp4pAsUk2VLXhDC0IjoxFjyxH0Fao8eOqFqBjpVGAYABQkdaRAwrH8cnFtGkvayhMRKzvcMrIZc-Jt+weGxx10zadn54QphIA
+        \begin{tikzcd}
+        F_1(a) \arrow[r, "\alpha(a)"] \arrow[d, "F_1(f)"'] & F_2(a) \arrow[d, "F_2(f)"] \\
+        F_1(b) \arrow[r, "\alpha(b)"']                     & F_2(b)                    
+        \end{tikzcd}
+    \end{center}
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{natural-isomorphism-definition}{Natural isomorphism}
+    A \naturaltransformation \(\alpha\colon F_1 \fromto F_2\) is called a \emph{natural isomorphism} if
+    for every object \(a \in \catob(\mathcal{C})\) the morphism \(\alpha(a)\) is an isomorphism.
+\end{snippetdefinition}
+
+\subsection{Representable functor}
 
 \begin{snippetdefinition}{representable-functor-definition}{Representable functor}
     Let \(\mathcal{C}\) be a localy small \category and let \(c\in\catob(\mathcal{C})\).
-    We define a \todo
+    We define a \functor \(\cathom_{\mathcal{C}}(c, -) \colon \mathcal{C} \fromto \textbf{Set}\)
+    defined by:
+    \begin{itemize}
+        \item \(\cathom_{\mathcal{C}}(c, -)(a) = \cathom_{\mathcal{C}}(c, a)\) for all \(a \in \catob(\mathcal{C})\);
+        \item \(\cathom_{\mathcal{C}}(c, -)(f) \colon \cathom_{\mathcal{C}}(c, a) \fromto \cathom_{\mathcal{C}}(c, b)\)
+        given by \(g \to f \circ g\) for all \(f \colon a \fromto b\) and \(g \colon c \fromto a\).
+    \end{itemize}
+    A \functor that is naturally isomorphic to \(\cathom_{\mathcal{C}}(c, -)\)
+    for some \(c \in \catob(\mathcal{C})\) is said to be \emph{representable}.
 \end{snippetdefinition}
 
-\plain{The consturction satisfies the properties of a functor (using function composition associativity).}
+\plain{The construction satisfies the properties of a functor (using function composition associativity).}
+
+\plain{The dual can also be considered, where the morphisms go into the object instead of out of it.}
+
+\subsection{Types of functors}
+
+\begin{snippetdefinition}{faithful-functor-definition}{Faithful functor}
+    A \functor \(F \colon \mathcal{C} \fromto \mathcal{D}\) is said to be \emph{faithful} if
+    for all \(a,b \in \catob(\mathcal{C})\)
+    \[
+        F \colon \cathom_{\mathcal{C}}(a,b) \fromto \cathom_{\mathcal{D}}(F(a), F(b))
+    \]
+    is \injective.
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{full-functor-definition}{Full functor}
+    A \functor \(F \colon \mathcal{C} \fromto \mathcal{D}\) is said to be \emph{full} if
+    for all \(a,b \in \catob(\mathcal{C})\)
+    \[
+        F \colon \cathom_{\mathcal{C}}(a,b) \fromto \cathom_{\mathcal{D}}(F(a), F(b))
+    \]
+    is \surjective.
+\end{snippetdefinition}
+
+\plain{We can also define a notion of surjectivity for objects.
+However, in category theory the equality of objects is not very relevant,
+and it is replaced by the notion of isomorphism.}
+
+\begin{snippetdefinition}{essentially-surjective-functor-definition}{Essentially surjective functor}
+    A \functor \(F \colon \mathcal{C} \fromto \mathcal{D}\) is said to be \emph{essentially surjective} if
+    every object \(d \in \catob(\mathcal{D})\) is isomorphic to an object of the form \(F(c)\)
+    for some \(c \in \catob(\mathcal{C})\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{subcategory-definition}{Subcategory}
+    \todo
+\end{snippetdefinition}
 
 \end{document}

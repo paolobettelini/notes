@@ -4,12 +4,116 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{tikz}
+\usepackage{bettelini}
+\usepackage{adjustbox}
+
+\usetikzlibrary{cd}
 
 \begin{document}
 
 \id{categorytheory-universal-properties}
 \genpage
 
-\section{Universal property}
+\section{Universal Construction}
+
+\begin{snippetdefinition}{universal-construction-defintion}{Universal Construction}
+    Universal construction is used to define objects in terms of their
+    relationships up to a unique isomorphism.
+    This means that the objects that satisfy the same universal property
+    are isomorphic.
+    Its purpose is to define an object without knowledge about the object itself,
+    but rather just the morphisms.
+\end{snippetdefinition}
+
+\section{Product}
+
+\begin{snippet}{categorial-product-universal-construction}
+The categorical product represents many operations
+such as the cartesian product of sets.
+A product of two objects \(a\) and \(b\) has the following
+morphisms:
+\begin{enumerate}
+    \item \(p \colon a \cartesianprod b \fromto a\), which returns the first value of the ordered pair
+    \item \(q \colon a \cartesianprod b \fromto b\), which returns the second value of the ordered pair
+\end{enumerate}
+
+In the following diagram \(c\) is the actual product and \(c'\) is a candidate object
+for the cardinal product.
+We rank a candidate \(c_i\) higher than \(c_j\) if there is a morphism
+\(m \colon c_i \fromto c_j\).
+
+\begin{minipage}{0.5\textwidth}
+    \adjustbox{scale=1.5,center}{%
+    \begin{tikzcd}
+        & c' \arrow[d, "m"] \arrow[rdd, "q'", bend left] \arrow[ldd, "p'"', bend right] &   \\
+        & c \arrow[ld, "p"] \arrow[rd, "q"']                                         &   \\
+      a &                                                                                  & b
+    \end{tikzcd}
+    }
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{align*}
+        p' &= p \circ m \\
+        q' &= q \circ m 
+    \end{align*}
+\end{minipage}
+
+Whenever \(m\) is \textit{flawed}, such as when it loses information
+or does not preserve structure, we discard \(c_i\).
+
+The universal property is that for any other product
+\(c'\) with morphisms \(p'\) and \(q'\),
+s a unique morphism
+\[
+    m \colon c'\fromto c
+\]
+such that
+\begin{align*}
+    p \circ m &= p' \\
+    q \circ m &= q'
+\end{align*}
+\end{snippet}
+
+\subsection{Coproduct}
+
+\begin{snippet}{categorial-coproduct-universal-construction}
+The coproduct represents operations
+such as the disjoint union of sets.
+The coproduct is the product when the morphisms are inverted.
+The coproduct of two objects \(a\) and \(b\) has the following
+morphisms:
+\begin{enumerate}
+    \item \(p \colon a \fromto a\sqcup b\)
+    \item \(q \colon b \fromto a\sqcup b\)
+\end{enumerate}
+
+Let \(c=a\sqcup b\).
+
+\begin{minipage}{0.5\textwidth}
+    \adjustbox{scale=1.5,center}{%
+    \begin{tikzcd}
+        & c'                &                                                  \\
+        & c \arrow[u, "m"'] &                                                  \\
+        a \arrow[ruu, "p'", bend left] \arrow[ru, "p"'] &                   & b \arrow[luu, "q'"', bend right] \arrow[lu, "q"]
+    \end{tikzcd}
+    }
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{align*}
+        p' &= m \circ p \\
+        q' &= m \circ q
+    \end{align*}
+\end{minipage}
+
+The universal property is that for any other object \(c'\)
+with morphisms \(p' \colon a \fromto c'\) and \(q' \colon b \fromto c'\),
+there exists a unique morphism \(m \colon c \fromto c'\)
+such that
+\begin{align*}
+    p' &= m \circ p \\
+    q' &= m \circ q
+\end{align*}
+\end{snippet}
 
 \end{document}

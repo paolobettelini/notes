@@ -104,20 +104,25 @@
 
 \section{Types of morphisms}
 
-%\plain{<hr>}
-
 \begin{snippetdefinition}{epimorphism-definition}{Epimorphism}
-    An epimorphism is a \textit{surjective} morphism.
-    An epimorphism is labelled with \(\twoheadrightarrow\).
+    Let \(\mathcal{C}\) be a \category
+    and let \(f \colon X \fromto Y\) be a morphism in \(\mathcal{C}\).
+    Then, \(f\) is said to be an \emph{epimorphism} if
+    for all morphisms \(g_1, g_2 \colon Y \fromto Z\) in \(\mathcal{C}\),
+    \[
+        g_1 \circ f = g_2 \circ f \implies g_1 = g_2.
+    \]
+    An epimorphism is denoted \(\twoheadrightarrow\).
 \end{snippetdefinition}
 
-\begin{snippetdefinition}{surjectivity-from-morphisms}{Surjectivity from morphisms}
-    A morphism \(f\colon a \rightarrow b\) is a epimorphism if
+\plain{An epimorphism is a morphism that is right-cancellable.
+It is the categorical generalization of a surjective function.}
 
-    \[
-        \forall c\, \forall g_1, g_2 : b \rightarrow c, g_1 \circ f = g_2 \circ f \Rightarrow g_1 = g_2
-    \]
-
+\begin{snippet}{surjectivity-from-morphisms-expl}
+    Consider a morphism \(f\colon a \rightarrow b\) which maps elements of \(a\) onto \(b\).
+    Let's also define the morphisms \(g_1\) and \(g_2\) which map elements from \(b\) to \(c\).
+    The condition for an epimorphism is equivalent to requiring the following
+    diagram to commute:
     \begin{center}
         \begin{tikzcd}
             a \arrow[r, "f"] &
@@ -125,11 +130,6 @@
             \arrow[r, "g_2"', shift right] & c
         \end{tikzcd}
     \end{center}
-\end{snippetdefinition}
-
-\begin{snippet}{surjectivity-from-morphisms-expl}
-    Consider a morphism \(f\colon a \rightarrow b\) which maps elements of \(a\) onto \(b\).
-    Let's also define the morphisms \(g_1\) and \(g_2\) which map elements from \(b\) to \(c\).
     The domain of \(g_1\) and \(g_2\) is the codomain of \(f\). These two functions act
     as \(f\) for object in the image of \(f\), but may map objects differently
     for objects in the codomain of \(f\) but outside the image of \(f\).
@@ -138,18 +138,22 @@
 \end{snippet}
 
 \begin{snippetdefinition}{monomorphism-definition}{Monomorphism}
-    An monomorphism is an \textit{injective} morphism.
-    A monomorphism is labelled with \(\hookrightarrow\).
+    Let \(\mathcal{C}\) be a \category
+    and let \(f \colon X \fromto Y\) be a morphism in \(\mathcal{C}\).
+    Then, \(f\) is said to be an \emph{monomorphism} if
+    for all morphisms \(g_1, g_2 \colon Z \fromto X\) in \(\mathcal{C}\),
+    \[
+        f \circ g_1 = f \circ g_2 \implies g_1 = g_2.
+    \]
+    A monomorphism is denoted \(\hookrightarrow\).
 \end{snippetdefinition}
 
-\begin{snippetdefinition}{injectivity-from-morphisms}{Injectivity from morphisms}
-    A morphism \(f\colon a \rightarrow b\) is a monomorphism if
-    
-    \[
-        \forall c\, \forall g_1, g_2: c \rightarrow a, 
-        f \circ g_1 = f \circ g_2 \Rightarrow g_1 = g_2
-    \]
+\plain{A monomorphism is a morphism that is left-cancellable.
+It is the categorical generalization of an injective function.}
 
+\begin{snippet}{injectivity-from-morphisms-expl}
+    The condition for a monomorphism is equivalent to requiring the following
+    diagram to commute:
     \begin{center}
         \begin{tikzcd}
             c \arrow[r, "g_1", shift left]
@@ -157,93 +161,23 @@
             a \arrow[r, "f"] & b
         \end{tikzcd}
     \end{center}
-\end{snippetdefinition}
-
-\subsection{Isomorphisms}
-
-\begin{snippetdefinition}{cat-theory-isomorphism-definition}{Invertible morphism}
-    A morphism \(f\colon a \rightarrow b\) is \textit{invertible} if there
-    is a \function \(g\) that goes from \(b\) to \(a\)
-    
-    \[
-        b:\quad b \rightarrow a
-    \]
-    
-    such that
-    
-    \begin{align*}
-        g \circ f &= \text{id}_b
-        \\
-        f \circ g &= \text{id}_a
-    \end{align*}
-    
-    \begin{center}
-        \begin{tikzcd}
-            a \arrow[r, "f", bend left] & b \arrow[l, "g", bend left]
-        \end{tikzcd}
-    \end{center}
-\end{snippetdefinition}
+\end{snippet}
 
 \begin{snippetdefinition}{cat-theory-isomorphism-definition}{Isomorphism}
-    An \textit{isomorphism} is a \bijective morphism.
+    Let \(\mathcal{C}\) be a \category
+    and let \(f \colon X \fromto Y\) be a morphism in \(\mathcal{C}\).
+    Then, \(f\) is said to be an \emph{isomorphism} if
+    there exists a morphism \(g \colon Y \fromto X\) in \(\mathcal{C}\)
+    such that
+    \[
+        g \circ f = \text{id}_X \land f \circ g = \text{id}_Y
+    \]
     An isomorphism is labelled with \(\xrightarrow{\sim}\).
 \end{snippetdefinition}
 
-\plain{(mono and epic, but not every mono and epic
-is an isomorphism).}
+\plain{Not that every isomorphism is both mono and epic, but the converse is not true in general.}
 
-\section{Functors}
-
-\begin{snippetdefinition}{functor-definition}{Functor}
-    Let \(\mathcal{C}, \mathcal{C'}\) be two \category[categories].
-    A \emph{functor} from \(\mathcal{C}\) to \(\mathcal{C'}\)
-    consists of a map
-    \[
-        F \colon \catob(\mathcal{C}) \fromto \catob(\mathcal{C'})
-    \]
-    and of maps
-    \[
-        F \colon \cathom_{\mathcal{C}}(a,b) \fromto \cathom_{\mathcal{C'}}(F(a), F(b))
-    \]
-    for all \(a,b \in \catob(\mathcal{C})\) such that:
-    \begin{enumerate}
-        \item \(F(\text{id}_a) = \text{id}_{F(a)}\) for all \(a \in \catob(\mathcal{C})\);
-        \item \(F(g \circ f) = F(g) \circ F(f)\) for all \(f\colon a \fromto b, g\colon b \to c\).
-    \end{enumerate}
-\end{snippetdefinition}
-
-\begin{snippetdefinition}{presheave-definition-definition}{Presheave}
-    Let \(\mathcal{C}\) be a \category.
-    A \emph{presheave} on \(\mathcal{C}\)
-    % todo link dualcat
-    is a \functor from \({\mathcal{C}}^{\text{op}}\) to \(\mathcal{C}\).
-\end{snippetdefinition}
-
-\begin{snippetdefinition}{natural-transformation-definition}{Natural transformation}
-    Let \(\mathcal{C}, \mathcal{C'}\) be two \category[categories]
-    and let \(F_1, F_2 \colon \mathcal{C} \fromto \mathcal{C'}\) be two \functor[functors].
-    A \emph{natural transformation} \(\alpha\colon F_1 \fromto F_2\)
-    is a \function assigning to each object \(a \in \catob(\mathcal{C})\)
-    a morphism \(\alpha(a) \colon F_1(a) \fromto F_2(a)\) in \(\mathcal{C'}\)
-    such that for all morphisms \(f \colon a \fromto b\) in \(\mathcal{C}\)
-    the following diagram commutes:
-    \begin{center}
-        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRADEB9ARgAo6AlCAC+pdJlz5CKMtyq1GLNlz4AjIaPHY8BIt1Jzq9Zq0QdOAJl7qRYkBm1S95ecaVmuVwSPkwoAc3giUAAzACcIAFskMhAcCCQAZiNFUxAAHXTGNAALOn4NO3CopOp4pAsUk2VLXhDC0IjoxFjyxH0Fao8eOqFqBjpVGAYABQkdaRAwrH8cnFtGkvayhMRKzvcMrIZc-Jt+weGxx10zadn54QphIA
-        \begin{tikzcd}
-        F_1(a) \arrow[r, "\alpha(a)"] \arrow[d, "F_1(f)"'] & F_2(a) \arrow[d, "F_2(f)"] \\
-        F_1(b) \arrow[r, "\alpha(b)"']                     & F_2(b)                    
-        \end{tikzcd}
-    \end{center}
-\end{snippetdefinition}
-
-\begin{snippetdefinition}{natural-isomorphism-definition}{Natural isomorphism}
-    A \naturaltransformation \(\alpha\colon F_1 \fromto F_2\) is called a \emph{natural isomorphism} if
-    for every object \(a \in \catob(\mathcal{C})\) the morphism \(\alpha(a)\) is an isomorphism.
-\end{snippetdefinition}
-
-\section{Types of elements}
-
-\subsection{Initial objects}
+\section{Types of elements} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{snippetdefinition}{initial-object-definition}{Initial object}
     An \textit{initial object} \(I\) is an object if
@@ -254,8 +188,6 @@ is an isomorphism).}
     \]
 \end{snippetdefinition}
 
-\subsection{Terminal objects}
-
 \begin{snippetdefinition}{terminal-object-definition}{Terminal object}
     A \textit{terminal object} \(T\) is an object if
     for every object \(X\) in a category \(C\)
@@ -264,152 +196,6 @@ is an isomorphism).}
         \forall X\in \text{ob}(C) \,\exists_{=1}f\colon X\fromto T
     \]
 \end{snippetdefinition}
-
-\section{Types of categories}
-
-\subsection{Thin categories}
-
-\begin{snippetdefinition}{thin-category-definition}{Thin Category}
-    A \textit{thin category} is a category in which each pair of objects
-    has either \(0\) or \(1\) morphism.
-    Every hom-set of a thin category has either \(1\) or \(0\) elements.
-\end{snippetdefinition}
-
-\subsubsection{Order categories}
-
-\begin{snippetdefinition}{thin-category-definition}{Order category}
-    An \textit{order category} is a thin category where morphisms represent relationships.
-\end{snippetdefinition}
-
-\begin{snippetexample}{order-category-example}{Order category}
-    Given an equality relationship
-
-    \begin{center}
-        \begin{tikzcd}
-            a \arrow[r, "\leq"] & b
-        \end{tikzcd}
-    \end{center}
-
-    The relationship must be reflexive since there must exist an identity morphsim.
-
-    \begin{center}
-        \begin{tikzcd}
-            a \arrow["\leq"', loop, distance=2em, in=215, out=145]
-        \end{tikzcd}
-    \end{center}
-
-    It must also be composable and associative.
-    The relations may for example be preorders, partial orders
-    or total orders.
-\end{snippetexample}
-
-\subsection{Kleisli category}
-
-% Given a category \(C\) the Kleisli category has an arrow
-% from a to b (a and b are objects in C) which represent
-% a morphism from a to (b, T)
-% in the category C.
-
-\section{Universal Construction}
-
-\begin{snippetdefinition}{universal-construction-defintion}{Universal Construction}
-    Universal construction is used to define objects in terms of their
-    relationships up to a unique isomorphism.
-    This means that the objects that satisfy the same universal property
-    are isomorphic.
-    Its purpose is to define an object without knowledge about the object itself,
-    but rather just the morphisms.
-\end{snippetdefinition}
-
-\section{Product}
-
-\begin{snippet}{categorial-product-universal-construction}
-The categorical product represents many operations
-such as the cartesian product of sets.
-A product of two objects \(a\) and \(b\) has the following
-morphisms:
-\begin{enumerate}
-    \item \(p \colon a \cartesianprod b \fromto a\), which returns the first value of the ordered pair
-    \item \(q \colon a \cartesianprod b \fromto b\), which returns the second value of the ordered pair
-\end{enumerate}
-
-In the following diagram \(c\) is the actual product and \(c'\) is a candidate object
-for the cardinal product.
-We rank a candidate \(c_i\) higher than \(c_j\) if there is a morphism
-\(m \colon c_i \fromto c_j\).
-
-\begin{minipage}{0.5\textwidth}
-    \adjustbox{scale=1.5,center}{%
-    \begin{tikzcd}
-        & c' \arrow[d, "m"] \arrow[rdd, "q'", bend left] \arrow[ldd, "p'"', bend right] &   \\
-        & c \arrow[ld, "p"] \arrow[rd, "q"']                                         &   \\
-      a &                                                                                  & b
-    \end{tikzcd}
-    }
-\end{minipage}
-\begin{minipage}{0.5\textwidth}
-    \begin{align*}
-        p' &= p \circ m \\
-        q' &= q \circ m 
-    \end{align*}
-\end{minipage}
-
-Whenever \(m\) is \textit{flawed}, such as when it loses information
-or does not preserve structure, we discard \(c_i\).
-
-The universal property is that for any other product
-\(c'\) with morphisms \(p'\) and \(q'\),
-s a unique morphism
-\[
-    m \colon c'\fromto c
-\]
-such that
-\begin{align*}
-    p \circ m &= p' \\
-    q \circ m &= q'
-\end{align*}
-\end{snippet}
-
-\subsection{Coproduct}
-
-\begin{snippet}{categorial-coproduct-universal-construction}
-The coproduct represents operations
-such as the disjoint union of sets.
-The coproduct is the product when the morphisms are inverted.
-The coproduct of two objects \(a\) and \(b\) has the following
-morphisms:
-\begin{enumerate}
-    \item \(p \colon a \fromto a\sqcup b\)
-    \item \(q \colon b \fromto a\sqcup b\)
-\end{enumerate}
-
-Let \(c=a\sqcup b\).
-
-\begin{minipage}{0.5\textwidth}
-    \adjustbox{scale=1.5,center}{%
-    \begin{tikzcd}
-        & c'                &                                                  \\
-        & c \arrow[u, "m"'] &                                                  \\
-        a \arrow[ruu, "p'", bend left] \arrow[ru, "p"'] &                   & b \arrow[luu, "q'"', bend right] \arrow[lu, "q"]
-    \end{tikzcd}
-    }
-\end{minipage}
-\begin{minipage}{0.5\textwidth}
-    \begin{align*}
-        p' &= m \circ p \\
-        q' &= m \circ q
-    \end{align*}
-\end{minipage}
-
-The universal property is that for any other object \(c'\)
-with morphisms \(p' \colon a \fromto c'\) and \(q' \colon b \fromto c'\),
-there exists a unique morphism \(m \colon c \fromto c'\)
-such that
-\begin{align*}
-    p' &= m \circ p \\
-    q' &= m \circ q
-\end{align*}
-\end{snippet}
 
 \end{document}
 
