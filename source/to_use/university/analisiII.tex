@@ -1038,9 +1038,350 @@ In particolare, vogliamo mostrare che \(\varphi\) è continua sotto alcune ipote
     Allora \(f\) è continua in \(y_0\).
 }
 
-\sproof{
-    todo
+\sproof{}{
+    Vogliamo mostrare che \(d(f(y), f(y_0)) \to 0\) se \(y \to y_0\).
+    Vogliamo stimare \(d(f(y), f(y_0))\) con \(f(y) = T(f(y), y)\).
+    Sia \(x = f(y)\) e \(f(y_0) = x_0\). Allora
+    \[
+        d(f(y), f(y_0)) = d(T(x,y), T(x_0, y_0))
+    \]
+    Usando la disuguaglianza triangolare
+    \begin{align*}
+        d(T(f(y_0), y_0))
+        &\leq d(T(f(y), y), T(f(y_0), y)) +
+        d(T(f(y_0), y), T(f(y_0), y_0)) \\
+        &\leq \alpha d(f(y), f(y_0))
+        + d(T(f(y_0), y), T(f(y_0), y_0)) \\
+        (1-\alpha) d(f(y), f(y_0))
+        &\leq d(T(f(y_0), y), T(f(y_0), y_0)) \to 0
+    \end{align*}
+    La costante è positiva e indipendente da \(y\).
+    La funzione \(T(f(y_0), -)\) è continua in \(y\).
 }
 
+\slemma{Sugli spazi normati}{
+    \[
+        \left|
+            ||y|| - ||x||
+        \right|
+        \leq ||y-x||
+    \]
+}
+
+\sproof{}{
+    Sia \(y = x + (y-x)\). Allora
+    \[
+        ||y|| = ||x + (y-x)|| \leq
+        ||x|| + ||y-x||
+    \]
+    Scambiando i ruoli di \(x\) e \(y\) si ottiene la proposizione.
+}
+
+Ciò mostra che la norma è lipschitz continua.
+
+Ogni spazio normato è uno spazio metrico, ma non il viceversa.
+
+\sdefinition{Spazio di Banach}{
+    Uno \emph{spazio di Banach} è uno spazio normato
+    completo rispetto alla norma.
+}
+
+\sdefinition{Equivalenza di norme}{
+    Diciamo che due norme \(||\cdot||, |\cdot|\) sono equivalenti
+    se \(\exists 0 < \alpha \leq \beta\) tale che
+    \[
+        \alpha|x| \leq ||x|| \leq \beta|x|, \quad \forall x \in X
+    \]
+}
+
+Questa è una relazione di equivalenza.
+
+\pagebreak
+
+\stheorem{Equivalenza di norme reali}{
+    Tutte le norme in \(\mathbb{R}^n\) sono equivalenti.
+}
+
+\sproof{}{
+    Basta mostrare che una norma \(||\cdot||\) questa è equivalente alla \(||\cdot||_2\).
+    Dobbiamo trovare \(\alpha,\beta\) tale che
+    \[
+        \alpha||x||_2 \leq ||x|| \leq \beta||x||_2, \quad \forall x \in \mathbb{R}^n
+    \]
+    Consideriamo la base canonica \(\{e_1, \cdots, e_n\}\) che è finito-dimensionale
+    e quindi \(x = (x_1, \cdots, x_n)\).
+    \begin{align*}
+        ||x|| &= \left|\left|
+            \sum_{i=1}^n x_i \cdot e_i
+        \right|\right| \leq \sum_{i=1}^n
+        |x_1| \cdot ||e_i|| \\
+        &\leq
+        \left(n \max \bigcup_{i=1}^n \{||e_i||\}\right)
+        \left(
+            \sum_{i=1}^n |x_i|
+        \right) \\
+        &\leq \left(n \max \bigcup_{i=1}^n \{||e_i||\}\right) ||x||_1
+        \leq \underbrace{\left(n \max \bigcup_{i=1}^n \{||e_i||\}\right)}_\beta ||x||_2
+    \end{align*}
+    Questo ci dice anche che \(||\cdot||\) è continua rispetto
+    alla topologia indotta da \(||\cdot||_2\), e pure lipschitziana.
+    Dobbiamo ora dimostrare l'altra metà della disuguaglianza e trovare \(\alpha\).
+    Poniamo \(\alpha\) in funzione dei vettori
+    \[
+        \alpha = \inf_{||x||_2 = 1} ||x||
+    \]
+    Mostriamo che \(\alpha>0\).
+    Una volta fatto questo, possiam ottenere che la definizione
+    di \(\alpha\) dice che \(||x||_2 = 1 \implies ||x|| \geq \alpha\).
+    Voglio dimostrare che \(||x|| \geq \alpha ||x||_2\) per tutte le \(x \in \mathbb{R}^n\).
+    Se \(x=0\) la disuguaglianza è soddisfstta. Altrimnti, normalizziamo \(z = x / ||x||_2\).
+    Usando l'omogeneità assoluta
+    \[
+        ||z||_2 = \left|\left|\frac{x}{||x||_2}\right|\right|
+        = \frac{1}{||x||_2}||x||_2 \implies ||z||_2 = 1
+    \]
+    Quindi \(||z|| \geq \alpha\) and furthermore
+    \[
+        \left|\left|\frac{x}{||x||_2}\right|\right| \geq \alpha \implies
+        ||x|| \geq \alpha ||x||_2
+    \]
+    We now need to show that \(\alpha\) is positive.
+    Siccome le normi sono non-negative, alla peggio sono nulle.
+    In realtà \(\alpha\) è un minimo
+    \[
+        \alpha = \min_{||x||_2 = 1} ||x||
+    \]
+    since the norm is continuous with the respect to the topology induced by \(||\cdot||_2\).
+    The set over which we are taking the minimum is clearly closed and bounded.
+    Siccome siamo nella topologia reale con norma euclidea è quindi anche compatto.
+    Per Weierstrass, \(\alpha\) è un minimo.
+    Quindi deve essere \(\alpha > 0\). Se fosse \(\alpha = 0\)
+    allora esisterebbe \(\hat{x}\) tale che \(||\hat{x}||_2 = 1\) e \(||\hat{x}|| = 0\), che è assurdo lightning.
+}
+
+\section{Operatori lineari fra spazi vettoriali}
+
+Lo spazio \(\mathcal{L}(\mathbb{R}^n, \mathbb{R}^m) \cong \text{Mat}_{m\times n}(\mathbb{R})\).
+
+Studiamo la continuità degli operatori lineari in spazi normati.
+
+\sproposition{}{
+    Ogni \(A \in \mathcal{L}(\mathbb{R}^n, \mathbb{R}^m)\)
+    è continua rispetto alla topologia indotta dalla norma (qualsiasi visto che sono equivalenti in \(\mathbb{R}^n\)).
+}
+
+\sproof{}{
+    \begin{enumerate}
+        \item Mostriamo che la continuità dell'operatore in un singolo punto, come l'origine,
+        implica la continuità di \(A\) in tutto \(\mathbb{R}^n\). Questo è un fatto generale.
+        Abbiamo quindi che se \(\{x_n\} \to 0\)
+        allora \(\{Ax_n\} \to A0 = 0\). La continuità generale è data dal fatto che se \(\{y_n\} \to x\)
+        allora \(\{Ay_n\} \to Ax\).
+        Ma \(\{Ay_n\} \to Ax\) se e solo se \(\{Ay_m - Ax\} \to 0\) cioè \(\{A(y_m - x)\} \to 0\) e
+        per linearità \(\{y_m - x\}\) è una successione che tende a zero, quindi \(A\) è continuo ovunque.
+        Inoltre, per la continuità uniforme possiamo msotrare che \(\forall \varepsilon > 0, \exists \delta > 0\)
+        tale che
+        \[
+            ||y-x|| < \delta \implies ||Ay - Ax|| < \varepsilon
+        \]
+        Ma \(||Ay - Ax|| = ||A(x-y)||\).
+        Poniamo quindi \(z = y-x\). Dobbiamo mostrare che se \(||z|| < \delta\)
+        allora \(||Az|| < \varepsilon\). Ma questa è la continuità nell'origine che stiamo presupponendo.
+        \item Mostriamo ora la continuità nell'origine.
+        Usiamo il fatto che \(\mathbb{R}^n\) ha dimensione finita.
+        Sia \(x = (x_1, \cdots, x_n)\) secondo la base canonica \((e_1, \cdots, e_n)\).
+        Calcolo usando la disuguaglianza triangolare
+        \begin{align*}
+            ||Ax|| &= \left|\left|
+                \sum_{i=1}^n x_i A e_i
+            \right|\right|
+            \leq \sum_{i=1}^n |x_i| \cdot ||Ae_i|| \\
+            &\leq C \sum_{i=1}^n |x_i|_1, \quad C = \max \bigcup_{i=1}^n \{||Ae_i||\}
+        \end{align*}
+        Ciò dimostra quindi che la funzione è Lipschitz-continua.
+    \end{enumerate}
+}
+
+Nel passo secondo abbiamo usato il fatto che lo spazio fosse finitamente generato (il dominio).
+In generale, con \(A \colon X \to Y\) è un operatore lineare fra spazi normati qualunque,
+on è detto che \(A\) sia continuo.
+
+\sexample{Controesempio}{
+    Consideriamo lo spazio delle funzioni \(f\colon \mathbb{R} \to \mathbb{R}\)
+    limitate, in \(\mathcal{C}^1\) e con derivata limitata \(\mathcal{BC}^1(\mathbb{R})\).
+    Come secondo spazio prendiamo delle funzioni continue e limitate \(f\colon \mathbb{R} \to \mathbb{R}\),
+    \(\mathcal{BC}(\mathbb{R})\).
+    Consideriamo quindi l'operatore della derivata \(\mathcal{BC}^1(\mathbb{R}) \to \mathcal{BC}(\mathbb{R})\).
+    Siccome questi non sono spazi finitamente generati, dobbiamo scegliere delle norme.
+    Scegliamo come norma sia nel dominio che nel codominio \(||\cdot||_\infty\),
+    che ha senso siccome le funzioni sono limitate. Mostriamo quindi che l'operatore lineare non è continuo.
+    Scegliamo l'origine. Vogliamo quindi trovare \(\{f_n\} \to 0\) ma tale
+    che \(\{f_n'\}\) non tende a zero.
+    Per farlo prendiamo una funzione oscillante che si schiaccia sull'ascisse, e quindi la sua derivata
+    non si schiaccia come la funzione. Prendiamo
+    \[
+        f_n(x) = \frac{1}{n}\sin(nx)
+    \]
+    Abbiamo la norma
+    \begin{align*}
+        ||f||_\infty &= \sup_{\mathbb{R}} \frac{1}{n}|\sin(nx)|
+        = \frac{1}{n}
+    \end{align*}
+    Mentre la norma della derivata
+        \begin{align*}
+        ||f'||_\infty &= \sup_{\mathbb{R}} |\cos(nx)| = 1
+    \end{align*}
+}
+
+Andiamo a definire una norma speciale su questo spazio, la norma operatoriale.
+
+\sdefinition{Norma operatoriale}{
+    \[
+        ||A||_* = \sup_{||x|| \leq 1} ||Ax||
+    \]
+}
+
+\sproposition{}{
+    Norma operatoriale è una norma.
+}
+
+Mostriamo che la norma è ben definita, e che questo è un numero reale.
+Infatti, \(||A||_* < +\infty\), siccome l'insieme del supremum è chiuso e limitato e, quindi, compatto,
+e la funzione è continua allora il supremum è un massimo.
+Mostriamo che il massimo si ottiene sulla frontiera della bolla.
+
+\sproof{}{
+    Mostriamo le due disuguaglianze.
+    Il fatto che \(||A||_* \geq \max ||Ax||\) è banale, infatti \(\{x \,|\, ||x||=1\}\)
+    è un sottoinsieme di \(\{x \,|\, ||x|| \leq 1\}\).
+    D'altra parte se il massimo è ottenuto per \(x = 0\) allora il max è 0 e quindi
+    \(Ax = 0\) sempre, e la disuguaglianza è banalmente soddisfatta.
+    Supponiamo ora che il massimo sia ottenuto in un punto non nullo \(\hat{x}\),
+    possiamo normalizzare e ottenere norma unitaria.
+    \begin{align*}
+        ||A\hat{x}|| &= \left|\left|A\left(||\hat{x}|| \frac{\hat{x}}{||\hat{x}||}\right)\right|\right|
+        = \left|\left|||\hat{x}|| A \left(\frac{\hat{x}}{||\hat{x}||}\right)\right|\right|
+        = ||\hat{x}|| \left|\left|A \left(\frac{\hat{x}}{||\hat{x}||}\right)\right|\right|
+        \leq \left|\left|A\left(\frac{\hat{x}}{||\hat{x}||}\right)\right|\right| \\
+        ||A||_* &= \max_{||x|| = 1 ||Ax||} = |A\hat{x}|
+        \leq \left|\left|A\frac{\hat{x}}{||\hat{x}||}\right|\right| \leq \max_{||x||=1} ||Ax||
+    \end{align*}
+}
+
+Quindi il valore può essere calcolato solo sulla buccia in quanto lì viene raggiunto il massimo.
+
+\sproposition{Stima fondamentale}{
+    Per ogni \(x\in \mathbb{R}^n\) vale
+    \[
+        ||Ax||_* \leq ||A|| \cdot ||x||
+    \]
+}
+
+\sproof{}{
+    Se \(||x|| = 1\) vale \(||Ax|| \leq ||A||\)
+    perché per la proprietà precedente, \[||A|| = \max_{||x||=1} ||Ax||\]
+    Se \(x=0\), la disuguaglianza vale.
+    Altrimenti, normalizziamo \(x\) per ritrovarci sulla frontiera.
+    \begin{align*}
+        ||A||_* \geq \left|\left|
+        A\left(\frac{x}{||x||}\right)\right|\right|
+        = \frac{1}{||x||} ||Ax||
+    \end{align*}
+    moltiplicando entrmambi i membri epr \(||x||\) si ottiene la tesi.
+}
+
+In realtà questa costante è la migliore.
+
+\sproposition{}{
+    Se \(\exists \alpha \in \mathbb{R}\)
+    tale che \(||Ax|| \leq \alpha ||x||\) per tutte le \(x \in \mathbb{R}^n\),
+    allora \[||A||_* \leq \alpha\]
+}
+
+In realtà questo risultato vale anche se supponiamo che \(||Ax|| \leq \alpha ||x||\)
+solo per x tale che \(||x|| \leq 1\) oppure tale che \(||x|| = \varepsilon\)
+per qualche \(\varepsilon > 0\).
+
+\sproof{}{
+    Supponiamo di avere una stima del tipo \(||Ax|| \leq \alpha ||x||\) per tutte le x.
+    Sappiamo che
+    \begin{align*}
+        ||A||_* &= \max_{||x|| = 1} ||Ax|| \leq \alpha \max_{||x|| \leq 1} ||x|| = \alpha
+    \end{align*}
+    che è quindi chiaramente \(1\).
+}
+
+La medesima dimostrazione funziona supponendo che \(||Ax|| \leq \alpha ||x||\)
+per tutte le \(||x|| \leq 1\).
+Se invece sappiamo che \(||Ax|| \leq \alpha ||x||\) solo per gli \(x\)
+tale che \(||x|| = \varepsilon\), allora è sufficiente normalizzare (per esercizio).
+
+\sproof{La norma operatoriale è una norma}{
+    \begin{enumerate}
+        \item \emph{annullamento:} Supponiamo che \(||A||_* = 0\).
+        Devo mostrare che \(A=0\). Siccome la norma è nulla,
+        \[
+            \max_{||x|| \leq 1} ||Ax|| = 0 \implies ||Ax|| = 0, \quad \forall x \,|\, ||x|| \leq 1
+        \]
+        e quindi anche per tutti le altre \(x\) visto che possiamo normalizzare. Quindi, \(Ax = 0\).
+        \item \emph{positiva omogeneità:} 
+        \begin{align*}
+            ||\lambda A||_* &= \max_{||x|| = 1} ||\lambda Ax||
+            = \max_{||x|| = 1} |\lambda| |Ax| = |\lambda| \max_{||x|| = 1} ||Ax|| = |\lambda| ||A||_*
+        \end{align*}
+        \item \emph{disuguaglianza triangolare:}
+        \begin{align*}
+            ||(A+B)x|| &= ||Ax + Bx|| \leq ||Ax|| + ||Bx|| \\
+            &\leq ||A||_* ||x|| + ||B||_* ||x| = ||x|| \left(
+                ||A||_* + ||B||_*
+            \right)
+        \end{align*}
+        Per la proposizion precedente, \(||A+B||_*\) è la più piccola costante
+        per cui vale una disuguaglianza di questo tipo.
+    \end{enumerate}
+}
+
+La norma operatoriale è scelta tale precisamente per la stima.
+
+\stheorem{}{
+    \((\mathcal{L}(\mathbb{R}^n, \mathbb{R}^m), ||\cdot||)\) è uno spazio di Banach.
+}
+
+\sproof{}{
+    Siccome questo spazio è finito dimensionale è isomorfismo allo spazio \(\mathbb{R}^{m \times n}\)
+    che è completo per esempio rispetto alla norma seconda.
+    Tuttavia, dimostramolo con le successioni di Cauchy. Cosideriamo quindi una successione di operatori lineari.
+    Per tutte le \(\varepsilon > 0\) esiste \(N_\varepsilon\) tale che \(\forall m,n > N_\varepsilon\)
+    tale che
+    \[
+        ||A_m - A-n|| < \varepsilon
+    \]
+    cioè per tutte le \(x\)
+    \[
+        ||(A_n - A_n)x|| \leq \varepsilon(x)
+    \]
+    Questo vuole dire che per \(x\) fissato la successione \(\{A_n x\}\) è una successione di Cauchy
+    in \(\mathbb{R}^n\). Siccome \(\mathbb{R}^n\) è completo, la successione converge.
+    Chiamiamo il limite di tale successione \(Ax\).
+    Verifichiamo che in questo modo abbiamo definito un operatore lineare \(x \to Ax\).
+    Sappiamo che \(A_n\) è lineare per ogni \(n\), quindi \(A_n(x + y) = A_nx + A_n y\).
+    Sappiamo che \(A(x+y)\) tende ad \(Ax + Ay\) e quindi
+    l'espressione sopra tende ad \(Ax + Ay\).
+    Analogamente per l'omogeneità.
+    Mostriamo ora che \(\{A_n\}\) effettivamente converge ad \(A\), quindi \(||A_n - A|| \to 0\).
+    Sappiamo che \(\{A_n\}\) è una successione di Cauchy.
+    Quindi \(\forall \varepsilon > 0\) esiste \(N_\varepsilon\) tale che \(\forall n,m > N_\varepsilon\)
+    \[
+        ||A_m x - A_n x| \leq \varepsilon||x||
+    \]
+    Ma \(A_n x \to A x\) per \(n \to \infty\).
+    passando al limite si ha che per tutte le \(\varepsilon > 0\) esiste \(N_\varepsilon\)
+    tale che \(\forall n > N_\varepsilon\), \[
+        ||A_nx - Ax|| \leq \varepsilon|x|
+    \]
+    cioè abbiamo trovato che \(||A_n - A|| - \varepsilon\).
+}
+
+Notiamo che abbiamo sfruttato solo la completezza di \(\mathbb{R}^n\).
 
 \end{document}
