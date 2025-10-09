@@ -1384,4 +1384,243 @@ La norma operatoriale è scelta tale precisamente per la stima.
 
 Notiamo che abbiamo sfruttato solo la completezza di \(\mathbb{R}^n\).
 
+\sexercise{}{
+    Sia \(A \colon \mathbb{R}^2 \to \mathbb{R}^3\)
+    dato da
+    \[
+        A = \begin{pmatrix}
+            3 & -2 \\ 0 & 1 \\ 1 & 3
+        \end{pmatrix}
+    \]
+    Prendiamo la norma infinito in ambo gli spazi.
+    Il massimo è dato dal valore sulla frontiera della bolla.
+    \[
+        ||A||_*
+        = \max_{\max \{|x|, |y|\} = 1}
+        \max \{|3x-2y|, |y|, |x+3y|\}
+    \]
+    Quindi \(|3x - 2x| \leq 3|x| + 2|y|\)
+    edeve essere \(\max\{||x||,||y||\} = 1\).
+    In particolare i due moduli sono minori o uguali ad uno.
+    \(|3x-2y| \leq 3+2 = 5\) e il valore \(5\)
+    è assunto per \(x=1\) e \(y=-1\) (oppure cil contrario).
+    Quindi \(||A||=5\).
+
+    Consideriamo invece ora la norma \(1\)
+    quindi
+    \[
+        ||A|| = \max_{|x| + |y| = 1}
+        (|3x-2y| + |y| + |x+3y|)
+    \]
+    Allora
+    \[
+        |3x - 2y| + |y| + |x + 3y|
+        \leq 3|x| + 2|y| + |y| + |x| + 3|y|
+        = 4|x| + 6|y|
+    \]
+    Siccome \(|x| + |y| = 1\)
+    quest'ultima è un interpolazione lineare
+    tipo \(ta + (1-t)b\).
+    In questo caso abbiamo l'espressione 
+    \(4|x| + 6|y|\)
+    che è sempre minore o uguale di \(6\).
+    Quindi abbiamo trovato che \(|3x-2y| + |y| + |x + 3y| \leq 6\).
+    Tale valore può essere raggiunto per esempio scegliendo \(x=0\) e \(y=1\).
+}
+
+Consideriamo ora operatori lineari invertibili,
+quindi fra spazi con la medesima dimensione.
+
+\stheorem{}{
+    \(\text{GL}_n(\mathbb{R})\) è un aperto 
+    in \(\mathcal{L}(\mathbb{R}^n, \mathbb{R}^n)\)
+    dove consideriamo lo spazio topologico indotto dalla metrica indotta
+    dalla norma associata allo spazio. Inoltre, la mappa dell'inversione è continua.
+}
+
+\sproof{}{
+    Visto che il determinante è non nullo
+    \[
+        \text{GL}_n(\mathbb{R}) = \text{det}^{-1}(\mathbb{R} \backslash \{0\})
+    \]
+    ma visto che è la preimmagine di un aperto tramite il determinante, che è continuo.
+
+    Dimostriamo tuttavia la proposizione con una argomento che può funzionare anche
+    nel caso infinito dimensionale.
+    \begin{enumerate}
+        \item \emph{identità è un punto interno dell'insieme:} mostriamo che esiste \(\delta\)
+        tale che \(||A-\mathbf{1}|| < \delta\) implica che \(A \in \text{GL}(\mathbb{R}^n)\).
+        Stiamo usando la norma operatoriale.
+        Posiamo \(B = \mathbf{1} - A\) e quindi \(A^{-1} = {(\mathbf{1} - B)}^{-1}\)
+        che possiamo scrivere come la serie geometrica di \(B^k\).
+        Ovviamente dobbiamo usare la convergenza della somma parziale della serie
+        secondo la norma dei vettori. (Purché la serie converga).
+        Infatti, se la serie converge usiamo la proprietà distributiva per mostrare che è veramente l'inverso di \(\mathbf{1} - B\)
+        \begin{align*}
+            (\mathbf{1}-\mathbf{1}) \sum_{k=0}^\infty B^k
+            &= \sum_{k=0}^\infty B^k - \sum_{k=0}^\infty B^{k+1} \\
+            &= \sum_{k=0}^\infty B^k - \sum_{k=1}^\infty B^k = B^0 = \mathbf{1} 
+        \end{align*}
+        Quindi la stessa cosa che vale per i numeri, vale anche con gli operatori (negli spazi vettoriali in generale).
+        Dobbiamo tuttavia studiare quando la serie converge.
+        Usando il criterio di Cauchy, troviamo che la serie converge se e solo se \(\forall \varepsilon > 0, \exists N_\varepsilon \in \mathbb{N}\)
+        tale che \(\forall p \in \mathbb{N}\) \begin{align*}
+            \left|\left|
+                \sum_{k=m}^{m+p} B^k
+            \right|\right| \leq \varepsilon
+        \end{align*}
+        Mediante la stima otteniamo una serie numerica.
+        \begin{align*}
+            \left|\left|
+                \sum_{k=m}^{m+p} B^k
+            \right|\right| \leq \sum_{k=m}^{m+p}
+            \left|\left| B^k \right|\right|
+        \end{align*}
+        Preferiremmo lavorare la potenza di una norma piuttosto che la norma di una potenza,
+        ma coincidono?
+
+        Calcoliamo quindi \(||B \circ A||_*\)
+        con \(A,B\) operatori lineari, e usando la norma operatoriale.
+        Siccome abbiamo la norma operatoriale vale la stima fondamentale
+        \begin{align*}
+            ||(B\circ A) x|| &= ||B(Ax)|| \leq ||B||_* ||Ax|| \leq ||B||_* ||A||_* ||x||
+        \end{align*}
+        Siccome la norma operatoriale è la più piccola costante per cui vale una stima del tipo dato.
+        Quindi \(||B \circ A||_* \leq ||B||_* ||A||_*\).
+        Quindi in particolare \(||B^k||_* \leq {||B||_*}^k\).
+        Tornando a prima otteniamo
+        \begin{align*}
+            \left|\left|
+                \sum_{k=m}^{m+p} B^k
+            \right|\right|_* \leq
+            \sum_{k=m}^{m+p} ||B^k||_*
+            \leq \sum_{k=m}^{m+p} {(||B||_*)}^k \leq \varepsilon
+        \end{align*}
+        pur di considerare \(||B||_* < 1\).
+        \item Sia \(A_0 \in \text{GL}_n(\mathbb{R})\).
+        Vogliamo mostrare che \(\exists \delta > 0\) tale che
+        \[
+            ||A-A_0||_* < \delta \implies A \in \text{GL}_n(\mathbb{R})
+        \]
+        Calcoliamo
+        \begin{align*}
+            A = A_0 - (A_0 - A) = A_0 (\mathbf{1}  A_0^{-1}(A_0 - A))
+            = A_0 (\mathbf{1} - B), \quad B = \mathbf{1} - B
+        \end{align*}
+        per il punto precedente \(\mathbf{1} - B\) è invertibile purché \(||B||_* < 1\).
+        Studiamo quando ciò avviene
+        \begin{align*}
+            ||B||_* = ||A_0^{-1}(A_0 - A)||_* \leq ||A_0^{-1}|| \cdot ||A_0 - A|| < 1
+            \text{ se } ||A_0 - A||_* < \frac{1}{||A_0^{-1}||}
+        \end{align*}
+        la divisione la possiamo fare in quanto la funzione nulla, che ha norma nulla, non è invertibile quindi non siamo
+        in quel caso.
+        Quindi, scegliendo \(\delta \leq 1 / ||A_0^{-1}||\)
+        si ha che \(A\) è invertibile, quindi è un aperto.
+        Cioè inq uesto caso \(||B|| < 1\) quindi \(\mathbf{1} - B\) è invertibile
+        e visto che abbiamo scritto \(A\) come prodoto di operatori invertibili, è anch'esso invertibile.
+    \end{enumerate}
+
+    Mostriamo ora che l'inversa è continua.
+    Da \(||B\circ A||_* \leq ||B||_* ||A||_*\)
+    da qui segue che la composizione di questi lineari è continua.
+    Siano \(B_n \to B\) e \(A_n \to A\) quindi \(B_n \circ A_n \to B\circ A\).
+    Mostriamo che la mappa \(A \to A^{-1}\) è continua, cioè che
+    \(A_n \to A \implies A_n^{-1} \to A^{-1}\). Abbiamo
+    \begin{align*}
+        A = A_0(\mathbf{1} - A_0^{-1}(A_0 - A)) = A_0(\mathbf{1} - B), \quad A^{-1} = (\mathbf{1} - B)^{-1} A_0^{-1}
+    \end{align*}
+    Vogliamo stimare \(||A^{-1} - A_0^{-1}||_*\).
+    \begin{align*}
+        A^{-1} - A_0^{-1} &=
+        {(\mathbf{1} - B)}^{-1} A_0^{-1} - A_0^{-1}
+        = \left[
+            {(\mathbf{1} - B)}^{-1} - \mathbf{1}
+        \right]A_0^{-1} = \left[
+            \sum_{k=0}^\infty B^k - \mathbf{1}
+        \right]A_0^{-1} = \left[\sum_{k=1}^\infty B^k\right] A_0^{-1} \\
+        ||A^{-1} - A_0^{-1}||_*
+        &= \left|\left| \left(\sum_{k=1}^\infty B^k\right) \circ A_0^{-1}
+        \right|\right|
+        \leq \left(\sum_{k=1}^\infty {(||B||_*)}^k\right) ||A_0^{-1}||
+        = \frac{||B||_*}{1 - ||B||_*} ||A_0^{-1} ||
+    \end{align*}
+    pur di prendere \(||B||_* < 1\).
+    Se \(A \to A_0 \implies ||B||_* \to 0\) allora \( A^{-1} - A_0^{-1} \to 0\).
+}
+
+\pagebreak
+
+\section{Calcoli differenziale multivariabile}
+
+\sdefinition{Limite multivariabile}{
+    Sia \(f \colon \Omega \subseteq \mathbb{R}^n \to \mathbb{R}^m\)
+    e sia \(a\) un punto di accimulazione per \(\Omega\).
+    Allora
+    \[
+        \lim_{x\to a} f(x) = b \in \mathbb{R}^m
+    \]
+    se \(\forall \varepsilon > 0, \exists \delta > 0\)
+    tale che \(\forall x \in \Omega\)
+    \[
+        0 < ||x-a||_1 < \delta
+        \implies
+        ||f(x) - b||_2 < \varepsilon
+    \]
+    dove le norme sono generiche.
+}
+
+Il concetto di limite ad infinito vuol dire uscire dai compatti.
+
+\sdefinition{Limite a infinito multivariabile}{
+    Sia \(f \colon \Omega \subseteq \mathbb{R}^n \to \mathbb{R}^m\)
+    con \(\Omega\) illimitato.
+    Allora
+    \[
+        \lim_{x\to \infty} f(x) = b \in \mathbb{R}^m
+    \]
+    se \(\forall \varepsilon > 0, \exists M > 0\)
+    tale che \(\forall x \in \Omega\)
+    \[
+        ||x|| > M \implies ||f(x) - b|| < \varepsilon
+    \]
+}
+
+e per il codominio
+
+\sdefinition{Limite infinito multivariabile}{
+    Sia \(f \colon \Omega \subseteq \mathbb{R}^n \to \mathbb{R}^m\)
+    e \(a\) punto di accumulazione.
+    Allora
+    \[
+        \lim_{x\to a} f(x) = \infty
+    \]
+    se \(\forall K > 0, \exists \delta > 0\)
+    tale che per tutte le \(x \in \Omega\)
+    \[
+        0 < ||x-a|| < \delta
+        \implies ||f(x)|| > K
+    \]
+}
+
+\sdefinition{Cammino}{
+    Un \emph{cammino} è un applicazione \(\varphi: (0,1) \to \mathbb{R}^n\) continua.
+}
+
+Sia \(\Phi_\Omega(a)\) l'insieme dei
+cammini con sostegni in \(\Omega\)
+e tale che \(\varphi(t) \to a\)
+per \(t \to 0^+\)
+e \(\varphi(t) \neq\) per tutte le \(t\).
+
+\stheorem{}{
+    \[
+        \lim_{x\to a} f(x) = b
+        \iff
+        \lim_{t \to 0^+}
+        f(\varphi(t)) = b
+    \]
+    per tutte le \(\varphi \in \Phi_\omega(a)\).
+}
+
 \end{document}
