@@ -5,6 +5,8 @@
 \usepackage{xcolor}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{bettelini}
+\usepackage{mathtools}
 
 \begin{document}
 
@@ -38,11 +40,88 @@ structure of open sets in the domain when mapping to the codomain.}
 
 \plain{This is also equivalent to saying that the map is continuous at every point.}
 
+\begin{snippetproposition}{topology-continuous-map-characterization}{}
+    Let \(f \colon X \fromto Y\)
+    be a map between \topologicalspace[topological spaces].
+    Then, \(f\) is \topologycontinuous \ifandonlyif
+    \[
+        \forall A \subseteq, f(\closure[X][A]) \subseteq \closure[Y][f(A)]
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{topology-continuous-map-characterization-proof}{topology-continuous-map-characterization}{}
+    \iffproof{
+        By the definition of continuity (with the complement)
+        \[
+            f(\overline{A}) = \overline{f(A)}
+            \iff
+            \overline{A} \subseteq f^{-1}(\overline{f(A)})
+        \]
+        By definition of closure of \(A\) (as the smallest closed set containing \(A\)),
+        this is equivalent to saying that
+        \[
+            A \subseteq f^{-1}(\overline{f(A)})
+        \]
+        This is equivalent to saying \(f(A) \subseteq \overline{f(A)}\) which is verified.
+    }{
+        We want to show that for each closed set \(C\), its preimage is also closed.
+        Let \(A = f^{-1}(C)\). We have
+        \begin{align*}
+            f(\overline{A}) = f(\overline{f^{-1}(C)})
+            \subseteq \overline{f(f^{-1}(C))} \subseteq \overline{C} = C
+        \end{align*}
+        But this is equivalent to \(f^{-1}C = \overline{f^{-1}(C)}\)
+        which is equivalent to saying that \(f^{-1}(C)\) is closed, which is what we wanted.
+    }
+\end{snippetproof}
+
+\plain{This means that the composition of continuous functions are also continuous.}
+
+\begin{snippettheorem}{topological-continuous-at-every-point-theorem}{}
+    Let \(f \colon X \fromto Y\)
+    be a map between \topologicalspace[topological spaces].
+    Then, \(f\) is \topologycontinuous \ifandonlyif it is continuous at each point.
+\end{snippettheorem}
+
+\begin{snippetproof}{topological-continuous-at-every-point-theorem-proof}{topological-continuous-at-every-point-theorem}{}
+    \iffproof{
+        Let \(x \in X\) and \(V\) a \neighborhood of \(f(x_0)\).
+        By definition
+        \[
+            V \supseteq A \ni f(x)
+        \]
+        where \(A\) is \topologicalspace[open][Open].
+        By continuity at a point \(x \in f^{-1}(A)\)
+        is \topologicalspace[open][Open] as \(f(x) \in A\).
+        We can take \(U = f^{-1}(A)\) and thus
+        \[
+            f(U) = f(f^{-1}(A)) \subseteq A \subseteq V
+        \]
+    }{
+        We want to show that for each \topologicalspace[open][Open] \(A\) of \(Y\),
+        \(f^{-1}(A)\) is \topologicalspace[open][Open] in \(X\).
+        The condition of opennes can be written as
+        \[
+            \forall x \in f^{-1}(A), f^{-1}(A) \text{ is a \neighborhood of } X
+        \]
+        which is equivalent to
+        \[
+            \forall x \in f^{-1}(A), f^{-1}(A) \subseteq U
+        \]
+        for some \topologicalspace[open][Open] \(U\) such that \(x \in U\).
+        By taking \(V = A\) we know that such a \(U\) exists by definition of continuity of \(f\)
+        in \(x\). Thus, there exists a \topologicalspace[open][Open] \neighborhood \(U\)
+        in \(x\) such that \(f(U) \subseteq V\)
+    }
+\end{snippetproof}
+
 \begin{snippetdefinition}{homeomorphism-definition}{Homeomorphism}
     Let \((X, {\mathcal{T}}_X)\) and \((Y, {\mathcal{T}}_Y)\) be \topologicalspace[topological spaces].
     A \function \(f\colon X \fromto Y\) is a \textit{homeomorphism} if it is \topologycontinuous, \bijective
     and \(f^\inversefunction\) is \topologycontinuous.
 \end{snippetdefinition}
+
+\plain{Homeomorphisms induce equivalence relations between topological spaces.}
 
 \begin{snippetdefinition}{sequentially-continuous-definition}{Sequentially continuous}
     Let \((X, {\mathcal{T}}_X)\) and \((Y, {\mathcal{T}}_Y)\) be \topologicalspace[topological spaces].
@@ -50,6 +129,214 @@ structure of open sets in the domain when mapping to the codomain.}
     \(x\in X\), for every sequence \({\{x_n\}}_{n \in \naturalnumbers} \subseteq X\) with \(x_n \to x\)
     we have that \({\{f(x_n)\}}_{n \in \naturalnumbers} \subseteq Y\) converges with
     \(f(x_n) \topologyconverges f(x)\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{open-closed-topological-map-definition}{Open and closed topological map}
+    Let \(f \colon X \fromto Y\)
+    be a map between \topologicalspace[topological spaces].
+    Then, \(f\) is said to be \emph{open/closed}
+    if for every \topologicalspace[open set][Open] / \closedset \(S\),
+    \(f(S)\) is \topologicalspace[open][Open] / \closedset[closed].
+\end{snippetdefinition}
+
+\begin{snippetproposition}{homeomorphism-equivalent-conditions}{}
+    Let \(f \colon X \fromto Y\)
+    be a map between \topologicalspace[topological spaces].
+    The following are equivalent:
+    \begin{enumerate}
+        \item \(f\) is a \homeomorphism;
+        \item \(f\) is open and \bijective;
+        \item \(f\) is closed and \bijective;
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{homeomorphism-equivalent-conditions-proof}{homeomorphism-equivalent-conditions}{}
+    \begin{itemize}
+        \item \((1) \iff (2\&3):\)
+        let \(g^{-1} = f\). We have \(g^{-1}(A) = f(A)\).
+        \(f\) is open/closed \ifandonlyif \(g\) is continuos,
+        and \(g\) is continuous \ifandonlyif \(\forall A\) \topologicalspace[open][Open] / \closedset[closed]
+        \(g^{-1}(A) = f(A)\) is \topologicalspace[open][Open] / \closedset[closed].
+    \end{itemize}
+\end{snippetproof}
+
+\section{Subspaces}
+
+\begin{snippet}{subspace-topology-expl}
+    We want a minimal notion of subspace such that the inclusion map from the subset to the original space is continuous.
+    We thus want \(i \colon Y \xhookrightarrow{} X\) is continuous.
+    For each \topologicalspace[open set][Open] \(A\),
+    \(i^{-1}(A) = A \intersection Y\).
+    This is equivalent to saying that all the \(A \cap Y\) are in the topology.
+
+    The closed sets in this topology are the ones that can be written as
+    \(i^{-1}(C)\) for \(C\) closed in \(X\).
+    \[
+        Y \difference i^{-1}(A) = i^{-1}(X \difference A)
+    \]
+\end{snippet}
+
+\begin{snippetdefinition}{subspace-topology-definition}{Subspace topology}
+    Let \((X, \tau)\) be a \topologicalspace and \(Y \subseteq X\).
+    Then, the \emph{subspace topology} is defined as
+    \[
+        \pi_Y = \{Y \intersection U \suchthat U \in \tau \}
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{subspace-topology-is-topology}{}
+    Let \((X, \tau)\) be a \topologicalspace and \(Y \subseteq X\).
+    Then, the subspace topology \(\pi_Y\) is a topology for \(Y\).
+\end{snippetproposition}
+
+\begin{snippetproof}{subspace-topology-is-topology-proof}{subspace-topology-is-topology}{}
+    Let \(i \colon Y \xhookrightarrow{} X\) be the continuous inclusion map.
+    \begin{enumerate}
+        \item \(\emptyset \in \pi_Y\) as \(i^{-1}(\emptyset) = \emptyset\);
+        \item \(Y \in \pi_Y\) as \(i^{-1}(X) = Y\);
+        \item \[
+            i^{-1}(A_1) \intersection i^{-1}(A_2) = i^{-1}(A_1 \intersection A_2)
+        \]
+        \item \[
+            i^{-1}\left(
+                \bigcup_{A \in \pi_Y} A
+            \right)
+            =
+            \bigcup_{A \in \pi_Y} i^{-1}(A)
+        \]
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetproposition}{subspace-topology-basis}{}
+    Let \(\mathcal{B}\) be a \topologicalbasis for \((X, \tau)\).
+    Let \(i \colon Y \xhookrightarrow{} X\) be the continuous inclusion map.
+    Then,
+    \[
+        \{i^{-1}(B) \suchthat B \in \mathbb{B}\}
+    \]
+    is a \topologicalbasis for the subspace \((Y, \pi_Y)\).
+\end{snippetproposition}
+
+\begin{snippetproof}{subspace-topology-basis-proof}{subspace-topology-basis}{}
+    Let \(A\in \tau\). We have \(A = \bigcup B\) for \(B \in \mathbb{B}\).
+    \[
+        i^{-1}(A) = i^{-1} \left(
+            \bigcup B
+        \right)
+        = \bigcup i^{-1}(B)
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{subspace-topology-universal-property}{Subspace topology universal property}
+    Let \(X, Z\) be \topologicalspace[topological spaces]
+    and \(i \colon Y \xhookrightarrow{} X\) be the continuous inclusion map
+    of a subspace of \(X\).
+    Suppose that \(f \colon Z \fromto Y\) is a map.
+    Then, \(i \circ f\) is continuous \ifandonlyif \(f\) is continuous.
+\end{snippetproposition}
+
+\begin{snippetproof}{subspace-topology-universal-property-proof}{subspace-topology-universal-property}{Subspace topology universal property}
+    \ffiproof{
+        This is obvious as the composition of continuous functions are continuous.
+    }{
+        Suppose that \(i \circ f\) is continuous.
+        We want to show that \(f\) is continuous, meaning that \(\forall B\)
+        \topologicalspace[open][Open] in \(Y\), \(f^{-1}(B)\) is \topologicalspace[open][Open]
+        in \(Z\).
+        By definition of subspace topology, \(B = i^{-1}(A)\) for some \topologicalspace[open][Open]
+        \(A\) of \(X\).
+        \[
+            f^{-1}(B) = f^{-1}(i^{-1}(A)) = {(i \circ f)}^{-1}(A)
+        \]
+        \topologicalspace[open][Open] in \(Z\), since \(i \circ f\) is continuous.
+    }
+\end{snippetproof}
+
+\begin{snippetproposition}{closure-in-subspace-topology}{}
+    Let \(X\) be a \topologicalspace and let \(i \colon Y \xhookrightarrow{} X\)
+    be the continuous inclusion map
+    of a subspace \(Y\) of \(X\). Let \(S \subseteq Y\). Then,
+    \[
+        (\closure[X][S]) \intersection Y = \closure[Y][S]
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{closure-in-subspace-topology-proof}{closure-in-subspace-topology}{}
+    It suffices to note the following:
+    \begin{itemize}
+        \item the closure of a subset is the intersection of all the \closedset[closed sets]
+        containing the subset;
+        \item the \closedset[closed sets] for the subspace topology of \(Y\)
+        re precisely the intersecitons with \(Y\)
+        of \closedset[closed sets] for the topology \(X\).
+    \end{itemize}
+\end{snippetproof}
+
+\begin{snippetlemma}{closure-and-opennes-in-topological-subsets}{}
+    Let \(X\) be a \topologicalspace, \(Z \subseteq Y \subseteq X\). Then,
+    \begin{enumerate}
+        \item if \(Y\) is \topologicalspace[open][Open] in \(X\),
+        then \(Z\) is \topologicalspace[open][Open] in \(Y\)
+        \ifandonlyif \(Z\) is \topologicalspace[open][Open] in \(X\);
+        \item if \(Y\) is \closedset[closed] in \(X\),
+        then \(Z\) is \closedset[closed] in \(Y\)
+        \ifandonlyif \(Z\) is \closedset[closed] in \(X\);
+        \item if \(y\in Y\) and \(Y\) is a \neighborhood of \(y\) in \(X\),
+        then \(Z\) is a \neighborhood of \(y\) in \(Y\) \ifandonlyif \(Z\)
+        is a \neighborhood of \(y\) in \(X\).
+    \end{enumerate}
+\end{snippetlemma}
+
+\begin{snippetproof}{closure-and-opennes-in-topological-subsets-proof}{closure-and-opennes-in-topological-subsets}{}
+    \begin{enumerate}
+        \item By definition of subspace, \(Z\) is \topologicalspace[open][Open] in \(Y\) \ifandonlyif
+        \(Z = A \intersection Y\) for some \(A\) \topologicalspace[open][Open] in \(X\).
+        If \(Y\) is \topologicalspace[open][Open] in \(X\), then \(Z\)
+        is \topologicalspace[open][Open] in \(X\) as intersection of two \topologicalspace[open sets][Open]
+        in \(X\). The other direction is obvious by definition of subspace topology.
+        \item Analogous.
+        \item There exist an \topologicalspace[open set][Open] \(U\)
+        of \(X\) such that \(y \in U \subseteq Y\).
+        SUppose that \(Z\) is a \neighborhood of \(y\) in \(X\).
+        We have \(Z \supseteq V \ni y\) where \(V\) is \topologicalspace[open][Open]
+        in \(X\). This means that \(Z \intersection Y \supseteq V \intersection Y \ni y\)
+        which is also \topologicalspace[open][Open] because it is the intersection of two
+        \topologicalspace[open sets][Open]. \\
+        Viceversa, suppose that \(Z\) is a \neighborhood
+        of \(y\) in \(Y\).
+        Then, there is a \(V\) \topologicalspace[open][Open] in \(Y\)
+        such that \(y \in V \subseteq Z\).
+        Consider \(U\) \topologicalspace[open][Open] in \(X\) such that
+        \(Y \supseteq U \ni y\) like before. Since \(U\)
+        is included in \(Y\) we can consider it a subspace of both \(Y\) and \(X\).
+        These two topologies are the same by transitivity.
+        This is because the \topologicalspace[open sets][Open] of such topology
+        are the subsets of the form \((A \intersection Y) \intersection U\)
+        where \(A\) is \topologicalspace[open][Open] in \(X\).
+        However, this is equivalent to the intersection with the smallest subset
+        \[
+            (A \intersection Y) \intersection U
+            = A \intersection U
+        \]
+        since \(U \subseteq Y \subseteq X\).
+        The subset \(U \intersection V\) is \topologicalspace[open][Open]
+        of \(U\) (viewed as a subspace of \(Y\)) as \(V\)
+        is \topologicalspace[open][Open] in \(Y\).
+        However, \(U\) is \topologicalspace[open][Open] in \(X\)
+        and thus by \((1)\), \(U \intersection V\) is \topologicalspace[open][Open] of \(X\)
+        by transitivity (when considering \(U\) as a subspace of \(X\)).
+        Thus, \(y\in U \intersection V \subseteq Z\)
+        and \(Z\) is a \neighborhood of \(y\) in \(X\).
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetdefinition}{topological-immersion-definition}{Topological immersion}
+    Let \(f \colon X \fromto Y\)
+    be a map between \topologicalspace[topological spaces] that is continuous and \injective.
+    Then, \(f\) is said to be a \emph{topological immersion}
+    if the \topologicalspace[open sets][Open]
+    of \(X\) are precisely the subsets of the form \(f^{-1}(A)\)
+    where \(A\) is \topologicalspace[open][Open] in \(Y\).
 \end{snippetdefinition}
 
 \end{document}
