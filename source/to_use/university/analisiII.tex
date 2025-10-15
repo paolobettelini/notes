@@ -1623,4 +1623,320 @@ e \(\varphi(t) \neq\) per tutte le \(t\).
     per tutte le \(\varphi \in \Phi_\omega(a)\).
 }
 
+\sdefinition{Derivata direzionale}{
+    TODO
+    \[
+        D_v f(a) = \lim_{t\to 0} \frac{f(a+vt) - f(a)}{t}
+    \]
+}
+
+%%%%%%% 15/ott
+
+La derivata parziale è come prendere una fetta della funzione multidimensionale,
+nella direzione data dal vettore direzionale, e calcolare la verivata ad una singola variabile.
+
+Le derivate parziali lungo i versori della base canonica si chiamano derivate parziali.
+
+\sexample{}{
+    Sia \[
+        f(x,y) = \begin{cases}
+            \frac{xy^2}{x^2 + y^2} & (x,y) \neq 0 \\
+            0 & (x,y) = (0,0)
+        \end{cases}
+    \]
+    Stabiliamo se le derivate direzionali
+    di \(f\) esistono nell'origine e calcoliamo.
+    Questa funzione è costante lungo gli assi cartesiani e vale zero.
+    Quindi, le derivate parziali sono nulle.
+    Sia \(v\) un qualsiasi versore. Possiamo già escludere i casi
+    con \(v_i = 0\) in quanto sono le derivate parziali.
+    Calcoliam quindi
+    \begin{align*}
+        \lim_{t\to 0} \frac{f(0 + tv_1, 0 + tv_2) - f(0,0)}{t}
+        &= \lim_{t\to 0}
+        \frac{1}{t} \frac{tv_1 t^2 v_2^2}{t^2v_1^2 + t^2v_2^2} \\
+        &= \lim_{t\to 0} \frac{t^3 v_1v_2^2}{t^3(v_1^2 + t^2v_2^4)} \\
+        &= \lim_{t\to 0} \frac{v_1v_2^2}{v_1^2 + t^2v_2^4} \\
+        &= \frac{v_1v_2^2}{v_1^2} = \frac{v_2^2}{v_1}
+    \end{align*}
+    Quindi \(f\) ammette tutte le derivate direzionali.
+    Controlliamo il limite di questa funzione nell'origine, per controllare
+    se è quindi continua in quel punto.
+    \begin{align*}
+        \frac{\rho^3 |\cos\theta| \sin^2\theta}{
+            \rho^2 (\cos^2 \theta + \rho^2 \sin^2 \theta)
+        }
+        &\leq \frac{\rho}{\cos^2\theta + \rho^2 \sin^4 \rho}
+    \end{align*}
+    Consideriamo
+    \[
+        f(y^2, y) = \frac{1}{2}
+    \]
+    Quindi abbimo trovato un cammino lungo il qualr la funzione non tende a zero.
+    Avremmo potuto semplicemente considerare la stima
+    \[
+        \frac{|xy^2|}{x^2 + y^4} \leq \frac{1}{2}
+    \]
+}
+
+L'esistenza delle derivate parziali
+non implica la differenziabilità.
+
+Nelle funzioni di una variabili l'esistenza del rapporto incrementale
+e l'approssimazione lineare local di una funzione coincidono e sono equivalenti alla
+differenziabilità, ma in più variaibli non coincidono.
+
+\sdefinition{}{
+    Sia \(f \colon \Omega \subseteq \mathbb{R}^n \to \mathbb{R}\)
+    con \(\Omega\) aperto e \(a \in \Omega\).
+    Diremo che \(f\) è differenziabile in \(a\)
+    se esiste una forma lineare (funzionale lineare),
+    o equivalentemente se esiste \(\lambda \in \mathbb{R}^n\) tale che
+    \[
+        f(a + h) = f(a) + \lambda \lambda + o(||h||)
+    \]
+    per \(h \to 0\).
+    Tale forma lieare è detta differenziale di \(f\) in \(a\),
+    denotata \(\text{d}f(a)\), che quindi manda \(h\) in \(h\lambda\).
+}
+
+(Teorema di Riesz, infatti il fatto che la derivata direzionale è data da \(\nabla f(a) \cdot v\)).
+Se tale \(\lambda\) esiste, è unico.
+Supponiamo che \(\lambda,\mu\) soddisfino l'uguaglianza.
+Sottraendo membro a membro otteniamo
+\begin{align*}
+    (\lambda - \mu) h = o(||h||)
+\end{align*}
+per \(h\to 0\).
+Quindi vogliamo
+\begin{align*}
+    \lim_{h\to 0} \frac{(\lambda - \mu)h}{||h||} = 0
+\end{align*}
+ma 
+\[
+    (\lambda - \mu) \frac{h}{||h||}
+\]
+non tende a zero per \(h\to 0\).
+Per mostrarlo scegliamo il cammino \(\varphi(t) = t(\mu-\nu)\) e
+\[
+    (\lambda - \mu) \frac{t(\lambda - \mu)}{|t| \cdot ||\lambda - \mu||}
+    = \frac{t}{|t|}||\lambda - \mu||
+\]
+che nont ende a zero perché \(\lambda \neq \mu\).
+Quindi non esistono \(\lambda \neq \mu\) tale che valga l'uguaglianza.
+
+\stheorem{}{
+    Se \(f\) è differenziabile in \(a\), allora
+    \begin{enumerate}
+        \item \(f\) è continua in \(a\);
+        \item \(\forall v \in \mathbb{R}^n\), esiste la derivata direzionale
+        \(D_v f(a) = \lambda \cdot v\);
+        \item \(\lambda = \nabla f(a)\)
+    \end{enumerate}
+}
+
+\sproof{}{
+    \begin{enumerate}
+        \item Per ipotesi esiste \(\lambda \in \mathbb{R}^n\)
+        tale che
+        \[
+            f(a + h) - f(a) = \lambda \cdot h + \varepsilon(h)
+        \]
+        con \(\varepsilon(h) = o(||h||)\).
+        Quindi, \begin{align*}
+            |f(a+h) - f(a)| &= 
+            |\lambda \cdot h + \varepsilon(h)| \\
+            &= |\lambda h| + |\varepsilon(h)| < ||\lambda||
+            ||h|| + ||h|| \frac{|\varepsilon(h)|}{||h||} \\
+            &\leq ||h|| \left[
+                ||\lambda|| + \frac{|\varepsilon(h)|}{||h||}
+            \right] \to 0
+        \end{align*}
+        Abbiamo usato la disuguaglianza di Cauchy-Schwarz.
+        \item Calcoliamo
+        \begin{align*}
+            \frac{f(a + tv) - f(a)}t
+            &= \frac{\lambda \cdot tv + \varepsilon(tv)}{t} \\
+            &= \lambda v + \frac{\varepsilon(tv)}{t} \\
+            &= \lambda v + \frac{\varepsilon(tv)}{t ||v||} \\
+            &= \lambda v + \frac{|t|}{t} \frac{\varepsilon(tv)}{||tv||} \\
+            &\to \lambda v
+        \end{align*}
+        \item \[
+            \frac{\partial f}{\partial x_j}(a)
+            = D_v f(a) = \lambda e_j = \lambda_j
+        \]
+        quindi \(\lambda = \nabla f(a)\).
+    \end{enumerate}
+}
+
+Per sabilire se una funzione \(f\) è differenziabile in \(a\),
+basta controllare se le derivate parziali esistono.
+
+\scorollary{Formula del gradiente}{
+    Se \(f\) è differenziabile in \(a\),
+    allora \(D_v f(a) = \nabla f(a) \cdot v\).
+}
+
+%\newcommand\restr[2]{{% we make the whole thing an ordinary symbol
+%\left.\kern-\nulldelimiterspace % automatically resize the bar with \right
+%#1 % the function
+%\vphantom{\big|} % pretend it's a little taller at normal size
+%\right|_{#2} % this is the delimiter
+%}}
+%
+%\[
+%    \restr{\frac{\partial f}{\partial x_i}}{a} \qquad
+%    \frac{\partial f}{\partial x_i} \tikz{
+%        \draw (0,0) -- (0, -0.5);
+%    }
+%\]
+
+\sexample{}{
+    Studia se \[
+        f(x,y) = x^5 \sqrt{|y|}
+    \]
+    è differenziabile nei punti del tipo \((x_0, 0)\) lungo l'asse \(x\).
+    Nel punto zero potremo avere dei problemi per la derivata parziale di \(y\),
+    quindi dovremo usare la definizione e non le regole delle derivate.
+    Siccome \(f(x,0) = 0\) la derivata nei punti della forma \((x_0, 0)\) è 0.
+    Calcoliamo
+    \begin{align*}
+        \frac{\partial f}{\partial y}(x_0, 0)
+        &= \lim_{y \to 0} \frac{f(x_0, y) - f(y_0, 0)}{y} \\
+        &= \lim_{y\to 0} \frac{x_0^5 \sqrt{||y||} - 0}{y} \\
+        &= \lim_{y\to 0} x_0^5 \frac{\sqrt{|y|}}{y} \\
+        &= \lim_{y\to 0} x_0^5 \,\text{sgn} y |y|^{-1/2} = \begin{cases}
+            0 & x_0 = 0 \\
+            \nexists & x_0 \neq 0
+        \end{cases}
+    \end{align*}
+    Ma quindi \(f\) non è differenziabile nei punti \((x_0, 0)\) se \(x_0 \neq 0\).
+    Invece nel punto dell'origine abbiamo \(\nabla f(0,0) = (0,0)\)
+    \begin{align*}
+        \lim_{(h,k) \to (0,0)} \frac{f(h,k) - f(0,0) - \nabla f(0,0) \cdot (h,k)}{\sqrt{h^2 + k^2}}
+        &= \lim_{(h,k) \to (0,0)} \frac{h^5 \sqrt{|k|}}{\sqrt{h^2 + k^2}} \\
+    \end{align*}
+    Siccome \[
+        \frac{|ab|}{a^2 + b^2} \leq \frac{1}{2}
+    \]
+    Abbiamo
+    \[
+        \left|\frac{h^5 \sqrt{|k|}}{\sqrt{h^2 + k^2}}\right|
+        = {\left(
+            \frac{|h| \cdot |k|}{h^2 + k^2}
+        \right)}^{1/2} {|h|}^{9/2} \leq \frac{1}{\sqrt{2}} {|h|}^{9/2}
+    \]
+    e quindi tende a zero. Allora \(f\) è differenziabile nell'origine.
+}
+
+Se \(f\) è differenziabile in \(a\) possiamo definire l'iperpiano tangente
+\[
+    f(a) + \nabla f(a) \cdot (x-a)
+\]
+
+\stheorem{Teorema del differenziale totale}{
+    Sia \(f \colon \Omega \to \mathbb{R}\), con \(\Omega \in \mathbb{R}^n\) aperto,
+    \(x_0 \in \Omega\). Se \(\exists r > 0\)
+    tale che \(B_r(x_0) \subseteq \Omega\) e tutte le derivate parziali di \(f\)
+    esistono in \(B_r(x_0)\) e sono continue in \(x_0\),
+    allora \(f\) è differenziabile in \(x_0\).
+}
+È una condizione sufficiente.
+\sproof{}{
+    Facciamo il caso \(n=2\).
+    Per ipotesi sappiamo che \(\nabla f(x_0)\) esiste.
+    Dobbiamo msotrare che
+    \[
+        \lim_{(x,y) \to (x_0,y_0)} \frac{
+            f(x,y) - f(x_0, y_0) - \nabla f(x) \cdot (x-x_0, y-y_0)
+        }{\sqrt{{(x-x_0)}^2 + {(y-y_0)}^2}} = 0
+    \]
+    Calcoliamo l'incremento \(f(x,y) - f(x_0, y_0)\). Piuttosto che congiungere
+    i due punti mediante un segmento, facciamo lo stesso percorso con due segmenti nella direzione degli assi,
+    quindi ho una variabile sola al posto di due, due volte. Quindi passiamo dal punto intermedio
+    \((x,y_0)\). Abbiamo allora
+    \begin{align*}
+        f(x,y) - f(x_0, y_0) &= \left[
+            f(x,y) - f(x,y_0)
+        \right] + \left[
+            f(x,y_0) - f(x_0,y)
+        \right]
+    \end{align*}
+    Possiamo applicare il teorema di Lagrange
+    \begin{align*}
+        f(x,y) - f(x,y_0) = \frac{\partial f}{\partial y}(x, \xi) (y-y_0)
+    \end{align*}
+    con \(\xi \in [y, y_0]\), visto che la derivata è parziale.
+    Considerando allo stesso modo \(f(x, y_0)\) e applicando Lagrange si ottiene
+    \[
+        f(x, y_0) - f(x_0, y_0) = \frac{\partial f}{\partial x}(\mu, y_0)(x-x_0)
+    \]
+    dove \(\eta \in [x, x_0]\). Sostituendo troviamo
+    \begin{align*}
+        &\frac{
+            f(x,y) - f(x_0, y_0) - \frac{\partial f}{\partial x}(x_0, y_0)(x-x_0)
+            - \frac{\partial f}{\partial y}(x_0, y_0)(y-y_0)
+        }{
+            \sqrt{
+                {(x-x_0)}^2 + {(y-y_0)}^2
+            }
+        }
+        \\ &= \left|
+            \frac{
+                \left[
+                \frac{\partial f}{\partial x}(\eta, y_0) -
+                \frac{\partial f}{\partial x}(x_0, y_0)
+            \right](x-x_0)
+            +
+            \left[
+                \frac{\partial f}{\partial y}(x, \xi) -
+                \frac{\partial f}{\partial y}(x_0, y_0)
+            \right](x-x_0)
+            }{
+                \sqrt{
+                    {(x-x_0)}^2 + {(y-y_0)}^2
+                }
+            }
+        \right| \\
+        &= \left|
+            \frac{\partial f}{\partial x}(\eta, y_0)
+            - \frac{\partial f}{\partial x}(x_0, y_0)
+        \right|
+        \frac{|x-x_0|}{\sqrt{
+            {(x-x_0)}^2 + {(y-y_0)}^2
+        }}
+        +
+        \left|
+            \frac{\partial f}{\partial y}(x, \xi)
+            - \frac{\partial f}{\partial y}(x_0, y_0)
+        \right|
+        \frac{|y-y_0|}{\sqrt{
+            {(x-x_0)}^2 + {(y-y_0)}^2
+        }} \\
+        &\leq
+        \left|\frac{\partial f}{\partial x}(\eta, y_0) - \frac{\partial f}{\partial x}(x_0, y_0)\right|
+        +\left|\frac{\partial f}{\partial y}(x, \xi) - \frac{\partial f}{\partial y}(x_0, y_0)\right|
+    \end{align*}
+    I due termini con le radici a denominatori sono minori di 1.
+    Per il teorema del confronto, se \((x,y) \to (x_0, y_0)\)
+    implica che \(\xi \to y_0\) e \(\eta \to x_0\).
+    Per la continuità della derivate parziali segue la tesi che il valore tende a zero.
+}
+
+\scorollary{}{
+    Se in \(\Omega\) tutte le derivate parziali
+    di \(f\) esistono e sono continue,
+    allora \(f\) è differenziabile in \(\Omega\).
+}
+
+\sdefinition{}{
+    Sia \(f \colon \Omega \to \mathbb{R}\), con \(\Omega \in \mathbb{R}^n\) aperto.
+    Se le derivate parziali esistono e sono continue in \(\Omega\), diremo che
+    \(f\) è differenziabile con continuità e scriviamo \(f \in C^1(\Omega)\).
+}
+
+Per il teorema del differenziale totale
+le classi \(C\) sono annidate.
+
 \end{document}
