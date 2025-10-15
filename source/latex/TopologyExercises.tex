@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{bettelini}
 
 \begin{document}
 
@@ -126,11 +127,207 @@
 \end{snippetsolution}
 
 \begin{snippetexercise}{topology-exercise-ex-5}{}
-    \todo
+    Show that a \topologicalspace is \(T_1\)
+    \ifandonlyif \(\forall x \in X\),
+    \[
+        \{x\} = \bigcap_{U \in I(x)} U
+    \]
+    where \(I(x)\) is the \set of \neighborhood[neighborhoods] of \(x\).
 \end{snippetexercise}
 
 \begin{snippetsolution}{topology-exercise-ex-5-sol}{}
-    \todo
+    \iffproof{
+        Let
+        \[
+            y\in \bigcap U_x
+        \]
+        and suppose by way of contradiction that \(x\neq y\).
+        Since \(X\) is \(T_1\), there exist an \topologicalspace[open set][Open]
+        \(U_y\) such that \(x \in U_y\) and \(y \notin U_y\).
+        Then, \(U_y\) is a \neighborhood of \(x\) (since it is open and contains \(x\)).
+        But then \(y \notin U_y\) which is a contradiction \lightning.
+        Thus, \(y=x\) and \[
+            \bigcap_{U \in I(x)} U \subseteq \{x\}  
+        \]
+        But clearly \(x\in U\) for all \(U \in I(x)\), so \(x\in \bigcap_{U\in I(x)}U\) and thus
+        \[
+            \{x\} \subseteq \bigcap_{U \in I(x)} U
+        \]
+        and therefore
+        \[
+            \{x\} = \bigcap_{U \in I(x)} U
+        \]
+    }{
+        Assume that \(\forall x \in X\)
+        \[
+            \{x\} = \bigcap_{U \in I(x)} U
+        \]
+        Let \(x,y\in X\) such that \(x\neq y\).
+        Then, \[
+            y \neq \{x\} = \bigcap_{U \in I(x)} U
+        \]
+        so there exists some \neighborhood \(U \in I(x)\) such that \(y\notin U\).
+        That is, there is a \neighborhood of \(x\) that does not contain \(y\), which is exactly the \(T_1\) condition.
+    }
 \end{snippetsolution}
+
+\plain{<hr>}
+
+\begin{snippetexercise}{topology-exercise-ex-6}{}
+    Let \(A\) be a dense subset of a \topologicalspace \(X\).
+    Show that for every \topologicalspace[open][Open]
+    \(U \subseteq X\), \(\overline{U \intersection A} = \overline{U}\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{topology-exercise-ex-6-sol}{}
+    \doubleinclusionproof{
+        This inclusion is trivial.
+    }{
+        We can state the condition of density as: \(U \intersection A \neq 0\), \(\forall U \neq \emptyset\) \topologicalspace[open][Open].
+        Let \(y \in U\) so that \(y \notin \overline{U \cap A}\). Then, there exists a \neighborhood of \(y\), \(V_y\),
+        such that \(V_y \cap (U \cap A) = \emptyset\). But
+        \[
+            V_y \cap (U \cap A) = (V_y \cap U) \cap A = \emptyset
+        \]
+        and \(V_y \cap U \neq 0\) which is a contradiction \lightning. 
+    }
+\end{snippetsolution}
+
+\begin{snippetexercise}{topology-exercise-ex-7}{}
+    Let \(X\) be a \set.
+    Consider \(C \colon \powerset(X) \fromto \powerset(X)\) such that:
+    \begin{enumerate}
+        \item \(A \subseteq X \implies A \subseteq C(A)\);
+        \item \(C(\emptyset) = \emptyset\);
+        \item \(A \subseteq X \implies C(A) = C(C(A))\);
+        \item \(C(A \union B) = C(A) \union C(B)\).
+    \end{enumerate}
+    Prove that for every topology on \(X\),
+    the application of \(C\) is an operatore of closeness
+    and, viceversa, that for every such operator there exist a unique
+    topological structure such that \(C(A) = \overline{A}\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{topology-exercise-ex-7-sol}{}
+    \begin{enumerate}
+        \item Let \(\tau_X\) be a topology for \(X\) and define \(C(A) = \overline{A}\).
+            This clearly satisfies properties (1-3).
+            We will now prove (4). \\
+            \doubleinclusionproof{
+                Since \(A \union B \subseteq \overline{A} \union \overline{B}\),
+                then \(\overline{A \union B} \subseteq \overline{A} \union \overline{B}\).
+            }{
+                Since \(A \subseteq \overline{A \union B}\)
+                and \(B \subseteq \overline{A \union B}\)
+                we have \(A \union B \subseteq A \subseteq \overline{A \union B}\).
+            }
+        \item Let \(\tau_X\) be defined by the \(\{B \suchthat B = C(B)\}\).
+        We will thus prove that a \set \(B\) is \closedset[closed] \ifandonlyif \(B=C(B)\).
+        \\
+        \doubleinclusionproof{
+            By property (1) and (2), \(C(A)\) is one such \set. Thus,
+            \[
+                \overline{A} =
+                \bigcap_{\substack{B \text{ \closedset[closed]} \\ A \subseteq B}} B \subseteq C(A)
+            \]
+        }{
+            Since \(B \subseteq A\), we have \(A \union B = B\),
+            and thus \begin{align*}
+                C(A \union B) &= C(B) = B \\
+                C(A) \union C(B) &= B \\
+                C(A) \union B &= B \\
+                &\implies C(A) \subseteq B
+            \end{align*}
+        }
+        We still need to show that \(\tau_X\) is a topology:
+        \begin{enumerate}
+            \item \(\emptyset = C(\emptyset)\);
+            \item \(X = C(X)\);
+            \item we need to prove the arbitrary
+            intersection, not the finite one as we are working with the \closedset[closed sets].
+            \begin{align*}
+                \bigcap_{i\in I} B_i &= \bigcap_{i\in I} C(B_i) \supseteq 
+                C\left(\bigcap_{i\in I} B_i\right) \supseteq \bigcap_{i\in I} B_i
+            \end{align*}
+            Thus, their intersection is \closedset[closed].
+            \item trivil since \(C(A \union B) = C(A) \union C(B)\).
+        \end{enumerate}
+    \end{enumerate}
+\end{snippetsolution}
+
+% 3.17 manetti
+\begin{snippetproposition}{constant-topological-maps-are-continuous}{}
+    Let \(f\colon X \fromto Y\) be a map between \topologicalspace[topological spaces].
+    Let \(\tau_X, \tau_Y\) be the topologies associated with \(X,Y\) respectively.
+    If \(f(x) = y_0\), then \(f\) is continuous.
+\end{snippetproposition}
+
+\begin{snippetproof}{constant-topological-maps-are-continuous-proof}{constant-topological-maps-are-continuous}{}
+    Let \(V \in \tau_Y\).
+    We have
+    \[
+        f^{-1}(V) = \begin{cases}
+            \emptyset & y_0 \notin V \\
+            X & y_0 \in V
+        \end{cases}
+    \]
+    which are both \topologicalspace[open][Open].
+\end{snippetproof}
+
+% 3.18 manetti
+\begin{snippetproposition}{topological-identity-map-continuity-equivalence}{}
+    The topological map \(\text{id}\colon (X, \tau_1) \fromto (X, \tau_2)\)
+    is \topologycontinuous \ifandonlyif \(\tau_1\) is coarser than \(\tau_2\).
+\end{snippetproposition}
+
+\begin{snippetproof}{topological-identity-map-continuity-equivalence-proof}{topological-identity-map-continuity-equivalence}{}
+    \iffproof{
+        Let \(A \in \tau_2\). We have
+        \[
+            \text{id}^{-1}(A) = A \in \tau_1
+        \]
+    }{
+        If \(\tau_2 \subseteq \tau_1\), we have
+        \[
+            \text{id}^{-1}(A) = A \in \tau_1
+        \]
+        which is \topologicalspace[open][Open].
+    }
+\end{snippetproof}
+
+\begin{snippetproposition}{adherent-subsets-properties-with-continuous-maps}{}
+    Let \((X, \tau)\) be a \topologicalspace. Two subsets \(A,B\) are said to be \emph{adherent}
+    if \[
+        (A \intersection \overline{B}) \union (\overline{A} \intersection B) \neq \emptyset
+    \]
+    Then,
+    \begin{enumerate}
+        \item if \(f \colon X \fromto Y\) is \topologycontinuous then it preserves adherence relations.
+        \item if \(f \colon X \fromto Y\) between \(T_1\) spaces preserves adherence relations,
+        then it is continuous.
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{adherent-subsets-properties-with-continuous-maps-proof}{adherent-subsets-properties-with-continuous-maps}{}
+    We know that \(f\) is \topologycontinuous \ifandonlyif 
+    \[
+        \forall A \subseteq, f(\overline{A}) \subseteq \overline{f(A)}
+    \]
+    \begin{enumerate}
+        \item Suppose for simplicity that \(\overline{A} \intersection B \neq \emptyset\).
+        Let \(x\in \overline{A} \intersection B\).
+        This means that \(f(x) \in \overline{f(A)} \intersection f(B)\).
+        \item We want to show that \(f(\overline{A}) \subseteq \overline{f(A)}\).
+        Consider \(x\) in a \closedset \(\overline{A}\). This means that
+        \[
+            \{x\} \intersection \overline{A} \neq \emptyset
+        \]
+        Since \(f\) preserves the adherence relation, \(f(\{x\}) = \{f(x)\}\)
+        which is adherent with \(f(A)\).
+        We now have \(\overline{\{f(x)\}} \intersection f(A) \neq \emptyset\)
+        or  \(\overline{\{f(x)\}} \intersection \overline{f(A)} \neq \emptyset\).
+        Thus, \(f(x) \in \overline{f(A)}\).
+    \end{enumerate}
+\end{snippetproof}
 
 \end{document}
