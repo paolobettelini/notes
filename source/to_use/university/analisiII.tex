@@ -1939,4 +1939,273 @@ Se \(f\) è differenziabile in \(a\) possiamo definire l'iperpiano tangente
 Per il teorema del differenziale totale
 le classi \(C\) sono annidate.
 
+\sexercise{}{
+    Studiare la differenziabilità di \[f(x,y) = \ln(1 + xy)-x^2y\].
+    Il dominio massimalel è \(\{(x,y) \,|\, xy > -1\}\).
+    Troviamo le due derivate parziali
+    \[
+        \frac{\partial f}{\partial x} = \frac{y}{1 + xy} - 2xy,
+        \quad
+        \frac{\partial f}{\partial y} = \frac{x}{1 + xy} - x^2
+    \]
+    Siccome le derivate sono continue ed esistono ovunque nel dominio (in particolare nell'origine)
+    la funzione è differenziabile.
+}
+
+\sexercise{}{
+    Studiare continuità e differenziabilità nell'origine di \[
+        f(x,y) = \begin{cases}
+            \sqrt{x^2 + y^2} \left[ 1 - e^{-\frac{x^2 + y^2}{|x|}}\right] & x \neq 0 \\
+            0 & x=0
+        \end{cases}
+    \]
+    Non conviene usare il tereoma del differenziale totale perché la funzione è a tratti
+    e quindi dovremmo usare la definizione di derivata.
+    Cominciamo con la continuità.
+    Calcoliamo il limite \((x,y) \to (0,0)\)
+    notando che \(|f| \leq \sqrt{x^2 + y^2} \to 0\).
+    Quindi è continua nell'origine. Calcoliamo adesso le derivate direzionali.
+    Sia \(v = (v_1, v_2)\) un versore
+    \begin{align*}
+        \frac{f(tv) - f(0)}{t} &= \frac{1}{t} \left(
+            |t| \left[1 - e^{\frac{t^2}{|t| \cdot |v_1|}}\right]
+        \right) \\
+        &= \text{sgn} t \left[1 - e^{- \frac{|t|}{|v_1|}}\right] \to 0
+    \end{align*}
+    quando \(v_1 \neq 0\).
+    Nel caso \(v_1 = 0\) abbiamo il vettore \((0, \pm 1)\) della direzione dell'asse \(y\).
+    In tal caso abbiamo
+    \[
+        \frac{\partial f}{\partial y} (0,0) = 0
+    \]
+    in quanto \(f\) è identicamente nulla in quell'asse.
+    Ma \(f\) non è differenziabile in quanto il seguente non tende a zero
+    \begin{align*}
+        \left|
+            \frac{
+                f(x,y) - f(0,0) - \nabla f(0,0) \cdot (x,y)
+            }{\sqrt{x^2 +y^2}}
+        \right|
+        &= 1 - e^{-\frac{x^2 + y^2}{|x|}}
+    \end{align*}
+    e considerando l'esponente. Possiamo trovare un cammino per il quale il limite non tende a zero.
+    Le rette non vanno bene, dobbiamo prendere un cammino che è tangente a \(x=0\).
+    Prendiamo per esempio \((t^2, t)\). L'esponente diventa \(-(t^4 + t^2)/t^2 \to -1\).
+    Quindi tutto il limite tende a \(1-e^{-1} \neq 0\).
+}
+
+La forma differenziabile \(\text{d}f(-) \colon \Omega \to \mathcal{L}(\mathbb{R}^n, \mathbb{R})\)
+e quindi associa ad ogni punto il funzionale lineare differenziale.
+Quindi
+\[
+    \text{d}f(a) \colon \mathbb{R}^n \to \mathbb{R}
+\]
+che associa \(h \to \nabla f(a) \cdot h\).
+In due variabili per esempio
+\[
+    \text{d}f(a)(x-a) = \nabla f(a)(x-a)= \frac{\partial f}{\partial x}(a)(x-e_1) + \frac{\partial f}{\partial x}(x-e_2)
+\]
+la cui applicazuine può essere scritta con le proiezioni
+\[
+    \text{d}f(a) = \frac{\partial f}{\partial x}(a)\,dx + \frac{\partial f}{\partial x}\,dy
+\]
+
+Nota: \(\nabla f(a)\) è il vettore che punta nella direzione di massima crescita locale.
+Infatti, \(f(a+h) - f(a) = \nabla f(a) \cdot h + \varepsilon(h)\)
+con \(\varepsilon(h) = o(||h||)\).
+Abbiamo
+\begin{align*}
+    f(a+h) - f(a) &= ||\nabla f(a)|| \cdot ||h|| \cos\theta + \varepsilon(h) \\
+    &= ||h|| \left[
+        ||\nabla f(a)|| \cos\theta + \frac{o(||h||)}{||h||}
+    \right]
+\end{align*}
+dove \(\theta\) è l'nagolo fra \(h\) e \(\nabla f(a)\).
+Quindi ciò assume valore massimo quando \(\theta = 0\),
+cioè quando la direzione è il verso di \(\nabla f(a)\).
+
+\pagebreak
+
+\subsection{Funzioni a valori vettoriali}
+
+Consideriamo \(f\colon \Omega \subseteq \mathbb{R}^n \to \mathbb{R}^m\) con \(\Omega\)
+aperto. Abbiamo quindi
+\[
+    f = \sum_{i=1}^n f_i e_i, \quad f_i \colon \Omega \mathbb{R}
+\]
+Sia \(a\in \Omega\) e sia \(v \in \mathbb{R}^n\). Definiamo la derivata direzionale
+\[
+    D_v f(a) = \lim_{t\to 0} \frac{
+        f(a+tv) - f(a)
+    }{t} \in \mathbb{R}^m
+\]
+e le componenti sono le derivate direzionali delle funzioni a valore reale.
+Posso definire un totale di \(mn\) derivate parziali
+\[
+    \frac{\partial f_i}{\partial x_j} (a)
+\]
+Possiamo quindi definire la matrice Jacobiana come la matrice
+\(J(a)_{i,j} = \frac{\partial f_i}{\partial x_j} (a)\).
+Quindi le righe della matrice sono i trasporti dei gradienti \(\nabla f_j(a)\).
+
+\sdefinition{Differenziabilità}{
+    Una funzione \(f\colon \Omega \subseteq \mathbb{R}^n \to \mathbb{R}^m\) con \(\Omega\)
+    aperto è differenziabile in \(a\in \Omega\) se \(\exists L \in \mathcal{L}(\mathbb{R}^m, \mathbb{R}^n)\)
+    tale che
+    \[
+        f(a+h) - f(a) = L(h) + \varepsilon(h)
+    \]
+    dove \(\varepsilon(h) = o(||h||)\).
+    Tale applicazione lineare di chiama differenziale.
+}
+
+Equivalentemente, \(f\) è differenziabile
+in \(a\) se esiste una matrice \(\Lambda \in M_{m\times n}(\mathbb{R})\)
+tale che \[ f(a+h) - f(a) = \Lambda h + \varepsilon(h) \]
+Equivalentemente \(f\) è differenziabile se e solo se \(f_i\) sono tutte differenziabili.
+
+\stheorem{Teorema del differenziale totale}{
+    Vale l'analogo teorema: se tutte le derivate parziali delle componenti di \(f\)
+    esistono in un intorno di \(a\) e sono continue in a allora \(f\) è differenziabile in \(a\)
+}
+
+\stheorem{}{
+    Se \(f\) è differenziabile in \(a\) allora \(f\) è continua
+    in \(a\), \(\forall v \in \mathbb{R}^n\) tale che \(||v|| = 1\),
+    \[
+        \exists D_vf(a) = \Lambda v
+    \]
+    e \(\Lambda = J(a)\).
+}
+Cioè il differenziale (differenziale primo) \(L\) è rappresentato nella base canonica dalla matrice Jacobiana,
+\[
+    \text{d}f_a h = Jf(a) h = \sum_{i=1}^m \left(
+        \sum_{j=1}^n \frac{\partial f_i}{\partial x_j}(a)h_j
+    \right)e_i
+\]
+
+\subsection{Chain rule}
+
+\stheorem{Chain rule}{
+    Siano \(f \colon \mathbb{R}^n \to \mathbb{R}^m\)
+    e \(g \colon \mathbb{R}^m \to \mathbb{R}^p\) funzioni
+    tali che \(f\) è differenziabile nel punto \(a\) e \(g\)
+    differenziabile in \(f(a)\).
+    Allora, \(g\circ f\) è differenziabile in \(a\) e vale
+    \[
+        \text{d}(g\circ g)(a) = \text{d}g(f(a)) \circ \text{d}f(a)
+    \]
+    O equivalentemente in forma matriciale
+    \[
+        J(g \circ f)(a) = Jg(f(a)) Jf(a)
+    \]
+}
+
+Sia \(h = g\circ f \colon \mathbb{R}^m \to \mathbb{R}^n\).
+Calcoliamo il seguente, che è il prodotto della \(i\)-esima riga di \(Jg(f(a))\)
+per la \(j\)-esima colonna di \(Jf(a)\)
+\begin{align*}
+    \frac{\partial h_i}{\partial x_i}(a)
+    &= \sum_{k=1}^m \frac{\partial g_i}{\partial y_k} (f(a))
+    \cdot \frac{\partial f_k}{\partial x_j}(a)
+\end{align*}
+
+\sexample{}{
+    Siano \(f\colon \mathbb{R}^2 \to \mathbb{R}^3\) e 
+    \(g\colon \mathbb{R}^3 \to \mathbb{R}^2\). Chiamiano \(x,y\) le coordinate di \(f\)
+    e \(u, v, w\) quelle di \(g\). Sia \(h = g \circ f\) quindi \(h(x,y) = (h_1(x,y), h_2(x,y))\).
+    Calcoliamo per esempio
+    \begin{align*}
+        \frac{\partial f_2}{\partial x}(a)
+        &= \frac{\partial g_2}{\partial u}(f(a))
+        \cdot \frac{\partial f_1}{\partial x}(a)
+        + \frac{\partial g_2}{\partial v}(f(a)) \cdot
+        \frac{\partial f_2}{\partial x}(a)
+        + \frac{\partial g_2}{\partial w}(f(a))
+        \cdot \frac{\partial f_3}{\partial x}(a)
+    \end{align*}
+}
+
+\sexample{}{
+    Siano \(f\colon \Omega \subseteq \mathbb{R}^2 \to \mathbb{R}^2\) e 
+    \(g\colon \mathbb{R}^2 \to \mathbb{R}\). Chiamiamo le variabili di \(f\)
+    \((\rho, \theta)\) e di \(g\) dicimo \((x,y)\).
+    Definiamo \(f(p, \theta) = (\rho\cos\theta,\rho\sin\theta)\).
+    Sia \(h = g \circ f\) quindi \(h(\rho, \theta) = g(\rho\cos\theta, \rho\sin\theta)\).
+    Calcoliamo
+    \begin{align*}
+        \frac{\partial h}{\partial \rho}
+        = \frac{\partial g}{\partial x}(\rho\cos\theta, \rho\sin\theta) \cos\theta
+        + \frac{\partial g}{\partial y}(\rho\cos\theta, \rho\sin\theta) \sin\theta
+    \end{align*}
+    e
+    \begin{align*}
+        \frac{\partial h}{\partial \theta}
+        = -\frac{\partial g}{\partial x}(\rho\cos\theta, \rho\sin\theta) \rho\sin\theta
+        + \frac{\partial g}{\partial y}(\rho\cos\theta, \rho\sin\theta) \rho\cos\theta
+    \end{align*}
+}
+
+\sexercise{}{
+    Studiare la continuità e differenziabilità nell'origine di
+    \[
+        f(x,y) = \begin{cases}
+            \frac{|x|^{1/4} \ln(1 + x^2 + y^2)}{{(x^2 + y^2)}^\alpha} & (x,y) \neq (0,0) \\
+            0 & (x,y) = (0,0)
+        \end{cases}
+    \]
+    al variare di \(\alpha\). Il dominio è tutto \(\mathbb{R}^2\).
+    Cominciamo studiando il limite nell'origine. In coordinate polari
+    \begin{align*}
+        F(\rho,\theta) &= \frac{\rho^{1/4} {|\cos\theta|}^{1/4} \ln(1 + \rho^2)}{\rho^{2\alpha}}
+        \leq \frac{\rho^{1/4} \ln(1 + \rho^2)}{\rho^{2\alpha}} \\
+        &= \rho^{\frac{1}{4} - 2 \alpha} \ln(1 + \rho^2) \leq \rho^{\rho^{\frac{1}{4} - 2 \alpha + 2}}
+    \end{align*}
+    Quindi sicuramente tende a zero per \(\alpha < 9/8\), dove \(f\) è continua.
+    Per dimostrare che il bound è sharp supponiamo \(\alpha \geq 9/8\) e consideriamo il cammino
+    \(x=0\). Abbiamo
+    \begin{align*}
+        f(x,0) &= \frac{{|x|}^{1/4} \ln(1 + x^2)}{{(x^2)}^\alpha} \\
+        &= \frac{{|x|}^{1/4} \ln(1 + x^2)}{{|x|}^{2\alpha}}
+        \sim {|x|}^{\frac{1}{4} + 2 - 2\alpha}
+    \end{align*}
+    Da notare il modo necessario.
+    Tale valore non tende mai a zero.
+    Supponiamo \(\alpha < 9/8\)
+    e studiamo la differenziabilità.
+    Non conviene sare il teorema del differenziale totale quindi calcoliamo le derivate parziali.
+    Chiaramente
+    \[
+        \frac{\partial f}{\partial y}(0,0) = 0
+    \]
+    Mentre
+    \begin{align*}
+        \frac{\partial f}{\partial x}(0,0)
+        &= \lim_{x\to 0} \frac{f(x,0) - f(0,0)}{x} \\
+        &= \lim_{x\to 0} \frac{{|x|}^{1/4} \ln(1 + x^2)}{x{|x|}^{2\alpha}} \\
+        &= \lim_{x\to 0} \text{sgn} x \cdot {|x|}^{\frac{1}{4} + 1 - 2\alpha} \\
+        &= \lim_{x\to 0} \text{sgn} x \cdot {|x|}^{\frac54 - 2\alpha}
+    \end{align*}
+    che tende a zero per \(\alpha < \frac58\), altrimeti il limite non esiste.
+    Quindi se \(\alpha \geq \frac58\) la derivata parziale in 0 non esiste.
+    Sia \(\alpha < 5/8\), dove abbiamo il gradiente. Calcoliamo quindi questo limite.
+    \begin{align*}
+        \frac{f(h,k) - f(0,0) - \nabla f(0,0) \cdot (h,k)}{\sqrt{h^2 + k^2}}
+        &= \frac{f(h,k)}{\sqrt{h^2 + k^2}} \\
+        &= \frac{{|x|}^{1/4} \ln(1 + h^2 + k^2)}{{(h^2 + k^2)}^{\alpha + 1/2}}
+    \end{align*}
+    che tende a zero se e solo se \(\alpha + \frac{1}{2} < 9/8\) come detto prima,
+    quindi \(\alpha < 5/8\).
+}
+
+\sexercise{}{
+    Studiare se la seguente funzione è differenziabile nell'origine
+    \[
+        f(x,y) = \begin{cases}
+            e^{-\frac{1}{x^2}} \sin \sqrt{x^2 + y^2} & x \neq 0 \\
+            0 & x = 0
+        \end{cases}
+    \]
+}
+
 \end{document}
