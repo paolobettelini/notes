@@ -1,0 +1,150 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+\usepackage{tikz}
+
+\usetikzlibrary{cd}
+
+\begin{document}
+
+\id{product-topology}
+\genpage
+
+\section{Product topology}
+
+\plain{We want to naturally induce the least coarse topology for the cartesian product of spaces.}
+
+\begin{snippetdefinition}{product-topology-definition}{Product topology}
+    Let \(\{X_i\}_{i \in I}\) be a family of \topologicalspace[topological spaces]
+    indexed by some \(I \neq \emptyset\). Then, the \emph{product topology}
+    is defined as the least coarse topology for
+    \[
+        X \triangleq \prod_{i\in I} X_i
+    \]
+    such that the canonical projections
+    \[
+        \pi_i \colon \prod_{j \in I} X_j \to X_i
+    \]
+    given by \(\{x_j\}_{j\in I} \fromto x_i\), are continuous.
+\end{snippetdefinition}
+
+\plain{We want to find the least coarse topology such that the two projections are continuous.}
+
+\begin{snippetproposition}{product-topology-is-topology}{Product topology is topology}
+    The product topology is a topology for the cartesian product of a family of spaces.
+\end{snippetproposition}
+
+% TODO la parte generica
+\begin{snippetproof}{product-topology-is-topology-proof}{product-topology-is-topology}{Product topology is a topology}
+    Consider the product topology for spaces \(X\) and \(Y\).
+    The collection of subsets \(\{U \cartesianprod V \suchthat U \text{ \topologicalspace[open][Open set] in } X \land V \text{ \topologicalspace[open][Open set] in } Y\}\)
+    is a \topologicalbasis for the space as:
+    \begin{enumerate}
+        \item \(X \cartesianprod Y = U \cartesianprod V\) for \(U=X\) and \(V=Y\);
+        \item \((U_1 \cartesianprod V_1) \intersection (U_2 \cartesianprod V_2) = (U_1 \intersection U_2) \times (V_1 \intersection V_2)\).
+    \end{enumerate}
+\end{snippetproof}
+
+\plain{The product topology between spaces is associative up to homeomorphism.}
+
+\begin{snippettheorem}{product-topology-projections-theorem}{}
+    Let \(P, Q\) be \topologicalspace[topological spaces]
+    and \(p \colon P \cartesianprod Q \fromto P, q \colon P \cartesianprod Q \fromto Q\)
+    be the two canonical projections. Then,
+    \begin{enumerate}
+        \item \(p, q\) are open maps;
+        \item for each \((x,y) \in P \cartesianprod Q\), the restrictions
+        \(\restr{p}{P \cartesianprod \{y\}}\) and \(\restr{q}{\{x\} \cartesianprod Q}\),
+        which are the canonical projections to the subspaces \(P \cartesianprod \{y\}\)
+        and \(\{x\} \cartesianprod Q\), are \homeomorphism[homeomorphisms];
+        \item a map \(f \colon X \fromto P \cartesianprod Q\) is continuous
+        \ifandonlyif \(p \circ f\) and \(q \circ f\) are continuous.
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{product-topology-projections-theorem-proof}{product-topology-projections-theorem}{}
+    \begin{enumerate}
+        \item[2.] The restrictions are obtained via composition of continuous maps.
+            \begin{center}
+                % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAAUACAHW4GM6AJxzwsdMGkHQe3YAE9eAXxCLS6TLnyEUARnJVajFmzQq1IDNjwEiZHQfrNWiDrwHDR4ydICKKgzBQAObwRKAAZlIAtkhkIDgQSHqGTmy8gvA4gsBoisBcbkIi2F5SUDLySsqqEdGx1AlIAEwNdFgMbAAWEBAA1ma1EDGILfGJiMmOxi6mihSKQA
+                \begin{tikzcd}
+                P \cartesianprod \{y\} \arrow[r, "\restr{p}{P \cartesianprod \{y\}}"] \arrow[d, hook] & p \\
+                P\cartesianprod Q \arrow[ru, "p"]                                                     &  
+                \end{tikzcd}
+            \end{center}
+            To study whether the maps are open, we characterize the \topologicalspace[open sets][Open set]
+            of \(P \cartesianprod \{y\}\) and \(\{x\} \cartesianprod Q\).
+            Consider a generic \topologicalspace[open set][Open set] of the standard \topologicalbasis
+            of \(P \cartesianprod Q\), \(U \cartesianprod V\). We have
+            \[
+                (U \cartesianprod V) \intersection (P \cartesianprod \{y\})
+                = \begin{cases}
+                    U \cartesianprod \{y\} & y \in V \\
+                    \emptyset & y \notin V
+                \end{cases}
+            \]
+            This means that the \topologicalspace[open sets][Open set] are precisely the subsets
+            of the form \(U \cartesianprod \{y\}\) for some \topologicalspace[open set][Open set]
+            of \(X\) \[ \restr{p}{P \cartesianprod \{y\}}(U \cartesianprod \{y\}) = U \]
+            The same goes for \(q\).
+        \item[1.] We want to show that \(p(Q)\) is an \topologicalspace[open set][Open set] of \(P\).
+        Since \[ Q = \bigcup_{y\in Q} \{y\} \]
+        we have that \[ P \cartesianprod Q = \bigcup_{y \in Q} P \cartesianprod \{y\} \]
+        Now consider
+        \[
+            A = \bigcup_{y\in Q} A \intersection (P \cartesianprod \{y\})
+        \]
+        and thus
+        \[
+            p(A) = p\left(
+                \bigcup_{y\in Q} A \intersection (P \cartesianprod \{y\})
+            \right)
+            = \bigcup_{y\in Q} \restr{p}{P \cartesianprod \{y\}} (A \intersection (P \cartesianprod \{y\}))
+        \]
+        which is \topologicalspace[open][Open set] in \(P\) as union of \topologicalspace[open set][Open set].
+        The same goes for \(q\). 
+        \item[3.] We have the following diagram
+        \begin{center}
+            % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBoBGAXVJADcBDAGwFcYkQANEAX1PU1z5CKchWp0mrdgAUABAB15AY3oAnHPCz0waVdFkBFHnxAZseAkVEAmcQxZtEII737mhV0sTuTHIaTziMFAA5vBEoABmegC2SKIgOBBIAMw09lJOaCA0jPQARjCM0gIWwiCqWCEAFjjGUbHxNElI1um+7ACO9SDREHGIZInJiGkghWBQqUMZfmgKyliqSrKRPX0DQy2IbeMwk0gAtCkzHU6dC0pLK2uuvY2DzSMJs+y3lNxAA
+            \begin{tikzcd}
+                                                                                                    & P                                                 \\
+            X \arrow[ru, "p \circ f", bend left] \arrow[rd, "q \circ f", bend right] \arrow[r, "f"] & P \cartesianprod Q \arrow[u, "p"'] \arrow[d, "q"] \\
+                                                                                                    & Q                                                
+            \end{tikzcd}
+        \end{center}
+        If \(f\) is continuous, then \(p \circ f\) and \(q \circ f\)
+        are continuous as composition of continuous maps. \\
+        We know that \(f\) is continuois \ifandonlyif for all \topologicalspace[open sets][Open set]
+        of the standard \topologicalbasis of \(P \cartesianprod Q\),
+        \(f^{-1}(U \cartesianprod V)\) is \topologicalspace[open][Open set] in \(X\)- We have
+        \begin{align*}
+            f^{-1}(U \cartesianprod V) &= f^{-1}(p^{-1}(U) \intersection q^{-1}(V)) \\
+            &= f^{-1}(p^{-1})(U) \intersection f^{-1}(q^{-1}(V)) \\
+            &= {(p \circ f)}^{-1}(U) \intersection {(q \circ f)}^{-1}(V)
+        \end{align*}
+        which is \topologicalspace[open][Open set] as intersection of
+        \topologicalspace[open sets][Open set] by the continuity of the composition.
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetexample}{topology-non-closed-canonical-projection-example}{}
+    The canonical projections are not closed in general.
+    Consider \(p \colon \realnumbers^2 \fromto \realnumbers\)
+    as the projection onthe first factor.
+    Let \(C = g^{-1}(0)\) where \(g\) is the continuous map
+    given by \(g \colon \realnumbers^2 \fromto \realnumbers\)
+    defined as \((x,y) \fromto xy-1\). We have
+    \begin{align*}
+        C = g^{-1}(\{0\}) = \{(x,y) \in \realnumbers \suchthat xy=1\}
+    \end{align*}
+    and thus \(p(C)\) is the \set of \(x\in \realnumbers\)
+    such that \(\exists y\) with \((x,y) \in C\).
+    But \(\realnumbers \difference \{0\}\) is not a \closedset in \(\realnumbers\)
+    and thus \(p\) is not a closed map.
+\end{snippetexample}
+
+\end{document}
