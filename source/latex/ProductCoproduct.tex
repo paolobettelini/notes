@@ -1,0 +1,212 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{tikz}
+
+\usetikzlibrary{cd}
+
+\begin{document}
+
+\id{categorytheory-product-coproduct}
+\genpage
+
+\section{Product}
+
+\begin{snippetdefinition}{category-product-definition}{Product}
+    Let \(\mathcal{C}\) be a \category, and let \(A,B\in \catob(\mathcal{C})\).
+    A \emph{product} of \(A\) and \(B\) in \(\mathcal{C}\) is an object \(A \times B \in \catob(\mathcal{C})\)
+    together with two morphisms
+    \[
+        \pi_A \colon A \times B \fromto A, \quad
+        \pi_B \colon A \times B \fromto B
+    \]
+    \begin{minipage}{0.65\textwidth}
+        called \emph{projections}, such that the following universal property holds: \\
+        for all \(X \in \catob(\mathcal{C})\) with morphisms
+        \(f\colon X \fromto A\) and \(g\colon X \fromto B\), there exists a unique morphism
+        \(\xi \colon X \fromto A \times B\) such that
+        \[
+            \pi_A \circ \xi = f \, \land \, \pi_B \circ \xi = g
+        \]
+    \end{minipage}
+    \begin{minipage}{0.35\textwidth}
+        \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZARgBpiBdUkANwEMAbAVxiRAEEACAHW7wFt4nAEIgAvqXSZc+QigAMpeVVqMWbduMkgM2PASIAmJSvrNWiEKIlS9somUOm1FkAA1xKmFADm8IqAAZgBOEPxIAMzUOBBIiiAMWGCuUHRwABbeINRm6pa8MAAeWHA4cACEvKS8xVpBoeGIUSAxSMYgAEYwYFBIALQR8bmuPtkJdF0MAArS+nIgwVg+6Th1ICFhkdGxiGSd3b1NQy5sgWsbjfGtiO3DbLxoWAD61toXcdtIe3f53I9PmmoDAmMGms3slkWy1WYgoYiAA
+        \begin{tikzcd}
+        A &                                                                                                  & B \\
+        & A \times B \arrow[ru, "\pi_B"] \arrow[lu, "\pi_A"']                                              &   \\
+        & X \arrow[u, "{\exists!\,\xi}", dashed] \arrow[ruu, "g"', bend right] \arrow[luu, "f", bend left] &  
+        \end{tikzcd}
+        \end{center}
+    \end{minipage}
+\end{snippetdefinition}
+
+\begin{snippettheorem}{category-product-in-set-theorem}{Product in \(\mathbf{Set}\)}
+    Let \(A,B \in \catob(\mathbf{Set})\). Then,
+    the categorical product of \(A\) and \(B\) corresponds to the cartesian product
+    \(A \cartesianprod B\).
+\end{snippettheorem}
+
+\begin{snippetproof}{category-product-in-set-theorem-proof}{category-product-in-set-theorem}{Product in \(\mathbf{Set}\)}
+    We will prove that \(A \times B = \{(a,b) \suchthat a \in A \land b\in B\}\).
+    Define \(\pi_A((a,b)) = a\) and \(\pi_B((a,b)) = b\).
+    Given any \set \(X\) and \function[functions]
+    \(f\colon X \fromto A\) and \(g\colon X \fromto B\) we need to find a unique
+    \function \(\xi \colon X \fromto A \cartesianprod B\) such that
+    \[
+        \pi_A(\xi(x)) = f(x) \land \pi_B(\xi(x)) = g(x)
+    \]
+    Let \(\xi(x) = (f(x), g(x))\).
+    Then, we have
+    \begin{align*}
+        \pi_A(\xi(x)) &= \pi_A((f(x), g(x))) = f(x) \\
+        \pi_B(\xi(x)) &= \pi_B((f(x), g(x))) = g(x)
+    \end{align*}
+    Let \(\xi'\colon X \fromto A \cartesianprod B\) satisfying those equations.
+    But then we must have \(\xi'(x) = (f(x), g(x))\) and thus \(\xi = \xi'\).
+\end{snippetproof}
+
+\plain{We will prove that every universal construction is unique up to isomorphism. We can prove it in this specific case to understand the argument.}
+
+\begin{snippetproposition}{categorical-product-unique-isomorphism}{}
+    The categorical product is unique up to isomorphism.
+\end{snippetproposition}
+
+\begin{snippetproof}{categorical-product-unique-isomorphism-proof}{categorical-product-unique-isomorphism}{}
+    Let \(A,B \in \catob(\mathbf{Set})\).
+    Consider two categorical products of \(A\) and \(B\),
+    \(P\) and \(Q\), with projections \(\pi_A, \pi_B\) and \(\rho_A, \rho_B\)
+    and unique morphisms \(h \colon X \fromto P, k \colon X \fromto Q\)
+    respectively. Since the universal property requires commutativity
+    for all \(X\in \catob(\mathbf{Set})\), we can choose the particular case
+    \(X=Q\) for the definition of \(P\) and \(X=P\) for the definition of \(Q\).
+    This gives us the following diagrams: \\
+    \begin{minipage}{0.5\textwidth}
+        \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZARgBpiBdUkANwEMAbAVxiRAAUQBfU9TXfIRRkATFVqMWbAIrdeIDNjwEiABlKrx9Zq0QgAgnL5LBRERq2TdIAELdxMKAHN4RUADMAThAC2SdSA4EEgAzNQARjBgUP7U2lJ6ADqJaFgA+nbUDHSRDOz8ykIgnlhOABY4RiBevrGBwYjmEjpsyalphjwe3n6IZPWhEVExiAC0IQHx1smeZRAZIFk5MHkFpnol5ZVd1T1I-UFITZHRoZNWrYmz853yNb0HDectSYkwAB5YcDhwAITJpDKixADCwYGsUDocDKjnsXCAA
+        \begin{tikzcd}
+        A &                                                                                                          & B \\
+        & P \arrow[ru, "\pi_B"'] \arrow[lu, "\pi_A"]                                                               &   \\
+        & Q \arrow[ruu, "\rho_B"', bend right] \arrow[luu, "\rho_A", bend left] \arrow[u, "{\exists!\,h}", dashed] &  
+        \end{tikzcd}
+        \end{center}
+    \end{minipage}
+    \begin{minipage}{0.5\textwidth}
+        \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZARgBpiBdUkANwEMAbAVxiRAEUQBfU9TXfIRRkATFVqMWbAArdeIDNjwEiABlKrx9Zq0QgAgnL5LBRERq2TdIAELdxMKAHN4RUADMAThAC2SdSA4EEgAzNQARjBgUP7U2lJ6ADqJngAWEAD6dtQMdJEM0vzKQiCeWE6pOEYgXr6xgcGI5hI6bMlpmYY8Ht5+iGQNoRFRMYgAtCEB8dbJaFhZIDl5MAVFpnplFVXdNb1IA0FIzZHRoVNWbYlzGV3ytX0HjeetSYkwAB5YcDhwAITJpAA1osQAwsGBrFA6HBUo57FwgA
+        \begin{tikzcd}
+        A &                                                                                                        & B \\
+        & Q \arrow[ru, "\rho_B"'] \arrow[lu, "\rho_A"]                                                           &   \\
+        & P \arrow[ruu, "\pi_B"', bend right] \arrow[luu, "\pi_A", bend left] \arrow[u, "{\exists!\,k}", dashed] &  
+        \end{tikzcd}
+        \end{center}
+    \end{minipage}
+    We will now prove that \(h\) and \(k\) are inverses of each other:
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZARgBpiBdUkANwEMAbAVxiRAAUQBfU9TXfIRRkATFVqMWbAIrdeIDNjwEiABlKrx9Zq0QgAgnL5LBRERq2TdIAELdxMKAHN4RUADMAThAC2SdSA4EEgAzNQARjBgUP7U2lJ6ADqJaFgA+nbUDHSRDOz8ykIgnlhOABY4RiBevrGBwYjmEjpsyalphjwe3n6IZPWhEVExiAC0IQHx1smeZRAZIFk5MHkFpnol5ZVd1T1I-UFITZHRoZNWrYmz853yNb0HDectSYkwAB5YcDhwAITJpDKixADCwYGsUDocDKjmBJxGEx29zqhz6Q1OiAmWTBEKhMJiS1y+RMKj0DBg7kqcQurw+Xx+-0SpAA1vYuEA
+        \begin{tikzcd}
+        A &                                                                                                                     & B \\
+        & P \arrow[ru, "\pi_B"'] \arrow[lu, "\pi_A"] \arrow[d, "{\exists!\,k}", dashed, bend left]                            &   \\
+        & Q \arrow[ruu, "\rho_B"', bend right] \arrow[luu, "\rho_A", bend left] \arrow[u, "{\exists!\,h}", dashed, bend left] &  
+        \end{tikzcd}
+    \end{center}
+    let \(\varphi = h \circ k\).
+    Then, since
+    \[
+        \pi_i \circ (h \circ k) = (\pi_i \circ h) \circ k
+        = \rho_i \circ k = \pi_i, \quad i\in \{1,2\}
+    \]
+    the following diagram is commutative:
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZARgBpiBdUkANwEMAbAVxiRAAUQBfU9TXfIRRkATFVqMWbTjz7Y8BIgAZSS8fWatEIAILdeIDPMFERq9ZK0gAQt3EwoAc3hFQAMwBOEALZIVIHAgkAGZqACMYMCg-ag0pbQAdBLQsAH1bagY6CIZ2fgUhEA8sRwALHH13L19Ef0CkMwlNNiSU1L1ZEE8fJDIAoMRQkAiopABaYP84q1a0jJAsnLzjRW1isorO7pq++sRGkejBqcsW5LSOg23e6j2T5sSEmAAPLDgcOABCJNIk+g80KUsCBMlgwFYoHQ4KUHCCFtkYLl8iY1iVynYuEA
+        \begin{tikzcd}
+        A &                                                                                                               & B \\
+        & P \arrow[ru, "\pi_B"'] \arrow[lu, "\pi_A"]                                                                    &   \\
+        & P \arrow[ruu, "\pi_B"', bend right] \arrow[luu, "\pi_A", bend left] \arrow[u, "{\exists!\,\varphi}"', dashed] &  
+        \end{tikzcd}
+    \end{center}
+    However, if we let \(\varphi=\text{id}_P\) the resulting diagram
+    is also commutative.
+    Since \(\varphi\) is unique, then we must have \(\varphi = \text{id}_P\)
+    and thus \(h\circ k = \text{id}_P\).
+    By swapping the roles of \(P\) and \(Q\) we also get
+    \(k\circ h = \text{id}_Q\).
+\end{snippetproof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% COPRODUCT %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Coproduct}
+
+\begin{snippetdefinition}{category-coproduct-definition}{Coproduct}
+    Let \(\mathcal{C}\) be a \category, and let \(A,B\in \catob(\mathcal{C})\).
+    A \emph{coproduct} of \(A\) and \(B\) in \(\mathcal{C}\) is an object \(A \sqcup B \in \catob(\mathcal{C})\)
+    together with two morphisms
+    \[
+        \iota_A \colon A \fromto A \sqcup B, \quad
+        \iota_B \colon B \fromto A \sqcup B
+    \]
+    \begin{minipage}{0.65\textwidth}
+        called \emph{injections}, such that the following universal property holds: \\
+        for all \(X \in \catob(\mathcal{C})\) with morphisms
+        \(f\colon A \fromto X\) and \(g\colon B \fromto X\), there exists a unique morphism
+        \(\xi \colon A \sqcup B \fromto X\) such that
+        \[
+            \xi \circ \iota_A = f \, \land \, \xi \circ \iota_B = g
+        \]
+    \end{minipage}
+    \begin{minipage}{0.35\textwidth}
+        \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZARgBpiBdUkANwEMAbAVxiRAEEACAHW7gEcAxkzScAQiAC+pdJlz5CKAAyklVWoxZt2UmSAzY8BIgCZV6+s1aIQE6bMMKiZExc3WQADSnqYUAObwRKAAZgBOEAC2SCogOBBIAMzUDFhgHlB0cAAWfiDUllo2vDAAHlhwOHAAhLykvOW6oRHRiGZxCYjJIABGMGBQSbGFHv75IAx0fQwACnJGihMwIThNIOFRSGQdSdR9A0gAtInD7mwh45PTc47GNmFY-tmr9ustSO3xMQVnxdz4ODoAH0JCkpjBZvMnPdHs81htWtsvohTlY2LwAcCdGDrlC7ksVj5JEA
+        \begin{tikzcd}
+        A \arrow[rdd, "f"', bend right] \arrow[rd, "\iota_A"] &                                                 & B \arrow[ldd, "g", bend left] \arrow[ld, "\iota_B"'] \\
+                                                            & A \sqcup B \arrow[d, "{\exists!\,\xi}", dashed] &                                                      \\
+                                                            & X                                               &                                                     
+        \end{tikzcd}
+        \end{center}
+    \end{minipage}
+\end{snippetdefinition}
+
+\begin{snippettheorem}{category-coproduct-in-set-theorem}{Coproduct in \(\mathbf{Set}\)}
+    Let \(A,B \in \catob(\mathbf{Set})\). Then,
+    the categorical coproduct of \(A\) and \(B\) corresponds to the disjoint union
+    \(A \disjointunion B\).
+\end{snippettheorem}
+
+\begin{snippetproof}{category-coproduct-in-set-theorem-proof}{category-coproduct-in-set-theorem}{Coproduct in \(\mathbf{Set}\)}
+    We will prove that \(A \sqcup B = (A \cartesianprod \{0\}) \union (B \cartesianprod \{1\})\).
+    Define \(\iota_A(a) = (a,0)\) and \(\iota_B(b) = (b,1)\).
+    Given any \set \(X\) and \function[functions]
+    \(f\colon A \fromto X\) and \(g\colon B \fromto X\) we need to find a unique
+    \function \(\xi \colon A \disjointunion B \fromto X\) such that
+    \[
+        \xi(\iota_A(x)) = f(x) \land \xi(\iota_B(x)) = g(x)
+    \]
+    Let
+    \[
+        \xi((x, i)) = \begin{cases}
+            f(x) & i=0 \\
+            g(x) & i=1
+        \end{cases}, \quad i\in\{0,1\}
+    \]
+    Then, we have
+    \begin{align*}
+        \xi(\iota_A) &= \xi((x,0)) = f(x) \\
+        \xi(\iota_B) &= \xi((x,1)) = g(x)
+    \end{align*}
+    Let \(\xi'\colon A \disjointunion B \fromto X\) satisfying those equations.
+    But then we must have
+    \[
+        \xi'((x, i)) = \begin{cases}
+            f(x) & i=0 \\
+            g(x) & i=1
+        \end{cases}, \quad i\in\{0,1\}
+    \]
+    and thus \(\xi = \xi'\).
+\end{snippetproof}
+
+\end{document}
