@@ -1,0 +1,77 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{noetherian-rings}
+\genpage
+
+\section{Noetherian ring}
+
+\begin{snippetdefinition}{noetherian-ring-definition}{Noetherian ring}
+    A \emph{left/right Noetherian ring} \(A\) is a \ring
+    that satisfies the ascending chain condition:
+    for every increasing sequence \(I_1 \subseteq I_2 \cdots\)
+    of left/right ideals has a largest element, meaning that
+    there exists \(n\) such that \(I_n = I_{n+1} = \cdots\).
+\end{snippetdefinition}
+
+\begin{snippettheorem}{noetherian-ring-equivalence-theorem}{}
+    Let \(A\) be a commutative \ring. The following are equivalent:
+    \begin{enumerate}
+        \item \(A\) is Noetherian;
+        \item every ideal \(I \idealin A\) is finitely generated, meaning
+        \(\exists x_1, \cdots, x_r \in I\) such that
+        \[
+            I = (x_1) + (x_2) \cdots + (x_r)
+        \]
+        that is \(\forall y \in I\), \(\exists a_1, \cdots, a_r\)
+        such that \(y = a_1x_1 + a_2 x_2 + \cdots, a_rx_r\);
+        \item every subset \(\mathcal{J} \neq \emptyset\) of \ideal[ideals] of \(A\)
+        has a maximal element, meaning \(\exists I \in \mathcal{J}\)
+        such that \(I \notsubseteq J\) for all \(J \in \mathcal{J}\). 
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{noetherian-ring-equivalence-theorem-proof}{noetherian-ring-equivalence-theorem}{}
+    \begin{enumerate}
+        \item \((1) \implies (3)\): Let \(\mathcal{J} \neq \emptyset\)
+        a \set of \ideal[ideals] of \(A\).
+        Choose \(I_1 \in \mathcal{J}\).
+        If \(I_1\) is \maximalideal[maximal] in \(\mathcal{J}\), we are done.
+        Otherwise, \(\exists I_2 \in \mathcal{J}\) such that \(I_1 \subset I_2 \cdots\).
+        We iterate this process until we find a \maximalideal.
+        Since \(A\) is Noetherian, the extraction will end in a finite amount of picks.
+        \item \((3) \implies (2)\): Let \(I \idealin A\).
+        Let us check the trivial cases.
+        If \(I = \{0_A\} = (0_A)\) we are done.
+        If \(I = A = (1_A)\) we are also done.
+        Suppose that \(I\) is not trivial.
+        Consider the \set of \ideal[ideals] \(\mathcal{J}_I \neq 0\) containing the \ideal[ideals] \(J\)
+        finitely generated such that \(J \subseteq I\).
+        We know that \(0_A \in I = (0_A) \subseteq I\)
+        which means \((0_A) \in \mathcal{J}_I\).
+        Let \(J \in \mathcal{J}\) be maximal in \(\mathcal{J}_I\).
+        This means that \(J = I\).
+        Indeed, if \(J \subset I\) then \(\exists y \in I \difference J\).
+        Furthermore, \(J\) is finitely generated and thus \(\exists x_1, \cdots, x_r \in J\)
+        which generate
+        \[
+            \tilde{J} \triangleq J + (y) \subseteq I
+        \]
+        and
+        \[
+            \tilde{J} = (x_1) + \cdots + (x_r)
+        \]
+        which is finitely generated.
+        Thus, \(\tilde{J} \in \mathcal{J}_I\) but \(\tilde{J} \supset J\) which was maximal
+        in \(\mathcal{J}_I\) \lightning.
+        Thus, \(J = I\) implies that \(I\) is finitely generated.
+    \end{enumerate}
+\end{snippetproof}
+
+\end{document}
