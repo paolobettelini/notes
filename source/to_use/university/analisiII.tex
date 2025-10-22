@@ -2237,7 +2237,7 @@ per la \(j\)-esima colonna di \(Jf(a)\)
 
 È falso per le funzioni a valori vettoriali.
 
-\stheorem{Teorema dell'increment fissato}{
+\stheorem{Teorema dell'incremento finto}{
     Sia \(\Omega \subseteq \mathbb{R}^n\) aperto e sia \(f\colon \Omega \to \mathbb{R}^m\)
     differenziabile in \(\Omega\). Sia \([x,y] \subseteq \Omega\).
     Allora 
@@ -2246,7 +2246,7 @@ per la \(j\)-esima colonna di \(Jf(a)\)
     \]
 }
 
-\sproof{Teorema dell'increment fissato}{
+\sproof{Teorema dell'incremento finito}{
     Consideriamo \(n=1\). Il teorema
     dice che data \(g\colon [a,b] \to \mathbb{R}^m\) continua su \([a,b]\)
     e differenziabile su \((a,b)\). Se \(||g'(x)|| \leq \alpha\) per tutte le \(x\)
@@ -2317,5 +2317,407 @@ per la \(j\)-esima colonna di \(Jf(a)\)
         e quindi \(E_{x_0}\) è aperto.
     }
 }
+
+\subsection{Criteri di lipschitzianità}
+
+Sappiamo che per le funzioni di una variabile la derivata limitata è un criterio di
+lipschitzianità.
+
+Sia \(\Omega \subseteq \mathbb{R}^m\) e \(f \colon \Omega \to \mathbb{R}^m\)
+differenziabile.
+
+\sproposition{}{
+    Sia \(f \in \text{Lip}_\alpha(\Omega, \mathbb{R}^m)\).
+    Allora \[
+        ||df(x)|| \leq \alpha
+    \]
+    per tutte le \(x\) in \(\Omega\).
+}
+
+\sproof{}{
+    Dobbiamo stimare la norma operatoriale del differenziabile.
+    Basta mostrare che 
+    \[
+    ||df(x)v|| \leq \alpha||v||
+    \]
+    per tutti i \(v\). Basta farlo per ogni versore \(||v||=1\).
+    Il differenziale è dato dalla derivata direzionale
+    \begin{align*}
+        ||df(x)v|| &= ||D_v f(x)||
+        = \left|\left|
+            \lim_{t \to 0} \frac{f(x + tv) - f(x)}{t}
+        \right|\right| \\
+        &= \lim_{t\to 0} \left|\left|
+            \frac{f(x + tv) - f(x)}{t}
+        \right|\right| \\
+        &= \lim_{t\to 0} \frac{1}{|t|}
+        ||f(x + vt) - f(x)|| \leq \alpha \lim_{t \to 0} \frac{1}{|t|}
+        ||tv|| = \alpha ||v||
+    \end{align*}
+    che esiste per ipotesi. Siccome la norma è continua possiamo portarla dentro al limite
+}
+
+Aggiungendo un ipotesi vale anche il viceversa in quanto
+dobbiamo usare il teorema dell'increment finito.
+Dobbiamo richiedere che tutti i segmenti siano in \(\Omega\),
+quindi ci serve \(\Omega\) convesso.
+
+\sproposition{}{
+    Sia \(\Omega \mathbb{R}^n\) aperto, \(f \colon \omega \to \mathbb{R}^m\)
+    e sia \(C \subseteq \Omega\) convesso.
+    Supponiamo che \(\exists \alpha > 0\)
+    tale che
+    \[
+        ||df(x)|| \leq \alpha, \quad \forall x \in C
+    \]
+    Allora, \(f \in \text{Lip}_\alpha(C)\).
+}
+
+\sproof{}{
+    Abbiamo
+    \[
+        ||f(x)-f(y)|| \leq ||x-y|| \sup_{0 < t < 1} || df(x + t(y-x)) ||
+    \]
+    Abbiamo una cosa simile alla lipschitzianità
+    ma non è una costante di Lipschitz in quanto dipende da \(x\) e \(y\).
+    Però per ipotesi
+    \[
+        \sup_{0 < t < 1} ||dt(x + t(y-x))|| \leq \alpha 
+    \]
+    quindi è lipschitziana    
+}
+
+\sexample{}{
+    Sia \(f(t) = (\cos t, \sin t, \arctan t)\) da \(\mathbb{R}\) a \(\mathbb{R}^3\).
+    Verifichiamo se è lipschitziana e le migliori costanti.
+    Nel dominio consideriamo la norma classica mentre nel codominio consideriamo
+    le norme \(1,2, \infty\).
+    Calcoliamo la matrice
+    \[
+        Jf(t) = f'(t) = \begin{pmatrix}
+            -\sin t \\
+            \cos t \\
+            \frac{1}{1 + t^2}
+        \end{pmatrix}
+    \]
+    Dobbiamo calcolare la norma \(||Jf(t)||\).
+    Con la norma due abbiamo
+    abbiamo \begin{align*}
+        ||f(t)||_2 = \sqrt{1 + {\left(\frac{1}{1 + t^2}\right)}^2} 
+    \end{align*}
+    Il massimo è chiramente \(\sqrt{2}\) che è la miglior costante di Lipschitz.
+    Con la norma 1 abbiamo
+    abbiamo \begin{align*}
+        ||f(t)||_1 = |\sin t| + |\cos t| + \frac{1}{1 + t^2}
+    \end{align*}
+    Il valore del sup è difficile da trovare, possiamo stimarla ad essere
+    minore di \(3\). Inoltre, \(||f'(0)||_1 = 2\)
+    quindi possiamo ridurre il bound.
+    Con la norma infinito abbiamo
+    \begin{align*}
+        ||f(t)||_\infty = \max\{|\sin t|, |\cos t|, \frac{1}{1 + t^2}\}
+    \end{align*}
+    Ci serve il supremum su \(t \in \mathbb{R}\)
+    del massimo di queste 3 funzioni. Sicuramente è minore o uguale di \(1\)
+    in quanto le 3 funzioni lo sono. In \(t=0\)
+    otteniamo precisamente \(1\).
+    Quindi il supremum è precisamente \(1\).
+    È di lipschitz (sempre) ma le costanti dipendono dalla norma, e non è mai
+    una contrazione.
+}
+
+\pagebreak
+
+\section{Derivate di ordini successive}
+
+Prendiamo \(\Omega \subseteq \mathbb{R}^n\) aperto
+e consideriamo \(f \colon \Omega \to \mathbb{R}\).
+Fissiamo un versore \(v\) e prendiamo \(a \in \Omega\).
+Supponiamo che la derivata direzionale \(D_v f\) esista in un intorno
+\(B_r(a)\).
+Allora \(D_vf\) è una funzione
+definita in un aperto che contiene \(a\).
+Quindi, possiamo farne a sua volta la derivata direzionale.
+Fissiamo un altro versore \(w \in \mathbb{R}^m\) e costruiamo la derivata direzionale
+nella direzione di \(w\) nel punto \(a\) se esiste.
+\[
+    D_w(D_v f)(a) \triangleq D^2_{w,v} f(a)
+\]
+In particolare, se come direzioni \(w\) e \(v\) scegliamo le direzioni degli assi cartesiani,
+queste derivate direzionali si chiamano derivate parziali seconde.
+Essa viene denotata come
+\[
+    \frac{\partial^2 f}{\partial x_i \partial x_j}(a)
+    \triangleq \frac{\partial}{\partial x_j} \left(
+        \frac{\partial f}{\partial x_i}(a)
+    \right) \triangleq f_{x_jx_i}(a)
+\]
+Se \(i \neq j\) si parla di derivate parziali secondo miste.
+Se \(i = j\) si usa la notazione
+\[
+    \frac{\partial^2f}{\partial x_i^2}(a)
+\]
+Possiamo quindi costruire \(n^2\)
+derivate parziali, con cui costruiamo una matrice quadrata.
+\sdefinition{Matrice Hessiana}{
+    Quindi, se in \(a\) esistono tutte le derivate parziali seconde di \(f\)
+    possiamo definire la matrice Hessiana.
+    \[
+        Hf(a) \triangleq \begin{pmatrix}
+            \frac{\partial^2 f}{\partial x_1^2}(a) &
+            \frac{\partial^2 f}{\partial x_1\partial x_2}(a) & \cdots &
+            \frac{\partial^2 f}{\partial x_1\partial x_n}(a) \\
+            \vdots \\
+            \frac{\partial^2 f}{\partial x_n \partial x_1}(a) &
+            \frac{\partial^2 f}{\partial x_n \partial x_2}(a) & \cdots &
+            \frac{\partial^2 f}{\partial x_n^2}(a)
+        \end{pmatrix}
+    \]
+}
+
+
+\sexample{}{
+    Sia \(f(x,y,z) = 3x^2y + xz^3\). Allora
+    \[
+        Hf(x,y,z) = \begin{pmatrix}
+            6y & 6x & 3z^2 \\
+            6y & 0 & 0 \\
+            3z^2 & 0 & 6xz
+        \end{pmatrix}
+    \]
+}
+
+\sexample{}{
+    Sia \(f(x,y) = x^2 \sqrt[3]{y}\).
+    Abbiamo problemi di differenziabilità nell'asse \(x\).
+    Ma per \(y \neq 0\) vale
+    \[
+        \nabla f = \left(2x\sqrt[3]{y}, \frac{1}{3}\frac{x^2}{\sqrt[3]{y}}\right)
+    \]
+    Fuori dall'asse \(x\) la funzione è differenziabile per il teorema del differenziale totale.
+    Consideriamo un punto generico in \((x_0, 0)\)
+    dove \(f\) è identicamente nulla. Quindi
+    \[
+        \frac{\partial f}{\partial x} (x_0, 0) = 0
+    \]
+    L'altra invece dobbiamo calcolare
+    \begin{align*}
+        \frac{\partial f}{\partial y}(x_0, 0)
+        &= \lim_{y\to 0} \frac{f(x_0, y) - f(x_0, 0)}{y} \\
+        &= \lim_{y\to 0} \frac{x_0^2}{y^{2/3}} \\
+        &= \begin{cases}
+            \infty & x_0 = 0 \\
+            0 & x_0 \neq 0
+        \end{cases}
+    \end{align*}
+    Quindi se \(x_0 = 0\)
+    \[
+        \frac{\partial f}{\partial y}(0,0) = 0
+    \]
+    perché \(f(0,y) = 0\).
+    \(f\) è differenziabile nell'origine (ma non possoamo mostrare con il teorema del differenziale totale).
+    Dobbiamo calcolare
+    \[
+        \lim_{(x,y) \to (0,0)} \frac{f(x,y)}{\sqrt{x^2 + y^2}} = 0
+    \]
+    che si risolve in coordinate polari.
+    Non possiamo calcoalre \(f_{xy}(0)\) perché dovrei calcolare
+    \[
+        \lim_{x \to 0} \frac{f_y(x, 0) - f_y(0,0)}{x}
+    \]
+    che none siste.
+    Invece \(f_{yx}(0)\) abbiamo
+    \[
+        \lim_{y \to 0} \frac{f_x(0,y) - f_x(0,0)}{y} = 0
+    \]
+}
+
+Quindi l'esistenza di una derivata parziale mista non implica l'esistenza
+di quella con gli ordini scambiati.
+
+\sexample{}{
+    Sia
+    \[
+        f(x,y) =\begin{cases}
+            \frac{xy^3}{x^2 + y^2} & (x,y) \neq 0 \\
+            0 & (x,y) = (0,0)
+        \end{cases}
+    \]
+    Abbimamo che \(f\) è continua in \(0,0\)
+    in quanto in coordinate polari
+    \[
+        \left|\frac{\rho \cos \theta \rho^2 \sin^3 \theta}{\rho^2}\right|
+        \leq \rho^2 \to 0
+    \]
+    Calcoliamo il gradiente di \(f\) fuori dall'origine (ci serve per calcolare le derivate secondarie).
+    Per \((x,y) \neq (0,0)\) abbiamo
+    \begin{align*}
+        f_x(x,y) &= \frac{y^3(x^2 + y^2) - xy^3 \cdot 2x}{{(x^2 + y^2)}^2}
+        = \frac{y^3(y^2 - x^2)}{{(x^2 + y^2)}^2}
+    \end{align*}
+    e
+    \begin{align*}
+        f_y(x,y) &= \frac{3xy^2(x^2 + y^2) - xy^3 \cdot 2y}{{(x^2 + y^2)}^2}
+        = \frac{xy^2(3x^2 + y^2)}{{(x^2 + y^2)}^2}
+    \end{align*}
+    \(f\) è sicuramente differenziabile duroi dall'origine.
+    Inoltre \(\nabla f(0,0) = (0,0)\) perché \(f\) è costante
+    negli assi. Per il teorema del differenziale totale \(f\)
+    è differenziabile in \(\mathbb{R}^2\).
+    Calcoliamo
+    \begin{align*}
+        f_{xy}(0,0) &= \lim_{x\to 0} \frac{f_y(x,0) - f_y(0,0)}{x} = 0
+    \end{align*}
+    perché \(f_y(x,0) = 0\).
+    Invece,
+    \begin{align*}
+        f_{yx}(0,0) &= \lim_{y\to 0} \frac{f_x(0,y) - f_x(0,0)}{x}  \\
+        &= \lim_{y\to 0} \frac{y^5 / y^4 - 0}{y} \\
+        &= \lim_{y\to 0} 1 = 1
+    \end{align*}
+}
+
+Quindi anche se ambo le derivate miste esistono non coincidono necessariamente.
+
+\stheorem{Teorema di Schwarz}{
+    Sia \(f \colon \Omega \subseteq \mathbb{R}^n \to \mathbb{R}\),
+    \(\Omega\) aperto, \(a \in \Omega\) e \(v,w\) due versori in \(\mathbb{R}^m\).
+    Supponiamo che \(B_r(a)\) dove \(D^2_{v,w} f\)
+    e \(D^2_{w,v}f\) esistono e siano continue in \(a\).
+    Allora \(D^2_{v,w} f(a) = D^2_{w,v} f(a)\).
+}
+
+\scorollary{}{
+    Se le derivate parziali esistono e sono continue in \(\Omega\),
+    allora
+    \[
+        \frac{\partial^2 f}{\partial x_i \partial x_j} =
+        \frac{\partial^2 f}{\partial x_j \partial x_i}
+    \]
+    ovvero \(Hf(x)\) è simmetrica.
+}
+
+\sdefinition{Classe \(\mathcal{C}^2\)}{
+    Sia \(f \colon \Omega \subseteq \mathbb{R}^n \to \mathbb{R}\),
+    allora \(f \in \mathcal{C}^2\) se tutte le derivate parziali prime e seconde di \(f\)
+    esistono e sono continue in \(\Omega\).
+}
+
+Sia \(f \colon \Omega \subseteq \mathbb{R}^n \to \mathbb{R}^m\).
+Possiamo definire le derivate superiori analogamente.
+Se \(f\) è differenziabile in \(\Omega\) è definito il differenziale
+\(df(x) \colon \mathbb{R}^n \to \mathbb{R}^m\) dato da
+\(df(x)h = Jf(x)h\).
+Fissato \(x\), al variare di \(h\) ho un applicazione lineare
+\[
+    df\colon \Omega \to \mathcal{L}(\mathcal{R}^n, \mathcal{R}^m)
+\]
+che manda \(x \to df(x)\).
+Questa non è in generale lineare in \(x\).
+
+\sdefinition{}{
+    Sia \(f\colon \Omega \subseteq \mathbb{R}^n \to \mathbb{R}^m\)
+    è differenziabile due volte in \(a \in \Omega\) se
+    \(f\) è differenziabile in \(\Omega\) e \(df \colon \Omega \to \mathcal{L}(\mathbb{R}^n, \mathbb{R}^m)\)
+    è differenziabile in \(a\).
+}
+
+\sproposition{}{
+    \begin{enumerate}
+        \item \(f\) è differenziabile due volte in \(a\)
+        se e solo se \(\partial f/\partial x_i\) è differenziabile in \(a\)
+        per tutti gli \(i\).
+        \item se \(f\) è differenziabile due volte in \(a\),
+        allora esistono tutte le seconde derivate parziali
+        e posso scambiare l'ordine di derivazione.
+        \item se \(f\) è differenziabile due volte in \(a\), allora
+        \begin{enumerate}
+            \item \(D_vf\) è differenziabile in \(a\) per ogni \(v\);
+            \item \(D_{v,w}^2 f(a) = D_{w,v}^2 f(a)\);
+            \item \[
+                D_{v,w}^2 f(a) = \sum_{i,j=1}^n \frac{\partial^2 f}{\partial x_i \partial x_j}(x)v_iw_i
+            \]
+        \end{enumerate}
+        \item Se in un intorno di \(a\) esistono e sono continue tutte le derivate parziali,
+        esistono tutte le derivate parziali seconde e sono continue in \(a\),
+        allora \(f\) è due volte differenziabile in \(a\).
+        \item se \(f \in \mathcal{C}^2(\Omega)\) allora \(f\) è due volte differenziabile
+        in \(\Omega\).
+    \end{enumerate}
+}
+
+\sdefinition{}{
+    Se \(f \colon \Omega \to \mathbb{R}^m\) è due volte differenziabile in \(a\),
+    allora \(d^2 f(a)\) indica il differenziale del differenziale di \(f\) nel punto \(a\).
+}
+
+Quindi
+\[
+    d^2f(a) \in \mathcal{L}(\mathbb{R}^n, \mathcal{L}(\mathbb{R}^n, \mathbb{R}^m))
+\]
+Questo significa che \(d^2f(a) h \in \mathcal{L}(\mathbb{R}^n, \mathbb{R}^m)\).
+Cioè è lineare sia in \(h\) che in \(k\), quindi bilineare
+\(k \to (d^2f(a)h)k\).
+Siccome è bilinare possiamo vederlo come \(d^2f(a) \colon \mathbb{R}^n \times \mathbb{R}^n \to \mathbb{R}^m\)
+dato da \(d^2f(a)(h,k) = (d^2f(a)h)k\).
+Possiamo dire che
+\[
+    d^2f(a)(h,k) = \sum_{i,j=1}^n \frac{\partial^2 f}{\partial x_i \partial x_j}(a)h_ik_j
+    = h^t Hf(a) k = (Hf(a)k)h
+\]
+dove \(Hf(a)\) è un tensore.
+In particolare, se \(f\) è una funzione a valori reali
+\[
+    df(a) h = \nabla f(a) h, \quad
+    d^2f(a)(h,k) = h^t Hf(a) k
+\]
+è una forma bilineare (forma = valori reali).
+Quando \(h=k\) scriviamo una sola variabile.
+In tal caso ottengo una forma quadratica che si scrive
+\[
+    \sum_{i,j=1}^n \frac{\partial^2 f}{\partial x_i \partial x_j}(a)h_ij_j    
+\]
+Succede che per \(h \to 0\)
+\begin{align*}
+    \frac{d^2f(a)(h)}{||h||^2}
+\end{align*}
+è limitato.
+
+\sexample{}{
+    Data una forma quadratica \(ax^2 + bxy + cy^2\)
+    e consideriamo
+    \[
+        \frac{ax^2 + bxy + xy^2}{ax^2 + bxy + xy^2}
+    \]
+    che in coordinate polari diventa
+    \[
+        a\cos^2 \theta + b \sin\theta\cos\theta + c\sin^2 \theta
+    \]
+    che chiaramente è limitata da \(|a| + |b| + |c|\).
+}
+
+\subsection{Derivate \(k\)-esime}
+
+Se per \(\{v^{(i)}\}\) versori in \(\mathbb{R}^m\)
+esiste in \(B_\delta(a)\) le derivate direzionali
+\[
+    D_{v^{(k-1)}, \cdots, v^{(1)}}^{k-1}f(x)
+\]
+e se è derivabile in \(a\) lungo la direzione \(v^{(k)}\),
+allora diremo che esiste la derivata \(k\)-esima.
+Se esistono continue tutte le derivate \(k\) esime possiamo permutare gli indici.
+
+\sexample{}{
+    Con \(k=3\) sia \(f \colon \mathbb{R}^2 \to \mathbb{R}\).
+    Possiamo scrivere \(f_{xxx},f_{xxy},f_{xyx},f_{yxx},f_{yyx},f_{yxy}, f_{xyy}, f_{yyy}\)
+    che sono \(2^3\) derivate.
+    Se vale il teorema di Schwarz molte di queste coincidono.
+}
+
+\sdefinition{}{
+    Diciamo che \(f \in \mathcal{C}^k(\Omega)\) se ogni derivata parziale di ordine \(\leq k\)
+    esiste ed è continua in \(\Omega\).
+}
+Chiaramente sono annidati.
 
 \end{document}
