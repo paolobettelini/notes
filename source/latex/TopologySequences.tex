@@ -4,15 +4,188 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{bettelini}
+\usepackage{tikz}
+
+\usetikzlibrary{cd}
 
 \newcommand\ts{{(X, \mathcal{T})}}
 
 \begin{document}
 
-\id{topology-sequences}
+\id{topology-hausdorff-spaces}
 \genpage
 
-\section{Sequences}
+\section{Hausdorff spaces}
+
+\begin{snippetdefinition}{hausdorff-space-definition}{Hausdorff space}
+    A \topologicalspace \(\ts\) is an \textit{Hausdorff space} if for all \(x,y\in X\)
+    where \(x\neq y\), there is a \neighborhood of \(x\), \(U_x\) and a \neighborhood of \(y\), \(U_y\)
+    such that \(U_x\) and \(U_y\) are \disjoint.
+\end{snippetdefinition}
+
+\begin{snippetproposition}{metric-spaces-are-hausdorf}{}
+    Let \((X, d)\) be a \metricspace and \(\mathcal{T}_d\) the topology induced by \(d\). Then,
+    \((X, d)\) is Hausdorf.
+\end{snippetproposition}
+
+\begin{snippetproof}{metric-spaces-are-hausdorf-proof}{metric-spaces-are-hausdorf}{}
+    Let \(x,y \in X\) such that \(x \neq y\).
+    Thus, \(d(x,y) > 0\). Consider \(r\) such that
+    \[
+        0 < r < \frac{d(x,y)}{2}
+    \]
+    We want to show that \(\ball_r(x) \intersection B_r(y) = \emptyset\).
+    Suppose that it is not and let \(z \leq \ball_r(x) \intersection B_r(y)\).
+    We have that \(d(x,z) < r\)
+    and \(d(y,z) < r\).
+    Using the triangular inequality
+    \[
+        d(x,y) \leq d(x, z) + d(z, y) < 2r < d(x,y)
+    \]
+    which is absurd \lightning.
+\end{snippetproof}
+
+\begin{snippetproposition}{topology-t2-implies-t1}{}
+    Let \(\ts\) be a \topologicalspace.
+    If \(\ts\) is \(T_2\), it is also \(T_1\).
+\end{snippetproposition}
+
+\begin{snippetproof}{topology-t2-implies-t1-proof}{topology-t2-implies-t1}{}
+    Let \(x \in X\).
+    We want to show that \(\{x\}\) is \closedset[closed], meaning that
+    \(X \difference \{x\}\) is \topologicalspace[open][Open set].
+    This is equivalent to saying that \(\forall y \in X \difference \{x\}\),
+    there exists a \neighborhood \(V\) of \(y\) such that \(V \subseteq X \difference \{x\}\).
+    Since the space is \(T_2\), there exist \neighborhood[neighborhoods]
+    \(U\) and \(V\) of \(y\) which are \disjoint.
+    This is equivalent to saying that \(V \subseteq X \difference U\),
+    which implies that \(V \subseteq X \difference U \subseteq X \difference \{x\}\).
+\end{snippetproof}
+
+\begin{snippetproposition}{hausdorff-spaces-derivatives-are-hausdorff}{}
+    Let \(\ts\) be a \(T_2\) \topologicalspace. Then,
+    \begin{enumerate}
+        \item every subspace of \(\ts\) is also Hausdorff;
+        \item let \(Y\) be another \(T_2\) \topologicalspace.
+        Then, \(X \cartesianprod Y\) is also Hausdorff.
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{hausdorff-spaces-derivatives-are-hausdorff-proof}{hausdorff-spaces-derivatives-are-hausdorff}{}
+    \begin{enumerate}
+        \item There exist \neighborhood[neighborhoods] \(U\) and \(V\)
+        of \(X\) such that \(x\in U\), \(y \in V\) and \(U \intersection V = \emptyset\).
+        We thus have
+        \[
+            (U \intersection Y) \intersection (V \intersection Y)
+            = (U \intersection V) \intersection Y = \emptyset \intersection Y = \emptyset.
+        \]
+        \item Let \((x,y), (x',y') \in X \cartesianprod Y\).
+        The two points are distinct if \(x \neq x' \lor y \neq y'\).
+        Without loss of generality choose let \(x \neq x'\).
+        There exist \neighborhood[neighborhoods]
+        \(U\) and \(U'\) of \(x\) and \(x'\) respectively that are \disjoint.
+        Then,
+        \[
+            (U \cartesianprod Y) \intersection (U' \cartesianprod Y)
+            = (U \intersection U') \cartesianprod Y = \emptyset \cartesianprod Y = \emptyset
+        \]
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetproposition}{hausdorff-space-diagonal-characterization}{}
+    Let \(X\) be a \topologicalspace.
+    Then, \(X\) is \(T_2\) \ifandonlyif
+    \(\Delta \subseteq X \cartesianprod X\) is a \closedset in \(X \cartesianprod X\)
+    where \(\Delta = \{(x,x) \suchthat x \in X\}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{hausdorff-space-diagonal-characterization-proof}{hausdorff-space-diagonal-characterization}{}
+    Saying that \(x\neq y\) is equivalent to saying that \(\forall (x,y) \in (X \cartesianprod X) \difference \Delta\)
+    there exist a \neighborhood of \((x,y) \subseteq (X \cartesianprod X) \difference \Delta\).
+    \(\forall x \neq y\) there exist \topologicalspace[open sets][Open set] \(U\) and \(V\)
+    of \(X\) such that \((x,y) \in U \cartesianprod V\) and \(U \cartesianprod V \subseteq (X \cartesianprod X) \difference \Delta\).
+    The latter is equivalent to saying that \(U \intersection V = \emptyset\).
+\end{snippetproof}
+
+\begin{snippetproposition}{hausdorff-space-basis-characterization}{}
+    Let \(\mathcal{B}\) be a \topologicalbasis
+    for a \topologicalspace \(X\).
+    Then, \(X\) is \(T_2\) \ifandonlyif \(\forall x \neq y, \exists B, B' \in \mathcal{B}\)
+    such that \(x \in B \land y\in B' \land B\intersection B' = \emptyset\).
+\end{snippetproposition}
+
+\begin{snippetproof}{hausdorff-space-basis-characterization-proof}{hausdorff-space-basis-characterization}{}
+    \ffiproof{
+        This is trivial.
+    }{
+        Given \topologicalspace[open sets][Open set]
+        \(U, V\) such that \(x \in U\) and \(y \in V\)
+        and \(U \intersection V = \emptyset\).
+        Since \(\mathcal{B}\) is a \topologicalbasis for \(X\),
+        we can write
+        \[
+            U = \bigcup_{i\in I} B_i, \qquad
+            V = \bigcup_{j \in J} B_j'
+        \]
+        for \(B_i, B_j' \in \mathcal{B}\).
+        Since \(x \in U\), there exists \(i \in I\) such that \(x \in B_i\).
+        Since \(y \in V\), there exists \(j \in J\) such that \(y \in B_j\).
+        Thus, \(B_i \intersection B_j' \subseteq U \intersection V = \emptyset\).
+    }
+\end{snippetproof}
+
+\begin{snippetcorollary}{topological-maps-hausdorff-equalizer-closed}{}
+    Let \(X, Y\) be \topologicalspace[topologicalspaces]
+    where \(Y\) is \(T_2\) and let \(f,g \colon X \fromto Y\).
+    Then, \(\text{Eq}(f,g)\) is a \closedset in \(X\). % TODOURGENT link Eq
+\end{snippetcorollary}
+
+\begin{snippetproof}{topological-maps-hausdorff-equalizer-closed-proof}{topological-maps-hausdorff-equalizer-closed}{}
+    Consider the diagram
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZARgBoAGAXVJADcBDAGwFcYkQANEAX1PU1z5CKMsWp0mrdgE0ABAB15AY3oAnHPCz0waVdFnSefEBmx4CRAEykxNBizaIQh3vzNCi5G+PtSnL8RgoAHN4IlAAMz0AWyQvEBwIJGsJB3Zgo0iYuJpEpABmO0lHEAiQGkZ6ACMYRgAFAXNhEFUsYIALHEzS7MQyBKTEfNceiFi+3MHLEaixnIGkfsYsMBKoejh2oPLUvxBFGAAPLDgcOABCUgV5Y55KbiA
+        \begin{tikzcd}
+        & X \arrow[rd, "g"] \arrow[ld, "f"'] \arrow[d, "{\exists!, \xi}", dashed] &   \\
+        Y & Y \cartesianprod Y \arrow[l] \arrow[r]                                  & Y
+        \end{tikzcd}
+    \end{center}
+    where \(\xi = (f,g)\).
+    By the universal property of the product, there exists a unique continuous map \(\xi\)
+    such that the diagram commutes.
+    Since \(Y\) is \(T_2\), \(\Delta \subseteq Y \cartesianprod Y\) is \closedset[closed]
+    in \(Y \cartesianprod Y\) where \(\Delta = \{(y,y) \suchthat y \in Y\}\).
+    Since \(\xi\) is continuous,
+    \[
+        \xi^{-1}(\Delta) = \{x \in X \suchthat \xi(x) \in \Delta\}
+    \]
+    but this condition is equivalent to sayin that \((f(x), g(x)) \in \Delta\),
+    which is the equalizer condition \(f=g\).
+\end{snippetproof}
+
+\plain{If the two spaces are equal, the solutions to the fixed point equation is closed.}
+
+\begin{snippetlemma}{topology-hausdorff-finite-distinct-point-separation}{}
+    Let \(X\) be a \(T_2\) \topologicalspace
+    and let \(p_1, \cdots, p_n\) a finite sequence of distinct points.
+    Then, there exist a finite sequence of \disjoint \topologicalspace[opens sets][Open set]
+    \(U_1, \cdots, U_n\) such that \(p_i \in U_i\).
+\end{snippetlemma}
+
+\begin{snippetproof}{topology-hausdorff-finite-distinct-point-separation-proof}{topology-hausdorff-finite-distinct-point-separation}{}
+    Since \(X\) is Hausdorf,
+    \(\forall 1 \leq i < j \leq n\)
+    there exists \disjoint \topologicalspace[opens sets][Open set] \(U_{i,j}\) and \(U_{j,i}\)
+    such that \(p_i \in U_{i,j}\) and \(p_j \in U_{j,i}\).
+    Let \[
+        U_i = \bigcap_{i \neq j} U_{i,j}
+    \]
+    which is \topologicalspace[opens][Open set] as it is a finite intersection of \topologicalspace[opens sets][Open set].
+    Thus, if \(i \neq j\), \(U_i \intersection U_j = \emptyset\).
+\end{snippetproof}
+
+\subsection{Sequences} %%%%%%%%%%%%%%%%%%%%%%
 
 \plain{Defining convergence on topological spaces is a bit tricky because there is
 no notion of distance (since there is no metric). We can define convergence as
@@ -20,7 +193,7 @@ the members of the sequence (eventually) all lie in each open neighborhood of th
 
 \begin{snippetdefinition}{topology-convergence-definition}{Convergence in topological space}
     Let \(\ts\) be a \topologicalspace.
-    A sequence \({\{x_n\}}_{n \in \naturalnumbers}\) in \(X\) converges to a point \(\alpha\in X\)
+    A \sequence \({\{x_n\}}_{n \in \naturalnumbers}\) in \(X\) converges to a point \(\alpha\in X\)
     (written \(x_n \to \alpha\)) if 
     \[ \forall U \in \mathcal{T}, \exists N \in \naturalnumbers \suchthat a_n \in U, \quad \forall n \geq N \]
 \end{snippetdefinition}
@@ -40,11 +213,5 @@ This is because we might not have enough open sets to require the sequence to be
 
 \plain{In order to achieve uniqueness, we need to require disjoint open sets for every pair of distinct elements.
 This is precisely what the Hausdorff property does.}
-
-\begin{snippetdefinition}{hausdorff-space-definition}{Hausdorff space}
-    A \topologicalspace \(\ts\) is an \textit{Hausdorff space} if for all \(x,y\in X\)
-    where \(x\neq y\), there is a \neighborhood of \(x\), \(U_x\) and a \neighborhood of \(y\), \(U_y\)
-    such that \(U_x\) and \(U_y\) are \disjoint.
-\end{snippetdefinition}
 
 \end{document}
