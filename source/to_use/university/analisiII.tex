@@ -2720,4 +2720,326 @@ Se esistono continue tutte le derivate \(k\) esime possiamo permutare gli indici
 }
 Chiaramente sono annidati.
 
+\subsection{Differenzaibili \(k\)-esimi}
+
+\sdefinition{Differenzaibile \(k\)-esimi}{
+    \[
+        d^k f(a) \colon \mathbb{R}^n \times \mathbb{R}^n \times \cdots \times \mathbb{R}^n \to \mathbb{R}^n
+    \]
+    è un applicazione lineare in ciascuno dei vettori di ingresso definita da
+    \[
+        d^k f(a) (h^{(1)}, \cdots, h^{(k)})
+        = \sum_{i_1, \cdots, i_k = 1}^n \frac{\partial^k f}{\partial x_{i_1} \cdots \partial x_{i_k}}(a)
+        h_{i_i}^{(i)}
+    \]
+}
+
+Per Schwarz molte di queste derivate sono uguali.
+Ci interessa il caso in cui \(h^{(i)} = h^{(j)} = h\)
+In questo caso abbiamo
+\[
+    d^k f(a)(h) = \sum_{\substack{j_1, \cdots, j_n \geq 0 \\ \sum j_i = k}}
+    \binom{k}{j_1 \cdots j_n} \frac{\partial^k f}{\partial x^{j_n}_n \cdots \partial x^{j_1}_1}(a)
+    h^{j_1}_1 \cdots h_n^{j_n}
+\]
+dove abbiamo usato il coefficiente multinomiale.
+
+\sexample{}{
+    Sia \(f \colon \mathbb{R}^3 \to \mathbb{R}\)
+    e \(k=4\). Allora
+    \begin{align*}
+        d^4f(a)(h) &= f_{xxxx}h_1^4
+        + f_{yyyy}h-2^4 + f_{zzzz}h_3^4
+        + h_1^3h_2 \left(
+            f_{xxxy} + f_{xxyx} + f_{xyxx} + f_{yxxx}
+        \right) + \cdots
+    \end{align*}
+    Il termine nelle parentesi è pari a \(4 f_{xxxx}\).
+    E il valore
+    \[
+        \binom{4}{3,1,0} = \frac{4!}{3!1!0!} = 4
+    \]
+}
+
+\(d^4 f(a)(h)\) è un polinomio omogeneo di grado \(k\)
+in \(h_1, \cdots, h_n\).
+Inoltre valore che
+\[
+    \frac{d^4 f(a)(h)}{||h||^k}
+\]
+è limitato per \(h\to 0\).
+
+\stheorem{Teorema di Taylor}{
+    Sia \(\Omega \subseteq \mathbb{R}^n\) aperto,
+    siano \(a,x \in \Omega\) tale che \([a,x] \subseteq \Omega\).
+    Sia \(f \colon \Omega \to \mathbb{R}\) tale che \(f \in \mathcal{C}^k(\Omega)\).
+    Allora,
+    \[
+        f(x) = \sum_{i=0}^{k-1} \left(\frac{d^{i}f(a)(x-a)}{i!}\right) + R_k(x-a)
+    \]
+    è il polinomio di Taylor di ordine \(k-1\) di \(f\) in \(a\).
+    Il resto è dato in forma di Peano come
+    \[
+        R_k(x-a) = \frac{d^k f(a)(x-a)}{k!} + o(||x-a||^k)
+    \]
+    per \(x \to a\), oppure in forma di Lagrange (se al posto di fermarmi a \(k-1\) ci fossimo fermati a \(k\))
+    \[
+        R_k(x-a) = \frac{d^k f(y)(x-a)}{k!}
+    \]
+    con \(y \in (a,x)\).
+    Inoltre, il polinomio di Taylor
+    è l'unico polinomio di grado al più \(k\)
+    tale che \(o(||x-a||^k)\) per \(x\to a\).
+}
+
+Viene detto ordine del polinomio di Taylor e non grado in quanto
+il polinomio ha grado al più quello dato ma potrebbe essere minore.
+
+\sexample{}{
+    Sia \[
+        f(x,y,z) = \ln(1 + xz^2 - y^3 e^{x+1})
+        + \sin \sqrt{1 - x^2 + xy - z\ln(1 + xy)}
+    \]
+    Trovare lo sviluppo di MacLaurin al quarto ordine.
+    Poniamo \(t = xz^2 - y^3 e^{x+1}\), e osserviamo che \(t \to 0\)
+    se \((x,y,z) \to (0,0,0)\). Possiamo dire
+    \begin{align*}
+        t &= xz^2 - y^3 e\left[
+            1 + x + \frac{x^2}{2} + \cdots
+        \right] \\
+        &= xz^2 - ey^3 - exy^3 + o(||(x,y,z)||^4)
+    \end{align*}
+    Sviluppiamo ora il logaritmo
+    \begin{align*}
+        \ln(1 + t) &=
+        xz^2 - ey^3 - exy^3 + o(||(x,y,z)||^4)
+    \end{align*}
+    in quanto tutti gli altri termini sono trascurabili.
+    Esercizio: fare anche il seno e mettere assieme.
+}
+
+\pagebreak
+
+\section{Ottimizzazione}
+
+Sia \(\Omega \subseteq \mathbb{R}^n\) un sottoinsieme qualcunque e sia \(f \colon \Omega \to \mathbb{R}\).
+
+\sdefinition{}{
+    Sia \(a\in \Omega\) è un punto di massimo assoluto per \(f\) in \(\Omega\)
+    se \(f(x) \leq f(a)\) \(\forall x \in \Omega\).
+    Invece \(a\) è punto di massimo relativo (o locale) per \(f\)
+    se esiste \(U\) intorno di \(a\) tale che \(a\) è punto
+    di massimo assoluto per \(f\) in \(\Omega \cap U\).
+    Analogamente forte per il minore stretto.
+}
+
+Se \(\Omega\) è un aperto, il problema di cercare
+massimi e minimi di \(f\) in \(\Omega\)
+si chiama ottimizzazione libera.
+
+\stheorem{Teorema di Fermat}{
+    Sia \(\Omega \subseteq \mathbb{R}^n\)
+    aperto, \(a \in \Omega\) un punto estremante per \(f\).
+    Se \(f\) è differenziabile in \(a\),
+    allora
+    \[
+        \frac{\partial f}{\partial x_i} = 0
+    \]
+    Cioè \(\nabla f =0\).
+}
+
+\sproof{Teorema di Fermat}{
+    Supponiamo che \(a\) sia estremanete per \(f\).
+    Allora \(a\) è estremanete anche a tutti le restrizioni di rette che passano per \(a\).
+    In particolare prendiamo \(\gamma_i(t) = a + te_i\)
+    paralleli agli assi cartesiani.
+    Sia \(\Phi_i\) la restrizione di \(f\) a tali rette.
+    Quindi \(Phi_i = f \circ \gamma_i\).
+    Le funzioni \(\Phi_i\) hanno un punto estremante in \(t=0\).
+    Inoltre, \(\Phi_i\)
+    sono differenziabili in quanto composizione di funzioni differenziabili.
+    Allora, per il teorema di Fermat in una variabile vale \(\Phi'(0) =0 \).
+    Quindi abbiamo
+    \begin{align*}
+        \Phi_i'(0) &= (f \circ \gamma_i)'(0) = \nabla f(\gamma_i (0)) \circ \gamma_i'(0) \\
+        &= \nabla f(a) \cdot e_i = \frac{\partial f}{\partial x_i} (a) = 0
+    \end{align*}
+}
+
+Tale condizione è necessaria ma non sufficiente.
+
+\sexample{}{
+    Siano \(f(x,y) = x^2 + y^2\) e \(g(x,y) = x^2 - y^2\).
+    Per entrambe \(\nabla f(0,0) = \nabla g(0,0) = 0\).
+    Tuttavia, l'origine è estremante per \(f\) ma non per \(g\).
+    Mentre non lo è per \(g\), che ha un punto di sella.
+}
+
+\sdefinition{Punti stazionari}{
+    Se \(f\) è differenziabile in \(a \in \Omega\)
+    e se \(\nabla f(a) = 0\), diremo che
+    \(a\) è punto stazionario o punto critico per \(f\).
+}
+
+\sdefinition{Punto di sella}{
+    Se \(f\) è differenziabile in \(a \in \Omega\)
+    e \(a\) è un punto stazionario che non è estremante, allora
+    è un \emph{punto di sella}.
+}
+
+Vogliamo avere strumenti per trovare questi punti.
+Non ha senso studiare il segno della derivata in quanto ce ne sono molteplici.
+Possiamo considerare i differenziali secondi,
+che sono forme bilineari, e studiare il segno della forma quadratica associata.
+
+Per le funzioni di una variabile possiamo considerare l'espansione di Taylor
+e studiare l'incremento (dove il primo termine si annulla siccome siamo in un intorno di un punto stazionario)
+\[
+    f(x) - f(a) = {(x-a)}^2 \left[
+        \frac{1}{2}f''(a) + o(1)
+    \right]
+\]
+da cui seguono i casi del segno.
+Vogliamo fare un procedimento analogo.
+Sia \(f\) differenziabile 2 volte
+Allora per \(h \to 0\)
+\begin{align*}
+    f(a + h) = f(a) + \nabla f(a) \cdot h + \frac{1}{2}h^t Hf(a)h + o(||h||^2)
+\end{align*}
+Se \(a\) è punto critico, l'incremento di \(f\) ha la forma
+\[
+    f(a + h) - f(a) = \frac{1}{2}h^t Hf(a)h + o(||h||^2)
+    = ||h||^2 \left[
+        \frac{h^tHf(a)h}{||h||^2} + o(1)
+    \right]
+\]
+Dobbiamo quindi studiare il segno della funzione
+\[
+    F(h) = \frac{h^t Hf(a)h}{||h||^2}
+    = \frac{1}{||h||^2} \sum_{i,j = 1}^n \frac{\partial^2 f}{\partial x_i \partial x_j}(a)h_i h_j
+\]
+\(F\) è il quoziente di due polinomi omogenei di grado \(2\).
+Quindi \(F\colon \mathbb{R}^n \backslash \{0\} \to \mathbb{R}\) è omogenea di grado zero \(F(\lambda h) = F(h)\).
+Ciò significa che \(F\) è costante su tutti i punti
+di ciascuna retta passante per l'origine (a parte nell'origine).
+Vogliamo dimostrare che \(F\) ammette massimi e minimi assoluti.
+Notiamo che se restringiamo il dominio ad un disco (non-degenere),
+i valori che questa funzione assume rimangono gli stessi, non importa quanto piccolo
+il cerchio.
+Ci restringiamo quindi a \[
+    S = \{x \in \mathbb{R}^n \,|\, ||x|| = r\}
+\]
+e allora \(F\) rispetto a \(S\) cioè \(S \to \mathbb{R}\)
+ammette massimo e minimo assoluti,
+in quanto \(F\) è continua e \(S\) è compatto,
+quindi per Weierstrass.
+Allora esistono \(m, M \in \mathbb{R}\)
+tale che \(m \leq F(h) \leq M\) per tutte le \(h \in \mathbb{R}^n \backslash \{0\}\)
+e \(m, M\) sono
+\[
+    m \leq \frac{h^t Hf(g)h}{||h||^2} \leq M
+\]
+per tutte le \(h \in \mathbb{R}^n \backslash \{0\}\)
+e quindi
+\[
+    m||h||^2 \leq h^tHf(a)h \leq M||h||^2
+\]
+per tutte le \(h \in \mathbb{R}^n\).
+Possiamo quindi dedurre che se \(m > 0\) allora \(a\) è un punto
+di minimo relativo, se \(M < 0\) allora \(a\) è un punto di massimo relativo,
+se invece \(m < 0 \land M > 0\) allora \(h^tHf(a)h\)
+cambia segno e quindi \(a\) è un punto di sella.
+Se \(mM=0\), c'è almeno una retta lungo la quale il termine di secondo grado si annulla.
+In questo caso \(o(1)\) non è più trascurabile e non possiamo concludere niente.
+
+\sexample{}{
+    Sia \[
+        f(x,y) = {(x-y)}^2 + \varphi
+    \]
+    dove \(\varphi\) è un polinomio composto da monomi di grado maggiore o uguale a tre.
+    Chiaramente \(f\) è differenziabile in \(0\)
+    e \(f(0,0) = 0\) quindi è punto critico. Calcoliamo
+    \begin{align*}
+        f_x &= 2(x-y) + \varphi_x \\
+        f_y &= -2(x-y) + \varphi_y \\
+        f_{xx} &= 2 + \varphi_{xx} \\
+        f_{xy} &= -2 + \varphi_{xy} \\
+        f_{yy} &= 2 + \varphi_{yy}
+    \end{align*}
+    Molte di queste derivate nell'origine scompaiono in dato il grado del polinomio.
+    Quindi
+    \[
+        Hf(0,0) = \begin{pmatrix}
+            2 & -2 \\ -2 & 2 \end{pmatrix}
+    \]
+    Scegliendo \(h=(1,1)\) abbiamo che
+    \[
+        \begin{pmatrix}
+            1 & 1
+        \end{pmatrix}
+        \begin{pmatrix}
+            2 & -2 \\ -2 & 2
+        \end{pmatrix}
+        \begin{pmatrix}
+            1 \\ 1
+        \end{pmatrix}
+        = 0
+    \]
+    Scegliendo \(\varphi(x,y) = x^{16}\).
+    Con questa scelta \(f\) ha un minimo in \(0,0\).
+    Se però scelgo \(\varphi(x,y) = x^{15}\) questa ha un punto di sella nell'origine.
+}
+
+Studiamo \(h^t Hf(a)h\).
+In generale, se \(Q \colon \mathbb{R}^n \to \mathbb{R}\)
+è una forma quadratica, allora \(Q(v) = v^t A v\) dove \(A\)
+è una matrice \(n\times n\) simmetrica.
+Per il teorema spettrale reale, se \(A\)
+è simmetrica, allora \(A\) ha \(n\)
+autovalori reali
+\[
+    \lambda_1 \leq \cdots \leq \lambda_n
+\]
+ed esiste una rotazione \(R\)
+tale che \(A = R^t D T\)
+dove \(D = \text{dial}(\lambda_1, \cdots, \lambda)\).
+Quindi,
+\begin{align*}
+    Q(v) &= v^t A v = v^t R^t DR v \\
+    &= \tilde{v}^t D \tilde{v} \\
+    &= \sum \lambda_i \tilde{v}_i^2
+\end{align*}
+ponento \(\tilde{v} = Rv\).
+Quindi
+\[
+    \lambda_1 ||\tilde{v}||^2 \leq Q(v) \leq \lambda_n ||\tilde{v}||^2
+\]
+Siccome \(R\) è una rotazione, quindi un isometria, preserva la norma,
+quindi \(||\tilde{v}|| = ||Rv|| = ||v||\). Allora
+\[
+    \lambda_1 ||v||^2 \leq Q(v) \leq \lambda_n ||v||^2
+\]
+Possiamo quindi dedurre che se \(\lambda_1 > 0\),
+\(Q\) è definita positiva. Se \(\lambda_m < 0\),
+\(Q\) è definita negativa.
+Se \(\lambda_1 \lambda_n < 0\), allora \(Q\) è indefinita,
+se \(\lambda_1 \lambda_n = 0\), allora \(Q\) è semidefinita.
+
+Questa era la dimostrazione del seguente teorema.
+
+\stheorem{}{
+    Sia \(f \colon \Omega \subseteq \mathbb{R}^n \to \mathbb{R}\),
+    \(\Omega\) aperto e \(a \in \Omega\) punto critico per \(f\)
+    ed \(f\) differenziabile due volte in \(a\). Allora,
+    \begin{enumerate}
+        \item \(Hf(a)\) è definita positiva, allora \(a\) è punto di minimo relativo forte;
+        \item \(Hf(a)\) è definita negativa, allora \(a\) è punto di massimo relativo forte;
+        \item \(Hf(a)\) è indefinita, allora \(a\) è un punto di sella;
+        \item se \(a\) è punto di massimo relativo, allora \(Hf(a)\) è semidefinita negativa;
+        \item se \(a\) è punto di minimo relativo, allora \(Hf(a)\) è semidefinita positiva.
+    \end{enumerate}
+}
+
+Se la matrice Hessiana è semidefinita, non possiamo fare nulla.
+
 \end{document}
