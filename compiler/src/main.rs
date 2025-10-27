@@ -218,6 +218,7 @@ async fn compile_generic_files(
                 // parent.to_path_buf()
                 if folder_name == LATEX_FOLDER {
                     if compiled_snippets.contains(current_path) {
+                        current_path = parent;
                         continue;
                     }
 
