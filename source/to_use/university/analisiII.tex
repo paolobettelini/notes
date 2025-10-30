@@ -3491,13 +3491,12 @@ non si chiama più teorema del Dini perché usa un altro argomento.
         &= \lim_{x\to \infty} e^{x-c} -x^2c = +\infty
     \end{align*}
     quindi per ogni \(c>0\).
-    Esercizio: valutare se c'è una sintoto obliquo.
     Per la derivata abbiamo \(F(x, \varphi(x))=0\),
     e quindi
     \begin{align*}
-        0 &= \frac{d}{dx} F(x,\varphi(x))
-        = F_x(x, \varphi(x)) + F_y(x, \varphi(x)) \varphi'(x) \\
-        \varphi'(x) &= -\frac{F_x(x, \varphi(x))}{F_y(x, \varphi(x))}
+        0 &= \frac{d}{dx} F(x,y(x))
+        = F_x(x, y(x)) + F_y(x, y(x)) y'(x) \\
+        y'(x) &= -\frac{F_x(x, y(x))}{F_y(x, y(x))}
     \end{align*}
     Dal punto di vista computazionale conviene considerare direttamente l'espressione
     \(x^2y(x) + e^{x + y(x)}\) e derivare rispetto ad \(x\)
@@ -3512,8 +3511,231 @@ non si chiama più teorema del Dini perché usa un altro argomento.
         y'(x) = - \frac{2xy - x^2y}{x^2 + e^{x+y}}
         = - xy \frac{2-x}{x^2 + e^{x+y}}
     \]
-    il cui unico punto critico è \(x=x\), mentre l'altro non è
+    il cui unico punto critico è \(x=2\), mentre l'altro non è
     da considerare in quanto la funzione non è definita in zero.
+    Verifichiamo che sia un punto di massimo.
+    Il segno di \(y'\) è dato dal segno di \(x(2-x)\),
+    quindi la funzione decresce in \((-\infty, 0)\),
+    cresce in \((0, 2]\) e poi descresce di nuovo.
+    Valutiamo se c'è un asintoto obliquo
+    a destra. Dobbiamo valure il limite di una funzione che non possediamo
+    esplicitamente, ma possiamo usare il teorema di De l'Hopital
+    e ottenere una versione più maneggevole,
+    \begin{align*}
+        \lim_{x\to \infty} \frac{\varphi(x)}{x}
+        &\overset{H}{=} \lim_{x\to \infty} \varphi'(x)
+        = \lim_{x\to \infty} -xy\frac{2-x}{x^2 + e^{x + y}} \\
+        &= \lim_{x\to \infty} \frac{x-2}{x} \cdot \frac{y}{1-y} = -1
+    \end{align*}
+    Quindi il coefficiente angolare, se l'asintoto obliquo esiste, deve essere per forua \(-1\).
+    Per trovare l'offset dell'asintoto dobbiamo calcolare
+    \[
+        \lim_{x\to \infty} (\varphi(x) - mx)
+    \]
+    Per calcolarlo consideriamo
+    \begin{align*}
+        \lim_{x\to \infty} F(x, mx+q)
+        &= \lim_{x\to \infty} F(x, q-x) 
+        = \lim_{x\to \infty} qx^2 + e^q - x^3 = - \infty
+    \end{align*}
+    Ciò significa che \(\varphi(x) < q-x\) e quindi \(\varphi(x) + x > q\) per tutte le \(q\).
+    Quindi il limite di \(\varphi(x) + x = \infty\) e allora \(\varphi\)
+    non ha veramente un asintoto obliquo.
+}
+
+La condizione che il limite di \(F(x, mx+q) = 0\)
+non è sufficiente affinché \(mx+q\) sia asintoto obliquo di \(\varphi(x)\).
+
+\sexercise{}{
+    Sia \(F(x,y) = -xe^y + 2y - 1\).
+    Dimostrare che nell'intorno di \((0, \frac12)\), le soluzioni di
+    \(F(x,y)=0\) definiscono implicitamente una funzione \(y=y(x)\).
+    Trovare successivamente lo sviluppo di MacLaurin al secondo ordine di \(y=y(x)\) in \(x=0\).
+    Notiamo che il problema è ben post in quanto \(F(0, \frac12) = 0\).
+    La condizione che garantisce l'esistenza di questa funzione
+    è che \(F_y \neq 0\).
+    Abbiamo \(F_y = -xe^y + 2\) e \(F_y(0, \frac12) = 2 \neq 0\).
+    Quindi per il teorema della funzione implicita esiste un'unica funzione \(y=y(x)\)
+    tale che \(F(x,y(x)) \equiv 0\).
+    Per lo sviluppo di MacLaurin abbiamo sicuramente
+    \(y(0) = \frac12\). Calcoliamo la derivata
+    \begin{align*}
+        \frac{d}{dx} \left[F(x,y(x))\right]
+        &= -e^x - xe^yy' + 2y' = 0
+    \end{align*}
+    In particolare per \(x=0\) abbiamo \(-e^{y(0)} - 0 + 2y'(0) = 0\)
+    quindi \(y'(0) = e^\frac12 / 2\).
+    Per trovare il termine successivo deriviamo nuovamente
+    \begin{align*}
+        \frac{d^2}{dx^2}\left[
+            F(x,y(x))
+        \right] = -e^y y' - e^yy' - x(\cdots) + 2y'' = 0
+    \end{align*}
+    Da cui otteniamo \(0 = -2e^{y(0)}y'(0) + 2y''(0)\)
+    e ricaviamo quindi \(y''(0) = \frac{e}{2}\).
+    Quindi
+    \[
+        y(x) = \frac12 + \frac12 e^{\frac12}x + \frac14 ex^2 + o(x^2)
+    \]
+}
+
+\sexercise{}{
+    Dimostrare che l'equazione \(x^2e^z + y^2 + z = 0\)
+    definisce implicitamente una funzione \(z=z(x,y)\)
+    nell'intorno di \((0,0,0)\).
+    Determina successivamente la natura di \((x,y) =(0,0)\)
+    per la funzione \(z\).
+    Sia \(F(x,y,z) = x^2e^z + y^2 + z\).
+    Osserviamo che \(F(0,0,0) = 0\) quindi il problema è ben posto.
+    Per verificare che la funzione esplicita esista dobbiamo trovare la derivata
+    \(F_z = x^2e^z + 1 > 0\).
+    In particolare, \(F_z(0,0,0) \neq 0\) e quindi possiamo applicare il teorema della funzione implciita.
+    Calcoliamo le derivate di \(z=z(x,y)\).
+    Abbiamo \(F(x,y, z(x,y)) \equiv 0\).
+    Le derivate sono
+    \begin{align*}
+        \frac{\partial}{\partial x} \left[F(x,y,z(x,y))\right]
+        &= 2xe^z + x^2 e^z z_x + z_x = 0
+        \\
+        \frac{\partial}{\partial y} \left[F(x,y,z(x,y))\right]
+        &= x^2e^z z_y + 2y + z_y = 0
+    \end{align*}
+    Abbiamo \(z_x(0,0) = 0\) e \(z_y(0,0) = 0\),
+    quindi \((0,0)\) è un punto critico per \(z\).
+    Dobbiamo calcolare le seconde derivate parziali, che sono tre:
+    \begin{align*}
+        \frac{\partial^2}{\partial x^2} \left[F(x,y, z(x,y))\right]
+        &= 2e^z + x(\cdots) + 2x(\cdots) + z_{xx} = 0
+        \\
+        \frac{\partial^2}{\partial y^2} \left[F(x,y, z(x,y))\right]
+        &= x^2(\cdots) + 2 + z_{yy} = 0
+        \\
+        \frac{\partial^2}{\partial x \partial y} \left[F(x,y, z(x,y))\right]
+        &= 2x(\cdots) + z_{xy} = 0
+    \end{align*}
+    Nel punto \((0,0)\) troviamo \(z_{xx} = -2\), \(z_{yy}(0,0) = -2\)
+    e \(z_{xy}(0,0)=0\).
+    La matrice Hessiana nell'origine è quindi data da
+    \begin{align*}
+        Hz(0,0) = \begin{pmatrix}
+            -2 & 0 \\ 0 & -2
+        \end{pmatrix}
+    \end{align*}
+    Quindi \((0,0)\) è un punto di massimo relativo.
+    Esercizio: mostrare che questo punto è un punto di massimo assoluto,
+    quindi stabilire il dominio della funzione implicita
+    e mostrare che \(z < 0\) tranne nell'origine.
+    Calcolare
+    \[
+        \lim_{(x,y) \to \infty} z(x,y)
+    \]
+    bisogna quindi calcoalre il limite di \(F(x,y, -c)\),
+    che possiamo calcolare in coordinate polari.
+}
+
+Consideriamo il sistema
+\[
+    \begin{cases}
+        y\cos(xz) - x^2 - 1 = 0 \\
+        y\sin(xz) - x = 0
+    \end{cases}
+\]
+vogliamo studiare l'insieme delle soluzioni del sistema.
+Al massimo possiamo aspettarci di trovare espressioni di due variabili
+in funzione della terza.
+Abbiamo quindi una funzione
+\[
+    F(x,y,z) = \begin{pmatrix}
+        y\cos(xz) - x^2 - 1 \\
+        y\sin(xz) - x
+    \end{pmatrix}
+\]
+e vogliamos studiare \(F^{-1}(\{(0,0)\})\).
+Sviluppiamo quindi la funzione al primo ordine
+\begin{align*}
+    F(x,y) &= F(x_0, y_0)
+    + dF(x_0, y_0) \begin{pmatrix}x-x_0 \\ y - y_0\end{pmatrix} + o(||(x-x_0, y-y_0)||)
+\end{align*}
+Il primo termine è nullo.
+Inoltre \(dF(x_0, y_0)\) è rappresentabile da \(JF(x_0, y_0)\)
+che possiamo scrivere come \([F_x \,|\, F_y]\) a blocchi
+dove \(F_x\) ha \(n\) colonne e \(F_y\) ne ha \(m\) (e ovviamente \(m\) righe).
+Abbiamo quindi
+\begin{align*}
+    F(x,y) &= F_x(x_0, y_0)(x-x_0)
+    + F_y(x_0, y_0)(y-y_0) + o(||(x-x_0, y-y_0)||)
+\end{align*}
+Ci interessa il valore \(F(x,y)=0\) (trascurando l'o-piccolo).
+Se \(F_y\) è invertibile possiamo isolarla
+\begin{align*}
+    F(x,y) &= F_x(x_0, y_0)(x-x_0)
+    + F_y(x_0, y_0)(y-y_0) = 0 \\
+    y &= y_0 - F_y(x_0, y_0)^{-1} \circ F_x(x_0, y_0)(x-x_0)
+\end{align*}
+quando \(F_y\) è invertibile.
+Questo chiaramente è il caso lineare. Ci aspettiamo che il medesimo
+avvenga in un contesto non linear ma solo localmente.
+Nell'esempio abbiamo
+\[
+    JF = \begin{pmatrix}
+        -yz\sin(xz)-2x & \cos(xz) & -xy\sin(xz) \\
+        yz\cos(xz) - 1 & \sin(xz) & xy\cos(xz)
+    \end{pmatrix}
+\]
+Voglio stabilire se \(F(x,y,z) = 0\) permetti di esplicitare due variabili rispetto alla terza
+nell'intorno di \((0,1,0)\). Abbiamo \(F(0,1,0) = (0,0)\).
+La matrice in questo punto ha rango 2
+\[
+    JF(0,1,0) = \begin{pmatrix}
+        0 & 1 & 0 \\ -1 & 0 & 0
+    \end{pmatrix}
+\]
+l'unica sottomatrice che realizza il rango è
+la prima matrice \(2\times 2\) di sinistra, quindi
+\(F=(0,0)\) definisce implicitamente \(x=x(z)\) e \(y=y(z)\).
+
+\stheorem{Teorema della funzione implicita}{
+    Sia \(\Omega \in \realnumbers^n \times \realnumbers^m\) aperto,
+    \((x_0, y_0) \in \Omega\), \(F \colon \Omega \to \realnumbers^m\).
+    Sia \(F\) continua in \(\Omega\). Allora esiste \(F_y \in \mathcal{L}(\realnumbers^m, \realnumbers^n)\)
+    in \(\Omega\), continua in \((x_0, y_0)\).
+    Sia \(F(x_0, y_0) = 0\), \(F_y(x_0, y_0) \in \text{GL}(\mathbb{R}^m)\).
+    Allora \(\exists r,R > 0\) tale che \(\forall x \in \overline{B_r}(x_0)\),
+    esiste un'unica \(y \in \overline{B_R}(y_0)\), \(y = \varphi(x)\)
+    tale che \(F(x,y) = 0\).
+    Inoltre, \(\varphi\) è continua in \(\overline{B_r}(x_0)\).
+}
+
+è un discordo locale in quanto dobbiamo trovare i raggi sufficientemente piccoli.
+
+\sproof{}{
+    Introduciamo la funzione \(T(x,y) = y - F_y(x_0, y_0)^{-1} F(x,y)\).
+    Quindi \(T \colon \Omega \to \realnumbers^m\).
+    La definizione ha senso in quanto \(F_y(x_0,y_0)\) è invertibile.
+    Consideriamo \(x\) come parametro.
+    Ci chiediamo se \(T\) ha un punto fisso rispetto ad \(y\).
+    Supponiamo che \(y\) sia un punto fisso di \(T\).
+    Quindi \(T(x,y)=y\),
+    che è equivalente a dire che \(F_y(x_0,y_0)^{-1} F(x,y) = 0\),
+    quindi per forza \(F(x,y)=0\) in quanto possiamo moltiplicare per l'inverso che esiste.
+    Se dimostro che \(T\) ammette un unico punto fisso rispetto ad \(y\),
+    allora abbiamo che \(\forall x\), esiste un unico \(y\) tale che \(F(x,y) = 0\).
+    Vogliamo dimostrare che \(T\) porta uno spazio metrico in sè e che è una contrazione
+    (di fattore \(\delta < 1\) con \(\delta\) uniforme rispetto ad \(x\)).
+    Vogliamo che \(T(x, -) \colon \overline{B_R}(y_0) \to \realnumbers^m\)
+    sia una contrazione per tutte le \(x\in \overline{B_r}(x_0)\).
+    Visto che \(\overline{B_R}(y_0)\) è convesso, basta stimare \(T_y\).
+    Siccome \(T(x,y) = y- F_y(x_0,y_0)^{-1}F(x,y)\). Allora \(T_y = I - F_y(x_0,y_0)^{-1}F_y(x,y)\).
+    Questo perché il differenziale del primo termine diventa la matrice identica,
+    mentre per il secondo la matrice che moltiplica esce dalla derivata per linearità.
+    \begin{align*}
+        ||T_y(x,y)|| &= ||I - F_y(x_0, y_0)^{-1} F_y(x,y) \\
+        &= ||F_y(x_0, y_0)^{-1} (F_y(x_0, y_0) - F_y(x,y)) || \\
+        &\leq ||F_y(x_0, y_0)^{-1}|| \cdot ||F_y(x_0, y_0) - F_y(x,y)||
+        \to 0
+    \end{align*}
+    per \((x,y) \to (x_0, y_0)\) perché \(F_y\)
+    è continua in \((x_0, y_0)\).
 }
 
 \end{document}
