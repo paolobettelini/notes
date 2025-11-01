@@ -1,0 +1,93 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{tikz}
+
+\usetikzlibrary{cd}
+
+\begin{document}
+
+\id{subobject-classifiers}
+\genpage
+
+\section{Subojects}
+
+\plain{The following is a generalization of subsets.}
+
+\begin{snippetdefinition}{subobject-definition}{Subobject}
+    Let \(\mathcal{C}\) a \category and \(A \in \catob(\mathcal{C})\).
+    The \emph{subobjects} of \(A\) in \(\mathcal{C}\) are
+    \[
+        \text{Sub}_\mathcal{C}(A)
+        \triangleq
+        \catob((\mathcal{C}\slicecat A)_\text{mono}) / \sim
+    \]
+    where given \(m_1 \colon B_1 \fromto A\) and \(m_2 \colon B_2 \fromto A\),
+    we have \(m_1 \sim m_2\) \ifandonlyif there exists an \catisomorphism
+    \(i \colon B_1 \fromto B_2\) in \(\mathcal{C}\) such that \(m_2 \circ i = m_1\).
+\end{snippetdefinition}
+
+\plain{Subojects are classes of monomorphisms in the slice category if there is an isomorphism between them that makes the triangle commute.}
+
+\subsection{Subojects in the category of sets}
+
+\begin{snippetproposition}{subojects-in-set}{Subobjects in \(\mathbf{Set}\)}
+    Let \(A \in \catset\). Then,
+    \[
+        \subojects_{\catset}(A) \cong \powerset(A) %TODOURGENT link isomorphism
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{subojects-in-set-proof}{subojects-in-set}{Subobjects in \(\mathbf{Set}\)}
+    Objects in \(\catset \slicecat A\) are \function[functions]
+    \(f \colon X \fromto A\). \monomorphism[Monomorphisms]
+    in \(\catset\) are \injective \function[functions].
+    Thus, \monomorphism[monomorphisms] in \(\catset \slicecat A\)
+    are \injective[injections] \(m \colon B \hookrightarrow A\).
+    Two such maps are isomorphic in \(\catset \slicecat A\)
+    \ifandonlyif they have the same image subset.
+\end{snippetproof}
+
+\subsection{Classifying objects}
+
+\begin{snippet}{subobject-classification-in-set}
+    In the \category \(\catset\), subsets \(S\)
+    of some \set \(X\) can be identified with their characteristic
+    \function[functions] \(\chi_S \colon X \fromto \{0,1\}\).
+    Let \(\text{true}: \{\ast\} \fromto \{0,1\}\) where \(\{\ast\}\)
+    is the singleton (terminal object) \(1_{\catset}\).
+    The \function sends \(\ast\) to \(1\) and we get the following
+    pullback square
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAGUQBfU9TXfIRRkAjFVqMWbABrdeIDNjwEiI8uPrNWiEAB1dwfXTg59XOXyWDVpMdU1Sd+4KLPdxMKAHN4RUADMAJwgAWyQyEBwIJDVIuiwGNgALCAgAaxB7SW0QLEyQBjoAIxgGAAV+ZSEQQKwvJJwLECDQ8OoopAAmLK02AEImlrDEbsjoxABmHsc9XRwYAA8cYBxAlnMeAODh2I7J6Zz9AGMkrAB9Ti4KLiA
+        \begin{tikzcd}
+        S \arrow[d, "i"', hook] \arrow[r, "!"] & \{\ast\} \arrow[d, "\text{true}"] \\
+        X \arrow[r, "\chi_S"]                  & {\{0,1\}}                        
+        \end{tikzcd}
+    \end{center}
+    where \(i\colon S \fromto X\) is the inclusion
+    and \(! \colon S \fromto \{\ast\}\) is the unique arrow
+    in \(\catset\) to the terminal object \(1_{\catset}\).
+\end{snippet}
+
+% TODO link "1" to terminal object
+
+\begin{snippetdefinition}{suboject-classifier-definition}{Suboject classifier}
+    Let \(\mathcal{C}\) be a \category with finite limits, a \emph{subobject classifier}
+    is a \monomorphism \(\text{true}\colon 1_\mathcal{C} \fromto \Omega\),
+    such that for every \monomorphism \(m \colon a' \fromto a\) there is a unique arrow
+    \(\chi_m \colon a \fromto \Omega\) called the \emph{classifying arrow} of \(m\),
+    such that we have a pullback square
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRDoHIQBfU9TXPkIoyARiq1GLNnR58QGbHgJFR5CfWatEIUQH0AOgYC2dHAAsAxo2ABhbnP5Khq0uOqbpOowHljMAHNZbgkYKAD4IlAAMwAnCGMkMhAcCCQAJg8pbRAAQkcQOISM6lSkAGYsrTYjHBgADxxgHFiWB14Y+MTENRS0xErJau8DS3MsPUTqBjoAIxgGAAUBZWEQWKwA8xwCou7ksp6qrxApkBn5pZWXHQ2tnZDuIA
+        \begin{tikzcd}
+        a' \arrow[r, "!"] \arrow[d, "m"'] & 1_\mathcal{C} \arrow[d, "\text{true}"] \\
+        a \arrow[r, "\chi_m"']            & \Omega                                
+        \end{tikzcd}
+    \end{center}
+\end{snippetdefinition}
+
+\end{document}
