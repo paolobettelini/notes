@@ -76,9 +76,27 @@
 \begin{snippetexercise}{multivariable-differentiability-ex-2}{}
     Determine the equation of the tangent plane
     to the graph of the \function
-    \[ f(x,y) = \in(x\ln y) \]
+    \[ f(x,y) = \sin(x\ln y) \]
     at the point \((\pi, e)\).
 \end{snippetexercise}
+
+\begin{snippetsolution}{multivariable-differentiability-ex-2-sol}{}
+    The partial derivatives are given by
+    \[
+        f_x(x,y) = \cos(x\ln y) \cdot \ln y, \qquad
+        f_y(x,y) = \cos(x\ln y) \cdot \frac xy
+    \]
+    At the given point
+    \[
+        f_x(\pi, e) = -1, \qquad f_y(\pi, e) = -\frac \pi e
+    \]
+    The tangent plane is given by
+    \begin{align*}
+        z &= f(\pi, e) + f_x(\pi, e)(x-\pi) + f_y(\pi, e)(y-e) \\
+        z &= -x - \frac \pi e y + 2\pi \\
+        z &= 2\pi - x - \frac{\pi}{e}y
+    \end{align*}
+\end{snippetsolution}
 
 \begin{snippetexercise}{multivariable-differentiability-ex-3}{}
     Determine whether the \function
@@ -123,5 +141,47 @@
     \]
     is continuous and for which it is differentiable at the origin.
 \end{snippetexercise}
+
+\begin{snippetsolution}{multivariable-differentiability-ex-6-sol}{}
+    We have the limit
+    \begin{align*}
+        \lim_{(x,y) \to (0,0)} {|y|}^\alpha \frac{\cos x}{\sqrt{x^2 + y^2}}
+        &\leq \lim_{(x,y) \to (0,0)}{|y|}^\alpha \frac{|\cos x|}{\sqrt{x^2 + y^2}} \\
+        &\leq \lim_{(x,y) \to (0,0)} \frac{{|y|}^\alpha}{\sqrt{x^2 + y^2}} \\
+        &= \lim_{(x,y) \to (0,0)} \frac{{(y^2)}^{\frac{\alpha}{2}}}{\sqrt{x^2 + y^2}} \\
+        &\leq \lim_{(x,y) \to (0,0)} \frac{{(y^2 + x^2)}^{\frac{\alpha}{2}}}{\sqrt{x^2 + y^2}} \\
+        &= \lim_{(x,y) \to (0,0)} {(x^2 + y^2)}^{\frac{\alpha - 1}{2}} = 0 \iff \alpha > 1
+    \end{align*}
+    Thus, \(f\) is continuous for \(\alpha >1 \).
+    Consider now the path \((0,y)\). We have \(f(0,y) = {|y|}^{\alpha - 1}\).
+    The limit is given by
+    \[
+        \lim_{y\to 0} f(0,y) = \begin{cases}
+            0 & \alpha > 1 \\
+            1 & \alpha = 1 \\
+            +\infty & \alpha < 1
+        \end{cases}
+    \]
+    Thus, \(f\) is only continuous for \(\alpha >1 \).
+    We will now study the differentiability.
+    The partial derivative with respect to \(x\) at the origin is given by
+    \[
+        \lim_{h \to 0} \frac{f(0 + h, 0) - f(0,0)}h = \lim_{h\to 0} 0 = 0
+    \]
+    the one with respect to \(y\) is given by
+    \[
+        \lim_{h \to 0} \frac{f(0, 0 + h) - f(0,0)}h = \lim_{h\to 0} \frac{{|y|}^{\alpha - 1}}{h}
+    \]
+    which is null for \(\alpha > 2\) and does not exist otherwise.
+    Let's thus require \(\alpha > 2\).
+    \begin{align*}
+        \lim_{(h,k) \to (0,0)} \frac{f(h,k) - f(0,0) - (0,0) \cdot \begin{pmatrix}h \\ k\end{pmatrix}}{\sqrt{h^2 + k^2}}
+        &= \lim_{(h,k) \to (0,0)} \frac{
+            {|k|}^\alpha \cos h
+        }{\sqrt{h^2 + k^2}} \\
+        &\leq \lim_{(h,k) \to (0,0)}
+        {h^2 + k^2}^{\frac{\alpha}{2} - 1} = 0 \iff \alpha > 2
+    \end{align*}
+\end{snippetsolution}
 
 \end{document}
