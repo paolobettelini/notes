@@ -120,7 +120,7 @@ In \(\mathbb{R}^n\).
     caratterizzate esplicitamente.
     Essi sono esattamente, a meno di omeomorfismo,
     gli spazi topologici della seguente forma: dato un insieme preordinato \((P, \leq)\),
-    la topologia di Alexandrov \(\mathcal{A}_{\mathcal{P}}\)
+    la topologia di Alexandroff \(\mathcal{A}_{\mathcal{P}}\)
     su \(\mathcal{P}\) è la topologia i cui aperti sono i sottoinsiemi
     \(U \subseteq \mathcal{P}\) tale che
     \(\forall p \leq q, p \in U \implies q \in U\).
@@ -877,6 +877,222 @@ Notiamo che ogni insieme finito è compatto per qualunque topologia.
     \]
     visto che sono tutte unione finite di aperti in \(\mathcal{A}\),
     allora \(X\) è esprimibile come unione finita di aperti in \(\mathcal{A}\).
+}
+
+\subsection{Verso la compattificazione di Alexandroff}
+
+\sproposition{}{
+    Siano \(K_1 \supseteq K_2 \supseteq \cdots K_n \supseteq K_{n+1} \supseteq \cdots\)
+    una catena discendente numerabile di chiusi non vuoti
+    e compatti di uno spazio topologico ambiente. Allora,
+    \[
+        \bigcap_{n\in\mathbb{N}} K_n \neq \emptyset
+    \]
+}
+
+\sproof{}{
+    \(K_n\) è chiuso in \(K_1\) in quanto
+    \(K_n = K_n \cap K_1\) e \(K_n\) è chiuso nello spazio ambiente.
+    Quindi i complementari \(K_1 \backslash K_n\) è aperto.
+    Supponiamo che l'intersezione sia vuota
+    \[
+        \bigcap_{n\in\mathbb{N}} K_n = \emptyset
+    \]
+    Ciò è equivalente a dire che
+    \begin{align*}
+        K_1 \difference \left(\bigcap_{n\in\mathbb{N}} K_n\right) &= K_1 \difference \emptyset \\
+        \bigcup_{n\in\mathbb{N}} (K_1 \difference K_n) = K_1
+    \end{align*}
+    quindi i sottoinsieme \(\{K_1 \difference K_n\}\)
+    formerebbero un ricoprimento aperto di \(K_1\),
+    dal quale, essendo \(K_1\) compatto, si dovrebbe poter estrarre un sottoricoprimento
+    finito \(\{K_1 \difference K_{J_1}, \cdots, K_1 \difference K_{J_n}\}\).
+    Avremmo quindi che
+    \begin{align*}
+        K_1 &= \bigcup K_1 \difference K_{J_i} \\
+        K_1 &= \bigcap K_{J_i} = \emptyset \\
+        K_1 &= K_{\max \{J_i\}}
+    \end{align*}
+    che è assurdo in quanto tutti i \(K\) sono non-vuoti per ipotesi.
+}
+
+\sproposition{}{
+    Siano \(X,Y\) spazi topologici e \(A,B\) sottospazi rispettivamente di \(X,Y\).
+    Allora \(A \times B\) è sottospazio di \(X \times Y\).
+
+    Sullo spazio \(A \times B\) possiamo definire due topologie:
+    la topoloia prodotto, considerando \(A\) e \(B\) come spazi topologici
+    secondo le topologie di sottospazio indotte dalle topologie madri,
+    oppure la topologia di sottospazio indotta dalla topologia prodotto su \(X \times Y\).
+    In realtà, sono uguali.
+}
+
+\sproof{}{
+    Considerando \(A \times B\) con la topologia di sottospazio,
+    abbiamo che una sua base è data dia sottoinsieme della forma
+    \[
+        (U \times V) \cap (A \times B) = (U \cap A) \times (V \cap B)
+    \]
+    Il primo termine è aperto della base standard
+    per \(X \times Y\), gli ultimi due sono aperti generici di \(A,B\)
+    per la topologia di sottospazio.
+    Le due topoloigie coincidono, avendo una stessa base.
+
+    Possiamo dimostrarlo con le proprietà universali delle topologie di prodotto e
+    delle topologie di sottospazio.
+    La topologia prodotto è la topologia meno fine su \(A \times B\)
+    che rende le due proiezioni
+    \(\pi_A \colon A \times B \to A\) e \(\pi_B \colon A \times B \to B\)
+    continue. la topologia di sottospazio su \(A \times B\) è la topologia meno fine che rende l'inclusione
+    \(1\colon A \times B \hookrightarrow X \times Y\) continue.
+    DISEGNO.
+    Sia \(J\) una topologia su \(A \times B\).
+    \(i\colon (A \times B, J) \to X \times Y\) è continua
+    se e solo se \(\pi_X \circ i\) e \(\pi_Y \circ i\) sono continue.
+    Ma \(\pi_X \circ i = i_A \circ \pi_A\) e \(\pi_Y \circ i = i_B \circ \pi_B\).
+    La proprietà universale della topologia di sottospazio ciò è equivalente a richiedere che
+    le due proiezioni \(\pi_A, \pi_B\) siano continue.
+    Quindi le due topologie coincidono.
+}
+
+\begin{center}
+    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAEEQBfU9TXfIRQBGclVqMWbdgAIAOnLwBbeDIBC3XiAzY8BIgCYx1es1aIQGnn12DDpYeNNSLATU02B+kQ6eTzIAAa8opYKnAy7tba-HpCJL4m-myB3OIwUADm8ESgAGYAThBKSGQgOBBIAKzUOHRYDGwAFhAQANYgSWZsWAD6nNQMdABGMAwACrF2FgVYmU04HiCFxUhG5ZWIAMy19Y0WLe2dEt0WfVZaKyWIACy1mzsnLiAKaH1Rl0XXdxvVXc+vPqpQYjMaTWzeECzeaLaJXJCiX6IdbOAKA3oaEGjCZTSHQhZLeGIREVUr-NFyN79QlfBH3JA-OoNZqtDrknppLhAA
+    \begin{tikzcd}
+    A \arrow[d, "i_A"', hook] & A \times B \arrow[r, "\pi_B"'] \arrow[l, "\pi_A"] \arrow[d, "i", hook] & B \arrow[d, "i_B", hook] \\
+    X                         & X \times Y \arrow[r, "\pi_Y"] \arrow[l, "\pi_X"']                      & Y                       
+    \end{tikzcd}
+\end{center}
+
+\stheorem{teorema di Wallace}{
+    Let \(X,Y\) spazi topologici e \(A \subseteq X, B \subseteq Y\)
+    sottospazi compatti con la topologia indotta e \(W\)
+    un aperto di \(X \times Y\) tale che \(A \times B \subseteq W\).
+    Allora, esistono degli aperti \(U\) di \(X\)
+    e \(V\) di \(Y\) tali che
+    \[
+        A \subseteq U \land B \subseteq V \land (U \times V \subseteq W)
+    \]
+}
+
+\sproof{}{
+    Dimostriamo dapprima il caso particolare del teorema per
+    \(A = \{a\}\).
+    Quindi \(\{a\} \times B \subseteq W\).
+    Ciò significa che \((a,b) \in W\) per ogni \(b\in B\).
+    Siccome \(W\) è un aperto di \(X\times Y\),
+    sappiamo che una base della topologia prodotto p data
+    dai prodotti \(U \times V\) dove \(U\) è aperto di \(X\) e \(V\) è aperto di \(Y\),
+    quindi esistono \(U_b\) di \(X\) e \(V_b\) di \(Y\)
+    tali che \((a,b) in U_b \times V_b \subseteq W\).
+    Quindi \(\{V_b\}\) definiscono un ricoprimento aperto del sottospazio \(B\).
+    per ipotesi, \(B\) è compatto, quindi possiamo estrarre un sottoricoprimento finito
+    \[
+        B \subseteq \bigcup V_{b_i}
+    \]
+    quindi a questo punto
+    poniamo \(V = \bigcup V_{b_i}\) e \(U = \bigcap U_{b_i}\).
+    Allora se \(A \subseteq U\), cioè \(\{a\} \subseteq U\),
+    è come dire che \(a \in U\) cioè \(a \in \bigcup b_i\).
+    Inoltre \begin{align*}
+        U \times V &= U \times \bigcup B_{b_i} \\
+        &= \bigcup (U \times V_{b_i})
+    \end{align*}
+    che sono tutti termini in \(U_{b_i}\) che sono in \(W\).
+    Quindi \(U, V\) soddisfano le condizioni del teorema.
+    Adesso, mostriamo il caso generale.
+    Sia \(A \subseteq X\) un compatto arbitrario.
+    \(\forall a \in A\) esistono aperti \(U_a\) di \(X\) e \(V_a\) di \(Y\)
+    tali che \(a \in U_a\), \(B \subseteq V_a\) e \(\{a\} \times B \subseteq W\)
+    per il caso particolare del teorema appena dimostrato.
+    Similarmente a prima, osservimo che \(\{U_a\}\) è un ricoprimento aperto
+    di \(A\), e quindi siccome \(A\) è compatto, esiste un sottoricoprimento finito
+    \[
+        A \subseteq \bigcup U_{a_i}
+    \]
+    Quindi poniamo \(U = \bigcup U_{a_i}\) e \(V = \bigcap V_{a_i}\).
+    Quindi \(A \subseteq U, B \subseteq V\)
+    in quanto \(B \subseteq V_a\) per ogni \(a\).
+    Quindi sarà anche contenuto nell'intersezione. Inoltre
+    \[
+        U \times V = \bigcup U_{a_i} \times V_{a_i} \subseteq W
+    \]
+}
+
+\scorollary{}{
+    Ogni sottospazio compatto di uno spazio di Hausdorff
+    è chiuso.
+}
+
+\sproof{}{
+    Sia \(X\) spazio di Hausdorff e \(K \subseteq X\) compatto.
+    Vogliamo mostrare che \(K\) è chiuso, quindi che \(X \difference K\) è aperto.
+    Dire che è aperto è come richiedere che sia intorno di ciascun suo punto.
+    Quindi \(\forall x \in X \difference K\) tale che \(x\notin K\)
+    esiste \(U\) tale che \(x\in U\) e \(U \subseteq X \difference K\), con \(U, K\) disgiunti.
+    Ricordiamo che \(X\) è di Hausdorff se e solo se
+    \(\Delta X = \{(x,x) \suchthat x\in X\}\) è chiusa in \(X \times X\).
+    Applichiamo il teorema di Wallace prendendo \(A = \{x\}\)
+    e \(B = K\), che sono compatto in quanto finito e compatto per ipotesi rispettivamente.
+    \(W = (X \times X) \difference \Delta x\)
+    aperto in quanto \(\Delta X\) è chiusa.
+    \(A \times B \subseteq W\) cioè \(\{x\} \times K \subseteq W\) e \(x \notin K\).
+    Deduciamo quindi dal teorema di Wallace che esistono aperti
+    \(U\) di \(X\) e \(V\) di \(Y\) tali che
+    \(\{x\} \subseteq U\), che è come dire \(x \in U\),
+    e \(K \subseteq V\).
+    Inoltre \(U \times K \subseteq U \times V \subseteq W = (X \times X) \difference \Delta X\).
+    XXXX 05/11/25
+}
+
+\scorollary{}{
+    Siano \(X, Y\) spazi topologici.
+    Se \(X\) è compatto allora la poiezione \(p \colon X \times Y \to Y\)
+    è chiusa. Inoltre, Se \(X\) e \(Y\) sono compatti allora \(X \times Y\) è compatto.
+    Mettere enumerate.
+}
+
+\sproof{}{
+    \begin{enumerate}
+        \item Sia \(C \subseteq X \times Y\) chiuso.
+        Vogliamo mostrare che \(p(C)\) è chiuso in \(Y\),
+        cioè che \(Y \difference p(C)\) è aperto, cioè
+        è un intorno di ogni suo punto,
+        quindi \(\forall y \notin p(C)\) esiste un intorno di \(Y\)
+        disgiunto da \(p(C)\).
+        Applichiamo il teorema di Wallacde prendendo
+        \(A = X\), \(B = \{y\}\) e \(W = (X \times Y) \difference C\) aperto
+        (in quanto \(C\) è chiuso).
+        Allora \(A \times B = X \times \{y\} \subseteq W = (X \times Y) \difference C\).
+        Ciò è equivalente a \(a \notin p(C)\)
+        che è l'insieme di tutte le \(y \in Y\) tale che esiste \(x \in X\)
+        con \((x,y) \in C\).
+        Il teorema di Wallace fornisce
+        quindi un aperto \(V\) intorno di \(y\) interamento contenuto
+        in \(Y \difference p(C)\).
+        Quindi \(B = \{y\} \subseteq B\) e
+        \[
+            X \times V \subseteq (X \times Y) \difference C
+            \iff
+            V \subseteq Y \difference p(C)
+        \]
+        \item Ricordiamo il risultato che dice
+        che data una mappa chiusa che va in un compatto, e le sue fibre
+        sono compatte allora il dominio è compatto.
+        Nel nostro caso la mappa è la prozeione, che è chiusa per il punto precedente.
+        Le fibre sono
+        \[
+            p^{-1}(y) \cong X
+        \]
+        in quanto \(X \times \{y\} \cong X\),
+        che è compatto per ipotesi.
+        Segue per induzione che prodotti finiti di spazi compatti sono compatti.
+    \end{enumerate}
+}
+
+\scorollary{}{
+    Un sottospazio di \(\realnumbers^n\)
+    è compatto (con la topologia indotta dalla topologia euclidea su \(\mathbb{R}^n\)),
+    se e solo se esso è chiuso e limitato (quindi incluso in un ipercubo).
 }
 
 \pagebreak
