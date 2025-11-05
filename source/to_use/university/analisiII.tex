@@ -3724,18 +3724,286 @@ la prima matrice \(2\times 2\) di sinistra, quindi
     (di fattore \(\delta < 1\) con \(\delta\) uniforme rispetto ad \(x\)).
     Vogliamo che \(T(x, -) \colon \overline{B_R}(y_0) \to \realnumbers^m\)
     sia una contrazione per tutte le \(x\in \overline{B_r}(x_0)\).
-    Visto che \(\overline{B_R}(y_0)\) è convesso, basta stimare \(T_y\).
-    Siccome \(T(x,y) = y- F_y(x_0,y_0)^{-1}F(x,y)\). Allora \(T_y = I - F_y(x_0,y_0)^{-1}F_y(x,y)\).
-    Questo perché il differenziale del primo termine diventa la matrice identica,
-    mentre per il secondo la matrice che moltiplica esce dalla derivata per linearità.
-    \begin{align*}
-        ||T_y(x,y)|| &= ||I - F_y(x_0, y_0)^{-1} F_y(x,y) \\
-        &= ||F_y(x_0, y_0)^{-1} (F_y(x_0, y_0) - F_y(x,y)) || \\
-        &\leq ||F_y(x_0, y_0)^{-1}|| \cdot ||F_y(x_0, y_0) - F_y(x,y)||
-        \to 0
-    \end{align*}
-    per \((x,y) \to (x_0, y_0)\) perché \(F_y\)
-    è continua in \((x_0, y_0)\).
+    \begin{enumerate}
+        \item Mostriamo che è una contrazione.
+            Visto che \(\overline{B_R}(y_0)\) è convesso, basta stimare \(T_y\).
+            Siccome \(T(x,y) = y- F_y(x_0,y_0)^{-1}F(x,y)\). Allora \(T_y = I - F_y(x_0,y_0)^{-1}F_y(x,y)\).
+            Questo perché il differenziale del primo termine diventa la matrice identica,
+            mentre per il secondo la matrice che moltiplica esce dalla derivata per linearità.
+            \begin{align*}
+                ||T_y(x,y)|| &= ||I - F_y(x_0, y_0)^{-1} F_y(x,y)|| \\
+                &= ||F_y(x_0, y_0)^{-1} (F_y(x_0, y_0) - F_y(x,y)) || \\
+                &\leq ||F_y(x_0, y_0)^{-1}|| \cdot ||F_y(x_0, y_0) - F_y(x,y)||
+                \to 0
+            \end{align*}
+            per \((x,y) \to (x_0, y_0)\) perché \(F_y\)
+            è continua in \((x_0, y_0)\).
+            Quindi esistono \(r, R> 0\) tale che per tutte le \(x \in \overline{B_r}(x_0)\)
+            e per tutte le \(y \in \overline{B_R}(y_0)\)
+            \[
+                ||T_y(x,y)|| \leq \delta < 1
+            \]
+            e \(\delta\) arbitrario.
+            In particolare
+            \[
+                \sup_{\substack{x \in \overline{B_r}(x_0) \\ y \in \overline{B_R}(y_0)}} ||T_y(x,y)|| \leq \delta
+            \]
+            e \(\delta\) è uniforme rispetto ad \(x\).
+        \item Mostriamo che esistono \(r,R >0\)
+            tali che per tutte le \(x \in \overline{B_r}(x_0)\)
+            e per tutte le \(y \in \overline{B_R}(y_0)\)
+            \(T(x, -) \colon \overline{B_r}(y_0) \fromto \overline{B_r}(y_0)\).
+            Vogliamo mostrare quindi che \(||T(x,y) - y_0 || \leq R\).
+            Scegliamo \(R\) come al punto precedennte.
+            Voglio mostrare che esiste \(r>0\) tale che la condizione è soddisfatta.
+            Sia \(y \in \overline{B_R}(y_0)\). Spezziamo in due pezzi
+            \begin{align*}
+                ||T(x,y) - y_0|| &\leq ||T(x,y) - T(x, y_0)|| + ||T(x,y_0) - y_0|| \\
+            \end{align*}
+            Il primo termine lo possiamo stimare mediante il teorema dell'incremento finito
+            in \(y\),
+            \begin{align*}
+                ||T(x,y)-T(x,y_0)|| &\leq ||y-y_0|| \cdot \sup_{0<t<1} ||T_y(x, y_0 + t(y-y_0)) \\
+                &\leq R \cdot \delta
+            \end{align*}
+            vogliamo che il secondo sia minore o uguale di \((1-\delta)R\).
+            Non possiamo più modificare \(R, \delta\) ma solo \(r\)
+            \begin{align*}
+                ||T(x,y_0) - y_0|| &= ||F_y(x_0, y_0)^{-1} F(x, y) \\
+                &\leq ||F_y(x_0, y_0)^{-1}|| \cdot ||F(x,y)|| \\
+                &= ||F_y(x_0, y_0)^{-1}|| \cdot ||F(x,y) - F(x_0, y_0)|| \to 0
+            \end{align*}
+            che tende a zero per \((x,y) \to (x_0, y_0)\) perché \(F\) è continua.
+            Abbiamo quindi i raggi tali che
+            \[
+                ||F(x, y_0) - F(x_0, y_0)|| \leq \frac{(1-\delta)R}{||F_y(x_0, y_0)^{-1}||}
+            \]
+    \end{enumerate}
+    Possiamo quindi applicare il teorema delle contrazioni (variante con parametro),
+    inoltre il punto fisso dipendende con coninuità da \(x\) e quindi la funzione implicita è continua.
 }
+
+Notiamo che ho usato le bolle chiuse in quanto mi serve uno spazio metrico completo.
+Vediamo se riusciamo a garantire l'esistenza anche su bolle aperte.
+In realtà mi è servita solamente la chiusura della bolla nella \(y\),
+\(\exists r_0, r_0>0\) tali che \(\forall x \in B_{r_0}(x_0)\),
+\(\exists! y \in B_{R_0}(y_0)\) tale che \(F(x,y) =0\).
+Si può scegliere \(R_0=R\) a patto di rimpicciolire \(r_0\).
+\(\exists r_0 > 0\) tale che \(\varphi(B_{r_0}(x_0)) \subseteq B_R(y_0)\)
+per la continuità di \(\varphi\) in \(x_0\), e quindi
+abbiamo mostrato l'esistenza e l'unicità della fuzione implicita
+anche sostituendo le bolle chiuse con bolle aperte.
+
+Supponiamo di avere \(F \colon \Omega \fromto \realnumbers^m\) e \((x_0, y_0) \in \Omega\).
+È possibile che esistano due mappe distinte \(\varphi, \psi\) definite implicitamente
+da \(F=0\) ed entrambe passanti per \((x_0, y_0)\)?
+Può succedere per esempio per \(F=x^2 - y^2\), ma in questo caso
+il gradiente di \(F\) in \((0,0)\) è il vettore nullo, quindi non posso applicare
+il teorema della funzione implica.
+Ma, anche in \((1,1)\) posso definire più di una funzione implicita, come
+\[
+    \varphi(x)= x, \qquad \psi(x) = \begin{cases}
+        -x & x \neq 1 \\
+        1 & x=1
+    \end{cases}
+\]
+il problema è che non sono entrambe continue.
+
+\scorollary{}{
+    Con le ipotesi del teorema della funzione implicita, siano
+    \(\varphi, \psi\) due funzioni definite implicitamente da \(F(x,y)=0\)
+    in un intorno di \(x_0\) tali che \(\varphi(x_0) = y_0 = \psi(x_0)\).
+    Allora se \(\varphi, \psi\) sono continue, \(\varphi \equiv \psi\) in \(U(x)\).
+}
+
+\sproof{}{
+    Sfruttiamo al continuità delle due mappe implicite.
+    Prendiamo \(r, R\) come nel teorema della funzione implicita.
+    Troviamo \(r_0 < r\) tale che
+    \[
+        \varphi(\overline{B_{r_0}}(x_0))
+        \union \psi(\overline{B_{r_0}}(x_0))
+        \subseteq \overline{B_R}(y_0)
+    \]
+    Possiamo trovare un tale raggio in quanto possiamo trovarlo per ciascuna delle mappe,
+    in quanto continue, e poi prendere il minimo.
+    Per il teorema della funzione implicita sono unici
+    gli zeri della mappa \(F(x,y)\) relati alla stessa \(x\)
+    contenuti in \(\overline{B_r}(x_0) \times \overline{B_R}(y_0)\).
+    Quindi \(F(x, \varphi(x)) = 0 = F(x, \psi(x))\) ma \((x, \varphi(x))\)
+    e \((x, \psi(x))\) sono in \(\overline{B_r}(x_0) \times \overline{B_R}(y_0)\)
+    quindi vale l'unicità per \(x \in \overline{B_{r_0}}(x_0)\).
+}
+
+Studiamo ora la differenziabilità della funzione implicita.
+Per esempio per \(F = y - |x|\),
+valgono le ipotesi del teorema della funzione implicita, ma la funzione
+\(y=|x|\) non è differenziabile.
+Dobbiamo aggiungere delle ipotesi anche alla \(x\).
+Differenziando la condizione otteniamo
+\begin{align*}
+    0 &= F(x, \varphi(x)) \\
+    0 &= F_x(x, \varphi(x)) + F_y(x, \varphi(x)) \circ \text{d}\varphi(x)
+\end{align*}
+Siccome \(F_y \in \text{GL}(\realnumbers^n)\) ed è continua in \((x_0, y_0)\),
+e \(\text{GL}(\realnumbers^n)\) è aperto,
+\(F_y(x, \varphi(x)) \in \text{GL}(\realnumbers^n)\)
+in un intorno di \(x_0\).
+Deduciamo che deve essere
+\[
+    \text{d}\varphi(x) = -F_y(x, \varphi(x))^{-1} \circ F_x(x, \varphi(x))
+\]
+
+\stheorem{}{
+    Sia \((x_0, y_0) \in \Omega \subseteq \realnumbers^n \times \realnumbers^m\) aperto,
+    dove le variabili le chiamiamo \(x\) per le prime variabile e \(y\) per quelle successive,
+    sia \(F \colon \Omega \fromto \realnumbers^m\), \(F(x_0, y_0) = 0\).
+    Sia \(\varphi \colon U(x) \fromto \realnumbers^m\)
+    tale che \(\varphi(x_0) = y_0\), \(F(x, \varphi(x)) = 0\)
+    per tutte le \(x \in U(x)\). Sia \(F\) differenzaibile in \((x_0, y_0)\),
+    \(F_y(x_0, y_0) \in \text{GL}(\realnumbers^m)\).
+    Allora, \(\varphi\) è differenziabile in \(x_0\) e \[
+        \text{d}\varphi(x) = -F_y(x, \varphi(x))^{-1} \circ F_x(x, \varphi(x))
+    \]
+}
+
+Da questa formula segue che \(\varphi\) ha la stessa regolarità di \(F\).
+
+\sproof{}{
+    Dobbiamo mostrare che
+    \[
+        \varphi(x_0 + h) - \varphi(x_0) + F_y(x, \varphi(x))^{-1} F_x(x, \varphi(x))h = o(||h||)
+    \]
+    per \(h \to 0\).
+    Possiamo sostiuire \(\varphi(x_0) = y_0\).
+    Poniamo
+    \begin{align*}
+        \Delta \varphi(x_0, h) &= \varphi(x_0 + h) - \varphi(x_0) + F_y(x, \varphi(x))^{-1} F_x(x, \varphi(x))h \\
+        &= F_y(x_0, y_0)^{-1} \left[
+            F_y(x_0, y_0)(\varphi(x_0 + h) - y_0) + F_x(x_0, y_0)h
+        \right]
+    \end{align*}
+    ma la parenesi quadra è pari al differenziabile applicato a qualcosa
+    \[
+        F_y(x_0, y_0)(\varphi(x_0 + h) - y_0) + F_x(x_0, y_0)h
+        = \text{d}F(x_0, y_0)(h, \varphi(x_0 + h) - y_0)
+    \]
+    Ma noi sappiamo che \(F\) è differenziabile in \((X_0, y_0)\),
+    quindi \(F(x_0 + v, y_0 + w) - F(x_0, y_0)  - \text{d}F(x_0, y_0)(v,w) = o(||v-w||)\).
+    Adesso, nella parentesi quadra sommo \(F(x_0 + h, \varphi(x_0 + h)) - F(x_0, y_0) = 0 - 0\).
+    Quindi otteniamo
+    \begin{align*}
+        &F_y(x_0, y_0)(\varphi(x_0 + h) - y_0) + F_x(x_0, y_0)h \\
+        &= F(x_0 + h, \varphi(x_0 + h)) - F(x_0, y_0) - \text{d}F(x_0, y_0)(h, \varphi(x_0 + h) - y_0) = o(||(h, \varphi(x_0 + h) - y_0)||)
+    \end{align*}
+    Siccome \(F_y(x_0, y_0)^{-1}\) è un operatore lineare fissato,
+    \[
+        ||\Delta \varphi(x_0, h)|| = o(||(h, \varphi(x_0 + h) - y_0)||)
+    \]
+    per \(((h, \varphi(x_0 + h) - y_0)) \to (0,0)\).
+    Ma per la continuità di \(\varphi\), se \(h \to 0\), allora \((h, \varphi(x_0 + h) - y_0)\)
+    tende a \((0,0)\), quindi
+    \[
+    ||\Delta \varphi(x_0, h)|| = o(||(h, \varphi(x_0 + h) - y_0)||)
+    \]
+    per \(h \to 0\).
+    Abbiamo dimostrato che \(\forall \varepsilon>0, \exists \delta > 0\) 
+    tale che
+    \[
+        ||h|| \leq \delta \implies ||\Delta \varphi(x_0, h)|| \leq \varepsilon ||(h, \varphi(x_0 + h) - y_0)||
+    \]
+    Consideriamo il vettore \((h, \varphi(x_0 + h) - y_0)\). Aggiungiamo e sottraiamo \(F_y(x_0, y_0)^{-1}F_x(x_0, y_0)h\)
+    alla seconda componente. Otteniamo
+    \begin{align*}
+        (h, \varphi(x_0 + h) - y_0) &= (h, \Delta \varphi(x_0, h) - F_y(x_0, y_0)^{-1}F_x(x_0,y_0)h) \\
+        &= (h, \Delta \varphi(x_0, h) - A_0h)
+        = (h, -A_0h) + (0, \Delta \varphi(x_0, h))
+    \end{align*}
+    Possiamo usare la norma di ciò sulla disuguaglianza triangolare.
+    \begin{align*}
+        ||(h, \varphi(x_0 + h) - y_0)|| &\leq
+        ||(h, -A_0h)|| + ||(0, \Delta \varphi(x_0, h))|| \\
+        &\leq C||h|| + ||\Delta \varphi(x_0, h)||
+    \end{align*}
+    Quindi deduciamo che
+    \begin{align*}
+        ||\Delta \varphi(x_0, h)|| &\leq C\varepsilon||h|| +
+        \varepsilon||\Delta \varphi (x_0, h)|| \\
+        &\leq \frac{C \varepsilon}{1 - \varepsilon}||h||
+    \end{align*}
+    quindi abbiamo dimostrato che per \(\varepsilon>0\), esiste \(\delta>0\)
+    tale che se \(||h|| < \delta\)
+    vale \[
+        ||\Delta \varphi(x_0, h)|| \frac{C \varepsilon}{1 - \varepsilon}||h||
+    \]
+    quindi \(\Delta \varphi(x_0, h) = o(||h||)\) per \(h\to 0\).
+}
+
+\sexercise{}{
+    Consideriamo il sistema
+    \[
+        \begin{cases}
+            F_1 = (y+3)s - \arctan(s + t) + 2x = 0 \\
+            F_2 = \sin(s + t) + 3y - x(t + 3) = 0
+        \end{cases}
+    \]
+    Mostriamo verificare se nell'intorno \((x,y,s,t) = (0,0,0,0)\)
+    definisce implicitamente una funzione.
+    Quindi \(F = (F_1, F_2) \colon \realnumbers^4 \fromto \realnumbers^2\).
+    Calcoliamo \(\jacobian F(x,y,s,t)\)
+    \[
+        \jacobian F(x,y,s,t) = \begin{pmatrix}
+            2 & s & y+3 - \frac{1}{1 + {(s+t)}^2} & -\frac{1}{1 + {(s+t)}^2} \\
+            -(t + 3) & 3 & \cos(s + t) & \cos(s + t) - x
+        \end{pmatrix}
+    \]
+    Nell'origine abbiamo
+    \[
+        \jacobian F(0,0,0,0) = \begin{pmatrix}
+            2 & 0 & 2 & -1 \\
+            -3 & 3 & 1 & 1
+        \end{pmatrix}
+    \]
+    Possiamo quindi scegliere arbitrariamente due variabili qualsiasi rispetto alle altre, ad esempio
+    \(s= s(x,y)\) e \(t = t(x,y)\).
+    Calcoliamo il differenziale in \((0,0)\)
+    \begin{align*}
+        \text{d}\varphi(x_0) &= -F_y(x_0, y_0)^{-1} \circ F_x(x_0, y_0)
+    \end{align*}
+    Siccome \(F \in \mathcal{C}^\infty(\realnumbers^4)\), allora \(\varphi \in \mathcal{C}^\infty(\realnumbers^4)\)
+    in un intorno di \((0,0)\).
+    \begin{align*}
+        J_{(x,y)}F(0,0,0,0) = \begin{pmatrix}
+            2 & 0 \\ -3 & 3
+        \end{pmatrix}, \quad J_{(s,t)}F(0,0,0,0) = \begin{pmatrix}
+            2 & -1 \\ 1 & 1
+        \end{pmatrix}
+    \end{align*}
+    E l'inverso è dato da
+    \begin{align*}
+        J_{(s,t)}F(0,0,0,0)^{-1} = \frac{1}{3} \begin{pmatrix}1 & 1 \\ -1 & 2\end{pmatrix}
+    \end{align*}
+    Abbiamo quindi il differenziabile
+    \[
+        \text{d}\varphi(x_0)(0,0) = \begin{pmatrix}
+            1/3 & -1 \\ 1/3 & -2
+        \end{pmatrix}  
+    \]
+}
+
+% righe numero componenti (gradienti trasposti)
+% colonne numero variabili
+
+% PARZIALE ARRIVA FINO A QUA
+
+\subsection{Teorema della funzione inversa}
+
+Posso determinare che una funzione reale è invertibile se è strettamente monotona.
+Il medesimo concetto non funziona tuttavia in dimensioni superiori.
+Chiaramente un operatore lineare da \(\realnumbers^n\) a \(\realnumbers^m\)
+per essere invertibile serve \(m=n\).
+Esistono anche funzioni invertibili da \(\realnumbers^n\) a \(\realnumbers^m\).
+In generale data una funzione non lineare da \(\realnumbers^n\) a \(\realnumbers^n\)
+qual'è la condizione per la (locale) invertibilità.
 
 \end{document}
