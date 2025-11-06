@@ -1607,7 +1607,7 @@ e per il codominio
     Un \emph{cammino} è un applicazione \(\varphi: (0,1) \to \mathbb{R}^n\) continua.
 }
 
-Sia \(\Phi_\Omega(a)\) l'insieme dei
+Sia \(\varphi_\Omega(a)\) l'insieme dei
 cammini con sostegni in \(\Omega\)
 e tale che \(\varphi(t) \to a\)
 per \(t \to 0^+\)
@@ -1620,7 +1620,7 @@ e \(\varphi(t) \neq\) per tutte le \(t\).
         \lim_{t \to 0^+}
         f(\varphi(t)) = b
     \]
-    per tutte le \(\varphi \in \Phi_\Omega(a)\).
+    per tutte le \(\varphi \in \varphi_\Omega(a)\).
 }
 
 \sdefinition{Derivata direzionale}{
@@ -2853,15 +2853,15 @@ si chiama ottimizzazione libera.
     Allora \(a\) è estremanete anche a tutti le restrizioni di rette che passano per \(a\).
     In particolare prendiamo \(\gamma_i(t) = a + te_i\)
     paralleli agli assi cartesiani.
-    Sia \(\Phi_i\) la restrizione di \(f\) a tali rette.
+    Sia \(\varphi_i\) la restrizione di \(f\) a tali rette.
     Quindi \(Phi_i = f \circ \gamma_i\).
-    Le funzioni \(\Phi_i\) hanno un punto estremante in \(t=0\).
-    Inoltre, \(\Phi_i\)
+    Le funzioni \(\varphi_i\) hanno un punto estremante in \(t=0\).
+    Inoltre, \(\varphi_i\)
     sono differenziabili in quanto composizione di funzioni differenziabili.
-    Allora, per il teorema di Fermat in una variabile vale \(\Phi'(0) =0 \).
+    Allora, per il teorema di Fermat in una variabile vale \(\varphi'(0) =0 \).
     Quindi abbiamo
     \begin{align*}
-        \Phi_i'(0) &= (f \circ \gamma_i)'(0) = \gradient f(\gamma_i (0)) \circ \gamma_i'(0) \\
+        \varphi_i'(0) &= (f \circ \gamma_i)'(0) = \gradient f(\gamma_i (0)) \circ \gamma_i'(0) \\
         &= \gradient f(a) \cdot e_i = \frac{\partial f}{\partial x_i} (a) = 0
     \end{align*}
 }
@@ -4005,5 +4005,240 @@ per essere invertibile serve \(m=n\).
 Esistono anche funzioni invertibili da \(\realnumbers^n\) a \(\realnumbers^m\).
 In generale data una funzione non lineare da \(\realnumbers^n\) a \(\realnumbers^n\)
 qual'è la condizione per la (locale) invertibilità.
+
+Per essere invertiile imponiamo che le dimensioni del dominio e del codominio siano le medesime:
+
+Sia \(f \colon \Omega \subseteq \realnumbers^n \fromto \realnumbers^n\),
+\(\Omega\) aperto e sia \(x_0 \in \Omega\), e \(y_0 = f(x_0)\).
+Costruiamo una funzione ausiliaria
+\(F(x,y) = f(x) -y\).
+È banale esplicitare le soluzioni di \(F=0\) rispetto alla \(y\), ma noi
+vorremmo farlo rispetto alla \(x\), per invertire la funzione localmente.
+Per il teorema della funzione implicia è possibile scrivere \(x=x(y)\) localmente
+se \(F_x(x_0, y_0) \in \text{GL}(\realnumbers^n)\).
+Ciò deve essere \(\text{d}f(x_0) \in \text{GL}(\realnumbers^n)\).
+Allora esistono \(r,R > 0\) tali che \(\forall y \in B_R(y_0)\)
+esiste un unica \(x\) tale che \(x=g(y) \in B_r(x_0)\)
+tale che \(f(x)=y\).
+Inoltre abbiamo un'espressione per \(\text{d}g\):
+sappiamo che \(f \in \mathcal{C}^1(\Omega) \implies g \in \mathcal{C}^1(B_R(y_0))\)
+e \begin{align*}
+    \text{d}g(y) &= -\text{d}f(x_0)^{-1} \circ (-I) \\
+    &= -F_x(g(y), y)^{-1} \circ F_y(g(y), y) \\
+    &= -\text{d}f(x)^{-1} \circ (-I) \\
+    &= \text{d}f(x)^{-1} = \text{d}f(g(y))^{-1}
+\end{align*}
+
+Notiamo che \(f\) NON stabilisce una biiezione fra \(B_r(x_0)\)
+e \(B_R(y_0)\).
+Dal teorema abbiamo che \(B_R(y_0) \subseteq f(B_r(x_0))\)
+solamente, quindi l'immagine della bolla del dominio
+può essere più grande. Inoltre, la preimmagine della bolla del codominio,
+non è necessariamente tutta contenuta nella prima, ci potrebbero essere
+una preimmagine fuori. Il teorema mi dice
+che \(f\) stabilisce una biiezinoe fra
+\(f^{-1}(B_R(y_0)) \cap B_r(x_0)\) e \(B_R(y_0)\).
+Notiamo che questi insiemi sono entrambi aperti. 
+
+% TODO disegno dalle slide 06/11/2025
+\begin{center}
+\begin{tikzpicture}[scale=1.2, every node/.style={font=\small}]
+
+% Domini
+\draw[thick] (0,0) rectangle (3,3);
+\node at (1.5,3.3) {Dominio};
+
+\draw[thick] (6,0) rectangle (9,3);
+\node at (7.5,3.3) {Codominio};
+
+% Punti centrali
+\fill (1.5,1.5) circle (1pt) node[below left] {$x_0$};
+\fill (7.5,1.5) circle (1pt) node[below left] {$y_0=f(x_0)$};
+
+% Bolla nel dominio
+\draw[fill=blue!20, thick] (1.5,1.5) circle (1);
+\node[blue!50!black] at (1.5,1.5+1.3) {$B_r(x_0)$};
+
+% Immagine deformata nel codominio
+\begin{scope}
+\clip (6,0) rectangle (9,3);
+\draw[fill=blue!20, thick, rotate around={15:(7.5,1.5)}]
+  (7.5,1.5) ellipse (1.3 and 0.8);
+\end{scope}
+\node[blue!50!black] at (7.5,2.9) {$f(B_r(x_0))$};
+
+% Piccola bolla contenuta
+\draw[fill=green!20, thick, dashed] (7.5,1.5) circle (0.6);
+\node[green!50!black] at (7.5,0.5) {$B_R(y_0)$};
+
+% Freccia fra i due spazi
+\draw[-{Stealth[length=3mm]}, thick] (3.2,1.5) -- (5.8,1.5)
+  node[midway, above] {$f$};
+
+% Piccola indicazione di possibile preimmagine fuori
+\draw[fill=blue!10, dashed] (2.5,2.2) circle (0.3);
+\node[blue!50!black] at (2.5,2.7) {altra preimmagine};
+\end{tikzpicture}
+\end{center}
+
+\stheorem{Teorema della funzione inversa}{
+    Sia \(f \colon \Omega \subseteq \realnumbers^n \fromto \realnumbers^n\),
+    \(\Omega\) aperto e sia \(x_0 \in \Omega\), e \(y_0 = f(x_0)\).
+    Inoltre, \(\text{d}f(x_0) \in \text{GL}(\realnumbers^n)\).
+    Allora, esiste un intorno \(U\) di \(x_0\) e \(V\) intorno di \(y_0\)
+    aperti tali che \(f \colon U \fromto V\)
+    è un diffeomorfismo.
+}
+
+\sexample{Diffeomorfismo locale non implica diffeomorfismo globale}{
+    Sia \(f(x,y) = e^x(\cos y, \sin y)\) definita su \(\realnumbers^2\).
+    È un diffeomorfismo locale? Basta verificare che
+    il differenziale sia invertibile.
+    \[
+        \begin{pmatrix}
+            e^x \cos y & -e^x \sin y \\
+            e^x \sin y & e^x \cos y
+        \end{pmatrix}
+    \]
+    Il determinante è sempre positivo, quindi è sempre infertibile.
+    Quindi, \(f\) ha un diffeomorfismo locale.
+    Tuttavia, la funzione non è iniettiva, in quanto è per esempio periodica,
+    quindi non è invertibile e non vi è diffeomorfismo globale.
+    (Cosa che invece funziona con le funzioni reali di una variabile)
+}
+
+\scorollary{}{
+    Sia \(\Omega \subseteq \realnumbers^n\) aperto,
+    \(f \colon \Omega \fromto \realnumbers^n\) tale che \(f \in \mathcal{C}^1(\Omega, \realnumbers^n)\),
+    \(\text{d}f(x) \in \text{GL}(\realnumbers^n)\) per ogni \(x\in \Omega\).
+    Allora, \(f(\Omega)\) è aperto.
+}
+
+\sproof{}{
+    Sia \(y_0 \in f(\Omega)\).
+    Vogliamo mostrare che \(y_0\) è introno di \(f(\Omega)\).
+    Per definizione \(\exists x_0 \in \Omega\) tale che \(y_0 = f(x_0)\)
+    e per ipotesi il differenziabile in quel punto è invertibile.
+    Per il teorema della funzione inversa esistono quindi
+    intorni \(U\) di \(x_0\) e \(V\) di \(y_0\) aperti
+    tale che la funzione rispettra \(f \colon U \fromto V\) è un diffeomorfismo.
+    In particolare, \(y_0 \in V = f(U) \subseteq f(\Omega)\).
+    Quindi sono tutti punti interni.
+}
+
+In particolare, se \(\text{d}f(x) \in \text{GL}(\realnumbers^n)\)
+per tutte le \(x \in \Omega\), allora \(f\) è una mappa aperta.
+Infatti a volte questo si chiama teorema della mappa aperta.
+
+Come detto, in una funzione di una variabile l'invertibilità della derivata è sufficiente
+per l'invertibilità, mentre in molteplici variabili l'invertibilità del differenziale
+mi garantisce solo l'invertibilità locale.
+Possiamo aggiungere la condizione di inietività per garantire l'invertibilità globale.
+
+\scorollary{}{
+    Sia \(\Omega \subseteq \realnumbers^n\) aperto,
+    \(f \colon \Omega \fromto \realnumbers^n\) tale che \(f \in \mathcal{C}^1(\Omega, \realnumbers^n)\),
+    \(\text{d}f(x) \in \text{GL}(\realnumbers^n)\) per ogni \(x\in \Omega\)
+    e \(f\) iniettiva in \(\Omega\).
+    Allora, \(f^{-1} \in \mathcal{C}^1(f(\Omega), \realnumbers^n)\)
+    e \(f \colon \Omega \fromto f(\Omega)\) è un diffeomorfismo.
+}
+
+\sproof{}{
+    L'iniettività garantisce l'esistenza di
+    \(f^{-1} \colon f(\Omega) \fromto \Omega\) e \(f(\Omega)\) è aperto.
+    Sia \(y_0 = f(x_0) \in f(\Omega)\).
+    Per il teorema della funzione inversa \(\exists r, R>0\)
+    tali che \(f\colon f^{-1}(B_R(y_0)) \cap B_r(x_0) \fromto B_r(y_0)\)
+    è un diffeomorfismo.
+    In particolare, l'inverso di questa funzione è differenzuiabile.
+    Ma essendo \(f\) iniettiva, questa inversa locale deve coincidere con l'inversa globale,
+    e quindi \(f^{-1} \colon f(\Omega) \fromto \Omega\) è differenziabile.
+}
+
+\subsection{Trasformazioni di coordinate}
+
+Le trasformazioni di coordinate mediante mappe affini sono diffeomorfismi.
+Tuttavia, non tutte le trasformazioni, come per esempio le coordinate polari, sono affinità.
+Queste trasformazioni devono essere biunivoche.
+Per esempio le coordinate polari vanno ristrette a \(\theta\in(0,2\pi]\)
+e \(\rho \neq 0\). Per riacquistare la suriettività dobbiamo togliere l'origine dal codominio.
+
+\sdefinition{Trasformazione di coordinate}{
+    Una trasformazione di coordinate di \(\realnumbers^n\)
+    è un diffeomorfismo globale il cui dominio deve essere un insieme "grosso".
+}
+
+\(f(\rho, \theta) = (\rho\cos\theta,\rho\sin\theta)\) è differenziabile,
+ma l'inversa non è continua. Infatti il seguente limite non esiste (considerando \(\theta \in (-\pi, \pi]\))
+\[
+    \lim_{(x,y) \fromto (-1,0)} f^{-1}(x,y)
+\]
+possiamo considerare i due cammini circolari dal sopra e dal sotto.
+Per rendere \(f\) un omeomorfismo, consideriamo
+\(f \colon (0, +\infty) \times (-\pi, \pi) \fromto \realnumbers^2 \difference \{(x,0) \suchthat x \leq 0\}\).
+Inoltre abbiamo
+\[
+    Jf(\rho,\theta) = \begin{pmatrix}
+        \cos\theta & -\rho\sin\theta \\
+        \sin\theta & \rho\cos\theta
+    \end{pmatrix}
+\]
+che ha determinante \(\rho>0\).
+Per le coordinate cilindriche consideriamo
+\[
+    f\colon (0,+\infty) \times (-\pi, \pi)
+    \times \realnumbers \fromto \realnumbers^3 \difference \{(x, 0, z) \suchthat x \leq 0\}
+\]
+la funzione è biiettiva inquesto dominio e inoltre
+\[
+    Jf(\rho,\theta, z) = \begin{pmatrix}
+        \cos\theta & -\rho\sin\theta & 0 \\
+        \sin\theta & \rho\cos\theta & 0 \\
+        0 & 0 & 1
+    \end{pmatrix}
+\]
+il cui determinante è il medesimo.
+Quindi è anch'essa un diffeomorfismo globale.
+Per le coordinate sferiche \((x,y,z) \to (\rho, \varphi, \theta)\) ho
+\[
+    f(\rho,\varphi,\theta) = (\rho\sin\varphi\cos\theta, \rho\sin\varphi\sin\theta,\rho\cos\varphi)
+\]
+con definizione
+\[
+    f\colon (0,+\infty) \times (0, \pi) \times (-\pi, \pi)
+    \fromto
+    \realnumbers^3 \difference \{(x,0,z) \suchthat x \leq 0\}
+\]
+Il Jacobiano è dato da
+\[
+    Jf(\rho,\varphi,\theta) = \begin{pmatrix}
+        \sin\varphi\cos\theta & \rho\cos\varphi\cos\theta & -\rho\sin\varphi\sin\theta \\
+        \sin\varphi\sin\theta & \rho\cos\varphi\sin\theta & \rho\sin\varphi\cos\theta \\
+        \cos\theta & -\rho\sin\varphi & 0
+    \end{pmatrix}
+\]
+il cui determinante è \(\rho^2 \sin\varphi > 0\).
+
+\pagebreak
+
+\section{Estremi vincolari}
+
+Notiamo che in generale, siccome il gradiente punta nella direzione di massima crescita, dobbiamo
+studiare i punti in cui la direzione del gradiente della funzione è ortogonale
+alla retta tangente del vincolo (esempio con cerchio unitario e piano \(x+y\)).
+Per trovare lo spazio tangente al vincolo usiamo il teorema della funzione implicita
+(perché magari non abbiamo la funzione direttamente).
+
+\sexample{}{
+    Consideriamo come varietà \(M = \Phi^{-1}(0)\)
+    dove \(\Phi \colon \realnumbers^n \fromto \realnumbers^m\)
+    con \(m < n\). Ho \(m\) equazioni in \(n\) incognite
+    \(\Phi = (\Phi_1, \cdots, \Phi_m)\).
+    Se tutto va bene, dato il sistema dei \(\Phi_i(x) = 0\),
+    possiamo isolare \(m\) incognite in funzione delle altre \(m-n\).
+    Sia \(k = m-n\) la dimensione di \(\Phi^{-1}(0)\) (se tutto va bene)
+    come varietà.
+}
 
 \end{document}
