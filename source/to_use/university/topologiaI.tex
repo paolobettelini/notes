@@ -120,7 +120,7 @@ In \(\mathbb{R}^n\).
     caratterizzate esplicitamente.
     Essi sono esattamente, a meno di omeomorfismo,
     gli spazi topologici della seguente forma: dato un insieme preordinato \((P, \leq)\),
-    la topologia di Alexandroff \(\mathcal{A}_{\mathcal{P}}\)
+    la topologia di Alexandrov \(\mathcal{A}_{\mathcal{P}}\)
     su \(\mathcal{P}\) è la topologia i cui aperti sono i sottoinsiemi
     \(U \subseteq \mathcal{P}\) tale che
     \(\forall p \leq q, p \in U \implies q \in U\).
@@ -879,7 +879,7 @@ Notiamo che ogni insieme finito è compatto per qualunque topologia.
     allora \(X\) è esprimibile come unione finita di aperti in \(\mathcal{A}\).
 }
 
-\subsection{Verso la compattificazione di Alexandroff}
+\subsection{Verso la compattificazione di Alexandrov}
 
 \sproposition{}{
     Siano \(K_1 \supseteq K_2 \supseteq \cdots K_n \supseteq K_{n+1} \supseteq \cdots\)
@@ -1094,6 +1094,318 @@ Notiamo che ogni insieme finito è compatto per qualunque topologia.
     è compatto (con la topologia indotta dalla topologia euclidea su \(\mathbb{R}^n\)),
     se e solo se esso è chiuso e limitato (quindi incluso in un ipercubo).
 }
+
+\sproof{}{
+    \ffiproof{
+        Supponiamo che \(A \subseteq \realnumbers^n\) sia chiuso e limitato.
+        Allora \(A \subseteq [-a, a]^n\) per qualche \(a>0\).
+        Siccome \([-a, a]\) è omeomorfo a \([0,1]\) che è compatto,
+        \([-a, a]^n\) è compatto in quanto prodotto di spazi compatti.
+        Quindi, \(A\) è compatto in quanto chiuso di uno spazio compatto.
+    }{
+        Supponiamo che \(A \subseteq \realnumbers^n\) sia
+        compatto. Consideriamo al funzione
+        \(d \colon A \fromto \realnumbers\) data da \(x\fromto ||x||\).
+        Chiaramente \(d\) è continua.
+        Allora, \(d(A)\) è compatto in \(\realnumbers\), ovvero chiuso e limitato.
+        In particolare, \(d(A) \subseteq [-N, N]\) per qualche \(N >0\).
+        Quindi, \(d(x) \leq N\) cioè per tutte le \(x\in A\), \(||x| \neq N\).
+        Quindi, \(A\) è limitato.
+        Allora \(A\) è chiuso in quanto compatto in uno spazio di Hausdorff, cioè
+        \(\realnumbers^n\).
+    }
+}
+
+Per esempio \(S^n \subseteq \realnumbers^{n+1}\) è compatto.
+Anche \(D^n = \{x \suchthat ||x||\leq 1\}\) disco è compatto.
+
+\scorollary{}{
+    Sia \(f\colon X \fromto Y\) un'applicazione continua con \(X\) compatto
+    e \(Y\) di Hausdorff. Allora \(f\) è un'applicazione chiusa.
+    In particolare, se \(f\) è biettiva allora \(f\) è un omeomorfismo.
+}
+
+\sproof{}{
+    Per dimostrarlo passiamo da un chiuso \(C\) in \(X\) verso ad un compatto
+    \(C\) in \(X\). Una volta fatto ciò possiamo applicare \(f\) per ottenere \(f(C)\) compatto in \(Y\),
+    ed infinite otteniamo \(f(C)\) chiuso in \(Y\).
+    Abbiamo utilizzato che ogni chiuso di un compatto è compatto.
+}
+
+\sdefinition{Compattificazione di Alexandrov}{
+    Sia \(X\) uno spazio topologico, \(\infty \notin X\).
+    Sull'insieme \(\hat{X} \triangleq X \union \{\infty\}\)
+    definiamo la seguente famiglia di sottoinsiemi
+    \[
+        J = \{A \text{ aperto } \suchthat A \subseteq X\}
+        \union \{\hat{X} \difference K \suchthat K \text{ chiuso e compatto in } X\}
+    \]
+}
+
+\sproposition{Quest'ultima famiglia è una topologia per \(\hat{X}\) della topologia di Alexandrov}{
+    \begin{enumerate}
+        \item \(\emptyset \in J\) in quanto \(\emptyset\) è un aperto di \(X\);
+        \item sia \(K = \emptyset\) che è chiuso e compatto in \(X\). Allora, \(\hat{X} \in J\);
+        \item \emph{intersezione:} abbiamo diversi casi
+        \begin{enumerate}
+            \item siano \(A_1, A_2 \subseteq X\) aperti di \(X\),
+            allora \(A_1 \intersection A_2\) è un aperto di \(X\);
+            \item sia \(A\) un aperto di \(X\). Sia \(K\) chiuso e compatto in \(X\).
+            Quindi
+            \[
+                A \intersection (\hat{X} \difference K) = A \intersection (X \difference K)
+            \]
+            quest'ultimo termine è aperto di \(X\).
+            \item nel caso \((\hat{X} \difference K_1) \intersection (\hat{X} \difference K_2)\)
+            usiamo le leggi di De Morgan. Quindi l'intersezione è equivalente a
+            \[
+                \hat{X} \difference (K_1 \union K_2)
+            \]
+            Il secondo termine è chiuso e compatto.
+        \end{enumerate}
+        \item \emph{unioni arbitrarie:} abbiamo diversi casi
+        \begin{enumerate}
+            \item sempre per le leggi di De Morgan
+                \begin{align*}
+                    \bigcup_{i\in I} (\hat{X} \difference K_i) &=
+                    \hat{X} \difference \left(\bigcap_{i\in I} K_i\right)
+                \end{align*}
+                Se \(I = \emptyset\) la proposizione è banale. Altrimenti,
+                esiste \(i_0 \in I\) tale che
+                \[
+                    \bigcap_{i \in I} K_i \subseteq K_{i_0}
+                \]
+                a sinistra l'intersezione è chiusa in quanto intersezione di chiusi, a destra è comatto.
+                Quindi, è anch'esso compatto in quanto chiuso di un compatto.
+            \item nel caso di un unione mista con \(K\) chiuso e compatto in \(X\)
+            e \(A\) aperto
+            \begin{align*}
+                (\hat{X} \difference K) \union A
+                &= (\hat{X} \difference K) \union (\hat{X} \difference (\hat{X} \difference A)) \\
+                &= \hat{X} \difference (K \union (\hat{X} \difference A))
+            \end{align*}
+            quindi è anche compatto.
+            Siccome \(X \difference A\) è chiuso allora è chiuso e compatto in quanto
+            chiuso del compatto \(K\)
+        \end{enumerate}
+    \end{enumerate}
+}
+
+\sproposition{}{
+    Sia \(X\) uno spazio topologico e \(\infty\notin X\).
+    Allora \(\hat{X}\) è compatto.
+}
+
+\sproof{}{
+    Supponiamo di avere un ricoprimento aperto
+    \(\{U_i\}_{i\in I}\) di \(\hat{X}\).
+    Esiste almeno una aperto che contiene \(\infty\).
+    Per semplicità sia \(\infty \in U_0\).
+    Quindi \(U_0\) è della forma \(U_0 = \hat{X} \difference K\)
+    per qualche \(K\) chiuso e compatto in \(X\).
+    Quindi, \(K = \hat{X} \difference U_0\).
+    Siccome \(K\) è compatto, esiste un sottoricoprimento finito
+    \(\{U_1, \cdots, U_n\}\) di \(K\).
+    Quindi, aggiungendo anche \(U_0\) a questi, ottengo un ricoprimento finito di tutto lo spazio.
+}
+
+Notiamo che l'inclusione \(i \colon X \inclusion \hat{X}\)
+è continua ed è una immersione aperta.
+Infatti, \(i^{-1}(A) = A\) è aperto di \(X\),
+e \(i^{-1}(\hat{X} \difference K) = X \difference K\)
+che è aperto di \(X\).
+Inoltre se \(A\) è un aperto di \(X\), \(i(A) = A\) che è aperto di \(\hat{X}\).
+Siccome \(i\) è iniettiva allora è un immersione aperta.
+
+\sproposition{}{
+    Se \(X\) è uno spazio topologico NON compatto
+    allora \(i(X)\) è denso in \(\hat{X}\),
+    dove \(i\) è l'inclusione sopracitata.
+}
+
+\sproof{}{
+    Abbiamo due tipi di aperti e quindi due casi.
+    Nel primo abbiamo \(i(X) \intersection i(A) = i(A) \neq \emptyset\)
+    per \(A \neq \emptyset\).
+    Nel secondo caso
+    \(i(X) \intersection (\hat{X} \difference K) = X \difference K \neq \emptyset\).
+}
+
+\sproposition{}{
+    Sia \(X\) uno spazio topoligico.
+    Allora \(\hat{X}\) è di Hausdorff se e solo se \(X\) è di Hausdorff
+    e ogni suo punto possiede un intorno compatto.
+}
+
+\sproof{}{
+    Siccome \(X\) è aperto in \(\hat{X}\), due punti di \(X\)
+    ammettono intorni disgiunti in \(X\) se e solo se ammettono intorni disgiunti in \(\hat{X}\).
+    Dato \(x\in X\), vogliamo studiare la condizione di esistenza di intorni perti disgiunti
+    rispettivamente di \(x\) e del punto \(\infty\).
+    Gli intorni di \(x\) sono aperti \(U\) di \(X\) tale che \(x\in U\),
+    mentre gli altri devono essere della forma \(\hat{X} \difference K\)
+    con \(\infty \in \hat{X} \difference K\) con \(K\) chiuso compatto in \(X\).
+    Vogliamo che l'intersezione sia disgiunta
+    \[
+        U \intersection (\hat{X} \difference K)
+        = U \intersection (X \difference K) = \emptyset
+    \]
+    fissato \(K\), un tale aperto \(U\) tale che
+    \(x \in U\), esiste se e solo se \(x \in \text{int}(K)\),
+    che è l'unione di tutti gli aperti contenuti in \(K\), che è precisamente la condizione
+    \[
+        U \intersection (X \difference K) = \emptyset
+    \]
+}
+
+\sproposition{}{
+    Sia \(Y\) uno spazio compatto e di Hausdorff e \(y\in Y\).
+    Allora, lo spazio topologico \(Y \difference \{y\}\) con la topologia di sottospazio
+    indotta da quella su \(Y\), soddisfa le condizioni del risultati precedente,
+    cioè è uno spazio di Hausdorff e ogni punto ammette un intorno compatto.
+}
+
+\sproof{}{
+    \(Y \difference \{y\}\) è di Hausdorff in quanto sottospazio di uno spazio di Hausdorff.
+    Resta da dimostrare l'esistenza degli intorni compatti per ogni punto.
+    Sia \(y\in Y \difference \{y\}\).
+    Essendo \(Y\) di Hausdorff per ipotesi, esistono
+    intorni aperti \(U\) di \(y\) e \(U'\) di \(y'\)
+    tali che \(U \intersection U' = \emptyset\).
+    Allora, \(Y \difference U\) è un chiuso di \(Y\) e essendo \(Y\) compatto,
+    \(Y \difference U \subseteq Y\) è compatto in quanto chiuso di un compatto (in \(Y\)),
+    ma vale anche \(y' \in Y \difference U \subseteq Y \difference \{y\}\).
+    L'appartenenza è data dal fatto che \(y' \in U' \subseteq Y \difference U\),
+    e l'inclusione perché \(\{y\} \subseteq U\).
+    Quindi, se consideriamo \(Y \difference U\) come sottospazio di \(Y \difference \{y\}\)
+    non cambia niente per transitività della topologia di sottospazio.
+    Quindi, \(Y \difference U\) è un chiuso e compatto di \(Y \difference \{y\}\).
+    Abbiamo quindi trovato un intorno compatto (pure chiuso) di \(y'\).
+}
+
+\sproposition{}{
+    Sia \(f \colon X \fromto Y\) un'immersione
+    aperta di spazi topologici di Hausdorff.
+    Allora, l'applicazione \(g\colon Y \fromto \hat{X}\)
+    data da \(y \fromto x\) se \(y = f(x)\),
+    che è ben posta in quanto \(f\) è iniettiva per ipotesi,
+    mentre \(y \fromto \infty\) se \(y \notin f(X)\),
+    è continua.
+}
+
+\sproof{}{
+    Mostriamo la continuità.
+    Sia \(U\) un aperto di \(\hat{X}\). Abbiamo due possibilità:
+    \begin{enumerate}
+        \item \(U \subseteq X\), allora \(g^{-1}(U) = f(U)\) che è aperto essendo
+        \(U\) aperto di \(X\) e \(f\) aperta per ipotesi;
+        \item \(U = \hat{X} \difference K\), allora \(g^{-1}(\hat{X} \difference K) = Y \difference f(K)\).
+        Questo è un aperto in quanto \(f(K)\) è un chiuso di \(Y\)
+        in quanto \(K\) è compatto, quindi \(f(K)\) è compatto in quanto continua,
+        e allora essendo \(Y\) di Hausdorff è chiuso.
+    \end{enumerate}
+}
+
+\scorollary{}{
+    Sia \(Y\) spazio compatto di Hausdorff
+    e \(y \in Y\).
+    Allora, \(Y\) è omeomorfo alla compattificazione
+    di Alexandrov di \(Y\difference \{y\}\).
+}
+
+\sproof{}{
+    Applichiamo la proposizione precedente
+    con \(X = Y \difference \{y\}\) e \(f = i \colon Y \difference \{y\} \inclusion Y\).
+    Questa è un immersione aperta, infatti \(Y\) è di Hausdorff e quindi \(T_1\),
+    cioè \(Y \difference \{y\}\) è aperto.
+    Abbiamo quindi una mappa continua \(g \colon Y \fromto \hat{Y \difference \{y\}}\).
+    Inoltre, è un omeomorfismo in quanto iniettiva ed è chiusa in quanto definita tra spazi entrambi
+    compatti e di Hausdorff (corollario precedente).
+}
+
+Per esempio \(S^{1} \difference \{p\} \cong \realnumbers\).
+Più in generale \(S^n\) è omeomorfa alla compattificazione di Alexandrov di \(\realnumbers^n\).
+
+\section{Topologia quoziente}
+
+\sdefinition{}{
+    Sia \(f \colon X \fromto Y\) un applicazione (tipicamente suriettiva) e \(X\)
+    uno spazio topologico. La topologia quoziente su \(Y\) è la più fine
+    cherende \(f\) continua.
+}
+
+Questo è un duale di quando abbiamo considerato la topologia meno fine
+per le mappe di inclusione.
+Caratterizzare questa dualità nel linguaggio categorico potrebbe essere una tesi.
+
+La collezione di insiemi
+\[
+    \tau = 
+    \{A \subseteq Y \suchthat f^{-1}(A) \text{ è aperto di } X\}
+\]
+è effettivamente una topologia su \(Y\), ed è quindi la topologia quoziente su \(Y\).
+
+Infatti:
+\begin{enumerate}
+    \item \(\emptyset \in \tau\) in quanto \(f^{-1}(\emptyset) = \emptyset\) che è aperto di \(X\).
+    \item \(Y \in \tau\) in quanto \(f^{-1}(Y) = X\) aperto di \(X\);
+    \item se \(A_1, A_2 \in \tau\) allora \[f^{-1}(A_1 \intersection A_2) = f^{-1}(A_1) \intersection f^{-1}(A_2)\]
+    \item sia invece \(\{A_i\}_{i\in I}\) allora
+    \[
+        f^{-1}\left(\bigcup_{i\in I} A_i\right)
+        = \bigcup_{i\in I} f^{-1}(A_i)
+    \]
+    che è unione di aperti di \(X\)
+\end{enumerate}
+
+\sdefinition{}{
+    Una applicazione continua e suriettiva \(f\colon X \fromto Y\)
+    è una \emph{identificazione} se gli aperti di \(Y\) sono tutti e soli i sottoinsiemi
+    \(A\) di \(Y\) tale che \(f^{-1}(A)\) è aperto in \(X\).
+}
+
+La topologia quoziente è l'unica topologia su \(Y\) che rende \(f\) una identificazione.
+Inoltre, \(f\) è un identificazione se vale l'analogo per i chiusi della condizione precedente,
+cioè se e solo se i chiusi di \(Y\) sono tutti e soli i sottoinsiemi \(C\) di \(Y\)
+tale che \(f^{-1}(C)\) è chiuso in \(X\).
+
+\sdefinition{}{
+    Sia \(f \colon X \fromto Y\) una mappa.
+    Un sottoinsieme \(A\) di \(X\) si dice
+    \(f\)-saturo se \(\forall x,x' \in X\) tali che \(f(x) = f(x')\),
+    allora \(x\in A\) se e solo se \(x'\in A\).
+}
+
+\(A \subseteq X\) è \(f\)-saturo se e solo se \(A = f^{-1}(B)\)
+per qualche sottoinsieme \(B \subseteq Y\).
+Equivalentemente, \(A = f^{-1}(f(A))\).
+
+\sproposition{}{
+    Se \(f\colon X \fromto Y\) è continua e suriettiva, allora \(f\)
+    è un identificazione
+    se e solo se gli aperti di \(Y\) sono tutti e soli
+    i sottoinsiemi di \(Y\) della forma \(f(A)\) dove \(A\) è un aperto \(f\)-saturo di \(X\).
+}
+
+\sproof{}{
+    Essendo \(f\) suriettiva, per tutte le \(B \subseteq Y\),
+    \(B = f(f^{-1}(B))\).
+    D'altro canto, \(A\) è \(f\)-saturo se e solo se \(A = f^{-1}(f(A))\).
+}
+
+\sproposition{}{
+    Sia \(f \colon X \fromto Y\) un identificzione.
+    Se \(A\) è un aperto \(f\)-saturo, allora \(f(A)\)
+    è un aperto di \(Y\).
+}
+
+\sproof{}{
+    \(f(A)\) è aperto di \(Y\) se e solo se
+    \(f^{-1}(f(A))\) è aperto in \(X\),
+    ma \(f^{-1}(f(A)) = A\) siccome \(A\) è \(f\)-saturo.
+}
+
+Questo non implica che \(f\) sia aperta.
 
 \pagebreak
 
