@@ -1,7 +1,7 @@
 \ProvidesPackage{stellar}[2023/01/01 Stellar LaTeX functions]
 
 %%
-%% REFER TO THE REAL stellar.sty
+%% REFER TO THE REAL stellar.sty in /source/latex/packages
 %%
 
 \RequirePackage{hyperref}
@@ -10,6 +10,8 @@
 \RequirePackage{url}
 \RequirePackage[most]{tcolorbox}
 \RequirePackage{wrapfig}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{tikz}
 
 % Integral command
 \ExplSyntaxOn
@@ -131,6 +133,40 @@
 \newcommand{\sproof}[2]{\begin{Proof}{#1}{}#2\end{Proof}}
 \newcommand{\slemma}[2]{\begin{Lemma}{#1}{}#2\end{Lemma}}
 
+% Creates a line on the left side with a radioactive warning logo
+\newtcolorbox{radioactive}{
+freelance,
+breakable,
+width=\dimexpr\textwidth+28pt\relax,
+before=\par\vspace{\bigskipamount}\noindent,
+enlarge left by=-14pt,
+overlay unbroken and first={
+  \node[
+  anchor=north east,
+  inner xsep=8pt,
+  xshift=8pt,
+  rounded corners=5pt] at ([xshift=-0.2cm]frame.north west) (tit) (tit) {%
+      \includegraphics[width=2em]{./media/radioactive.png}%
+    };
+  \draw[
+  line width=3pt,
+  rounded corners=10pt,
+  red,
+  dash pattern=on 5pt off 3pt,
+  ] ([xshift=4pt]frame.north west) -- ([xshift=4pt]frame.south west);
+},
+overlay middle and last={
+  \draw[
+  line width=3pt,
+  rounded corners=5pt,gray
+  ] ([xshift=4pt]frame.north west) -- ([xshift=4pt]frame.south west);
+},
+frame code={},
+interior code={},
+top=0pt,
+bottom=0pt
+}
+
 %%%%% DOUBLE PROOF ENVIRONMENTS %%%%%
 
 \newcommand{\doubleproof}[4]{%
@@ -186,5 +222,5 @@
 \newcommand{\difference}{\,\backslash\,}
 \newcommand{\hessian}{H}
 \newcommand{\jacobian}{J}
-\renewcommand{\emptyset}{\varnothing}
 \newcommand{\inclusion}{\hookrightarrow}
+\renewcommand{\emptyset}{\varnothing}
