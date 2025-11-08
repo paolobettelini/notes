@@ -4,6 +4,9 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{tikz}
+\usepackage{wrapfig}
+\usepackage{bettelini}
 
 \begin{document}
 
@@ -101,12 +104,157 @@
     \]
 \end{snippetexercise}
 
+\begin{snippetsolution}{multivariable-optimization-ex-6-sol}{}
+    We first note that \(f(-x,y) = f(x,-y) = -f(x,y)\).
+    The derivatives are given by
+    \[
+        f_x = y(1-x^2-y^2)(1-5x^2-y^2), \quad
+        f_y = x(1-x^2-y^2)(1-x^2 - 5y^2)
+    \]
+    The partial derivatives are null when
+    \[
+        \begin{cases}
+            y(1-x^2-y^2)(1-5x^2-y^2) = 0\\
+            x(1-x^2-y^2)(1-x^2 - 5y^2) = 0
+        \end{cases}
+    \]
+    This yields the following equations
+    \[
+        y = 0 \\
+        x(1-x^2)(1-x^2) = 0
+    \]
+    which is satisfied at \((0,0), (\pm 1,0)\).
+    Then, \(1-x^2-y^2 = 0\) yields the unitary circumference.
+    Finally,
+    \[
+        \begin{cases}
+            1 - 5x^2-y^2 = 0 \\
+            x(4x^2)(-4+24x^2) = 0
+        \end{cases}
+    \]
+    yields the points \((0, \pm 1)\), \(\pm 1 / \sqrt{6}, \pm 1 / \sqrt{6}\) and
+    \((\pm 1 / \sqrt{6}, \mp 1 / \sqrt{6})\).
+    The mixed derivatives are
+    \begin{align*}
+        f_{xx} &= y\left((1-x^2-y^2)(-12x) + 8x^3\right) \\
+        f_{yy} &= -2xy(6-6x^2 - 10y^2) \\
+        f_{xy} &= (1-x^2-y^2)(1-5x^2 - y^2)-4y^2(1-3x^2-y^2)
+    \end{align*}
+    At the origin we have
+    \[
+        \hessian_f(0,0) = \begin{pmatrix}
+            0 & 1 \\ 1 & 0
+        \end{pmatrix}
+    \]
+    which has \(\det \hessian_f(0,0) = -1 < 0\) and thus the origin is a saddle point.
+    At the point \((1 / \sqrt{6}, 1 / \sqrt{6})\) we have
+    \[
+        \hessian_f\left(\frac{1}{\sqrt{6}}, \frac{1}{\sqrt{6}}\right) = \begin{pmatrix}
+            -\frac{10}{9} & -\frac{2}{9} \\
+            -\frac{2}{9} & -\frac{10}{9}
+        \end{pmatrix}
+    \]
+    which has \(\det \hessian_f(1 / \sqrt{6}, 1 / \sqrt{6}) = 96/81 > 0\)
+    and \(\trace \hessian_f(1 / \sqrt{6}, 1 / \sqrt{6}) = -20/9 < 0\).
+    Thus, we have negative eigenvalues and this point is a maximum point.
+    The same goes for \((-1 / \sqrt{6}, -1 / \sqrt{6})\)
+    and the points \((1 / \sqrt{6}, -1 / \sqrt{6})\)
+    and \((-1 / \sqrt{6}, 1 / \sqrt{6})\) are minimum points.
+    \setlength{\intextsep}{0pt}%
+    \begin{wrapfigure}{r}{3cm}
+        \begin{tikzpicture}[scale=1]
+            % Axes
+            \draw[->, thick] (-1.5,0) -- (1.5,0) node[right] {$x$};
+            \draw[->, thick] (0,-1.5) -- (0,1.5) node[above] {$y$};
+
+            % Circle arcs (alternating red/blue)
+            \draw[very thick, red] (0:1) arc[start angle=0, end angle=90, radius=1];    % Q1 (+)
+            \draw[very thick, blue] (90:1) arc[start angle=90, end angle=180, radius=1]; % Q2 (-)
+            \draw[very thick, red] (180:1) arc[start angle=180, end angle=270, radius=1]; % Q3 (+)
+            \draw[very thick, blue] (270:1) arc[start angle=270, end angle=360, radius=1]; % Q4 (-)
+
+            % Signs outside the circle
+            \node at (0.7,1.0) {\Large $+$};
+            \node at (-0.7,1.0) {\Large $-$};
+            \node at (-0.7,-1.0) {\Large $+$};
+            \node at (0.7,-1.0) {\Large $-$};
+
+            % Signs inside the circle
+            \node at (0.4,0.4) {\Large $+$};
+            \node at (-0.4,0.4) {\Large $-$};
+            \node at (-0.4,-0.4) {\Large $+$};
+            \node at (0.4,-0.4) {\Large $-$};
+
+            % Small circles at the "corner" points
+            \foreach \x/\y in {1/0, 0/1, -1/0, 0/-1}{
+            \draw[thick, green!70!black, fill] (\x,\y) circle (0.075);
+            }
+        \end{tikzpicture}
+    \end{wrapfigure}
+    We know that the same criterion does not work for a curve of critical points.
+    We thus study \(f\) on neighbhoords of the unitary circumference.
+    By the study of the graph we can see that
+    the {\color{green!70!black}points} \((\pm, 0), (0, \pm 1)\)
+    are saddle points. The {\color{red}points}
+    \[
+        \left(S^1 \intersection \{(x,y) \in \realnumbers^2 \suchthat x>0\land y>0\}\right)
+        \union
+        \left(S^1 \intersection \{(x,y) \in \realnumbers^2 \suchthat x<0\land y<0\}\right)
+    \]
+    are maximum points and the {\color{blue}points}
+    \[
+        \left(S^1 \intersection \{(x,y) \in \realnumbers^2 \suchthat x>0\land y<0\}\right)
+        \union
+        \left(S^1 \intersection \{(x,y) \in \realnumbers^2 \suchthat x<0\land y>0\}\right)
+    \]
+    are minimum points.
+    \wrapfill
+\end{snippetsolution}
+
 \begin{snippetexercise}{multivariable-optimization-ex-7}{}
     Determine the local extrema of the \function
     \[
         f(x,y) = \frac{x^2 + 2y}{x^2 + y^2 + 1}
     \]
 \end{snippetexercise}
+
+\begin{snippetsolution}{multivariable-optimization-ex-7-sol}{}
+    We first note that
+    \[
+        f(x,y) = \frac{x^2 + 2y + 1}{x^2 + y^2 + 1} + \frac{x^2 + 2y - 1}{x^2 + y^2 + 1}
+        = 1 - \frac{{(y-1)}^2}{x^2 + y^2 + 1} \leq 1
+    \]
+    The partial derivatives are given by
+    \[
+        f_x = \frac{2x{(y-1)}^2}{{(x^2 + y^2 + 1)}^2}, \quad
+        f_y = \frac{2(x^2 -y^2 + 1 -yx^2)}{{(x^2 + y^2 + 1)}^2}
+    \]
+    The partial derivatives are null at the points \((0, \pm 1)\)
+    and at the line \((x, 1)\).
+    The second partial derivates are
+    \begin{align*}
+        f_{xx} &= \frac{2{(y-1)}^2 (x^2 + y^2 + 1 - 4x^2)}{{(x^2 + y^2 + 1)}^3} \\
+        f_{yy} &= \frac{2 \left[(-2xy - x^2)(x^2 + y^2 + 1) - 4y(x^2 - y^2 + 1 -yx^2)\right]}{{(x^2 + y^2 + 1)}^3} \\
+        f_{xy} &= \frac{4x(y-1)\left[x^2 + y^2 + 1 - 2y(y-1)\right]}{{(x^2 + y^2 + 1)}^3}
+    \end{align*}
+    At the point \((0, -1)\) we have
+    \[
+        \hessian_f(0,-1) = \begin{pmatrix}
+            2 & 0 \\ 0 & 1
+        \end{pmatrix}
+    \]
+    which has \(\det H_f(0,-1) = 2 >\) and \(\trace H_f(0,-1) = 3>\), which means
+    that this is a point of minimum.
+    We will now study the point \((x,1)\).
+    We know that the same criterion does not work for a curve of critical points.
+    We have \(f(x,1) = 1\).
+    Studying the sign in a neighbhoord of this point makes sense when \(f=0\). We thus
+    translate the function \(g = f-1\). We have
+    \[
+        g(x,y) = \frac{x^2 + 2y - x^2 - y^2 - 1}{x^2 + y^2 + 1} = -\frac{{(y-1)}^2}{x^2 + y^2 + 1} \leq 0
+    \]
+    Thus, the points \((x,1)\) are points of weak absolute maximum.
+\end{snippetsolution}
 
 \begin{snippetexercise}{multivariable-optimization-ex-8}{}
     Verify that the origin is a critical point for the \function[functions]
