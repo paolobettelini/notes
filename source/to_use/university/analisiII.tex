@@ -3973,15 +3973,15 @@ Da questa formula segue che \(\varphi\) ha la stessa regolarità di \(F\).
     Siccome \(F \in \mathcal{C}^\infty(\realnumbers^4)\), allora \(\varphi \in \mathcal{C}^\infty(\realnumbers^4)\)
     in un intorno di \((0,0)\).
     \begin{align*}
-        J_{(x,y)}F(0,0,0,0) = \begin{pmatrix}
+        \jacobian_{(x,y)}F(0,0,0,0) = \begin{pmatrix}
             2 & 0 \\ -3 & 3
-        \end{pmatrix}, \quad J_{(s,t)}F(0,0,0,0) = \begin{pmatrix}
+        \end{pmatrix}, \quad \jacobian_{(s,t)}F(0,0,0,0) = \begin{pmatrix}
             2 & -1 \\ 1 & 1
         \end{pmatrix}
     \end{align*}
     E l'inverso è dato da
     \begin{align*}
-        J_{(s,t)}F(0,0,0,0)^{-1} = \frac{1}{3} \begin{pmatrix}1 & 1 \\ -1 & 2\end{pmatrix}
+        \jacobian_{(s,t)}F(0,0,0,0)^{-1} = \frac{1}{3} \begin{pmatrix}1 & 1 \\ -1 & 2\end{pmatrix}
     \end{align*}
     Abbiamo quindi il differenziabile
     \[
@@ -4183,7 +4183,7 @@ Per rendere \(f\) un omeomorfismo, consideriamo
 \begin{radioactive}
 Inoltre abbiamo
 \[
-    Jf(\rho,\theta) = \begin{pmatrix}
+    \jacobian_f(\rho,\theta) = \begin{pmatrix}
         \cos\theta & -\rho\sin\theta \\
         \sin\theta & \rho\cos\theta
     \end{pmatrix}
@@ -4196,7 +4196,7 @@ Per le coordinate cilindriche consideriamo
 \]
 la funzione è biiettiva inquesto dominio e inoltre
 \[
-    Jf(\rho,\theta, z) = \begin{pmatrix}
+    \jacobian_f(\rho,\theta, z) = \begin{pmatrix}
         \cos\theta & -\rho\sin\theta & 0 \\
         \sin\theta & \rho\cos\theta & 0 \\
         0 & 0 & 1
@@ -4216,7 +4216,7 @@ con definizione
 \]
 Il Jacobiano è dato da
 \[
-    Jf(\rho,\varphi,\theta) = \begin{pmatrix}
+    \jacobian_f(\rho,\varphi,\theta) = \begin{pmatrix}
         \sin\varphi\cos\theta & \rho\cos\varphi\cos\theta & -\rho\sin\varphi\sin\theta \\
         \sin\varphi\sin\theta & \rho\cos\varphi\sin\theta & \rho\sin\varphi\cos\theta \\
         \cos\theta & -\rho\sin\varphi & 0
@@ -4243,7 +4243,311 @@ Per trovare lo spazio tangente al vincolo usiamo il teorema della funzione impli
     Se tutto va bene, dato il sistema dei \(\Phi_i(x) = 0\),
     possiamo isolare \(m\) incognite in funzione delle altre \(m-n\).
     Sia \(k = m-n\) la dimensione di \(M\) (se tutto va bene)
-    come varietà.
+    come varietà. \\
+    Sia \(x_0 \in M\), \(\text{d}\Phi(x_0) \colon \realnumbers^n \fromto \realnumbers^m\).
+    \(\jacobian_\Phi(x_0)\) è una matrice di tipo \(m\times n = (n-k)\times n\).
+    Possiamo applicare il teorema della funzione implica se e solo se
+    \(\jacobian_\Phi(x_0)\) è massi,o cioè \(\text{rank} \jacobian_\Phi(x_0) = n-k\), ovvero se
+    \(\text{d}\Phi(x_0)\) è suriettivo. In questo caso, a meno di permutare le variabili posso scrivere
+    \(x\in\realnumbers^n\) con \(x=(z,y)\) con \(z\in\realnumbers^n\) e \(y\in\realnumbers^{n-k}\) e
+    \(\Phi_y(x_0) \in \text{GL}(\realnumbers^{n-k})\).
+    \(M\) in un intorno di \(x_0\) può essere scritta nel modo seguente
+    \((z,y) \in M\) se e solo se \(y = \varphi(z)\) dove \(\varphi\) è la funzione implicita.
+    Se \(\Phi\) è di classe \(\mathcal{C}^1\), lo è pure \(\varphi\), quindi possiamo sviluppar
+    \(\varphi\) al primo ordine
+    \[
+        y-y_0 = \text{d}\varphi(z_0)(z-z_0) + o(||z-z_0||)
+    \]
+    Ottengo lo spazio tangente trascurando l'o-piccolo e traslando nell'origine
+    \[T_{x_0}M = \{(v,w) \in \realnumbers^k \times \realnumbers^{m-n} \suchthat w = \text{d}\varphi(z_0) v\}
+    = \{(v, \text{d}\varphi(z_0)v)\}\]
 }
+
+\stheorem{}{
+    Sia \(\Phi \colon \Omega \subseteq \realnumbers^n \fromto \realnumbers^{n-k}\),
+    \(\Phi \in \mathcal{C}'(\Omega)\), \(x_0 \in \Omega\) tale che
+    \(\Phi(x_0) = 0\), \(\text{d}\Phi(x_0)\) suriettivo.
+    Sia \(M = \Phi^{-1}(0)\).
+    Allora, \(T_{x_0}M = \text{ker} \,\text{d}\Phi(x_0)\).
+}
+
+\sproof{}{
+    Sappiamo che \(\text{d}\varphi(z_0) = -\Phi_y(x_0)^{-1} \circ \Phi_y(x_0)\).
+    \(w = \text{d}\varphi(z_0)v\) se e solo se \(\Phi_y(x_0) w = -\Phi_z(x_0)v\)
+    se e solo se \(\Phi_z(x_0)v + \Phi_y(x_0)w = 0\) se e solo se
+    \(\text{d}\phi(x_0)(v,w) =0\) se e solo se \((v,w) \in \text{ker} \,\text{d}\Phi(x_0)\). 
+}
+
+\sdefinition{}{
+    Se \(M = \Phi^{-1}(0)\), \(\Phi(x) = 0\) e \(\text{d}\Phi(x_0)\) è surettiva, allora
+    \(x_0\) è un punto regolare di \(M\).
+}
+
+\sexample{}{
+    Sia \(M=S^1\), quindi \(\Phi(x,y) = x^2 + y^2 - 1\),
+    \(M\Phi^{-1}(0)\). Dobbiamo calcolare il kernel di \(\text{d} \Phi(x_0, y_0)\).
+    \[
+        \text{d}\Phi(x_0, y_0)(v,w) = \nabla \Phi(x_0, y_0)(v,w) =0
+        \implies
+        T(x_0, y_0)M = \nabla \Phi(x_0, y_0) = (2x_0, 2y_0)
+    \]
+    Abbiamo che
+    \[
+        \nabla \Phi(x_0, y_0) = (0,0) \iff (x_0, y_0) = (0,0)
+    \]
+    ma \((0,0) \notin M\), quindi \(S^1\) è regolare.
+    \[
+        T_{(x,y,z)}S^1 = \{(v,w) \suchthat (x_0, y_0)(v,w) = 0\}
+        = \{
+            x_0v +y_0w = 0
+        \} = \{(\lambda y_0 - \lambda x_0) \suchthat \lambda \in \realnumbers\}
+        = \langle(y_0, x_0)\rangle
+    \]
+}
+
+\sexample{}{
+    Sia \(\Phi \colon \realnumbers^n \fromto \realnumbers\), \(M = \Phi^{-1}(0)\).
+    \(\text{d}\Phi(x_0)v = \nabla \Phi(x_0)v = 0\)
+    se e solo se \(v \perp \nabla \Phi(x_0)\).
+    \(T_{x_0}M = \nabla \Phi(x_0)^\perp\).
+    Lo spazio tangente agli insiemi di livello di \(\Phi\) e lo spazio ortogonale a \(\nabla \Phi(x_0)\)
+    (se è non nullo, cioè se \(x\) è un punto regolare).
+}
+
+\sexample{}{
+    Sia \(\Phi(x,y,z) = xyz^2 + 1\), \(M = \Phi^{-1}(0)\).
+    Esistono punti \((x,y,z)\) di \(M\) tale che \((1,1,0) \in T_{(x,y,z)}M\) e
+    \((0,1,1)\in T_{(x,y,z)}M\)?
+    \(\nabla \Phi(x,y,z) = (yz^2,xz^2, 2xyz)\). Se si annulla almeno una delle tre corodinate 
+    deve annullarsi \(\implies (x,y,z) \notin M\) perché \(\Phi(x,y,z) = 01\) e quindi \(M\) è regolare.
+    Devo quindi imporre che \(\Phi(x,y,z) = 0\), che \(\nabla \Phi(x,y,z)(1,1,0) = 0\) e che
+    \(\nabla \Phi(x,y,z)(0,1,1) = 0\).
+    \begin{align*}
+        \begin{cases}
+            xyz^2 + 1 = 0\\
+            yz^2 + xz^2 = 0\\
+            xz^2 + 2xyz = 0
+        \end{cases}
+        \to
+        \begin{cases}
+            xyz^2 + 1 = 0 \\
+            z^2(y + x) = 0 \\
+            xz(z + 2y) = 0
+        \end{cases}
+        \to
+        \begin{cases}
+            x = -y \\
+            z = -2y \\
+            -4y^2 + 1 = 0
+        \end{cases}
+    \end{align*}
+    quindi \(P \equiv (1 / \sqrt{2}, -1/\sqrt{2}, -\sqrt{2})\) e \(Q \equiv (-1/\sqrt{2}, 1/\sqrt{2}, -\sqrt{2})\).
+    Siccome \(\text{dim} T \times M = 2\) implica \(TpM = \langle(1,1,0),(0,1,1)\rangle = T_aM\).
+    Consideriamo il caso generale \(\Phi \colon \Omega \subseteq \realnumbers^n \fromto \realnumbers^{n-k}\).
+    \(M = \Phi^{-1}(0)\). Ci aspettiamo che, se \(x_0\) è un punto regolare,
+    che \(M\) sia \(k\)-dimensionale (per lo meno in un intorno di \(x_0\))
+    \[
+        M = \begin{cases}
+            \Phi_1(x) = 0\\
+            \Phi_{n-k}(x) = 0
+        \end{cases}
+    \]
+    vogliamo caratterizzare \(T_{x_0} M = \text{ker}\,\text{d}\Phi(x_0)\).
+    Vale \(\text{d}\Phi(x_0)v = 0\) se e solo se \(J \Phi(x_0)v = 0\) se e solo se
+    \[
+        \begin{pmatrix}
+            \nabla \Phi_1(x_0)_\perp \\
+            \vdots \\
+            \nabla \Phi_{n-k}(x_0)_\perp
+        \end{pmatrix} v = 0 \iff
+        \begin{pmatrix}
+            \nabla \Phi_1(x_0) \cdot v \\
+            \vdots \\
+            \nabla \Phi_{n-k}(x_0) \cdot v
+        \end{pmatrix} = \begin{pmatrix}
+            0 \\ \vdots \\ 0
+        \end{pmatrix}
+    \]
+    meaning that \(v\in T_{x_0}M\) if and only if \(v_1 \nabla \Phi_i(x_0) = 0\).
+    Cioè, \(T_{x_0}M^\perp = \langle \nabla \Phi_1(x_0), \cdots, \nabla \Phi_{n-k}(x_0)\rangle\)
+    ovvero \(T_{x_0}M = \langle \nabla \Phi_1(x_), \cdots, \nabla \Phi_{n-k}(x_0) \rangle^\perp\)
+    e \(\nabla \Phi_1(x_0), \cdots, \nabla \Phi_{n-k}(x_0)\) sono l.i. perché i triangoli
+    delle righe di \(\jacobian_\Phi(x_0)\) e per ipotesi \(\jacobian_\Phi(x_0) = \text{rank} n-k\).
+}
+
+\sexample{}{
+    Sia
+    \[
+        \Phi(x,y,z) = \begin{pmatrix}
+            x + y^2 + 3z \\ xz + y^2
+        \end{pmatrix}
+    \]
+    \(\phi \colon \realnumbers^3 \fromto \realnumbers^2\).
+    Posto \(M = \Phi^{-1}(0,0)\), trovare \(T_{(0,0,0)}M\).
+    \[
+        \jacobian_\Phi = \begin{pmatrix}
+            1 & 2y & 3 \\ z & 2y & x
+        \end{pmatrix}, \quad \jacobian_\Phi(0,0,0) = \begin{pmatrix}
+            1 & 0 & 3 \\ 0 & 0 & 0
+        \end{pmatrix}
+    \]
+    \(\text{rank} \jacobian_\Phi(0,0,0) = 1\), quindi non è massimo.
+    \(\text{dim}\,\text{ker}\,\text{d}\Phi(0,0,0) =2\), ma \(k=1\).
+    Il problema è che il punto non è regolare.
+}
+
+\sexample{}{
+    Sia \(\Phi\colon \realnumbers^4 \fromto \realnumbers^2\) e \(M = \Phi^{-1}(0)\).
+    Supponiamo che \(0\in M\), cioè che \(\Phi(0)=0\) e che
+    \[
+        \jacobian_\Phi(0) = \begin{pmatrix}
+            -1 & 1 & 0 & 1 \\ 2 & 0 & 1 & -1
+        \end{pmatrix}
+    \]
+    Determinare \(T_0 M\). Abbiamo \(\text{rank} \, \text{d} \Phi(0)=2\) è massimo,
+    e quindi \(0\) è un punto regolare di \(M\).
+    \[
+        \left(T_0M\right)^\perp = \langle \begin{pmatrix}
+            -1 \\ 1 \\ 0 \\ 1
+        \end{pmatrix}, \begin{pmatrix}
+            2 \\ 0 \\ 1 \\ -1
+        \end{pmatrix}
+        \rangle = \left\{
+            \lambda \begin{pmatrix}
+                -1 \\ 1 \\ 0 \\ 1
+            \end{pmatrix}
+            + \mu \begin{pmatrix}
+                2 \\ 0 \\ 1 \\ -1
+            \end{pmatrix}
+            \suchthat \mu, \lambda \in \realnumbers
+        \right\}
+    \]
+    Sia \((x,y,z,w) \in \realnumbers^4\). Devo imporre l'ortogonalità alle righe della matrice
+    \(\jacobian_\Phi(0)\)
+    \[
+        \begin{cases}
+            -x + y + w = 0 \\
+            2x + z - w = 0
+        \end{cases}
+    \]
+    Risolviamo \(z,w\) in funzione di \(x,y\).
+    \begin{align*}
+        \begin{pmatrix}
+            -1 & 1 \\ 2 & 0
+        \end{pmatrix}
+        \begin{pmatrix}
+            x \\ y
+        \end{pmatrix}
+        + \begin{pmatrix}
+            0 & 1 \\ 1 & -1
+        \end{pmatrix}
+        \begin{pmatrix}
+            z \\ w
+        \end{pmatrix} = \begin{pmatrix}
+            0 \\ 0
+        \end{pmatrix} \\
+        \begin{pmatrix}
+            z \\ w
+        \end{pmatrix} = {-\begin{pmatrix}
+            0 & 1 \\ 1 & -1
+        \end{pmatrix}}^{-1}
+        \begin{pmatrix}
+            -1 & 1 \\ 2 & 0
+        \end{pmatrix}
+        \begin{pmatrix}
+            x \\ y
+        \end{pmatrix} = \cdots = \begin{pmatrix}
+            -1 & -1 \\ 1 & -1
+        \end{pmatrix}
+        \begin{pmatrix}
+            x \\ y
+        \end{pmatrix}
+    \end{align*}
+    e
+    \[
+        T_0 M = \left\{
+            \begin{pmatrix}
+                x \\ y \\ -x-y \\ -x-y
+            \end{pmatrix} \suchthat x,y \in \realnumbers
+        \right\} = \langle \begin{pmatrix}
+            1 \\ 0 \\ -1 \\ 1
+        \end{pmatrix}, \begin{pmatrix}
+            0 \\ 1 \\ -1 \\ -1
+        \end{pmatrix} \rangle
+    \]
+}
+
+\sdefinition{}{
+    \(M \subseteq \realnumbers^m\) è una sottovarietà \(k\)-dimensionale
+    se \(\forall x_0 \in M\), esiste \(V \subseteq \realnumbers^m\) aperto, \(x_0 \in V\)
+    ed esiste \(\Phi \in \mathcal{C}^1(V, \realnumbers^{n-k})\) tale che
+    \(M \intersection V = \Phi^{-1}(0)\) e \(\text{d}\Phi(x_0)\) sia suriettivo.
+}
+
+Dato \(M\) sottovarietà \(k\)-dimensionale
+di \(\realnumbers^n\), vorrei definire lo spazio tangente ad \(M\)
+in \(x_0\) come \(\text{ker}\,\text{d}\Phi(x_0)\), dove \(\Phi\) è
+una funzione definita in un intorno di \(x_0\) come nella definizione.
+Il problema è che lo stesso \(M\) può essere descritto da molte \(\Phi\) diverse.
+
+\sexample{}{
+    Sia \(M = \{(x,y) \suchthat y=0\}\), \(\Phi(x,y) = y\).
+    \(\Xi(x,y) = y(x^2 + 1)\), \(\Psi(x,y) = y(x^2 + y^2)\).
+    \(\nabla \Phi = (0,1)\), quindi \((0,0)\) è un punto regolare per questo \(\Phi\).
+    \(\nabla \Psi = (2xy, 3y^2)\), \((0,0)\) non è un punto regolare.
+}
+
+\sdefinition{}{
+    Sia \(M \subseteq \realnumbers^n\) una sottovarietà \(k\)-dimensionale
+    se \(\forall x_0 \in M\) esiste un intorno di \(x_0\) e una funzione
+    \(\varphi \colon \realnumbers^k \fromto \realnumbers^{n-k}\) (di cui le variaibli
+    le chiamiamo \(x\) e \(y\)) tale che \((z,y) \in M\) se e solo se \(y = \varphi(z)\)
+    (a mano di permutazioni delle variabili).
+}
+
+Le due definizioni sono equivalenti:
+sia \(\Phi\) tale che \(M = \Phi^{-1}(0)\) nell'intorno di \(x_0\) e
+\(\text{d}\Phi(x_0)\) sia suriettivo.
+Allora per il teorema della funzione implicita esiste la \(\varphi\) della seconda definizione.
+Viceversa, se \(\varphi\colon \realnumbers^k \fromto \realnumbers^{n-k}\) definisce
+\(M\) localmente, basta scegliere \(\Phi(z,y) = y-\varphi(z)\) e la funzione \(\Phi\) soddisfa
+la definizione precedente di sottovarietà.
+Vogliamo dare una definizione dello spazio tangente che sia indipendente dalla scelta
+di \(\Phi\). Consideriamo un cammino \(\gamma\) sulla sottovarietà \(M\), cioè un'applicazione
+derivabile \(\gamma \colon (-\varepsilon, \varepsilon) \fromto M\) tale che \(\gamma(0) = x_0\).
+\(\dot{\gamma}(0)\) è un vettore in \(\realnumbers^n\) ed è tangente al supporto di \(\gamma\) in \(x_0\).
+Facendo varriare il cammino otteniamo tutti e soli i vettori tangenti
+ad \(M\) in \(x_0\), cioè \[
+    T_{x_0}M = \{
+        \dot{\gamma}(0) \suchthat \gamma \colon (-\varepsilon, \varepsilon) \fromto M
+        \text{ cammino } \suchthat \gamma(0) = x_0
+    \}
+\]
+Vogliamo dimostrare che questa definizione di spazio tangente coincide con quelle vecchie,
+cioè con \(\text{ker}\,\text{d}\Phi(x_0)\) dove \(\Phi^{-1}(0) = M \intersection V\).
+Poniamo
+\[
+    X = \{
+        \dot{\gamma} \suchthat \gamma \colon (-\varepsilon, \varepsilon) \fromto M
+        \text{ cammino } \land \gamma(0) = x_0
+    \}
+\]
+Sia \(x \in X\), cioè \(v = \dot{\gamma}(0)\) con \(\gamma \colon (-\varepsilon, \varepsilon) \fromto M\)
+cammino tale che \(\gamma(0) = x_0\) e sia
+\(\Phi \in \mathcal{C}^1(\mathcal{U}(x_0), \realnumbers^{n-k})\) tale che
+\(M \intersection \mathcal{U}(x_0) = \Phi^{-1}(0)\) e \(\text{d}\Phi(x_0)\) sia suriettivo.
+Verifichiamo che \(v \in \text{ker} \, \text{d}\Phi(x_0)\).
+Consideriamo \(\Phi \circ \gamma \colon (-\varepsilon, \varepsilon) \fromto \realnumbers^{n-k}\) è la
+funzione identicamente nulla perché per ipotesi \(\gamma\) è un cammino in \(M\), quindi
+\(\gamma(t) \in M\) per tutte le \(t\), e allora \(\Phi(\gamma(t)) = 0\).
+Calcoliamo \((\Phi\circ\gamma)'(0)\)
+\[
+    0 = (\Phi\circ\gamma)'(0) = \text{d}\Phi(\gamma(0))\dot{\gamma}(0) = \text{d}\Phi(x_0)v
+    \implies v \in\text{ker}\,\text{d}\Phi(x_0)
+\]
+Dobbiamo dimostrare l'inclusione opposta, cioè che se \(v \in \text{ker}\,text{d}\Phi(x_0)\) 
+allora esiste \(\gamma \colon (-\varepsilon, \varepsilon) \fromto M\) tale che
+\(\gamma(0) = x_0\) e \(\dot{\gamma}(0) = v\). Se non fossimo vincolari a stare in \(M\) potremmo
+scegliere \(\gamma(t) = x_0 + tv\).
 
 \end{document}
