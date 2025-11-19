@@ -1851,7 +1851,7 @@ Lo muniamo della topologia quoziente.
 Se \(G\) è finito e \(X\) è di Hausdorff allora \(X/G\) è di Hausdorff.
 Ciò segue dalla proposizione precedente con \(A=X\).
 
-\subsection{Spazi proiettivi}
+\subsection{Spazi proiettivi reali}
 
 \sdefinition{Spazio proiettivo}{
     Consideriamo \((\realnumbers^{n+1} \difference \{0\}) /_\sim\)
@@ -1897,6 +1897,144 @@ Allora possiamo costruire il seguente diagramma
 dove \(r(x) = x/||x||\) e \(f([x]) = [x]\).
 Possiamo quindi concludere che lo spazio proiettivo è di Hausdorff
 in quanto quoziente dello spazio \(S^n\) che è di Hausdorff.
+
+\subsection{Spazi proiettivi complessi}
+
+\sdefinition{Spazio proiettivo}{
+    Consideriamo \((\complexnumbers^{n+1} \difference \{0\}) /_\sim\)
+    dove \(x \sim y\) se e solo se \(\exists y \in \complexnumbers \difference \{0\} \suchthat x = \lambda x\),
+    che è il quoziente per l'azione del gruppo delle omotetie.
+    Questo è lo spazio proiettivo complesso di dimensione \(n\),
+    \(\mathbb{P}(\complexnumbers) \triangleq (\complexnumbers^{n+1} \difference \{0\}) /_\sim\).
+}
+
+Come prime possiamo rappresentare lo spazio con \(S^{2n + 1}\) e quindi è compatto e connesso.
+Vogliamo mostrare che è pure di Hausdorff. Consideriamo
+\[
+    K = \{(x,y) \in (\complexnumbers^{n+1} \difference \{0\}) \times (\complexnumbers^{n+1} \difference \{0\}) \suchthat x = \lambda y\}
+\]
+questi elementi sono come matrici \(2\times(n+1)\) a coefficienti complessi.
+La condizione di proporzionalità della righe della matrice equivale precisamente alla conizione di avere
+rango \(1\), la quale è equivalente a richiedere che tutti i determinanti minori di ordine 2
+si anullino.
+Ma tali condizioni si esprimono attraverso equazioni, quindi danno luogo a un sottoinsieme chiuso.
+Quindi \(K\) è chiuso e lo spazio proiettivo è di Hausdorff.
+
+
+\pagebreak
+
+\section{Topologia algebrica}
+
+\sdefinition{Costruzione invariante}{
+    Una costruzione invariante su spazi topologici è una funzione \(f\) tale che
+    se \(X\) e \(Y\) sono omeomorfi allora \(f(X)\) e \(f(Y)\) sono isomorfi,
+    nel senso della categoria a cui appartengono gli oggetti \(f(X)\) e \(f(Y)\).
+}
+
+\sdefinition{Componente connesse per archi}{
+    Sia \(X\) spazio topologico.
+    Sia \(\pi_0(X) = X/\sim\) dove \(\sim\) è relazione di equivalenza data da
+    \[
+        x \sim y \iff \exists \alpha [0,1] \fromto X \suchthat \alpha(0) = x \land \alpha(1) = y
+    \]
+    sono le componenti connesse per archi di \(X\).
+}
+
+È chiaramente una relazione di equivalenza.
+
+Data una funzione continua \(f\),
+\begin{center}
+    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAA0QBfU9TXfIRQBGclVqMWbAJrdeIDNjwEiZYePrNWiDgHoA+gB1D2ALZy+SwUVHrqmqTukHjZ7uJhQA5vCKgAZgBOEOaIZCA4EEiiElps-hYgQSFIAEzUkUgAzNQMWGDaIFAQODieIPaShcZoWPrEABT+AJSJyaExmYhZPAHBoeFdqVwUXEA
+    \begin{tikzcd}
+    X \arrow[r, "f"] \arrow[d]            & Y \arrow[d] \\
+    X/_\sim \arrow[r, "\pi_0(f)", dotted] & Y/_\sim    
+    \end{tikzcd}
+\end{center}
+dove \(\pi_0(f) \colon \pi_0(X) \fromto \pi_0(Y)\)
+data da \([x] \fromto [f(x)]\).
+Tale definizione è ben posta in quanto dato un cammino \(\alpha\) fra due
+rappresentanti \(x, x'\) allora nell'immagine possiamo considerare \(f \circ \alpha\).
+Inoltre, \(\pi_0\) soddisfa le proprietà di funtorialità:
+\begin{enumerate}
+    \item \(\pi_0(1_X) = 1_{\pi_0(X)}\);
+    \item \(\pi_0(g\circ f) = \pi_0(g) \circ \pi_0(f)\).
+\end{enumerate}
+
+\subsection{Omotopia}
+
+\sdefinition{}{
+    Due applicazioni continue \(f_0, f_1 \colon X \fromto Y\) tra spazi topologici si dicono
+    \emph{omotope} se esiste una applicazione continua
+    \[
+       H \colon X \fromto [0,1] \fromto Y
+    \]
+    che porta \((x, t) \fromto H(x, b)\) data da:
+    \begin{enumerate}
+        \item \(H(x, 0) = f_0(x)\);
+        \item \(H(x, 1) = f_1(x)\)
+    \end{enumerate}
+    per tutte le \(x\in X\).
+    Una tale applicazione viene detta \emph{omotopia} da \(f_0\) a \(f_1\).
+}
+
+È quindi una deformazione continua.
+
+\sproposition{}{
+    Sia \(X,Y\) spazi topologici
+    e sia \(C(X,Y)\) l'insieme delle applicazioni continue.
+    Allora, la relazione \(\sim\) su \(C(X,Y)\) fra
+    le mappe omotope è una relazione di equivalenza.
+}
+
+\sproof{}{
+    \begin{enumerate}
+        \item Chiaramente \(f\sim f\) mediante omotopia costante \(H(x,t) = f(x)\).
+        \item Sia \(f\sim g\) tramite \(H \colon X \colon [0,1] \fromto Y\). Allora
+        \(g \sim f\) tramite \(G = H(x, 1-t)\).
+        \item Siano \(f\sim g\) e \(g\sim h\) tramite \(H\colon X \colon [0,1] \fromto Y\)
+        e \(K\colon X \colon [0,1] \fromto Y\) rispettivamente.
+        Allora \(f\sim h\) mediante
+        \[
+            L(x, t) \triangleq \begin{cases}
+                H(x, 2t) & 0 \leq t \leq \frac12 \\
+                K(x, 2t-1) & \frac12 \leq t \leq 1
+            \end{cases}
+        \]
+    \end{enumerate}
+}
+
+\subsection{Incollamente di funzioni continue}
+
+Siano \(A_i \subseteq X\) una famiglia arbitraria di sottoinsiemi
+e \(f_i \colon A_i \fromto Y\) mappe continue
+tali che \(\forall i,j \in I\)
+\[
+    \restr{f_i}{A_i \intersection A_j} = \restr{f_j}{A_i \intersection A_j}
+\]
+Possiamo quindi definire
+\[
+    f \colon \bigcup_{i \in I} A_i \fromto Y
+\]
+data da \(x \fromto f(x) = f_i(x)\) se \(x\in A_i\).
+Questa funzione è ben definita ed è continua se:
+\begin{enumerate}
+    \item gli \(A_i\) sono tutti aperti in \(X\);
+    \item \(I\) è finito e gli \(A_i\) sono tutti chiusi.
+\end{enumerate}
+Per la proprietà di transitività della topologia di sottospazio abbiamo che
+\begin{enumerate}
+    \item Se \(V\) è aperto di \(Y\)
+    \[
+        f^{-1}(V) = \bigcup_{i\in I} f_i^{-1}(V)
+    \]
+    che è unione di aperti in \(X\) e quindi aperti in \(\bigcup A_i\) per transitività della topologia di sottospazio;
+    \item Se \(C\) è chiuso di \(Y\)
+    \[
+        f^{-1}(C) = \bigcup_{i\in I} f_i^{-1}(C)
+    \]
+    che è unione di chiusi in \(A_i\), che è chiuso in \(\bigcup A_i\) in quanto unione
+    finita di chiusi, e quindi chiuso per transitività della topologia di sottospazio.
+\end{enumerate}
 
 \pagebreak
 
