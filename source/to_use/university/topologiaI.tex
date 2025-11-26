@@ -2036,6 +2036,269 @@ Per la proprietà di transitività della topologia di sottospazio abbiamo che
     finita di chiusi, e quindi chiuso per transitività della topologia di sottospazio.
 \end{enumerate}
 
+TODO lezione 19 (pomeriggio), 20 novembre
+
+\pagebreak
+
+\section{Gruppo fondamentale}
+
+TODO 20 novembre. \\
+
+\sproposition{}{
+    Sia \(\alpha \in \Omega(X, a, b)\).
+    Allora:
+    \begin{enumerate}
+        \item \(1_a \ast \alpha \sim \alpha \ast 1_b \sim \alpha\);
+        \item \(\alpha \ast i(\alpha) \sim 1_a\);
+    \end{enumerate}
+    dove \(i(\alpha)(t) = \alpha(1-t)\).
+}
+
+Siccome \(\alpha = i(i(\alpha))\) allora deduciamo anche che
+\(i(\beta) \ast \beta = 1_b\).
+
+\sproof{}{
+    \begin{enumerate}
+        \item suddividiamo l'intervallo in due parti, e sul primo pezzo
+        \([0, \frac12]\) usiamo \(1_a\) mentre in \([\frac12, 1]\)
+        percorriamo con \(\alpha\).
+        Nell'altro caso usiamo prima \(\alpha\) e poi \(1_b\).
+        Nel primo caso abbiamo
+        \[
+            (1_a \ast \alpha)(t) = \alpha(\psi(t))
+        \]
+        dove \(\psi\) è la riparametrizzazione continua di \([0,1]\)
+        data da 
+        \[
+            \psi(t) = \begin{cases}
+                0 & 0 \leq t \leq \frac12 \\
+                2t - 1 & \frac12 \leq t \leq 1
+            \end{cases}
+        \]
+        nell'altro caso abbiamo
+        \((\alpha \ast 1_b)(t) = \alpha(\nu(t))\) dove \(\nu\)
+        è la riparametrizzazione continua di \([0,1]\) data da
+        \[
+            \nu(t) = \begin{cases}
+                2t & 0 \leq t \leq \frac12 \\
+                1 & \frac12 \leq t \leq 1
+            \end{cases}
+        \]
+        La tesi segue quindi dal fatto che
+        riparametrizzazioni continue di cammini a estremi fissati
+        otteniamo un cammino a meno di omotopia.
+        \item Vogliamo mostrare che \(\alpha \ast i(\alpha) \sim 1_a\).
+        Dobbiamo costruire un'omotopia a estremi fissi \(F \colon I \times I \fromto X\)
+        tra \(\alpha \ast i(\alpha)\) e \(1_a\).
+        L'idea è quella di percorrere \(\alpha\) da \(0\) a \(t/2\),
+        \(1_a\) da \(t/2\) a \(1-t/2\), e \(i(\alpha)\)
+        da \(1-t/2\) a \(1\). Abbiamo quindi
+        \[
+            F(t,s) = \begin{cases}
+                \alpha(2t) & 0 \leq t \leq \frac{s}{2} \\
+                \alpha(s) & \frac{s}{2} \leq t \leq 1-\frac{s}{2} \\
+                \alpha(2-2t) & 1 - \frac{s}{2} \leq t \leq 1
+            \end{cases}
+        \]
+        Notiamo che per \(s=0\) e \(s=1\) ottengo i due cammini,
+        quindi \(F(t, 1) = (\alpha \ast i(\alpha))(b)\).
+        Per verificare che gli estremi fissi basta verificare
+        \(F(0, s) = a\) e \(F(1, s) = b\) per ogni \(s\).
+    \end{enumerate}
+}
+
+\sdefinition{Gruppo fondamentale}{
+    Sia \(X\) uno spazio topologico e \(a \in X\).
+    L'insieme delle classi di omotopia a estremi fissi
+    \[
+        \pi_1(X, a) = \{[a] \suchthat \alpha \colon I \fromto X \text{ cammino } \land \alpha(0) = a = \alpha(1)\}
+    \]
+    dotato dell'operazione
+    \[
+        [\alpha] \cdot [\beta] = [\alpha \ast \beta]
+    \]
+}
+
+\sproposition{Il gruppo fondamentale è un gruppo}{
+    Abbiamo
+    \begin{enumerate}
+        \item l'inverso è dato da \([\alpha] = [i(\alpha)]\);
+        \item l'elemento neutro è \([1_a]\)
+    \end{enumerate}
+}
+
+\sproof{}{
+    \begin{enumerate}
+        \item Mostriamo che l'operazione è ben definita.
+        Siano \(\alpha \sim \alpha'\) e \(\beta \sim \beta'\).
+        Vogliamo mostrare che \(\alpha \ast \beta \sim \alpha' \ast \beta'\).
+        Ma questo è un risultato precedente.
+        \item L'associatività segue dal risultato della scorsa lezione.
+        \item Per l'elemento inverso abbiamo \[
+            [\alpha] \cdot [i(\alpha)] = [\alpha \ast i(\alpha)]
+            = [1_a]
+        \]
+        \item Per l'elemento neutro abbiamo
+        \[
+            [1_a] \cdot [a] = [1_a \ast \alpha] = [\alpha]
+        \]
+        e
+        \[
+            [\alpha] \cdot [1_a] = [\alpha \ast 1_a] = [\alpha]
+        \]
+    \end{enumerate}
+}
+
+Abbiamo quindi un ponte fra topologia e algebra.
+
+\sdefinition{}{
+    La categoria \(\mathbf{Top}_\ast\) è la categoria in cui gli oggetti sono le coppie
+    \((X, a)\) dove \(X\) è uno spazio topologico e \(a \in X\),
+    e le cui freccie da \((X, a)\) a \((y, b)\) sono le applicazioni
+    continue \(f \colon X \fromto Y\) tali che \(f(a)= b\).
+}
+
+\sproposition{}{
+    Il gruppo \(\pi_1\) definisce un funtore
+    \(\mathbf{Top}_\ast \fromto \mathbf{Grp}\).
+}
+
+\sproof{}{
+    Abbiamo già definito l'azione del \(\pi_1\)
+    sugli oggetti di \(\mathbf{Top}_\ast\). Definiamo la sua azione sulle freccie
+    \(f \colon (X, a) \fromto (Y, b)\) tali che \(b = f(a)\).
+    Definiamo \(\pi_1(f) \colon \pi_1(X, a) \fromto \pi_1(Y, b)\)
+    con \(f([a]) = [f \circ \alpha]\), che è ben posta.
+    Mostriamo che è un omomorfismo di gruppi.
+    Questo segue dalla prossima proposizione. Usando quella otteniamo
+    \begin{align*}
+        \pi_1(f)([\alpha]\cdot[\beta])
+        &= \pi_1(f)([\alpha \ast \beta]) \\
+        &= [f \circ (\alpha \ast \beta)] \\
+        &= [(f \circ \alpha) \ast (f \circ \beta)] \\
+        &= [f \circ \alpha] \cdot [f \circ \beta] \\
+        &= \pi_1(f)([\alpha]) \cdot \pi_1(f)([\beta])
+    \end{align*}
+    Inoltre l'elemento neutro
+    \[
+        \pi_1(f)([1_a]) = [f \circ 1_a] = [1_b]
+    \]
+    Mostriamo infine le proprietà di funtorialità
+    \begin{enumerate}
+        \item Sia \(f \colon (X, a) \fromto (Y, b)\)
+        e \(g \colon (Y, b) \fromto (Z, c)\).
+        Abbiamo quindi \begin{align*}
+            \pi_1(g \circ f)([a]) &= [(g \circ f) \circ \alpha] \\
+            &= (\pi_1(g) \circ \pi_1(f))([\alpha]) \\
+            &= \pi_1(g)(\pi_1(f)([a])) \\
+            &= [g \circ (f \circ \alpha)]
+        \end{align*}
+        \item Sia \(1_{(X, a)} \colon (X, a) \fromto (X, a)\).
+        Dobbiamo mostrare che il funtore manda questo elemento dell'identità dei gruppi,
+        quindi
+        \begin{align*}
+            \pi_1(1_{(X, a)})([\alpha])
+            &= [1_X \circ \alpha] = [\alpha] \\
+            &= 1_{\pi_1(X, a)}([\alpha])
+        \end{align*}
+    \end{enumerate}
+}
+
+\begin{center}
+    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAEkQBfU9TXfIRQBGclVqMWbABQANUgAI6ASm68QGbHgJFRw8fWatEIaQE1FAI1VdxMKAHN4RUADMAThAC2SMiBwQSKISRmwAOmGMaAAWdGpunj6IwQFIAEzUhlImrvEgHt6+1KmIGSHZ+QoRAMZY7tVKINQMdJYwDAAK-NpCIO5YDtE43BRcQA
+    \begin{tikzcd}
+    I \arrow[r, "\alpha"] \arrow[rd, "f \circ a"'] & {(X, a)} \arrow[d, "f"] \\
+                                                & {(Y, b)}               
+    \end{tikzcd}
+\end{center}
+
+\sproposition{}{
+    Sia \(f \colon X \fromto Y\) un'applicazione continua,
+    allora:
+    \begin{enumerate}
+        \item dati \(\alpha, \beta \in \Omega(X, a, b)\), omotopi fra loro \(\alpha \sim \beta\),
+        allora \(f \circ \alpha \sim f \circ \beta\);
+        \item dati \(\alpha \in \Omega(X, a, b)\) e \(\beta \in \Omega(X, b, c)\), allora
+        \[f \circ (\alpha \ast \beta) = (f \circ \alpha) \ast (f \circ \beta)\]
+        e \(i(f \circ \alpha) = f \circ i(\alpha)\).
+    \end{enumerate}
+}
+
+\sproof{}{
+    Il primo punto deriva da prima. Rimane da dimostrare il secondo.
+    Le operazioni \(i\) e \(\ast\) sono azioni che coinvolgono solamente il dominio,
+    mentre quella di composizione coinvolge solo il codominio,
+    e sono indipendenti l'una dall'altra quindi commutano.
+}
+
+\sproposition{}{
+    Il \(\pi_1\) è un invariante topologico.
+    Dato \(f \colon (X, a) \fromto (Y; b)\) tale che \(b = f(a)\),
+    allora \(\pi_1(f) \colon \pi_1(X, a) \fromto \pi_1(Y, b)\)
+    è un isomorfismo di gruppi (ogni funtore manda isomorfismi in isomorfismi).
+}
+
+Supponiamo di avere uno spazio \(X\) e due punti \(a,b\) connessi fa un cammino
+\(\gamma\).
+Allora possiamo considerare \(\gamma_{\#} \colon \pi_1(X, a) \fromto \pi_1(X, b)\)
+data da
+\[
+    \gamma_{\#}([\alpha])
+    = [i(\alpha) \ast \alpha \ast \gamma]
+\]
+che è ben definita in quanto se \(\alpha \sim \alpha'\)
+allora per i risultati precedenti \(i(\alpha) \ast \alpha \ast \gamma \sim i(\alpha) \ast \alpha' \ast \gamma\).
+Inoltre \(i(\alpha)_{\#} = \gamma_{\#}^{-1}\) (semplice verifica).
+Mostriamo che \(\gamma_{\#}\) è un omomorfismo di gruppi.
+\begin{align*}
+    \gamma_{\#}([\alpha][\beta])
+    &= \gamma_{\#}([\alpha \ast \beta]) \\
+    &= [i(\gamma) \ast \alpha \ast \beta \ast \gamma] \\
+    \gamma_{\#}([\alpha]) \cdot \gamma_{\#}([\beta]) &= [i(\gamma) \ast \alpha \ast \gamma] \\
+    &= [i(\gamma) \ast \alpha \ast \gamma \ast i(\alpha) \ast \beta \ast \gamma] \\
+    &= [i(\gamma) \ast \alpha \ast \beta \ast \gamma]
+\end{align*}
+Quindi \(\gamma_{\#}\) è un isomorfismo di gruppi.
+
+\sdefinition{Simply connected}{
+    A topological space \(X\) is said to be simply connected if it
+    is connected by arc (tutti i gruppi fondamentali sono isomorfi)
+    e \(\pi_1(X)\) è banale.
+}
+
+\sexample{}{
+    Sia \(X \subseteq \realnumbers^n\) un sottospazio convesso.
+    Allora \(\pi_1(X, a) = \{\ast\}\) è il gruppo banale \(\forall a \in X\).
+    In altre parole, \(X\) è simply connected.
+    Sia \(\alpha \colon I \fromto X\) un cammino chiuso \(\alpha(0) = \alpha(1) = a\).
+    Vogliamo trovare un omotopia per mostrare che quest'ultimo è omotopicamente equivalente al cammino
+    costane \(1_a\).
+    Sia \(F \colon I \times I \fromto X\) dato da
+    \((t,s) \fromto s1_a(t) + (1-s)\alpha(t)\).
+}
+
+\sproposition{}{
+    Siano \(X, Y\) spazi topologici e \(a \in X\) e \(b \in Y\).
+    Allora, abbiamo un isomorfismo
+    \[
+        \pi_1(X \times Y, (a,b)) \cong \pi_1(X, a) \times \pi_1(X, b)
+    \]
+    dato dalla mappa \([a \colon I \fromto X \times Y] \fromto ([\pi_X \circ \alpha], [\pi_Y \circ \alpha])\)
+    dove \(\pi\) sono le proiezioni.
+}
+
+\sproof{}{
+    Per la prorpetà universale della topologia prodotto \(X \times Y\)
+    abbiamo \[
+        \Omega(X \times Y, (a,b))
+        \cong \Omega(X, a) \times \Omega(Y, b)    
+    \]
+    Tale biiezione induce la mappa nell'enunciato della proposizione.
+    Il fatto che tale mappa sia una biiezione segue dal fatto che dare un'omotopia nello spazio prodotto
+    equivale a dare due omotopie negli spazi del prodotti, e quindi si restringe bene a fare il quoziente.
+    La mappa è un omomorfismo di gruppi essendo \(\pi_1\) un funtore.
+}
+
 \pagebreak
 
 \section{Esercizi 21 ottobre}
