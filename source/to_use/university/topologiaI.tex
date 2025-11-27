@@ -2288,7 +2288,7 @@ Quindi \(\gamma_{\#}\) è un isomorfismo di gruppi.
 }
 
 \sproof{}{
-    Per la prorpetà universale della topologia prodotto \(X \times Y\)
+    Per la proprietà universale della topologia prodotto \(X \times Y\)
     abbiamo \[
         \Omega(X \times Y, (a,b))
         \cong \Omega(X, a) \times \Omega(Y, b)    
@@ -2297,6 +2297,250 @@ Quindi \(\gamma_{\#}\) è un isomorfismo di gruppi.
     Il fatto che tale mappa sia una biiezione segue dal fatto che dare un'omotopia nello spazio prodotto
     equivale a dare due omotopie negli spazi del prodotti, e quindi si restringe bene a fare il quoziente.
     La mappa è un omomorfismo di gruppi essendo \(\pi_1\) un funtore.
+}
+
+\subsection{Retratti}
+
+Consideriamo \(i \colon A \hookrightarrow X\) e \(a \in A\).
+Abbiamo la mappa \(\pi_1(1) \colon \pi_1(A, a) \fromto \pi_1(X, a)\).
+In generale non è iniettiva perché cammini non omotopi in \(A\) a estremi fissi potrebero esserli
+in \(X\).
+
+Tuttavia, se \(A\) è retratto di \(X\) mediante \(R \colon X \fromto A\) continua
+tale che \(r \circ i = 1_A\) allora per funtorialità di \(\pi_1\) come funtore
+otteniamo che \[\pi_1(r) \circ \pi_1(i) = \pi_1(r \circ i) = \pi_i(1_A) = 1_{\pi_1(A, a)}\]
+quindi in particolare \(\pi_1(i)\) è iniettiva.
+
+\sproposition{}{
+    Sia \(A\) un retratto per deformazione di \(X\). Allora per ogni punto \(a \in A\),
+    \(\pi_1(i) \colon \pi_1(A, a) \fromto \pi_1(X, a)\) è un isomorfismo.
+}
+
+\sproof{}{
+    Sia \(R\colon X \times I \fromto X\) una deformazione di \(X\) su \(A\).
+    Siccome ogni retratto per deformazione induce un retratto la mappa è anche iniettiva.
+    Dobbiamo anche mostrare che è pure suriettiva.
+    Sia \([\beta] \in \pi_1(X, a)\) con \(\beta \in \Omega(X, a, a)\) un elememto del codominio.
+    Poniamo \(r(x) = R(x, 0) \colon X \fromto A\).
+    Consideriamo \(r \circ \beta \colon I \fromto A\).
+    Possiamo quindi calcolare
+    \begin{align*}
+        \pi_1(i)([r \circ \beta])
+        &= [i \circ r \circ \beta]
+        &= [\beta]
+    \end{align*}
+    cioè è vero in quanto \(F\colon I \times I \fromto X\)
+    definita da \((t,s) \fromto F(t,s) = R(\beta(t), s)\)
+    è proprio un'omotopia a estremi fissi tra \(\beta\) e \(i \circ r \circ \beta\)
+    \begin{align*}
+        F(t,0) &= R(\beta(t), 0) = r(\beta(t)) = i(r(\beta(t))) = (i \circ r \circ \beta)(i) \\
+        F(t,1) &= R(\beta(t), 1) = \beta(t)
+    \end{align*}
+    gli estremi fissi sono facili da verificare.
+    Quindi è suriettiva.
+}
+
+\sproposition{}{
+    Sia \(F \colon X \times I \fromto Y\) un'omotopia tra due applicazioni continue
+    \(f \colon X \fromto Y\) e \(g \colon X \fromto Y\). Sia \(a \in X\). Definiamo
+    \(\gamma \colon I \fromto Y\) dato da \(t \fromto \gamma(s) = F(a, s)\),
+    che chiaramente è un cammino da \(f(a)\) a \(g(a)\).
+    Il seguente diagramma è commutativo:
+}
+
+\begin{center}
+    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZARgBoAGAXVJADcBDAGwFcYkQAdDtLACgA1SAAnoBKEAF9S6TLnyEUAJlLFqdJq3ZcevAJrCA5rzHipM7HgJFyKtQxZtEnbn31CAZsdGm1MKAfgiUHcAJwgAWyRlEBwIJDJ1By0OA3pw8PoAfWAuAGIJSWkQUIikGxi4xAT7TSdtLEziXgNTIpLIxHLYqJoax2ceRt53cRpGegAjGEYABVlLBRAQrAMACxxJSgkgA
+    \begin{tikzcd}
+                                            & {\pi(X, a)} \arrow[rd, "\pi_1(g)"] \arrow[ld, "\pi_1(f)"'] &                \\
+    {\pi(Y, f(a))} \arrow[rr, "\gamma_{\#}"] &                                                            & {\pi(Y, g(a))}
+    \end{tikzcd}
+\end{center}
+
+\slemma{}{
+    Sia \(p_1, p_2, p_3 \in \realnumbers^n\)
+    e \[\realnumbers \supseteq I = \{t_1p_1 + t_2p_2 + t_3p_3 \suchthat t_1,t_2,t_3 \geq 0 \land t_1 + t_2 + t_3 = 1\}\]
+    triangolo eventualmente degenere di vertici \(p_1, p_2, p_3\).
+    Sia \(f \colon T \fromto X\) un'applicazione continua e, per ogni \(i,j\)
+    sia \(f_{i,j} \colon I = [0,1] \fromto X\) la parametrizzazione standard della restrizione di
+    \(f\) al lato di estremi \(p_i, p_j\).
+    Quindi \(f_{i,j} \colon [0,1] \fromto X\)
+    è dato da \(t \fromto f((1-t)p_i + tp_j)\).
+    % mettere il disegnino triangolo 27 novembre 2025
+    Allora \(f_{1,3} \sim f_{1,2} \ast f_{2,3}\).
+}
+
+\sproof{}{
+    Introduciamo una funzione ausiliaria
+    \(q \colon I \times I \fromto T\) data da
+    \[
+        q(t,s) = \begin{cases}
+            (1 -t -ts)p_1 + 2tsp_2 + (t - ts)p_3 & 0 \leq t \leq \frac12 \\
+            (1-t-s+ts)p_1 + 2(1-t)sp_2 + (t-s + ts)p_3 & \frac12 < t \leq 1
+        \end{cases}
+    \]
+    Abbiamo che per \(s=0\)
+    \[
+        q(t, 0) = \begin{cases}
+            (1-b)p_1 + tp_3 & 0 \leq t \leq \frac12 \\
+            (1-t)p_1 + tp_3 & 0 \leq t \leq 1
+        \end{cases}
+    \]
+    mentre per \(s=1\)
+    \[
+        q(t,1) = \begin{cases}
+            (1-2t)p_1 + 2tp_2 & 0 \leq t \leq \frac12 \\
+            1-(2t-1)p_2 + (2t-1)p_2 & \frac12 \leq t \leq 1
+        \end{cases}
+    \]
+    che sono i due lati.
+    Quindi abbiamo \((F \circ q)(t,0) = f_{1,3}(t)\)
+    e \((F \circ q)(t,1) = (f_{1,2} \ast f_{2,3})(t)\)
+    e quindi \(F \circ q\) è un omotopia a estremi fissi tra \(f_{1,3}\)
+    e \(f_{1,2} \ast f_{2,3}\).
+}
+
+\sproof{}{
+    Vogliamo dimostrare che per ogni \([\alpha] \in \pi_1(X, a)\),
+    \begin{align*}
+        [i(\gamma) \ast (f \circ \alpha) \ast \gamma] &= [g \circ \alpha] \\
+        [(f \circ \alpha) \ast \gamma] &= [\gamma \ast (g\circ \alpha)] \\
+    \end{align*}
+    cioè che \((f \circ \alpha) \ast \gamma\) e \(\gamma \ast (g \circ \alpha)\)
+    sono omotopi a estremi fissi.
+    Definiamo la seguente funzione
+    \(G \colon I \times I \fromto Y\) data da \((t,s) = F(\alpha(t), s)\).
+    Notiamo che
+    \begin{align*}
+        G(t,0) &= F(\alpha(b), 0) = f(\alpha(b)) = (f \circ a)(t) \\
+        G(t,1) &= F(\alpha(t), 1) = g(\alpha(t)) = (g \circ \alpha)(t) \\
+        G(0, s) &= F(\alpha(0), s) = \gamma(s) \\
+        G(1, s) &= F(\alpha(1), s) = \gamma(s)
+    \end{align*}
+    Vogliamo applicare il lemma e quindi suddividere il quadrato (dominio) in due triangoli.
+    Possiamo quindi notare che i due lati a destra e sinistra verso l'alto sono \(\gamma\),
+    mentre il lato sopra verso destra è \(g \circ \alpha\) e quello sott \(f\circ \alpha\).
+    Quindi scindiamo il quadrato mediante la diagonale mediante
+    \(\delta \colon I \fromto Y\) dato da \(t \fromto \gamma(t) = F(\alpha(t), t)\).
+    Possiamo applicare il lemma ad entrambi i triangoli, quindi
+    \(\delta \sim \gamma \ast (g \circ \alpha)\) e \(\gamma \sim (f \circ \alpha) \ast \gamma\).
+    Per transività della relazione di equivalenza abbiamo che
+    \(\gamma \ast (g \circ \alpha) \sim (f \circ \alpha) \ast \gamma\).
+}
+
+\scorollary{}{
+    Sia \(X\) uno spazio topologico e \(g \colon X \fromto X\)
+    una funzione continua omotopa a \(1_X\). Sia \(a \in X\).
+    Allora, l'applicazione \(\pi_1(g) \colon \pi_1(X, a) \fromto \pi_1(X, g(a))\)
+    è un isomorfismo di gruppi.
+}
+
+\sproof{}{
+    Basta applicare la commutatività del triangolo alle due mappe
+    prendendo \(f = 1_X\)e quindi \(\pi_1(g) \cong \gamma_{\#} \circ 1_{\pi_1(X, a)} \cong \gamma_{\#}\).
+}
+
+\slemma{}{
+    Siano \(f,g,h\) delle applicazioni fra gli insiemi \(A, B, C, D\)
+    tali che \(g \circ f\) e \(h \circ g\) siano biiettivi.
+    Allora, \(f\) è biiettiva.
+}
+
+\sproof{}{
+    Siccome \(g \circ f\) è biiettiva, è iniettiva e quindi \(f\) è iniettiva.
+    Dobbiamo anche dimostrare che \(f\) è suriettiva.
+    Sia \(b \in B\) e quindi \(g(b) \in C\).
+    Essendo \(g \circ f\) suriettiva, abbiamo \(g(b) = (g \circ f)(a)\)
+    per qualche \(a\). Ma siccome \(h \circ g\)
+    è biiettiva, \(h \circ g\) è iniettiva.
+    Essendo \((h \circ g)(b) = (h \circ g)(f(a))\)
+    da cui segue che \(b = f(a)\).
+}
+
+\stheorem{Estremamente importante}{
+    Sia \(f \colon X \fromto Y\) un'equivalenza omotopica di spazi topologica.
+    Allora per ogni \(a \in X\), l'applicazione
+    \[
+        \pi_1(X,a) \fromto \pi_1(Y, f(a))
+    \]
+    è un isomorfismo di gruppi.
+}
+
+\sproof{}{
+    Essendo \(f\) un'equivalenza omotopica, esiste \(g \colon Y\fromto X\)
+    tale che \(g \circ f \sim 1_x\) e \(f\circ g \sim 1_Y\).
+    (Inserire diagramma sotto).
+    Il lemma si applicare quindi dando che \(\pi_1(f)\)
+    è un isomorfismo.
+}
+
+\begin{center}
+    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAB120sB9ARgAUADVIACOgEoQAX1LpMufIRR9yVWoxZtO3fgICaYgGYDJU2fOx4CRAExrq9Zq0QcuvQSNEBzASbPmciAYVkpEAMwOGs7a7npeJr7+Einm6jBQ3vBEoEYAThAAtkhkIDgQSKrRWq46Hn6BuQXFiFXlSPbVLm66gt6NIPlFHdTtiJFdsb0NMkFDLaVjnQBGMGBQSAC0ACwAnI6a3XV6-ZwAxlh5Z8eCRhKiALyiNwLe55dnoncg1Ax0qwwAAoKazKEB5LDeAAWOFmTWGrVGFXG1FW6y2ewOMVqcVu93eV2euNe9yeLyMBM+-R+ID+AOBoRsrgh0Nh0go0iAA
+    \begin{tikzcd}
+    {\pi_1(X, a)} \arrow[r, "\pi_1(f)"] \arrow[rr, "\pi_1(g)\circ\pi_1(f) = \pi_1(g\circ f)"', bend right=49] & {\pi_1(Y, f(a))} \arrow[r, "\pi_1(g)"] \arrow[rr, "\pi_1(f) \circ \pi_1(g) = \pi_1(f\circ g)"', bend right=49] & {\pi_1(X, g(f(a)))} \arrow[r, "\pi_1(f)"] & {\pi_1(X, f(g(f(a))))}
+    \end{tikzcd}
+\end{center}
+
+\subsection{Semplice connessione delle sfere}
+
+Esistono dei cammini suriettivi in \(S^n\) (curve di Peano).
+Tuttavia, è possibile dimostrare chd ogni cammino chiuso in \(S^{n \geq 2}\) è omotopicamente
+equivalente alla giunzione
+di un numero finito di cammini chiusi non suriettivi.
+
+\sproposition{Teorema del numero di Lebesgue}{
+    Sia \((Y, d)\) uno spazio metrico compatto,
+    \(f \colon Y \fromto X\) un'applicazione continua verso uno spazio \(X\),
+    e \(\mathcal{A}\) un ricorpimento aperto di \(X\).
+    Allora, esiste un numero reale positivo
+    \(\delta\) tale che per ogni \(y \in Y\) si ha che
+    \[
+        f(B_\delta(y))
+    \]
+    è interamente contenuto in uno degli aperti di \(\mathcal{A}\).
+}
+
+\sproof{}{
+    Per ogni \(n \in \mathbb{Z}^{+}\) definiamo
+    \[
+        Y_n = \{y\in Y \suchthat \exists U \in A, f(B_{2^{-n}}(y)) \subseteq U\}
+    \]
+    Dobbiamo quindi mostrare che \(Y = Y_n\) per qualche \(n\).
+    Se la tesi vale per \(\delta\) allora vale per qualsiasi \(\delta' \leq \delta\).
+    Abbiamo
+    \[
+        Y = \bigcup_{n \in \mathbb{N}} Y_n
+    \]
+    in quanto per ogni \(y \in Y\), \(f(y) \in f^{-1}(U)\),
+    ma quest'ultimo è un aperto di \(Y\) in quanto \(U\) è aperto e \(f\) è continua,
+    e quindi \(f^{-1}(U) \supseteq B_{2^{-n}}(y)\)
+    cioè un raggio sufficientemente piccolo per un \(n\) sufficientemente grande.
+    Osserviamo che \(Y_n \subseteq Y_{n+1}\).
+    Mostriamo che \(Y_n \subseteq \text{int}(Y_{n+1})\) per ogni \(n\).
+    Per mostrarlo prendiamo \(y \in Y_n\), scegliamo \(U \in \mathcal{A}\) tale che
+    \[
+        B_{2^{-n}}(y) \subseteq f^{-1}(U) 
+    \]
+    Per ogni \(z \in B_{2^{-(n+1)}}(y)\), vogliamo mostrare che \(z \in Y_{n+1}\)
+    e quindi esiste un intorno e abbiamo finito.
+    Per mostrarlo notiamo che ciò è come dire \(d(z, y) < 2^{-(n+1)}\).
+    Per mostrare che \(z \in Y_{n+1}\)
+    mostriamo che \(B_{2^{-(n+1)}}(z) \subseteq f^{-1}(U)\).
+    Sia \(x\) in tale bolla.
+    Allora
+    \begin{align*}
+        d(x,y) &= d(x,z) + d(z,y) < 2 \cdot 2^{-(n+1)} = 2^{-n}
+    \end{align*}
+    abbiamo quindi che \(x \in B_{2^{-n}}(y) \subseteq f^{-1}(U)\) e quindi abbiamo concluso.
+    Dall'uguaglianza
+    \[
+        Y = \bigcup_{n \in \mathbb{N}} Y_n
+    \]
+    segue che
+    \[
+        Y = \bigcup_{n \in \mathbb{N}} \text{int}(Y_n)
+    \]
+    Essendo \(Y\) compatto abbiamo che \(Y = \text{int}(Y_{n_k})\)
+    dove \(k = \max\{n_1, \cdots, n_m\}\).
 }
 
 \pagebreak
