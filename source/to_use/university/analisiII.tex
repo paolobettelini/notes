@@ -5407,9 +5407,10 @@ C'è un modo naturale di scegliere quella più bella.
 In tal caso se \(\gamma(x) = (x, f(x))\) con \(f \in \mathcal{C}^1([a,b])\)
 allora \(\dot\gamma(x) = (1, f'(x))\) che non si può annullare.
 
-\subsection{Surve}
+Se \(\gamma\) è regolare la retta tangente al sostengo nel punto \(\gamma(t_0)\) è
+la retta \[ x = \gamma(t_0) + t\dot\gamma(t_0) \]
 
-Vedi \texttt{analidiIII.pdf} per la definizione di lunghezza di una curva.
+Vedi \texttt{analisiIII.pdf} per la definizione di lunghezza di una curva.
 
 \sexample{Curva non rettificabile}{
     Sia \(\gamma(t) \colon [0,1] \fromto \realnumbers^2\) data da
@@ -5447,6 +5448,289 @@ Vedi \texttt{analidiIII.pdf} per la definizione di lunghezza di una curva.
         \right| \geq \sum_{k=1}^N \frac{1}{k} \to \infty
     \]
     per \(N \to \infty\).
+}
+
+\begin{radioactive}
+\sproposition{}{
+    Se \(\varphi\) è una curva lipschitziana, allora è rettificabile.
+}
+
+\sproof{}{
+    Abbiamo che
+    \[
+        \forall t,s \in I, ||\varphi(s)-\varphi(t)|| \leq L|t-s|
+    \]
+    quindi
+    \begin{align*}
+        L(\varphi, P) &= \sum_{i=1}^n ||\varphi(t_i) - \varphi(t_{i-1})|| \\
+        &\leq \sum_{i=1}^n L|t_i-t_{i-1}| = L(b-a)
+    \end{align*}
+    e allora \(L(\varphi) \leq L(b-a)\).
+}
+\end{radioactive}
+
+\stheorem{}{
+    Se \(\gamma \sim \varphi\) allora \(L(\gamma) = L(\varphi)\)
+    con \(\gamma \colon [a,b] \fromto \realnumbers^n\)
+    e \(\varphi \colon [\alpha, \beta] \fromto \realnumbers^n\).
+}
+
+\sproof{}{
+    Per ipotesi esiste \(h\) diffeomorfismo (basta che sia un omeomorfismo)
+    tale che \(\gamma \circ h = \varphi\).
+    Essendo \(h\) monotona e biunivoca, manda partizioni di \([a,b]\)
+    in partizioni di \([\alpha, \beta]\), quindi vi è una corrispondenza biunivoca.
+    Siccome le due immagini delle curve sono le medesime le loro lunghezze devono coincidere.
+}
+
+\begin{radioactive}
+\stheorem{}{
+    Sia \(\varphi \colon I \to \realnumbers^n\) con \(\varphi \in \mathcal{C}^1(I)\) (che sono di Lipschitz).
+    Allora \(\varphi\) è rettificabile e
+    \[
+        L(\varphi) = \integral[a][b][||\varphi'(t)||][t]
+    \]
+}
+\end{radioactive}
+
+(Come l'abbiamo vista ad analisi 3?)
+\sproof{}{
+    Sia \(\delta > 0\) allora
+    \[
+        \gamma(t + \delta) - \gamma(t) = \integral[t][t+\delta][\dot\gamma(\tau)][\tau]
+    \]
+    Quindi
+    \begin{align*}
+        \left|\left|\gamma(t + \delta) - \gamma(t)\right|\right|
+        &= \left|\left|
+            \integral[t][t + \delta][\dot\gamma(\tau)][\tau]
+        \right|\right| \\
+        &\leq \integral[t][t+\delta][||\dot\gamma(\tau)||][\tau]
+    \end{align*}
+    Data quindi una partizione \(P\)
+    \begin{align*}
+        L(\gamma, P) &= \sum_{k=1}^N ||\gamma(t_k) - \gamma(t_{k-1})|| \\
+        &\leq \sum_{k=1}^N \integral[t_k - 1][t_k][||\dot\gamma(\tau)||][\tau] \\
+        &= \integral[a][b][||\varphi'(t)||][t]
+    \end{align*}
+    Ma dobbiamo ancora verificare l'altra disuguaglianza.
+    Siccome \(\gamma\) è continua, per il teorema di Lagrnage
+    \[
+        \integral[t][t + \delta][\dot\gamma(\tau)][\tau] = \delta || \dot\gamma(t + \delta\theta) ||
+    \]
+    per qualche \(\delta \in (0,1)\). Abbiamo quindi
+    \begin{align*}
+        \left|
+            ||\gamma(t + \delta) - \gamma(t)||
+            - \integral[t][t +\delta][||\dot\gamma(\tau)||][\tau]
+        \right|
+        &= \left|
+            ||\gamma(t + \delta) - \gamma(t)|| - \delta||\dot\gamma(t + \delta\theta)||
+        \right| \\
+        &= ||\gamma(t + \delta) - \gamma(t) - \delta\dot\gamma(t + \delta\theta)|| \\
+        &= \left|\left|\integral[t][t + \delta][[\dot\gamma(\tau) - \dot\gamma(\tau + \delta\theta)]][\tau]
+        \right|\right| \\
+        &= \integral[t][t+\delta][\dot\gamma(\tau + \delta\theta)][\tau]
+    \end{align*}
+    Siccome la curva è continua è anche uniformemente continua, quindi
+    \[
+        \forall \varepsilon > 0, \exists \delta>0 \,|\,
+        \delta > |t-s| \implies ||\gamma(t) - \gamma(\tau)|| < \varepsilon
+    \]
+    Sia \(\delta < \delta_\varepsilon\). Allora nell'integrale
+    \(\tau \in [t, t+\delta]\), \(t + \delta\theta \in [t, t + \delta]\)
+    e quindi \(|\tau - (t + \delta\theta)| < \delta < \delta_\varepsilon\).
+    Possiamo quindi applicare l'uniforme continuità all'integranda. Se \(\delta < \delta_varepsilon\)
+    allora
+    \begin{align*}
+        \left|||\gamma(t + \delta) - \gamma(t)|| - \integral[t][t + \delta][
+            ||\dot\gamma(\tau)||
+        ][\tau] \right|
+        &\leq \integral[t][t + \delta][
+            ||\dot\gamma(\tau) - \dot\gamma(t + \delta\theta)||
+        ][\tau] \leq \varepsilon \delta
+    \end{align*}
+    Ma conosciamo il segno dell'argomento del modulo, infatti
+    abbiamo detto prima che quel termine è minore dell'integrale della norma della derivata, quindi
+    \begin{align*}
+        0 \leq \integral[t][t + \delta][||\dot\gamma(\tau)||][\tau]
+        - ||\gamma(t + \delta) - \gamma(t)|| \leq \varepsilon\delta \\
+        \integral[t][t + \delta][
+            ||\dot\gamma(\tau)||
+        ][\tau] \leq ||\gamma(t + \delta) - \gamma(t)|| + \varepsilon \delta
+    \end{align*}
+    Scegliamo quindi una partizione \(\Pi\)
+    con la proprietà che \(|\Pi| < \delta_varepsilon\), cioè che
+    \(|t_k - t_{k-1}| - \delta_varepsilon\).
+    Allora abbiamo
+    \begin{align*}
+        \integral[t_{k-1}][t_k][
+            ||\dot\gamma(\tau)||
+        ][\tau] \leq ||\gamma(t_k) - \gamma(t_{k-1})|| + \varepsilon(t_k - t_{k-1})
+    \end{align*}
+    Sommando su \(k\) si ottiene
+    \begin{align*}
+        \integral[a][b][||\dot\gamma(t)||][t] &\leq
+        \sum_{k=1}^N ||\gamma(t_k) - \gamma(t_{k-1})|| + \varepsilon(b-a) \\
+        &= L(\gamma, \Pi) + \varepsilon(b-a) \leq L(\gamma) + \varepsilon(b-a)
+    \end{align*}
+    Abbiamo quindi mostrato che
+    \[
+        \integral[a][b][||\varphi'(t)||][t]
+        \leq L(\gamma) + \varepsilon(b-a)
+    \]
+    ma siccome \(\varepsilon\) è arbitrariamente piccolo segue la tesi.
+}
+
+Questo vale anche per le curve \(\mathcal{C}^1\) a tratti, basta suddividere le distanze.
+
+\sexercise{}{
+    Sostituiamo \(2y = \sinh(t)\) in
+    \begin{align*}
+        \integral[\sqrt{1 + 4y^2}][y]
+        &= \integral[\frac12\sqrt{\cosh^2(t)}\cosh(t)][t] \\
+        &= \frac12\integral[\cosh^2(t)][t] \\
+        &= \frac12(t + \sinh(t)\cosh(t)) + C
+    \end{align*}
+    che abbiamo risolto per parti.
+}
+
+\pagebreak
+
+\subsection{Parametrizzazione naturale (lunghezza d'arco)}
+
+Sia \(\gamma\colon [a,b] \fromto \realnumbers^n\) una curva regolare
+tale che \(\gamma \in \mathcal{C}^1([a,b], \realnumbers^n)\)
+e \(\dot\gamma \neq 0\).
+Sia
+\[
+    h(t) = \integral[a][t][||\dot\gamma(\tau)||][\tau]
+\]
+che è ben definita per ogni \(t \in [a,b]\).
+Tale funzione manda \([a,b] \fromto [0, L(\gamma)]\)
+ed è derivabile
+\[
+    \frac{dh}{dt}(t) = ||\dot\gamma(t)|| > 0
+\]
+quindi è anche strettamente crescente e invertibile, è pure un diffeomorfismo.
+Possiamo quindi usarla come cambiamento parametro \(s = h(t)\) e definiamo
+\[
+    \varphi(s) = \gamma(h^{-1}(s))
+\]
+dove \(\varphi \colon [0, L(\gamma)] \fromto \realnumbers^n\).
+La derivata è data da \begin{align*}
+    \frac{d\varphi}{ds} &= \frac{d\gamma}{dt}(h^{-1}(s)) \cdot \frac{dh^{-1}}{ds}(s) \\
+    &= \dot\gamma(h^{-1}(s)) \cdot \frac{1}{\frac{dh}{dt}(h^{-1}(s))} \\
+    &= \frac{\dot\gamma(h^{-1}(s))}{||\dot\gamma(h^{-1}(s))}
+\end{align*}
+Quindi abbiamo trovato una parametrizzazione il cui vettore tangente
+è sempre un vettore.
+In particolare
+\[
+    L\left(
+        \restr{\varphi}{[a,b]}
+    \right)= \integral[a][b][|\varphi'(\tau)|][\tau] = b-a
+\]
+tale parametro \(s\) si chiama parametro arco o lunghezza d'arco o ascisse curvilinea.
+D'ora in avanti usiamo \(\gamma'\) per intendere derivata rispetto a questo parametro.
+
+\sexample{}{
+    Consideriamo l'elica
+    \[
+        \gamma(t) = (R\cos t, R\sin t, bt), \quad R>0, b \in \realnumbers, t \in [0, 2\pi]
+    \]
+    Poniamo
+    \begin{align*}
+        s(t) &= \integral[0][t][||\dot\gamma(\tau)||][\tau] \\
+        &= \integral[0][t][
+            \sqrt{
+                R^2 + b^2
+            }
+        ][\tau] \\
+        &= t\sqrt{R^2 + b^2}
+    \end{align*}
+    Quindi possiamo invertire la funzione con
+    \[
+        \varphi(s) = \gamma\left(
+            \frac{s}{\sqrt{R^2 + b^2}}
+        \right) = \begin{pmatrix}
+            R\cos \frac{s}{\sqrt{R^2 + b^2}} \\
+            R\sin \frac{s}{\sqrt{R^2 + b^2}} \\
+            \frac{bs}{\sqrt{R^2 + b^2}}
+        \end{pmatrix}
+    \]
+    per \(s \in [0, \sqrt{R^2 + b^2}]\).
+}
+
+\stheorem{}{
+    Sia \(\gamma \colon [a,b] \fromto \realnumbers^n\)
+    e \(\varphi \colon [\alpha, \beta] \fromto \realnumbers^n\) archi regolari.
+    Allora \(\varphi \sim \gamma\) in senso \(\mathcal{C}^1\) se e solo se i supporti coincidono. 
+}
+
+\sproof{}{
+    Una direzione è ovvia. Supponiamo che abbiamo il medesimo sostegno.
+    Senza perdita di generalità supponiamo che le curve siano parametrizzate su
+    ascisse curvilinea. Abbiamo che \(L=L(\gamma) = L(\varphi)\)
+    in quanto le curve sono semplici e quindi la lunghezza è una nozione puramente
+    geometrica e quindi date dal sostegno.
+    Abbiamo quindi \(\gamma, \varphi \colon [0, L] \fromto \realnumbers^n\)
+    e \(\text{Im} \varphi = \text{Im} \gamma = \Gamma\).
+    Sia \(p \in \Gamma\) tale che \(p \neq \gamma(0) \land p \neq \gamma(L)\).
+    Cosifacendo esiste un unico \(s \in [0, L]\) tale che \(p = \gamma(s)\).
+    Inoltre esiste un unico \(s' \in [0, L]\) tale che \(p = \varphi(s')\).
+    Allora abbiamo che o \(s=s'\) oppure \(s = L-s'\).
+    Nel primo caso \(\gamma(s) = \varphi(s') = \varphi(s)\),
+    nel secondo caso abbiamo \(\gamma(s) = \varphi(s') = \varphi(L-s)\)
+    per \(s \in [0,L]\) quindi \(\varphi \sim \gamma\).
+}
+
+\pagebreak
+
+\subsection{Integrali curvilinei}
+
+\sdefinition{Integrale curvilineo}{
+    Sia \(\Gamma\) una curva in \(\realnumbers^n\) e sia \(\Omega \subseteq \realnumbers^n\)
+    e \(f \colon \Omega \fromto \realnumbers\) e supponiamo \(\Gamma \subseteq \Omega\).
+    Allora l'integrale curvilineo è dato da
+    \[
+        \int_\Gamma f\,ds \triangleq
+        \integral[a][b][f(\gamma(t))||\dot\gamma(t)||][t]
+    \]
+}
+
+Se la curva non è semplice l'integrale esiste comunque ma perdiamo l'interpretazione geometrica in alcuni casi.
+
+\stheorem{}{
+    Se \(\gamma \sim \varphi\),
+    \[
+        \int_\gamma f\,ds = \int_\varphi f\,ds 
+    \]
+}
+
+\sproof{}{
+    Indichiamo con \(t\) le variabili di \([a,b]\) e con \(\xi\) quelle di \([\alpha, \beta]\).
+    Per ipotesi esiste \(h \colon [a,b] \fromto [\alpha, \beta]\) diffeomorfismo
+    tale che \(\varphi = \gamma \circ h\).
+    Consideriamo il caso \(h' < 0\) (l'altro è un po' più facile).
+    Calcoliamo
+    \begin{align*}
+        \integral[\alpha][\beta][
+            f(\varphi(\xi)) ||\dot\varphi(\xi)||
+        ][\xi] &=
+        \integral[\alpha][\beta][
+            f(\gamma(h(\xi)))||\dot\gamma(h(\xi))h'(\xi)||
+        ][\xi] \\
+        &= - \integral[\alpha][\beta][
+            f(\gamma(h(\xi)))||\dot\gamma(h(\xi))||h'(\xi)
+        ][\xi] \\
+        &= - \integral[h(\alpha)][h(\beta)][
+            f(\gamma(t))||\dot\gamma(t)||
+        ][\xi] \\
+        &= \integral[a][b][f(\gamma(t))||\dot\gamma(t)||][t]
+    \end{align*}
+    ponendo \(t = h(\xi)\). Siccome \(h\) è decrescente
+    \(h(\alpha) = b\) e \(h(\beta) = a\).
 }
 
 \end{document}
