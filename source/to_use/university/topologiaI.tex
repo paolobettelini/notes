@@ -112,7 +112,7 @@ In \(\mathbb{R}^n\).
     d_\infty(x,y) \leq d_2(x,y) \leq d_1(x,y) \leq n \cdot d_\infty(x,y)
 \]
 
-\section{08 ottobre 2025 DA METTERE}
+\section{08 ottobre 2025}
 
 \sexercise{}{
     Le topologie con la proprietà che le intersezioni arbitrari di
@@ -2036,13 +2036,310 @@ Per la proprietà di transitività della topologia di sottospazio abbiamo che
     finita di chiusi, e quindi chiuso per transitività della topologia di sottospazio.
 \end{enumerate}
 
-TODO lezione 19 (pomeriggio), 20 novembre
+\slemma{}{
+    Siano \(f_0, f_1 \colon X \fromto Y\) e \(g_0, g_1 \colon Y \fromto Z\)
+    funzioni continue tali che \(f_0 \sim f_1\) e \(g_0 \sim g_1\).
+    Allora \(g_0 \circ f_0 \sim g_1 \circ f_1\)
+}
+
+\begin{center}
+    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBoBGAXVJADcBDAGwFcYkQANAAgB0e8AtvC4BJEAF9S6TLnyEU5UgCZqdJq3ZjJ07HgJFFxVQxZtEIAJoSpIDLrkGKx9Wcu9+WIXFHWds-ShKTjQmGuYAWhKqMFAA5vBEoABmAE4QAkgAzDQ4EEgALCEu7ADiviCp6Vk5eYjk2hVpGYhkILnVIIxYYK5QEDg4MSBFpux8MAAeWHA4cACEfKR8eIywXABi5ZXNre2IQWqj5psN20i7tYqHYSB8aFgA+mI0jPQARjCMAAoyevIgKSwsQAFjgtk0OnslOJKOIgA
+    \begin{tikzcd}
+                                                                                            & Y                                             &   \\
+    X \times I \arrow[r, "{\exists!\,\tilde F}", dotted] \arrow[ru, "F"] \arrow[rd, "\pi_I"'] & Y \times I \arrow[r, "G"] \arrow[d] \arrow[u] & Z \\
+                                                                                            & I                                             &  
+    \end{tikzcd}
+\end{center}
+
+\sproof{}{
+    Sia \(F \colon X \times I \fromto Y\)
+    omotopia da \(f_0\) a \(f_1\)
+    e \(G \colon Y \times I \fromto Z\)
+    omotopia da \(g_0\) a \(g_1\).
+    Per la proprietà universale del prodotto
+    \(Y \times I\) esiste un'unica applicazione continua
+    \(\tilde F \colon X \fromto I \fromto Y \times I\)
+    che da commutare il diagramma.
+    Abbiamo che \(G \circ \tilde F\) è continua in quanto
+    composizione di applicazioni continue,
+    ed è un'omotopia da \(g_0 \circ f_0\)
+    a \(g_1 \circ f_1\) in quanto:
+    \begin{enumerate}
+        \item \begin{align*}
+            (G \circ \tilde F)(x,0)
+            &= G(\tilde F(x,0)) =
+            G(f_0(x), 0) \\
+            &= g_0(f_0(x)) = (g_0 \circ f_0)(x)
+        \end{align*}
+        \item \begin{align*}
+            (G \circ \tilde F)(x,1)
+            &= G(\tilde F(x,1)) =
+            G(f_1(x), 1) \\
+            &= g_1(f_1(x)) = (g_1 \circ f_1)(x)
+        \end{align*}
+    \end{enumerate}
+}
+
+\sdefinition{}{
+    Una applicazione continua \(f \colon X \fromto Y\)
+    si dice una \emph{equivalenza omotopica}
+    se esiste un'applicazione continua \(g \colon Y \fromto X\)
+    tale che \(f \circ g\) e \(g \circ f\)
+    siano rispettivamente omotope a \(1_Y\) e \(1_X\).
+    Diciamo che due spazi topologici sono \emph{omotopicamente equivalenti}
+    se esiste un'equivalenza omotopica fra di essi.
+}
+
+Quest'ultima è una relazione di equivalenza.
+
+\sexample{}{
+    Siano \(x \subseteq \realnumbers^n\)
+    e \(y \subseteq \realnumbers^m\)
+    sottospazi convessi e non vuoti.
+    Allora \(X\) e \(Y\) sono omotopicamente equivalenti.
+
+    Per dimostrarlo scegliamo delle applicazioni continue
+    \(f \colon X \fromto Y\) e \(g \colon Y \fromto X\)
+    (come per esempio quelle costanti).
+    Allora \(g\circ f \colon X \fromto X\)
+    e \(f\circ g \colon Y \fromto Y\)
+    sono continue e \(g \circ f \sim 1_X\)
+    e \(f \circ g \sim 1_Y\)
+    in quanto \(X, Y\) sono convessi (risultato precedente)
+}
+
+\sdefinition{}{
+    Uno spazio topologico è detto \emph{contrattile}
+    se è omotopicamente equivalente ad un singolo punto.
+}
+
+\slemma{}{
+    Siano \(f, g \colon X \fromto Y\)
+    applicazioni continue.
+    Se \(f,g\) sono omotope allora
+    \(\pi_0(f) = \pi_0(g) \colon \pi_0(X) \fromto \pi_0(Y)\).
+    In particolare, se \(f\) è equivalenza omotopica allora
+    \(\pi_0(f)\) è una biiezione.
+}
+
+\sproof{}{
+    Abbiamo \(\pi_0(f)([x]) = [f(x)]\)
+    e \(\pi_0(g)([x]) = [g(x)]\). \\
+    \iffproof{
+        Dire che \(\pi_0(f) = \pi_0(g)\)
+        è equivalente a dire che \(\forall x \in X\),
+        \(f(x)\) e \(g(x)\) stanno nella medesima Componente
+        connessa per archi di \(Y\).
+        Sia \(F \colon X \times I \fromto Y\) un omotopia da
+        \(f\) a \(g\).
+        Per ogni \(x \in X\), consideriamo
+        \(F_x \colon I \fromto Y\)
+        data da \(F_x(t) = F(x,t)\)
+        che è continuo in quanto composizione di applicazioni continue.
+        Allora abbiamo che \(F_x(0) = f(x)\)
+        e \(F_x(1) = g(x)\) quindi \(F_x\)
+        è un cammino in \(Y\) da \(f(x)\) a \(g(x)\).
+    }{
+        Supponiamo che \(f\) sia una equivalenza omotopica.
+        Allora esiste \(g \colon Y \fromto X\) continua tale che
+        \(g \circ f \sim 1_X\) e \(f \circ g \sim 1_Y\).
+        Abbiamo \(\pi_0(g) \circ \pi_0(f) = \pi_0(g \circ f) = \pi_0(1_X) = 1_{\pi_0(X)}\).
+        Analogamente si dimostra che \(\pi_0(f) \circ \pi_0(g) = 1_{\pi_0(Y)}\).
+    }
+}
+
+\subsection{Retratti e retratti per deformazione}
+
+\sdefinition{Retratto}{
+    Sia \(X\) uno spazio topologico
+    e \(Y \subseteq X\) un suo sottospazio.
+    Diciamo che \(Y\) è un retratto di \(X\)
+    se esiste una applicazione continua \(r \colon X \fromto Y\),
+    detta \emph{retrazione}, tale che \(r(y) = y\)
+    per \(y\in Y\).
+}
+
+Se \(i Y \hookrightarrow X\) è l'inclusioe canonica
+allora la condizione \(r(y) = y\)
+equivale esattamente alla condizione \(r \circ i = 1_Y\).
+
+\sexample{}{
+    Consideriamo due circonferenza \(A, B\)
+    distinte che sono tangenti in un punto \(P\),
+    quinsi toccano. Allora \(r \colon A \union B \fromto A\)
+    data da \[
+        y \fromto \begin{cases}
+            r(y) = y & y \in A \\
+            r(y) = P & y \in B
+        \end{cases}
+    \]
+    ed \(r\) è continua in qanto incollamento di funzioni continue.
+}
+
+\sdefinition{}{
+    Sia \(X\) uno spazio topologico. Un sottospazio \(Y\)
+    di \(X\) si dice \emph{retratto per deformazione} di \(X\)
+    se esiste un'applicazione continua
+    \[
+        R \colon X \times I \fromto X
+    \]
+    detta \emph{deformazione di \(X\) su \(Y\)} tale che
+    \begin{enumerate}
+        \item \(R(x,0) \in Y\) per \(x \in X\);
+        \item \(R(x, 1) = x\) per \(x \in X\);
+        \item \(R(y, 1) = y\) per \(y \in Y\) e \(t\in I\).
+    \end{enumerate}
+}
+
+\sexample{}{
+    Sia \(A\) un insieme stellato per il punto \(p \in A\).
+    Allora \(\{p\} \subseteq A\) è un retratto per deformazioni di \(A\)
+    in quanto abiamo \(R \colon A \times I \fromto A\)
+    dato da \((x,t) \fromto R(x, t) = tx + (1-t)p\)
+    che è continua e
+    \begin{enumerate}
+        \item \(R(x,0) = p\);
+        \item \(R(x,1) = x\);
+        \item \(R(p, t) = tp + (1-t)p = p\).
+    \end{enumerate}
+}
+
+\sproposition{}{
+    Sia \(X\) uno spazio topologico e \(Y \subseteq X\)
+    un retratto per deformazione di \(X\).
+    Allora \(Y\) è un retratto di \(X\)
+    e l'inclusione \(Y \hookrightarrow X\)
+    è un'equivalenza omotopica 
+}
+
+\sproof{}{
+    Abbiamo \(R \colon X \times I \fromto X\) retrazione per deformazione di \(X\) su \(Y\).
+    Definiamo \(r \colon X \fromto Y\) come
+    \(r(x) = R(x,0)\in Y\) e \(r(y) = R(y,0) = y\)
+    per \(y \in Y\).
+    Questa funzione è continua in quanto
+    \[
+        i \circ r = \restr{R}{X \times \{0\}}
+    \]
+    è continua per la prorpieté universale della topologia di sottospazio.
+    Abbiamo \(r \circ i = 1_Y\).
+    D'altro canto, abbiamo \(i \circ r \sim 1_X\).
+    Infatti, \(R\) fornisce un'omotopia tra \(i \circ r\) e \(1_X\):
+    \begin{enumerate}
+        \item \(R(x, 1) = x = 1_X(x)\);
+        \item \(R(x,0) = i(r(x)) = (i \circ r)(x)\).
+    \end{enumerate}
+}
+
+\sexample{}{
+    Consideriamo \(S^n \hookrightarrow \realnumbers^{n+1} \difference \{0\}\)
+    e \(r \colon \realnumbers^{n+1} \difference \{0\} \fromto S^n\)
+    data da \(x \fromto x / ||x||\).
+    Abbiamo \(R\) dato da \((x,t) \fromto R(x,t) = tx + (1-t)r(x)\)
+    che è un retratto per deformazione.
+}
 
 \pagebreak
 
 \section{Gruppo fondamentale}
 
-TODO 20 novembre. \\
+\sdefinition{Insieme dei cammini}{
+    \(\Omega(X, a, b)\)
+}
+
+\sdefinition{Omotopia a estremi fissi}{
+    Relazione di equivalenza fra due cammini
+    se vi è una omotopia fra di essi tale che
+    \(F(0,s) = a\) e \(F(1, s) = b\).
+}
+
+\sproposition{}{
+    La nozione di omotopia ad estremi fissi è compatibile con le operazioni
+    \begin{enumerate}
+        \item \(\alpha \sim \alpha' \implies i(\alpha) \sim i(\alpha')\);
+        \item se \(\alpha \sim \alpha'\)
+        e \(\beta \sim \beta'\) allora
+        \(\alpha \ast \beta \sim \alpha' \ast \beta'\).
+    \end{enumerate}
+}
+
+\sproof{}{
+    \begin{enumerate}
+        \item Sia \(F \colon I \times I \fromto X\)
+        omotopia a estremi fissi tra \(\alpha\) e \(\alpha'\).
+        Allora \(\tilde F \colon I \times I \fromto X\)
+        data da \((t,s) \fromto \tilde F(t,s) = F(1-t,s)\)
+        che è omotopia a estremi fissi tra \(i(\alpha)\)
+        e \(i(\alpha')\).
+        \item Siano \(F\) una omotopia a estremi fissi fra
+        \(\alpha\) e \(\alpha'\)
+        e \(G\) una omotopia a estremi fissi fra \(\beta\)
+        e \(\beta'\).
+        Allora
+        \[
+            (F \ast G)(t,s) = \begin{cases}
+                F(2t, s) & 0 \leq t \leq \frac12 \\
+                G(2t-1, s) & \frac12 \leq t \leq 1
+            \end{cases}
+        \]
+        tale mappa è continua in quanto "incollamento"
+        di funzioni continue che sono compatibili nell'intersezione,
+        quindi \(F \ast G\) è una omotopia a estremi fissi
+        fra \(\alpha \ast \beta\) e \(\alpha' \ast \beta'\).
+    \end{enumerate}
+}
+
+\slemma{}{
+    Sia \(\alpha \colon I \fromto X\) un cammino e
+    \(\varphi \colon I \fromto I\) un'applicazione
+    continua tale che \(\varphi(0) = 0\)
+    e \(\varphi(1) = 1\). Sia \(\beta\)
+    il cammino riparametrizzato attraverso \(\varphi\),
+    cioè
+    \(\beta \triangleq \alpha \circ \varphi\).
+    Allora \(\alpha\) e \(\beta\) sono omotopicamente equivalenti
+    a estremi fissi.
+}
+
+\sproof{}{
+    Essenod \(I\) convesso, il segmento chde collega
+    \(t\) a \(\varphi(t)\) è interamente contenuto in \(I\).
+    Abbiamo \(F \colon I \times I \fromto X\)
+    dato da \((t,s) \fromto \alpha(s \varphi(t) + (1-s)t)\).
+    Questa è funzione continua in quanto composizione di funzioni continue
+    ed è omotopia ad estremi fissi da \(\alpha\) a \(\beta\)
+    in quanto \(\varphi(0) = 0 \land \varphi(1) = 1\).
+}
+
+\sproposition{}{
+    L'operazione \(\ast\) di concatenazione tra cammini è
+    associativa a mano di omotopia a estremi fissi.
+    Sia quindi \(\alpha \in \Omega(X, a,b)\)
+    e \(\beta \in \Omega(X, b, c)\)
+    e \(\gamma \in \Omega(X, c, d)\).
+    Allora
+    \[
+        (\alpha \ast \beta)
+        \ast \gamma \sim \alpha \ast (\beta \ast \gamma)
+    \]
+}
+
+\sproof{}{
+    \((\alpha \ast \beta) \ast \gamma\)
+    e \(\alpha \ast (\beta \ast \gamma)\)
+    differiscono solamente per una riparametrizzazione continua.
+    In effetti,
+    \[((\alpha \ast \beta)\ast \gamma)(t) = (\alpha \ast (\beta \ast \gamma))(\varphi(t))\]
+    dove \(\varphi\) è la funzione continua definita come seguente:
+    \[
+        \varphi(t) = \begin{cases}
+            2t & 0 \leq t \leq \frac14 \\
+            t + \frac14 & \frac14 \leq t \leq \frac12 \\
+            \frac{t + 1}{2} & \frac12 \leq t \leq 1
+        \end{cases}
+    \]
+    La tesi segue dal lemma.
+}
 
 \sproposition{}{
     Sia \(\alpha \in \Omega(X, a, b)\).
@@ -2467,7 +2764,7 @@ quindi in particolare \(\pi_1(i)\) è iniettiva.
 
 \sproof{}{
     Essendo \(f\) un'equivalenza omotopica, esiste \(g \colon Y\fromto X\)
-    tale che \(g \circ f \sim 1_x\) e \(f\circ g \sim 1_Y\).
+    tale che \(g \circ f \sim 1_X\) e \(f\circ g \sim 1_Y\).
     (Inserire diagramma sotto).
     Il lemma si applicare quindi dando che \(\pi_1(f)\)
     è un isomorfismo.
