@@ -5733,4 +5733,250 @@ Se la curva non è semplice l'integrale esiste comunque ma perdiamo l'interpreta
     \(h(\alpha) = b\) e \(h(\beta) = a\).
 }
 
+\sexample{}{
+    Sia \(\Gamma\) una curva parametrizzata da \(\gamma(t) = (\cos t, \sin t, t)\) con \(0\leq t \leq 2\pi\)
+    e \(f(x,y,z) = z^3\). Calcoliamo l'integrale di \(f\) su questa funzione.
+    Abbiamo \(\dot\gamma(t) = (-\sin t, \cos t, 1)\)
+    e quindi \(||\dot\gamma(t)|| = \sqrt{\sin^2 t + \cos^2 t + 1} = \sqrt{2}\).
+    Abbiamo quindi
+    \begin{align*}
+        \int_\Gamma f\,ds &= \integral[0][2\pi][f(\cos t, \sin t, t)||\dot\gamma(t)][t] \\
+        &= \integral[0][2\pi][t^3 \sqrt{2}][t] = 4\sqrt{2}\pi^4
+    \end{align*}
+}
+
+\sexample{}{
+    Sia \(\Gamma\) una cura parametrizzata da \(\gamma(t) = (t, t^2)\)
+    per \(t\in [0,1]\) e \(f(x,y) = xy\).
+    Abbiamo \(\dot\gamma(t) = (1, 2t)\) e la sua norma è data da
+    \(\sqrt{1 + 4t^2}\). Abbiamo dunque l'integrale
+    \begin{align*}
+        \int_\Gamma f\,ds &= \integral[0][1][f(t,t^2) \sqrt{1 + 4t^2}][t] \\
+        &= \integral[0][1][t^3 \sqrt{1 + 4t^2}][t]
+    \end{align*}
+    ponendo \(u = 1 + 4t^2\) otteniamo
+    \begin{align*}
+        \int_\Gamma f\,ds &=
+        \frac{1}{32} \integral[1][5][
+            \left(u^{3/2} - u^{1/2}\right)
+        ][u] \\
+        &= \frac{25\sqrt{5} + 1}{120}
+    \end{align*}
+}
+
+Dato un insieme di punti \((P_1, P_2, \cdots, P_n)\) reali allora il baricentro è
+\[
+    G = \frac{1}{n} \sum P_i
+\]
+Se \(\Gamma\) è una curva, il baricentro di \(\Gamma\)
+è dato da
+\[
+    x_G = \frac{1}{L(\Gamma)} \int_\Gamma x \,ds
+\]
+e analogamente
+\[
+    y_G = \frac{1}{L(\Gamma)} \int_\Gamma y \,ds
+\]
+Se avessimo anche una densità
+\[
+    x_G = \frac{1}{\int_\Gamma \delta \,ds} \int\Gamma \delta \cdot d \,ds
+\]
+
+\sexample{}{
+    Calcoliamo il baricentro
+    dell'insieme \(\Gamma = \{(x,y) \suchthat x^2 + y^2 = 1 \land y \geq 0\}\).
+    Abbiamo quindi una semicirconferenza.
+    \(\Gamma\) è parametrizzata da \(\gamma(t) = (\cos t, \sin t)\) per \(t \in [0, \pi]\).
+    La lunghezza ce l'abbiamo senza integrale, è \(\pi\).
+    Per simmetria la coordinata delle ascisse del baricentro è nulla. Quindi dobbiamo solo calcolare
+    \begin{align*}
+        y_G &= \frac{1}{\pi} \int_\Gamma y \,ds &= \frac{1}{\pi} \integral[0][\pi][\sin t \cdot 1][t] = \frac{2}{\pi}
+    \end{align*}
+}
+
+\sexercise{}{
+    Calcolare il baricentro del pezzo (destra) di catenario che viene usato nel file
+    sulla catenaria.
+}
+
+\section{Forme differenziali}
+
+\begin{radioactive}
+\sdefinition{Forme differenziali (1-forme)}{
+    Una forma differenziale è una applicazione
+    \(\omega \colon \Omega \subseteq \realnumbers^n \fromto (\realnumbers^n)'\)
+    dove \(\Omega\) è aperto e \(\omega\) è almeno continua.
+}
+\end{radioactive}
+
+\sdefinition{Integrale su curva}{
+    Consideriamo una forma differenziale di classe \(\mathcal{C}^1\) a tratti
+    e \(\gamma \colon [a,b] \fromto \realnumbers^n\). Allora definiamo
+    \[
+        \int_\gamma \omega \triangleq \integral[a][b][\omega(\gamma(t))\dot\gamma(t)][t]
+    \]
+}
+
+\sexample{}{
+    Nel piano \(\realnumbers^n\) consideriamo
+    \(\omega(x,y)(v,w) = (2y-x)v + x^2w\) che è una forma differenziale.
+    Fissati \(x,y\), \(\omega\) è lineare in \(v,w\).
+    Consideriamo \(\gamma(t) = (t,t^2)\) e calcoliamo
+    \begin{align*}
+        \int_\gamma \omega &= \integral[0][1][\omega(t, t^2)(1, 2t)][t] \\
+        &= \integral[0][1][(2t^2-t) \cdot 1 + t^2 \cdot 2t][t] = \frac23
+    \end{align*}
+}
+
+\stheorem{}{
+    Se \(\gamma, \varphi\) sono \(\mathcal{C}^1\) a tratti e sono equivalenti, allora
+    \[
+        \int_\gamma \omega = \pm \int_\varphi \omega
+    \]
+    dove il segno derivata dall'equivalenza per orientamento delle due curve.
+}
+
+\sproof{}{
+    Supponiamo che \(\varphi = \gamma \circ h\) con \(h\colon [\alpha, \beta] \fromto [a, b]\) diffeomorfismo.
+    Quindi \(h\) o è strettamente crescente o strettamente decrescente.
+    Facciamo il caso con \(h'< 0\) che è più difficile.
+    Abbiamo l'integrale
+    \begin{align*}
+        \int_\varphi \omega &= \integral[\alpha][\beta][\omega(\varphi(\tau))\dot\varphi(\tau)][\tau] \\
+        &= \integral[\alpha][\beta][\omega(\gamma(h(\tau)))\dot{(\gamma \circ h)}(\tau)][\tau] \\
+        &= \integral[\alpha][\beta][
+            \omega(\gamma(h(\tau)))\dot\gamma(h(\tau))h'(\tau)
+        ][\tau] \\
+        &= \integral[h(\beta)][h(\alpha)][
+            \omega(\gamma(t)) \dot\gamma(t)
+        ][t] \\
+        &= \integral[b][a][\omega(\gamma(t))\dot\gamma(t)][t] \\
+        &= -\int_\gamma \omega
+    \end{align*}
+    usando \(h(\tau) = t\).
+}
+
+In particolare
+\[
+    \int_{-\gamma} \omega = - \int_\gamma \omega
+\]
+
+\stheorem{}{
+    \[
+        \int_{\gamma + \varphi} \omega = \int_\gamma \omega + \int_\varphi \omega
+    \]
+}
+
+\sdefinition{}{
+    Un campo vettoriale è una funzione \(F \colon \omega \subseteq \realnumbers^n \fromto \realnumbers^n\)
+    almeno continua.
+}
+
+Dato un tale campo \(F\)
+posso associare una forma differenziale \(\omega\) ponendo
+\(\omega(x) v = F(x) \cdot v\).
+Se \(\alpha \in (\realnumbers^n)'\) per il teorema di Riesz esiste un solo
+\(w \in \realnumbers^n\) tale che \(\alpha(v) = w\cdot v\).
+Quindi dato \(\omega(x) \in (\realnumbers^n)'\) esiste un unico \(F(x) \in \realnumbers^n\)
+tle che \(\omega(x) v = F(v) \cdot v\) e \(\omega\)
+è continua in \(x\) se e solo se \(F\) è continua in \(x\).
+Possiamo quindi parlare di campi vettoriali o forme differenziali in egualmodo.
+
+Se \(F\) è un campo possiamo definire l'integrale della forma differenziale associata al campo vettoriale su una curva come
+\[
+    \integral[a][b][F(\gamma(t)) \cdot \dot\gamma(t)][t]
+\]
+che è pure detto il lavoro fatto da un campo.
+A volte l'integranda viene denominata \(F \cdot T \,ds\).
+
+Possiamo decomporre una forma differenziale sulla base del duale
+\[
+    \omega(x) = \sum F_i(x) \,\text{d}x_i
+\]
+
+In generale se \(f \colon \Omega \subseteq \realnumbers^n \fromto \realnumbers\)
+allora \(df\) è una forma differenziale, e il campo associato è \(\nabla f\).
+Chiaramente \(\nabla x_i = (0, 0, \cdots, 1, 0, \cdots, 0) = e_i\) e quindi \(\text{d}x_i\)
+è il duale di \(e_i\).
+Abbiamo quindi che
+\[
+    \omega(x) v = \sum F_i(x) \text{d}x_i = \sum F_i(x) \cdot v_i = F(x) \cdot v
+\]
+
+\sdefinition{}{
+    Diciamo che \(\omega\) è una forma differenziale esatta se
+    \(w = \text{d}f\) per qualche \(f \in \mathcal{C}^1(\Omega)\), detta primitiva o potenziale.
+    Analogamente diremo che il campo vettoriale è conservativo se è gradiente di una funzione.
+}
+
+Se \(\Omega\) è connesso, tutti gli infiniti potenziali differiscono di una costante.
+Diciamo che \(\Omega\) è un dominio se è un aperto connesso.
+
+Supponiamo che \(w = \text{d}f\) sia una forma differenziale esatta e sia \(\gamma \colon [a,b] \fromto \realnumbers^n\)
+una curva \(\mathcal{C}^1\). Allora
+\begin{align*}
+    \int_\gamma \omega &= \integral[a][b][\omega(\gamma(t))\dot\gamma(t)][t] \\
+    &= \integral[a][b][\text{d}f(\gamma(t))\dot\gamma(t)][t] \\
+    &= \integral[a][b][(f \circ \gamma)'(t)][t] \\
+    &= f(\gamma(b)) - f(\gamma(a)).
+\end{align*}
+
+Cioè l'integrale di \(\omega\) dipende solo dagli estremi della curva.
+
+\sexample{Forma non esatta}{
+    Consideriamo il campo vettoriale \(F(x,y) = (x^2y, x)\). Questo non è un campo conservativo.
+    Per assurdo supponiamo che lo sia e che quindi esista \(f\) tale che \(F(x,y) = \nabla f\).
+    Quindi
+    \[
+        \frac{\partial f}{\partial x} = x^2y, \quad \frac{\partial f}{\partial y} = x
+    \]
+    ma le sue derivate sono derivabili, quindi \(f \in \mathcal{C}^2\).
+    Ma allora deve valere il teorema di Schwarz, ma
+    \[
+        \frac{\partial^2 f}{\partial y\partial x} = x^2, \quad
+        \frac{\partial^2 f}{\partial x\partial y} = 1
+    \]
+    che non coincidono, che è assurdo.% \lightning.
+}
+
+\stheorem{Condizione necessaria}{
+    Sia \(F \in \mathcal{C}^1(\Omega, \realnumbers^n)\) un campo conservativo.
+    Allora, \[
+        \frac{\partial F_j}{\partial x_i}(x) = \frac{\partial F_j}{\partial x_i}
+    \]
+    per \(x \in \Omega\).
+}
+
+\sproof{}{
+    Per ipotesi \(F=\nabla F\) con \(f \colon \Omega \fromto \realnumbers\), \(f \in \mathcal{C}^2(\Omega)\).
+    Allora vale il teorema di Schwarz
+    \[
+        \frac{\partial^2 f}{\partial x_i \partial x_j}(x) = \frac{\partial^2 f}{\partial x_j \partial x_i}(x)
+    \]
+    Ma \(F = \nabla f\) significa che \(F_i(x) = \partial f / \partial x_i (x)\).
+    Quindi deve valere la tesi.
+}
+
+\stheorem{Forma differenziale irrotazionale}{
+    Sia \(F \in \mathcal{C}^1(\Omega; \realnumbrs^n)\) irrotazionale
+    se \[
+        \frac{\partial F_i}{\partial x_j} = \frac{\partial F_j}{\partial x_i}
+    \]
+    per tutte le \(i,j\).
+    Per le forme differenziali si dice forma chiusa (e si scrive \(\text{d}\omega = 0\) cioè la derivata esterna).
+}
+
+Il nome deriva dall'operatore di rotore che per \(F \colon \Omega \subseteq \realnumbers^3 \fromto \realnumbers^3\)
+è definito come il campo vettoriale costruito nel modo seguente
+\[
+    \text{rot}F \triangleq \begin{pmatrix}
+        \frac{\partial F_3}{\partial y}- \frac{\partial F_2}{\partial z} \\
+        \frac{\partial F_1}{\partial z}- \frac{\partial F_3}{\partial x} \\
+        \frac{\partial F_2}{\partial x}- \frac{\partial F_1}{\partial y}
+    \end{pmatrix}
+\]
+
+Il teorema che abbiamo appena visto è che se \(\omega\) esatta allora è chiusa
+(oppure se il campo è conservativo allora è irrotazionale.
+
 \end{document}
