@@ -31,7 +31,6 @@
 - \integers to \integernumbers ?
 - hopital H =
 - mettere il comando per linear subspace
-- MOLTO IMPORTANTE: bisogna racchiudere molte def in \mathop{...}, come ho fatto per sup, inf. Così
   possiamo anche non usare underset su lim e sup ma direttamente \sup_
 
 # AI promps
@@ -45,9 +44,3 @@ Your response must only contain the ID written in lower kebab case and the title
 The ID and the title must be in english.
 For example: "internal-direct-external-product-isomorphism-theorem Isomorphism between internal and external direct product".
 Here is the proposition:
-
-# Replaces
-
-\,|\,           \suchthat
-\mathbb{N}      \naturalnumbers
-\mathbb{R}      \realnumbers
