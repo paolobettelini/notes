@@ -243,3 +243,20 @@ bottom=0pt
 \vphantom{\big|} % pretend it's a little taller at normal size
 \right|_{#2} % this is the delimiter
 }}
+
+% Double upper and lower integrals
+\makeatletter
+\newcommand\lriint{\mathop{\mathpalette\tb@iint{t}}\,\iint}
+\newcommand\uriint{\mathop{\mathpalette\tb@iint{b}}\,\iint}
+\newcommand\tb@iint[2]{%
+  \sbox\z@{$\m@th#1\iint$}% misura lo \iint
+  \if#2t%
+    % barra in alto, centrata
+    \rlap{\hbox to \wd\z@{\hfil\raisebox{\dimexpr\ht\z@+1pt\relax}{\rule{\wd\z@}{0.4pt}}\hfil}}%
+  \else
+    % barra in basso
+    \rlap{\hbox to \wd\z@{\raisebox{\dimexpr-\dp\z@ -2pt\relax}{\rule{\wd\z@}{0.4pt}}\hfil}}%
+  \fi
+}
+\makeatother
+

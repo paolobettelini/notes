@@ -5977,14 +5977,213 @@ Il nome deriva dall'operatore di rotore che per \(F \colon \Omega \subseteq \rea
 \]
 
 Il teorema che abbiamo appena visto è che se \(\omega\) esatta allora è chiusa
-(oppure se il campo è conservativo allora è irrotazionale).
-
-\\
+(oppure se il campo è conservativo allora è irrotazionale). \\
 
 3,4 Dicembre
 
-\\
+\pagebreak
 
-XXX
+\section{Integrali}
+
+Definendo gli integrali doppi
+otteniamo come bonus il fatto che possiamo definire l'area di un dominio
+piano.
+Quando generalizziamo l'idea di funzioni a scala, usando partizioni
+di dominio di dimensioni superiori, abbiamo il problema di sforare fuori dal bordo.
+
+\sdefinition{}{
+    Sia \(Q = [a,b] \times [c,d]\) un rettangolo
+    e sia \(f \colon Q \fromto \realnumbers\) limitata
+    in \(Q\).
+    Siano \(\Pi_X = \{a = x_0, < x_1 < \cdots < x_n = b\}\)
+    e \(\Pi_Y = \{c = y_0, < y_1 < \cdots < y_m = c\}\) due partizioni.
+    Sia quindi \(\Pi = \Pi_X \times \Pi_Y\) una partizione di \(Q\).
+    Denotiamo \(x_h\) e \(y_k\) le coordinate dei rettangoli delel rispettive variabili, quindi
+    abbiamo \(n \times m\) rettangolini
+    \[
+        Q_{hk} = [x_{h-1}, x_h] \times [y_{k-1}, y_k]
+    \]
+    Poniamo
+    \[
+        m_{hk} \triangleq \inf_{Q_{hk}} f, \quad
+        M_{hk} \triangleq \sup_{Q_{hk}}
+    \]
+    e \[
+        |Q_{hk}| = (x_h - x_{h-1}) (y_k - y_{k-1})
+    \]
+    l'area di un rettangolino.
+    Definiamo quindi
+    \[
+        s(\Pi) \triangleq \sum_{h,k} |Q_{hk}| m_{hk}, \quad
+        S(\Pi) \triangleq \sum_{h,k} |Q_{hk}| M_{hk}
+    \]
+    Definiamo l'integrale superiore e inferiore
+    \[
+        \lriint_Q f(x,y)\,\text{d}x\,\text{dy} \triangleq
+        \sup_\Pi s(\Pi), \quad \uriint_Q f(x,y)\,\text{d}x\,\text{dy} \triangleq
+        \inf_\Pi S(\Pi)
+    \]
+    Se i due coincidono allora diciamo che \(f\) è Riemann-integrabile in \(Q\)
+}
+
+Chiaramente la funzione di Dirichlet generalizzata
+\[
+    f(x,y) = \begin{cases}
+        1 & x,y \in \mathbb{Q} \intersection [0,1] \\
+        0 & \text{otherwise}
+    \end{cases}
+\]
+non è Riemann-integrabile.
+
+\sproposition{}{
+    Se \(\forall \varepsilon > 0\), esiste partizione \(\Pi\)
+    tale che \(S(\Pi) s(\Pi) < \varepsilon\), allora \(f\) è integrabile.
+}
+
+\stheorem{}{
+    Se \(f \colon Q \fromto \realnumbers\) è continua, allora è integrabile in \(Q\).
+}
+
+\sproof{}{
+    \(f\) è continua in \(Q\) (compatto) quindi è uniformemente continua,
+    cioè \(\forall \varepsilon > 0\), esiste \(\delta > 0\)
+    tale che
+    \[
+        ||(x_1,y_1) - (x_2, y_2)|| < \delta \implies |f(x_1,y_2) - f(x_2, y_2)| < \varepsilon
+    \]
+    Basta scegliere \(\Pi\) in modo tale che \(\text{diam} Q_{hk} < \delta\)
+    per tutti gli \(h,k\). Abbiamo quindi
+    \begin{align*}
+        S(\Pi)- s(\Pi)
+        &= \sum_{h,k} |Q_{h,k}| (M_{hk} - m_{hk})
+        \leq \varepsilon \sum_{h,k} |Q_{hk}| = |Q|\varepsilon \to 0
+    \end{align*}
+}
+
+\sdefinition{}{
+    Sia \(Z \subseteq \realnumbers^2\) limitato.
+    Diciamo che \(Z\) è trascurabile (di misura nulla)
+    se \(\forall \varepsilon > 0\) esistono \(Q_1, \cdots, Q_n\) rettangoli tali che
+    \begin{enumerate}
+        \item \(Z \subseteq \bigcup Q_i\);
+        \item \(\sum |Q_i| < \varepsilon\)
+    \end{enumerate}
+}
+
+Non è quella di Lebesgue. Un insieme finito è trscurabile.
+
+Consideriamo ora un segmento, per esempio parallelo alle ascisse.
+Anche questo è trascurabile in quanto è ricopribile da un solo rettangolo
+di altezza \(\varepsilon\). Anche se il segmento è orientato
+in un'altra direzione, possiamo considerare
+un ricoprimento di quadratini di area \(\varepsilon\),
+di cui quindi me ne servono \(L / (\sqrt{2}\varepsilon)\)
+dove \(L\) è la lunghezza. Quindi ne servono \(N \sim \frac{1}{\varepsilon}\)
+e quindi l'area è \(\sim \frac{1}{\varepsilon}\varepsilon^2 \to 0\).
+
+Il grafico di una funzione \(y = f(x)\) non è in generale trascurabile.
+Se è Riemann-integrabile su \([a,b]\), lo è di sicuro.
+In tal caso, possiamo considerare funzioni a scala arbitrariamente vicine
+al grafico, quindi \(S(\Pi)- s(\Pi) < \varepsilon\).
+Possiamo costruire dei rettangolini usando le differenza fra
+le funzioni a scala superiori e inferiori
+\[
+    \sum_j (x_j, x_{j-1})(M_j - m_j) < \varepsilon
+\]
+e i rettangolini contengono il grafico di \(f\), quindi è trascurabile.
+
+Se \(Z\) è un insieme con interno non vuoto, allora non è trascurabile.
+In tal caso contiene almeno una bolla.
+
+Nella definizione di insieme trascurabile
+richiedo che \(Z \subseteq \bigcup Q_i\).
+In generale però non deve essere racchiuso nell'interno.
+Non lede la generalità se richiediamo che \(Z\) sia contenuto nell'interno
+di \(\bigcup Q_i\), in quanto possiamo sempre aumentare leggermente le grandezze dei rettangolo
+(stesso centro ma raddoppiando i lati e \(|2Q_i| = 4|Q_i|\)).
+Possiamo quindi assumere ciò d'ora in avanti e ci verrà comodo.
+Inoltre non richiediamo che i rettangoli provengano da una partizione prodotto,
+e possono appunto sovrapporsi.
+Senza ledere la generalità possiamo supporre che derivino da una partizione prodotto.
+Infatti, basta aumentare il numero di rettangoli per separare i punto di overlap.
+Quindi due rettangoli che si sovrappongono possono diventare 7 nuovi rettangoli.
+In questo modo, la somma delle aree diminuisce in quanto non conto molteplici volte gli overlap,
+ma l'area totale decresce quindi va bene comunque.
+
+\sexample{}{
+    Sia \[
+        Z = \{(x,y) \in [0,1] \times [0,1] \suchthat x,y \in \mathbb{Q}\}
+    \]
+    Questo insieme non è trascurabile in quanto, se consideriamo una partizione
+    prodotto, la partizione deve coprire tutto \([0,1] \times [0,1]\).
+    Ma quindi l'area totale è \(1\), quindi non è trascurabile.
+    Infatti \(\partial Z = [0,1] \times [0,1]\).
+}
+
+\stheorem{}{
+    Sia \(f \colon Q \fromto \realnumbers\) limitata e sia \[D_f = \{(x,y) \in Q \suchthat f \text{ è discontinua nel punto }\}\]
+    Se \(\mu(D_f) = 0\) allora \(f\) è integrabile.
+}
+
+\sproof{}{
+    Fissiamo \(\varepsilon > 0\) e costruiamo una partizione prodotto. I punti
+    di \(D_f\) sono ricoperti da alcuni rettangoli della partizione, e siccome
+    \(\mu(D_f) = 0\) possiamo scegliere \(\Pi\) in modo che la somma delle aree
+    di questi rettangoli siano minori di \(\varepsilon\).
+    Senza perdita di generalità supponiamo che i punti di discontinuità siano
+    contenuti negli interni dei rettangolini che li contengono.
+    Nei rettangolini che non contengono punti di discontinuità, la funzione è continua.
+    Sui rettangoli che contengono punti di \(D_f\), \(f\) è limitata (come ovunque)
+    e quindi
+    \begin{align*}
+        \sum_{\substack{h,k \\ \bigcup Q_{h,k} \supseteq D_f}} &\leq
+        \sum_{\substack{h,k \\ \bigcup Q_{h,k} \supseteq D_f}} 2 \sup_Q(|f|) \\
+        &\leq 2 \sup_Q(|f|) \varepsilon
+    \end{align*}
+    Il contributo della differenza fra la somma superiore e inferiore è quindi trascurabile.
+    Consideriamo ora il contributo a \(S(\Pi) - s(\Pi)\) dovuto ai rettangoli
+    in cui \(f\) è continua.
+    Siccome l'insieme di questi rettangoli è comaptto e \(f\) è continua,
+    allora \(f\) è uniformemente continua.
+    Raffiniamo eventualmente la partizione possiamo supporre che \(\text{diam}Q_{h,k} < \delta\).
+    Per lo stesso ragionamento utilizzato in precedenza
+    \(S(\Pi) - s(\Pi) \leq \mu(Q) \varepsilon\),
+    quindi in totale \[S(\Pi) - s(\Pi) \leq 2 \sup_Q(|f|) \varepsilon + \varphi\mu(Q) \to 0\]
+}
+
+Sia \(Q = [a,b] \times [c,d]\) e sia \(f \colon Q \fromto \realnumbers\)
+integrabile. Vogliamo stabilire se esiste una formula del tipo
+\[
+    \iint_Q f(x,y) \,\text{d}x\,\text{d}y = \integral[c][d][
+        \integral[a][b][f(x,y)][x]
+    ][y]
+\]
+
+\sexample{}{
+    Sia \(Q = [0,1] \times [0,1]\) e consideriamo
+    la funzione
+    \[
+        f(x,y) = \begin{cases}
+            1_{\mathbb{Q}}(x) & y = \frac12 \\
+            0 & \text{altrimenti}
+        \end{cases}
+    \]
+    Chiaramente \(f\) è Riemann integrabiel in \(Q\),
+    ma se fisso \(y=\frac12\) la funzione non è integrabile.
+    In questo caso può pure andare bene in quanto uno dei due integrali non è valido solo in un punto,
+    ma in generale possiamo fare esempi peggiori.
+}
+
+\stheorem{Teorema di Fubini}{
+    Sia \(f \colon Q \fromto \realnumbers\) integrabile.
+    Se \(\forall y \in [c,d]\) Esiste\[
+        F(y) = \integral[a][b][f(x,y)][x]
+    \]
+    cioè se \(f(\cdot, y)\) è integrabile in \([a,b]\), allora \(F\) è integrabile
+    in \([c,d]\) e vale
+    \[
+        \iint_Q f(x,y)\,\text{d}y\,\text{d}{x} = \integral[c][d][F(y)][y]
+    \]
+}
 
 \end{document}
