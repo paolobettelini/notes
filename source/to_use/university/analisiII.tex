@@ -6067,7 +6067,7 @@ non è Riemann-integrabile.
     \begin{enumerate}
         \item \(Z \subseteq \bigcup Q_i\);
         \item \(\sum |Q_i| < \varepsilon\)
-    \end{enumerate}
+    \end{enumerate} % su tutti i h,k tali che Qhk intersection Z neq emptyset
 }
 
 Non è quella di Lebesgue. Un insieme finito è trscurabile.
@@ -6168,7 +6168,7 @@ integrabile. Vogliamo stabilire se esiste una formula del tipo
             0 & \text{altrimenti}
         \end{cases}
     \]
-    Chiaramente \(f\) è Riemann integrabiel in \(Q\),
+    Chiaramente \(f\) è Riemann integrabile in \(Q\),
     ma se fisso \(y=\frac12\) la funzione non è integrabile.
     In questo caso può pure andare bene in quanto uno dei due integrali non è valido solo in un punto,
     ma in generale possiamo fare esempi peggiori.
@@ -6184,6 +6184,262 @@ integrabile. Vogliamo stabilire se esiste una formula del tipo
     \[
         \iint_Q f(x,y)\,\text{d}y\,\text{d}{x} = \integral[c][d][F(y)][y]
     \]
+}
+
+\sproof{Teorema di Fubini}{
+    Fissiamo per \(Q\) una partizione prodotto
+    \(\Pi = \Pi_X \times \Pi_Y\).
+    Fissiamo un rettangolo \(Q_{h,k}\) e fissiamo \(y \in [y_{k-1}, y_k]\).
+    In questo quadratino consideriamo la striscia con \(y\) fissato, maggioriamo
+    con il sup sulla striscia e poi con il sup di tutto il quadratino (e rispettivamente sup)
+    \begin{align*}
+        &\sum_h (x_h - x_{h-1}) m_{h,k} \leq \\
+        &\sum_h (x_h - x_{h-1}) \inf_{x \in [x_{h-l}, x_h]} f(x,y)
+        \leq F(y) \leq
+        \sum_h (x_h - x_{h-1}) \sup_{x \in [x_{h-l}, x_h]} f(x,y) \\
+        &\leq \sum_h (x_h - x_{h-1}) M_{h,k}
+    \end{align*}
+    Per integrare
+    scriviamo
+    \begin{align*}
+        \sum_{h,k} |Q_{h,k}| m_{h,k} \leq
+        \sum_k (y_k - y_{k-1}) \inf_{y \in [y_{k-l}, y_k]} F(y)
+        \leq
+        \sum_k (y_k - y_{k-1}) \sup_{y \in [y_{k-l}, y_k]} F(y)
+        \leq \sum_{h,k} |Q_{h,k}| M_{h,k}
+    \end{align*}
+    \[
+        s(f, \Pi) \leq s(F, \Pi_Y) \leq S(F, \Pi_Y) \leq S(f, \Pi)
+    \]
+    Per ipotesi \(\forall \varepsilon > 0\) esiste \(\Pi\) tale che
+    \(S(f, \Pi) - s(f, \Pi) < \varepsilon\). Ma allora
+    \(S(F, \Pi_Y) - s(F, \Pi_Y) < \varepsilon\) e quindi \(F\)
+    è integrabile su  \([c,d]\) e vale l'uguaglianza tra gli integrali.
+}
+
+In particolare se \(f \in \mathcal C(Q)\), allora \(f\) è integrabile su \(Q\)
+e pure la sua restrizione \(f(\cdot, y)\) è continua su \([a,b]\),
+e quindi \(F\) è definita.
+
+\sexercise{}{
+    Sia \(Q = [0,1] \times [0,3]\)
+    e \[
+        f(x,y) = \begin{cases}
+            2xy & y \leq x^2 \\
+            x^3 + 2x^2y & y > x^2
+        \end{cases}
+    \]
+    La funzione è continua sicuramente tranne sul grafico di \(y=x^2\).
+    Tale bordo è una funzione integrabile e quindi trascurabile
+    in quanto insieme di misura nulla, quindi \(f\) è integrabile.
+    La funzione \(f(x, \cdot)\) è integrabile in quanto continua tranne che al massimo in un singolo punto.
+    Quindi vale il teorema di Fubini. Abbiamo quindi
+    \begin{align*}
+        \iint_Q f(x,y) \,\text{d}x\,\text{d}y &= \integral[0][1][
+            \integral[0][3][
+                f(x,y)
+            ][y]
+        ][x] \\
+        &= \integral[0][1][
+            \left(
+            \integral[0][x^2][
+                2xy
+            ][y] + 
+            \integral[x^3][3][
+                (x^3 + 2x^2y)
+            ][y]
+            \right)
+        ][x] \\
+        &= \integral[0][1][
+            3x^3 + 9x^2 - x^6
+        ][x]
+    \end{align*}
+}
+
+\sexercise{}{
+    Sia \(f(x,y) = x^{-3}e^{\frac{y}{x}}\)
+    e \(Q=[1,2] \times [0,1]\).
+    Non abbiamo problemi e la funzione è continua nel dominio, quindi è integrabile.
+    È anche limitata in quanto su un compatto. Integriamo prima rispetto alla \(y\)
+    \begin{align*}
+        \iint_Q f(x,y) \,\text{d}x\,\text{d}y &= \integral[1][2][
+            \integral[0][1][
+                x^{-3}e^{\frac{y}{x}}
+            ][y]
+        ][x] \\
+        &= \integral[1][2][
+            x^{-2}(e^{\frac{1}{x}} - 1)
+        ][x] \\
+        &= \integral[1][2][x^{-2}e^{\frac{1}{x}}][x]
+        - \integral[1][2][x^{-2}][x] \\
+        &= -\frac12 + \sqrt{e} + e
+    \end{align*}
+}
+
+Sia \(D \subseteq \realnumbers^2\) limitato e \(f \colon D \fromto \realnumbers\). Siccome
+è limitato è sicuramente contenuto in un rettangolo \(Q\).
+Possiamo pure scegliere un rettangolo tale che \(D\) sia contenuto nel suo interno.
+Definiamo ora una funzione ausiliaria
+\[
+    \tilde f(x,y) = \begin{cases}
+        f(x,y) & (x,y) \in D \\
+        0 & (x,y) \in Q \difference D
+    \end{cases}
+\]
+Definiamo quindi
+\[
+    \iint_D f(x,y) \,\text{d}x\,\text{d}y
+    \triangleq \iint_Q \tilde f(x,y) \,\text{d}x\,\text{d}y
+\]
+
+La definizione è ben posta, cioè indipendente da \(Q\), in quanto
+l'integrale sulla intersezione dei rettangoli è nullo.
+
+Anche se \(f\) è continua (in cui caso vogliamo che sia integrabile),
+il bordo di \(D\) potrebbe essere non trascurabile, e quindi \(\tilde f\) non sarebbe integrabile.
+Dobbiamo quindi imporre che il bordo sia trascurabile.
+
+\sexample{}{
+    Sia \(D = (\mathbb{Q} \intersection [0,1])^2 \subseteq [0,1] \times [0,1]\).
+    Prendiamo \(f \colon D \fromto \realnumbers\) data da \(f(x,y) = 1\).
+    Tale funzione è continua, ma \(\tilde f\) è la funzione di Dirichlet
+    e non è integrabile. Infatti, il bordo è \([0,1] \times [0,1]\) e non è trascurabile.
+}
+
+\sdefinition{Misura di Peano-Jordan}{
+    Diciamo che \(D \subseteq \realnumbers^2\) è misurabile su \(D\) se
+    \[
+        \exists \iint_Q 1\,\text{d}x\,\text{d}y
+    \]
+    e diciamo
+    \[
+        \mu(D) \triangleq \iint_Q 1 \,\text{d}x\,\text{d}y
+    \]
+}
+
+\stheorem{}{
+    \(D\) è misurabile secondo Peano-Jordan se e solo se \(\partial D\)
+    è trascurabile.
+}
+
+\sproof{}{
+    Sia \(\Pi\) una partizione prodotto di un quadrato \(Q\) contenente \(D\),
+    e calcoliamo \(S(\Pi) - s(\Pi)\).
+    Se \(Q_{hk} \subseteq D^\circ\), allora il contributo di tale rettangolino è la sua area,
+    quindi inf e sup coincidono,
+    quindi il contributo in \(S(\Pi)- s(\Pi)\) è nullo.
+    Se \(Q_{hk} \subseteq (Q \difference D)^\circ\), vale lo stesso ragionamento, il contributo è nullo.
+    Allora i contributi sono dati da quelle che intersecano
+    sia \(D\) che il suo complementare, quindi \(Q_{hk} \intersection D \neq \emptyset\)
+    e \(Q_{hk} \intersection (Q \difference D) \neq \emptyset\).
+    Il contributo di questi è
+    \begin{align*}
+        S(\Pi) - s(\Pi) &= \sum_{\substack{h,k \\ Q_{hk} \intersection D \neq \emptyset \\ Q_{hk} \intersection (Q \difference D) \neq \emptyset}}
+        |Q_{h,k}| \cdot 1
+    \end{align*}
+    Siccome il quadratino interseca punti di \(D\), il suo sup è \(1\), mentre il suo inf è \(0\)
+    in quanto interseca punto del complementare.
+    Per avere \(\mu(\partial D) = 0\) vogliamo che
+    \[
+        \sum_{\substack{h,k \\ Q_{h,k} \intersection \partial D \neq \emptyset}}
+        |Q_{h,k}| < \varepsilon
+    \]
+    Abbiamo due famiglie diverse di indici
+    \begin{align*}
+        \mathcal F &= \{(h,k) \suchthat Q_{h,k} \intersection D \neq \emptyset \land Q_{h,k} \intersection (Q \difference D) \neq \emptyset\} \\
+        \mathcal F' &= \{(h,k) \suchthat Q_{h,k} \intersection \partial D \neq \emptyset\}
+    \end{align*}
+    Chiaramente \(\mathcal F \subseteq \mathcal F'\).
+    L'altra inclusione non è vera in quanto ci può essere un quadratino che tocca solamente il bordo in uno dei suoi lati.
+    Tuttavia, possiamo modificare la partizione riducendola, fino a che \(\mathcal F = \mathcal F'\),
+    quindi vale la tesi.
+    Esercizio:
+    dimostrare che se \(Q_{h,k} \intersection D \neq \emptyset\) e \(Q_{h,k} \intersection (Q \difference D)\)
+    allora \(Q \intersection \partial D \neq \emptyset\).
+}
+
+\stheorem{}{
+    Sia \(D \subseteq \realnumbers^2\) misurabile, \(f \colon D \fromto \realnumbers\)
+    limitata, \(f\) continua su \(D^\circ\).
+    Allora, \(f\) è Riemann integrabile su \(D\).
+}
+
+\sproof{}{
+    Sia \(Q\) un rettangolo tale che \(Q^\circ \supseteq \overline{D}\).
+    \(Q = D^\circ \sqcup \partial D \sqcup (Q \difference D)^\circ\).
+    Sia \(\tilde f\) l'estensione nulla di \(f\) a \(Q\).
+    Notiamo che in \(D\), \(f \equiv \tilde f\) e quindi
+    \(f \equiv \tilde f\) anche su \(D^\circ\).
+    Inoltre \(\tilde f \equiv 0\) su \((Q \difference D)^\circ\) e quindi è continua anche su \((Q \difference D)^\circ\).
+    Dunque, l'insieme delle discontinuità di \(f\) è contenuto in \(\partial D\), che per ipotesi ha misura nulla,
+    quindi è integrabile su \(D\).
+}
+
+Sia \(D \subseteq \realnumbers^2\) liimtato, \(Z \subseteq \realnumbers^2\) trascurabile.
+Supponiamo che \(f \colon D \union Z \fromto \realnumbers\) sia limitata.
+Allora, \(f\) è Riemann integrabile su \(D\) se e solo se lo è anche su \(D \union Z\)
+se e solo se lo è anche su \(D \difference Z\). Anche per unione finita di insiemi trascurabili.
+
+Sia \(f \colon \overline D \fromto \realnumbers\) limitata con \(D\) limitato.
+In generale non c'è una correlazione fra l'integrabilità su \(D\) e sulla sua chiusura.
+Però, se \(D\) è misurabile, allora
+allora \(f\) è integrabile su \(D\) se e solo se lo è su \(\overline{D}\).
+Questo è dato dal fatto che \(\overline D = \partial D \union D\).
+
+Può succedere che \(f\) sia integrabile su \(D\) anche se \(D\) non è misurabile.
+Per esempio se \(f \equiv 0\).
+Anche se ho un dominio di misura nulle, tutte le funzioni sono integrabili e hanno integrale nullo.
+In tal caso basta prendere una partizione prodotto \(\Pi\), possiamo ricoprire
+il dominio con un numero finito di rettangoli con area \(<\varepsilon\).
+Per tutti gli altri rettangoli, il contributo in \(S(\Pi) - s(\Pi)\) è nullo.
+
+\sdefinition{Dominio semplice}{
+    Siano \(\alpha, \beta \colon [a,b] \fromto \realnumbers\) continua
+    such that \(\alpha(x) \leq \beta(x)\) on \([a,b]\).
+    Diciamo che \(D = \{(x,y) \suchthat a \leq x \leq b, \alpha(x) \leq y \leq \beta(x)\}\)
+    è un \emph{dominio y-semplice} o \emph{normale rispetto all'asse y}.
+    Analogamente per l'altro asse.
+}
+
+Un dominio di questo tipo è misurabile in quanto \(\partial D\) è l'unione di quattro
+pezzi (2 grafici e 2 segmenti) che sono tutti Riemann integrabili in quanto
+le funzioni sono continue, e quindi misurabile.
+
+\stheorem{}{
+    Sia \(D\) un dominio \emph{y-semplice}
+    e \(f\) come sopra.
+    Supponiamo che \(f\) sia limitata e continua in \(D^\circ\). Allora
+    \[
+        \iint_Q f(x,y) \,\text{d}x\,\text{d}y 
+        = \integral[a][b][
+            \integral[\alpha(x)][\beta(x)][f(x,y)][y]
+        ][c]
+    \] 
+}
+
+\sproof{}{
+    Possiamo racchiudere il dominio in un rettangolo \(Q\)
+    e consideriamo \(\tilde f\) l'estensione nulla di \(f\) a \(Q\).
+    Ovviamente \(\tilde f\) è integrabile in quanto \(D\) è misurabile.
+    Dobbiamo mostrare che \(\forall x \in [a,b], \tilde f(x, \cdot)\) è integrabile in \([c,d]\)
+    dove \([c,d]\) è il lato del rettangolo \(Q\).
+    Chiaramente \(\tilde f\) ha al più due discontinuità, e quindi integrabile in quanto continua
+    altrove. Quindi vale il teorema di Fubini e vale il teorema
+    \begin{align*}
+        \iint_Q f(x,y) \,\text{d}x\,\text{d}y 
+        &= \iint_Q \tilde f(x,y) \,\text{d}x\,\text{d}y \\
+        &= \integral[a][b][
+            \integral[\alpha(x)][\beta(x)][f(x,y)][y]
+        ][c] \\
+        &= \integral[a][b][
+            \integral[c][\alpha(x)][0][y]
+            + \integral[\alpha(x)][\beta(x)][f(x,y)][y]
+            + \integral[\beta(x)][d][0][y]
+        ][x] \\
+        &= \integral[a][b][
+            \integral[\alpha(x)][\beta(x)][f(x,y)][y]
+        ][c]
+    \end{align*}
 }
 
 \end{document}
