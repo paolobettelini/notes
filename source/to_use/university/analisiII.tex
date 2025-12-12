@@ -6322,6 +6322,8 @@ Dobbiamo quindi imporre che il bordo sia trascurabile.
     è trascurabile.
 }
 
+Quindi o \(f=1\) è integrabile o ha misura nulla.
+
 \sproof{}{
     Sia \(\Pi\) una partizione prodotto di un quadrato \(Q\) contenente \(D\),
     e calcoliamo \(S(\Pi) - s(\Pi)\).
@@ -6441,5 +6443,259 @@ le funzioni sono continue, e quindi misurabile.
         ][c]
     \end{align*}
 }
+
+\stheorem{}{
+    Siano \(f,g\) due funzioni integrabili su un dominio
+    \(D\) misurabile e siano \(\alpha, \beta \in \realnumbers\). Allora
+    \begin{enumerate}
+        \item \(\alpha f + \beta g\) è integrabile e vale la somma (linearità);
+        \item se \(f \leq g\) allora vale anche con gli integrali (monotona);
+        \item se \(|f|\) è integrabile allora il valore assoliuto dell'integrale
+        è minore dell'integrale di \(|f|\).
+        \item Teorema della media: se \(m = \inf_D f\) e \(M = \sup_D f\), allora
+        \[
+            m \leq \frac{1}{\mu(D)} \iint_d f(x,y) \,\text{d}x\,\text{d}y \leq M
+        \]
+        \item se \(D\) è compatto e connesso
+        e \(f\) è continua, allora esiste \((x_0, y_0) \in D\) tale che
+        \[
+            \frac{1}{\mu(D)}  \iint_D f(x,y) \,\text{d}x\,\text{d}y 
+            = f(x_0, y_0)
+        \]
+        \item se \(D=D_1 \union D_2\)
+        tale che \(\mu(D_1 \intersection D_2) = 0\), allora
+        \[
+            \iint_D f(x,y) \,\text{d}x\,\text{d}y 
+            = \iint_{D_1} f(x,y) \,\text{d}x\,\text{d}y + \iint_{D_2} f(x,y) \,\text{d}x\,\text{d}y 
+        \]
+    \end{enumerate}
+}
+
+\sexercise{}{
+    Calcolare il volume del cilindroide definito da
+    \(z = xy\) nel dominio
+    \[
+        D = \{
+            (x,y) \suchthat 0 \leq y \leq \frac{3}4 \land x^2 + y^2 - 25 \leq 0    
+        \}
+    \]
+    Chiaramente dobbiamo prendere il modulo per assicurarci un valore positivo
+    \[
+        \iint_D |f(x,y)| \,\text{d}x\,\text{d}y 
+    \]
+    Il dominio è un cerchio di raggio \(5\) centrato nell'origine,
+    tagliando da una retta (e dall'asse delle ascisse).
+    Siamo quindi nel primo quadrante.
+    Notiamo che il punto \((4, 3)\) si trova sulla circonferenza.
+    Sezioniamo tale area orizzontalmente
+    \begin{align*}
+        \iint_D |f(x,y)| \,\text{d}x\,\text{d}y 
+        &= \integral[0][3][
+            y\integral[\frac43y][\sqrt{25 - y^2}][
+                x
+            ][x]
+        ][y] \\
+        &= \integral[0][3][
+            \frac{25}{2} \left(1 - \frac19 y^2\right)
+        ][y] \\
+        &= \frac{225}{8}
+    \end{align*}
+}
+
+\sexercise{}{
+    Calcolare
+    \[
+        \iint_D f(x,y) \,\text{d}x\,\text{d}y 
+    \]
+    dove
+    \[
+        D = \{
+            (x,y) \suchthat 0 \leq x \leq \pi \land \sqrt{x} < y \sqrt{\pi}    
+        \}
+    \]
+    e \(f(x,y) = \\frac{\sin(y^2)}{y}\).
+    Notiamo che il denominatore non si annulla mai, ma l'origine è un punto di accumulazione
+    quindi ci si può avvicinare. Dobbiamo verificare che \(f\) sia limitata.
+    Sicuramente \(f > 0\), inoltre
+    \[
+        \frac{y^2}{y} \leq \frac{y^2}{y} = y \to 0
+    \]
+    quindi è limitata e nell'origine si può allungare per continuità.
+    \begin{align*}
+        \iint_D |f(x,y)| \,\text{d}x\,\text{d}y 
+        &= \integral[0][\sqrt\pi][
+            \integral[0][y^2][
+                \frac{\sin(y^2)}{y}
+            ][x]
+        ][y] \\
+        &= \integral[0][\sqrt\pi][
+            \sin(y^2)y
+        ][y]  \\
+        &= \frac12(-\cos \pi + \cos 0) = 1
+    \end{align*}
+}
+
+\sexercise{}{
+    Calcolare, al variare di \(\alpha > 1\),
+    \[
+        \iint_D \frac{x^2}{y} \,\text{d}x\,\text{d}y 
+    \]
+    dove 
+        \[
+        D = \{
+            (x,y) \suchthat  x> 0 \land x^\alpha < y < x
+        \}
+    \]
+    Siccome \(x^\alpha < x\) allora deve essere \(x < 1\).
+    Il dominio è quindi l'intersezione nel primo quadrante fra \(y=x\)
+    e \(y=x^\alpha\).
+    In generale il limite di questa funzione nell'origine non esiste, ma dobbiamo considerare solamente
+    le direzioni che stanno nel dominio.
+    Possiamo notare che
+    \[
+        f(x,y) = \frac{x^2}{y} \leq \frac{x^2}{x^\alpha} = x^{2-\alpha}
+    \]
+    quindi se \(\alpha \leq 2\) va tutto bene.
+    Se \(\alpha > 2\), la funzione è illimitata.
+    Infatti, se \(\varepsilon > 0\) è tale che
+    \(2 - 2 + \varepsilon < \alpha\), allora \(f(t, t^{2 + \varepsilon}) = 1 / t^\varepsilon \to \infty\).
+    Quindi la funzione è limitata solo per \(1 < \alpha \leq 2\).
+    Abbiamo dunque 
+    \begin{align*}
+        \iint_D |f(x,y)| \,\text{d}x\,\text{d}y 
+        &= \integral[0][1][
+            \integral[x^\alpha][x][
+                \frac{x^2}{y}
+            ][y]
+        ][x] \\
+        &= (1-\alpha) \integral[0][1][
+            x^2\ln(x)
+        ][x] \\
+        &= \frac{\alpha - 1}{9}
+    \end{align*}
+}
+
+\sexercise{}{
+    Scambiare l'ordine di integrazione in
+    \[
+        \integral[-1][1][
+            \integral[|x|][\sqrt{2-x^2}][f(x,y)][y]
+        ][y]
+    \]
+    Abbiamo che \(|x| = \sqrt{2-x^2}\) se e solo se \(x = \pm 1\).
+    Il dominio di integrazione è quindi una fetta di circonferenza verso l'alto.
+    Per sezionarlo orizzontalmente dobbiamo spezzarlo in due
+    \begin{align*}
+        \iint_D |f(x,y)| \,\text{d}x\,\text{d}y 
+        &= \integral[0][1][
+            \integral[-y][y][
+                f(x,y)
+            ][x]
+        ][y] + \integral[1][\sqrt 2][
+            \integral[-\sqrt{2-y^2}][\sqrt{2 - y^2}][
+                f(x,y)
+            ][x]
+        ][y]
+    \end{align*}
+}
+
+\sexercise{}{
+    Calcolare
+    \[
+        \iint_{\{x^2 + y^2 < 1\}} (x-y)\cos(x^2 + y^2) \,\text{d}x\,\text{d}y 
+    \]
+    Notiamo che \(f(x,y) = -f(-x, -y)\) e il dominio è simmetrico, allora l'integrale fa zero.
+}
+
+\subsection{Integrali tripli}
+
+La teoria si estende in maniera completamente analoga.
+Ora, il grafico di una funzione integrabile \(\realnumbers^2 \fromto \realnumbers\)
+è un insieme di misura nulla.
+
+\sexample{}{
+    Consideriamo l'insieme \[
+        D = \{(x,y,z) \suchthat x\geq 0 \land y \geq 0 \land z \geq 0 \land x + y + z \leq 1\}
+    \]
+    è un \(3\)-simplesso standard, anche detto tetraedo fondamentale dell'ottante positivo.
+    Vogliamo calcolare
+    \[
+        \iiint_D f(x,y,z) \,\text{d}x\,\text{d}y\,\text{d}z
+    \]
+    Possiamo sezionarlo per strati \(z \in [0,1]\)
+    \begin{align*}
+        \iiint_D f(x,y,z) \,\text{d}x\,\text{d}y\,\text{d}z
+        &=
+        \integral[0][1][
+            \iint_{D_z} f(x,y,z) \,\text{d}x\,\text{d}y
+        ][z]
+    \end{align*}
+    Alternativamente possiamo sezionarlo per fili. Consideriamo la proiezione del dominio
+    sul piano \(xy\). Consideriamo dei fili verticali che arrivano fino all'estremo del dominio \(z = 1 - x - y\).
+    Quindi un singolo filo va da \(0\) a \(1-x-y\). Abbiamo quindi
+    \begin{align*}
+        \iiint_D f(x,y,z) \,\text{d}x\,\text{d}y\,\text{d}z
+        &=
+        \iint_T \integral[0][1-x-y][f(x,y,z)][z] \,\text{d}x\,\text{d}y
+    \end{align*}
+    dove \(T\) è la base, cioè \(\{(x,y) \suchthat x \geq 0 \land y \geq 0 \land x+y \leq 1\}\)
+}
+
+Abbiamo quindi 2 modi di sezionare un integrale doppio e 6 di sezionarne uno triplo.
+% (n-1)n
+
+In generale, se
+\[
+    D = \{(x,y,z) \suchthat (x,y) \in T, \alpha(x,y) \leq z \leq \beta(x,y)\}
+\]
+abbiamo
+\[
+    \iiint_D f(x,y,z) \,\text{d}x\,\text{d}y\,\text{d}z
+    = \iint_T \integral[\alpha(x,y)][\beta(x,y)][f(x,y,z)][z] \,\text{d}x\,\text{d}y
+\]
+
+\sexample{}{
+    Calcolare il volume del 3 simplesso standard.
+    Dobbiamo integrare la funzione \(1\).
+    Cominciamo per strati
+    \begin{align*}
+        \iiint_D 1 \,\text{d}x\,\text{d}y\,\text{d}z
+        &= \integral[0][1][
+            \iint_{D_z} 1 \,\text{d}x\,\text{d}y
+        ][z] \\
+        &= \integral[0][1][
+            \integral[0][1-z][
+                \integral[0][1-z-y][1][x]
+            ][y]
+        ][z] \\
+        &= \integral[0][1][
+            \integral[0][1-z][
+                1-z-y
+            ][y]
+        ][z] = \frac16
+    \end{align*}
+    Facciamolo ora per fili
+    \begin{align*}
+        \iiint_D 1 \,\text{d}x\,\text{d}y\,\text{d}z
+        &= \iint_T \integral[0][1-x-y][1][z] \,\text{d}x\,\text{d}y \\
+        &= \iint_T 1-x-y \,\text{d}x\,\text{d}y \\
+        &= \integral[0][1][
+            \integral[0][1-x][1][y]
+        ][x] = \frac16
+    \end{align*}
+}
+
+\sexercise{}{
+    L'ipervolume dell'\(n\)-simplesso è \(1 / n!\).
+}
+
+%\begin{align*}
+%    \iint_D |f(x,y)| \,\text{d}x\,\text{d}y 
+%    &= \integral[][][
+%        \integral[][][
+%
+%        ][]
+%    ][]
+%\end{align*}
 
 \end{document}
