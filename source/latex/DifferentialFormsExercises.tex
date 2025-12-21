@@ -1,0 +1,104 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+\usepackage{tikz}
+
+\usetikzlibrary{decorations.markings, arrows.meta}
+
+\begin{document}
+
+\id{differential-forms-exercises}
+\genpage
+
+\section{Exercises}
+
+\begin{snippetexercise}{differential-forms-ex1}{}
+    Let
+    \[
+        \omega = (x^4 - y)\,dx + (x + y^2)\,dy
+    \]
+    and compute its integral on
+    \begin{center}
+        \tikzset{
+            mid arrow/.style={
+                postaction={
+                    decorate,
+                    decoration={
+                        markings,
+                        mark=at position 0.6 with {\arrow[scale=1]{Latex}}
+                    }
+                }
+            }
+        }
+        \tikzset{
+            quarter arrow/.style={
+                postaction={
+                    decorate,
+                    decoration={
+                        markings,
+                        mark=at position 0.3 with {\arrow[scale=1]{Latex}}
+                    }
+                }
+            }
+        }
+        \begin{tikzpicture}
+            \draw[->, gray, thick] (-1.5, 0) -- (1.5, 0) node[right] {$x$};
+            \draw[->, gray, thick] (0, -1.5) -- (0, 1.5) node[above] {$y$};
+
+            \def\R{1} 
+            \coordinate (StartSemicircle) at (\R, 0);   % (1, 0)
+            \coordinate (EndSemicircle) at (-\R, 0);    % (-1, 0)
+            \coordinate (Origin) at (0, 0);             % (0, 0)
+            \coordinate (PointMinus1) at (0, -1);       % (0, -1)
+            \coordinate (PointPlus1) at (0, 1);         % (0, 1)
+
+            \begin{scope}[color=red!80!black, very thick, line join=round, line cap=round]
+                \draw[quarter arrow] (StartSemicircle) arc (0:180:\R);
+                \draw[mid arrow] (EndSemicircle) -- (Origin);
+                \draw[mid arrow] (Origin) -- (PointMinus1);
+                \draw[mid arrow] (PointMinus1) -- (StartSemicircle);
+            \end{scope}
+
+            \fill (PointMinus1) circle (1pt) node[right] {$-1$};
+            \fill (PointPlus1) circle (1pt) node[above right] {$1$};
+            \fill (StartSemicircle) circle (1pt) node[below right] {$1$};
+            \fill (EndSemicircle) circle (1pt) node[below left] {$-1$};
+        \end{tikzpicture}
+    \end{center}
+\end{snippetexercise}
+
+\begin{snippetsolution}{differential-forms-ex1-sol}{}
+    We observe that the curve is piecewise smooth and closed.
+    Thus, we split the integral into 4 obvious paths.
+    Since it is closed, if the differential form is exact then the integral is zero.
+    Since we are in \(\realnumbers^2\) (star-shaped), we check if it is closed. We have
+    \begin{align*}
+        \frac{\partial X}{\partial y} &= -1 \quad \frac{\partial Y}{\partial x} = 1
+    \end{align*}
+    Clearly it is not closed, but we can rewrite it as
+    \[
+        \omega = (x^4 - y)\,dx + (x +y^2)\,dy = (x^4 + y)\,dx + (x + y^2)\,dy - 2x\,dx
+    \]
+    So \(\omega_1\) is an exact form, and we are left with the integral over \(\omega_2\).
+    We can parametrize (possibly over the same interval)
+    \begin{align*}
+        &\varphi_1(t) = (\cos(\pi t), \sin(\pi t)) \\
+        &\varphi_2(t) = (t-1, 0) \\
+        &\varphi_3(t) = (0, -1 -t) \\
+        &\varphi_4(t) = (t, t-1)
+    \end{align*}
+    with \(t\in[0,1]\).
+    We are left with
+    \begin{align*}
+        \int_{\varphi} \omega &= \int_\varphi \omega_2 = -2\int_\varphi y\,dx \\
+        &= \integral[0][1][
+            -\pi \sin^2 (\pi t) + 0 + 0 + (t-1)
+        ][t]=\pi+1
+    \end{align*}
+\end{snippetsolution}
+
+\end{document}

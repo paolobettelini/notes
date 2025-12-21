@@ -1,0 +1,82 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{triple-integrals-exercises}
+\genpage
+
+\section{Exercises}
+
+\plain{TODO: exercise sheet.}
+
+\begin{snippetexercise}{triple-integrals-ex1}{Volume of tetrahedron}
+    Compute the volume of
+    \[
+        D = \{(x,y,z) \in \realnumbers^3 \suchthat x\geq 0 \land y \geq 0 \land z \geq 0 \land x + y + z \leq 1\}
+    \]
+    which is the standard \(3\)-standard, or the standard tetrahedron
+    of the positive octant.
+\end{snippetexercise}
+
+\begin{snippetsolution}{triple-integrals-ex1-so1}{Volume of tetrahedron - Solution 1}
+    We want to compute
+    \[
+        \iiint_D f(x,y,z) \,\text{d}x\,\text{d}y\,\text{d}z
+    \]
+    where \(f(x,y,z)=1\).
+    We can dissect it into layers \(z \in [0,1]\)
+    \begin{align*}
+        \iiint_D f(x,y,z) \,\text{d}x\,\text{d}y\,\text{d}z
+        &=
+        \integral[0][1][
+            \left(
+                \iint_{D_z} f(x,y,z) \,\text{d}x\,\text{d}y
+            \right)
+        ][z] \\
+        &= \integral[0][1][
+            \integral[0][1-z][
+                \integral[0][1-z-y][1][x]
+            ][y]
+        ][z] \\
+        &= \integral[0][1][
+            \integral[0][1-z][
+                1-z-y
+            ][y]
+        ][z] = \frac16
+    \end{align*}
+\end{snippetsolution}
+
+\begin{snippetsolution}{triple-integrals-ex2-so1}{Volume of tetrahedron - Solution 2}
+    We want to compute
+    \[
+        \iiint_D f(x,y,z) \,\text{d}x\,\text{d}y\,\text{d}z
+    \]
+    where \(f(x,y,z)=1\).
+    We can dissect it by threads. Consider the projection of the domain
+    on the \(xy\) plane.
+    Consider vertical threads reaching the edge of the domain \(z = 1 - x - y\).
+    So a single thread goes from \(0\) a \(1-x-y\). We thus have
+    \begin{align*}
+        \iiint_D f(x,y,z) \,\text{d}x\,\text{d}y\,\text{d}z
+        &=
+        \iint_T \left(\integral[0][1-x-y][f(x,y,z)][z]\right) \,\text{d}x\,\text{d}y
+    \end{align*}
+    where \(T\) is the base \(\{(x,y) \suchthat x \geq 0 \land y \geq 0 \land x+y \leq 1\}\).
+    Thus,
+    \begin{align*}
+        \iiint_D 1 \,\text{d}x\,\text{d}y\,\text{d}z
+        &= \iint_T \integral[0][1-x-y][1][z] \,\text{d}x\,\text{d}y \\
+        &= \iint_T 1-x-y \,\text{d}x\,\text{d}y \\
+        &= \integral[0][1][
+            \integral[0][1-x][1][y]
+        ][x] = \frac16
+    \end{align*}
+\end{snippetsolution}
+
+\end{document}

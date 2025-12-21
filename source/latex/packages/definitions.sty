@@ -1,9 +1,10 @@
 \ProvidesPackage{definitions}[2023/01/01 Stellar definition commands]
 
+\RequirePackage{amsthm}
 \RequirePackage{stellar}
 \RequirePackage{xcolor}
 \RequirePackage{xspace}
-\RequirePackage{wasysym}
+\RequirePackage[nointegrals]{wasysym}
 \RequirePackage{scolors}
 \RequirePackage{tikz}
 \RequirePackage{stackengine,scalerel}
@@ -219,6 +220,23 @@
 %\newcommand{\urint}{\snippetref[riemann-integral-definition|(Upper) Riemann integral][\scolorweak[black]\origurint]}
 \newcommand{\lrint}{\origlrint}
 \newcommand{\urint}{\origurint}
+
+%% Same thing but for \iint
+% Double upper and lower integrals
+\makeatletter
+\newcommand\lriint{\mathop{\mathpalette\tb@iint{t}}\,\iint}
+\newcommand\uriint{\mathop{\mathpalette\tb@iint{b}}\,\iint}
+\newcommand\tb@iint[2]{%
+  \sbox\z@{$\m@th#1\iint$}% misura lo \iint
+  \if#2t%
+    % line above
+    \rlap{\hbox to \wd\z@{\hfil\raisebox{\dimexpr\ht\z@+1pt\relax}{\rule{\wd\z@}{0.4pt}}\hfil}}%
+  \else
+    % line beneath
+    \rlap{\hbox to \wd\z@{\raisebox{\dimexpr-\dp\z@ -2pt\relax}{\rule{\wd\z@}{0.4pt}}\hfil}}%
+  \fi
+}
+\makeatother
 
 % \injective (text)
 \createtextcmd{\injective}{injectivity-definition}{Injective}{injective}

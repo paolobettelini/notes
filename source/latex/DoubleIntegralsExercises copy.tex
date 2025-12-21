@@ -1,0 +1,235 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{double-integrals-exercises}
+\genpage
+
+\section{Exercises}
+
+\plain{TODO: exercise sheet.}
+
+\begin{snippetexercise}{double-integrals-ex1}{}
+    Let \(Q = [0,1] \cartesianprod [0,3]\) and \[
+        f(x,y) = \begin{cases}
+            2xy & y \leq x^2 \\
+            x^3 + 2x^2y & y > x^2
+        \end{cases}
+    \]
+    Compute
+    \[
+        \iint\nolimits_Q f(x,y) \,\text{d}x\,\text{d}y
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{double-integrals-ex1-sol}{}
+    This boundary is an integrable function and therefore negligible,
+    since it is a set of measure zero; hence \(f\) is integrable.
+    The function \(f(x, -)\) is integrable since it is continuous except possibly at a single point.
+    Therefore, Fubini's theorem applies. We thus have
+    \begin{align*}
+        \iint\nolimits_Q f(x,y) \,\text{d}x\,\text{d}y &= \integral[0][1][
+            \integral[0][3][
+                f(x,y)
+            ][y]
+        ][x] \\
+        &= \integral[0][1][
+            \left(
+            \integral[0][x^2][
+                2xy
+            ][y] + 
+            \integral[x^3][3][
+                (x^3 + 2x^2y)
+            ][y]
+            \right)
+        ][x] \\
+        &= \integral[0][1][
+            3x^3 + 9x^2 - x^6
+        ][x]
+    \end{align*}
+\end{snippetsolution}
+
+\begin{snippetexercise}{double-integrals-ex2}{}
+    Let \(Q = [1,2] \cartesianprod [0,1]\) and \(f(x,y) = x^{-3}e^{\frac{y}{x}}\).
+    Compute
+    \[
+        \iint\nolimits_Q f(x,y) \,\text{d}x\,\text{d}y
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{double-integrals-ex2-sol}{}
+    We have no issues and the function is continuous on the domain, so it is integrable.
+    It is also bounded since it is defined on a compact set. We first integrate with respect to \(y\):
+    \begin{align*}
+        \iint\nolimits_Q f(x,y) \,\text{d}x\,\text{d}y &= \integral[1][2][
+            \integral[0][1][
+                x^{-3}e^{\frac{y}{x}}
+            ][y]
+        ][x] \\
+        &= \integral[1][2][
+            x^{-2}(e^{\frac{1}{x}} - 1)
+        ][x] \\
+        &= \integral[1][2][x^{-2}e^{\frac{1}{x}}][x]
+        - \integral[1][2][x^{-2}][x] \\
+        &= -\frac12 + \sqrt{e} + e
+    \end{align*}
+\end{snippetsolution}
+
+\begin{snippetexercise}{double-integrals-ex3}{}
+    Compute the volume of the solid bounded by
+    \(z = xy\) over the domain
+    \[
+        D = \{
+            (x,y) \in \realnumbers^2 \suchthat 0 \leq y \leq \frac{3}4 \land x^2 + y^2 - 25 \leq 0    
+        \}
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{double-integrals-ex3-sol}{}
+    We need to take the absolute value to ensure a positive result
+    \[
+        \iint\nolimits_D |f(x,y)| \,\text{d}x\,\text{d}y 
+    \]
+    The domain is a circle of radius \(5\) centered at the origin,
+    cut by a line (and by the x-axis).
+    We are therefore in the first quadrant.
+    We note that the point \((4, 3)\) lies on the circumference.
+    We slice this area horizontally:
+    \begin{align*}
+        \iint\nolimits_D |f(x,y)| \,\text{d}x\,\text{d}y 
+        &= \integral[0][3][
+            y\integral[\frac43y][\sqrt{25 - y^2}][
+                x
+            ][x]
+        ][y] \\
+        &= \integral[0][3][
+            \frac{25}{2} \left(1 - \frac19 y^2\right)
+        ][y] \\
+        &= \frac{225}{8}
+    \end{align*}
+\end{snippetsolution}
+
+\begin{snippetexercise}{double-integrals-ex4}{}
+    Compute
+    \[
+        \iint\nolimits_D f(x,y) \,\text{d}x\,\text{d}y 
+    \]
+    where
+    \[
+        D = \{
+            (x,y) \suchthat 0 \leq x \leq \pi \land \sqrt{x} < y \sqrt{\pi}    
+        \}
+    \]
+    and \(f(x,y) = \frac{\sin(y^2)}{y}\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{double-integrals-ex4-sol}{}
+    We note that the denominator never vanishes, but the origin is an accumulation point,
+    so we can approach it. We need to verify that \(f\) is bounded.
+    Certainly \(f > 0\), moreover
+    \[
+        \frac{y^2}{y} \leq \frac{y^2}{y} = y \to 0
+    \]
+    so it is bounded, and at the origin it can be extended by continuity.
+    \begin{align*}
+        \iint\nolimits_D |f(x,y)| \,\text{d}x\,\text{d}y 
+        &= \integral[0][\sqrt\pi][
+            \integral[0][y^2][
+                \frac{\sin(y^2)}{y}
+            ][x]
+        ][y] \\
+        &= \integral[0][\sqrt\pi][
+            \sin(y^2)y
+        ][y] \\
+        &= \frac12(-\cos \pi + \cos 0) = 1
+    \end{align*}
+\end{snippetsolution}
+
+\begin{snippetexercise}{double-integrals-ex5}{}
+    Compute, for \(\alpha > 1\),
+    \[
+        \iint\nolimits_D \frac{x^2}{y} \,\text{d}x\,\text{d}y 
+    \]
+    where 
+    \[
+        D = \{
+            (x,y) \in \realnumbers^2 \suchthat  x> 0 \land x^\alpha < y < x
+        \}
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{double-integrals-ex5-sol}{}
+    Since \(x^\alpha < x\), we must have \(x < 1\).
+    The domain is therefore the intersection in the first quadrant between \(y=x\)
+    and \(y=x^\alpha\).
+    In general, the limit of this function at the origin does not exist, but we need to consider only
+    the directions that lie within the domain.
+    We can note that
+    \[
+        f(x,y) = \frac{x^2}{y} \leq \frac{x^2}{x^\alpha} = x^{2-\alpha}
+    \]
+    so if \(\alpha \leq 2\) everything is fine.
+    If \(\alpha > 2\), the function is unbounded.
+    Indeed, if \(\varepsilon > 0\) is such that
+    \(2 - 2 + \varepsilon < \alpha\), then \(f(t, t^{2 + \varepsilon}) = 1 / t^\varepsilon \to \infty\).
+    Thus the function is bounded only for \(1 < \alpha \leq 2\).
+    We then have 
+    \begin{align*}
+        \iint\nolimits_D |f(x,y)| \,\text{d}x\,\text{d}y 
+        &= \integral[0][1][
+            \integral[x^\alpha][x][
+                \frac{x^2}{y}
+            ][y]
+        ][x] \\
+        &= (1-\alpha) \integral[0][1][
+            x^2\ln(x)
+        ][x] \\
+        &= \frac{\alpha - 1}{9}
+    \end{align*}
+\end{snippetsolution}
+
+\begin{snippetexercise}{double-integrals-ex6}{}
+    Exchange the order of integration in
+    \[
+        \integral[-1][1][
+            \integral[|x|][\sqrt{2-x^2}][f(x,y)][y]
+        ][x]
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{double-integrals-ex6-sol}{}
+    We have that \(|x| = \sqrt{2-x^2}\) if and only if \(x = \pm 1\).
+    The integration domain is therefore an upward circular slice.
+    To slice it horizontally we need to split it into two parts:
+    \begin{align*}
+        \iint\nolimits_D |f(x,y)| \,\text{d}x\,\text{d}y 
+        &= \integral[0][1][
+            \integral[-y][y][
+                f(x,y)
+            ][x]
+        ][y] + \integral[1][\sqrt 2][
+            \integral[-\sqrt{2-y^2}][\sqrt{2 - y^2}][
+                f(x,y)
+            ][x]
+        ][y]
+    \end{align*}
+\end{snippetsolution}
+
+\begin{snippetexercise}{double-integrals-ex7}{}
+    Compute
+    \[
+        \iint\nolimits_{\{x^2 + y^2 < 1\}} (x-y)\cos(x^2 + y^2) \,\text{d}x\,\text{d}y 
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{double-integrals-ex7-sol}{}
+    Note that \(f(x,y) = -f(-x, -y)\) and the domain is symmetric, and thus the integral is zero.
+\end{snippetsolution}
+
+\end{document}
