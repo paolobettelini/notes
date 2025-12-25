@@ -28,7 +28,6 @@
 - desmos 3d lib
 - \boundary, \interior etc. senza il secondo argomento
 - i \cartesianprod i direct/semidirect products, dovrebbero linkare al direct inner/outer product
-- \integers to \integernumbers ?
 - hopital H =
 - mettere il comando per linear subspace
   possiamo anche non usare underset su lim e sup ma direttamente \sup_

@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{graphicx}
 \usepackage{tikz}
 \usepackage{pgfplots}
 
@@ -15,6 +16,19 @@
     mathstyle/.style={font=\sffamily\Large\bfseries},
     arrowstyle/.style={->, -Latex, thick, gray!60, shorten >= 3pt, shorten <= 3pt},
     boundarythick/.style={line width=1.5pt}
+}
+
+% Identification arrow for the squares to be glued
+\tikzset{
+    identification arrow/.style={
+        postaction={
+            decorate,
+            decoration={
+                markings,
+                mark=at position 0.525 with {\arrow[black, scale=1.2, -{Triangle}]{>}}
+            }
+        }
+    }
 }
 
 \begin{document}
@@ -50,109 +64,27 @@
     \]
 \end{snippettheorem}
 
-\begin{snippet}{sphere-disk-illustration}
-    \begin{center}
-        \begin{tikzpicture}[scale=0.5, transform shape, >=Latex]
+\includesnpt{sphere-disk-illustration}
 
-        \def\toprowy{8cm} 
-        \def\bottomrowy{0cm}
+\section{Gluing rectangles}
 
-        % ================= COLUMN 0: D^0 =================
-        \begin{scope}[xshift=0cm]
-            % D^0
-            \begin{scope}[yshift=\toprowy]
-                \fill[red] (0,0) circle (6pt);
-                \node[mathstyle, above=1cm] at (0,0) {$D^0$};
-                \node[labelstyle, above=0.3cm] at (0,0) {Single point};
-            \end{scope}
-        \end{scope}
+\begin{snippetdefinition}{cylinder-definition}{Cylinder}
+    Let \(I = [0,1]\) be the closed unit interval.
+    Define the equivalence relation \(\sim\) on \(I\) generated
+    by \((0,t) \sim (1,t)\).
+    The \emph{cylinder} is defined as \(C = (I \times I)/\sim\).
+\end{snippetdefinition}
 
-        % ================= COLUMN 1: D^1 and S^0 =================
-        \begin{scope}[xshift=6cm]
-            % D^1
-            \begin{scope}[yshift=\toprowy]
-                \draw[line width=2.5pt, red!60] (-1.5,0) -- (1.5,0);
-                \fill[red] (-1.5,0) circle (6pt);
-                \fill[red] (1.5,0) circle (6pt);
-                
-                \node[mathstyle, above=1cm] at (0,0) {$D^1$};
-                \node[labelstyle, above=0.3cm] at (0,0) {Closed interval};
-                
-                % Boundary Arrow
-                \draw[arrowstyle] (0,-0.8) -- (0,-5.5) node[midway, right, font=\large, black] {$\partial$};
-            \end{scope}
-            
-            % S^0
-            \begin{scope}[yshift=\bottomrowy]
-                \fill[blue] (-0.8,0) circle (6pt);
-                \fill[blue] (0.8,0) circle (6pt);
-                \node[mathstyle, above=1cm] at (0,0) {$S^0$};
-                \node[labelstyle, below=0.8cm] at (0,0) {Two points};
-            \end{scope}
-        \end{scope}
+\includesnpt{cylinder-illustration-gluing}
 
-        % ================= COLUMN 2: D^2 and S^1 =================
-        \begin{scope}[xshift=14cm]
-            % D^2
-            \begin{scope}[yshift=\toprowy]
-                \filldraw[fill=red!20, draw=red!80!black, thick] (0,0) circle (1.5cm);
-                
-                \node[mathstyle, above=2.2cm] at (0,0) {$D^2$};
-                \node[labelstyle, above=1.6cm] at (0,0) {Filled disk};
-                
-                % Boundary Arrow
-                \draw[arrowstyle] (0,-1.6) -- (0,-4.5) node[midway, right, font=\large, black] {$\partial$};
-            \end{scope}
+\begin{snippetdefinition}{torus-surface-definition}{Torus surface}
+    Let \(I = [0,1]\) be the closed unit interval.
+    Define the equivalence relation \(\sim\) on \(I\) generated
+    by \((x,0) \sim (x,1)\) and \((0,y) \sim (1,y)\).
+    The \emph{surface of the torus} is defined as \(T = (I \times I)/\sim\).
+\end{snippetdefinition}
 
-            % S^1
-            \begin{scope}[yshift=\bottomrowy]
-                \draw[boundarythick, blue] (0,0) circle (1.5cm);
-                \node[mathstyle, above=2.2cm] at (0,0) {$S^1$};
-                \node[labelstyle, below=1.8cm] at (0,0) {Circle};
-            \end{scope}
-        \end{scope}
-
-        % ================= COLUMN 3: D^3 and S^2 =================
-        \begin{scope}[xshift=24cm]
-            % D^3
-            \begin{scope}[yshift=\toprowy]
-                \fill[red!30] (0,0) circle (1.8cm);
-                \draw[red!60!black, thick] (0,0) circle (1.8cm);
-                
-                % 3D Lines
-                \draw[red!60!black, thin, opacity=0.4] (-1.8,0) arc (180:360:1.8cm and 0.6cm);
-                \draw[red!60!black, thin, dashed, opacity=0.4] (1.8,0) arc (0:180:1.8cm and 0.6cm);
-                
-                \node[mathstyle, above=2.5cm] at (0,0) {$D^3$};
-                \node[labelstyle, above=1.9cm] at (0,0) {Solid ball};
-                
-                % Boundary Arrow
-                \draw[arrowstyle] (0,-2.0) -- (0,-4.5) node[midway, right, font=\large, black] {$\partial$};
-            \end{scope}
-
-            % S^2
-            \begin{scope}[yshift=\bottomrowy]
-                \draw[boundarythick, blue] (0,0) circle (1.8cm);
-                \draw[blue, thin] (-1.8,0) arc (180:360:1.8cm and 0.6cm);
-                \draw[blue, thin, dashed] (1.8,0) arc (0:180:1.8cm and 0.6cm);
-                \draw[blue, thin] (0,1.8) arc (90:270:0.6cm and 1.8cm);
-                \draw[blue, thin, dashed] (0,-1.8) arc (-90:90:0.6cm and 1.8cm);
-                
-                \node[mathstyle, above=2.5cm] at (0,0) {$S^2$};
-                \node[labelstyle, below=2.0cm] at (0,0) {Sphere surface};
-            \end{scope}
-        \end{scope}
-
-        % --- Separators ---
-        \draw[gray!20, dashed, thick] (3, -3) -- (3, 11);
-        \draw[gray!20, dashed, thick] (10, -3) -- (10, 11);
-        \draw[gray!20, dashed, thick] (19, -3) -- (19, 11);
-
-        \end{tikzpicture}
-    \end{center}
-\end{snippet}
-
-\section{Gluing}
+\includesnpt{torus-surface-illustration-gluing}
 
 \begin{snippetdefinition}{mobius-strip-definition}{Möbius strip}
     Let \(I = [0,1]\) be the closed unit interval.
@@ -161,65 +93,7 @@
     The \emph{Möbius strip} is defined as \(M = (I \times I)/\sim\).
 \end{snippetdefinition}
 
-\begin{snippet}{mobius-strip-illustration-gluing}
-    \begin{center}
-        % https://tex.stackexchange.com/questions/118563/moebius-strip-using-tikz
-        \begin{tikzpicture}
-            \tikzset{
-                simple mid arrow/.style={
-                    postaction={
-                        decorate,
-                        decoration={
-                            markings,
-                            mark=at position 0.525 with {\arrow[black, scale=1.2, -{Triangle}]{>}}
-                        }
-                    }
-                }
-            }
-
-            \begin{scope}[xshift=-6.5cm, yshift=1cm]
-                \coordinate (BL) at (0,0);
-                \coordinate (BR) at (3,0);
-                \coordinate (TR) at (3,3);
-                \coordinate (TL) at (0,3);
-                \draw[thick] (BL) -- (BR);
-                \draw[thick] (TL) -- (TR);
-                \draw[very thick, dashed, blue, simple mid arrow] (BL) -- (TL);
-                \draw[very thick, dashed, blue, simple mid arrow] (TR) -- (BR);
-                \node[below=0.5cm, font=\sffamily] at (1.5,0) {Identification};
-            \end{scope}
-
-            \begin{axis}[
-                yshift=2.5cm,
-                anchor=center, % Anchor at the center of the plot
-                hide axis,
-                view={40}{40},
-                width=8cm, height=8cm,
-                axis equal,
-                /tikz/background rectangle/.style={fill=none}
-            ]
-                % The Surface
-                \addplot3 [
-                    surf,
-                    shader=faceted interp,
-                    point meta=x,
-                    colormap/greenyellow,
-                    samples=40,
-                    samples y=5,
-                    z buffer=sort,
-                    domain=0:360,
-                    y domain=-0.5:0.5,
-                    thin
-                ] (
-                    {(1+0.5*y*cos(x/2))*cos(x)},
-                    {(1+0.5*y*cos(x/2))*sin(x)},
-                    {0.5*y*sin(x/2)}
-                );
-            \end{axis}
-
-        \end{tikzpicture}
-    \end{center}
-\end{snippet}
+\includesnpt{mobius-strip-illustration-gluing}
 
 \begin{snippetdefinition}{klein-bottle-definition}{Klein's bottle}
     Let \(I = [0,1]\) be the closed unit interval.
@@ -227,5 +101,42 @@
     by \((x,0) \sim (x,1)\) and \((0,y) \sim (1,1-y)\).
     The \emph{Klein's bottle} is defined as \(K = (I \times I)/\sim\).
 \end{snippetdefinition}
+
+\plain{We first glue two sides and make a cylinder, but then because of the inverted orientation, the cylinder must pass through itself to be glued to the other side.}
+
+\includesnpt{klein-bottle-illustration-gluing}
+
+\section{Higher genus surfaces}
+
+\begin{snippet}{genus-two-torus-expl}
+    We can analogously create a torus with two holes.
+    Geometrically, this operation is performed by removing a small
+    open disk from two separate tori and gluing them together along
+    the resulting circular boundaries.
+    This joining process also transforms the fundamental polygon.
+    Since a single torus is constructed from a 4-sided polygon
+    (a square) with the boundary word $aba^{-1}b^{-1}$,
+    joining two tori effectively concatenates their identification schemes.
+    Consequently, the double torus is identified from an \textbf{octagon}
+    (8 sides). The edges are glued in the sequence:
+    \[
+        a_1 b_1 a_1^{-1} b_1^{-1} a_2 b_2 a_2^{-1} b_2^{-1}
+    \]
+    where the first four edges form the first handle and the subsequent
+    four form the second.
+\end{snippet}
+
+\includesnpt{genus-two-torus-illustration}
+
+\begin{snippet}{multiple-genus-torus-expl}
+    In general, the construction for a two-holed torus holds for any orientable
+    surface of genus $g$.
+    To construct a surface with $g$ holes, we employ a
+    fundamental polygon with \textbf{$4g$ sides}.
+    The standard canonical identification follows the product of $g$ commutators:
+    \[
+        \prod_{i=1}^{g} a_i b_i a_i^{-1} b_i^{-1} = a_1 b_1 a_1^{-1} b_1^{-1} \dots a_g b_g a_g^{-1} b_g^{-1}.
+    \]
+\end{snippet}
 
 \end{document}
