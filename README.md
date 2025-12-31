@@ -19,7 +19,7 @@ Math symbols are clickable and linked to their definition
 @online{paolobettelini,
   author    = {Paolo Bettelini},
   title     = {notes},
-  year      = {2025},
+  year      = {2026},
   publisher = {GitHub},
   journal   = {GitHub repository}
 }
