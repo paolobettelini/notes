@@ -1,0 +1,76 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{topology-retracts}
+\genpage
+
+\section{Retracts and deformation retracts}
+
+\begin{snippetdefinition}{retract-definition}{Retract}
+    Let \(X\) be a \topologicalspace and \(Y \subseteq X\) a subspace.
+    We say that \(Y\) is a \emph{retract} of \(X\)
+    if there exists a \topologycontinuous[continuous] map \(r \colon X \fromto Y\),
+    called a \emph{retraction}, such that \(r(y) = y\) for all \(y \in Y\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{deformation-retract-definition}{Deformation retract}
+    Let \(X\) be a \topologicalspace.
+    A subspace \(Y \subseteq X\) is called a \emph{deformation retract} of \(X\)
+    if there exists a \topologycontinuous[continuous] map
+    \[
+        R \colon X \cartesianprod [0,1] \fromto X
+    \]
+    called a \emph{deformation of \(X\) onto \(Y\)}, such that:
+    \begin{enumerate}
+        \item \(R(x, 0) = x\) for all \(x \in X\);
+        \item \(R(x, 1) \in Y\) for all \(x \in X\);
+        \item \(R(y, t) = y\) for all \(y \in Y\) and \(t \in [0,1]\).
+    \end{enumerate}
+\end{snippetdefinition}
+
+\begin{snippetexample}{star-shaped-deformation-retract}{Star-shaped set}
+    Let \(A \subseteq \realnumbers^n\) be a star-shaped set with respect to a point \(p \in A\).
+    Then \(\{p\}\) is a deformation retract of \(A\) via the map
+    \[
+        R(x, t) = (1-t)x + tp
+    \]
+\end{snippetexample}
+
+\begin{snippetproposition}{deformation-retract-is-homotopy-equivalence}{Deformation retract is homotopy equivalence}
+    Let \(X\) be a \topologicalspace and \(Y \subseteq X\) a deformation retract.
+    Then \(Y\) is a retract of \(X\) and the inclusion \(i \colon Y \inclusion X\)
+    is a \snippetref[homotopy-equivalence-definition][homotopy equivalence].
+\end{snippetproposition}
+
+\begin{snippetproof}{deformation-retract-is-homotopy-equivalence-proof}{deformation-retract-is-homotopy-equivalence}{Deformation retract is homotopy equivalence}
+    Let \(R \colon X \cartesianprod [0,1] \fromto X\) be the deformation.
+    Define \(r \colon X \fromto Y\) by \(r(x) = R(x, 1) \in Y\).
+    
+    For \(y \in Y\), we have \(r(y) = R(y, 1) = y\), so \(r\) is a retraction.
+    Thus \(r \circ i = \identity_Y\).
+    
+    On the other hand, \(R\) provides a homotopy between \(i \circ r\) and \(\identity_X\):
+    \begin{itemize}
+        \item \(R(x, 0) = x = \identity_X(x)\);
+        \item \(R(x, 1) = r(x) = (i \circ r)(x)\).
+    \end{itemize}
+    Hence \(i \circ r \simeq \identity_X\).
+\end{snippetproof}
+
+\begin{snippetexample}{sphere-deformation-retract}{Sphere as deformation retract}
+    Consider the inclusion \(S^n \inclusion \realnumbers^{n+1} \difference \{0\}\)
+    and the map \(r \colon \realnumbers^{n+1} \difference \{0\} \fromto S^n\)
+    given by \(r(x) = x / \|x\|\).
+    
+    The map \(R(x, t) = (1-t)x + t \cdot r(x)\) gives a deformation retraction,
+    so \(S^n\) is a deformation retract of \(\realnumbers^{n+1} \difference \{0\}\).
+\end{snippetexample}
+
+\end{document}

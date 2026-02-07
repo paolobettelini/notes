@@ -1,0 +1,97 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{fundamental-group-s1}
+\genpage
+
+\section{Fundamental group of the circle}
+
+\begin{snippetdefinition}{lifting-definition}{Lifting}
+    Let \(p \colon \tilde{X} \fromto X\) be a covering
+    and \(f \colon Y \fromto X\) a continuous map.
+    A \emph{lift} (or \emph{lifting}) of \(f\)
+    is a continuous map \(\tilde{f} \colon Y \fromto \tilde{X}\)
+    such that \(p \circ \tilde{f} = f\).
+\end{snippetdefinition}
+
+\begin{snippettheorem}{path-lifting-theorem}{Path lifting theorem}
+    Let \(p \colon \tilde{X} \fromto X\) be a covering,
+    \(\alpha \colon [0,1] \fromto X\) a path, and \(\tilde{x}_0 \in p^{-1}(\alpha(0))\).
+    Then there exists a unique lift \(\tilde{\alpha} \colon [0,1] \fromto \tilde{X}\)
+    with \(\tilde{\alpha}(0) = \tilde{x}_0\).
+\end{snippettheorem}
+
+\begin{snippettheorem}{homotopy-lifting-theorem}{Homotopy lifting theorem}
+    Let \(p \colon \tilde{X} \fromto X\) be a covering
+    and \(F \colon [0,1] \cartesianprod [0,1] \fromto X\) a homotopy.
+    If \(\tilde{\alpha}\) is a lift of \(F(\cdot, 0)\)
+    starting at \(\tilde{x}_0\), then there exists a unique lift
+    \(\tilde{F} \colon [0,1] \cartesianprod [0,1] \fromto \tilde{X}\)
+    with \(\tilde{F}(0, 0) = \tilde{x}_0\).
+\end{snippettheorem}
+
+\subsection{Calculation of \(\pi_1(S^1)\)}
+
+Consider the covering \(e \colon \realnumbers \fromto S^1\) given by \(e(t) = e^{2\pi i t}\).
+
+\begin{snippetdefinition}{degree-winding-number-definition}{Degree / Winding number}
+    Let \(\alpha \colon [0,1] \fromto S^1\) be a loop based at \(1\).
+    Let \(\tilde{\alpha}\) be the unique lift with \(\tilde{\alpha}(0) = 0\).
+    The \emph{degree} (or \emph{winding number}) of \(\alpha\) is
+    \[
+        \deg(\alpha) = \tilde{\alpha}(1) \in \integers
+    \]
+\end{snippetdefinition}
+
+\begin{snippetlemma}{degree-well-defined}{Degree is well-defined on homotopy classes}
+    If \(\alpha \simeq \beta\) (rel endpoints), then \(\deg(\alpha) = \deg(\beta)\).
+\end{snippetlemma}
+
+\begin{snippetproof}{degree-well-defined-proof}{degree-well-defined}{Degree is well-defined}
+    Let \(F\) be a homotopy from \(\alpha\) to \(\beta\) with fixed endpoints.
+    By the homotopy lifting theorem, there is a lift \(\tilde{F}\)
+    with \(\tilde{F}(0, s) = 0\) for all \(s\).
+    Since \(e(\tilde{F}(1, s)) = 1\) for all \(s\),
+    we have \(\tilde{F}(1, s) \in \integers\).
+    By continuity and connectedness, \(\tilde{F}(1, s)\) is constant.
+    Thus \(\tilde{\alpha}(1) = \tilde{F}(1, 0) = \tilde{F}(1, 1) = \tilde{\beta}(1)\).
+\end{snippetproof}
+
+\begin{snippettheorem}{fundamental-group-circle}{Fundamental group of \(S^1\)}
+    \[
+        \pi_1(S^1, 1) \cong \integers
+    \]
+    The isomorphism is given by the degree map \(\deg \colon \pi_1(S^1, 1) \fromto \integers\).
+\end{snippettheorem}
+
+\begin{snippetproof}{fundamental-group-circle-proof}{fundamental-group-circle}{\(S^1\)}
+    \begin{itemize}
+        \item \emph{homomorphism:}
+            For loops \(\alpha, \beta\), we have \(\deg(\alpha * \beta) = \deg(\alpha) + \deg(\beta)\)
+            since the lift of \(\alpha * \beta\) starting at \(0\) ends at \(\deg(\alpha) + \deg(\beta)\).
+        \item \emph{surjective:}
+            For any \(n \in \integers\), the loop \(\alpha_n(t) = e^{2\pi i n t}\)
+            has degree \(n\).
+        \item \emph{injective:}
+            If \(\deg(\alpha) = 0\), then \(\tilde{\alpha}(1) = 0 = \tilde{\alpha}(0)\).
+            The path \(\tilde{\alpha}\) is a loop in \(\realnumbers\).
+            Since \(\realnumbers\) is contractible, \(\tilde{\alpha} \simeq 0\),
+            hence \(\alpha = e \circ \tilde{\alpha} \simeq e \circ 0 = 1_1\).
+    \end{itemize}
+\end{snippetproof}
+
+\begin{snippetcorollary}{fundamental-group-torus}{Fundamental group of torus}
+    \[
+        \pi_1(T^2) \cong \integers \cartesianprod \integers
+    \]
+    since \(T^2 = S^1 \cartesianprod S^1\).
+\end{snippetcorollary}
+
+\end{document}

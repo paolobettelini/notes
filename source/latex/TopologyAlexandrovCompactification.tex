@@ -1,0 +1,115 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{topology-alexandrov-compactification}
+\genpage
+
+\section{Alexandrov compactification}
+
+\begin{snippetdefinition}{alexandrov-compactification-definition}{Alexandrov compactification}
+    Let \(X\) be a \topologicalspace with topology \(\mathcal{U}\), and let \(\infty \notin X\).
+    On the set \(\hat{X} \triangleq X \union \{\infty\}\), we define the topology
+    \[
+        \mathcal{J} = \mathcal{U}
+        \union \{V \union \{\infty\} \suchthat X \difference V \text{ is closed and compact in } X\}
+    \]
+    The space \((\hat{X}, \mathcal{J})\) is called the \emph{Alexandrov compactification}
+    (or \emph{one-point compactification}) of \(X\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{alexandrov-compactification-is-topology}{Alexandrov topology}
+    The collection \(\mathcal{J}\) defined above forms a topology on \(\hat{X}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{alexandrov-compactification-is-topology-proof}{alexandrov-compactification-is-topology}{Alexandrov topology}
+    We verify the axioms:
+    \begin{enumerate}
+        \item \(\emptyset \in \mathcal{J}\) since \(\emptyset\) is open in \(X\);
+        \item Taking \(K = \emptyset\) (closed and compact), we get \(\hat{X} \in \mathcal{J}\);
+        \item \textbf{Finite intersections:}
+            \begin{itemize}
+                \item If \(A_1, A_2 \subseteq X\) are open in \(X\), then \(A_1 \intersection A_2\) is open in \(X\);
+                \item If \(A\) is open in \(X\) and \(K\) is closed compact in \(X\),
+                    then \(A \intersection (\hat{X} \difference K) = A \intersection (X \difference K)\) is open in \(X\);
+                \item \((\hat{X} \difference K_1) \intersection (\hat{X} \difference K_2)
+                    = \hat{X} \difference (K_1 \union K_2)\), and \(K_1 \union K_2\) is closed and compact.
+            \end{itemize}
+        \item \textbf{Arbitrary unions:}
+            \begin{itemize}
+                \item \(\bigcup_{i\in I} (\hat{X} \difference K_i) = \hat{X} \difference \bigcap_{i\in I} K_i\).
+                    The intersection is closed, and being contained in any \(K_{i_0}\), it is compact;
+                \item For a mixed union \((\hat{X} \difference K) \union A\),
+                    we have \(K \intersection (X \difference A)\) is closed and compact.
+            \end{itemize}
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetproposition}{alexandrov-compactification-is-compact}{Alexandrov compactification is compact}
+    Let \(X\) be a \topologicalspace.
+    Then \(\hat{X}\) is compact.
+\end{snippetproposition}
+
+\begin{snippetproof}{alexandrov-compactification-is-compact-proof}{alexandrov-compactification-is-compact}{Alexandrov compactification is compact}
+    Let \(\{U_i\}_{i\in I}\) be an open cover of \(\hat{X}\).
+    There exists some \(U_0\) containing \(\infty\),
+    which must be of the form \(U_0 = \hat{X} \difference K\)
+    for some closed compact \(K \subseteq X\).
+    
+    Since \(K\) is compact, there exists a finite subcover
+    \(\{U_1, \ldots, U_n\}\) of \(K\).
+    Then \(\{U_0, U_1, \ldots, U_n\}\) is a finite subcover of \(\hat{X}\).
+\end{snippetproof}
+
+\begin{snippetproposition}{alexandrov-non-compact-is-dense}{Dense when not compact}
+    If \(X\) is a \topologicalspace that is not compact,
+    then \(X\) is dense in \(\hat{X}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{alexandrov-non-compact-is-dense-proof}{alexandrov-non-compact-is-dense}{Dense when not compact}
+    We must show that every non-empty open set of \(\hat{X}\) intersects \(X\).
+    For opens \(A \subseteq X\), this is clear.
+    For opens of the form \(\hat{X} \difference K\) with \(K\) compact and closed,
+    we have \(X \intersection (\hat{X} \difference K) = X \difference K \neq \emptyset\)
+    since \(K \neq X\) (otherwise \(X\) would be compact).
+\end{snippetproof}
+
+\begin{snippetproposition}{alexandrov-hausdorff-condition}{Hausdorff condition}
+    Let \(X\) be a \topologicalspace.
+    Then \(\hat{X}\) is Hausdorff if and only if \(X\) is Hausdorff
+    and every point of \(X\) has a compact neighborhood.
+\end{snippetproposition}
+
+\begin{snippetproposition}{compact-hausdorff-minus-point}{Compact Hausdorff minus a point}
+    Let \(Y\) be a compact hausdorff metric space and \(y \in Y\).
+    Then \(Y \difference \{y\}\) is Hausdorff and every point has a compact neighborhood.
+\end{snippetproposition}
+
+\begin{snippetproof}{compact-hausdorff-minus-point-proof}{compact-hausdorff-minus-point}{Compact Hausdorff minus a point}
+    \(Y \difference \{y\}\) is Hausdorff as a subspace of a Hausdorff space.
+    
+    For the compact neighborhood property, let \(y' \in Y \difference \{y\}\).
+    Since \(Y\) is Hausdorff, there exist disjoint open neighborhoods
+    \(U\) of \(y\) and \(U'\) of \(y'\).
+    Then \(Y \difference U\) is a closed subset of \(Y\), hence compact.
+    Since \(y' \in U' \subseteq Y \difference U \subseteq Y \difference \{y\}\),
+    we have found a compact neighborhood of \(y'\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{compact-hausdorff-is-alexandrov}{Compact Hausdorff as Alexandrov}
+    Let \(Y\) be a compact hausdorff metric space and \(y \in Y\).
+    Then \(Y\) is homeomorphic to the Alexandrov compactification
+    of \(Y \difference \{y\}\).
+\end{snippetcorollary}
+
+\begin{snippetcorollary}{sphere-alexandrov-compactification}{Sphere as compactification}
+    \(S^n\) is homeomorphic to the Alexandrov compactification of \(\realnumbers^n\).
+\end{snippetcorollary}
+
+\end{document}

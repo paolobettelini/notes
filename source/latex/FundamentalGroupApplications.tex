@@ -1,0 +1,108 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{fundamental-group-applications}
+\genpage
+
+\section{Applications of the fundamental group}
+
+\subsection{Brouwer fixed point theorem}
+
+\begin{snippettheorem}{brouwer-fixed-point-d2}{Brouwer fixed point theorem for D²}
+    Every continuous map \(f \colon D^2 \fromto D^2\) has a fixed point.
+\end{snippettheorem}
+
+\begin{snippetproof}{brouwer-fixed-point-d2-proof}{brouwer-fixed-point-d2}{Brouwer fixed point}
+    Suppose for contradiction that \(f(x) \neq x\) for all \(x \in D^2\).
+    Define \(r \colon D^2 \fromto S^1\) by taking
+    \(r(x)\) to be the intersection of the ray from \(f(x)\) through \(x\)
+    with \(S^1\).
+    
+    This map is continuous and satisfies \(r(x) = x\) for \(x \in S^1\),
+    so \(r\) is a \snippetref[retract-definition][retraction] of \(D^2\) onto \(S^1\).
+    
+    But then \(\pi_1(r) \colon \pi_1(D^2) \fromto \pi_1(S^1)\)
+    would be surjective.
+    Since \(\pi_1(D^2) = \{e\}\) (as \(D^2\) is contractible)
+    and \(\pi_1(S^1) \cong \integers \neq \{e\}\),
+    this is a contradiction \lightning.
+\end{snippetproof}
+
+\subsection{Fundamental theorem of algebra}
+
+\includesnpt{fundamental-theorem-of-algebra}
+
+\begin{snippetproof}{fundamental-theorem-algebra-proof}{fundamental-theorem-algebra}{Fundamental theorem of algebra}
+    It suffices to show that \(f\) has at least one root, since if \(\alpha\) is a root
+    then \(f\) is divisible by \(x - \alpha\) and \(f/(x-\alpha)\) has degree \(n-1\),
+    so we can proceed by induction.
+    
+    Suppose for contradiction that \(f\) has no complex roots.
+    Consider the function \(g_r \colon [0,1] \fromto S^1\) defined by
+    \[
+        g_r(s) \triangleq \frac{f(re^{2\pi i s}) / f(r)}{|f(re^{2\pi i s}) / f(r)|}
+    \]
+    By construction, \(g_r\) takes values in \(S^1\) and is well-defined and continuous
+    since \(f\) never vanishes by hypothesis.
+    
+    Define \(g \colon [0,1] \cartesianprod \realnumbers \fromto S^1\) by \((s,r) \mapsto g_r(s)\).
+    Then
+    \[
+        g_r(0) = \frac{f(r) / f(r)}{|f(r)/f(r)|} = 1 = g_r(1)
+    \]
+    So \(g_r\) is a closed path from \(1\) to \(1\) in \(S^1\), hence \([g_r] \in \pi_1(S^1, 1)\).
+    
+    We have \(g_0(s) = 1\), so \(g_0\) is the constant path at \(1\).
+    For all \(r, r'\), the loops \(g_r\) and \(g_{r'}\) are homotopic with fixed endpoints
+    (we can take \(g\) as the homotopy between them).
+    Thus \(g_r\) is homotopic to the constant loop \(g_0\).
+    
+    We now choose an \(r\) for which this leads to a contradiction.
+    Choose \(r_0\) large enough that \(r_0 > 1\) and \(r_0 > \sum |c_i|\)
+    (the coefficients of the polynomial).
+    
+    For \(\|x\| = r_0\), by the triangle inequality:
+    \begin{align*}
+        \left|\sum c_i x^{n-i}\right|
+        &\leq \sum |c_i| \cdot |x^{n-i}| \leq
+        |x^{n-1}| \cdot \left(\sum_{i=1}^{n-1}|c_i|\right)
+    \end{align*}
+    
+    So for all \(t \in [0,1]\) we have
+    \[
+        |x^n| > t \cdot \left|\sum_{i=1}^{n-1} c_i x^{n-i}\right|
+    \]
+    
+    Considering
+    \[
+        f_t(x) \triangleq x^n + t\sum c_i x^{n-i}
+    \]
+    we have \(f_t(x) \neq 0\) for \(t \in [0,1]\).
+    Clearly \(f(x) = f_1(x)\) and \(f_0(x) = x^n\).
+    
+    Substituting this into \(g_{r_0}\):
+    \[
+        g_{r_0,t}(s) = \frac{f_t(r_0 e^{2\pi i s}) / f_t(r_0)}{|f_t(r_0 e^{2\pi i s}) / f_t(r_0)|}
+    \]
+    
+    For \(t=1\) we have \(f_1(x) = f(x)\) so \(g_{r_0, 1} = g_{r_0}\),
+    a closed path in \(S^1\) homotopic to the constant loop.
+    
+    For \(t=0\) we have
+    \[
+        g_{r_0, 0}(s) = \frac{{r_0}^n e^{2\pi i n s} / {r_0}^n}{|{r_0}^n / {r_0}^n|} = e^{2\pi i n s}
+    \]
+    
+    So we have found a path that winds \(n\) times around \(1\),
+    i.e., its degree is \(n\), but \(g_{r_0, 0}\) and \(g_{r_0, 1}\) are homotopic
+    with fixed endpoints \lightning.
+\end{snippetproof}
+
+\end{document}

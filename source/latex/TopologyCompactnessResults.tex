@@ -1,0 +1,112 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{topology-compactness-results}
+\genpage
+
+\section{Compactness results}
+
+\begin{snippettheorem}{unit-interval-is-compact}{[0,1] is compact}
+    The unit interval \([0,1]\) is compact
+    with respect to the Euclidean topology on \(\realnumbers\).
+\end{snippettheorem}
+
+\begin{snippetproof}{unit-interval-is-compact-proof}{unit-interval-is-compact}{[0,1] is compact}
+    Let \(\mathcal{A}\) be an open cover of \([0,1]\).
+    Define the subset \(S \subseteq [0, 1]\) as:
+    \[
+        S = \{t \in [0, 1] \suchthat [0,t] \text{ is covered by finitely many sets in } \mathcal{A}\}
+    \]
+    Note that \(S \neq \emptyset\) since \(0 \in S\).
+    Indeed, \(0 \in [0,1]\), so there exists \(A \in \mathcal{A}\) with \(0 \in A\),
+    thus \([0,0] \subseteq A\).
+    
+    Since \(S\) is bounded above by \(1\), let \(b = \sup S\). Clearly \(b \leq 1\).
+    
+    \textbf{Step 1:} We show that \(b \in S\).
+    Since \(b \in [0,1]\), there exists \(A \in \mathcal{A}\) such that \(b \in A\).
+    Being \(A\) open, there exists \(\delta > 0\) such that \((b-\delta, b] \subseteq A\).
+    By definition of supremum, there exists \(t \in S\) with \(t > b - \delta\).
+    Since \(t \in S\), there exists a finite family \(\mathcal{F} \subseteq \mathcal{A}\)
+    that covers \([0,t]\).
+    Then \(\mathcal{F} \cup \{A\}\) is a finite family that covers \([0,b]\),
+    since \([0,b] \subseteq [0,t] \cup (b-\delta, b]\). Thus \(b \in S\).
+    
+    \textbf{Step 2:} We show that \(b = 1\).
+    Suppose for contradiction that \(b < 1\).
+    Since \(b \in A\), there exists \(\eta > 0\) such that \([b, b+\eta] \subseteq A\)
+    with \(b+\eta \le 1\).
+    Combining the finite cover of \([0,b]\) with \(A\), we cover \([0, b+\eta]\).
+    Hence \(b+\eta \in S\), contradicting \(b = \sup S\) \lightning.
+    
+    We conclude that \(b=1\). Since \(b \in S\), then \(1 \in S\),
+    meaning \([0,1]\) admits a finite subcover.
+\end{snippetproof}
+
+\begin{snippetcorollary}{real-compact-closed-bounded}{Compactness in the reals}
+    A subspace of \(\realnumbers\) is compact if and only if
+    it is closed and bounded.
+\end{snippetcorollary}
+
+\begin{snippetproof}{real-compact-closed-bounded-proof}{real-compact-closed-bounded}{Compactness in the reals}
+    \iffproof{
+        Let \(A \subseteq \realnumbers\) be compact.
+        
+        \emph{Bounded:} Consider the open cover \(\{(-n, n) \suchthat n \in \naturalnumbers\}\).
+        Since \(A\) is compact, there exists a finite subcover,
+        so \(A \subseteq [-N, N]\) for some \(N > 0\).
+        
+        \emph{Closed:} We show \(\closure[]{A} \subseteq A\).
+        If \(p \notin A\), the function \(f(x) = 1/(x-p)\) is continuous on \(A\).
+        Since \(A\) is compact, \(f(A)\) is compact, hence bounded.
+        This implies \(p \notin \closure[]{A}\).
+    }{
+        If \(A\) is closed and bounded,
+        then \(A \subseteq [-a, a]\) for some \(a \geq 0\).
+        Since \([-a, a]\) is homeomorphic to \([0,1]\), it is compact.
+        As a closed subspace of a compact space, \(A\) is compact.
+    }
+\end{snippetproof}
+
+\begin{snippetcorollary}{weierstrass-theorem}{Weierstrass extreme value theorem}
+    Let \(X\) be a compact \topologicalspace and \(f \colon X \fromto \realnumbers\)
+    a \topologycontinuous[continuous] map. Then \(f\) attains its maximum and minimum.
+\end{snippetcorollary}
+
+\begin{snippetproof}{weierstrass-theorem-proof}{weierstrass-theorem}{Weierstrass theorem}
+    Since \(f\) is continuous and \(X\) is compact. \(f(X)\) is compact in \(\realnumbers\).
+    Therefore \(f(X)\) is closed and bounded.
+    
+    Being bounded, \(\inf f(X)\) and \(\sup f(X)\) are real numbers.
+    By definition, infimum and supremum always belong to the closure.
+    Since \(f(X)\) is closed, it equals its closure,
+    so \(\inf f(X)\) and \(\sup f(X)\) belong to \(f(X)\) itself,
+    i.e., they are maximum and minimum.
+\end{snippetproof}
+
+\begin{snippettheorem}{compact-in-hausdorff-is-closed}{Compact in Hausdorff is closed}
+    Let \(X\) be a hausdorff metric space and \(K \subseteq X\) a compact subspace.
+    Then \(K\) is \closedset[closed] in \(X\).
+\end{snippettheorem}
+
+\begin{snippetproof}{compact-in-hausdorff-is-closed-proof}{compact-in-hausdorff-is-closed}{Compact in Hausdorff is closed}
+    We show that \(X \difference K\) is \openset[open].
+    Let \(p \in X \difference K\).
+    For each \(k \in K\), since \(X\) is Hausdorff,
+    there exist disjoint open neighborhoods \(U_k\) of \(p\) and \(V_k\) of \(k\).
+    The family \(\{V_k\}_{k \in K}\) is an open cover of \(K\).
+    Since \(K\) is compact, there exist \(k_1, \ldots, k_n\) such that
+    \(K \subseteq V_{k_1} \union \cdots \union V_{k_n}\).
+    Let \(U = U_{k_1} \intersection \cdots \intersection U_{k_n}\).
+    Then \(U\) is an open neighborhood of \(p\) disjoint from \(K\).
+    Thus \(X \difference K\) is open.
+\end{snippetproof}
+
+\end{document}

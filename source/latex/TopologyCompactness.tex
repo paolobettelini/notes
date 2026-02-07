@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{bettelini}
 
 \begin{document}
 
@@ -12,8 +13,82 @@
 
 \section{Compactness}
 
-\begin{snippetdefinition}{topology-compactness-definition}{Compactness}
-    \todo
+\begin{snippetdefinition}{compact-topological-space-definition}{Compact topological space}
+    Let \(X\) be a \topologicalspace.
+    Then, \(X\) is said to be \emph{compact} if every open cover of \(X\)
+    admits a finite subcover. That is, for every family \(\{U_i\}_{i \in I}\)
+    of \openset[open sets] such that \(X = \bigcup_{i \in I} U_i\),
+    there exist finitely many \(U_{i_1}, \ldots, U_{i_n}\)
+    such that \(X = U_{i_1} \union \cdots \union U_{i_n}\).
 \end{snippetdefinition}
+
+\begin{snippettheorem}{continuous-image-of-compact-is-compact}{Continuous image of compact}
+    Let \(X, Y\) be \topologicalspace[topological spaces]
+    and \(f \colon X \fromto Y\) a \topologycontinuous[continuous] map.
+    If \(X\) is compact, then \(f(X)\) is compact as a subspace of \(Y\).
+\end{snippettheorem}
+
+\begin{snippetproof}{continuous-image-of-compact-is-compact-proof}{continuous-image-of-compact-is-compact}{Continuous image of compact}
+    Let \(\{A_i\}_{i \in I}\) be a family of \openset[open sets] of \(Y\) such that
+    \(f(X) \subseteq \bigcup_{i \in I} A_i\).
+    Then
+    \[
+        X = f^{-1}(f(X)) \subseteq \bigcup_{i \in I} f^{-1}(A_i)
+    \]
+    which is a union of \openset[open sets] in \(X\) since \(f\) is \topologycontinuous.
+    Since \(X\) is compact, there exist \(A_1, \ldots, A_n\)
+    such that \(X = f^{-1}(A_1) \union \cdots \union f^{-1}(A_n)\).
+    Applying \(f\) we get
+    \[
+        f(X) = f(f^{-1}(A_1)) \union \cdots \union f(f^{-1}(A_n))
+    \]
+    and thus \(f(X) \subseteq A_1 \union \cdots \union A_n\).
+\end{snippetproof}
+
+\begin{snippetproposition}{closed-subspace-of-compact-is-compact}{Closed subspace of compact}
+    Let \(X\) be a compact \topologicalspace and \(C \subseteq X\) a \closedset[closed] subspace.
+    Then, \(C\) is compact.
+\end{snippetproposition}
+
+\begin{snippetproof}{closed-subspace-of-compact-is-compact-proof}{closed-subspace-of-compact-is-compact}{Closed subspace of compact}
+    Let \(\{A_i\}_{i \in I}\) be a family of \openset[open sets] such that
+    \(C \subseteq \bigcup_{i \in I} A_i\).
+    Note that \(X = (X \difference C) \union \bigcup_{i \in I} A_i\),
+    where the first term is \openset[open] as the complement of a \closedset[closed set].
+    Since \(X\) is compact, there exist \(A_1, \ldots, A_n\)
+    such that \(X = (X \difference C) \union \bigcup_{i=1}^n A_i\).
+    Thus,
+    \[
+        C = C \intersection X = (C \intersection (X \difference C))
+        \union \bigcup_{i=1}^n (A_i \intersection C)
+    \]
+    but the first term is empty, so \(C \subseteq A_1 \union \cdots \union A_n\).
+\end{snippetproof}
+
+\begin{snippetproposition}{finite-union-of-compacts-is-compact}{Finite union of compacts}
+    Let \(X\) be a \topologicalspace and \(K_1, \ldots, K_n \subseteq X\)
+    compact subspaces. Then, \(K = \bigcup_{i=1}^n K_i\) is compact.
+\end{snippetproposition}
+
+\begin{snippetproof}{finite-union-of-compacts-is-compact-proof}{finite-union-of-compacts-is-compact}{Finite union of compacts}
+    Since each \(K_i\) is compact, we can extract finite subcovers from any open cover.
+    The union of these finite subcovers is still a finite subcover of \(K\).
+\end{snippetproof}
+
+\begin{snippetproposition}{compactness-base-criterion}{Compactness base criterion}
+    Let \(\mathcal{B}\) be a \topologicalbasis for a \topologicalspace \(X\).
+    If every open cover of \(X\) formed by elements in \(\mathcal{B}\)
+    admits a finite subcover, then \(X\) is compact.
+\end{snippetproposition}
+
+\begin{snippetproof}{compactness-base-criterion-proof}{compactness-base-criterion}{Compactness base criterion}
+    Let \(\{A_i\}_{i \in I}\) be an open cover of \(X\).
+    For each \(A_i\), consider \(\mathcal{B}_{A_i} = \{B \in \mathcal{B} \suchthat B \subseteq A_i\}\).
+    By definition of a \topologicalbasis, \(A_i = \bigcup \mathcal{B}_{A_i}\).
+    Thus, \(X = \bigcup_{i \in I} \bigcup_{B \in \mathcal{B}_{A_i}} B\),
+    and by hypothesis there exist \(B_1, \ldots, B_n\) such that \(X = B_1 \union \cdots \union B_n\),
+    where each \(B_j \in \mathcal{B}_{A_{i_j}}\) for some \(i_j\).
+    Therefore, \(X = A_{i_1} \union \cdots \union A_{i_n}\).
+\end{snippetproof}
 
 \end{document}

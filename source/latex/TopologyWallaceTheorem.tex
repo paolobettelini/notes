@@ -1,0 +1,120 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{topology-wallace-theorem}
+\genpage
+
+\section{Wallace theorem}
+
+\begin{snippetproposition}{descending-chain-compacts-nonempty}{Descending chain of compacts}
+    Let \(K_1 \supseteq K_2 \supseteq \cdots \supseteq K_n \supseteq K_{n+1} \supseteq \cdots\)
+    be a countable descending chain of non-empty \closedset[closed] compact subsets
+    of a \topologicalspace. Then,
+    \[
+        \bigcap_{n\in\naturalnumbers} K_n \neq \emptyset
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{descending-chain-compacts-nonempty-proof}{descending-chain-compacts-nonempty}{Descending chain of compacts}
+    Each \(K_n\) is closed in \(K_1\) since \(K_n = K_n \intersection K_1\)
+    and \(K_n\) is closed in the ambient space.
+    Thus the complements \(K_1 \difference K_n\) are open.
+    
+    Suppose for contradiction that \(\bigcap_{n\in\naturalnumbers} K_n = \emptyset\).
+    Then
+    \[
+        K_1 = K_1 \difference \left(\bigcap_{n\in\naturalnumbers} K_n\right)
+        = \bigcup_{n\in\naturalnumbers} (K_1 \difference K_n)
+    \]
+    so \(\{K_1 \difference K_n\}\) forms an open cover of \(K_1\).
+    Since \(K_1\) is compact, there exists a finite subcover
+    \(\{K_1 \difference K_{j_1}, \ldots, K_1 \difference K_{j_m}\}\).
+    But then \(K_1 = K_1 \difference K_{\max\{j_i\}}\), which implies
+    \(K_{\max\{j_i\}} = \emptyset\), contradicting that all \(K_i\) are non-empty \lightning.
+\end{snippetproof}
+
+\begin{snippettheorem}{wallace-theorem}{Wallace theorem}
+    Let \(X, Y\) be \topologicalspace[topological spaces] and
+    \(A \subseteq X\), \(B \subseteq Y\) compact subspaces.
+    Let \(W\) be an \openset[open set] of \(X \cartesianprod Y\) such that \(A \cartesianprod B \subseteq W\).
+    Then, there exist \openset[open sets] \(U \subseteq X\) and \(V \subseteq Y\) such that
+    \[
+        A \subseteq U, \quad B \subseteq V, \quad U \cartesianprod V \subseteq W
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{wallace-theorem-proof}{wallace-theorem}{Wallace theorem}
+    \textbf{Special case:} First, we prove the theorem for \(A = \{a\}\) a singleton.
+    
+    For each \(b \in B\), we have \((a, b) \in W\).
+    Since \(W\) is open in \(X \cartesianprod Y\), there exist open sets
+    \(U_b \subseteq X\) and \(V_b \subseteq Y\) such that
+    \((a, b) \in U_b \cartesianprod V_b \subseteq W\).
+    
+    The family \(\{V_b\}_{b \in B}\) is an open cover of \(B\).
+    Since \(B\) is compact, there exist \(b_1, \ldots, b_n\) such that
+    \(B \subseteq V_{b_1} \union \cdots \union V_{b_n}\).
+    
+    Set \(U = U_{b_1} \intersection \cdots \intersection U_{b_n}\)
+    and \(V = V_{b_1} \union \cdots \union V_{b_n}\).
+    Then \(a \in U\), \(B \subseteq V\), and
+    \[
+        U \cartesianprod V = U \cartesianprod \bigcup_{i=1}^n V_{b_i}
+        = \bigcup_{i=1}^n (U \cartesianprod V_{b_i})
+        \subseteq \bigcup_{i=1}^n (U_{b_i} \cartesianprod V_{b_i})
+        \subseteq W
+    \]
+    
+    \textbf{General case:} For each \(a \in A\), by the special case,
+    there exist open sets \(U_a\) and \(V_a\) such that
+    \(a \in U_a\), \(B \subseteq V_a\), and \(U_a \cartesianprod V_a \subseteq W\).
+    
+    The family \(\{U_a\}_{a \in A}\) is an open cover of \(A\).
+    Since \(A\) is compact, there exist \(a_1, \ldots, a_m\) such that
+    \(A \subseteq U_{a_1} \union \cdots \union U_{a_m}\).
+    
+    Set \(U = U_{a_1} \union \cdots \union U_{a_m}\)
+    and \(V = V_{a_1} \intersection \cdots \intersection V_{a_m}\).
+    Then \(A \subseteq U\), \(B \subseteq V\) (since \(B \subseteq V_{a_i}\) for all \(i\)), and
+    \[
+        U \cartesianprod V \subseteq \bigcup_{i=1}^m (U_{a_i} \cartesianprod V_{a_i}) \subseteq W
+    \]
+\end{snippetproof}
+
+\begin{snippetcorollary}{projection-from-compact-is-closed}{Projection from compact is closed}
+    Let \(X, Y\) be \topologicalspace[topological spaces]
+    with \(X\) compact. Then the projection \(\pi_Y \colon X \cartesianprod Y \fromto Y\) is a closed map.
+\end{snippetcorollary}
+
+\begin{snippetproof}{projection-from-compact-is-closed-proof}{projection-from-compact-is-closed}{Projection from compact is closed}
+    Let \(C \subseteq X \cartesianprod Y\) be \closedset[closed].
+    We show that \(\pi_Y(C)\) is closed, i.e., \(Y \difference \pi_Y(C)\) is open.
+    
+    Let \(y \notin \pi_Y(C)\). This means \(X \cartesianprod \{y\} \subseteq (X \cartesianprod Y) \difference C\).
+    Apply the \snippetref[Wallace theorem][wallace-theorem] with
+    \(A = X\), \(B = \{y\}\), and \(W = (X \cartesianprod Y) \difference C\).
+    We obtain an open \(V \subseteq Y\) with \(y \in V\) and \(X \cartesianprod V \subseteq W\).
+    Thus \(V \subseteq Y \difference \pi_Y(C)\), proving \(Y \difference \pi_Y(C)\) is open.
+\end{snippetproof}
+
+\begin{snippetcorollary}{product-of-compacts-is-compact}{Product of compacts is compact}
+    Let \(X, Y\) be compact \topologicalspace[topological spaces].
+    Then \(X \cartesianprod Y\) is compact.
+\end{snippetcorollary}
+
+\begin{snippetproof}{product-of-compacts-is-compact-proof}{product-of-compacts-is-compact}{Product of compacts}
+    By \snippetref[the previous result][projection-from-compact-is-closed],
+    the projection \(\pi_Y \colon X \cartesianprod Y \fromto Y\) is a closed map.
+    The fibers \(\pi_Y^{-1}(y) = X \cartesianprod \{y\} \cong X\) are compact.
+    Since \(Y\) is compact and all fibers are compact,
+    \(X \cartesianprod Y\) is compact.
+\end{snippetproof}
+
+\end{document}

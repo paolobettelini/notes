@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{bettelini}
 
 \begin{document}
 
@@ -11,5 +12,103 @@
 \genpage
 
 \section{Fundamental group}
+
+\begin{snippetdefinition}{path-space-definition}{Path space}
+    Let \(X\) be a \topologicalspace and \(a, b \in X\).
+    The \emph{path space} from \(a\) to \(b\) is defined as
+    \[
+        \Omega(X, a, b) = \{\alpha \colon [0,1] \fromto X \mid \alpha \text{ continuous}, \alpha(0) = a, \alpha(1) = b\}
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{fixed-endpoint-homotopy-definition}{Fixed-endpoint homotopy}
+    Let \(X\) be a \topologicalspace and \(\alpha, \beta \in \Omega(X, a, b)\).
+    A \emph{fixed-endpoint homotopy} (or \emph{path homotopy}) between \(\alpha\) and \(\beta\)
+    is a homotopy \(F \colon [0,1] \times [0,1] \fromto X\) such that:
+    \begin{enumerate}
+        \item \(F(t, 0) = \alpha(t)\) and \(F(t, 1) = \beta(t)\);
+        \item \(F(0, s) = a\) and \(F(1, s) = b\) for all \(s \in [0,1]\).
+    \end{enumerate}
+    We write \(\alpha \simeq \beta\) (rel endpoints).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{path-concatenation-definition}{Path concatenation}
+    Let \(\alpha \in \Omega(X, a, b)\) and \(\beta \in \Omega(X, b, c)\).
+    The \emph{concatenation} \(\alpha * \beta \in \Omega(X, a, c)\) is defined by
+    \[
+        (\alpha * \beta)(t) = \begin{cases}
+            \alpha(2t) & 0 \leq t \leq \frac{1}{2} \\
+            \beta(2t - 1) & \frac{1}{2} \leq t \leq 1
+        \end{cases}
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{path-inverse-definition}{Path inverse}
+    Let \(\alpha \in \Omega(X, a, b)\).
+    The \emph{inverse path} \(i(\alpha) \in \Omega(X, b, a)\) is defined by
+    \[
+        i(\alpha)(t) \triangleq \alpha(1 - t)
+    \]
+\end{snippetdefinition}
+
+\begin{snippetlemma}{reparametrization-homotopy}{Reparametrization lemma}
+    Let \(\alpha \in \Omega(X, a, b)\) and \(\varphi \colon [0,1] \fromto [0,1]\)
+    a continuous map with \(\varphi(0) = 0\) and \(\varphi(1) = 1\).
+    Then \(\alpha \simeq \alpha \circ \varphi\) (rel endpoints).
+\end{snippetlemma}
+
+\begin{snippetproposition}{path-concatenation-associativity}{Associativity of concatenation}
+    Let \(\alpha \in \Omega(X, a, b)\), \(\beta \in \Omega(X, b, c)\),
+    and \(\gamma \in \Omega(X, c, d)\).
+    Then \((\alpha * \beta) * \gamma \simeq \alpha * (\beta * \gamma)\) (rel endpoints).
+\end{snippetproposition}
+
+\begin{snippetproposition}{path-identity-inverse}{Identity and inverse}
+    Let \(\alpha \in \Omega(X, a, b)\) and let \(1_a\) denote the constant path at \(a\).
+    Then:
+    \begin{enumerate}
+        \item \(1_a * \alpha \simeq \alpha \simeq \alpha * 1_b\);
+        \item \(\alpha * i(\alpha) \simeq 1_a\) and \(i(\alpha) * \alpha \simeq 1_b\).
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetdefinition}{fundamental-group-definition}{Fundamental group}
+    Let \(X\) be a \topologicalspace and \(a \in X\).
+    The \emph{fundamental group} of \(X\) based at \(a\) is
+    \[
+        \pi_1(X, a) = \{[\alpha] \mid \alpha \in \Omega(X, a, a)\}
+    \]
+    the set of fixed-endpoint homotopy classes of loops based at \(a\),
+    with the group operation
+    \[
+        [\alpha] \cdot [\beta] = [\alpha * \beta]
+    \]
+\end{snippetdefinition}
+
+\begin{snippettheorem}{fundamental-group-is-group}{\(\pi_1\) is a group}
+    \((\pi_1(X, a), \cdot)\) is a group with:
+    \begin{enumerate}
+        \item identity element \([1_a]\);
+        \item inverse \([\alpha]^{-1} = [i(\alpha)]\).
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{fundamental-group-is-group-proof}{fundamental-group-is-group}{\(\pi_1\) is a group}
+    \begin{enumerate}
+        \item \emph{Well-defined:} If \(\alpha \simeq \alpha'\) and \(\beta \simeq \beta'\),
+            then \(\alpha * \beta \simeq \alpha' * \beta'\).
+        \item \emph{Associativity:} \(([\alpha] \cdot [\beta]) \cdot [\gamma]
+            = [(\alpha * \beta) * \gamma] = [\alpha * (\beta * \gamma)]
+            = [\alpha] \cdot ([\beta] \cdot [\gamma])\).
+        \item \emph{Identity:} \([1_a] \cdot [\alpha] = [1_a * \alpha] = [\alpha]\)
+            and \([\alpha] \cdot [1_a] = [\alpha * 1_a] = [\alpha]\).
+        \item \emph{Inverse:} \([\alpha] \cdot [i(\alpha)] = [\alpha * i(\alpha)] = [1_a]\).
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetdefinition}{simply-connected-definition}{Simply connected}
+    A \topologicalspace \(X\) is said to be \emph{simply connected}
+    if it is arc-connected and \(\pi_1(X, a) = \{e\}\) for some (equivalently, any) \(a \in X\).
+\end{snippetdefinition}
 
 \end{document}
