@@ -1,0 +1,76 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\newcommand\ts{{(X, \mathcal{T})}}
+
+\begin{document}
+
+\id{topological-sequences}
+\genpage
+
+\section{Sequences}
+
+\plain{Defining convergence on topological spaces is a bit tricky because there is
+no notion of distance (since there is no metric). We can define convergence as
+the members of the sequence (eventually) all lie in each open neighborhood of the convergence point.}
+
+\begin{snippetdefinition}{topology-convergence-definition}{Convergence in topological space}
+    Let \(\ts\) be a \topologicalspace.
+    A \sequence \({\{x_n\}}_{n \in \naturalnumbers}\) in \(X\) converges to a point \(\alpha\in X\)
+    (written \(x_n \to \alpha\)) if 
+    \[ \forall U \in \mathcal{T}, \exists N \in \naturalnumbers \suchthat a_n \in U, \quad \forall n \geq N \]
+\end{snippetdefinition}
+
+\plain{This definition of convergence admits sequences that converge to multiple values.
+This is because we might not have enough open sets to require the sequence to be arbitrarily "close"
+(like in a metric space) to only one convergence point.}
+
+\begin{snippetexample}{topology-multiple-convergence-example}{Topological space multiple convergence}
+    Let \(\ts\) be the \topologicalspace where \(X=\realnumbers\) and
+    \[ \mathcal{T} = \{\emptyset, \realnumbers\} \union \{(b, \infty) \suchthat b \in \realnumbers\}\]
+    The sequence \({\{a_n\}}_{n\in \naturalnumbers} = {\{\frac{1}{n}\}}_{n\in \naturalnumbers}\).
+    This sequences clearly converges to \(0\) because for \(n>0\) the value of the sequence is
+    contained in every open set that contains \(0\). However, the same goes for \(-1\), \(-2\) and so on.
+    Thus, \(a_n\topologyconverges 0 \land a_n\topologyconverges -1 \land a_n \topologyconverges -2 \land \cdots\).
+\end{snippetexample}
+
+\plain{In order to achieve uniqueness, we need to require disjoint open sets for every pair of distinct elements.
+This is precisely what the Hausdorff property does.}
+
+\begin{snippetproposition}{continuous-preserves-convergence}{Continuous maps preserve convergence}
+    Every continuous function \(f \colon X \fromto Y\) is sequentially continuous,
+    i.e., it sends convergent \sequence[sequences] to convergent \sequence[sequences].
+    If \(x_n \to x\) then \(f(x_n) \to f(x)\).
+\end{snippetproposition}
+
+\begin{snippetproof}{continuous-preserves-convergence-proof}{continuous-preserves-convergence}{Continuous preserves convergence}
+    By hypothesis, for every neighborhood \(U\) of \(x\) in \(X\),
+    there exists \(N\) such that if \(n > N\), then \(x_n \in U\).
+    Since \(f\) is continuous at \(x\), for every neighborhood \(V\)
+    of \(f(x)\) there exists a neighborhood \(U\) of \(x\) such that \(f(U) \subseteq V\).
+    It follows that for every neighborhood \(V\) of \(f(x)\), there exists
+    \(N\) such that \(\forall n > N\), \(f(x_n) \in V\):
+    taking \(U\) such that \(f(U) \subseteq V\) and \(N\) such that \(\forall n > N\),
+    \(x_n \in U\), we have \(f(x_n) \in V\).
+\end{snippetproof}
+
+\begin{snippetproposition}{hausdorff-unique-limit}{Unique limits in Hausdorff spaces}
+    A \sequence \({\{x_n\}}_{n \in \naturalnumbers}\) in a \(T_2\) space has a unique limit.
+\end{snippetproposition}
+
+\begin{snippetproof}{hausdorff-unique-limit-proof}{hausdorff-unique-limit}{Unique limits in Hausdorff}
+    Suppose for contradiction that \(x_n \to x\) and \(x_n \to x'\) with \(x \neq x'\).
+    Since \(X\) is \(T_2\), there exist disjoint open neighborhoods
+    \(U\) of \(x\) and \(V\) of \(x'\) such that \(U \intersection V = \emptyset\).
+    There exists \(N\) such that for \(n > N\), \(x_n \in U\).
+    There exists \(M\) such that for \(n > M\), \(x_n \in V\).
+    But then for \(n > \max\{N, M\}\), we have \(x_n \in U\) and \(x_n \in V\),
+    so \(x_n \in U \intersection V = \emptyset\) \lightning.
+\end{snippetproof}
+
+\end{document}
