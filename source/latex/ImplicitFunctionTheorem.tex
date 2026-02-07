@@ -14,7 +14,601 @@
 \section{Implicit function theorem}
 
 \begin{snippetdefinition}{implicitly-defined-function-definition}{Implicitly defined function}
-    \todo
+    Let \(\Omega \subseteq \realnumbers^2\) open and \(F \colon \Omega \fromto \realnumbers\).
+    Consider \(S = \{(x,y) \suchthat F(x,y) = 0\}\).
+    A \function \(\varphi \colon I \fromto \realnumbers\) with \(I\) a real interval
+    is \emph{implicitly defined} by the equation \(F(x,y) = 0\) if:
+    \begin{enumerate}
+        \item \((x, \varphi(x)) \in \Omega\) for all \(x \in I\);
+        \item \(F(x, \varphi(x)) = 0\) for all \(x \in I\).
+    \end{enumerate}
+    An analogous definition holds when \(x\) is expressed as a \function of \(y\).
 \end{snippetdefinition}
+
+\begin{snippet}{implicitly-defined-function-local-expl}
+    In general, we want to know for which conditions
+    the equation \(F(x,y) = 0\) implicitly defines a \function \(y(x)\)
+    or \(x(y)\).
+    
+    To do so, we adopt a local approach: under suitable assumptions,
+    the equation \(F(x,y) = 0\) implicitly defines locally a unique \function
+    of variable \(y\) or variable \(x\).
+\end{snippet}
+
+\begin{snippetexample}{implicit-function-bisettrici-example}{}
+    Let \(F(x,y) = x^2 - y^2\). The zeros are clearly the bisectors \(y = x\) and \(y = -x\).
+    Choosing a point of the form \((5,5)\), everything works:
+    there exists a \neighborhood in which the equation \(F = 0\)
+    implicitly defines a unique \function \(y = x\) or \(x = y\).
+    However, there is a problem at the origin.
+    The solution set does not represent the graph of any \function
+    as there could be infinitely many.
+\end{snippetexample}
+
+\begin{snippetexample}{implicit-function-only-origin-example}{}
+    The equation \(F(x,y) = x^2 + y^2 = 0\)
+    vanishes only at the origin. Thus, it does not implicitly define
+    any \function.
+\end{snippetexample}
+
+\begin{snippetexample}{implicit-function-cusp-example}{}
+    Let \(F(x,y) = x^3 - y^2\).
+    Its zeros form a curve with a cusp at the origin.
+\end{snippetexample}
+
+\begin{snippet}{implicit-function-motivation-expl}
+    In the unit circle, we can express a local \function for both variables
+    except at the 4 intersections with the coordinate axes.
+    At two of these points, we can only express the \function in terms of \(x\),
+    while at the other two, only in terms of \(y\).
+    
+    Consider the Taylor expansion.
+    Let \((x_0, y_0) \in \Omega\) such that \(F(x_0, y_0) = 0\).
+    Expanding \(F\) to first order:
+    \begin{align*}
+        F(x,y) &= F(x_0, y_0) + F_x(x_0, y_0)(x - x_0)
+        + F_y(x_0, y_0)(y - y_0) + o(\|(x - x_0, y - y_0)\|)
+    \end{align*}
+    In the linear case, where the little-o term is neglected,
+    we have equality to zero when
+    \[
+        F_x(x_0, y_0)(x - x_0) + F_y(x_0, y_0)(y - y_0) = 0
+    \]
+    We can isolate \(y\) if \(F_y(x_0, y_0) \neq 0\),
+    giving
+    \[
+        y = y_0 - \frac{F_x(x_0, y_0)}{F_y(x_0, y_0)}(x - x_0)
+    \]
+    We expect this also holds in the non-linear case, adding \(o(\|x - x_0\|)\).
+    
+    For instance, considering the gradient of \(F = x^2 + y^2 - 1\)
+    which vanishes on the unit circle, we have \(\gradient F = (2x, 2y)\).
+    Note that this vanishes when \(x = y = 0\),
+    and \((0,0) \notin F^{-1}(0)\). At all other points, we can express a local \function.
+    For example, at the point \((1, 0)\), we cannot express a local \function
+    for \(y\), but we can express one for \(x\).
+\end{snippet}
+
+\begin{snippettheorem}{dini-theorem}{Implicit function theorem (Dini)}
+    [\{
+        "generalizations": ["general-implicit-function-theorem"]
+    \}]
+    Let \(\Omega \subseteq \realnumbers^2\) be open,
+    \(F \colon \Omega \fromto \realnumbers\) \realcontinuous in \(\Omega\),
+    and \((x_0, y_0) \in \Omega\) such that \(F(x_0, y_0) = 0\).
+    Suppose that the partial derivative \(F_y\) exists in \(\Omega\)
+    and is \realcontinuous at the point \((x_0, y_0)\).
+    If \(F_y(x_0, y_0) \neq 0\), then there exist \(\delta, \sigma > 0\)
+    such that:
+    \begin{enumerate}
+        \item \(F_y \neq 0\) in \(\overline{B}_\delta(x_0) \cartesianprod \overline{B}_\sigma(y_0)\);
+        \item there exists a unique \(\varphi \colon \overline{B}_\delta(x_0) \fromto \overline{B}_\sigma(y_0)\)
+        implicitly defined by the equation \(F(x,y) = 0\).
+        Moreover, \(\varphi\) is \realcontinuous in \(\overline{B}_\delta(x_0)\).
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{dini-theorem-proof}{dini-theorem}{Implicit function theorem (Dini)}
+    We know that \(F_y(x_0, y_0) \neq 0\)
+    (assume without loss of generality that it is positive)
+    and \(F_y\) is \realcontinuous at \((x_0, y_0)\).
+    By the sign permanence theorem, there exists a \neighborhood where this derivative remains
+    strictly positive.
+    Thus, there exist \(\sigma, \tilde{\delta} > 0\) such that
+    \[
+        \overline{B}_{\tilde{\delta}}(x_0) \cartesianprod \overline{B}_\sigma(y_0) \subseteq \Omega
+    \]
+    and
+    \[
+        F_y(x,y) > 0, \quad \forall (x,y) \in \overline{B}_{\tilde{\delta}}(x_0) \cartesianprod \overline{B}_\sigma(y_0)
+    \]
+    which is a small rectangle.
+    Consider the values the \function takes on the vertical line \(x = x_0\).
+    The restriction \(F(x_0, y)\) vanishes at the given point,
+    is non-negative above, and non-positive below, since it is monotone increasing.
+    That is, since \(F_y > 0\), we have
+    \(F(x_0, y_0 - \sigma) < 0\) and \(F(x_0, y_0 + \sigma) > 0\).
+    Since \(F\) is \realcontinuous on all of \(\Omega\),
+    there exists \(\delta > 0\) such that
+    \[
+        F(x, y_0 - \sigma) < 0, \quad \forall x \in \overline{B}_\delta(x_0)
+    \]
+    and
+    \[
+        F(x, y_0 + \sigma) > 0, \quad \forall x \in \overline{B}_\delta(x_0)
+    \]
+    Consider \(x \in \overline{B}_\delta(x_0)\)
+    and the restriction \(F(x, -)\), i.e., the vertical lines.
+    We have \(F(x, y_0 - \sigma) < 0\),
+    \(F(x, y_0 + \sigma) > 0\), and \(F_y > 0\)
+    in \(\overline{B}_\delta(x_0) \cartesianprod \overline{B}_\sigma(y_0)\).
+    Since \(F\) is \realcontinuous and \(F(x, -)\) is monotone increasing, there exists a single point
+    \(y\) where \(F(x, y) = 0\).
+    Thus, for every \(x \in \overline{B}_\delta(x_0)\),
+    there exists a unique \(y \in \overline{B}_\sigma(y_0)\)
+    such that \(F(x, y) = 0\).
+    We have thus defined the implicit \function.
+    It remains to show continuity.
+    If \(\{x_n\} \to x\) with \(x\) in the ball,
+    we want \(\varphi(x_n) \to \varphi(x)\).
+    Consider a generic \subsequence \(\varphi(x_{n_k})\).
+    From this \subsequence, we want to extract a \subsequence converging to \(\varphi(x)\).
+    Note that \(\varphi(x_{n_k}) \in \overline{B}_\sigma(y_0)\),
+    which is compact.
+    Since it is compact, we can extract a convergent \subsequence.
+    There exists \(n_{k_j}\) such that \(\varphi(x_{n_{k_j}}) \to y\).
+    We only know that \(y \in \overline{B}_\sigma(y_0)\).
+    We want to show that \(y = \varphi(x)\).
+    We know that for all \(j\),
+    \[
+        0 = F(x_{n_{k_j}}, \varphi(x_{n_{k_j}}))
+    \]
+    and taking \(j \to \infty\),
+    \[
+        F(x_{n_{k_j}}, \varphi(x_{n_{k_j}})) \to F(x, y) = 0
+    \]
+    by continuity of \(F\), this must be \(0\).
+    By uniqueness of the implicit \function, we must have \(y = \varphi(x)\).
+\end{snippetproof}
+
+\begin{snippet}{dini-theorem-generalization-expl}
+    For \(\Omega \subseteq \realnumbers^n \cartesianprod \realnumbers\)
+    and \(F \colon \Omega \fromto \realnumbers\), the proof is the same
+    since monotonicity is used only on the last variable
+    and the \function has real values.
+
+    If instead the \function has values in \(\realnumbers^m\),
+    we can no longer use monotonicity. This generalized version
+    is no longer called Dini's theorem because it uses a different argument.
+\end{snippet}
+
+\begin{snippetexample}{implicit-function-global-zeros-example}{}
+    Let \(F(x,y) = x^2 y + e^{x+y}\).
+    We want to describe globally the zero set.
+    Clearly \(F \in \continuityclass^\infty(\realnumbers^2)\).
+    The derivatives are \(F_x = 2xy + e^{x+y}\)
+    and \(F_y = x^2 + e^{x+y}\).
+    The second derivative never vanishes.
+    In fact, \(F_y > 0\) always.
+    For fixed \(x\), along vertical lines,
+    the \function is monotone increasing.
+    To check if there is a zero, we study the two limits
+    \[
+        \lim_{y \to -\infty} F(x, y), \quad
+        \lim_{y \to +\infty} F(x, y)
+    \]
+    If the first limit is non-positive and the second is non-negative,
+    then there exists \(y = \varphi(x)\) such that \(F(x, \varphi(x)) = 0\).
+    Computing:
+    \begin{align*}
+        \lim_{y \to -\infty} F(x, y)
+        &= \begin{cases}
+            0 & x = 0 \\
+            -\infty & x \neq 0
+        \end{cases}
+    \end{align*}
+    while
+    \[
+        \lim_{y \to +\infty} F(x, y) = +\infty
+    \]
+    always.
+    If \(x \neq 0\), there certainly exists a zero in between.
+    If \(x = 0\), since the \function is increasing, there is no zero.
+    This tells us that the domain of the implicit \function is
+    \(\realnumbers \backslash \{0\}\).
+    
+    Now study the sign of \(\varphi\).
+    Compute \(F(x, 0)\).
+    If \(F(x, 0) > 0\), then \(\varphi(x) < 0\);
+    if \(F(x, 0) < 0\), then \(\varphi(x) > 0\) by monotonicity.
+    And if \(F(x, 0) = 0\), then \(\varphi(x) = 0\).
+    Since \(F(x, 0) = e^x > 0\),
+    our implicit \function is always negative.
+    
+    Compute the 4 limits.
+    For the limit as \(x \to -\infty\):
+    if it exists, it belongs to \([-\infty, 0]\).
+    Cut with horizontal lines:
+    \[
+        \lim_{x \to -\infty} F(x, -c) = \lim_{x \to -\infty} e^{x-c} - x^2 c = -\infty
+    \]
+    for \(c > 0\). In particular, \(F(x, -c) < 0\) for \(x\) in a \neighborhood of \(-\infty\).
+    Thus, \(-c < \varphi(x) < 0\).
+    Since \(c\) is arbitrary, the limit is \(0^-\).
+    
+    Now compute the limit as \(x \to 0\).
+    Consider \(c > 0\) and compute
+    \[
+        \lim_{x \to 0} F(x, -c) = \lim_{x \to 0} e^{x-c} - x^2 c = e^{-c} > 0
+    \]
+    Thus, the limit is \(-\infty\) from both sides.
+    So there is a vertical asymptote.
+    
+    Now
+    \[
+        \lim_{x \to +\infty} F(x, -c) = \lim_{x \to +\infty} e^{x-c} - x^2 c = +\infty
+    \]
+    for every \(c > 0\).
+    
+    For the derivative, we have \(F(x, \varphi(x)) = 0\),
+    and thus
+    \begin{align*}
+        0 &= \frac{d}{dx} F(x, y(x)) = F_x(x, y(x)) + F_y(x, y(x)) y'(x) \\
+        y'(x) &= -\frac{F_x(x, y(x))}{F_y(x, y(x))}
+    \end{align*}
+    From a computational standpoint, it is convenient to consider directly the expression
+    \(x^2 y(x) + e^{x + y(x)}\) and differentiate with respect to \(x\):
+    \begin{align*}
+        0 &= 2xy + x^2 y' + e^{x+y}(1 + y') = y'(x^2 + e^{x+y}) + 2xy + e^{x+y} \\
+        y'(x) &= -\frac{2xy + e^{x+y}}{x^2 + e^{x+y}}
+    \end{align*}
+    We can use the fact that \(x^2 y + e^{x+y} = 0\) identically on the graph of \(\varphi\).
+    Thus, \(e^{x+y} = -x^2 y\) and so
+    \[
+        y'(x) = -\frac{2xy - x^2 y}{x^2 + e^{x+y}} = -xy \frac{2-x}{x^2 + e^{x+y}}
+    \]
+    whose only critical point is \(x = 2\), while the other is not
+    to be considered since the \function is not defined at zero.
+    Verify that it is a maximum.
+    The sign of \(y'\) is given by the sign of \(x(2-x)\),
+    so the \function decreases on \((-\infty, 0)\),
+    increases on \((0, 2]\), and then decreases again.
+    
+    Evaluate if there is an oblique asymptote on the right.
+    We must evaluate the limit of a \function we do not have explicitly,
+    but we can use L'Hôpital's rule to obtain a more manageable form:
+    \begin{align*}
+        \lim_{x \to \infty} \frac{\varphi(x)}{x}
+        &\overset{H}{=} \lim_{x \to \infty} \varphi'(x)
+        = \lim_{x \to \infty} -xy \frac{2-x}{x^2 + e^{x+y}} \\
+        &= \lim_{x \to \infty} \frac{x-2}{x} \cdot \frac{y}{1 - y} = -1
+    \end{align*}
+    Thus, the slope, if the oblique asymptote exists, must be \(-1\).
+    To find the offset of the asymptote, we must compute
+    \[
+        \lim_{x \to \infty} (\varphi(x) - mx)
+    \]
+    To compute it, consider
+    \begin{align*}
+        \lim_{x \to \infty} F(x, mx + q)
+        &= \lim_{x \to \infty} F(x, q - x)
+        = \lim_{x \to \infty} qx^2 + e^q - x^3 = -\infty
+    \end{align*}
+    This means that \(\varphi(x) < q - x\) and thus \(\varphi(x) + x > q\) for all \(q\).
+    Thus, the limit of \(\varphi(x) + x = \infty\), and so \(\varphi\)
+    does not actually have an oblique asymptote.
+    The condition that the limit of \(F(x, mx+q) = 0\)
+    is not sufficient for \(mx+q\) to be an oblique asymptote of \(\varphi(x)\).
+\end{snippetexample}
+
+\section{Generalized implicit function theorem}
+
+\begin{snippet}{generalized-implicit-function-system-expl}
+    Consider the system
+    \[
+        \begin{cases}
+            y\cos(xz) - x^2 - 1 = 0 \\
+            y\sin(xz) - x = 0
+        \end{cases}
+    \]
+    We want to study the solution set of the system.
+    At most, we can expect to find expressions of two variables
+    as a \function of the third.
+    We have a \function
+    \[
+        F(x, y, z) = \begin{pmatrix}
+            y\cos(xz) - x^2 - 1 \\
+            y\sin(xz) - x
+        \end{pmatrix}
+    \]
+    and we want to study \(F^{-1}(\{(0, 0)\})\).
+    Expanding the \function to first order:
+    \[
+        F(x, y) = F(x_0, y_0) + dF(x_0, y_0) \begin{pmatrix} x - x_0 \\ y - y_0 \end{pmatrix}
+        + o(\|(x - x_0, y - y_0)\|)
+    \]
+    The first term is zero.
+    Moreover, \(dF(x_0, y_0)\) is representable by \(\jacobian F(x_0, y_0)\),
+    which we can write as \([F_x \mid F_y]\) in block form,
+    where \(F_x\) has \(n\) columns and \(F_y\) has \(m\) (and obviously \(m\) rows).
+    We have
+    \[
+        F(x, y) = F_x(x_0, y_0)(x - x_0) + F_y(x_0, y_0)(y - y_0)
+        + o(\|(x - x_0, y - y_0)\|)
+    \]
+    We are interested in \(F(x, y) = 0\) (neglecting the little-o term).
+    If \(F_y\) is invertible, we can isolate it:
+    \[
+        y = y_0 - F_y(x_0, y_0)^{-1} \circ F_x(x_0, y_0)(x - x_0)
+    \]
+    when \(F_y\) is invertible.
+    This is clearly the linear case. We expect the same
+    to hold in a non-linear context, but only locally.
+    
+    In the example, we have
+    \[
+        \jacobian F = \begin{pmatrix}
+            -yz\sin(xz) - 2x & \cos(xz) & -xy\sin(xz) \\
+            yz\cos(xz) - 1 & \sin(xz) & xy\cos(xz)
+        \end{pmatrix}
+    \]
+    We want to determine if \(F(x, y, z) = 0\) allows expressing two variables in terms of the third
+    in a \neighborhood of \((0, 1, 0)\). We have \(F(0, 1, 0) = (0, 0)\).
+    The matrix at this point has rank 2:
+    \[
+        \jacobian F(0, 1, 0) = \begin{pmatrix}
+            0 & 1 & 0 \\
+            -1 & 0 & 0
+        \end{pmatrix}
+    \]
+    The only submatrix achieving rank 2 is the leftmost \(2 \cartesianprod 2\) submatrix,
+    so \(F = (0, 0)\) implicitly defines \(x = x(z)\) and \(y = y(z)\).
+\end{snippet}
+
+\begin{snippettheorem}{general-implicit-function-theorem}{Generalized Implicit function theorem}
+    Let \(\Omega \subseteq \realnumbers^n \cartesianprod \realnumbers^m\) be open,
+    \((x_0, y_0) \in \Omega\), \(F \colon \Omega \fromto \realnumbers^m\).
+    Let \(F\) be \realcontinuous in \(\Omega\). Suppose there exists
+    \(F_y \in \setoflineartransformations(\realnumbers^m, \realnumbers^m)\)
+    in \(\Omega\), \realcontinuous at \((x_0, y_0)\).
+    Let \(F(x_0, y_0) = 0\), \(F_y(x_0, y_0) \in \text{GL}(\realnumbers^m)\).
+    Then there exist \(r, R > 0\) such that for all \(x \in \overline{B}_r(x_0)\),
+    there exists a unique \(y \in \overline{B}_R(y_0)\), \(y = \varphi(x)\),
+    such that \(F(x, y) = 0\).
+    Moreover, \(\varphi\) is \realcontinuous in \(\overline{B}_r(x_0)\).
+\end{snippettheorem}
+
+\plain{This is a local statement since we need to find sufficiently small radii.}
+
+\begin{snippetproof}{general-implicit-function-theorem-proof}{general-implicit-function-theorem}{Generalized Implicit function theorem}
+    Introduce the \function \(T(x, y) = y - F_y(x_0, y_0)^{-1} F(x, y)\).
+    Thus \(T \colon \Omega \fromto \realnumbers^m\).
+    The definition makes sense since \(F_y(x_0, y_0)\) is invertible.
+    Consider \(x\) as a parameter.
+    We ask whether \(T\) has a fixed point with respect to \(y\).
+    Suppose that \(y\) is a fixed point of \(T\).
+    Thus \(T(x, y) = y\),
+    which is equivalent to saying that \(F_y(x_0, y_0)^{-1} F(x, y) = 0\),
+    hence necessarily \(F(x, y) = 0\) since we can multiply by the inverse, which exists.
+    If we show that \(T\) has a unique fixed point with respect to \(y\),
+    then we have that for all \(x\), there exists a unique \(y\) such that \(F(x, y) = 0\).
+    We want to show that \(T\) maps a \metricspace into itself and that it is a \contraction
+    (with factor \(\delta < 1\), with \(\delta\) uniform in \(x\)).
+    We want \(T(x, -) \colon \overline{B}_R(y_0) \fromto \realnumbers^m\)
+    to be a \contraction for all \(x \in \overline{B}_r(x_0)\).
+    \begin{enumerate}
+        \item We show it is a \contraction.
+            Since \(\overline{B}_R(y_0)\) is convex, it suffices to estimate \(T_y\).
+            Since \(T(x, y) = y - F_y(x_0, y_0)^{-1}F(x, y)\), we have
+            \(T_y = I - F_y(x_0, y_0)^{-1}F_y(x, y)\).
+            This is because the differential of the first term becomes the identity matrix,
+            while for the second, the multiplying matrix exits the derivative by linearity.
+            \begin{align*}
+                \|T_y(x, y)\| &= \|I - F_y(x_0, y_0)^{-1} F_y(x, y)\| \\
+                &= \|F_y(x_0, y_0)^{-1} (F_y(x_0, y_0) - F_y(x, y))\| \\
+                &\leq \|F_y(x_0, y_0)^{-1}\| \cdot \|F_y(x_0, y_0) - F_y(x, y)\| \to 0
+            \end{align*}
+            as \((x, y) \to (x_0, y_0)\) because \(F_y\) is \realcontinuous at \((x_0, y_0)\).
+            Thus, there exist \(r, R > 0\) such that for all \(x \in \overline{B}_r(x_0)\)
+            and for all \(y \in \overline{B}_R(y_0)\),
+            \[
+                \|T_y(x, y)\| \leq \delta < 1
+            \]
+            with \(\delta\) arbitrary.
+            In particular,
+            \[
+                \sup_{\substack{x \in \overline{B}_r(x_0) \\ y \in \overline{B}_R(y_0)}} \|T_y(x, y)\| \leq \delta
+            \]
+            and \(\delta\) is uniform in \(x\).
+        \item We show that there exist \(r, R > 0\)
+            such that for all \(x \in \overline{B}_r(x_0)\)
+            and for all \(y \in \overline{B}_R(y_0)\),
+            \(T(x, -) \colon \overline{B}_R(y_0) \fromto \overline{B}_R(y_0)\).
+            We want to show that \(\|T(x, y) - y_0\| \leq R\).
+            Choose \(R\) as in the previous point.
+            We want to show that there exists \(r > 0\) such that the condition is satisfied.
+            Let \(y \in \overline{B}_R(y_0)\). Split into two pieces:
+            \[
+                \|T(x, y) - y_0\| \leq \|T(x, y) - T(x, y_0)\| + \|T(x, y_0) - y_0\|
+            \]
+            The first term can be estimated using the mean value theorem in \(y\):
+            \begin{align*}
+                \|T(x, y) - T(x, y_0)\| &\leq \|y - y_0\| \cdot \sup_{0 < t < 1} \|T_y(x, y_0 + t(y - y_0))\| \\
+                &\leq R \cdot \delta
+            \end{align*}
+            We want the second to be less than or equal to \((1 - \delta)R\).
+            We can no longer modify \(R, \delta\), only \(r\):
+            \begin{align*}
+                \|T(x, y_0) - y_0\| &= \|F_y(x_0, y_0)^{-1} F(x, y_0)\| \\
+                &\leq \|F_y(x_0, y_0)^{-1}\| \cdot \|F(x, y_0)\| \\
+                &= \|F_y(x_0, y_0)^{-1}\| \cdot \|F(x, y_0) - F(x_0, y_0)\| \to 0
+            \end{align*}
+            which tends to zero as \((x, y) \to (x_0, y_0)\) because \(F\) is \realcontinuous.
+            We thus have radii such that
+            \[
+                \|F(x, y_0) - F(x_0, y_0)\| \leq \frac{(1 - \delta)R}{\|F_y(x_0, y_0)^{-1}\|}
+            \]
+    \end{enumerate}
+    We can thus apply the \contraction mapping theorem (variant with parameter);
+    moreover, the fixed point depends continuously on \(x\),
+    and thus the implicit \function is \realcontinuous.
+\end{snippetproof}
+
+\begin{snippet}{generalized-implicit-function-closed-balls-expl}
+    Note that closed balls were used because we need a \mscomplete \metricspace.
+    Let us see if we can guarantee existence also on open balls.
+    In fact, we only needed the closure of the ball in \(y\):
+    there exist \(r_0, R_0 > 0\) such that for all \(x \in B_{r_0}(x_0)\),
+    there exists a unique \(y \in B_{R_0}(y_0)\) such that \(F(x, y) = 0\).
+    We can choose \(R_0 = R\) provided we shrink \(r_0\) appropriately.
+    There exists \(r_0 > 0\) such that \(\varphi(B_{r_0}(x_0)) \subseteq B_R(y_0)\)
+    by continuity of \(\varphi\) at \(x_0\), and thus
+    we have shown existence and uniqueness of the implicit \function
+    also with open balls replacing closed balls.
+\end{snippet}
+
+\begin{snippet}{implicit-function-uniqueness-expl}
+    Suppose we have \(F \colon \Omega \fromto \realnumbers^m\) and \((x_0, y_0) \in \Omega\).
+    Is it possible that two distinct maps \(\varphi, \psi\) exist, both implicitly defined
+    by \(F = 0\) and both passing through \((x_0, y_0)\)?
+    This can happen, for example, for \(F = x^2 - y^2\), but in this case
+    the gradient of \(F\) at \((0, 0)\) is the zero vector, so we cannot apply
+    the \snippetref[general-implicit-function-theorem][implicit function theorem].
+    However, even at \((1, 1)\), more than one implicit \function can be defined, such as
+    \[
+        \varphi(x) = x, \quad \psi(x) = \begin{cases}
+            -x & x \neq 1 \\
+            1 & x = 1
+        \end{cases}
+    \]
+    The problem is that they are not both \realcontinuous.
+\end{snippet}
+
+\begin{snippetcorollary}{implicit-function-uniqueness-corollary}{}
+    Under the hypotheses of the \snippetref[general-implicit-function-theorem][implicit function theorem], let
+    \(\varphi, \psi\) be two \function[functions] implicitly defined by \(F(x, y) = 0\)
+    in a \neighborhood of \(x_0\) such that \(\varphi(x_0) = y_0 = \psi(x_0)\).
+    If \(\varphi, \psi\) are \realcontinuous, then \(\varphi \equiv \psi\) in \(U(x_0)\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{implicit-function-uniqueness-corollary-proof}{implicit-function-uniqueness-corollary}{}
+    We exploit the continuity of the two implicit maps.
+    Take \(r, R\) as in the \snippetref[general-implicit-function-theorem][implicit function theorem].
+    Find \(r_0 < r\) such that
+    \[
+        \varphi(\overline{B}_{r_0}(x_0)) \union \psi(\overline{B}_{r_0}(x_0)) \subseteq \overline{B}_R(y_0)
+    \]
+    We can find such a radius since we can find one for each map,
+    as they are \realcontinuous, and then take the minimum.
+    By the \snippetref[general-implicit-function-theorem][implicit function theorem], the zeros of the map \(F(x, y)\) corresponding to the same \(x\)
+    and contained in \(\overline{B}_r(x_0) \cartesianprod \overline{B}_R(y_0)\) are unique.
+    Thus \(F(x, \varphi(x)) = 0 = F(x, \psi(x))\), but \((x, \varphi(x))\)
+    and \((x, \psi(x))\) are in \(\overline{B}_r(x_0) \cartesianprod \overline{B}_R(y_0)\),
+    so uniqueness holds for \(x \in \overline{B}_{r_0}(x_0)\).
+\end{snippetproof}
+
+\section{Differentiability of the implicit function}
+
+\begin{snippet}{implicit-function-differentiability-expl}
+    Let us study the differentiability of the implicit \function.
+    For example, for \(F = y - |x|\),
+    the hypotheses of the \snippetref[general-implicit-function-theorem][implicit function theorem] hold, but the \function
+    \(y = |x|\) is not \differentiable.
+    We need to add hypotheses on \(x\) as well.
+    Differentiating the condition, we obtain
+    \begin{align*}
+        0 &= F(x, \varphi(x)) \\
+        0 &= F_x(x, \varphi(x)) + F_y(x, \varphi(x)) \circ \text{d}\varphi(x)
+    \end{align*}
+    Since \(F_y \in \text{GL}(\realnumbers^m)\) and is \realcontinuous at \((x_0, y_0)\),
+    and \(\text{GL}(\realnumbers^m)\) is open,
+    \(F_y(x, \varphi(x)) \in \text{GL}(\realnumbers^m)\)
+    in a \neighborhood of \(x_0\).
+    We deduce that
+    \[
+        \text{d}\varphi(x) = -F_y(x, \varphi(x))^{-1} \circ F_x(x, \varphi(x))
+    \]
+\end{snippet}
+
+\begin{snippettheorem}{implicit-function-differentiability-theorem}{Differentiability of the implicit function}
+    Let \((x_0, y_0) \in \Omega \subseteq \realnumbers^n \cartesianprod \realnumbers^m\) be open,
+    let \(F \colon \Omega \fromto \realnumbers^m\), \(F(x_0, y_0) = 0\).
+    Let \(\varphi \colon U(x_0) \fromto \realnumbers^m\)
+    such that \(\varphi(x_0) = y_0\), \(F(x, \varphi(x)) = 0\)
+    for all \(x \in U(x_0)\). Let \(F\) be \differentiable at \((x_0, y_0)\),
+    \(F_y(x_0, y_0) \in \text{GL}(\realnumbers^m)\).
+    Then \(\varphi\) is \differentiable at \(x_0\) and
+    \[
+        \text{d}\varphi(x) = -F_y(x, \varphi(x))^{-1} \circ F_x(x, \varphi(x))
+    \]
+\end{snippettheorem}
+
+\plain{From this formula, it follows that the implicit function has the same regularity as F.}
+
+\begin{snippetproof}{implicit-function-differentiability-theorem-proof}{implicit-function-differentiability-theorem}{Differentiability of the implicit function}
+    We must show that
+    \[
+        \varphi(x_0 + h) - \varphi(x_0) + F_y(x_0, y_0)^{-1} F_x(x_0, y_0)h = o(\|h\|)
+    \]
+    as \(h \to 0\).
+    We can substitute \(\varphi(x_0) = y_0\).
+    Set
+    \begin{align*}
+        \Delta \varphi(x_0, h) &= \varphi(x_0 + h) - \varphi(x_0) + F_y(x_0, y_0)^{-1} F_x(x_0, y_0)h \\
+        &= F_y(x_0, y_0)^{-1} \left[
+            F_y(x_0, y_0)(\varphi(x_0 + h) - y_0) + F_x(x_0, y_0)h
+        \right]
+    \end{align*}
+    but the bracket equals the differential applied to something:
+    \[
+        F_y(x_0, y_0)(\varphi(x_0 + h) - y_0) + F_x(x_0, y_0)h
+        = \text{d}F(x_0, y_0)(h, \varphi(x_0 + h) - y_0)
+    \]
+    Now we know that \(F\) is \differentiable at \((x_0, y_0)\),
+    so \(F(x_0 + v, y_0 + w) - F(x_0, y_0) - \text{d}F(x_0, y_0)(v, w) = o(\|v - w\|)\).
+    Now, in the bracket add \(F(x_0 + h, \varphi(x_0 + h)) - F(x_0, y_0) = 0 - 0\).
+    Thus we get
+    \begin{align*}
+        &F_y(x_0, y_0)(\varphi(x_0 + h) - y_0) + F_x(x_0, y_0)h \\
+        &= F(x_0 + h, \varphi(x_0 + h)) - F(x_0, y_0) - \text{d}F(x_0, y_0)(h, \varphi(x_0 + h) - y_0) \\
+        &= o(\|(h, \varphi(x_0 + h) - y_0)\|)
+    \end{align*}
+    Since \(F_y(x_0, y_0)^{-1}\) is a fixed linear operator,
+    \[
+        \|\Delta \varphi(x_0, h)\| = o(\|(h, \varphi(x_0 + h) - y_0)\|)
+    \]
+    as \((h, \varphi(x_0 + h) - y_0) \to (0, 0)\).
+    But by continuity of \(\varphi\), if \(h \to 0\), then \((h, \varphi(x_0 + h) - y_0) \to (0, 0)\), so
+    \[
+        \|\Delta \varphi(x_0, h)\| = o(\|(h, \varphi(x_0 + h) - y_0)\|)
+    \]
+    as \(h \to 0\).
+    We have shown that for all \(\varepsilon > 0\), there exists \(\delta > 0\) such that
+    \[
+        \|h\| \leq \delta \implies \|\Delta \varphi(x_0, h)\| \leq \varepsilon \|(h, \varphi(x_0 + h) - y_0)\|
+    \]
+    Consider the vector \((h, \varphi(x_0 + h) - y_0)\). Add and subtract \(F_y(x_0, y_0)^{-1}F_x(x_0, y_0)h\)
+    from the second component. We get
+    \begin{align*}
+        (h, \varphi(x_0 + h) - y_0) &= (h, \Delta \varphi(x_0, h) - F_y(x_0, y_0)^{-1}F_x(x_0, y_0)h) \\
+        &= (h, \Delta \varphi(x_0, h) - A_0 h) = (h, -A_0 h) + (0, \Delta \varphi(x_0, h))
+    \end{align*}
+    We can use the \norm of this in the triangle inequality:
+    \begin{align*}
+        \|(h, \varphi(x_0 + h) - y_0)\| &\leq \|(h, -A_0 h)\| + \|(0, \Delta \varphi(x_0, h))\| \\
+        &\leq C\|h\| + \|\Delta \varphi(x_0, h)\|
+    \end{align*}
+    Thus we deduce that
+    \begin{align*}
+        \|\Delta \varphi(x_0, h)\| &\leq C\varepsilon\|h\| + \varepsilon\|\Delta \varphi(x_0, h)\| \\
+        &\leq \frac{C\varepsilon}{1 - \varepsilon}\|h\|
+    \end{align*}
+    so we have shown that for \(\varepsilon > 0\), there exists \(\delta > 0\)
+    such that if \(\|h\| < \delta\), then
+    \[
+        \|\Delta \varphi(x_0, h)\| \leq \frac{C\varepsilon}{1 - \varepsilon}\|h\|
+    \]
+    thus \(\Delta \varphi(x_0, h) = o(\|h\|)\) as \(h \to 0\).
+\end{snippetproof}
 
 \end{document}

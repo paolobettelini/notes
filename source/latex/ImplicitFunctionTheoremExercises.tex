@@ -249,7 +249,61 @@
 \end{snippetexercise}
 
 \begin{snippetsolution}{implicit-function-theorem-ex13-sol}{}
-    \todo
+Let \(F = (F_1, F_2) \colon \realnumbers^4 \fromto \realnumbers^2\).
+    Compute \(\jacobian F(x, y, s, t)\):
+    \[
+        \jacobian F(x, y, s, t) = \begin{pmatrix}
+            2 & s & y + 3 - \frac{1}{1 + (s+t)^2} & -\frac{1}{1 + (s+t)^2} \\[0.5em]
+            -(t + 3) & 3 & \cos(s + t) & \cos(s + t) - x
+        \end{pmatrix}
+    \]
+    At the origin:
+    \[
+        \jacobian F(0, 0, 0, 0) = \begin{pmatrix}
+            2 & 0 & 2 & -1 \\
+            -3 & 3 & 1 & 1
+        \end{pmatrix}
+    \]
+    We can thus choose arbitrarily two variables as \function[functions] of the other two,
+    for example \(s = s(x, y)\) and \(t = t(x, y)\).
+    Compute the differential at \((0, 0)\):
+    \[
+        \text{d}\varphi(x_0) = -F_y(x_0, y_0)^{-1} \circ F_x(x_0, y_0)
+    \]
+    Since \(F \in \continuityclass^\infty(\realnumbers^4)\), we have \(\varphi \in \continuityclass^\infty\)
+    in a \neighborhood of \((0, 0)\).
+    \[
+        \jacobian_{(x,y)} F(0, 0, 0, 0) = \begin{pmatrix}
+            2 & 0 \\
+            -3 & 3
+        \end{pmatrix}, \quad
+        \jacobian_{(s,t)} F(0, 0, 0, 0) = \begin{pmatrix}
+            2 & -1 \\
+            1 & 1
+        \end{pmatrix}
+    \]
+    And the inverse is given by
+    \[
+        \jacobian_{(s,t)} F(0, 0, 0, 0)^{-1} = \frac{1}{3} \begin{pmatrix}
+            1 & 1 \\
+            -1 & 2
+        \end{pmatrix}
+    \]
+    We thus have the differential
+    \[
+        \text{d}\varphi(0, 0) = -\frac{1}{3} \begin{pmatrix}
+            1 & 1 \\
+            -1 & 2
+        \end{pmatrix}
+        \begin{pmatrix}
+            2 & 0 \\
+            -3 & 3
+        \end{pmatrix}
+        = \begin{pmatrix}
+            1/3 & -1 \\
+            1/3 & -2
+        \end{pmatrix}
+    \]
 \end{snippetsolution}
 
 \begin{snippetexercise}{implicit-function-theorem-ex14}{}
@@ -276,6 +330,40 @@
         \((u,v)\fromto (u + v, v)\), smooth and global.
     \end{enumerate}
     Hence, \(f\) is such a diffeomorphism for \(\lambda \in \{0,-1\}\).
+\end{snippetsolution}
+
+\begin{snippetexercise}{implicit-function-theorem-ex15}{}
+    Let \(F(x, y) = -xe^y + 2y - 1\).
+    Show that in a \neighborhood of \((0, \frac{1}{2})\), the solutions of
+    \(F(x, y) = 0\) implicitly define a \function \(y = y(x)\).
+    Then find the MacLaurin expansion to second order of \(y = y(x)\) at \(x = 0\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{implicit-function-theorem-ex15-sol}{implicit-function-theorem-ex15}{}
+    Note that the problem is well-posed since \(F(0, \frac{1}{2}) = 0\).
+    The condition guaranteeing existence of this \function
+    is that \(F_y \neq 0\).
+    We have \(F_y = -xe^y + 2\) and \(F_y(0, \frac{1}{2}) = 2 \neq 0\).
+    Thus, by the implicit \function theorem, there exists a unique \function \(y = y(x)\)
+    such that \(F(x, y(x)) \equiv 0\).
+    For the MacLaurin expansion, we have
+    \(y(0) = \frac{1}{2}\). Computing the derivative:
+    \begin{align*}
+        \frac{d}{dx} \left[F(x, y(x))\right]
+        &= -e^y - xe^y y' + 2y' = 0
+    \end{align*}
+    In particular, for \(x = 0\), we have \(-e^{y(0)} - 0 + 2y'(0) = 0\),
+    thus \(y'(0) = \frac{e^{1/2}}{2}\).
+    To find the next term, differentiate again:
+    \begin{align*}
+        \frac{d^2}{dx^2}\left[F(x, y(x))\right] = -e^y y' - e^y y' - x(\cdots) + 2y'' = 0
+    \end{align*}
+    From which we get \(0 = -2e^{y(0)} y'(0) + 2y''(0)\)
+    and thus \(y''(0) = \frac{e}{2}\).
+    Therefore
+    \[
+        y(x) = \frac{1}{2} + \frac{1}{2}e^{1/2}x + \frac{1}{4}ex^2 + o(x^2)
+    \]
 \end{snippetsolution}
 
 \end{document}
