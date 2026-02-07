@@ -1,0 +1,376 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{multivariable-optimization}
+\genpage
+
+\section{Optimization}
+
+\begin{snippetdefinition}{absolute-maximum-minimum-definition}{Absolute maximum and minimum}
+    Let \(\Omega \subseteq \realnumbers^n\) be any subset and let \(f \colon \Omega \fromto \realnumbers\).
+    A point \(a \in \Omega\) is an \emph{absolute maximum} for \(f\) in \(\Omega\)
+    if \(f(x) \leq f(a)\) for all \(x \in \Omega\).
+    An analogous definition holds for the \emph{absolute minimum}.
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{relative-maximum-minimum-definition}{Relative maximum and minimum}
+    Let \(\Omega \subseteq \realnumbers^n\) be any subset and let \(f \colon \Omega \fromto \realnumbers\).
+    A point \(a \in \Omega\) is a \emph{relative} (or \emph{local}) \emph{maximum} for \(f\)
+    if there exists a \neighborhood \(U\) of \(a\) such that \(a\) is an absolute maximum
+    for \(f\) in \(\Omega \intersection U\).
+    Analogously, a point is a \emph{strong} relative maximum if the inequality is strict.
+    Similar definitions hold for the \emph{relative minimum}.
+\end{snippetdefinition}
+
+\plain{If the set is open, the problem of finding
+maxima and minima of the function in it
+is called <i>unconstrained optimization</i>.}
+
+\begin{snippettheorem}{fermat-theorem-multivariable}{Fermat's theorem (Multivariable)}
+    Let \(\Omega \subseteq \realnumbers^n\) be open and let \(a \in \Omega\) be an extremal point for \(f\).
+    If \(f\) is \differentiable at \(a\), then
+    \[
+        \frac{\partial f}{\partial x_i}(a) = 0
+    \]
+    for all \(i\). That is, \(\gradient f(a) = 0\).
+\end{snippettheorem}
+
+\begin{snippetproof}{fermat-theorem-multivariable-proof}{fermat-theorem-multivariable}{Fermat's theorem (Multivariable)}
+    Suppose that \(a\) is an extremal point for \(f\).
+    Then \(a\) is also an extremal point for all restrictions of \(f\) to lines passing through \(a\).
+    In particular, consider \(\gamma_i(t) = a + te_i\),
+    parallel to the coordinate axes.
+    Let \(\varphi_i\) be the restriction of \(f\) to such lines.
+    Thus \(\varphi_i = f \circ \gamma_i\).
+    The \function[functions] \(\varphi_i\) have an extremal point at \(t = 0\).
+    Moreover, \(\varphi_i\) are \differentiable as compositions of \differentiable \function[functions].
+    Then, by Fermat's theorem in one variable, \(\varphi_i'(0) = 0\).
+    We thus have
+    \begin{align*}
+        \varphi_i'(0) &= (f \circ \gamma_i)'(0) = \gradient f(\gamma_i(0)) \cdot \gamma_i'(0) \\
+        &= \gradient f(a) \cdot e_i = \frac{\partial f}{\partial x_i}(a) = 0
+    \end{align*}
+\end{snippetproof}
+
+\plain{This condition is necessary but not sufficient.}
+
+\begin{snippetexample}{fermat-not-sufficient-example}{}
+    Let \(f(x, y) = x^2 + y^2\) and \(g(x, y) = x^2 - y^2\).
+    For both, \(\gradient f(0, 0) = \gradient g(0, 0) = 0\).
+    However, the origin is an extremal point for \(f\) but not for \(g\),
+    which has a saddle point there.
+\end{snippetexample}
+
+\begin{snippetdefinition}{stationary-point-definition}{Stationary point}
+    Let \(\Omega \subseteq \realnumbers^n\) be open and let \(f \colon \Omega \fromto \realnumbers\)
+    be \differentiable at \(a \in \Omega\).
+    If \(\gradient f(a) = 0\), we say that \(a\) is a \emph{stationary point}
+    or \emph{critical point} for \(f\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{saddle-point-definition}{Saddle point}
+    Let \(\Omega \subseteq \realnumbers^n\) be open and let \(f \colon \Omega \fromto \realnumbers\)
+    be \differentiable at \(a \in \Omega\).
+    If \(a\) is a stationary point that is not an extremal point, then \(a\) is a \emph{saddle point}.
+\end{snippetdefinition}
+
+\plain{We want tools to find these points.
+    It does not make sense to study the sign of the derivative, as there are multiple.
+    We can consider the second differentials,
+    which are bilinear forms, and study the sign of the associated quadratic form.
+}
+
+
+
+\begin{snippetexample}{hessian-degenerate-case-example}{}
+    Let
+    \[
+        f(x, y) = (x - y)^2 + \varphi
+    \]
+    where \(\varphi\) is a \polynomial consisting of monomials of degree greater than or equal to three.
+    Clearly \(f\) is \differentiable at \(0\),
+    and \(f(0, 0) = 0\), so it is a critical point. Computing:
+    \begin{align*}
+        f_x &= 2(x - y) + \varphi_x \\
+        f_y &= -2(x - y) + \varphi_y \\
+        f_{xx} &= 2 + \varphi_{xx} \\
+        f_{xy} &= -2 + \varphi_{xy} \\
+        f_{yy} &= 2 + \varphi_{yy}
+    \end{align*}
+    Many of these derivatives vanish at the origin given the degree of the \polynomial.
+    Thus
+    \[
+        \hessian f(0, 0) = \begin{pmatrix}
+            2 & -2 \\
+            -2 & 2
+        \end{pmatrix}
+    \]
+    Choosing \(h = (1, 1)\), we have
+    \[
+        \begin{pmatrix} 1 & 1 \end{pmatrix}
+        \begin{pmatrix} 2 & -2 \\ -2 & 2 \end{pmatrix}
+        \begin{pmatrix} 1 \\ 1 \end{pmatrix}
+        = 0
+    \]
+    Choosing \(\varphi(x, y) = x^{16}\),
+    \(f\) has a minimum at \((0, 0)\).
+    But if we choose \(\varphi(x, y) = x^{15}\), we get a saddle point at the origin.
+\end{snippetexample}
+
+
+
+\begin{snippettheorem}{hessian-criterion-theorem}{Hessian criterion}
+    Let \(f \colon \Omega \subseteq \realnumbers^n \fromto \realnumbers\),
+    with \(\Omega\) open and \(a \in \Omega\) a critical point for \(f\),
+    and \(f\) twice \differentiable at \(a\). Then:
+    \begin{enumerate}
+        \item if \(\hessian f(a)\) is positive definite, then \(a\) is a strong relative minimum;
+        \item if \(\hessian f(a)\) is negative definite, then \(a\) is a strong relative maximum;
+        \item if \(\hessian f(a)\) is indefinite, then \(a\) is a saddle point;
+        \item if \(a\) is a relative maximum, then \(\hessian f(a)\) is negative semidefinite;
+        \item if \(a\) is a relative minimum, then \(\hessian f(a)\) is positive semidefinite.
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{hessian-criterion-theorem-proof}{hessian-criterion-theorem}{Hessian criterion}
+    In general, if \(Q \colon \realnumbers^n \fromto \realnumbers\)
+    is a quadratic form, then \(Q(v) = v^\transpose A v\) where \(A\)
+    is a symmetric \(n \times n\) \matrix.
+    By the real spectral theorem, if \(A\) is symmetric,
+    then \(A\) has \(n\) real \eigenvalue[eigenvalues]
+    \[
+        \lambda_1 \leq \cdots \leq \lambda_n
+    \]
+    and there exists a rotation \(R\)
+    such that \(A = R^\transpose D R\)
+    where \(D = \text{diag}(\lambda_1, \ldots, \lambda_n)\).
+    Thus,
+    \begin{align*}
+        Q(v) &= v^\transpose A v = v^\transpose R^\transpose D R v \\
+        &= \tilde{v}^\transpose D \tilde{v}
+        = \sum_{i=1}^n \lambda_i \tilde{v}_i^2
+    \end{align*}
+    setting \(\tilde{v} = Rv\).
+    Thus
+    \[
+        \lambda_1 \|\tilde{v}\|^2 \leq Q(v) \leq \lambda_n \|\tilde{v}\|^2
+    \]
+    Since \(R\) is a rotation, hence an \isometry, it preserves the \norm,
+    so \(\|\tilde{v}\| = \|Rv\| = \|v\|\). Then
+    \[
+        \lambda_1 \|v\|^2 \leq Q(v) \leq \lambda_n \|v\|^2
+    \]
+    We can thus deduce that if \(\lambda_1 > 0\),
+    \(Q\) is positive definite; if \(\lambda_n < 0\),
+    \(Q\) is negative definite;
+    if \(\lambda_1 \lambda_n < 0\), then \(Q\) is indefinite;
+    if \(\lambda_1 \lambda_n = 0\), then \(Q\) is semidefinite.
+    The result for \(h^\transpose \hessian f(a) h\) follows directly.
+\end{snippetproof}
+
+\plain{If the Hessian matrix is semidefinite, the test is inconclusive.}
+
+\section{Two-dimensional case}
+
+
+
+\begin{snippettheorem}{two-dimensional-hessian-criterion-theorem}{Two-dimensional Hessian criterion}
+    Let \(\Omega \subseteq \realnumbers^2\) be open, \(f \colon \Omega \fromto \realnumbers\)
+    twice \differentiable, and \(a\) a critical point. Then:
+    \begin{enumerate}
+        \item if \(\det \hessian f(a) < 0\), then \(a\) is a saddle point;
+        \item if \(\det \hessian f(a) > 0\) and \(f_{xx} > 0\), then \(a\) is a minimum;
+        \item if \(\det \hessian f(a) > 0\) and \(f_{xx} < 0\), then \(a\) is a maximum.
+    \end{enumerate}
+    If the determinant is zero, the criterion is inconclusive.
+\end{snippettheorem}
+
+\begin{snippetproof}{two-dimensional-hessian-criterion-theorem-proof}{two-dimensional-hessian-criterion-theorem}{Two-dimensional Hessian criterion}
+    For \(n = 2\), we can determine the sign of \(\hessian f(a)\) without finding the \eigenvalue[eigenvalues]:
+    \[
+        \begin{pmatrix} h & k \end{pmatrix}
+        \begin{pmatrix} f_{xx} & f_{xy} \\ f_{xy} & f_{yy} \end{pmatrix}
+        \begin{pmatrix} h \\ k \end{pmatrix}
+        = h^2 f_{xx} + 2hk f_{xy} + k^2 f_{yy}
+    \]
+    If \(f_{xx} = f_{yy} = 0\), then the quadratic form is indefinite.
+    Suppose therefore that \(f_{xx} \neq 0\).
+    We have
+    \begin{align*}
+        h^2 f_{xx} + 2hk f_{xy} + k^2 f_{yy}
+        &= f_{xx} \left(h^2 + 2hk \frac{f_{xy}}{f_{xx}}\right) + k^2 f_{yy} \\
+        &= f_{xx} \left(h^2 + 2hk \frac{f_{xy}}{f_{xx}} + k^2 \frac{f_{xy}^2}{f_{xx}^2}\right)
+        - k^2 \frac{f_{xy}^2}{f_{xx}} + k^2 f_{yy} \\
+        &= f_{xx} \left(h + k \frac{f_{xy}}{f_{xx}}\right)^2
+        + \frac{k^2}{f_{xx}} \left(f_{xx} f_{yy} - f_{xy}^2\right) \\
+        &= f_{xx} \left(h + k \frac{f_{xy}}{f_{xx}}\right)^2
+        + \frac{k^2}{f_{xx}} \det \hessian f(a)
+    \end{align*}
+    The sign of this last expression is completely determined by the sign of the determinant and of \(f_{xx}\).
+\end{snippetproof}
+
+\begin{snippet}{hessian-criterion-sign-remark}
+    Note that if the determinant is positive, then \(f_{xx}\) and \(f_{yy}\) have the same sign.
+    Indeed, \(f_{xx} f_{yy} - f_{xy}^2 > 0\) implies
+    \(f_{xx} f_{yy} > f_{xy}^2 \geq 0\).
+    
+    For \(n \geq 2\), the sign of \(\hessian f(a)\) can be determined using the criterion
+    of principal northwest minors.
+\end{snippet}
+
+\begin{snippetexample}{optimization-saddle-point-example}{}
+    Let \(f(x, y) = x^2 - 2y^2 - 4x + 7\).
+    Clearly \(f \in \continuityclass^\infty(\realnumbers^2)\).
+    We have \(f_x = 2x - 4\) and \(f_y = -4y\), \(f_{xx} = 2\) and \(f_{yy} = -4\).
+    The first two derivatives vanish for
+    \[
+        \begin{cases}
+            2x - 4 = 0 \\
+            -4y = 0
+        \end{cases}
+    \]
+    thus at \((2, 0)\).
+    We have
+    \[
+        \hessian f(2, 0) = \begin{pmatrix}
+            2 & 0 \\
+            0 & -4
+        \end{pmatrix}
+    \]
+    so \((2, 0)\) is a saddle point.
+\end{snippetexample}
+
+\begin{snippetexample}{optimization-multiple-critical-points-example}{}
+    Let \(f(x, y) = x^4 + y^4 + 4xy - 2x^2 - 2y^2\).
+    Clearly \(f \in \continuityclass^\infty(\realnumbers^2)\).
+    We have \(f_x = 4x^3 + 4y - 4x\) and \(f_y = 4y^3 + 4x - 4y\).
+    \[
+        \begin{cases}
+            x^3 + y - x = 0 \\
+            y^3 + x - y = 0
+        \end{cases}
+        \to
+        \begin{cases}
+            x^3 + y^3 = 0 \\
+            y^3 + x - y = 0
+        \end{cases}
+        \to
+        \begin{cases}
+            x = -y \\
+            y^3 - 2y = 0
+        \end{cases}
+    \]
+    so the points are \((0, 0)\), \((\sqrt{2}, -\sqrt{2})\), and \((-\sqrt{2}, \sqrt{2})\).
+    We have \(f_{xx} = 12x^2 - 4\), \(f_{xy} = 4\), and \(f_{yy} = 12y^2 - 4\).
+    Given
+    \[
+        \hessian f(x, y) = \begin{pmatrix}
+            12x^2 - 4 & 4 \\
+            4 & 12y^2 - 4
+        \end{pmatrix}
+    \]
+    For the points with square roots:
+    \[
+        \hessian f(\pm\sqrt{2}, \mp\sqrt{2}) = \begin{pmatrix}
+            20 & 4 \\
+            4 & 20
+        \end{pmatrix}
+    \]
+    whose determinant is positive, as is \(f_{xx}\),
+    so these points are minima. At the origin:
+    \[
+        \hessian f(0, 0) = \begin{pmatrix}
+            -4 & 4 \\
+            4 & -4
+        \end{pmatrix}
+    \]
+    which has zero determinant.
+    In this case, we study the increment \(f(x, y) - f(0, 0) = f(x, y) = x^4 + y^4 - 2(x - y)^2\).
+    Consider \(f(x, -x) = 2x^4 - 8x^2\) which has a maximum at \(x = 0\).
+    Consider \(f(x, x) = 2x^4\) which has a minimum at \(x = 0\).
+    Thus \((0, 0)\) is a saddle point.
+\end{snippetexample}
+
+\begin{snippetexample}{optimization-semidefinite-case-example}{}
+    Let \(f(x, y) = x^2 y - y^2\).
+    Clearly \(f \in \continuityclass^\infty(\realnumbers^2)\).
+    We have \(f_x = 2xy\) and \(f_y = x^2 - 2y\). The only critical point
+    is the origin.
+    We have \(f_{xx} = 2y\), \(f_{xy} = 2x\), and \(f_{yy} = -2\). The \matrix is
+    \[
+        \hessian f(x, y) = \begin{pmatrix}
+            2y & 2x \\
+            2x & -2
+        \end{pmatrix}
+    \]
+    and at the origin
+    \[
+        \hessian f(0, 0) = \begin{pmatrix}
+            0 & 0 \\
+            0 & -2
+        \end{pmatrix}
+    \]
+    which has zero determinant. Thus the criterion is inconclusive.
+    Consider the restriction of \(f\) to lines through the origin:
+    \(f(x, mx) = mx^3 - m^2 x^2\), which has a maximum at \(x = 0\) for all \(m\).
+    Note that \(f(0, y) = -y^2\) has a maximum at \(y = 0\).
+    But it is not legitimate to conclude that \(f\) has a maximum at the origin.
+    Study the sign of the increment \(f(x, y) - f(0, 0) = f(x, y) = y(x^2 - y)\).
+    This \function is non-negative \ifandonlyif \(y > 0\) and \(x^2 > y\),
+    or \(y < 0\) and \(x^2 < y\).
+    But the second case is impossible. Thus \(f\) has a saddle point
+    at the origin. Indeed, every \neighborhood
+    of the origin contains points where \(f(x, y) > 0\) and points where \(f(x, y) < 0\).
+    For example, \(f(x, x^2/2)\) has a minimum at \(x = 0\).
+\end{snippetexample}
+
+\begin{snippet}{polar-coordinates-optimization-expl}
+    The search for extremal points can also be done in polar coordinates.
+    If \(F(\rho, \theta) = f(\rho \cos \theta, \rho \sin \theta)\),
+    the critical points correspond to
+    \[
+        \frac{\partial F}{\partial \rho} = 0, \quad
+        \frac{\partial F}{\partial \theta} = 0
+    \]
+    for \(\rho > 0\).
+    However, we must treat \(\rho = 0\), i.e. the origin, separately.
+\end{snippet}
+
+\begin{snippetexample}{optimization-rational-function-example}{}
+    Let
+    \[
+        f(x, y) = \frac{x^2 + y^2}{x} - 4\ln(1 + y)
+    \]
+    Thus
+    \[
+        f_x = 1 - \frac{y^2}{x^2}, \quad
+        f_y = \frac{2y + 2y^2 - 4x}{x(1 + y)}
+    \]
+    They both vanish at \((0, 0)\), \((1, 1)\), \((3, -3)\), but the only acceptable point is \((1, 1)\).
+    We have \(f_{xx} = 2y^2/x^3\), \(f_{xy} = -2y/x^2\), and \(f_{yy} = 2/x + 4/(1 + y)^2\).
+    From this
+    \[
+        \hessian f(x, y) = \begin{pmatrix}
+            2\frac{y^2}{x^3} & -2\frac{y}{x^2} \\[0.5em]
+            -2\frac{y}{x^2} & \frac{2}{x} + \frac{4}{(1 + y)^2}
+        \end{pmatrix}
+    \]
+    and at the point
+    \[
+        \hessian f(1, 1) = \begin{pmatrix}
+            2 & -2 \\
+            -2 & 3
+        \end{pmatrix}
+    \]
+    whose determinant is greater than zero and \(f_{xx} > 0\).
+    Thus \((1, 1)\) is a minimum.
+\end{snippetexample}
+
+\end{document}
