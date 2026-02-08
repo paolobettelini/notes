@@ -1,0 +1,259 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{higher-order-derivatives}
+\genpage
+
+\section{Higher-order derivatives}
+
+\begin{snippet}{second-directional-derivative-construction}
+    Let \(\Omega \subseteq \realnumbers^n\) be open
+    and consider \(f \colon \Omega \fromto \realnumbers\).
+    Fix a unit \vector \(v\) and let \(a \in \Omega\).
+    Suppose the directional derivative \(D_v f\) exists in a \neighborhood \(B_r(a)\).
+    Then \(D_v f\) is a \function defined on an open \set containing \(a\),
+    so we can take its directional derivative in turn.
+    Fix another unit \vector \(w \in \realnumbers^n\) and construct
+    \[
+        D_w(D_v f)(a) \triangleq D^2_{w,v} f(a)
+    \]
+    if it exists.
+\end{snippet}
+
+\begin{snippetdefinition}{second-partial-derivative-definition}{Second partial derivative}
+    When \(w\) and \(v\) are coordinate axis directions,
+    these directional derivatives are called \emph{second partial derivatives}, denoted
+    \[
+        \frac{\partial^2 f}{\partial x_i \partial x_j}(a)
+        \triangleq \frac{\partial}{\partial x_j} \left(\frac{\partial f}{\partial x_i}(a)\right)
+        \triangleq f_{x_j x_i}(a)
+    \]
+    If \(i \neq j\), these are called \emph{mixed partial derivatives}.
+    If \(i = j\), we use the notation \(\frac{\partial^2 f}{\partial x_i^2}(a)\).
+\end{snippetdefinition}
+
+\plain{We can construct n² partial derivatives and form a square matrix.}
+
+\begin{snippetdefinition}{hessian-matrix-definition}{Hessian matrix}
+    If all second partial derivatives of \(f\) exist at \(a\),
+    we define the \emph{Hessian matrix}:
+    \[
+        \hessian f(a) \triangleq \begin{pmatrix}
+            \frac{\partial^2 f}{\partial x_1^2}(a) &
+            \frac{\partial^2 f}{\partial x_1 \partial x_2}(a) & \cdots &
+            \frac{\partial^2 f}{\partial x_1 \partial x_n}(a) \\
+            \vdots & \ddots & & \vdots \\
+            \frac{\partial^2 f}{\partial x_n \partial x_1}(a) &
+            \frac{\partial^2 f}{\partial x_n \partial x_2}(a) & \cdots &
+            \frac{\partial^2 f}{\partial x_n^2}(a)
+        \end{pmatrix}
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexample}{hessian-polynomial-example}{}
+    Let \(f(x, y, z) = 3x^2 y + xz^3\). Then
+    \[
+        \hessian f(x, y, z) = \begin{pmatrix}
+            6y & 6x & 3z^2 \\
+            6x & 0 & 0 \\
+            3z^2 & 0 & 6xz
+        \end{pmatrix}
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{mixed-partial-nonexistence-example}{}
+    Let \(f(x, y) = x^2 \sqrt[3]{y}\).
+    For \(y \neq 0\), the \function is \differentiable by the total differential theorem.
+    At a point \((x_0, 0)\), \(f\) is identically zero, so \(\frac{\partial f}{\partial x}(x_0, 0) = 0\).
+    For the other partial:
+    \[
+        \frac{\partial f}{\partial y}(x_0, 0)
+        = \lim_{y \to 0} \frac{x_0^2}{y^{2/3}}
+        = \begin{cases}
+            \infty & x_0 \neq 0 \\
+            0 & x_0 = 0
+        \end{cases}
+    \]
+    At the origin, \(f\) is \differentiable (verified directly).
+    However, \(f_{xy}(0, 0)\) does not exist because
+    \(\lim_{x \to 0} \frac{f_y(x, 0) - f_y(0, 0)}{x}\) does not exist.
+    Meanwhile, \(f_{yx}(0, 0) = 0\).
+\end{snippetexample}
+
+\plain{The existence of one mixed partial derivative does not imply
+the existence of the other with swapped order.}
+
+\begin{snippetexample}{mixed-partials-different-example}{}
+    Let
+    \[
+        f(x, y) = \begin{cases}
+            \frac{xy^3}{x^2 + y^2} & (x, y) \neq (0, 0) \\
+            0 & (x, y) = (0, 0)
+        \end{cases}
+    \]
+    The \function is \realcontinuous at the origin (verified in polar coordinates).
+    For \((x, y) \neq (0, 0)\):
+    \[
+        f_x(x, y) = \frac{y^3(y^2 - x^2)}{(x^2 + y^2)^2}, \quad
+        f_y(x, y) = \frac{xy^2(3x^2 + y^2)}{(x^2 + y^2)^2}
+    \]
+    Also \(\gradient f(0, 0) = (0, 0)\) since \(f\) is constant along axes.
+    Computing:
+    \[
+        f_{xy}(0, 0) = \lim_{x \to 0} \frac{f_y(x, 0) - f_y(0, 0)}{x} = 0
+    \]
+    But
+    \[
+        f_{yx}(0, 0) = \lim_{y \to 0} \frac{f_x(0, y) - f_x(0, 0)}{y}
+        = \lim_{y \to 0} \frac{y^5/y^4}{y} = 1
+    \]
+    So both mixed partials exist but \(f_{xy}(0, 0) \neq f_{yx}(0, 0)\).
+\end{snippetexample}
+
+\begin{snippettheorem}{schwarz-theorem}{Schwarz's theorem}
+    Let \(f \colon \Omega \subseteq \realnumbers^n \fromto \realnumbers\),
+    with \(\Omega\) open, \(a \in \Omega\), and \(v, w\) two unit \vector[vectors] in \(\realnumbers^n\).
+    Suppose there exists \(B_r(a)\) where \(D^2_{v,w} f\) and \(D^2_{w,v} f\) exist
+    and are \realcontinuous at \(a\).
+    Then \(D^2_{v,w} f(a) = D^2_{w,v} f(a)\).
+\end{snippettheorem}
+
+\begin{snippetcorollary}{hessian-symmetry-corollary}{}
+    If the partial derivatives exist and are \realcontinuous in \(\Omega\), then
+    \[
+        \frac{\partial^2 f}{\partial x_i \partial x_j} = \frac{\partial^2 f}{\partial x_j \partial x_i}
+    \]
+    i.e., \(\hessian f(x)\) is symmetric.
+\end{snippetcorollary}
+
+\begin{snippetdefinition}{c2-class-definition}{Class \(\continuityclass^2\)}
+    Let \(f \colon \Omega \subseteq \realnumbers^n \fromto \realnumbers\).
+    Then \(f \in \continuityclass^2(\Omega)\) if all first and second partial derivatives of \(f\)
+    exist and are \realcontinuous in \(\Omega\).
+\end{snippetdefinition}
+
+\section{Twice differentiable functions}
+
+\begin{snippetdefinition}{twice-differentiable-definition}{Twice differentiable}
+    Let \(f \colon \Omega \subseteq \realnumbers^n \fromto \realnumbers^m\).
+    We say \(f\) is \emph{twice differentiable} at \(a \in \Omega\) if
+    \(f\) is \differentiable in \(\Omega\) and \(\text{d}f \colon \Omega \fromto \mathcal{L}(\realnumbers^n, \realnumbers^m)\)
+    is \differentiable at \(a\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{twice-differentiable-properties}{}
+    \begin{enumerate}
+        \item \(f\) is twice \differentiable at \(a\) \ifandonlyif \(\partial f / \partial x_i\) is \differentiable at \(a\) for all \(i\).
+        \item If \(f\) is twice \differentiable at \(a\), then all second partial derivatives exist and we can swap the order of differentiation.
+        \item If \(f\) is twice \differentiable at \(a\), then:
+        \begin{enumerate}
+            \item \(D_v f\) is \differentiable at \(a\) for every \(v\);
+            \item \(D^2_{v,w} f(a) = D^2_{w,v} f(a)\);
+            \item \(D^2_{v,w} f(a) = \sum_{i,j=1}^n \frac{\partial^2 f}{\partial x_i \partial x_j}(a) v_i w_j\).
+        \end{enumerate}
+        \item If all first partial derivatives exist and are \realcontinuous in a \neighborhood of \(a\),
+        and all second partial derivatives exist and are \realcontinuous at \(a\),
+        then \(f\) is twice \differentiable at \(a\).
+        \item If \(f \in \continuityclass^2(\Omega)\), then \(f\) is twice \differentiable in \(\Omega\).
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippet}{second-differential-bilinear-form}
+    If \(f \colon \Omega \fromto \realnumbers^m\) is twice \differentiable at \(a\),
+    then \(\text{d}^2 f(a) \in \mathcal{L}(\realnumbers^n, \mathcal{L}(\realnumbers^n, \realnumbers^m))\).
+    This means \(\text{d}^2 f(a)\) is bilinear; we view it as \(\text{d}^2 f(a) \colon \realnumbers^n \times \realnumbers^n \fromto \realnumbers^m\):
+    \[
+        \text{d}^2 f(a)(h, k) = \sum_{i,j=1}^n \frac{\partial^2 f}{\partial x_i \partial x_j}(a) h_i k_j
+        = h^\transpose \hessian f(a) \, k
+    \]
+    For real-valued \(f\):
+    \[
+        \text{d}f(a)(h) = \gradient f(a) \cdot h, \quad
+        \text{d}^2 f(a)(h, k) = h^\transpose \hessian f(a) \, k
+    \]
+    When \(h = k\), we get a quadratic form:
+    \[
+        \text{d}^2 f(a)(h) = \sum_{i,j=1}^n \frac{\partial^2 f}{\partial x_i \partial x_j}(a) h_i h_j
+    \]
+    and \(\frac{\text{d}^2 f(a)(h)}{\|h\|^2}\) is bounded as \(h \to 0\).
+\end{snippet}
+
+\section{\(k\)-th order derivatives}
+
+\begin{snippetdefinition}{ck-class-definition}{Class \(\continuityclass^k\)}
+    We say \(f \in \continuityclass^k(\Omega)\) if every partial derivative of order \(\leq k\)
+    exists and is \realcontinuous in \(\Omega\).
+\end{snippetdefinition}
+
+\plain{These classes are nested: \(\continuityclass^{k+1}(\Omega) \subseteq \continuityclass^k(\Omega)\).}
+
+\begin{snippetdefinition}{k-th-differential-definition}{\(k\)-th differential}
+    The \(k\)-th differential
+    \[
+        \text{d}^k f(a) \colon \underbrace{\realnumbers^n \times \cdots \times \realnumbers^n}_{k \text{ times}} \fromto \realnumbers^m
+    \]
+    is a multilinear map defined by
+    \[
+        \text{d}^k f(a)(h^{(1)}, \ldots, h^{(k)})
+        = \sum_{i_1, \ldots, i_k = 1}^n \frac{\partial^k f}{\partial x_{i_1} \cdots \partial x_{i_k}}(a)
+        h_{i_1}^{(1)} \cdots h_{i_k}^{(k)}
+    \]
+\end{snippetdefinition}
+
+\begin{snippet}{k-th-differential-same-direction}
+    When all \(h^{(i)} = h\), by Schwarz's theorem:
+    \[
+        \text{d}^k f(a)(h) = \sum_{\substack{j_1, \ldots, j_n \geq 0 \\ j_1 + \cdots + j_n = k}}
+        \binom{k}{j_1, \ldots, j_n} \frac{\partial^k f}{\partial x_n^{j_n} \cdots \partial x_1^{j_1}}(a)
+        h_1^{j_1} \cdots h_n^{j_n}
+    \]
+    where the multinomial coefficient is \(\binom{k}{j_1, \ldots, j_n} = \frac{k!}{j_1! \cdots j_n!}\).
+    The expression \(\text{d}^k f(a)(h)\) is a homogeneous \polynomial of degree \(k\)
+    in \(h_1, \ldots, h_n\), and \(\frac{\text{d}^k f(a)(h)}{\|h\|^k}\) is bounded as \(h \to 0\).
+\end{snippet}
+
+\section{Taylor's theorem}
+
+\begin{snippettheorem}{multivariable-taylor-theorem}{Taylor's theorem (Multivariable)}
+    Let \(\Omega \subseteq \realnumbers^n\) be open,
+    \(a, x \in \Omega\) such that \([a, x] \subseteq \Omega\),
+    and \(f \colon \Omega \fromto \realnumbers\) with \(f \in \continuityclass^k(\Omega)\).
+    Then
+    \[
+        f(x) = \sum_{i=0}^{k-1} \frac{\text{d}^i f(a)(x - a)}{i!} + R_k(x - a)
+    \]
+    is the Taylor \polynomial of order \(k - 1\) of \(f\) at \(a\).
+\end{snippettheorem}
+
+\begin{snippetdefinition}{taylor-remainder-peano-definition}{Peano remainder}
+    The remainder in Peano form is
+    \[
+        R_k(x - a) = \frac{\text{d}^k f(a)(x - a)}{k!} + o(\|x - a\|^k)
+    \]
+    as \(x \to a\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{taylor-remainder-lagrange-definition}{Lagrange remainder}
+    The remainder in Lagrange form is
+    \[
+        R_k(x - a) = \frac{\text{d}^k f(y)(x - a)}{k!}
+    \]
+    for some \(y \in (a, x)\).
+\end{snippetdefinition}
+
+\begin{snippet}{taylor-polynomial-uniqueness}
+    The Taylor \polynomial is the unique \polynomial of degree at most \(k - 1\)
+    such that \(f(x) - P(x) = o(\|x - a\|^{k-1})\) as \(x \to a\).
+    
+    Note: we say "order" of the Taylor \polynomial rather than "degree"
+    because the \polynomial has degree at most the given value, but could be smaller.
+\end{snippet}
+
+\end{document}

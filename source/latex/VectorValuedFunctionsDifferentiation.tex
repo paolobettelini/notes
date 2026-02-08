@@ -1,0 +1,268 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{vector-valued-functions-differentiability}
+\genpage
+
+\section{Vector-valued functions}
+
+\begin{snippet}{vector-valued-function-components-expl}
+    Consider \(f \colon \Omega \subseteq \realnumbers^n \fromto \realnumbers^m\) with \(\Omega\) open.
+    We have
+    \[
+        f = \sum_{i=1}^m f_i e_i, \quad f_i \colon \Omega \fromto \realnumbers
+    \]
+    Let \(a \in \Omega\) and \(v \in \realnumbers^n\). The directional derivative is
+    \[
+        D_v f(a) = \lim_{t \to 0} \frac{f(a + tv) - f(a)}{t} \in \realnumbers^m
+    \]
+    and the components are the directional derivatives of the real-valued \function[functions].
+    We can define a total of \(mn\) partial derivatives
+    \[
+        \frac{\partial f_i}{\partial x_j}(a)
+    \]
+    The \jacobian \matrix is defined as the \matrix \((\jacobian f(a))_{i,j} = \frac{\partial f_i}{\partial x_j}(a)\).
+    The rows of the \matrix are the transposes of the gradients \(\gradient f_i(a)\).
+\end{snippet}
+
+\begin{snippetdefinition}{vector-valued-differentiability-definition}{Differentiability (Vector-valued)}
+    A \function \(f \colon \Omega \subseteq \realnumbers^n \fromto \realnumbers^m\) with \(\Omega\) open
+    is \emph{differentiable} at \(a \in \Omega\) if there exists \(L \in \mathcal{L}(\realnumbers^n, \realnumbers^m)\)
+    such that
+    \[
+        f(a + h) - f(a) = L(h) + \varepsilon(h)
+    \]
+    where \(\varepsilon(h) = o(\|h\|)\).
+    This linear map is called the \emph{differential}.
+\end{snippetdefinition}
+
+\begin{snippet}{vector-valued-differentiability-equivalences}
+    Equivalently, \(f\) is \differentiable at \(a\) if there exists a \matrix \(\Lambda \in \matrices_{m \times n}(\realnumbers)\)
+    such that \(f(a + h) - f(a) = \Lambda h + \varepsilon(h)\).
+    Equivalently, \(f\) is \differentiable \ifandonlyif all components \(f_i\) are \differentiable.
+\end{snippet}
+
+\begin{snippettheorem}{vector-total-differential-theorem}{Total differential theorem (Vector-valued)}
+    If all partial derivatives of the components of \(f\)
+    exist in a \neighborhood of \(a\) and are \realcontinuous at \(a\),
+    then \(f\) is \differentiable at \(a\).
+\end{snippettheorem}
+
+\begin{snippettheorem}{vector-differentiability-properties}{Differentiability properties (Vector-valued)}
+    If \(f\) is \differentiable at \(a\), then \(f\) is \realcontinuous at \(a\),
+    for all \(v \in \realnumbers^n\) with \(\|v\| = 1\),
+    \[
+        \exists D_v f(a) = \Lambda v
+    \]
+    and \(\Lambda = \jacobian f(a)\).
+\end{snippettheorem}
+
+\begin{snippet}{differential-jacobian-representation}
+    The differential \(L\) is represented in the canonical basis by the \jacobian \matrix:
+    \[
+        \text{d}f_a(h) = \jacobian f(a) \, h = \sum_{i=1}^m \left(\sum_{j=1}^n \frac{\partial f_i}{\partial x_j}(a) h_j\right) e_i
+    \]
+\end{snippet}
+
+\section{Chain rule}
+
+\begin{snippettheorem}{multivariable-chain-rule}{Chain rule}
+    Let \(f \colon \realnumbers^n \fromto \realnumbers^m\)
+    and \(g \colon \realnumbers^m \fromto \realnumbers^p\) be \function[functions]
+    such that \(f\) is \differentiable at \(a\) and \(g\) is \differentiable at \(f(a)\).
+    Then \(g \circ f\) is \differentiable at \(a\) and
+    \[
+        \text{d}(g \circ f)(a) = \text{d}g(f(a)) \circ \text{d}f(a)
+    \]
+    Or equivalently in \matrix form:
+    \[
+        \jacobian(g \circ f)(a) = \jacobian g(f(a)) \cdot \jacobian f(a)
+    \]
+\end{snippettheorem}
+
+\begin{snippet}{chain-rule-component-formula}
+    Let \(h = g \circ f \colon \realnumbers^n \fromto \realnumbers^p\).
+    The following is the product of the \(i\)-th row of \(\jacobian g(f(a))\)
+    with the \(j\)-th column of \(\jacobian f(a)\):
+    \[
+        \frac{\partial h_i}{\partial x_j}(a) = \sum_{k=1}^m \frac{\partial g_i}{\partial y_k}(f(a)) \cdot \frac{\partial f_k}{\partial x_j}(a)
+    \]
+\end{snippet}
+
+\begin{snippetexample}{chain-rule-3d-2d-example}{}
+    Let \(f \colon \realnumbers^2 \fromto \realnumbers^3\) and \(g \colon \realnumbers^3 \fromto \realnumbers^2\).
+    Call \(x, y\) the coordinates of \(f\) and \(u, v, w\) those of \(g\).
+    Let \(h = g \circ f\) so \(h(x, y) = (h_1(x, y), h_2(x, y))\).
+    For example:
+    \begin{align*}
+        \frac{\partial h_2}{\partial x}(a)
+        &= \frac{\partial g_2}{\partial u}(f(a)) \cdot \frac{\partial f_1}{\partial x}(a)
+        + \frac{\partial g_2}{\partial v}(f(a)) \cdot \frac{\partial f_2}{\partial x}(a)
+        + \frac{\partial g_2}{\partial w}(f(a)) \cdot \frac{\partial f_3}{\partial x}(a)
+    \end{align*}
+\end{snippetexample}
+
+\begin{snippetexample}{chain-rule-polar-coordinates-example}{}
+    Let \(f \colon \Omega \subseteq \realnumbers^2 \fromto \realnumbers^2\) and \(g \colon \realnumbers^2 \fromto \realnumbers\).
+    Call the variables of \(f\) as \((\rho, \theta)\) and of \(g\) as \((x, y)\).
+    Define \(f(\rho, \theta) = (\rho \cos\theta, \rho \sin\theta)\).
+    Let \(h = g \circ f\) so \(h(\rho, \theta) = g(\rho \cos\theta, \rho \sin\theta)\).
+    \begin{align*}
+        \frac{\partial h}{\partial \rho}
+        &= \frac{\partial g}{\partial x}(\rho\cos\theta, \rho\sin\theta) \cos\theta
+        + \frac{\partial g}{\partial y}(\rho\cos\theta, \rho\sin\theta) \sin\theta \\[0.5em]
+        \frac{\partial h}{\partial \theta}
+        &= -\frac{\partial g}{\partial x}(\rho\cos\theta, \rho\sin\theta) \rho\sin\theta
+        + \frac{\partial g}{\partial y}(\rho\cos\theta, \rho\sin\theta) \rho\cos\theta
+    \end{align*}
+\end{snippetexample}
+
+\section{Mean value theorems}
+
+\begin{snippettheorem}{multivariable-lagrange-theorem}{Lagrange's theorem (Multivariable)}
+    Let \(\Omega \subseteq \realnumbers^n\) be open and \([a, b] \subseteq \Omega\).
+    Let \(f \colon \Omega \fromto \realnumbers\) be \differentiable in \(\Omega\).
+    Then there exists \(\alpha \in (a, b)\) such that
+    \[
+        f(b) - f(a) = \gradient f(\alpha) \cdot (b - a)
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{multivariable-lagrange-theorem-proof}{multivariable-lagrange-theorem}{Lagrange's theorem (Multivariable)}
+    Construct a \function that parametrizes the segment:
+    \(\varphi \colon [0, 1] \fromto \Omega\) with \(\varphi(t) = a + t(b - a)\),
+    which is \differentiable.
+    Consider \(F = f \circ \varphi \colon [0, 1] \fromto \realnumbers\).
+    \(F\) is \realcontinuous on \([0, 1]\) and \differentiable on \((0, 1)\).
+    By the one-variable Lagrange theorem, there exists \(\theta \in (0, 1)\) such that
+    \(F(1) - F(0) = F'(\theta)\).
+    We have \(F(1) = f(b)\), \(F(0) = f(a)\), and
+    \[
+        F'(t) = \gradient f(\varphi(t)) \cdot \varphi'(t) = \gradient f(\varphi(t)) \cdot (b - a)
+    \]
+    Setting \(\alpha = \varphi(\theta)\) gives the result.
+\end{snippetproof}
+
+\plain{The theorem is false for vector-valued functions.}
+
+\begin{snippettheorem}{finite-increment-theorem}{Finite increment theorem}
+    Let \(\Omega \subseteq \realnumbers^n\) be open and \(f \colon \Omega \fromto \realnumbers^m\)
+    be \differentiable in \(\Omega\). Let \([x, y] \subseteq \Omega\).
+    Then
+    \[
+        \|f(x) - f(y)\| \leq \|x - y\| \sup_{0 < t < 1} \|\text{d}f(x + t(y - x))\|
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{finite-increment-theorem-proof}{finite-increment-theorem}{Finite increment theorem}
+    Consider \(n = 1\). Given \(g \colon [a, b] \fromto \realnumbers^m\) \realcontinuous on \([a, b]\)
+    and \differentiable on \((a, b)\), if \(\|g'(x)\| \leq \alpha\) for all \(x \in (a, b)\), then
+    \(\|g(b) - g(a)\| \leq \alpha(b - a)\).
+    
+    Set \(v = g(b) - g(a)\) and define the auxiliary \function \(\varphi(x) = g(x) \cdot v\)
+    with form \([a, b] \fromto \realnumbers\).
+    By Lagrange's theorem, there exists \(\theta \in (a, b)\) such that
+    \(\varphi(b) - \varphi(a) = \varphi'(\theta)(b - a)\), giving
+    \[
+        g(b) \cdot v - g(a) \cdot v = g'(\theta) \cdot v \cdot (b - a) \leq \|g'(\theta)\| \cdot \|v\| \cdot (b - a)
+    \]
+    by Cauchy-Schwarz. Since \(v = g(b) - g(a)\), substituting yields
+    \(\|g(b) - g(a)\|^2 \leq \|g'(\theta)\| \cdot \|g(b) - g(a)\| \cdot (b - a)\).
+    Dividing by \(\|g(b) - g(a)\|\) (if nonzero) gives the result.
+    
+    For \(n > 1\), consider \(\Psi(t) = f(x + t(y - x))\) with form \([0, 1] \fromto \realnumbers^m\).
+    Since \(\Psi'(t) = \text{d}f(x + t(y - x))(y - x)\), we get
+    \[
+        \|f(y) - f(x)\| \leq \|y - x\| \sup_{0 < t < 1} \|\text{d}f(x + t(y - x))\|
+    \]
+\end{snippetproof}
+
+\begin{snippetcorollary}{constant-function-criterion-corollary}{}
+    Let \(f \colon \Omega \fromto \realnumbers^m\), with \(\Omega \subseteq \realnumbers^n\) open and connected,
+    and \(f\) \differentiable in \(\Omega\).
+    Then \(f\) is constant in \(\Omega\) \ifandonlyif
+    \(\frac{\partial f_i}{\partial x_j} = 0\) in \(\Omega\) for all \(i, j\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{constant-function-criterion-corollary-proof}{constant-function-criterion-corollary}{}
+    \iffproof{
+        The forward direction is obvious.
+    }{
+        For the converse, let \(x_0 \in \Omega\) and set \(E_{x_0} = \{x \in \Omega \suchthat f(x) = f(x_0)\}\).
+        We show \(E_{x_0} = \Omega\).
+        \(E_{x_0} \neq \emptyset\) since \(x_0 \in E_{x_0}\).
+        We show \(E_{x_0}\) is open: let \(y \in E_{x_0}\). There exists \(r > 0\) with \(B_r(y) \subseteq \Omega\).
+        For \(x \in B_r(y)\), since \(B_r(y)\) is convex, \([x, y] \subseteq B_r(y)\).
+        By the finite increment theorem,
+        \(\|f(x) - f(y)\| \leq \|x - y\| \sup_{0 < t < 1} \|\text{d}f(x + t(y - x))\| = 0\)
+        since \(\text{d}f = 0\). Thus \(f(x) = f(y) = f(x_0)\), so \(x \in E_{x_0}\).
+        By connectedness, \(E_{x_0} = \Omega\).
+    }
+\end{snippetproof}
+
+\section{Lipschitz criteria}
+
+\plain{For single-variable functions, bounded derivative is a criterion for Lipschitz continuity.}
+
+\begin{snippetproposition}{lipschitz-implies-bounded-differential}{}
+    Let \(\Omega \subseteq \realnumbers^n\) and \(f \colon \Omega \fromto \realnumbers^m\) be \differentiable.
+    If \(f \in \text{Lip}_\alpha(\Omega, \realnumbers^m)\), then \(\|\text{d}f(x)\| \leq \alpha\) for all \(x \in \Omega\).
+\end{snippetproposition}
+
+\begin{snippetproof}{lipschitz-implies-bounded-differential-proof}{lipschitz-implies-bounded-differential}{}
+    We estimate the operator \norm of the differential.
+    It suffices to show \(\|\text{d}f(x)v\| \leq \alpha \|v\|\) for all \(v\).
+    For unit \vector[vectors] \(\|v\| = 1\), the differential equals the directional derivative:
+    \begin{align*}
+        \|\text{d}f(x)v\| &= \|D_v f(x)\|
+        = \left\|\lim_{t \to 0} \frac{f(x + tv) - f(x)}{t}\right\| \\
+        &= \lim_{t \to 0} \frac{1}{|t|} \|f(x + tv) - f(x)\|
+        \leq \alpha \lim_{t \to 0} \frac{1}{|t|} \|tv\| = \alpha \|v\|
+    \end{align*}
+    since the \norm is \realcontinuous.
+\end{snippetproof}
+
+\begin{snippetproposition}{bounded-differential-implies-lipschitz}{}
+    Let \(\Omega \subseteq \realnumbers^n\) be open, \(f \colon \Omega \fromto \realnumbers^m\),
+    and \(C \subseteq \Omega\) be convex.
+    If there exists \(\alpha > 0\) such that \(\|\text{d}f(x)\| \leq \alpha\) for all \(x \in C\),
+    then \(f \in \text{Lip}_\alpha(C)\).
+\end{snippetproposition}
+
+\begin{snippetproof}{bounded-differential-implies-lipschitz-proof}{bounded-differential-implies-lipschitz}{}
+    By the finite increment theorem,
+    \(\|f(x) - f(y)\| \leq \|x - y\| \sup_{0 < t < 1} \|\text{d}f(x + t(y - x))\|\).
+    By hypothesis, \(\sup_{0 < t < 1} \|\text{d}f(x + t(y - x))\| \leq \alpha\),
+    so \(f\) is Lipschitz with constant \(\alpha\).
+\end{snippetproof}
+
+\begin{snippetexample}{lipschitz-constant-norms-example}{}
+    Let \(f(t) = (\cos t, \sin t, \arctan t)\) from \(\realnumbers\) to \(\realnumbers^3\).
+    We verify if it is Lipschitz and find the best constants.
+    \[
+        \jacobian f(t) = f'(t) = \begin{pmatrix}
+            -\sin t \\ \cos t \\ \frac{1}{1 + t^2}
+        \end{pmatrix}
+    \]
+    With the 2-\norm:
+    \[
+        \|f'(t)\|_2 = \sqrt{1 + \left(\frac{1}{1 + t^2}\right)^2}
+    \]
+    The maximum is \(\sqrt{2}\), which is the best Lipschitz constant.
+    
+    With the \(\infty\)-\norm:
+    \[
+        \|f'(t)\|_\infty = \max\left\{|\sin t|, |\cos t|, \frac{1}{1 + t^2}\right\}
+    \]
+    The supremum over \(t \in \realnumbers\) is exactly 1 (achieved at \(t = 0\)).
+    The \function is Lipschitz (always) but the constants depend on the \norm, and it is never a \contraction.
+\end{snippetexample}
+
+\end{document}

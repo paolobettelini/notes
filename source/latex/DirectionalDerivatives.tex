@@ -1,0 +1,282 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{directional-derivatives}
+\genpage
+
+\section{Directional derivatives}
+
+\begin{snippetdefinition}{directional-derivative-definition}{Directional derivative}
+    Let \(f \colon \Omega \subseteq \realnumbers^n \fromto \realnumbers\)
+    with \(\Omega\) open and \(a \in \Omega\).
+    The \emph{directional derivative} of \(f\) at \(a\) in the direction \(v \in \realnumbers^n\)
+    is
+    \[
+        D_v f(a) = \lim_{t \to 0} \frac{f(a + tv) - f(a)}{t}
+    \]
+    if this limit exists.
+\end{snippetdefinition}
+
+\plain{The partial derivative is like taking a slice of the multidimensional function
+in the direction given by the directional vector, and computing the single-variable derivative.
+The directional derivatives along the canonical basis vectors are called partial derivatives.}
+
+\begin{snippetexample}{directional-derivative-all-directions-example}{}
+    Let
+    \[
+        f(x, y) = \begin{cases}
+            \frac{xy^2}{x^2 + y^4} & (x, y) \neq (0,0) \\
+            0 & (x, y) = (0,0)
+        \end{cases}
+    \]
+    We determine whether the directional derivatives of \(f\) exist at the origin and compute them.
+    This \function is constant along the coordinate axes and equals zero.
+    Thus, the partial derivatives are zero.
+    Let \(v\) be any unit \vector. We can exclude the cases with \(v_i = 0\) as those are the partial derivatives.
+    Compute
+    \begin{align*}
+        \lim_{t \to 0} \frac{f(tv_1, tv_2) - f(0,0)}{t}
+        &= \lim_{t \to 0} \frac{1}{t} \frac{tv_1 t^2 v_2^2}{t^2 v_1^2 + t^4 v_2^4} \\
+        &= \lim_{t \to 0} \frac{t^3 v_1 v_2^2}{t^3(v_1^2 + t^2 v_2^4)} \\
+        &= \lim_{t \to 0} \frac{v_1 v_2^2}{v_1^2 + t^2 v_2^4}
+        = \frac{v_1 v_2^2}{v_1^2} = \frac{v_2^2}{v_1}
+    \end{align*}
+    Thus \(f\) admits all directional derivatives.
+    However, checking the limit of this \function at the origin shows it is not \realcontinuous there,
+    since along \(f(y^2, y) = \frac{1}{2}\) the \function does not tend to zero.
+\end{snippetexample}
+
+\plain{The existence of partial derivatives does not imply differentiability.
+In single-variable functions, the existence of the incremental ratio and the local linear approximation
+of a function coincide and are equivalent to differentiability. In multiple variables they do not coincide.}
+
+\section{Differentiability}
+
+\begin{snippetdefinition}{multivariable-differentiability-definition}{Differentiability}
+    Let \(f \colon \Omega \subseteq \realnumbers^n \fromto \realnumbers\)
+    with \(\Omega\) open and \(a \in \Omega\).
+    We say that \(f\) is \emph{differentiable} at \(a\)
+    if there exists a linear form, or equivalently if there exists \(\lambda \in \realnumbers^n\), such that
+    \[
+        f(a + h) = f(a) + \lambda \cdot h + o(\|h\|)
+    \]
+    as \(h \to 0\).
+    Such a linear form is called the \emph{differential} of \(f\) at \(a\),
+    denoted \(\text{d}f(a)\), which maps \(h\) to \(\lambda \cdot h\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{differential-uniqueness}{Uniqueness of the differential}
+    If \(f\) is \differentiable at \(a\), then the \vector \(\lambda\) in the definition is unique.
+\end{snippetproposition}
+
+\begin{snippetproof}{differential-uniqueness-proof}{differential-uniqueness}{Uniqueness of the differential}
+    Suppose that \(\lambda, \mu\) both satisfy the equality.
+    Subtracting member by member, we get
+    \[
+        (\lambda - \mu) \cdot h = o(\|h\|)
+    \]
+    as \(h \to 0\).
+    We thus need
+    \[
+        \lim_{h \to 0} \frac{(\lambda - \mu) \cdot h}{\|h\|} = 0
+    \]
+    However, \((\lambda - \mu) \cdot \frac{h}{\|h\|}\) does not tend to zero as \(h \to 0\).
+    To show this, choose the path \(\varphi(t) = t(\lambda - \mu)\) and compute
+    \[
+        (\lambda - \mu) \cdot \frac{t(\lambda - \mu)}{|t| \cdot \|\lambda - \mu\|}
+        = \frac{t}{|t|} \|\lambda - \mu\|
+    \]
+    which does not tend to zero because \(\lambda \neq \mu\).
+    Thus, there cannot exist \(\lambda \neq \mu\) satisfying the equality.
+\end{snippetproof}
+
+\begin{snippettheorem}{differentiability-implies-continuity-and-directional}{Differentiability implications}
+    If \(f\) is \differentiable at \(a\), then:
+    \begin{enumerate}
+        \item \(f\) is \realcontinuous at \(a\);
+        \item for all \(v \in \realnumbers^n\), the directional derivative exists and \(D_v f(a) = \lambda \cdot v\);
+        \item \(\lambda = \gradient f(a)\).
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{differentiability-implies-continuity-and-directional-proof}{differentiability-implies-continuity-and-directional}{Differentiability implications}
+    \begin{enumerate}
+        \item By hypothesis, there exists \(\lambda \in \realnumbers^n\) such that
+        \[
+            f(a + h) - f(a) = \lambda \cdot h + \varepsilon(h)
+        \]
+        with \(\varepsilon(h) = o(\|h\|)\).
+        Thus,
+        \begin{align*}
+            |f(a + h) - f(a)| &= |\lambda \cdot h + \varepsilon(h)| \\
+            &\leq |\lambda \cdot h| + |\varepsilon(h)|
+            \leq \|\lambda\| \|h\| + \|h\| \frac{|\varepsilon(h)|}{\|h\|} \\
+            &\leq \|h\| \left[\|\lambda\| + \frac{|\varepsilon(h)|}{\|h\|}\right] \to 0
+        \end{align*}
+        using the Cauchy-Schwarz inequality.
+        \item Compute
+        \begin{align*}
+            \frac{f(a + tv) - f(a)}{t}
+            &= \frac{\lambda \cdot tv + \varepsilon(tv)}{t} \\
+            &= \lambda \cdot v + \frac{\varepsilon(tv)}{t} \\
+            &= \lambda \cdot v + \frac{|t|}{t} \frac{\varepsilon(tv)}{\|tv\|} \to \lambda \cdot v
+        \end{align*}
+        \item We have
+        \[
+            \frac{\partial f}{\partial x_j}(a) = D_{e_j} f(a) = \lambda \cdot e_j = \lambda_j
+        \]
+        thus \(\lambda = \gradient f(a)\).
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetcorollary}{gradient-formula-corollary}{Gradient formula}
+    If \(f\) is \differentiable at \(a\), then \(D_v f(a) = \gradient f(a) \cdot v\).
+\end{snippetcorollary}
+
+\begin{snippetexample}{differentiability-partial-existence-example}{}
+    Study whether
+    \[
+        f(x, y) = x^5 \sqrt{|y|}
+    \]
+    is \differentiable at points of the form \((x_0, 0)\) along the \(x\)-axis.
+    At zero we may have issues with the partial derivative in \(y\),
+    so we must use the definition rather than derivative rules.
+    Since \(f(x, 0) = 0\), the derivative at points \((x_0, 0)\) is 0.
+    Compute
+    \begin{align*}
+        \frac{\partial f}{\partial y}(x_0, 0)
+        &= \lim_{y \to 0} \frac{f(x_0, y) - f(x_0, 0)}{y}
+        = \lim_{y \to 0} x_0^5 \frac{\sqrt{|y|}}{y} \\
+        &= \lim_{y \to 0} x_0^5 \, \text{sgn}(y) |y|^{-1/2}
+        = \begin{cases}
+            0 & x_0 = 0 \\
+            \nexists & x_0 \neq 0
+        \end{cases}
+    \end{align*}
+    Thus \(f\) is not \differentiable at \((x_0, 0)\) when \(x_0 \neq 0\).
+    At the origin, we have \(\gradient f(0, 0) = (0, 0)\):
+    \begin{align*}
+        \lim_{(h,k) \to (0,0)} \frac{f(h, k) - f(0, 0) - \gradient f(0, 0) \cdot (h, k)}{\sqrt{h^2 + k^2}}
+        = \lim_{(h,k) \to (0,0)} \frac{h^5 \sqrt{|k|}}{\sqrt{h^2 + k^2}}
+    \end{align*}
+    Since \(\frac{|ab|}{a^2 + b^2} \leq \frac{1}{2}\), we have
+    \[
+        \left|\frac{h^5 \sqrt{|k|}}{\sqrt{h^2 + k^2}}\right|
+        = \left(\frac{|h| \cdot |k|}{h^2 + k^2}\right)^{1/2} |h|^{9/2}
+        \leq \frac{1}{\sqrt{2}} |h|^{9/2}
+    \]
+    which tends to zero. Thus \(f\) is \differentiable at the origin.
+\end{snippetexample}
+
+\plain{If f is differentiable at a, we can define the tangent hyperplane
+as f(a) + ∇f(a) · (x - a).}
+
+\begin{snippettheorem}{total-differential-theorem}{Total differential theorem}
+    Let \(f \colon \Omega \fromto \realnumbers\), with \(\Omega \subseteq \realnumbers^n\) open,
+    and \(x_0 \in \Omega\). If there exists \(r > 0\)
+    such that \(B_r(x_0) \subseteq \Omega\) and all partial derivatives of \(f\)
+    exist in \(B_r(x_0)\) and are \realcontinuous at \(x_0\),
+    then \(f\) is \differentiable at \(x_0\).
+\end{snippettheorem}
+
+\plain{This is a sufficient condition.}
+
+\begin{snippetproof}{total-differential-theorem-proof}{total-differential-theorem}{Total differential theorem}
+    Consider the case \(n = 2\).
+    By hypothesis, \(\gradient f(x_0)\) exists.
+    We must show that
+    \[
+        \lim_{(x,y) \to (x_0, y_0)} \frac{f(x, y) - f(x_0, y_0) - \gradient f(x_0) \cdot (x - x_0, y - y_0)}{\sqrt{(x - x_0)^2 + (y - y_0)^2}} = 0
+    \]
+    Compute the increment \(f(x, y) - f(x_0, y_0)\). Rather than joining the two points
+    with a segment, we take the same path with two segments in the direction of the axes,
+    so we have one variable at a time. We pass through the intermediate point \((x, y_0)\):
+    \[
+        f(x, y) - f(x_0, y_0) = [f(x, y) - f(x, y_0)] + [f(x, y_0) - f(x_0, y_0)]
+    \]
+    We can apply Lagrange's theorem:
+    \[
+        f(x, y) - f(x, y_0) = \frac{\partial f}{\partial y}(x, \xi)(y - y_0)
+    \]
+    with \(\xi \in [y, y_0]\). Similarly,
+    \[
+        f(x, y_0) - f(x_0, y_0) = \frac{\partial f}{\partial x}(\eta, y_0)(x - x_0)
+    \]
+    with \(\eta \in [x, x_0]\). Substituting:
+    \begin{align*}
+        &\left|\frac{f(x,y) - f(x_0, y_0) - \frac{\partial f}{\partial x}(x_0, y_0)(x-x_0)
+        - \frac{\partial f}{\partial y}(x_0, y_0)(y-y_0)}{\sqrt{(x-x_0)^2 + (y-y_0)^2}}\right| \\
+        &\leq \left|\frac{\partial f}{\partial x}(\eta, y_0) - \frac{\partial f}{\partial x}(x_0, y_0)\right|
+        + \left|\frac{\partial f}{\partial y}(x, \xi) - \frac{\partial f}{\partial y}(x_0, y_0)\right|
+    \end{align*}
+    By the squeeze theorem, if \((x, y) \to (x_0, y_0)\),
+    then \(\xi \to y_0\) and \(\eta \to x_0\).
+    By continuity of the partial derivatives, the result tends to zero.
+\end{snippetproof}
+
+\begin{snippetcorollary}{differentiability-in-domain-corollary}{}
+    If all partial derivatives of \(f\) exist and are \realcontinuous in \(\Omega\),
+    then \(f\) is \differentiable in \(\Omega\).
+\end{snippetcorollary}
+
+\begin{snippetdefinition}{continuously-differentiable-definition}{Continuously differentiable}
+    Let \(f \colon \Omega \fromto \realnumbers\), with \(\Omega \subseteq \realnumbers^n\) open.
+    If the partial derivatives exist and are \realcontinuous in \(\Omega\), we say that
+    \(f\) is \emph{continuously differentiable} and write \(f \in \continuityclass^1(\Omega)\).
+\end{snippetdefinition}
+
+\plain{By the total differential theorem, the C classes are nested.}
+
+\begin{snippet}{gradient-direction-interpretation}
+    The gradient \(\gradient f(a)\) is the \vector pointing in the direction of maximum local growth.
+    Indeed, \(f(a + h) - f(a) = \gradient f(a) \cdot h + \varepsilon(h)\)
+    with \(\varepsilon(h) = o(\|h\|)\).
+    We have
+    \[
+        f(a + h) - f(a) = \|\gradient f(a)\| \cdot \|h\| \cos\theta + \varepsilon(h)
+        = \|h\| \left[\|\gradient f(a)\| \cos\theta + \frac{o(\|h\|)}{\|h\|}\right]
+    \]
+    where \(\theta\) is the angle between \(h\) and \(\gradient f(a)\).
+    This attains its maximum when \(\theta = 0\),
+    i.e., when the direction is along \(\gradient f(a)\).
+\end{snippet}
+
+\section{Other}
+
+\begin{snippetproposition}{tangent-plane-formula}{Tangent plane formula}
+    The equation of the plane that is tangent to \(f(x,y)\)
+    at the point \((x_0, y_0)\) is given by
+    \[
+        z = f(x_0, y_0) + f_x(x_0, y_0)(x-x_0) + f_y(x_0, y_0)(y-y_0)
+    \]
+\end{snippetproposition}
+
+\begin{snippetproposition}{partial-derivatives-determinant}{}
+    Let \(A \in \matrices_{n\times n}(\realnumbers)\) such that \(A_{i,j} = a_{i,j}\).
+    Then,
+    \[
+        \frac{\partial}{\partial a_{i,j}} \det A = \cofactor_{i,j}
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{partial-derivatives-determinant-proof}{partial-derivatives-determinant}{}
+    We can use the determinant expansion
+    \begin{align*}
+        \det A &= \sum_{k=1}^n a_{i,k} \cofactor_{i,k} \\
+        \frac{\partial}{\partial a_{i,j}} \det A
+        &= \frac{\partial}{\partial a_{i,j}} \sum_{k=1}^n a_{i,k} \cofactor_{i,k} \\
+        &= \sum_{k=1}^n \frac{\partial}{\partial a_{i,j}} a_{i,k} \cofactor_{i,k} \\
+        &= \sum_{k=1}^n \cofactor_{i,k} \frac{\partial a_{i,k}}{\partial a_{i,j}} \\
+        &= \sum_{k=1}^n \cofactor_{i,k} \delta_{k,j} \\
+        &= \cofactor_{i,j}
+    \end{align*}
+\end{snippetproof}
+
+\end{document}
