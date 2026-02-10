@@ -1,0 +1,595 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{diffeq-exercises-2}
+\genpage
+
+\section{Exercises}
+
+\begin{snippetexercise}{diffeq-ex-1}{}
+    Solve the following Cauchy problem:
+    \[
+        \begin{cases}
+        y' = y^3 \sin(2x) \\
+        y\left(\frac{\pi}{4}\right) = \sqrt{2}
+        \end{cases}
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-1-sol}{}
+    The given differential equation is of separable variables type. We can rewrite it as:
+    \[ \frac{dy}{dx} = y^3 \sin(2x). \]
+    Separating the variables (for \( y \neq 0 \)):
+    \[ y^{-3} \, dy = \sin(2x) \, dx. \]
+    Integrating both sides:
+    \[ \int y^{-3} \, dy = \int \sin(2x) \, dx. \]
+    \[ \frac{y^{-2}}{-2} = -\frac{1}{2} \cos(2x) + C. \]
+    Multiplying the equation by \(-2\):
+    \[ \frac{1}{y^2} = \cos(2x) + K, \quad \text{where } K = -2C. \]
+    Now we apply the initial condition \( y(\pi/4) = \sqrt{2} \) to determine the constant \( K \):
+    \[ \frac{1}{(\sqrt{2})^2} = \cos\left(2 \cdot \frac{\pi}{4}\right) + K \]
+    \[ \frac{1}{2} = \cos\left(\frac{\pi}{2}\right) + K \]
+    \[ \frac{1}{2} = 0 + K \implies K = \frac{1}{2}. \]
+    Substitute \( K = 1/2 \) back into the general solution:
+    \[ \frac{1}{y^2} = \cos(2x) + \frac{1}{2} = \frac{2\cos(2x) + 1}{2}. \]
+    Inverting both sides:
+    \[ y^2 = \frac{2}{2\cos(2x) + 1}. \]
+    Taking the square root:
+    \[ y(x) = \pm \sqrt{\frac{2}{2\cos(2x) + 1}}. \]
+    Since the initial value \( y(\pi/4) = \sqrt{2} \) is positive, we select the positive branch:
+    \[ y(x) = \sqrt{\frac{2}{2\cos(2x) + 1}}. \]
+    The solution is valid where the denominator is positive, i.e., \( \cos(2x) > -1/2 \). In the interval containing \( \pi/4 \), the domain is \( x \in (-\pi/3, \pi/3) \).
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-2}{}
+    \textbf{2.} Solve the following Cauchy problem:
+    \[
+        \begin{cases}
+        y' + y \tan x = 3 \sin 2x \\
+        y(0) = 1.
+        \end{cases}
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-2-sol}{}
+    This is a linear first-order ordinary differential equation of the form \(y' + p(x)y = q(x)\), with \(p(x) = \tan x\) and \(q(x) = 3 \sin 2x\).
+
+    \begin{enumerate}
+        \item \emph{Calculate the integrating factor}
+        The integrating factor \(I(x)\) is defined as:
+        \[ I(x) = e^{\int p(x) \, dx} = e^{\int \tan x \, dx}. \]
+        Since \(\int \tan x \, dx = \int \frac{\sin x}{\cos x} \, dx = -\ln|\cos x|\), we have:
+        \[ I(x) = e^{-\ln|\cos x|} = \frac{1}{|\cos x|}. \]
+        Given the initial condition at \(x=0\) (where \(\cos x > 0\)), we can simplify this to \(I(x) = \frac{1}{\cos x}\) in the interval \((-\pi/2, \pi/2)\). 
+        \item \emph{Multiply and integrate}
+        Multiply the entire differential equation by \(\frac{1}{\cos x}\):
+        \[ \frac{1}{\cos x}y' + \frac{\sin x}{\cos^2 x}y = \frac{3 \sin 2x}{\cos x}. \]
+        The left side becomes the derivative of the product \(y \cdot I(x)\). The right side simplifies using the double-angle identity \(\sin 2x = 2 \sin x \cos x\):
+        \[ \frac{d}{dx}\left( \frac{y}{\cos x} \right) = \frac{3(2 \sin x \cos x)}{\cos x} = 6 \sin x. \]
+        Now, integrate both sides with respect to \(x\):
+        \[ \frac{y}{\cos x} = \int 6 \sin x \, dx = -6 \cos x + C. \]
+        \item \emph{General Solution}
+        Multiply by \(\cos x\) to isolate \(y\):
+        \[ y(x) = \cos x (C - 6 \cos x) = C \cos x - 6 \cos^2 x. \]
+        \item \emph{Apply Initial Condition}
+        Use \(y(0) = 1\) to find the constant \(C\):
+        \[ 1 = C \cos(0) - 6 \cos^2(0) \]
+        \[ 1 = C(1) - 6(1)^2 \implies 1 = C - 6 \implies C = 7. \]
+        \item \emph{Final Solution}
+        Substituting \(C=7\) back into the general solution:
+        \[ y(x) = 7 \cos x - 6 \cos^2 x. \]
+    \end{enumerate}
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-3}{}
+    Determine the general integral of the differential equation
+    \[ xy' = y + xe^{\frac{y}{x}}. \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-3-sol}{}
+    This is a first-order homogeneous differential equation. We can rewrite it by dividing by \(x\) (assuming \(x \neq 0\)):
+    \[ y' = \frac{y}{x} + e^{\frac{y}{x}}. \]
+    \begin{enumerate}
+        \item \emph{Substitution}
+        We use the substitution \( u = \frac{y}{x} \), which implies \( y = xu \).
+        Differentiating with respect to \( x \), we get:
+        \[ y' = u + xu'. \]
+        \item \emph{Separation of variables}
+        Substituting the expressions for \( y' \) and \( \frac{y}{x} \) into the differential equation:
+        \[ u + xu' = u + e^u. \]
+        Simplifying by subtracting \( u \) from both sides:
+        \[ xu' = e^u. \]
+        Now we separate the variables \( x \) and \( u \):
+        \[ \frac{du}{dx} = \frac{e^u}{x} \implies e^{-u} \, du = \frac{1}{x} \, dx. \]
+        \item \emph{Integration}
+        Integrating both sides:
+        \[ \int e^{-u} \, du = \int \frac{1}{x} \, dx. \]
+        \[ -e^{-u} = \ln|x| + C, \]
+        where \( C \) is an arbitrary integration constant.
+        \item \emph{Solving for \(y\)}
+        Rearranging the equation to solve for \( u \):
+        \[ e^{-u} = -\ln|x| - C. \]
+        Let \( K = -C \). For the solution to be defined, we need \( K - \ln|x| > 0 \).
+        \[ -u = \ln(K - \ln|x|) \implies u = -\ln(K - \ln|x|). \]
+        Finally, substitute back \( u = \frac{y}{x} \):
+        \[ \frac{y}{x} = -\ln(K - \ln|x|). \]
+        \[ y(x) = -x \ln(K - \ln|x|). \]
+    \end{enumerate}
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-4}{}
+    Determine the general integral of the differential equation
+    \[ y' = -\frac{1}{x^2} - \frac{y}{x} + y^2. \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-4-sol}{}
+    This is a Riccati differential equation of the form \( y' = P(x) + Q(x)y + R(x)y^2 \), where \( P(x) = -\frac{1}{x^2} \), \( Q(x) = -\frac{1}{x} \), and \( R(x) = 1 \).
+    \begin{enumerate}
+        \item \emph{Finding a particular solution}
+        We guess a particular solution of the form \( y_p(x) = \frac{k}{x} \).
+        Differentiating gives \( y_p' = -\frac{k}{x^2} \). Substituting this into the equation:
+        \[ -\frac{k}{x^2} = -\frac{1}{x^2} - \frac{1}{x}\left(\frac{k}{x}\right) + \left(\frac{k}{x}\right)^2 \]
+        \[ -\frac{k}{x^2} = \frac{-1 - k + k^2}{x^2}. \]
+        Multiplying by \( x^2 \) and rearranging:
+        \[ -k = -1 - k + k^2 \implies k^2 = 1 \implies k = \pm 1. \]
+        We choose the particular solution \( y_p(x) = \frac{1}{x} \).
+        \item \emph{Substitution}
+        We use the standard substitution for Riccati equations: \( y(x) = y_p(x) + \frac{1}{u(x)} = \frac{1}{x} + \frac{1}{u} \).
+        Differentiating with respect to \( x \):
+        \[ y' = -\frac{1}{x^2} - \frac{u'}{u^2}. \]
+        Substitute \( y \) and \( y' \) back into the original ODE:
+        \[ -\frac{1}{x^2} - \frac{u'}{u^2} = -\frac{1}{x^2} - \frac{1}{x}\left(\frac{1}{x} + \frac{1}{u}\right) + \left(\frac{1}{x} + \frac{1}{u}\right)^2. \]
+        Simplifying the right hand side:
+        \[ -\frac{1}{x^2} - \frac{u'}{u^2} = -\frac{1}{x^2} - \frac{1}{x^2} - \frac{1}{xu} + \frac{1}{x^2} + \frac{2}{xu} + \frac{1}{u^2} \]
+        \[ -\frac{u'}{u^2} = \frac{1}{xu} + \frac{1}{u^2}. \]
+        Multiplying by \( -u^2 \), we obtain a linear first-order differential equation for \( u \):
+        \[ u' = -\frac{1}{x}u - 1 \implies u' + \frac{1}{x}u = -1. \]
+        \item \emph{Solving for \( u(x) \)}
+        The integrating factor is \( I(x) = e^{\int \frac{1}{x} dx} = e^{\ln|x|} = |x| \). Assuming \( x > 0 \) for simplicity, \( I(x) = x \).
+        Multiplying the linear ODE by \( x \):
+        \[ xu' + u = -x \implies (xu)' = -x. \]
+        Integrating both sides:
+        \[ xu = \int -x \, dx = -\frac{x^2}{2} + C. \]
+        \[ u(x) = \frac{2C - x^2}{2x}. \]
+        \item \emph{General Integral}
+        Substitute \( u(x) \) back into the expression for \( y(x) \):
+        \[ y(x) = \frac{1}{x} + \frac{1}{u(x)} = \frac{1}{x} + \frac{2x}{2C - x^2}. \]
+        Finding a common denominator:
+        \[ y(x) = \frac{2C - x^2 + 2x^2}{x(2C - x^2)} = \frac{2C + x^2}{x(2C - x^2)}. \]
+        Letting \( K = 2C \), the general solution is:
+        \[ y(x) = \frac{K + x^2}{x(K - x^2)}. \]
+    \end{enumerate}
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-5}{}
+    \textbf{5.} Determine the general integral of the differential equation
+    \[ y' + \frac{1}{3}y = e^x y^4. \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-5-sol}{}
+    This is a Bernoulli differential equation of the form \( y' + a(x)y = b(x)y^\alpha \) with \( \alpha = 4 \). To solve it, we perform a substitution to reduce it to a linear equation.
+    \begin{enumerate}
+        \item \emph{Substitution}
+        We introduce the variable \( z = y^{1-\alpha} = y^{1-4} = y^{-3} \).
+        Differentiating \( z \) with respect to \( x \):
+        \[ z' = \frac{d}{dx}(y^{-3}) = -3y^{-4}y'. \]
+        From this, we can write \( y^{-4}y' = -\frac{1}{3}z' \).
+        \item \emph{Transformation}
+        Divide the original differential equation by \( y^4 \) (assuming \( y \neq 0 \)):
+        \[ \frac{y'}{y^4} + \frac{1}{3}\frac{y}{y^4} = e^x \implies y^{-4}y' + \frac{1}{3}y^{-3} = e^x. \]
+        Substitute the expressions in terms of \( z \):
+        \[ -\frac{1}{3}z' + \frac{1}{3}z = e^x. \]
+        Multiply the entire equation by \( -3 \) to put it in standard linear form:
+        \[ z' - z = -3e^x. \]
+        \item \emph{Solving the linear equation}
+        This is a first-order linear ODE. The integrating factor is \( e^{\int -1 \, dx} = e^{-x} \).
+        Multiply both sides by \( e^{-x} \):
+        \[ e^{-x}z' - e^{-x}z = -3e^x e^{-x} \implies \frac{d}{dx}(z e^{-x}) = -3. \]
+        Integrate both sides with respect to \( x \):
+        \[ z e^{-x} = \int -3 \, dx = -3x + C. \]
+        Solve for \( z \):
+        \[ z(x) = e^x(C - 3x). \]
+        \item \emph{General Integral}
+        Substitute back \( z = y^{-3} \):
+        \[ \frac{1}{y^3} = e^x(C - 3x). \]
+        Solving for \( y \):
+        \[ y(x) = \frac{1}{\sqrt[3]{e^x(C - 3x)}}. \]
+        Note: \( y(x) = 0 \) is also a solution to the original equation (a singular solution lost during the division by \( y^4 \)).
+    \end{enumerate}
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-6}{}
+    \todo
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-6-sol}{}
+    \todo
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-7}{}
+    Solve the following Cauchy problem, with \( a \in \realnumbers \):
+    \[
+        \begin{cases}
+        xy' = y(1 + \ln y - \ln x) \\
+        y(1) = e^a.
+        \end{cases}
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-7-sol}{}
+    We can simplify the term inside the parenthesis using the property of logarithms \( \ln y - \ln x = \ln(y/x) \). The differential equation becomes:
+    \[ xy' = y\left(1 + \ln\left(\frac{y}{x}\right)\right) \implies y' = \frac{y}{x} \left( 1 + \ln\left(\frac{y}{x}\right) \right). \]
+    This is a first-order homogeneous differential equation, as the right-hand side depends only on the ratio \( y/x \).
+    \begin{enumerate}
+        \item \emph{Substitution}
+        Let \( u = \frac{y}{x} \). Then \( y = xu \).
+        Differentiating \( y \) with respect to \( x \) using the product rule:
+        \[ y' = u + xu'. \]
+        \item \emph{Separation of variables}
+        Substitute \( y' \) and \( y/x \) back into the differential equation:
+        \[ u + xu' = u(1 + \ln u). \]
+        Expand the right-hand side:
+        \[ u + xu' = u + u \ln u. \]
+        Subtract \( u \) from both sides:
+        \[ xu' = u \ln u. \]
+        Now, separate the variables \( u \) and \( x \) (assuming \( u > 0 \) and \( \ln u \neq 0 \)):
+        \[ \frac{du}{u \ln u} = \frac{dx}{x}. \]
+        \item \emph{Integration}
+        Integrate both sides:
+        \[ \int \frac{du}{u \ln u} = \int \frac{dx}{x}. \]
+        To integrate the left side, substitute \( v = \ln u \), so \( dv = \frac{1}{u} \, du \):
+        \[ \int \frac{dv}{v} = \ln|v| = \ln|\ln u|. \]
+        The integral on the right is \( \ln|x| \). Thus:
+        \[ \ln|\ln u| = \ln|x| + C_1. \]
+        Exponentiating both sides:
+        \[ |\ln u| = e^{\ln|x| + C_1} = |x| e^{C_1}. \]
+        Removing the absolute values introduces an arbitrary constant \( K \) (where \( K = \pm e^{C_1} \) or \( K=0 \) for the trivial solution \( u=1 \)):
+        \[ \ln u = Kx. \]
+        Solving for \( u \):
+        \[ u = e^{Kx}. \]
+        \item \emph{Back-substitution}
+        Recall that \( u = y/x \):
+        \[ \frac{y}{x} = e^{Kx} \implies y(x) = x e^{Kx}. \]
+        \item \emph{Apply Initial Condition}
+        We use the condition \( y(1) = e^a \):
+        \[ e^a = 1 \cdot e^{K(1)} \implies e^a = e^K. \]
+        Comparing the exponents, we find:
+        \[ K = a. \]
+        \item \emph{Final Solution}
+        Substitute \( K = a \) into the general solution:
+        \[ y(x) = x e^{ax}. \]
+    \end{enumerate}
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-8}{Peano's Brush}
+    Prove that the Cauchy problem
+    \[
+        \begin{cases}
+            y' = 3y^{2/3} \\
+            y(0) = 0
+        \end{cases}
+    \]
+    has infinite solutions in every neighborhood of \( x = 0 \).
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-8-sol}{}
+    The function \( f(x, y) = 3y^{2/3} \) is continuous on \( \realnumbers^2 \), which guarantees the existence of at least one solution by Peano's Existence Theorem. However, the partial derivative \( \frac{\partial f}{\partial y} = 2y^{-1/3} \) is unbounded as \( y \to 0 \). Therefore, the Lipschitz condition is not satisfied in any neighborhood of the origin, and the uniqueness of the solution is not guaranteed.
+    To prove the existence of infinite solutions, we construct them explicitly.
+    \begin{enumerate}
+        \item \emph{Trivial Solution}
+        The function \( y(x) = 0 \) for all \( x \in \realnumbers \) is a solution because \( y'(x) = 0 \) and \( 3(0)^{2/3} = 0 \), satisfying the equation and the initial condition \( y(0) = 0 \).
+        \item \emph{Non-trivial Solutions}
+        Assuming \( y \neq 0 \), we separate the variables:
+        \[ \frac{dy}{y^{2/3}} = 3 \, dx \implies y^{-2/3} \, dy = 3 \, dx. \]
+        Integrating both sides:
+        \[ \int y^{-2/3} \, dy = \int 3 \, dx \implies 3y^{1/3} = 3x + C. \]
+        Dividing by 3 and solving for \( y \):
+        \[ y^{1/3} = x + k \implies y(x) = (x + k)^3, \]
+        where \( k = C/3 \).
+        To satisfy \( y(0) = 0 \), we must have \( k = 0 \), which gives the solution \( y(x) = x^3 \).
+        \item \emph{Construction of the Solution Family}
+        We can construct piecewise functions that stay on the trivial solution \( y=0 \) for a while and then branch off onto the cubic solution. For any parameter \( c \ge 0 \), define:
+        \[
+            y_c(x) = \begin{cases}
+            0 & \text{if } x \le c \\
+            (x - c)^3 & \text{if } x > c.
+            \end{cases}
+        \]
+        Let us verify that \( y_c(x) \) is a solution:
+        \begin{itemize}
+            \item \emph{Initial Condition:} Since \( c \ge 0 \), \( 0 \le c \), so \( y_c(0) = 0 \).
+            \item \emph{Differential Equation:}
+            For \( x < c \), both sides of the ODE are 0.
+            For \( x > c \), \( y_c'(x) = 3(x-c)^2 \) and \( 3(y_c(x))^{2/3} = 3((x-c)^3)^{2/3} = 3(x-c)^2 \), so the equation holds.
+            At the junction point \( x = c \), we check differentiability:
+            \[ y_c'(c^-) = 0, \quad y_c'(c^+) = \lim_{h \to 0^+} \frac{(h)^3 - 0}{h} = 0. \]
+            The derivative exists and is 0, matching the right-hand side of the ODE.
+        \end{itemize}
+        Since \( c \) can be chosen arbitrarily from the interval \( [0, \infty) \), there are infinitely many distinct solutions to the Cauchy problem defined on \( \realnumbers \).
+    \end{enumerate}
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-9}{}
+    Solve the following Cauchy problem:
+    \[
+        \begin{cases}
+        y'' - y' - 2y = x^2 + 1 \\
+        y(0) = 2 \\
+        y'(0) = 0.
+        \end{cases}
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-9-sol}{}
+    This is a second-order linear non-homogeneous differential equation with constant coefficients. The general solution is the sum of the homogeneous solution \( y_h(x) \) and a particular solution \( y_p(x) \).
+
+    \begin{enumerate}
+        \item \emph{Homogeneous equation}
+        The associated homogeneous equation is \( y'' - y' - 2y = 0 \).
+        The characteristic equation is:
+        \[ \lambda^2 - \lambda - 2 = 0 \implies (\lambda - 2)(\lambda + 1) = 0. \]
+        The roots are \( \lambda_1 = 2 \) and \( \lambda_2 = -1 \).
+        Thus, the homogeneous solution is:
+        \[ y_h(x) = c_1 e^{2x} + c_2 e^{-x}. \]
+
+        \item \emph{Particular solution}
+        The right-hand side is a polynomial of degree 2, \( g(x) = x^2 + 1 \). Since \( 0 \) is not a root of the characteristic equation, we search for a particular solution in the form of a generic polynomial of degree 2:
+        \[ y_p(x) = Ax^2 + Bx + C. \]
+        Calculate the derivatives:
+        \[ y_p'(x) = 2Ax + B, \quad y_p''(x) = 2A. \]
+        Substitute these into the original ODE:
+        \[ (2A) - (2Ax + B) - 2(Ax^2 + Bx + C) = x^2 + 1. \]
+        Group the terms by powers of \( x \):
+        \[ -2Ax^2 + (-2A - 2B)x + (2A - B - 2C) = x^2 + 1. \]
+        By comparing the coefficients, we obtain the system:
+        \[
+        \begin{cases}
+            -2A = 1 \implies A = -\frac{1}{2} \\
+            -2A - 2B = 0 \implies -2(-\frac{1}{2}) - 2B = 0 \implies 1 - 2B = 0 \implies B = \frac{1}{2} \\
+            2A - B - 2C = 1 \implies 2(-\frac{1}{2}) - \frac{1}{2} - 2C = 1 \implies -1 - \frac{1}{2} - 1 = 2C \implies 2C = -\frac{5}{2} \implies C = -\frac{5}{4}.
+        \end{cases}
+        \]
+        So, the particular solution is \( y_p(x) = -\frac{1}{2}x^2 + \frac{1}{2}x - \frac{5}{4} \).
+
+        \item \emph{General solution}
+        \[ y(x) = c_1 e^{2x} + c_2 e^{-x} - \frac{1}{2}x^2 + \frac{1}{2}x - \frac{5}{4}. \]
+
+        \item \emph{Applying initial conditions}
+        First, compute the derivative of the general solution:
+        \[ y'(x) = 2c_1 e^{2x} - c_2 e^{-x} - x + \frac{1}{2}. \]
+        Now apply the conditions \( y(0) = 2 \) and \( y'(0) = 0 \):
+        \[
+        \begin{cases}
+            y(0) = c_1 + c_2 - \frac{5}{4} = 2 \implies c_1 + c_2 = \frac{13}{4} \\
+            y'(0) = 2c_1 - c_2 + \frac{1}{2} = 0 \implies 2c_1 - c_2 = -\frac{1}{2}.
+        \end{cases}
+        \]
+        Add the two equations to eliminate \( c_2 \):
+        \[ (c_1 + 2c_1) + (c_2 - c_2) = \frac{13}{4} - \frac{2}{4} \implies 3c_1 = \frac{11}{4} \implies c_1 = \frac{11}{12}. \]
+        Substitute \( c_1 \) back into the first equation:
+        \[ \frac{11}{12} + c_2 = \frac{13}{4} \implies c_2 = \frac{39}{12} - \frac{11}{12} = \frac{28}{12} = \frac{7}{3}. \]
+
+        \item \emph{Final solution}
+        \[ y(x) = \frac{11}{12}e^{2x} + \frac{7}{3}e^{-x} - \frac{1}{2}x^2 + \frac{1}{2}x - \frac{5}{4}. \]
+    \end{enumerate}
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-10}{}
+    Determine the general integral of the differential equation
+    \[ y'' - 2y' + y = \frac{e^x}{1+x^2}. \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-10-sol}{}
+    This is a second-order linear non-homogeneous differential equation with constant coefficients. We solve it using the method of variation of parameters.
+    \begin{enumerate}
+        \item \emph{Homogeneous solution}
+        The characteristic equation associated with the homogeneous part \( y'' - 2y' + y = 0 \) is:
+        \[ \lambda^2 - 2\lambda + 1 = 0 \implies (\lambda - 1)^2 = 0. \]
+        We have a real double root \( \lambda = 1 \).
+        Therefore, the general solution of the homogeneous equation is:
+        \[ y_h(x) = c_1 e^x + c_2 x e^x. \]
+        \item \emph{Variation of parameters}
+        Since the non-homogeneous term \( f(x) = \frac{e^x}{1+x^2} \) is not of a special form (polynomial-exponential), we use Lagrange's method. We look for a particular solution of the form:
+        \[ y_p(x) = c_1(x)e^x + c_2(x)xe^x. \]
+        First, we calculate the Wronskian determinant of the fundamental system \( \{e^x, xe^x\} \):
+        \[ W(x) = \det \begin{pmatrix} e^x & xe^x \\ (e^x)' & (xe^x)' \end{pmatrix} = \det \begin{pmatrix} e^x & xe^x \\ e^x & e^x(1+x) \end{pmatrix}. \]
+        \[ W(x) = e^x \cdot e^x(1+x) - xe^x \cdot e^x = e^{2x}(1+x-x) = e^{2x}. \]
+        \item \emph{Calculating coefficients}
+        We find \( c_1(x) \) and \( c_2(x) \) using the formulas involving the Wronskian:
+        \[ c_1'(x) = -\frac{y_2(x) f(x)}{W(x)}, \quad c_2'(x) = \frac{y_1(x) f(x)}{W(x)}. \]
+        Calculating \( c_1'(x) \):
+        \[ c_1'(x) = -\frac{xe^x \cdot \frac{e^x}{1+x^2}}{e^{2x}} = -\frac{xe^{2x}}{e^{2x}(1+x^2)} = -\frac{x}{1+x^2}. \]
+        Integrating with respect to \( x \):
+        \[ c_1(x) = \int -\frac{x}{1+x^2} \, dx = -\frac{1}{2} \ln(1+x^2). \]
+        Calculating \( c_2'(x) \):
+        \[ c_2'(x) = \frac{e^x \cdot \frac{e^x}{1+x^2}}{e^{2x}} = \frac{e^{2x}}{e^{2x}(1+x^2)} = \frac{1}{1+x^2}. \]
+        Integrating with respect to \( x \):
+        \[ c_2(x) = \int \frac{1}{1+x^2} \, dx = \arctan x. \]
+        \item \emph{General integral}
+        The particular solution is:
+        \[ y_p(x) = \left(-\frac{1}{2} \ln(1+x^2)\right)e^x + (\arctan x)xe^x. \]
+        Combining this with the homogeneous solution \( y_h(x) \), we get the general integral:
+        \[ y(x) = c_1 e^x + c_2 x e^x - \frac{1}{2} e^x \ln(1+x^2) + x e^x \arctan x. \]
+        Factoring out \( e^x \):
+        \[ y(x) = e^x \left( c_1 + c_2 x - \frac{1}{2} \ln(1+x^2) + x \arctan x \right). \]
+    \end{enumerate}
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-11}{}
+    Solve the following Cauchy problem:
+    \[
+        \begin{cases}
+        y'' - (\sin x)y' + y \ln(1+x) = 0 \\
+        y(0) = 0 \\
+        y'(0) = 0.
+        \end{cases}
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-11-sol}{}
+    We are dealing with a second-order linear homogeneous differential equation of the form:
+    \[ y'' + a_1(x)y' + a_0(x)y = 0, \]
+    where \( a_1(x) = -\sin x \) and \( a_0(x) = \ln(1+x) \).
+    \begin{enumerate}
+        \item \emph{Check for existence and uniqueness}
+        The coefficients \( a_1(x) \) and \( a_0(x) \) are continuous functions on the interval \( (-1, +\infty) \). Since the initial point \( x_0 = 0 \) belongs to this interval, the Existence and Uniqueness Theorem for linear differential equations guarantees that there exists a unique solution defined on this interval.
+        \item \emph{Observation of the trivial solution}
+        Notice that the constant function \( y(x) = 0 \) is a solution to the differential equation:
+        \[ y'(x) = 0, \quad y''(x) = 0 \implies 0 - (\sin x)(0) + (0)\ln(1+x) = 0. \]
+        Furthermore, it satisfies the initial conditions:
+        \[ y(0) = 0 \quad \text{and} \quad y'(0) = 0. \]
+        \item \emph{Conclusion}
+        Since the solution is unique and the trivial solution satisfies the problem, it is the only solution.
+        \[ y(x) \equiv 0. \]
+    \end{enumerate}
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-12}{}
+    \todo
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-12-sol}{}
+    \todo
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-13}{}
+    Determine the general integral of the differential equation
+    \[ y'' + 2y' + 3y = 3e^{2x} \sin(3x). \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-13-sol}{}
+    This is a second-order linear non-homogeneous differential equation with constant coefficients. The general solution is given by the sum of the homogeneous solution \(y_h(x)\) and a particular solution \(y_p(x)\).
+    \begin{enumerate}
+        \item \emph{Homogeneous solution}
+        The characteristic equation associated with the homogeneous part \(y'' + 2y' + 3y = 0\) is:
+        \[ \lambda^2 + 2\lambda + 3 = 0. \]
+        Calculating the roots:
+        \[ \Delta = 4 - 12 = -8. \]
+        \[ \lambda_{1,2} = \frac{-2 \pm \sqrt{-8}}{2} = -1 \pm i\sqrt{2}. \]
+        Since the roots are complex conjugates \(\alpha \pm i\beta\) with \(\alpha = -1\) and \(\beta = \sqrt{2}\), the homogeneous solution is:
+        \[ y_h(x) = e^{-x}(c_1 \cos(\sqrt{2}x) + c_2 \sin(\sqrt{2}x)). \]
+        \item \emph{Particular solution}
+        The non-homogeneous term is \(f(x) = 3e^{2x} \sin(3x)\).
+        We look for a particular solution using the method of undetermined coefficients (similarity method). The term corresponds to the complex number \(z = 2 + 3i\). Since \(2 + 3i\) is not a root of the characteristic equation, we guess a solution of the form:
+        \[ y_p(x) = e^{2x}(A \cos(3x) + B \sin(3x)). \]
+        We compute the derivatives:
+        \[ y_p' = e^{2x}[ (2A+3B)\cos(3x) + (2B-3A)\sin(3x) ]. \]
+        \[ y_p'' = e^{2x}[ (-5A+12B)\cos(3x) + (-12A-5B)\sin(3x) ]. \]
+        Substituting \(y_p, y_p', y_p''\) into the original equation \(y'' + 2y' + 3y\):
+        \begin{align*}
+            e^{2x} [ &(-5A+12B)\cos(3x) + (-12A-5B)\sin(3x) \\
+            &+ 2(2A+3B)\cos(3x) + 2(2B-3A)\sin(3x) \\
+            &+ 3A\cos(3x) + 3B\sin(3x) ] = 3e^{2x} \sin(3x).
+        \end{align*}
+        Grouping the cosine and sine terms:
+        \[ e^{2x} [ (2A + 18B)\cos(3x) + (-18A + 2B)\sin(3x) ] = 3e^{2x} \sin(3x). \]
+        Comparing the coefficients, we obtain the system:
+        \[
+        \begin{cases}
+            2A + 18B = 0 \implies A = -9B \\
+            -18A + 2B = 3
+        \end{cases}
+        \]
+        Substituting \(A\) into the second equation:
+        \[ -18(-9B) + 2B = 3 \implies 162B + 2B = 3 \implies 164B = 3 \implies B = \frac{3}{164}. \]
+        Consequently:
+        \[ A = -9 \left(\frac{3}{164}\right) = -\frac{27}{164}. \]
+        Thus, the particular solution is:
+        \[ y_p(x) = \frac{3}{164} e^{2x} (-9 \cos(3x) + \sin(3x)). \]
+        \item \emph{General Integral}
+        Combining the results:
+        \[ y(x) = e^{-x}(c_1 \cos(\sqrt{2}x) + c_2 \sin(\sqrt{2}x)) + \frac{3}{164} e^{2x} (\sin(3x) - 9 \cos(3x)). \]
+    \end{enumerate}
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-14}{}
+    Determine the general integral of the differential equation
+    \[ y''' + 6y'' + 11y' + 6y = 0. \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-14-sol}{}
+    This is a third-order linear homogeneous differential equation with constant coefficients.
+    \begin{enumerate}
+        \item \emph{Characteristic equation}
+        The associated characteristic equation is:
+        \[ \lambda^3 + 6\lambda^2 + 11\lambda + 6 = 0. \]
+        \item \emph{Finding the roots}
+        We look for integer roots among the divisors of the constant term 6 (i.e., \(\pm 1, \pm 2, \pm 3, \pm 6\)).
+        Let's test \(\lambda = -1\):
+        \[ (-1)^3 + 6(-1)^2 + 11(-1) + 6 = -1 + 6 - 11 + 6 = 0. \]
+        Since \(\lambda = -1\) is a root, we can divide the polynomial by \((\lambda + 1)\).
+        \[ \lambda^3 + 6\lambda^2 + 11\lambda + 6 = (\lambda + 1)(\lambda^2 + 5\lambda + 6). \]
+        Now we solve the quadratic equation \(\lambda^2 + 5\lambda + 6 = 0\) by factoring:
+        \[ (\lambda + 2)(\lambda + 3) = 0. \]
+        The roots are distinct and real: \(\lambda_1 = -1\), \(\lambda_2 = -2\), \(\lambda_3 = -3\).
+        \item \emph{General Integral}
+        Since the roots are real and distinct, the general solution is a linear combination of the corresponding exponentials:
+        \[ y(x) = c_1 e^{-x} + c_2 e^{-2x} + c_3 e^{-3x}, \]
+        where \(c_1, c_2, c_3\) are arbitrary real constants.
+    \end{enumerate}
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-15}{}
+    \todo
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-15-sol}{}
+    \todo
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-16}{}
+    \todo
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-16-sol}{}
+    \todo
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-17}{}
+    \todo
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-17-sol}{}
+    \todo
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-18}{}
+    \todo
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-18-sol}{}
+    \todo
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-19}{}
+    \todo
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-19-sol}{}
+    \todo
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-20}{}
+    \todo
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-20-sol}{}
+    \todo
+\end{snippetsolution}
+
+\begin{snippetexercise}{diffeq-ex-21}{}
+    \todo
+\end{snippetexercise}
+
+\begin{snippetsolution}{diffeq-ex-21-sol}{}
+    \todo
+\end{snippetsolution}
+
+\end{document}
