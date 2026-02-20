@@ -1,0 +1,74 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{floating-points}
+\genpage
+
+\section{Floating points}
+
+\begin{snippetdefinition}{floating-point-definition}{Floating point numbers}
+    The \set of \emph{floating point numbers} is
+    \begin{align*}
+        f(\beta, t, m, M) = \{0, \text{NaN}, \pm\infty\} \cup
+        \left\{x = \text{sign}(x) \cdot \beta^e \sum_{i=1}^t y_i \beta^{-i} \suchthat
+        t,y_i,m,M \in \naturalnumbers, y_1 \neq 0, -m\leq e \leq M \right\}
+    \end{align*}
+\end{snippetdefinition}
+
+\begin{snippet}{machine-precision-explanation}
+    We can estimate the relative error
+    \[
+        \frac{|x-\tilde x|}{|x|}
+    \]
+    where \(x\in\realnumbers\) and \(\tilde x \in f(\beta, t, m, M)\) is its best representation in a computer.
+    Consider \(x > 0\).
+    Clearly, if \(x \in f(\beta, t, m, M)\), then \(|x-\tilde x| = 0\).
+    Otherwise, \(x\in [a,b]\) where \(a,b\in f(\beta, t, m, M)\) and are consecutive in the \set.
+    Thus,
+    \[
+        |x-\tilde x| \leq \frac{b-a}{2}
+    \]
+    We then have
+    \[
+        a = \beta^e \sum_{i=1}^t y_i \beta^{-i}
+    \]
+    and
+    \[
+        b = \beta^e \left( \sum_{i=1}^t y_i \beta^{-i} + \beta^{-t} \right)
+        = a + \beta^{e - t}
+    \]
+    Thus, the difference is given by
+    \[
+        |x - \tilde x| \leq \frac{1}{2}\beta^{e-t}
+    \]
+    We now need to lower bound the normalizing element
+    \[
+        |x| = \beta^e \sum_{i=1}^\infty y_i\beta^{-i} \geq \beta^e \cdot y_1 \beta^{-1} \geq \beta^{e-1}
+    \]
+    We then have
+    \[
+        \frac{1}{|x|} \leq \beta^{1-e}
+    \]
+    By combining the two results we get
+    \[
+        \frac{|x-\tilde x|}{|x|} \leq \frac{1}{2}\beta^{e-t} \beta^{1-e}
+        = \frac{1}{2} \beta^{1-t} \triangleq u
+    \]
+    Then, \(u\) is the machine precision.
+\end{snippet}
+
+\begin{snippetdefinition}{machine-precision-definition}{Machine precision}
+    The \emph{machine precision} is an upper bound on the relative error due to rounding in floating point arithmetic.
+    For a floating point system \(f(\beta, t, m, M)\), it is defined as
+    \[
+        u \triangleq \frac{1}{2} \beta^{1-t}
+    \]
+\end{snippetdefinition}
+
+\end{document}
