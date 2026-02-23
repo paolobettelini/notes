@@ -19,6 +19,8 @@
 \maketitle
 \tableofcontents
 
+\pagebreak
+
 \section{Successione di funzioni}
 
 \begin{radioactive}
@@ -26,7 +28,9 @@
     Una \emph{successione di funzioni} è una famiglia di funzioni \(\{f_n\}_{n\in\naturalnumbers}\)
     definite su un dominio comune \(f_n \colon D \to \realnumbers\).
 }
+\end{radioactive}
 
+\begin{radioactive}
 \sdefinition{Convergenza in un punto}{
     Sia \(\{f_n\}_{n\in\naturalnumbers}\) una successione di funzioni.
     La successione converge in un punto \(x_0\) se
@@ -34,7 +38,9 @@
         \lim_{n\to\infty} f_n(x_0) < \infty
     \]
 }
+\end{radioactive}
 
+\begin{radioactive}
 \sdefinition{Convergenza puntuale}{
     Sia \(\{f_n\}_{n\in\naturalnumbers}\) una successione di funzioni.
     La successione \emph{converge puntualmente} ad una funzione \(f\colon D \to \realnumbers\) se
@@ -42,9 +48,141 @@
         \forall x\in D, \lim_{n\to\infty} f_n(x) = f(x)
     \]
 }
+\end{radioactive}
 
+\begin{radioactive}
 Quindi la successione converge in ogni punto, ma la velocità di convergenza può dipenderere dal punto.
+\end{radioactive}
 
+\begin{radioactive}
+\sexample{Convergenza puntuale e limitatezza}{
+    Limite puntuali di funzioni limitate non sono necessariamente limitate.
+    Prendiamo \(S = \realnumbers\) come dominio e \(f_n(x) = e^x \chi_{[-n, n]}(x)\), che sono limitate.
+    Il candidato per la convergenza puntuale è \(f(x) = e^x\), che tuttavia non è limitato.
+    Fissiamo quindi \(x \in S\) e \(\varepsilon > 0\) e cerchiamo
+    \(N(\varepsilon, x)\) naturale che verifica la definizione di convergenza puntuale.
+    Possiamo prendere \(N(\varepsilon, x) = \lceil |x| \rceil\) allora
+    \begin{align*}
+        |f_n(x) - f(x)| = 0 < \varepsilon
+    \end{align*}
+    per \(n > N\).
+}
+\end{radioactive}
+
+\begin{radioactive}
+\sexample{Convergenza puntuale e continuità}{
+    Limite puntuali di funzioni continue non sono necessariamente continue.
+    Prendiamo \(S = [-1,1]\) come dominio e
+    \[
+        f_n(x) = -\chi_{[-1, -\frac{1}{n})}(x) + nx \chi_{[-\frac{1}{n}, \frac{1}{n}]}(x) + \chi_{(\frac{1}{n}, 1]}(x)
+        = \begin{cases}
+            -1 & x \in \left[-1, -\frac{1}{n}\right) \\
+            nx & x \in \left[-\frac{1}{n}, \frac{1}{n}\right] \\
+            1 & x \in \left(\frac{1}{n}, 1\right]
+        \end{cases}
+    \]
+    che sono continue.
+    \begin{center}
+        \begin{tikzpicture}[scale=2]
+            \draw[->] (-1.5, 0) -- (1.5, 0) node[right] {$x$};
+            \draw[->] (0, -1.5) -- (0, 1.5) node[above] {$y$};
+
+            \draw[dashed, gray] (-1, 0) node[above, text=black] {$-1$} -- (-1, -1);
+            \draw[dashed, gray] (1, 0) node[below, text=black] {$1$} -- (1, 1);
+            \draw[dashed, gray] (-0.35, 0) node[above, text=black] {$-\frac{1}{n}$} -- (-0.35, -1);
+            \draw[dashed, gray] (0.35, 0) node[below, text=black] {$\frac{1}{n}$} -- (0.35, 1);
+            
+            \draw[dashed, gray] (0, 1) node[left, text=black] {$1$} -- (1, 1);
+            \draw[dashed, gray] (0, -1) node[right, text=black] {$-1$} -- (-1, -1);
+
+            \draw[thick, blue] (-1.2, -1) -- (-0.35, -1) -- (0.35, 1) -- (1.2, 1);
+            
+            \filldraw[blue] (-0.35, -1) circle (0.6pt);
+            \filldraw[blue] (0.35, 1) circle (0.6pt);
+            
+            \node[blue, above] at (0.8, 1) {$f_n(x)$};
+        \end{tikzpicture}
+    \end{center}
+    Il candidato limite è \[
+        f(x) = -\chi_{[-1, 0]}(x) + \chi_{[0,1]}(x) = \begin{cases}
+            -1 & x \in [-1, 0) \\
+            0 & x = 0 \\
+            1 & x \in (0, 1]
+        \end{cases}
+    \]
+    Notiamo anche che questa funzione non converge in maniera uniforme
+    perché punti più vicini all'origine sono più difficile da essere avvicinati dagli \(f_n\)
+    rispetto a punti più distanti.
+    Fissiamo \(x \in S\) e \(\varepsilon > 0\).
+    Vogliamo trovare \(N(x, \varepsilon)\) che soddisfi la definizione.
+    Possiamo scegliere una \(N\) tale che \(N > \frac{1}{|x|}\).
+}
+\end{radioactive}
+
+\begin{radioactive}
+\sexample{Convergenza puntuale delle derivate della successione diverso dalla derivata del limite}{
+    Prendiamo \(S = \realnumbers\) come dominio e
+    \[
+        f_n(x) = \frac{\sin(nx)}{\sqrt{n}}
+    \]
+    Notiamo che \[
+        |f_n(x)| \leq \frac{1}{\sqrt{n}} \to 0
+    \]
+    quindi \(f_n(x)\) converge puntualmente a \(f(x) = 0\).
+    Tuttavia, \[
+        f_n'(x) = \frac{n\cos(nx)}{\sqrt{n}} = \sqrt{n} \cos(nx)
+    \]
+    mentre \(f'(x) = 0\). Il limite di \(f_n'(x)\)
+    non esiste per ogni \(x \in S\) e quindi non converge puntualmente a \(f'(x)\).
+}
+\end{radioactive}
+
+\begin{radioactive}
+\sexample{Convergenza puntuale degli integrali diverso dall'integrale del limite}{
+    Prendiamo \(S = \realnumbers\) come dominio e
+    \[
+        f_n(x) = n \chi_{(0, \frac{1}{n})}(x)
+    \]
+    Il candidato limite è \(f(x) = 0\). 
+    Fissiamo \(x \in S\) e \(\varepsilon > 0\) e cerchiamo un
+    \(N(\varepsilon, x)\) naturale che verifichi la definizione di
+    convergenza puntuale.
+    Distinguamo due casi:
+    \begin{itemize}
+        \item Se \(x \le 0\), allora \(x \notin (0, \frac{1}{n})\) per qualsiasi \(n \ge 1\), dunque \(f_n(x) = 0\). Possiamo scegliere banalmente \(N = 1\).
+        \item Se \(x > 0\), affinché la funzione si annulli abbiamo bisogno che \(x \ge \frac{1}{n}\), ovvero \(n \ge \frac{1}{x}\). Possiamo allora prendere \(N(\varepsilon, x) = \lceil \frac{1}{x} \rceil\).
+    \end{itemize}
+    In entrambi i casi, per \(n > N\), otteniamo:
+    \begin{align*}
+        |f_n(x) - f(x)| = 0 < \varepsilon
+    \end{align*}
+    il che dimostra che \(f_n\) converge puntualmente a \(f=0\).
+    Sia \(f_n\) che \(f\) sono integrabili secondo Riemann.
+    Tuttavia,
+    \[
+        \integral[0][1][f_n(x)][x] = \integral[0][\frac{1}{n}][n][x] = 1
+    \]
+    mentre invece
+    \[
+        \integral[0][1][f(x)][x] = 0
+    \]
+    che non coincidono. Quindi, la successione numerica
+    \[
+        \left\{\integral[0][1][f_n(x)][x]\right\}_{n \in \naturalnumbers}
+    \]
+    non converge a \(\integral[0][1][f(x)][x]\).
+}
+\end{radioactive}
+
+\begin{radioactive}
+Vogliamo che la successione di funzioni si avvicini in maniera uniforme
+alla sua funzione limite, cioè vogliamo rafforzare la definizione
+rendendo la convergenza indipendente dalla coordinata.
+Questo ci permette di avere una convergrnza che si comporta meglio rispetto alla limitatezza,
+continuità, derivata e integrale.
+\end{radioactive}
+
+\begin{radioactive}
 \sdefinition{Convergenza uniforme}{
     Sia \(\{f_n\}_{n\in\naturalnumbers}\) una successione di funzioni.
     La successione \emph{converge uniformemente} ad una funzione \(f\colon D \to \realnumbers\) se
@@ -53,7 +191,9 @@ Quindi la successione converge in ogni punto, ma la velocità di convergenza pu�
     \]
     per \(n\to\infty\).
 }
+\end{radioactive}
 
+\begin{radioactive}
 Oppure possiamo dire che la condizione è che
 \[
     \forall \varepsilon > 0, \exists N \suchthat \forall n>N, ||f_n-f||_{\infty, E} < \varepsilon
@@ -67,7 +207,9 @@ ma siccome ciò deve valere per tutte le \(x\) possiamo utilizzare il supremum.
 
 Quindi la velocità di convergenza è la stessa in ogni punto. 
 Ogni cosa che converge uniformemente converge puntualmente.
+\end{radioactive}
 
+\begin{radioactive}
 \sdefinition{Convergenza uniformemente di Cauchy}{
     Sia \(\{f_n\}_{n\in\naturalnumbers}\) una successione di funzioni.
     La successione è \emph{uniformemente di Cauchy} se
@@ -82,6 +224,71 @@ Ogni cosa che converge uniformemente converge puntualmente.
 A partire da un certo indice, tutte le funzioni della successione sono molto vicine tra loro in modo uniforme su tutto il dominio,
 indipendentemente dalla funzione limite.
 \end{radioactive}
+
+\begin{radioactive}
+\sexample{Convergenza uniforme}{
+    Prendiamo \(S = [0, +\infty)\)
+    come domiio e \[ f_n(x) = \frac{x}{1 + nx} \]
+    Il candidato limite è \(f(x) = 0\).
+    Verifichiamo la convergenza uniforme.
+    Abbiamo
+    \begin{align*}
+        \left|f_n(x) - f(x)\right|
+        &= \frac{x}{1 + nx} \leq \begin{cases}
+            \frac{x}{nx} & x > 0 \\
+            0 & x = 0
+        \end{cases} \leq \frac{1}{n} \to 0
+    \end{align*}
+    Basta quindi prendere \(N(\varepsilon)\) tale che \(\varepsilon > \frac{1}{\varepsilon}\).
+    \begin{center}
+        \begin{tikzpicture}[scale=1.5, >=stealth]
+            \def\xmax{6}
+            \def\ymax{1.3}
+
+            \draw[->] (-0.2, 0) -- (\xmax+0.8, 0) node[right] {$x$};
+            \draw[->] (0, -0.2) -- (0, \ymax) node[above] {$y$};
+
+            \draw (1, 0.05) -- (1, -0.05) node[below] {$1$};
+            \draw (2, 0.05) -- (2, -0.05) node[below] {$2$};
+            \draw (4, 0.05) -- (4, -0.05) node[below] {$4$};
+            \draw (6, 0.05) -- (6, -0.05) node[below] {$6$};
+            
+            \draw (0.05, 1) -- (-0.05, 1) node[left] {$1$};
+            \draw (0.05, 0.5) -- (-0.05, 0.5) node[left] {$1/2$};
+            \node[below left] at (0,0) {$0$};
+
+            \draw[red, dashed, thin, opacity=0.5] (0, 1) -- (\xmax, 1);
+            \draw[red, thick, domain=0:\xmax, samples=200] plot (\x, {\x / (1 + \x)});
+            \node[red, right] at (\xmax, {\xmax / (1 + \xmax)}) {$n=1$};
+
+            \draw[blue, dashed, thin, opacity=0.5] (0, 0.5) -- (\xmax, 0.5);
+            \draw[blue, thick, domain=0:\xmax, samples=200] plot (\x, {\x / (1 + 2*\x)});
+            \node[blue, right] at (\xmax, {\xmax / (1 + 2*\xmax)}) {$n=2$};
+
+            \draw[teal, dashed, thin, opacity=0.5] (0, 0.1) -- (\xmax, 0.1);
+            \draw[teal, thick, domain=0:\xmax, samples=200] plot (\x, {\x / (1 + 10*\x)});
+            \node[teal, right] at (\xmax, {\xmax / (1 + 10*\xmax)}) {$n=10$};
+
+            \draw[->, black, thick, dashed] (3, 0.7) -- (3, 0.15);
+        \end{tikzpicture}
+    \end{center}
+}
+\end{radioactive}
+
+\begin{radioactive}
+In generale per la convergenza uniforme, vogliamo che \(|f_n(x) - f(x)| < \varepsilon\),
+cioè \(f(x) - \varepsilon < f_n(x) - f(x) + \varepsilon\).
+In altre parole, vogliamo che i grafici delle \(f_n\) siano definitivamente contenuti
+nella regione delimitata dalle curve \(f-\varepsilon\) e \(f + \varepsilon\).
+\end{radioactive}
+
+Per esempio, nel secondo esempio sopra,
+\begin{align*}
+    |f_n(x) - f(x)| = \frac12
+\end{align*}
+per tutte le \(x \in S\) e \(n \in \naturalnumbers\), quindi non vi è convergenza uniforme.
+
+\pagebreak
 
 \stheorem{Convergenza uniforme e convergenza uniformemente di Cauchy}{
     Sia \(\{f_n\}_{n\in\naturalnumbers}\) una successione di funzioni.
@@ -3098,13 +3305,15 @@ in quanto una partizione è finita.
     Si può mettere anche l'immagine del diagramma commutativo.
 }
 
-%%%%%%
+\begin{radioactive}
 \sproposition{}{
     Supponiamo di avere due curve \(\varphi_1 \colon I_1 \to \realnumbers^n\)
     e \(\varphi_2 \colon I_2 \to \realnumbers^n\). Se \(\varphi_1 \sim \varphi_2\) allora
     \(\varphi_1\) e \(\varphi_2\) hanno lo stesso sostegno.
 }
-%%%%%%%%%%%%%%%%%%%%
+\end{radioactive}
+
+\begin{radioactive}
 \sexample{}{
     Sia \(\sigma \colon [0,1] \to [a,b]\) tale che \(\sigma(t) = a + (b-a)t\)
     che è una retta mappante \([0,1]\) in \([a,b]\).
@@ -3116,7 +3325,9 @@ in quanto una partizione è finita.
     Chiaramente, \(\varphi \sim \hat{\varphi}\).
     Quindi, la seconda curva è la medesima ma definita su \([0,1]\) al posto di \([a,b]\).
 }
-%%%%%%%%%%%%%%%%%%%%%5
+\end{radioactive}
+
+\begin{radioactive}
 \sexample{}{
     Consideriamo \(\varphi(t) = (\cos t, \sin t)\) definita in
     \begin{enumerate}
@@ -3127,7 +3338,9 @@ in quanto una partizione è finita.
     \end{enumerate}
     le ultime tre hanno il medesimo sostegno.
 }
-%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{radioactive}
+
+\begin{radioactive}
 \sexample{}{
     Sia \(\varphi_1(t) = (t, \sqrt{1-t^2})\) in \([1/2, 1]\)
     e \(\varphi_2(t) = (\cos t, \sin t)\) in \([0, \pi/3]\).
@@ -3138,8 +3351,9 @@ in quanto una partizione è finita.
         = \varphi_2(\cos t)
     \]
 }
+\end{radioactive}
 
-%%%%%%%%%%%%%%
+\begin{radioactive}
 \sdefinition{Verso di percorrenza}{
     Siano \(\varphi_1\), \(\varphi_2\) due curve equivalenti con \(\sigma(t)\).
     \begin{enumerate}
@@ -3147,6 +3361,7 @@ in quanto una partizione è finita.
         \item se \(\sigma'(t) < 0\) diremo che le due curve hanno lo verso di percorrenza opposto.
     \end{enumerate}
 }
+\end{radioactive}
 
 Sia \(\varphi \colon [a,b] \to \realnumbers^n\) e sia \(P\) una partizione di \([a,b]\)
 e indichiamo
@@ -3155,7 +3370,7 @@ e indichiamo
 \]
 con la norma euclidea.
 
-%%%%%%
+\begin{radioactive}
 \sdefinition{Lunghezza della curva}{
     Diremo che la curva \(\varphi\) è \emph{rettificabile} se
     \[
@@ -3164,13 +3379,15 @@ con la norma euclidea.
     dove \(P\) sono tutte le partizioni di \([a,b]\). In tal caso, chiamiamo tale valore
     la \emph{lunghezza della curva} \(L(\varphi)\).
 }
+\end{radioactive}
 
-%%%%%%%%%%%%
+\begin{radioactive}
 \sproposition{}{
     Se \(\varphi\) è una curva lipschitziana, allora è rettificabile.
 }
+\end{radioactive}
 
-%%%%%%%%%%%%
+\begin{radioactive}
 \sproof{}{
     Abbiamo che
     \[
@@ -3183,8 +3400,9 @@ con la norma euclidea.
     \end{align*}
     e allora \(L(\varphi) \leq L(b-a)\).
 }
+\end{radioactive}
 
-%%%%%%%%%%%%%%%%%
+\begin{radioactive}
 \sexample{}{
     Sia \(\varphi(t) = (\cos t, \sin t)\) definito in \(I = [0, \pi]\).
     Abbiamo
@@ -3203,8 +3421,9 @@ con la norma euclidea.
     \end{align*}
     Vale allora che \(L(\varphi) \leq \sqrt{2}\pi\).
 }
+\end{radioactive}
 
-%%%%%%%%%%%%
+\begin{radioactive}
 \stheorem{}{
     Sia \(\varphi \colon I \to \realnumbers^n\) con \(\varphi \in \mathcal{C}^1(I)\) (che sono di Lipschitz).
     Allora \(\varphi\) è rettificabile e
@@ -3212,8 +3431,9 @@ con la norma euclidea.
         L(\varphi) = \integral[a][b][||\varphi'(t)||][t]
     \]
 }
+\end{radioactive}
 
-%%%%%%%%%%%%
+\begin{radioactive}
 \sproposition{}{
     \begin{align*}
         \left|\left|
@@ -3223,8 +3443,9 @@ con la norma euclidea.
     \end{align*}
     dove l'integrale di un vettore è il vettore degli integrali.
 }
+\end{radioactive}
 
-%%%%%%%%%%%%%%%%%%
+\begin{radioactive}
 \sproof{}{
     Sia \[
         v = \left(\integral[a][b][\varphi_1(t)][t], \cdots, \integral[a][b][\varphi_n(t)][t]\right)
@@ -3241,10 +3462,11 @@ con la norma euclidea.
         &= ||v|| \integral[a][b][||\varphi(t)||][t]
     \end{align*}
 }
+\end{radioactive}
 
 \pagebreak
 
-%%%%%%%%%%%%
+\begin{radioactive}
 \sproof{Del teorema}{
     \begin{enumerate}
         \item     \begin{align*}
@@ -3303,15 +3525,17 @@ con la norma euclidea.
     \end{enumerate}
     quindi vale l'equivalenza.
 }
+\end{radioactive}
 
-%%%%%%%%%%%%%%%%
+\begin{radioactive}
 Nel caso bidimensionale \(\varphi(t) = (t, f(t))\) vale allora
 \[
     \integral[a][b][||\varphi'(t)||][t] = \integral[a][b][||(1, f'(t))||][t]
     = \integral[a][b][\sqrt{1 + {\frac{df}{dt}}^2}][t]
 \]
+\end{radioactive}
 
-%%%%%%%%%%%%%%%%5
+\begin{radioactive}
 \sexample{Curva non rettificabile}{
     % TODO immagine
     La curva \(\varphi\colon [0,1] \to \realnumbers^2\)
@@ -3337,6 +3561,7 @@ Nel caso bidimensionale \(\varphi(t) = (t, f(t))\) vale allora
     \end{align*}
     che diverge per \(n \to \infty\).
 }
+\end{radioactive}
 
 \begin{center}
     \begin{tikzpicture}[scale=2,>=stealth]
