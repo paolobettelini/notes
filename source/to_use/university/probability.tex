@@ -130,8 +130,8 @@ Quello soggettivo è quello più generale.
 \subsection{Formalizzazione}
 
 \begin{radioactive}
-\sdefinition{Evento}{
-    Un \emph{evento} è una qualsiasi asserzione
+\sdefinition{Esito}{
+    Un \emph{esito} è una qualsiasi asserzione
     della quale ne si può stabilire la veridicità
     osservando il risultato dell'esperimento. 
 }
@@ -142,6 +142,138 @@ Se abbiamo un urna possiamo rappresentare
 gli eventi come punti su un segmento di punti, cioè tutte le possibili estrazioni.
 Con due urne posso fare lo stesso con una griglia discreta, e così via.
 \end{radioactive}
+
+\begin{radioactive}
+\sdefinition{Evento}{
+    Un \emph{evento} è un insieme di esiti.
+}
+\end{radioactive}
+
+Possiamo fare un ponte fra gli operatori della teoria degli insiemi e
+la logica degli eventi.
+
+% logic-of-probability-events-definition
+Siano \(A, B\) due eventi, indicati con i rispettivi insiemi di esiti \(A\) e \(B\).
+\begin{enumerate}
+    \item La \emph{negazione} di un evento \(-A\) corrisponde all'evento associato all'insieme complementare \(\Omega \difference A\).
+    \item La \emph{somma} logica di due eventi \(A+B\), cioè se almeno uno dei due eventi si verificano, corrisponde all'evento associato all'unione insiemistica \(A \union B\).
+    \item Il \emph{prodotto} logico di due eventi \(A\cdot B\), cioè se ambo gli avventi si verificano, corrisponde all'evento associato all'intersezione insiemistica \(A \intersection B\).
+    \item La \emph{differenza} logica di due eventi \(A - B\) corrisponde all'evento associato alla differenza insiemistica \(A \difference B\). 
+    \item La \emph{differenza simmetrica} di due eventi \(A\Delta B\) corrisponde all'evento associato alla differenza simmetrica insiemistica \((A \intersection B^c) \union (A^c \intersection B)\).
+    \item L'\emph{implicazione} logica di due eventi \(A\implies B\) corrisponde all'evento associato alla relazione di sottoinsieme \(A \subseteq B\).
+    \item L'\emph{equivalenza} fra due eventi \(A = B\), cioè \(A \implies B\) e \(B \implies A\), corrisponde all'uguaglianza insiemistica \(A = B\).
+    \item Due eventi si dicono \emph{incompatibili}, cioè se non possono verificarsi in contemporanea, corrisponde alla condizione che l'intersezione insiemistica sia vuota \(A \intersection B = \emptyset\).
+\end{enumerate}
+
+La teoria degli insiemi non è esattamente la stessa cosa della teoria degli eventi.
+Per esempio la probabilità condizionata non corrisponde a nessun insieme.
+
+
+\sdefinition{}{
+    Nel caso della probabilità classica con \(\Omega\) finito, possiamo scegliere l'insieme
+    degli eventi come \(\powerset(\Omega)\)
+    e definire la misura come \(\mathbb P \colon \powerset(\Omega) \fromto [0,1]\) dato da
+    \[
+        \mathbb P (A) = \frac{|A|}{|\Omega|}
+    \]
+    per uno spazio equiprobabile.
+}
+
+Vogliamo espandersi al caso della probabilità soggettiva
+\sdefinition{}{
+    Sia \(\Omega \neq \emptyset\) di cardinalità finita.
+    Chiamiamo \emph{misura di probabilità} su \(\powerset(\Omega)\)
+    una funzione \(\mathbb P \colon \powerset(\Omega) \fromto [0,1]\)
+    tale che
+    \begin{enumerate}
+        \item \(\mathbb P(\Omega) = 1\)
+        \item \(\forall A, B \in \powerset(\Omega)\) disgiunti,
+        \[  \mathbb P (A \union B) = \mathbb P (A) + \mathbb P (B) \]
+    \end{enumerate}
+    Chiamiamo \emph{spazio di probabilità con spazio campionato \(\Omega\)
+    di cardinalità finita} la terna \((\Omega, \powerset(\Omega), \mathbb P)\).
+}
+
+\sproposition{}{
+    Sia \((\Omega, \powerset(\Omega), \mathbb P)\)
+    uno spazio di probabilità con spazio campionato \(\Omega\)
+    di cardinalità finita. Allora,
+    \begin{enumerate}
+        \item per ogni \(A \in \powerset(\Omega)\), \(\mathbb P(\Omega \difference A) = 1 - \mathbb P (A)\);
+        \item per ogni \(A,B \in \powerset(\Omega)\) tale che \(B \subseteq A\),
+            \(\mathbb P(A \difference B) = \mathbb P (A) - \mathbb P (B)\)
+        \item per ogni \(A,B \in \powerset(\Omega)\), \(\mathbb P (A \union B) = \mathbb P (A) + \mathbb P (B) - \mathbb P (A \intersection B)\)
+        \item \emph{Additività:} \(\forall n \in \naturalnumbers\) e \(A_1, \cdots, A_n \in \powerset(\Omega)\) tale che
+        \(A_i \intersection A_j = 0\) per tutti gli \(i \neq j\),
+        \[
+            \mathbb P \left(
+                \bigcup_{k=1}^n A_k
+            \right) = \sum_{k=1}^n \mathbb P(A_k)
+        \]
+        \item \emph{Subadditività:} \(\forall n \in \naturalnumbers\) e \(A_1, \cdots, A_n \in \powerset(\Omega)\)
+        \[
+            \mathbb P \left(\bigcup_{k=1}^n A_k\right) \leq \sum_{k=1}^n \mathbb P(A_k)
+        \]
+    \end{enumerate}
+}
+
+\sproof{}{
+    \begin{enumerate}
+        \item \begin{align*}
+            \mathbb P(\Omega) &= \mathbb P(A \union (\Omega \difference A)) \\
+            &= \mathbb P(A) + \mathbb P(\Omega \difference A)
+        \end{align*}
+        e quindi \(\mathbb P(A) = 1- \mathbb P(\Omega-A)\).
+        \item \begin{align*}
+            \mathbb P(A \difference B) &= \mathbb P(A \intersection (\Omega \difference B)) = 1- \mathbb P\left(\Omega \difference (A \intersection (\Omega \difference B))\right)
+        \end{align*}
+        dal disegno degli insiemi
+        \begin{align*}
+            \mathbb P(A \difference B) &= 1-\mathbb P((\Omega \difference A) \union B) \\
+            &= 1 - \mathbb P(\Omega \difference A) - \mathbb P(B) \\
+            &= \mathbb P(A) - \mathbb P(B)
+        \end{align*}
+        \item \begin{align*}
+            \mathbb P(A \union B) &= \mathbb P((A \difference A \intersection B) \union (B \difference A \intersection B) \union (A \intersection B)) \\
+            &= \mathbb P(A \difference A \intersection B) + \mathbb P((B \intersection A \intersection B) \union (A \intersection B)) \\
+            &= \mathbb P(A \difference A \intersection B) + \mathbb P(B \intersection A \intersection B) + \mathbb P(A \intersection B) \\
+            &= \mathbb P(A) - \mathbb P(A \intersection B) + \mathbb P(B) - \mathbb P(A \intersection B) + \mathbb P(A \intersection B) \\
+            &= \mathbb P(A) + \mathbb P(B) - \mathbb P(A \intersection B)
+        \end{align*}
+        \item Dimostriamo per induzione. Per \(n=2\) vale per la definizione.
+        Assumiamo che la proposizione sia vera per \(n\) e mostriamo il passo successivo
+        \begin{align*}
+            \mathbb P\left(\bigcup_{i=1}^{n+1} A_i\right)
+            &= \mathbb P\left(\bigcup_{i=1}^{n+1} A_i\right) \\
+            &= \mathbb P\left(\bigcup_{i=1}^{n} A_i\right) + \mathbb P(A_{n+1}) \\
+            &= \sum_{i=1}^{n+1} \mathbb P(A_i)
+        \end{align*}
+        \item Vale lo stesso passo \(n=2\) dello scorso punto
+        \begin{align*}
+            \mathbb P(A_1 \union A_2) &= \mathbb P(A_1) + \mathbb P(A_2) - \mathbb P(A_1 \intersection A_2) \\
+            &\leq \mathbb P(A_1) + \mathbb P(A_2)
+        \end{align*}
+        poi segue per induzione come il punto scorso.
+    \end{enumerate}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \pagebreak
 
@@ -430,6 +562,189 @@ Se richiediamo che \(f_n(x)\) siano continue allora il limite per \(x \to x_0\)
     \end{align*}
     Quindi scegliendo \(\delta = \overline \delta\) viene verifica la definizione di continuità in \(x_0\)
     per \(f\).
+}
+
+\sexample{Convergenza puntuale non implica convergenza uniforme}{
+    Prendiamo \(S = [0,1]\) come dominio e \(f_n(x) = n^2 x (1-x^2)^n\)
+    converge puntualmente a \(f(x) = 0\) ma non in maniera uniforme.
+}
+
+\stheorem{Teorema del dini (un altro)}{
+    Supponiamo di avere un compatto \(S=K\) compatto. Prendiamo
+    \begin{enumerate}
+        \item \(\{f_n\}\) successione di funzioni continue su \(K\);
+        \item \(\{f_n\}\) converge puntualmente a \(f \colon K \fromto \realnumbers\) continua;
+        \item \(\{f_n\}\) successione monotona non crescente, cioè
+    \end{enumerate}
+    Allora, \(\{f_n\}\) converge uniformemente in \(K\) a \(f\).
+}
+
+\sproof{}{
+    Definiamo \(g_n \triangleq f_n - f\).
+    Notiamo che, dalle ipotesi, valgono:
+    \begin{enumerate}
+        \item \(g_n \to g\) puntualmente con \(g=0\);
+        \item \(g_n \colon K \fromto \realnumbers\) continua per tutte le \(n\in\naturalnumbers\);
+        \item \(\{g_n\}\) monotona non crescente
+    \end{enumerate}
+    Inoltre, notiamo che se dimostriamo che \(g_n\) converge uniformemente a \(g\), allora abbiamo finito.
+    Fissiamo \(\varepsilon>0\). Definiamo
+    \[
+        K_n \triangleq \left\{
+            x \in K \suchthat |g_n(x)| \geq \varepsilon
+        \right\}
+    \]
+    cioè dove non è verificata la definizione di convergenza uniforme.
+    Siccome \(x \fromto |g_n(x)|\) è continua, abbiamo che \(K_n\) è chiuso e \(K_n \subseteq K\).
+    Siccome è un sottoinsieme chiuso di un compatto, è compatto. Inoltre dalla monotonia di
+    \(\{g_n\}\) sono annidati \(K_{n+1} \subseteq K_n\).
+    Prendiamo \(x \in K\). Per ipotesi, \(g_n(x) \to 0\) per \(n \to +\infty\).
+    Di conseguenza, esiste \(N(x) \in \naturalnumbers\) tale che \(x \notin K_n\)
+    \(\forall n \geq N\).
+    Quindi, \[ x \notin \bigcap_{k=1}^\infty K_n \]
+    Possiamo ripetere il medesimo ragionamento per tutte le \(x \in K\) quindi otteniamo
+    \[
+        \bigcap_{n=1}^\infty K_n = \emptyset
+    \]
+    Sappiamo che l'intersezione numerabile di compatti annidati è non vuota (topologia citare il teorema).
+    Quindi se l'intersezione è vuota, almeno uno deve essere vuota (contronominale).
+    Per definizione di \(K_n\), esiste un vale che
+    \begin{align*}
+        |g_n(x)| \leq \varepsilon, \quad \forall x \in K \difference K_n = K \difference \emptyset = K
+    \end{align*}
+    per ogni \(n > N\).
+}
+
+\sexample{}{
+    Consideriamo \(S = (0, 1]\) e
+    \[
+        f_n(x) = \frac{1}{nx + 1}
+    \]
+    È facile verificare che \(f_n \to f\) puntualmente con \(f = 0\).
+    Non possiamo applicare il teorema in quanto il dominio non è compatto.
+    Infatti, preso \(\varepsilon = \frac12\), comunque io prenda \(N \in \naturalnumbers\)
+    per soddisfare la definizione, troov sempre un \(x \in S\) tale che \(x \in K_n\)
+    con \(n > N\).
+    Devo trovare \(x \in S\) tale che \(|f_N(x)| > \frac12\) \begin{align*}
+       |f_N(x)| &= \frac{1}{nx + 1} > \frac12 \\
+       Nx + 1 &< 2 \implies x < \frac{1}{N}
+    \end{align*}
+    Quindi se mi avvicino a \(0\) trovo sempre un \(x\) che rende falsa la definizione
+    di convergenza uniforme.
+    \begin{center}
+        \begin{tikzpicture}[scale=7, >=stealth]
+            \draw[->, thick] (-0.1, 0) -- (1.2, 0) node[right] {$x$};
+            \draw[->, thick] (0, -0.1) -- (0, 1.2) node[above] {$y$};
+
+            \draw (1, 0.02) -- (1, -0.02) node[below] {$1$};
+
+            \draw (0.02, 1) -- (-0.02, 1) node[left] {$1$};
+            \draw (0.02, 1/2) -- (-0.02, 1/2) node[left] {$\frac{1}{2}$};
+            \draw (0.02, 1/3) -- (-0.02, 1/3) node[left] {$\frac{1}{3}$};
+            \draw (0.02, 1/4) -- (-0.02, 1/4) node[left, yshift=4pt] {$\frac{1}{4}$};
+            \draw (0.02, 1/5) -- (-0.02, 1/5) node[left, yshift=-4pt] {$\frac{1}{5}$};
+
+            \foreach \n/\col/\yval in {
+                1/red/0.5,
+                2/blue/0.3333,
+                3/teal/0.25,
+                4/orange/0.2
+            } {
+                \draw[\col, thick, domain=0:1, samples=100] plot (\x, {1/(\n*\x + 1)});
+                \draw[\col, dashed, thin] (1, \yval) -- (0, \yval);
+                \filldraw[\col] (1, \yval) circle (0.01);
+                \node[\col, right] at (1, \yval) {$f_\n$};
+            }
+
+            \draw[purple, very thick] (0.015, 0) -- (1.1, 0);
+            \node[purple, above] at (0.6, 0.02) {$f=0$};
+
+            \filldraw[fill=white, draw=purple, thick] (0,0) circle (0.015);
+            \filldraw[fill=white, draw=black, thick] (0,1) circle (0.015);
+        \end{tikzpicture}
+    \end{center}
+    Anche se prendessimo \(S = [0,1]\), cioè la chiusura per avere un compatto, non funzionerebbe comunque
+    per mancanza di continuità.
+}
+
+Alternatively, we can say that the condition is
+\[
+    \forall \varepsilon > 0, \exists N \suchthat \forall n>N, ||f_n-f||_{\infty, E} < \varepsilon
+\]
+We should say that the difference
+\[
+    |f_n(x) - f| \leq \varepsilon
+\]
+but since this must hold for all \(x\), we can use the supremum.
+Questo è come dire che il limite della successione
+\[
+    \lim_n \left(\sup_{x\in S} |f_n(x) - f(x)\right) = 0
+\]
+
+\sproposition{Criteri convrgenza uniforme}{
+    Supponiamo che esista una successione \(\{g_n\}\) e \(C>0\) tale che
+    \[
+        \sup_{x\in S} |f_n(x) - f_m(x)| \leq C \cdot \sup_{x\in S |g_n(x) - g_m(x)}|
+    \]
+    Allora se \(\{g_n\}\) converge uniformemente, anche \(\{f_n\}\) converge uniformemente.
+    Viceversa, se troviamo una successione di punti \(\{x_n\} \subseteq S\)
+    tali che
+    \begin{align*}
+        \lim_n |f_n(x_n) - f(x_n)| > 0
+    \end{align*}
+    Allora \[
+        \sup_{x\in S} |f_n(x) - f(x)| \geq |f_n(x_n) - f(x_n)|
+    \]
+    cioè il supremum è sicuramente maggiore dell'espressione valutata in un singolo punto.
+    In questo caso \(\{f_n\}\) non converge uniformemente.
+}
+
+\sdefinition{Spazio funzioni continue limitate}{
+    \[
+        C_b(S) = \{
+            f \colon S \fromto \realnumbers \suchthat
+            f \text{ continua e limitata}    
+        \}
+    \]
+}
+
+Su questo spazio abbiamo la norma
+\[
+    ||f||_{\infty} \triangleq \sup_{x \in S} |f(x)|
+\]
+Notiamo che \(||f_n-f||_\infty\) non è altro che la distanza \(d_\infty\)
+indotta dalla \(||\cdot||_\infty\) sullo spazio \(C_b(S)\),
+dove \(d_\infty(g, f) = ||f-g||_\infty\).
+
+Abbiamo dimostrato complessivamente che \(C_b(S)\) è uno spazio completo.
+
+\stheorem{}{
+    \(C_b(S)\) è uno spazio di Banach rispetto alla norma infinito.
+}
+
+\sproof{}{
+    Consideriamo una successione \(\{f_n\}\) nello spazio \(C_b(S)\) di Cauchy, cioè
+    \[
+        \lim_{m,n} d_\infty(f_n, f_m) = \lim_{m,n} ||f_n - f_m||_\infty = 0
+    \]
+    Vogliamo verificare che esiste quindi \(f \in C_b(S)\) tale che
+    \[
+        \lim_n d_\infty(f_n, f) = \lim_n ||f_n - f|| = 0
+    \]
+    Ma questo seguente dai risultati precedente e dalle definizioni equivalenti di convergenza uniforme.
+    Infatti, il criterio di Cauchy implica
+    che esista \(f \colon S \fromto \realnumbers\) tale che \(f_n\) converge uniformemente a \(f\) in \(S\).
+    Inoltre, per ipotesi \(f_n\) continua e limitata.
+    Quindi, \(f\) è pure continua e limitata su \(S\), cioè \(f \in C_b(S)\).
+}
+
+\stheorem{Stone-Weierstrass}{
+    Sia \(S=K\) compatto.
+    Allora \(\forall f \in C_b(K)\), esiste \(\{P_n\}\) successione di polinomi
+    \(\realnumbers[x]\) (anche complessi) tali che \(P_n \to f\) uniformemente in \(K\).
+    In altre parole, se consideriamo \(P(K)\) l'insieme dei polinomi a coefficienti reali, abbiamo che
+    \(P(K)\) è denso in \(C_b(K)\) rispetto alla topologia indotta
+    dalla norma infinito.
 }
 
 \end{document}
