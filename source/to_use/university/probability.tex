@@ -257,13 +257,195 @@ Vogliamo espandersi al caso della probabilità soggettiva
     \end{enumerate}
 }
 
+\pagebreak
 
+\sproposition{Formula di inclusione-esclusione}{
+    Sia \((\Omega, \powerset(\Omega), \mathbb P)\)
+    uno spazio di probabilità con spazio campionato \(\Omega\)
+    di cardinalità finita.
+    Prendiamo \(A_1, \cdots, A_n \in \powerset(\Omega)\) con \(n \in \naturalnumbers\).
+    Allora,
+    \[
+        \mathbb P \left(
+            \bigcup_{j=1}^n A_j
+        \right) = \sum_{k=1}^n \sum_{\substack{i_1, \cdots, i_k \\ \in \{1,\cdots, n\} \\ i_1 \neq i_2 \cdots i_k}}
+        (-1)^{k+1} \mathbb P \left(
+            \bigcap_{r=1}^k A_{i_r}
+        \right)
+    \]
+    Tutte le possibili intersezione di \(k\) elementi pesati da \(A_1, \cdots, A_n\).
+}
 
+\sproof{}{
+    Mostriamolo per induzione
+    Il caso \(n=2\) segue dal caso banale dimostrato in precedenza, cioè
+    \begin{align*}
+        \mathbb P(A_1 \union A_2) &=
+        \sum_{k=1}^2 \sum_{\substack{i_1, \cdots, i_k \\ \in \{1,2\} \\ i_1 \neq \cdots \neq i_k}} (-1)^{k+1} \mathbb P\left(
+            \bigcap_{r=1}^k A_{i_r}
+        \right) \\
+        &= \sum_{i_1 \in \{1,2\} } \mathbb P(A_{i_1})
+        - \sum_{\substack{i_1, i_2 \in \{1,2\} \\ i_1 \neq i_2 }} \mathbb P(A_1 \intersection A_2) \\
+        &= \mathbb P(A_1) + \mathbb P(A_2) - \mathbb P(A_1 \intersection A_2)
+    \end{align*}
+    Supponiamo che la formula funzioni per \(n-1\) e dimosriamolo per \(n\).
+    Abbiamo
+    \begin{align*}
+        \overline A_{n-1} &= \bigcup_{j=1}^{n-1}A_j \\
+        \mathbb P\left(
+            \bigcup_{j=1}^n A_j
+        \right) 
+        &= \mathbb P\left(
+            \overline A_{n-1} \union A_n
+        \right) \\
+        &\overset{(n=2)}{=} 
+        \mathbb P(\overline A_{n-1}) +\mathbb P(A_n) - \mathbb P \left(\overline A_{n-1} \intersection A_n\right)
+    \end{align*}
+    Studiamo separamente il primo termine e l'ultimo termine.
+    Nel primo abbiamo
+    \begin{align*}
+        \mathbb P (\overline A_{n-1}) = \mathbb P\left(
+            \sum_{k=1}^{n-1} \sum_{\substack{i_1, \cdots, i_k \\ \in \{1,\cdots,n-1\} \\ i_1 \neq \cdots \neq i_k }} (-1)^{k+1} \mathbb P\left(
+                \bigcap_{r=1}^k A_{i_r}
+            \right)
+        \right)
+    \end{align*}
+    Per l'ultimo termine usiamo il passo \(n-1\)
+    \begin{align*}
+        \mathbb P\left(
+            \overline A_{n-1} \intersection A_n
+        \right) &= \mathbb P \left(
+            \left[
+                \bigcup_{j=1}^{n-1} A_j
+            \right] \intersection A_n
+        \right) \\
+        &= \mathbb P \left(
+            \bigcup_{j-1}^{n-1} (A_j \intersection A_n)
+        \right) \\
+        &= \sum_{k=2}^{n-1}
+        \sum_{\substack{ i_1, \cdots, i_k \\ \in \{1,\cdots, n-1\} \\ i_1 \neq \cdots \neq i_k }}
+        \mathbb P \left(
+            \bigcap_{r=1}^k (A_{i_r} \intersection A_n)
+        \right) \\
+        &= -\sum_{k=2}^{n} 
+        \sum_{\substack{ i_2, \cdots, i_k \\ \in \{1,\cdots, n\} \\ i_1 \neq \cdots \neq i_k \\ \exists j \in \{1, \cdots, k\} \\ \suchthat i_j = n }}
+        \mathbb P \left(
+            \bigcap_{r=1}^k A_{i_r}
+        \right)
+    \end{align*}
+    Combinando tuto
+    \begin{align*}
+        \mathbb P \left(
+            \bigcup_{j=1}^n A_j
+        \right)
+        &= \mathbb P (\overline A_{n-1}) + \mathbb P(A_n) - \mathbb P(\overline A_{n-1} \intersection A_n) \\
+        &= \mathbb P(A_n) + \sum_{k=2}^{n} 
+        \sum_{\substack{ i_2, \cdots, i_k \\ \in \{1,\cdots, n\} \\ i_1 \neq \cdots \neq i_k \\ \exists j \in \{1, \cdots, k\} \\ \suchthat i_j = n }}
+        \mathbb P \left(
+            \bigcap_{r=1}^k A_{i_r}
+        \right) \\
+        &+ \sum_{k=1}^{n-1} \sum_{\substack{i_1, \cdots, i_k \\ \in \{1,\cdots, n-1\} \\i_1 \neq \cdots \neq ik }}
+        (-1)^{k+1} \mathbb P\left(
+            \bigcap_{r=1}^k A_{i_r}
+        \right) \\
+        &= \sum_{k=1}^n \sum_{\substack{i_1, \cdots, i_k \\ \in \{1, \cdots, n\} \\ i_1 \neq \cdots \neq i_k }}
+        (-1)^{k+1} \mathbb P\left(
+            \bigcap_{r=1}^k A_{i_r}
+        \right)
+    \end{align*}
+}
 
+Andiamo a rappresentare il nostro spazio M. D. P con un vettore.
+Sia \(N \in \naturalnumbers\) e \(\Omega = \{\omega_1, \cdots, \omega_N\}\).
+Notiamo che dato \(A \in \powerset (\Omega)\) possiamo sempre rappresentarlo come
+\[
+    A = \{\omega_{i_1}, \cdots, \omega_{i_k}\}
+\]
+con \(k \in \{1, \cdots, N\}\) e \(i_1, \cdots, i_k \in \{1, \cdots, N\}\)
+con \(i_1 \neq \cdots \neq i_k\).
+Da questo segue che
+\begin{align*}
+    A &= \bigsqcup_{r=1}^k \{\omega_{i_r}\}
+\end{align*}
+Quindi per l'additività di una generica M.D.P \(\mathbb P \colon \powerset (\Omega) \fromto [0,1]\)
+vale
+\[
+    \mathbb P (A) = \sum_{r=1}^k \mathbb P(\{\omega_{i_r}\})
+\]
+Abbiamo quindi scritto la misura di un insieme \(A \in \powerset (\Omega)\)
+come la somma delle misure dei singoletti che lo compongono.
+Ricordiamo che
+\[
+    \mathbb P (\Omega) = \sum_{i=1}^N \mathbb P(\omega_i) = 1
+\]
 
+\sproposition{}{
+    Sia \(\Omega \neq \emptyset\) con \(|\Omega| = N\) finito.
+    I seguenti 3 insiemi sono in corrispondenza biunivoca
+    \begin{enumerate}
+        \item \[
+            S_N \triangleq \left\{
+                (P_1, \cdots, P_N) \in [0,1]^N \suchthat \sum_{i=1}^N P_i = 1
+            \right\}
+        \]
+        \[
+            K_{N-1} \triangleq \left\{
+                (P_1, \cdots, P_{N_1})
+                \in [0,1]^{N-1} \suchthat \sum_{i=1}^{N-1} P_i \leq 1
+            \right\}
+        \]
+        \item \[
+            M(\Omega) \triangleq \left\{
+                \mathbb P \text{ M. D. P su } (\Omega, \powerset(\Omega))
+            \right\}
+        \]
+    \end{enumerate} 
+}
 
+\sproof{}{
+    Per la corrispodnenza fra \(S_n\) a \(K_{N-1}\)
+    prendo la funzione \(f \colon K_{N-1} \fromto S_N\) data da
+    \[
+        f(P_1, \cdots, P_{N_1}) \triangleq \left(P_1, \cdots, P_{n-1}, 1- \sum_{i=1}^{N-1} P_i \right)
+    \]
+    Dimostrazione per esercizio.
+    Dimostriamo che \(M(\Omega)\) e \(S_N\) sono in corrispondenza biunivoca.
+    Prendiamo \(g \colon M(\Omega) \fromto S_N\) come
+    \[
+        g(\mathbb P) \triangleq (
+            \mathbb P(\{\omega_1\}),
+            \cdots,
+            \mathbb P(\{\omega_N\})
+        )
+    \]
+    Notiamo che per definizione di misura di probabilità,
+    tutti i termini \(\mathbb P(\{\omega_i\}) \in [0,1]\) per tutte le \(i \in \{1, \cdots, N\}\),
+    e \[
+        \sum_{i=1}^N \mathbb P(\{\omega_i\}) = \mathbb P(\Omega) = 1
+    \]
+    quindi \(g(\mathbb P) \in S_n\) ed è ben definita.
+    La suriettività è data dal fatto che dato \((P_1, \cdots, P_N) \in S_N\)
+    basta prendere \(\mathbb P \in M(\Omega)\) tale che
+    \(\mathbb P (\{\omega_i\}) \triangleq P_i\).
+    Per l'iniettività prendiamo \(\mathbb P_1, \mathbb P_2 \in M(\Omega)\)
+    tali che \(g(\mathbb P_1) = g(\mathbb P_2)\), cioè \(\mathbb P_1(\{\omega_i\}) = \mathbb P_2(\{\omega_i\})\).
+    Ma sono uguali in quanto dato \(A = \{\omega_{i_1}, \cdots, \omega_{i_k}\} \in \powerset(\Omega)\)
+    \[
+        \mathbb P_1(A)
+        = \sum_{r=1}^k \mathbb P_1(\{\omega_{i_r}\})=
+        \sum_{r=1}^k \mathbb P_2(\{\omega_{i_r}\})
+        = \mathbb P_2(A)
+    \]
+}
 
+Per questa corrispodnenza biunivoca
+sono essenziali il possesso di un sottoinsieme di elementi di \(\powerset(\Omega)\)
+che genera (tramite unioni ed intersezioni) tutto \(\powerset(\Omega)\),
+e pure l'additività (o caso generale sigma additività per il caso infinito).
+È importante notare che una funzione generica \(\powerset(\Omega) \fromto [0,1]\)
+non è univocamente determinata dal valore che assume sui singoletti.
 
+\section{Indipendenza e condizionamento}
 
 
 
