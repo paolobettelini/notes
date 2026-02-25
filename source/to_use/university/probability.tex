@@ -8,6 +8,8 @@
 \usepackage{wrapfig}
 \usepackage{tikz}
 
+\usetikzlibrary{cd}
+
 \title{Probability}
 \author{Paolo Bettelini}
 \date{}
@@ -463,7 +465,7 @@ non è univocamente determinata dal valore che assume sui singoletti.
 
 \stheorem{Criterio di Cauchy}{
     Una successione di funzioni \(\{f_n\}\) converge uniformemente a \(f \colon S \fromto \realnumbers\)
-    in \(S\) se e solo se \(\varepsilon > 0\) esiste \(N(\varepsilon)\) naturale tale che
+    in \(S\) se e solo se per ogni \(\varepsilon > 0\) esiste \(N(\varepsilon)\) naturale tale che
     \[
         \forall m,n > N,
         |f_n(x) - f_m(x)| < \varepsilon, \forall x \in S
@@ -928,5 +930,228 @@ Abbiamo dimostrato complessivamente che \(C_b(S)\) è uno spazio completo.
     \(P(K)\) è denso in \(C_b(K)\) rispetto alla topologia indotta
     dalla norma infinito.
 }
+
+\subsection{Teorem di Ascoli-Arzelà}
+
+Il seguente teorema è un analogo di Bolzano-Weierstrass, ma bisogna aggiungere una condizione.
+Cerchiamo delle condizioni sulla nostra successione di funzioni che garantisca che
+si possa estrarre una sottosuccessione convergente.
+Oltre all'equilimitatezza ci serve l'equicontinuità.
+
+\sdefinition{Equicontinuità}{
+    Diciamo che la successione \(\{f_n\}\) è \emph{equicontinua}
+    su \(S\), se \(\forall \varepsilon > 0\) esiste \(\delta(\varepsilon) > 0\)
+    tale che se \(|x-y| < \delta\) per \(x,y \in S\), allora
+    \[
+        |f_n(x) - f_n(y)| < \varepsilon
+    \]
+    per \(n \in \naturalnumbers\).
+}
+
+Quindi è una sorta di continuità uniforme 
+L'equicontinuità implica che \(f_n\) sia uniformemente continua su \(S\), ma non il contrario,
+cioè se tutti le \(f_n\) sono uniformemente continue il \(\delta\) dell'uniforme continuità delle \(f_n\)
+potrebbe dipendere da \(n\).
+
+\sproposition{}{
+    Se tutte le \(f_n\) sono lipschitziane su \(S\),
+    un criterio di equicontinuità è che esista \(L > 0\) indipendente da \(n\)
+    che verifica la definizione di lipschitzianità per ogni \(f_n\).
+}
+
+\sproof{}{
+    Abbiamo \[
+        |f_n(x) - f_n(y)| \leq L|x-y|
+    \]
+    e prendiamo \(\delta < \varepsilon / L\).
+}
+
+In particolare se \(f_n\) è \(\mathcal C^1\),
+allora è sufficiente che \(\{f_n'\}\) sia equilimitata per garantire l'equilipschizianità,
+come in analisi I.
+
+\sproposition{}{
+    Sia \(S=K\) compatto e \(\{f_n\}\) successione di funzioni continue
+    su \(K\) tali che \(f_n\) converge uniformemente a \(f\) in \(K\)
+    con \(f \colon K \fromto \realnumbers\).
+    Allora, \(\{f_n\}\) è equicontinua.
+}
+
+\sproof{}{
+    Notiamo che, visto che \(K\) è compatto, questa proposizione si lega con il fatto
+    che se \(f_n\) continua su un compatto, quindi limitata, allora \(\{f_n\}\)
+    equilimitata poiché converge uniformemente. % link prop
+    Vogliamo mostrare che \(\forall \varepsilon > 0\)
+    esiste \(\delta(\varepsilon) > 0\) tale che
+    per ogni \(x,y \in K\) quando \(|x-y|<\delta\) vale
+    \[
+        |f_n(x) - f_n(y)| < \epsilon 
+    \]
+    Per la definizione di convergenza uniforme esiste
+    \(N\left(\frac{\varepsilon}{3}\right)\)
+    naturale tale che
+    per ogni \(n \geq N\) e \(x \in K\)
+    vale \[
+        |f_n(x) - f(y)| < \varepsilon
+    \]
+    inoltre, \(f\) è limite unifome di funzioni continue,
+    quindi è continua.
+    Siccome è continua su un compatto, è uniformemente continua.
+    Di conseguenza esiste \(\delta_0\left(\frac{\varepsilon}{3}\right)\) tale che
+    \[
+        |f(x) - f(y)| < \frac{\varepsilon}{3}
+    \]
+    per tutte le \(x,y \in K\) ove \(|x-y| < \delta_0\).
+    Combinando tutto otteniamo che \(\forall n > N\)
+    \begin{align*}
+        |f_n(x) - f_m(y)| &\leq |f_n(x) - f(x)| + |f(x) - f(y)| + |f_n(y) - f(y)| \\
+        &\leq \frac{\varepsilon}{3} + \frac{\varepsilon}{3} + \frac{\varepsilon}{3}
+        = \varepsilon
+    \end{align*}
+    Però per dimostrare l'equicontinuità
+    dobbiamo trovare un \(\delta\) che vada bene anche per \(f_1, \cdots, f_{N}\).
+    Anche loro sono continue su un compatto quindi uniformemente continue.
+    Di conseguenza,
+    esistono \(\delta_i(\varepsilon) > 0\) tale che
+    \[
+        |f_i(x) - f_i(y)| < \varepsilon
+    \]
+    per ogni \(x,y \in K\)
+    dove \(|x-y| < \delta_i\).
+    Possiamo quindi prendere \(\min\{\delta_0, \delta_1, \cdots, \delta_N\}\).
+}
+
+\slemma{Lemma di Ascoli-Arzelà}{
+    Sia \(S=K\) compatto e \(\{f_n\}\) una successione di funzioni equicontinua
+    su \(K\) che converge puntualmente ad \(f \colon S \fromto \realnumbers\) in \(K\).
+    Allora, \(\{f_n\}\) converge uniformemente a \(f\).
+}
+
+Quindi \(f\) è pure continua.
+
+\sproof{}{
+    Per il criterio di Cauchy,
+    ci basta dimostrare che per ogni \(\varepsilon > 0\) esiste \(N(\varepsilon)\) naturale tale che
+    \[
+        \forall m,n > N,
+        |f_n(x) - f_m(x)| < \varepsilon, \forall x \in K
+    \]
+    Dall'equicontinuità, \(\exists \delta\left(\frac{\varepsilon}{3}\right) > 0\)
+    tale che \(\forall x,y \in K\) e \(i \in \naturalnumbers\)
+    \[
+        |x-y| < \delta \implies
+        |f_i(x) - f_i(y)| < \varepsilon
+    \]
+    Visto che \(K\) è compatto, esistono \(x_1, \cdots, x_N \in K\)
+    tale che
+    \[
+        K \subseteq \bigcup_{j=1}^N B_\delta(x_j)
+    \]
+    Visto che \(\{f_n\}\) converge puntualmente, in \(K\)
+    per il criterio di Cauchy per successioni numeriche,
+    \(\forall J \in \{1, \cdots, N\}\) esiste \(N_J\left(\frac{\varepsilon}{3}, x_j\right)\)
+    naturale tale che
+    \[
+        |f_n(x_j) - f_m(x_j)| < \frac{\varepsilon}{3}
+    \]
+    per tutte le \(m,n > N_J\).
+    Prendiamo \(\overline N = \max \{N_1, \cdots, N_N\}\).
+    Combinando tutto
+    \begin{align*}
+        |f_n(x) - f_m(x)| &\leq |f_n(x) - f_n(x_i)| + |f_m(x_i) - f_m(x)|
+        + |f_n(x_i) - f_m(x_i)|
+    \end{align*}
+    dove \(x_i \in K\) tale che \(x \in B_\delta(x_i)\), che esiste sempre.
+    Quindi, \(|x-x_i| < \delta \) e di conseguenza
+    \[
+        |f_n(x) - f_m(x)| < \frac{\varepsilon}{3} + \frac{\varepsilon}{3} + \frac{\varepsilon}{3} = \varepsilon
+    \]
+}
+
+\stheorem{Ascoli-Arzelà}{
+    Prendiamo \(S=K\) compatto e consideriamo
+    \(\{f_n\}\) successione di funzioni
+    \begin{enumerate}
+        \item equicontinua su \(K\);
+        \item equilimitata su \(K\);
+    \end{enumerate}
+    Allora, esiste una sottosuccessione uniformemente convergente in \(K\).
+}
+
+\sproof{}{
+    Per il lemma ci basta mostrare che esiste una sottosuccessione
+    che converge puntualmente.
+    Prendimo \(r_1 \in K \intersection \rationalnumbers\).
+    Consideriamo la successione \(\{f_n(r_1)\}\).
+    Grazie all'equilimitatezza essa è limitata, e quindi per
+    Bolzano-Weierstrass esiste una sottosuccessione \(\{f_{n_k}(r_1)\}\)
+    convergente. Denotiamo per comodità \(f^1_n \triangleq f_{n_k}\).
+    Ripetiamo il ragionamento prendendo \(r_2 \in K \intersection \rationalnumbers\)
+    diverso da \(r_1\) e consideriamo la successione \(\{f^1_n(r_2)\}_{n \in J}\)
+    con \(J \subseteq \naturalnumbers\) infinito.
+    Per lo stesso ragionamento di prima estratto una sottosuccessione convergente
+    \(\{f^2_{n_k}(r_2)\}_{k\in\naturalnumbers}\) e denotiamo \(f^2_n \triangleq f^1_{n_k}\).
+    Ripetiamo il processo all'infinito e quindi otteniamo una famiglia di sottosuccessioni
+    \[
+        \{f_n\} \supseteq \{f_n^1\} \supseteq \{f_n^3\} \cdots
+    \]
+    Consideriamo la diagonale del seguente diagramma: DISEGNO SOTTO impostiamo
+    \(g_k = f_k^k\).
+    Per costruzione \(\forall x \in K \intersection \rationalnumbers\)
+    vale che \(\{g_k(x)\}_{k \in \naturalnumbers}\)
+    converge per come abbiamo costruito
+    le \(f_k^k\). Dobbiamo dimostrare che questa successione converga su tutto \(K\).
+    Visto che \(\{g_k\}\)
+    è contenuta in \(\{f_n\}\)
+    allora è equicontinua, quindi esiste per ogni \(\varepsilon > 0\) un \(\delta\left(\frac{\varepsilon}{3}\right)\)
+    tale che \[ |g_k(x) - g_k(y)| < \varepsilon\]
+    per ogni \(k \in \naturalnumbers\) e per ogni \(x,y \in K\)
+    quando \(|x-y| < \delta\).
+    Ma per tutte le \(x \in K\) esiste \(x_0 \in K \intersection \rationalnumbers\)
+    tale che \(|x-x_0| < \delta\).
+    Inoltre per il criterio di Cauchy per successioni numeriche esiste \(N\left(\frac{\varepsilon}{3}, x_0\right)\)
+    tale che \[
+        |g_n(x_0)- g_m(x_0)| < \frac{\varepsilon}{3}, \quad \forall n,m \geq N
+    \]
+    Combinando il tutto ottengo che
+    \begin{align*}
+        |g_n(x) - g_m(x)| &\leq |g_n(x) - g_m(x)| + |g_m(x_0) - g_m(x)| + |g_m(x_0) - g_m(x_0)| \\
+        &\leq \frac{\varepsilon}{3} + \frac{\varepsilon}{3} + \frac{\varepsilon}{3} = \varepsilon
+    \end{align*}
+    per tutte le \(n,m > N\), visto che \(|x-x_0| < \delta\).
+    L'epsilon dipende da \(x\) ma noi vogliamo la convergenza puntuale.
+}
+
+\begin{center}
+    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRADMB9ARgD1uQAX1LpMufIRTdyVWoxZsuAJn5CRIDNjwEiSmdXrNWiDpwDMq4aK0SiZ-XKOLOAFkvrN4nSjLdZhhRMuPiU1ay9JZGk-A3ljUxVQqw0xbUi9GMdA0wskj1TbFHtMgPiuNzzwtLtSJX845zczMJSbb2Q9OtinIPNeZuTPaqla+p6E-pahwpJR7uzgycGC9rIzMYWeXhcplcjpdfmyzhUd5bb00kOs44sz-Iua69LG7d3HlBcrjfiAHV+AMZQCA4BDnCJEL5dG5sf5AkFgh4Qz6kEoNExw4Gg97I5BfShHWGArGIqozMguH5EmgknHDKKkSmEjG-GkIukzPRMmEstnY8H0+zcl682kCmZfYXokD-KBi2QwKAAc3gRFA7AAThAALZIMggHAQJAAVmSmp1JuohqQAE4zVrdYgbVajYhuKaKIIgA
+    \begin{tikzcd}
+    f_1^1 \arrow[rd] & f_2^1            & f_3^1            & f_4^1  & \cdots \\
+    f_1^2            & f_2^2 \arrow[rd] & f_3^2            & f_4^2  & \cdots \\
+    f_1^3            & f_2^3            & f_3^3 \arrow[rd] & f_4^3  & \cdots \\
+    f_1^4            & f_2^4            & f_3^4            & f_4^4  & \cdots \\
+    \vdots           & \vdots           & \vdots           & \vdots & \ddots
+    \end{tikzcd}
+\end{center}
+
+\sexample{}{
+    Questo teorema ha ipotesi molto forti,
+    ma il risultato è tuttavia banale-
+    Anche in casi ``buoni'' non è scontato poter estrarre una sottosuccssione convergente.
+    Prendiamo \(S = K = [0,1]\) come dominio e
+    \[
+        f_n(x) = \frac{x^2}{x^2 + (1-nx)^2}
+    \]
+    È facile notare che questa converge puntualmente ad \(f=1\).
+    Inoltre \(|f_n(x)| \leq 1\)
+    e \(f_n(1/n) = 1\).
+    Se esistesse una sottosuccessione
+    \(\{f_n\}\) dovrebbe convergere ad \(f\), tuttavia
+    \[
+        \sup_{x \in [0,1]} |f_{n_k} - f| = \sup_{x \in [0,1]}
+        |f_{n_k}(x)| > f_{n_k}(\frac{1}{n_k}) > 1
+    \]
+    che è assurdo perché il sup è sempre maggiore o uguale della funzione valutata in un punto.
+}
+
 
 \end{document}
