@@ -25,7 +25,18 @@
 \end{snippetexercise}
 
 \begin{snippetsolution}{linear-algebra-batch-7-ex-1-sol}{}
-    \todo
+    By the Rank-Nullity Theorem, if \(f\colon \realnumbers^5 \to \realnumbers^2\) is a linear map, we have:
+    \[
+        \lineardim (\ker f) + \lineardim (\image f) = \lineardim (\realnumbers^5) = 5
+    \]
+    Since \(\image f \subseteq \realnumbers^2\), we know that \(\lineardim (\image f) \leq 2\).
+    Therefore, the kernel of any such linear map must have \(\lineardim (\ker f) \geq 3\).
+    Let us find the dimension of \(U\). The conditions \(x_1 = 3x_2\) and \(x_3 = x_4 = x_5\) can be written as:
+    \[
+        U = \{(3x_2, x_2, x_3, x_3, x_3) \suchthat x_2, x_3 \in \realnumbers\} = \linearspan((3,1,0,0,0), (0,0,1,1,1))
+    \]
+    Since these two vectors are linearly independent, \(\lineardim (U) = 2\).
+    Because \(2 < 3\), \(U\) cannot be the kernel of a linear map from \(\realnumbers^5\) into \(\realnumbers^2\).
 \end{snippetsolution}
 
 \begin{snippetexercise}{linear-algebra-batch-7-ex-2}{}
@@ -37,25 +48,87 @@
 \end{snippetexercise}
 
 \begin{snippetsolution}{linear-algebra-batch-7-ex-2-sol}{}
-    \todo
+    \begin{enumerate}[label=\Alph*]
+        \item We can verify that they form a basis by calculating the determinant of the matrix with these vectors:
+        \[
+            \begin{vmatrix}
+                1 & -2 & -1 \\
+                3 & 9 & -1 \\
+                4 & 1 & 8
+            \end{vmatrix}
+            = 1(72 - (-1)) + 2(24 - (-4)) - 1(3 - 36) = 73 + 56 + 33 = 162 \neq 0
+        \]
+        The determinant is non-zero, meaning the vectors are linearly independent, thus forming a basis of \(\realnumbers^3\).
+        \item We must express \(e_1 = (1, 0, 0)\) as a linear combination of the basis vectors:
+        \[
+            (1, 0, 0) = a(1, 3, 4) + b(-2, 9, 1) + c(-1, -1, 8)
+        \]
+        This yields the linear system:
+        \[
+            \begin{cases}
+                a - 2b - c = 1 \\
+                3a + 9b - c = 0 \\
+                4a + b + 8c = 0
+            \end{cases}
+        \]
+        Solving this system, we find \(a = \frac{73}{162}\), \(b = -\frac{14}{81}\), and \(c = -\frac{11}{54}\).
+        By linearity of \(f\), we have:
+        \begin{align*}
+            f(1, 0, 0) &= a f(v_1) + b f(v_2) + c f(v_3) \\
+            &= \frac{73}{162} (2, -2, 5) - \frac{14}{81} (1, 2, 3) - \frac{11}{54} (2, -1, -11) \\
+            &= \left( \frac{146}{162} - \frac{28}{162} - \frac{66}{162}, -\frac{146}{162} - \frac{56}{162} + \frac{33}{162}, \frac{365}{162} - \frac{84}{162} + \frac{363}{162} \right) \\
+            &= \left( \frac{52}{162}, -\frac{169}{162}, \frac{644}{162} \right) = \left( \frac{26}{81}, -\frac{169}{162}, \frac{322}{81} \right)
+        \end{align*}
+    \end{enumerate}
 \end{snippetsolution}
 
 \begin{snippetexercise}{linear-algebra-batch-7-ex-3}{}
     Consider the endomorphism \(f \in \operatorname{End}(\mathcal{P}(\realnumbers))\),
     \((f(p))(x) = x^2p(x)\).
-    Prove that \[\operatorname{im} f = \{p \in \mathcal{P}(\realnumbers) \suchthat p(0) = p'(0) = 0\}.\]
+    Prove that \[\image f = \{p \in \mathcal{P}(\realnumbers) \suchthat p(0) = p'(0) = 0\}.\]
 \end{snippetexercise}
 
 \begin{snippetsolution}{linear-algebra-batch-7-ex-3-sol}{}
-    \todo
+    Let us denote the set as \(S = \{p \in \mathcal{P}(\realnumbers) \suchthat p(0) = p'(0) = 0\}\).
+    First, we show \(\image f \subseteq S\). If \(q \in \image f\), then there exists a polynomial \(p\) such that \(q(x) = (f(p))(x) = x^2 p(x)\).
+    We evaluate \(q(0) = 0^2 p(0) = 0\). The derivative is \(q'(x) = 2x p(x) + x^2 p'(x)\), so \(q'(0) = 0 + 0 = 0\). Thus, \(q \in S\).
+    Next, we show \(S \subseteq \image f\). If \(q \in S\), then \(q(0) = 0\) meaning the constant term of \(q\) is 0. Similarly, \(q'(0) = 0\) means the linear term (\(x\)) coefficient is 0.
+    Thus, \(q(x)\) can be factored as \(q(x) = x^2(a_2 + a_3 x + \dots) = x^2 p(x)\) for some polynomial \(p \in \mathcal{P}(\realnumbers)\).
+    This implies \(q = f(p)\), meaning \(q \in \image f\).
+    Therefore, \(\image f = S\).
 \end{snippetsolution}
 
 \begin{snippetexercise}{linear-algebra-batch-7-ex-4}{}
-    Consider the linear map \[g\colon \realnumbers^5 \to \realnumbers^4, \quad g(x_1, x_2, x_3, x_4, x_5) = (x_1 + x_2 + x_4, x_2 + x_3, x_1 + x_2 + x_5, x_2 + x_3).\] Find bases for \(\ker g\) and \(\operatorname{im} g\).
+    Consider the linear map \[g\colon \realnumbers^5 \to \realnumbers^4, \quad g(x_1, x_2, x_3, x_4, x_5) = (x_1 + x_2 + x_4, x_2 + x_3, x_1 + x_2 + x_5, x_2 + x_3).\] Find bases for \(\ker g\) and \(\image g\).
 \end{snippetexercise}
 
 \begin{snippetsolution}{linear-algebra-batch-7-ex-4-sol}{}
-    \todo
+    To find a basis for \(\ker g\), we set \(g(x) = 0\):
+    \[
+        \begin{cases}
+            x_1 + x_2 + x_4 = 0 \\
+            x_2 + x_3 = 0 \\
+            x_1 + x_2 + x_5 = 0 \\
+            x_2 + x_3 = 0
+        \end{cases}
+    \]
+    From the second equation, \(x_3 = -x_2\). From the first, \(x_4 = -x_1 - x_2\). From the third, \(x_5 = -x_1 - x_2\).
+    The variables \(x_1\) and \(x_2\) are free.
+    Setting \(x_1 = 1, x_2 = 0\) gives the vector \((1, 0, 0, -1, -1)\).
+    Setting \(x_1 = 0, x_2 = 1\) gives the vector \((0, 1, -1, -1, -1)\).
+    Thus, a basis for \(\ker g\) is \(\{(1, 0, 0, -1, -1), (0, 1, -1, -1, -1)\}\).
+    Since \(\lineardim(\image g) = 5 - \lineardim(\ker g) = 5 - 2 = 3\), we need to select 3 linearly independent columns from the standard matrix of \(g\):
+    \[
+        A = \begin{pmatrix}
+            1 & 1 & 0 & 1 & 0 \\
+            0 & 1 & 1 & 0 & 0 \\
+            1 & 1 & 0 & 0 & 1 \\
+            0 & 1 & 1 & 0 & 0
+        \end{pmatrix}
+    \]
+    Taking the first, second, and fourth column vectors gives \(\{(1, 0, 1, 0), (1, 1, 1, 1), (1, 0, 0, 0)\}\). 
+    We can verify they are linearly independent since \(c_1(1,0,1,0) + c_2(1,1,1,1) + c_3(1,0,0,0) = 0 \implies c_2 = 0\) from the second coordinate, and then \(c_1 + c_3 = 0, c_1 = 0 \implies c_1 = c_3 = 0\).
+    Thus, a basis for \(\image g\) is \(\{(1, 0, 1, 0), (1, 1, 1, 1), (1, 0, 0, 0)\}\).
 \end{snippetsolution}
 
 \begin{snippetexercise}{linear-algebra-batch-7-ex-5}{}
