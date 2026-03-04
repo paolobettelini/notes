@@ -17,7 +17,227 @@
 \tableofcontents
 
 \section{Numerical}
+\pagebreak
+\begin{snippettheorem}{Determinante matrice di Vandermonde}
+    Sia \(V\) una matrice di Vandermonde. Allora
+    \[
+        \det V = \prod_{1 \leq i < j \leq n}(A_j - A_i)
+    \]
+\end{snippettheorem}
 
+Quindi è invertibile se e solo se \(i \neq j \implies A_i \neq A_j\).
 
+\begin{snippetproof}{Determinante matrie di Vandermonde}
+    We proceed by induction.
+    \begin{enumerate}
+        \item \emph{Base case:} if \(n=1\), then \(\det V = \det [1] = 1\).
+        \item \emph{Induction:} suppose that the thesis holds for \(n-1\).
+        Then, we can compute the determinant using the Laplace's expansion
+        \[
+            \renewcommand{\arraystretch}{1.4}
+            V = \left(
+            \begin{array}{cccc @{\hspace{1em}} | @{\hspace{1em}} c}
+            1 & z_1 & \dots & z_1^{n-2} & z_1^{n-1} \\
+            1 & z_2 & \dots & z_2^{n-2} & z_2^{n-1} \\
+            \vdots & \vdots & \ddots & \vdots & \vdots \\
+            1 & z_{n-1} & \dots & z_{n-1}^{n-2} & z_{n-1}^{n-1} \\
+            \hline
+            1 & z_n & \dots & z_n^{n-2} & z_n^{n-1}
+            \end{array}
+            \right)
+        \]
+        Abbiamo \[
+            \det V_n = \sum_{k=0}^{n-1} {(-1)}^{n+(k+1)}z^k_n M_k = 
+            \sum_{k=0}^{n-1} A_k z_n^k
+        \]
+        dove \(M_k\) è il minor ottenuto togliendo l'ultima riga e la colonna \(k+1\) e quindi
+        \(A_k = {(-1)}^{n+(k+1)}M_k\).
+        Quindi il determinante è un polinomio \(P(z)\) di grado \(n-1\) la cui potenza massima
+        \(z^{n-1}_n\) corrisponde alla colonna \(n\), cioè \(M_{n-1} = \det V_{n-1}\). Otteniamo quindi l'espansione
+        \[
+            \det V_n = z_n^{n-1} \det V_{n-1} + \sum_{k=0}^{n-2} V_k z_n^k
+        \]
+        Per ipotesi induttiva, \[
+            \det V_{n-1} = \prod_{1 \leq i < j \leq n-1} (z_j - z_i)
+        \]
+        che è il coefficiente del grado massimo \(z_n^{n-1}\).
+        Notiamo ora che se avessimo \(z_n = z_k\) per qualche \(k<n\), allora due righe della matrice
+        coincidono e quindi \(\det V_n = 0\), ciò implica che \(P(z_k) = 0\), e quindi
+        \(P\) ha le radici \(z_1, \cdots, z_{n-1}\). Allora, il polinomio ha esattamente la forma
+        \[
+            P(z_n) = C \prod_{i=1}^{n-1} (z_n - z_i)
+        \]
+        per qualche costante \(C\).
+        Ma noi sappiamo che questo coefficiente principale \(C\) è precisamente \(A\), e quindi sostituendo otteniamo
+        \[
+            \det V_n = \left(
+                \prod_{1 \leq i < j \leq n-1} (z_j - z_i)
+            \right)
+            \left(
+                \prod_{i=1}^{n-1} (z_n - z_i)
+            \right)
+            = \prod_{i \leq i < j \leq n} (z_j - z_i)
+        \]
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippettheorem}{Forma normale di Schur}
+    Sia \(A \in \matrices_{n \times n}(\complexnumbers)\).
+    Esiste una matrice unitaria \(Q\), cioè \(Q^*Q=1\), tale che
+    \[
+        Q^*AQ = T
+    \]
+    dove \(T\) è triangolare superiore.
+\end{snippettheorem}
+
+\begin{snippetproof}{Forma normale di Schur}
+    Procediamo per induzione su \(n\).
+    \begin{enumerate}
+        \item \emph{Base case:} we have \(A = (a_{11}) = (e^{i\theta})(a_{11})(e^{-i\theta})\)
+        for any \(\theta \in \realnumbers\).
+        \item \emph{Induction case:} let \(\lambda\) be an eigenvalue of \(A\)
+        and let \(x\) an associated eigenvector.
+        Sia \(v_1 = x/||x||_2\) e quindi \(Av_1 = \lambda v_1\) siccome \(Ax = \lambda x\).
+        Quindi, \(v_1\) è un autovettore associato a \(\lambda\) con norma \(1\).
+        Completiamo \(v_1\) ad una base ortonormale di \(\complexnumbers^n\) usando il processo di Gram-Schmidt \(\{v_1, \cdots, v_n\}\).
+        Costruiamo quindi la matrice unitaria \(U_1 = [v_1, \cdots, v_n]\). Consideriamo quindi
+        \[
+            U_1^* A U_1 = \begin{pmatrix}
+                \lambda_1 & \ast \\ 0 & A_1
+            \end{pmatrix}
+        \]
+        dove \(A_1\) è una matrice \((n-1) \times (n-1)\) complessa.
+        Per ipotesi induttiva esiste matrice unitaria \(U_2\) tale che \(U_2^* A_1 U_2 = T\) con \(T\) triangolare superiore.
+        Allora costruiamo
+        \[
+            U = U_1 \begin{pmatrix}
+                1 & 0 \\ 0 & U_2
+            \end{pmatrix}
+        \]
+        Allora
+        \[
+            U^* A U = \begin{pmatrix}
+                \lambda_1 & \ast \\ 0 & T_1
+            \end{pmatrix} = T
+        \]
+        è trinagolare superiore, con diagonale formata dagli autovalori di \(A\).
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetproposition}{}
+    Somma diretta di matrici unitarie \(A,B\) è unitaria
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    \begin{align*}
+        (A \oplus B)^t (A \oplus B) &= \begin{pmatrix}
+            A^t & 0 \\ 0 & B^t
+        \end{pmatrix}\begin{pmatrix}
+            A & 0 \\ 0 & B
+        \end{pmatrix} \\
+        &= \begin{pmatrix}
+            A^t A & 0 \\ 0 & B^t B
+        \end{pmatrix} = \begin{pmatrix}
+            I_m & 0 \\ 0 & I_n
+        \end{pmatrix} = I_{m+n}
+    \end{align*}
+\end{snippetproof}
+
+\begin{snippetdefinition}{Forma normale di Jordan}
+    Sia \(A \in \matrices_{n\times n}\) una matrice quadrata.
+    Una \emph{matrice di Jordan} \(J\) associata ad \(A\) è una matrice a blocchi diagonali del tipo
+    \[
+        J = \begin{pmatrix}
+            J_1 & 0 & \cdots & 0 \\
+            0 & J_2 & \cdots & 0 \\
+            \vdots & \vdots & \ddots & \vdots \\
+            0 & 0 & \cdots & J_k
+        \end{pmatrix}
+    \]
+    dove ogni blocco ha forma
+    \[
+        J_i = \begin{pmatrix}
+            \lambda_i & 1 & 0 & \cdots & 0 \\
+            0 & \lambda_i & 1 & \cdots & 0 \\
+            \vdots & \vdots & \ddots & \ddots & \vdots \\
+            0 & 0 & \cdots & \lambda_i & 1 \\
+            0 & 0 & \cdots & 0 & \lambda_i \\
+        \end{pmatrix}
+    \]
+    con \(\lambda_i\) autovalori di \(A\).
+\end{snippetdefinition}
+
+\begin{snippettheorem}{Teorema della forma normale di Jordan}
+    Ogni matrice quadrata complessa \(A\) è simile a una e una sola matrice di Jordan \(J\), a meno dell'ordine dei blocchi
+    \(A = PJP^{-1}\).
+\end{snippettheorem}
+
+Siano \(x,y \in \complexnumbers^n\), allora \(||x||_2^2 = x^*x\)
+e \((xy)^* = y^*x^*\).
+Inoltre,
+\[
+    ||A||_2 = \sup_{x \neq 0} \frac{||Ax||_2}{||x||} = \rho(A^* A)
+\]
+Se \(A\) è unitaria \(||A||_2 = \rho(I) = 1\), ma si può dire anche che \(Ax = \lambda x\).
+
+\begin{snippettheorem}{}
+    Sia \(\lambda\) autovalore di \(A\) unitaria, allora \(|\lambda| = 1\).
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Abbiamo che \(||Ax||_2 = ||x||_2\) ma ciò è uguale a \(||\lambda x||_2 = |\lambda| \cdot ||x||_2\),
+    dividiamo per \(||x||_2\) che non è nullo e troviamo la tesi.
+\end{snippetproof}
+
+\begin{snippettheorem}{}
+    Sia \(P \in \matrices_{n\times n}(\realnumbers)\), \(P\) matrice di permutazione, cioè \(P=P^t\).
+    Allora, \(\lambda\) autovalori di \(P\) sono in \(\{+1, -1\}\).
+\end{snippettheorem}
+
+\begin{snippettheorem}{}
+    Consideriamo \(||\cdot||\) su \(\matrices_{n\times n}(\complexnumbers)\) è unitariamente invariante,
+    cioè \(\forall A \in \matrices_{n \times n}(\complexnumbers)\), \(\forall P, Q\) unitarie su \(\matrices_{n \times n}(\complexnumbers)\),
+    vale \(||PA||_2 = ||AQ||_2 = ||A||_2\).
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Abbiamo
+    \[
+        ||PA||_2 = \sup_{x \neq 0} \frac{||PAx||_2}{||x||_2} = \sup_{x \neq 0} \frac{||Ax||_2}{||x||_2} = ||A||_2
+    \]
+    Inoltre
+    \begin{align*}
+        ||AQ||_2 &= \sup_{x \neq 0} \frac{||AQx||}{||x||_2} &= \sup_{x \neq 0} \frac{||Ay||_2}{||y||_2} = ||A||_2
+    \end{align*}
+    dove \(y = Qx\) e poiché \(Q\) è unitario \(||y||_2 = ||x||_2\).
+\end{snippetproof}
+
+\begin{snippettheorem}{}
+    \(GL_n(\complexnumbers)\) è denso rispetto a \(\matrices_n(\complexnumbers)\).
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Sia \(X\in \matrices_{n\times n}(\complexnumbers)\).
+    Mostriamo che \(\exists \{X_s\}\) tale che \(\{X_s\} \to X\),
+    con \(X_s \in GL_n(\complexnumbers)\).
+    Se \(X\) è invertibile allora \(\forall s, X_s = X\) e abbiamo finito.
+    Altrimenti consideriamo la forma normale di Schur \(X = QTQ^*\), costruiamo \(X_s = QT_sQ^*\) con \(T_s\) dato da
+    \[
+        (T_s)_{j,k} = \begin{cases}
+            (T)_{j,k} & j \neq k \\
+            (T)_{j,k} & k=j \land T_{j,j} \neq 0 \\
+            \frac{1}{s} & k=j \land T_{j,j} = 0
+        \end{cases}
+    \]
+    Quindi per costruzione \(T_s\) è invertibile per tutte le \(s>0\) ed è triangolare superiore.
+    Abbiamo allora
+    \begin{align*}
+        ||X-X_s||_2 &= ||QTQ^* - QT_sQ^*||_2
+        = ||Q(T-T_s)Q^*||_2 = ||T-T_s||_2  \\
+        &= ||\underset{1 \leq j \leq n}{\operatorname{diag}}(\alpha_{j,s})||_2 = \frac{1}{s} \to 0
+    \end{align*}
+    Con \(\alpha_{j,s} = 0\) se \(1 \leq j \leq n\) e \(T_{j,j} \neq 0\),
+    e \(\alpha_{j,s} = -1/s\) se \(1 \leq j \leq n\) e \(T_{j,j} = 0\).
+\end{snippetproof}
 
 \end{document}

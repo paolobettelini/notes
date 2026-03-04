@@ -449,6 +449,136 @@ non è univocamente determinata dal valore che assume sui singoletti.
 
 \section{Indipendenza e condizionamento}
 
+\begin{snippetdefinition}{Probabilità condizionata}
+    Sia \((\Omega, \powerset(\Omega), \mathbb P)\) uno S.D.P
+    con \(\Omega\) finito.
+    Siano \(A, B \in \powerset(\Omega)\) tale che \(\mathbb P(B) > 0\).
+    Allora la \emph{probabilità condizionata di \(A\) dato \(B\)} è definita come
+    \[
+        \mathbb P (A | B) \triangleq \frac{\mathbb P(A \intersection B)}{\mathbb P(B)}
+    \]
+    Se \(\mathbb P(A) > \mathbb P(A | B)\) allora diciamo che \(B\) condiziona
+    negativamente \(A\), e viceversa positivamente, se coincidono non condiziona.
+\end{snippetdefinition}
+
+Possiamo evitare la condizione \(\mathbb P(B) > 0\)
+possiamo definire la possibilità condizionata
+come la soluzione per \(x \in [0,1]\) di 
+\[ \mathbb P(A \intersection B) = x \mathbb P (B) \]
+Quindi se \(\mathbb P(B) = 0\) allora l'equazione ha infinite soluzioni.
+
+Se \(B\) condiziona negativamente \(A\) allora condiziona positivamente \(\Omega \difference A\).
+
+\begin{snippetproposition}{name}
+    La funzione \(\mathbb P(-|B)\) definisce una misura di probabilità su \((\Omega, \powerset(\Omega))\).
+\end{snippetproposition}
+
+\begin{snippetproof}{name}
+    \begin{enumerate}
+        \item \[
+            \mathbb P(\Omega | B) = \frac{
+                \mathbb P(\Omega \intersection B)
+            }{\mathbb P(B)}
+            = \frac{\mathbb P(B)}{\mathbb P(B)} = 1
+        \]
+        \item \(\forall A, C \in \powerset(\Omega)\) tale che
+        \(A \intersection C = \emptyset\) vale \[
+            \mathbb P(A \union C | B) =
+            \mathbb P(A | B) + \mathbb P(C | B)
+        \]
+        Lo mostriamo
+        \begin{align*}
+            \mathbb P(A \union C | B)
+            &= \frac{
+                \mathbb P((A \union C) \intersection B)
+            }{
+                \mathbb P(B)
+            }
+            = \frac{
+                \mathbb P((A \intersection B) \union (C \intersection B))
+            }{
+                \mathbb P(B)
+            } \\
+            &= \frac{
+                \mathbb P(A \intersection B)
+            }{
+                \mathbb P(B)
+            } + \frac{
+                \mathbb P(C \intersection B)
+            }{
+                \mathbb P(B)
+            } \\ 
+            &= \mathbb P(A | B) + \mathbb P(C | B)
+        \end{align*}
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippettheorem}{Probilità totale}
+    Siano \(\Omega_1, \cdots, \Omega_n \in \powerset(\Omega)\) e \(n \in \naturalnumbers\)
+    partizione disgiunta di \(\Omega\).
+    Allora \(\forall A \in \powerset(\Omega)\) vale
+    \[
+        \mathbb P(A) = \sum_{k=1}^n \mathbb P(A \intersection \Omega_k)
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{Probilità totale}
+    \begin{align*}
+        \mathbb P(A) &= \mathbb P(A \intersection \Omega) = \mathbb P\left(
+            A \intersection \left(
+                \bigcup_{k=1}^n \Omega-k
+            \right)
+        \right) \\
+        &= \mathbb P\left(
+            \bigcup_{k=1}^n (A \intersection \Omega_k)
+        \right) \\
+        &= \sum_{k=1}^n \mathbb P(A \intersection \Omega_k) \\
+        &= \sum_{k=1}^n \mathbb P(A | \Omega_k) \mathbb P(\Omega_k) \\
+        &= \sum_{k=1}^n \mathbb P(A \intersection \Omega_k)
+    \end{align*}
+\end{snippetproof}
+
+\begin{snippettheorem}{Formula di Bayes}
+    Siano \(A_1, \cdots, A_n \in \powerset(\Omega)\) partizione di \(\Omega\)
+    e \(B \in \powerset(\Omega)\) tale che \(\mathbb P(B) > 0\) allora
+    \[
+        \mathbb P(A_i | B) = \frac{
+            \mathbb P(B | A_i) \mathbb P(A_i)
+        }{
+            \mathbb P(B)
+        } = \frac{
+            \mathbb P(B|A_i) \mathbb P(A_i)
+        }{
+            \sum_{k=1}^n \mathbb P(B | A_k) \mathbb P(A_k)
+        }, \quad \forall i \in \{1, \cdots, n\}
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{Formula di Bayes}
+    Applichiamo due volte la definizione di probabilità condizionata
+    \[
+        \mathbb P(A_i | B) =
+        \frac{
+            \mathbb P(A_i \intersection B)
+        }{
+            \mathbb P(B)
+        } = \frac{
+            \mathbb P(B | A_i) \mathbb P(A_i)
+        }{
+            \mathbb P(B)
+        } = \frac{
+            \mathbb P(B|A_i)\mathbb P(A_i)
+        }{
+            \sum_{k=1}^n \mathbb P(B|A_k)\mathbb P(A_k)
+        }
+    \]
+\end{snippetproof}
+
+\subsection{Indipendenza}
+
+
+
+
 
 
 
@@ -1152,5 +1282,262 @@ Quindi \(f\) è pure continua.
     \]
     che è assurdo perché il sup è sempre maggiore o uguale della funzione valutata in un punto.
 \end{snippetexample}
+
+\begin{snippetexercise}{}
+    Siano \(I\) un intervallo e \(f_n\colon I \fromto \realnumbers\) una successione di funzioni derivabili su \(I\). Provare che
+    se \(\{f_n(x_0)\}\) converge per qualche \(x_0 \in I\) e se \(\{f'\}\) converge localmente uniformemente in \(I\),
+    allora \(\{f_n\}\) converge localmente uniformemente in \(I\) ad una primitiva di \[\lim_{n\to \infty} f_n'\].
+\end{snippetexercise}
+
+Studiamo ora la convergenza uniforme e l'integrazione.
+
+\begin{snippettheorem}{}
+    Sia \(S = [a,b]\) intervallo reale e \(\{f_n\}_{n \in \naturalnumbers}\) una successione di funzioni Riemann integrabili
+    su \(S\) e \(f_n \to f\) uniformemente con \(f \colon [a,b] \fromto \realnumbers\). Allora, \(f\) è Riemann integrabile
+    in \([a,b]\) e vale
+    \[
+        \integral[a][b][f(x)][x] = \lim_{n} \integral[a][b][f_n(x)][x]
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Come prima cosa dobbiamo dimostrare che \(f\) è Riemann integrabile su \(S\). Data la convergenza uniforme, 
+    \(\forall \varepsilon > 0\) esiste \(N(\varepsilon)\) naturale tale che
+    \[
+        \sup_{x\in [a,b]} |f_n(x) - f(x)| < \varepsilon, \quad \forall n \geq N
+    \]
+    Quindi
+    \[
+        f_n(x) - \frac{\varepsilon}{b-a} \leq f(x) \leq f_n(x) + \frac{\varepsilon}{b-a}, \quad \forall x \in [a,b]
+    \]
+    Presa una partizione finita di \([a,b]\) \(a = t_0 < t_1 < \cdots < t_n = b\) definiamo
+    \(I_k = [x_{k-1}, x_k]\) con \(k \in \{1,\cdots, n\}\). Dall'espressione sopra otteniamo che per tutti i \(k\),
+    \[
+        \inf_{x\in I_k} f_n(x) - \frac{\varepsilon}{b-a} \leq \inf_{x \in I_k} f(x) \leq \inf_{x\in I_k} f_n(x) + \frac{\varepsilon}{b-a}
+    \]
+    e
+    \[
+        \sup_{x\in I_k} f_n(x) - \frac{\varepsilon}{b-a} \leq \sup_{x \in I_k} f(x) \leq \sup_{x\in I_k} f_n(x) + \frac{\varepsilon}{b-a}
+    \]
+    Otteniamo quindi che
+    \begin{align*}
+        \sum_{k=1}^n \left(\sup_{x\in I_k} f_n(x)\right)(t_k - t_{k-1}) - \frac{\varepsilon}{b-a} \sum_{k=1}^n (t_k - t_{k-1})
+        &\leq \sum_{k=1}^n \left(\sup_{x\in I_k} f(x)\right)(t_k - t_{k-1}) \\
+        &\leq \sum_{k=1}^n \left(\sup_{x\in I_k} f_n(x)\right)(t_k - t_{k-1}) + \frac{\varepsilon}{b-a} \sum_{k=1}^n (t_k - t_{k-1})
+    \end{align*}
+    che sono quindi le somme \(S(f_n, P)\) e \(S(f, P)\).
+    Allora
+    \[
+        S(f_n, P) - \varepsilon \leq S(f, P) \leq S(f_n, P) + \varepsilon
+    \]
+    dove \(P\) è la partizione data.
+    Nello stesso modo, usando la versione con l'infimum, otteniamo
+    \[
+        s(f_n, P) - \varepsilon \leq s(f, P) \leq s(f_n, P) + \varepsilon
+    \]
+    dove
+    \[
+        s(f, P) = \sum_{k=1}^n \inf_{x\in I_k} f(x)(t_k-t_{k-1})
+    \]
+    Questo vale per ogni partizione \(P\) di \([a,b]\). Per defininizione di inegrale di Riemann \(f\) è integrabile se
+    \[
+        \sup_P S(f,P) = \sup_P s(f,P) < \infty
+    \]
+    dove \(P\) rappresenta tutte le possibili partizioni.
+    Se questo è vero
+    \[
+        \integral[a][b][f(x)][x] = \sup_P S(f, P) = \sup_P s(f,P)
+    \]
+    applicando questa definizione di integrabilità e facendo il supremum sulle partizioni otteniamo 
+    \[
+        \integral[a][b][f_n(x) - \varepsilon][x] \leq \sup_P s(f,P) \leq \sup_P S(f, P) \leq \integral[a][b][f_n(x)] + \varepsilon[x]
+    \]
+    che possiamo fare siccome \(f_n\) è integrabile.
+    Quindi concludiamo che
+    \[
+        \left|
+            \sup_P S(f, P) - \sup_P s(f,P)
+        \right| \leq \varepsilon
+    \]
+    di conseguenza
+    \[
+        \integral[a][b][f(x)][x] = \sup_P S(f, P) = \sup_P s(f, P)
+    \]
+    cioè \(f\) è integrabile.
+    Mostriamo ora la proposizione con il limite.
+    Sappiamo che \(\forall \varepsilon > 0\) esiste \(N(\varepsilon)\) naturale tale che
+    \[ |f_n(x) - f(x)| \leq \frac{\varepsilon}{b-a} \]
+    per \(n \geq N\).
+    Allora otteniamo
+    \begin{align*}
+        \left|
+            \integral[a][b][f(x)][x] - \integral[a][b][f_n(x)][x]
+        \right| &\leq \integral[a][b][|f_n(x) - f(x)|][x] \\
+        &< \integral[a][b][\frac{\varepsilon}{b-a}][x] = \varepsilon
+    \end{align*}
+\end{snippetproof}
+
+Questo risultato non vale per integrali impropri.
+
+\begin{snippetexample}{Controesempio - Limite di funzioni integrabili non integrabile su dominio illimitato}
+    Sia \(S = [1, +\infty)\) e consideriamo su tale dominio
+    \[
+        f_n(x) \triangleq \frac{1}{x} \chi_{[1,n]} = \begin{cases}
+            \frac1x & x \in [1,n] \\
+            0 & x \in (n, \infty)
+        \end{cases}
+    \]
+    È facile mostrare che le \(f_n\) sono integrabili su \(S\), infatti fissato \(n\) abbiamo che
+    \begin{align*}
+        \integral[1][\infty][f_n(x)][x] &= \lim_{t \to \infty} \integral[1][t][\frac{1}{x}\chi_{[1,n]}][x] \\
+        &= \lim_{t\to\infty} \integral[1][\min\{t,n\}][\frac1x][x] \\
+        &= \integral[1][n][\frac1x][x] = \ln|n|
+    \end{align*}
+    Mostriamo ora la convergenza uniforme a \(f(x) = 1/x\) in \([1, +\infty)\). Abbiamo
+    \begin{align*}
+        \sup_{x\in [1, +\infty)} |f_n(x) - f(x)| &= \sup_{x\in [1, +\infty)} \left|
+            \frac{1}{x} \chi_{[1,n]}(x) - \frac1x
+        \right| \\
+        &= \sup_{x\in [1, +\infty)} \frac{1}{x} \chi_{[1, n]}(x) = \frac{1}{n} \to 0
+    \end{align*}
+    per \(n\to\infty\).
+    Quindi \(f_n\) converge uniformemente a \(f(x)\), che tuttavia non è Riemann integrabile su \([1, +\infty)\).
+\end{snippetexample}
+
+\begin{snippetexample}{Controesempio - Il limite degli integrali è diverso dall'integrale del limite}
+    Sia \(S=\realnumbers\) e su tale dominio definiamo
+    \[
+        f_n(x) \triangleq \frac{1}{n} \chi_{[n, 2n]}(x) = \begin{cases}
+            \frac1n & x \in [n,2n] \\
+            0 & x \notin [n, 2n]
+        \end{cases}
+    \]
+    Mostriamo l'integrabilità fissato \(n\),
+    \begin{align*}
+        \integral[-\infty][+\infty][f_n(x)][x] &= \lim_{\gamma \to -\infty} \lim_{\mu \to +\infty}
+        \integral[\gamma][\mu][\frac{1}{n}\chi_{[n,2n]}(x)][x] \\
+        &= \lim_{\mu \to +\infty} \integral[n][\min\{\mu, 2n\}][\frac{1}{n}][x] \\
+        &= \integral[n][2n][\frac1n][x] = 1
+    \end{align*}
+    Mostriamo che \(\{f_n\}\) converge uniformemente a \(f(x) = 0\) su \(\realnumbers\). Abbiamo
+    \begin{align*}
+        \sup_{x\in \realnumbers} |f_n(x) - f(x)| &= \sup_{x\in \realnumbers} \left|
+            \frac{1}{n} \chi_{[n,2n]}(x)
+        \right| \\
+        &= \frac{1}{n} \to 0
+    \end{align*}
+    per \(n\to\infty\). Tuttavia,
+    \[
+        \integral[-\infty][\infty][f(x)][x] = 0 \neq 1 = \lim_n \integral[-\infty][+\infty][f_n(x)][x]
+    \]
+\end{snippetexample}
+
+Guardiamo ora la convergenza uniforme e la derivazione.
+
+\begin{snippettheorem}{}
+    Sia \(S = [a,b]\) intervallo reale e \(\{f_n\}\) successione di funzioni \(f_n \colon [a,b] \fromto \realnumbers\) derivabili
+    tale che \(\exists x_0 \in [a,b]\) tale che \(\{f_n(x_0)\}\) è convergente.
+    Se la successione \(\{f_n'\}\) converge uniformementein \(S\), allora \(\exists f \colon S \fromto \realnumbers\) tale che
+    \(f_n \to f\) uniformemente e \(f_n' \to f'\) uniformemente in \(S\).
+    In particolare,
+    \[
+        \lim_n f_n'(x) = f'(x), \quad x \in [a,b]
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Cominciamo con un caso facile, cioè \(f_n \in \mathcal C^1([a,b])\) per tutte le \(n\).
+    In questo caso posso usare il teorema fondamentale del calcolo integrale,
+    \[
+        f_n(x) = f_n(x_0) + \integral[x_0][x][x][f_n'(y)][y]
+    \]
+    Per ipotesi \(f_n(x_0) \to c \in \realnumbers\) per \(n \to \infty\),
+    \(f_n' \to h\) uniformemente con \(h \colon S \fromto \realnumbers\) continua perché le \(f_n'\) sono continue.
+    Inoltre, per il teorema d'integrazione precedente
+    \[
+        \lim_n \integral[x_0][x][f_n'(y)][y] =\integral[x_0][x][h(y)][y]
+    \]
+    Da questo deduciamo che \(f_n \to f\) puntualmente con \[
+        f(x) = c + \integral[x_0][x][h(y)][y]
+    \]
+    Per il teorema fondamentale del calcolo integrale \(f'(x) = h(x)\) per tutte le \(x\in[a,b]\).
+    Ci manca da dimostrare che \(f_n \to f\) uniformemente in \([a,b]\). Abbiamo
+    \begin{align*}
+        \sup_{x\in[a,b]} |f_n(x) - f(x)| &= \sup_{x\in [a,b]} \left|f_n(x_0) + \integral[x_0][x][f_n'(y)][y] - c - \integral[x_0][x][h(y)][y]\right| \\
+        &\leq |f_n(x_0) - c| + \sup_{x\in[a,b]} \integral[x_0][x][|f_n'(y) - h(y)|][y] \\
+        &\leq |f_n(x_0) - c| + \sup_{x\in[a,b]} \integral[a][b][|f_n'(y) - h(y)|][y] \\
+        &\leq |f_n(x_0) - c| + (b-a) \sup_{x\in [a,b]} |f_n'(x) - h(x)| \to 0
+    \end{align*}
+    per \(n\to\infty\). Il primo termine tende a zero per la convergenza a \(c\) e il secondo per la convergenza uniforme ad \(h\). \\
+    Questa dimostrazione ci fa interpretare questo teorema come una sorta di corollario del precedente, infatti abbiamo chiesto che \(f_n' \to h\)
+    uniformemente e poi abbiamo dimostrato che \(f_n\) converge uniformemente ad una primitiva di \(h\). \\
+    Passiamo ora al caso dove \(f_n\) non è necessariamente \(\mathcal C^1([a,b])\).
+    Cominciamo utilizzato il criterio di Cauchy per dimostrare che \(\{f_n\}\) converge uniformemente a qualcosa, cioè
+    \(\forall \varepsilon > 0\), \(\exists N(\varepsilon)\) naturale tale che
+    \[
+        |f_n(x) - f_m(x)| < \varepsilon, \quad \forall n,m>N, \forall x \in [a,b]
+    \]
+    Per comodità definiamo \(g_{m,n} = f_n - f_m\).
+    Dalle ipotesi deduciamo che:
+    \begin{enumerate}
+        \item \(\exists x_0 \in [a,b]\) tale che \(\exists N_0\left(\frac{\varepsilon}{2}, x_0\right)\) naturale tale che
+        \[
+            |g_{n,m}(x_0)| = |f_n(x_0) - f_m(x_0)| < \frac{\varepsilon}{2(b-a)}, \quad \forall n,m>N_0, \forall x \in [a,b]
+        \]
+        \item \(\{f_n'\}\) converge uniformemente quindi \(\exists N_1\left(\frac{\varepsilon}{2}\right)\) naturale
+        tale che 
+        \[
+            |g_{n,m}'| = |f_n'(x) - f_n'(x)| < \varepsilon,  \forall n,m>N_1, \forall x \in [a,b]
+        \]
+    \end{enumerate}
+    Fissiamo \(\overline N = \max\{N_0, N_1\}\). Applichiamo il teorema del valor medio sulla funzione
+    \(g_{n_m}\) con \(n,m > N\), quindi \(\forall x \in [a,b]\), esiste \(t_0 \in \left(\min\{x,x_0\}, \max\{x,x_0\}\right)\) tale che
+    \[
+        |g_{n,m}(x) - g_{n,m}(x_0)| \leq |x-x_0| \cdot |g_{n,m}'(x_0)| < (b-a) \cdot \frac{\varepsilon}{2(b-a)} = \frac{\varepsilon}{2}
+    \]
+    Combinando tutto otteniamo che
+    \begin{align*}
+        |f_n(x) - f_m(x)| &= |g_{n,m}(x)| \leq |g_{n,m}(x) - g_{n,m}(x_0)| + |g_{n,m}(x_0)| \\
+        &< \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon, \quad \forall n,m \geq N, \forall x \in [a,b]
+    \end{align*}
+    Abbiamo mostrato che esiste \(f\) continua tale che \(f_n \to f\) uniformemente.
+    Ora dobbiamo mostrare che \(f\) è derivabile e \(f_n' \to f'\) uniformemente.
+    Per ipotesi sappiamo già che \(\{f_n'\}\) converge uniformente
+    a qualcosa, quindi per unicità del limite basta dimostrare che \(f_n' \to f\) puntualmente in \([a,b]\).
+    Fissato \(x\in [a,b]\) e \(n\) naturale definiamo
+    \[
+        \Delta_n (t) \triangleq \frac{f_n(x) - f_n(t)}{x-t}, \quad \forall t \in [a,b] \difference \{x\}
+    \]
+    Notiamo che
+    \begin{itemize}
+        \item \[ \lim_{t\to x} \Delta_n(t) = f_n'(x), \quad \forall n \in \naturalnumbers \]
+        \item \[ \lim_n \Delta_n(t) = \Delta(t) = \frac{f(x) - f(t)}{x-t}, \quad t \in [a,b] \difference \{x\} \]
+    \end{itemize}
+    Per concludere ci basta dimostrare che
+    \begin{align*}
+        \lim_{t\to x} \lim_n \Delta_n(t) &\overset{(1)}{=} \lim_n \lim_{t \to x} \Delta_n(t) \\
+        &= \lim_{t\to x} \Delta(t) = \lim_{t\to x} \frac{f(x) - f(t)}{x-t} \\
+        &\overset{(2)}{=} \lim_{n} f_n'(x)
+    \end{align*}
+    Se dimostriamo che vale la \((1)\) otteniamo \((2)\) abbiamo finito.
+    Se \(\{\Delta_n\}\) converge uniformemente in \([a,b]\difference \{x\}\), visto
+    che \(x\) è un punto di accumulazione, per il teorema di cambio limite otteniamo \((1)\).
+    Per il teorema del valor medio applicato a \(f_n - f_m\), \(\exists t_0 \in \left(\min\{x, t\}, \max\{x,t\}\right)\) tale che
+    \begin{align*}
+        |\Delta_n(t) - \Delta_m(t)| &= \frac{
+            |f_n(x) - f_n(t) - f_m(x) + f_m(t)
+        }{
+            |t-x|
+        } \\
+        &\leq \frac{|t-x|}{|t-x|} \cdot |f_n'(t_0) - f_m'(t_0)| \\
+        &= |f_n'(t_0) - f_m'(t_0)|, \quad \forall t \in [a,b]\difference \{x\}
+    \end{align*}
+    Di conseguenza 
+    \[
+        \sup_{t\in [a,b]\difference \{x\}} |\Delta_n(t) - \Delta_m(t)| \leq
+        \sup_{t\in [a,b] \difference \{x\}} |f_n'(t) - f_m'(t)|
+    \]
+    Ma per ipotesi \(\{f_n'\}\) converge uniformemente quindi anche \(\{\Delta_n\}\) converge uniformemente in \([a,b] \difference \{x\}\).
+\end{snippetproof}
 
 \end{document}
