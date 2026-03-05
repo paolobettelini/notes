@@ -318,13 +318,13 @@ rsipetto a parametrizzazione arbitraria.
     \]
     Allora
     \[
-        \kappa(s) \triangleq ||\ddot{\sigma}(s)|| = \frac{
+        \kappa(s) \triangleq \|\ddot{\sigma}(s)\| = \frac{
             \sqrt{|\sigma'|^2|\sigma''|^2 - \langle\sigma', \sigma''\rangle^2}
         }{
             |\sigma'|^3
         }
     \]
-    dove il valore assoluto è il modulo \(\sqrt{\langle v, \rangle v}\).
+    dove il valore assoluto indica il modulo \(\sqrt{\langle v, v \rangle}\).
 \end{snippetproposition}
 
 \begin{snippetproof}{}
@@ -334,11 +334,11 @@ rsipetto a parametrizzazione arbitraria.
         &= \frac{d}{dt} \left(\frac{\sigma'}{|\sigma'|}\right) \frac{dt}{ds}
         = \frac{d}{dt} \left(\frac{\sigma'}{|\sigma'|}\right) \frac{1}{|\sigma'|} \\
         &= \frac{\sigma''|\sigma'| - \sigma' \frac{d}{dt}|\sigma'|}{|\sigma'|^2} \cdot \frac{1}{|\sigma'|} \\
-        &= \frac{\sigma''|\sigma'| - \sigma' \frac{d}{dt} \sqrt{\langle \sigma', \rangle \sigma'}}{|\sigma'|^2} \cdot \frac{1}{|\sigma'|} \\
+        &= \frac{\sigma''|\sigma'| - \sigma' \frac{d}{dt} \sqrt{\langle \sigma', \sigma' \rangle}}{|\sigma'|^2} \cdot \frac{1}{|\sigma'|} \\
         &= \frac{
             \sigma''|\sigma'| 
             - \sigma' \cdot \frac12 \langle \sigma', \sigma'\rangle^{-1/2} 
-            \cdot 2 \cdot \langle \sigma'', \sigma'\rangle}{
+            \cdot 2 \langle \sigma'', \sigma'\rangle}{
             |\sigma'|^2
         } \cdot \frac{1}{|\sigma'|} \\
         &= \frac{\sigma''}{|\sigma'|^2} - \sigma' \frac{
@@ -349,36 +349,45 @@ rsipetto a parametrizzazione arbitraria.
     \end{align*}
     Che è la prima equazione. Successivamente
     \begin{align*}
-        \kappa(s) &= |\ddot\sigma(s)| = \left|
+        \kappa(s) &= \|\ddot\sigma(s)\| = \left\|
             \frac{\sigma''}{|\sigma'|^2} - \sigma' \frac{
                 \langle \sigma'', \sigma'\rangle
             }{|\sigma'|^4}
-        \right| \\
+        \right\| \\
         &= \sqrt{
-            \langle \frac{\sigma''}{|\sigma'|^2} - \sigma' \frac{\langle \sigma'', \sigma'\rangle}{|\sigma'|^4} \rangle,
-            \langle \frac{\sigma''}{|\sigma'|^2} - \sigma' \frac{\langle \sigma'', \sigma'\rangle}{|\sigma'|^4} \rangle
+            \left\langle 
+                \frac{\sigma''}{|\sigma'|^2} - \sigma' \frac{\langle \sigma'', \sigma'\rangle}{|\sigma'|^4}, 
+                \frac{\sigma''}{|\sigma'|^2} - \sigma' \frac{\langle \sigma'', \sigma'\rangle}{|\sigma'|^4} 
+            \right\rangle
         } \\
         &= \sqrt{
-            \frac{\langle \sigma'', \sigma'\rangle}{|\sigma'|^4}
-            - 2 \frac{\langle \sigma'', \sigma'\rangle}{|\sigma'|^6}
+            \frac{\langle \sigma'', \sigma''\rangle}{|\sigma'|^4} 
+            - 2 \frac{\langle \sigma'', \sigma'\rangle \langle \sigma', \sigma''\rangle}{|\sigma'|^6} 
             + \frac{\langle \sigma', \sigma'\rangle\langle \sigma'', \sigma'\rangle^2}{|\sigma'|^8}
         } \\
         &= \sqrt{
-            \frac{
-                |\sigma''|^2 |\sigma'|^2 - 2\langle \sigma'', \sigma'\rangle + \langle \sigma'', \sigma'\rangle^2
-            }{
-                |\sigma'|^6
-            }
+            \frac{|\sigma''|^2}{|\sigma'|^4} 
+            - 2 \frac{\langle \sigma'', \sigma'\rangle^2}{|\sigma'|^6} 
+            + \frac{|\sigma'|^2 \langle \sigma'', \sigma'\rangle^2}{|\sigma'|^8}
+        } \\
+        &= \sqrt{
+            \frac{|\sigma''|^2 |\sigma'|^2}{|\sigma'|^6} 
+            - 2 \frac{\langle \sigma'', \sigma'\rangle^2}{|\sigma'|^6} 
+            + \frac{\langle \sigma'', \sigma'\rangle^2}{|\sigma'|^6}
         } \\
         &= \sqrt{
             \frac{
                 |\sigma''|^2 |\sigma'|^2 - \langle \sigma'', \sigma'\rangle^2
             }{
-                |\sigma'|^3
+                |\sigma'|^6
             }
-        } 
+        } \\
+        &= \frac{
+            \sqrt{|\sigma''|^2 |\sigma'|^2 - \langle \sigma'', \sigma'\rangle^2}
+        }{
+            |\sigma'|^3
+        }
     \end{align*}
-    Potrebbe esserci un quadrato mancante negli ultimi passaggi. TODO.
 \end{snippetproof}
 
 \section{Argomenti di curve piane}
@@ -400,8 +409,10 @@ oppure \((x(y), y)\) dove \(y(x), x(y)\) sono funzioni \(\mathcal C^\infty\).
 Supponiamo di avere una famiglia di curve piane
 \(C_t\) di equazioni \(F(t,x,y) = 0\) per ogni \(t\).
 
+\begin{radioactive}
 \begin{snippetdefinition}{Inviluppo}
-    Una curva \(\sigma \colon I \fromto \realnumbers^2\)
+    Una curva \(\sigma \colon I \fromto \realnumbers^2\) differenziabile
+    e con derivata non-nulla
     è detta \emph{inviluppo} della famiglia di curve piane
     \[
         C_t = \{(x,y) \suchthat F(t, x,y) = 0\}
@@ -409,7 +420,9 @@ Supponiamo di avere una famiglia di curve piane
     se \(\sigma\) è tangente a \(C_t\) in \(\sigma(t)\)
     per ogni \(t\).
 \end{snippetdefinition}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetproposition}{}
     Se \(\sigma(t) = (x(t), y(t))\) è inviluppo di \(F(t,x,y)\),
     allora i punti \((t,x(t), y(t))\) sono soluzioni del sistema 
@@ -420,7 +433,9 @@ Supponiamo di avere una famiglia di curve piane
         \end{cases}
     \]
 \end{snippetproposition}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetproof}{}
     Dalla definizione di inviluppo segue che
     \[
@@ -442,9 +457,11 @@ Supponiamo di avere una famiglia di curve piane
     Quindi metendo assieme le due espressioni due termini di derivate parziale si annullano e rimane
     la condizione della tesi.
 \end{snippetproof}
+\end{radioactive}
 
 \pagebreak
 
+\begin{radioactive}
 \begin{snippetexample}{Involuzione}
     \begin{wrapfigure}{r}{6cm}
         \begin{center}
@@ -487,7 +504,9 @@ Supponiamo di avere una famiglia di curve piane
     Semplificando concludiamo quindi che l'equazione cartesiana dell'involuzione è \(4xy = 1\).
     \wrapfill
 \end{snippetexample}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{}{Non sempre esiste la curva di inviluppo}
     Se consideriamo il fascio di rette passanti per un punto, come l'origine, cioè date
     dall'equazione \(F(t,x,y) = y - tx\), oppure il fascio di rette parallele
@@ -519,14 +538,18 @@ Supponiamo di avere una famiglia di curve piane
     \]
     non vi è soluzione.
 \end{snippetexample}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetproposition}{}
     Sia \(F(t, x,y) = 0\)
     una famiglia di rette.
     Allora la curva di inviluppo esiste, ed è non-costante, se e solo se
     \(F\) non esprime un fascio di rette.
 \end{snippetproposition}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetproof}{}
     Scriviamo \(F(t,x,y) = a(t)x + b(t)y + c(t)\)
     con \((a(t), b(t)) \neq 0\) per tutte le \(t\)
@@ -535,10 +558,13 @@ Supponiamo di avere una famiglia di curve piane
     con \((x,y)\) non costante. Bisogna quindi escludere il fascio di rette.
     TODO.
 \end{snippetproof}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetproposition}{}
-    Ogni curva piana regolare è inviluppo della faimglia delle sue rette tangenti.
+    Ogni curva piana regolare è inviluppo della famiglia delle sue rette tangenti.
 \end{snippetproposition}
+\end{radioactive}
 
 Immaginiamoci di avere uno spago
 avvolto attorno ad un cilindro e di disfarlo
@@ -561,7 +587,7 @@ e la sua traiettoria è data dalla curva di involuzione della circonferenza.
     \begin{wrapfigure}{r}{6cm}
         \begin{center}
 \begin{tikzpicture}[scale=0.9]
-    \definecolor{giallino}{RGB}{255,255,200}
+    \definecolor{anglecolor}{RGB}{255,255,200}
     
     \draw[thick] (0,0) ellipse (3cm and 2cm);
     
@@ -572,18 +598,18 @@ e la sua traiettoria è data dalla curva di involuzione della circonferenza.
     \coordinate (T1) at (4, 0.769);
     \coordinate (T2) at (-1, 2.694);
     
-    \fill[giallino] (P) -- ++(-67:0.4) arc (-67:25:0.4) -- cycle;
+    \fill[anglecolor] (P) -- ++(-67:0.4) arc (-67:25:0.4) -- cycle;
     
     \draw[->] ([shift={(-67:0.4)}]P) arc (-67:25:0.4);
     
     \draw (F1) -- (F2p);
     \draw (F2) -- (P);
     
-    \draw[red, thin] (T2) -- (T1) node[right, black] {$b$};
+    \draw[red, thin] (T2) -- (T1) node[above, black] {$b$};
     
     \fill (F1) circle (1.5pt) node[below] {$F_1$};
     \fill (F2) circle (1.5pt) node[below] {$F_2$};
-    \fill (P) circle (1.5pt) node[above left] {$P$};
+    \fill (P) circle (1.5pt) node[above] {$P$};
     \fill (F2p) circle (1.5pt) node[above right] {$F_2'$};
     
     \node at (2.2, 1.75) {$\theta$};
@@ -591,7 +617,7 @@ e la sua traiettoria è data dalla curva di involuzione della circonferenza.
         \end{center}
     \end{wrapfigure}
     Consideriamo al retta \(b\) bisettrice dell'angolo \(\theta\) fra le rette
-    \(PF_2\) e \(PF_1\). Vogliamo dimostrare che \(b\) è tangente all'allisse in \(P\).
+    \(PF_2\) e \(PF_1\). Vogliamo dimostrare che \(b\) è tangente all'ellisse in \(P\).
     Consideriamo \(F_2'\) su \(PF_1\) con distanza
     \[
         d(P, F_2') = d(P, F_2)

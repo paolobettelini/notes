@@ -701,7 +701,7 @@ eventi \[
 e cerchiamo una condizione aggiuntiva per garantire che siano a due a due indipendenti
 \begin{align*}
     \mathbb P(A\intersection B) &=
-    \mathbb P(A \union B \intersection (\Omega \difference C)) \\
+    \mathbb P(A \intersection B \intersection \Omega) \\
     &= \mathbb P((A \intersection B \intersection C) \union (A \intersection B) \intersection (\Omega \difference C))
     = \mathbb P(A \intersection B \intersection C) + \mathbb P(A \intersection B \intersection (\Omega \difference C)) \\
     &= \mathbb P(A)\mathbb P(B)\mathbb P(C) + \mathbb P(A \intersection B \intersection (\Omega \difference C))
@@ -710,12 +710,15 @@ e cerchiamo una condizione aggiuntiva per garantire che siano a due a due indipe
 Ci serve che anche \(A, B, \Omega \difference C\)
 verifichino
 \[
-    \mathbb P(A \intersection B \intersection (\Omega \difference C)) = TODO
+    \mathbb P(A \intersection B \intersection (\Omega \difference C)) = \mathbb P(A)\mathbb P(B)\mathbb P(\Omega \difference C)
 \]
 E continuando da prima
-\[
-    = TODO
-\]
+\begin{align*}
+    \mathbb P(A\intersection B) &= \mathbb P(A)\mathbb P(B)\mathbb P(C) + \mathbb P(A \intersection B \intersection (\Omega \difference C)) \\
+    &= \mathbb P(A)\mathbb P(B)\left(
+        \mathbb P(C) + \mathbb P(\Omega \difference C)
+    \right) = \mathbb P(A) \mathbb P(B)
+\end{align*}
 Quindi \(A\) e \(B\) sono indipendenti.
 Sopra abbiamo dimostrare l'uguaglianza
 \[
@@ -740,6 +743,8 @@ Abbiamo quindi trovato che
 \]
 assunto che siano indipendenti.
 
+\pagebreak 
+
 \begin{snippetproposition}{}
     Siano \(A_1, \cdots, A_n \in \powerset(\Omega)\) allora sono equivalenti:
     \begin{enumerate}
@@ -756,52 +761,36 @@ assunto che siano indipendenti.
 
 \begin{snippetproof}{}
     \ffiproof{
-        Procediamo per induzione.
-        Il caso base \(n=2\) segue per induzione prendendo \(B_1 = A_1\)
-        e \(B_2 = A_2\).
-        Assumiamo per \(n-1\) che la tesi sia vera e dimostriamola per \(n\).
-        Dobbiamo dimostrare che \(\forall k \in \{1, \cdots, n\}\)
-        e \(i_1, \cdots, i_k \in \{1, \cdots, n\}\)
-        Abbiamo che
+        Procediamo per induzione su \(n\).
+        Il caso base \(n=2\) segue assumendo vera l'ipotesi 2: prendendo \(B_1 = A_1\) e \(B_2 = A_2\) otteniamo \(\mathbb P(A_1 \intersection A_2) = \mathbb P(A_1)\mathbb P(A_2)\), che è la definizione di indipendenza per due eventi.
+        Assumiamo per ipotesi induttiva che l'implicazione (2) \(\implies\) (1) sia vera per \(n-1\) eventi e dimostriamola per \(n\).
+        Affinché gli \(A_1, \dots, A_n\) siano indipendenti (1), la regola del prodotto deve valere per l'intersezione di tutti gli \(n\) eventi e per qualsiasi loro sottofamiglia.
+        La validità per tutti gli \(n\) eventi è garantita direttamente dall'ipotesi (2) scegliendo \(B_k = A_k\) per ogni \(k\):
         \[
-            \mathbb P \left(
-                \bigcap_{r=1}^k A_{i_r}
-            \right) = \prod_{r=1}^k \mathbb P(A_{i_r})
+            \mathbb P \left( \bigcap_{k=1}^n A_k \right) = \prod_{k=1}^n \mathbb P(A_k)
         \]
-        Per comodità dimostriamolo nel caso \(k=n-1\),
-        \(i_1 = 1, \cdots, i_{n-1} = n-1\).
-        Per il passo \(n-1\) dell'ipotesi induttiva vale la seguente implicazione
-        \[
-            \mathbb P\left(
-                \bigcap_{k=1}^{n-1} B_k
-            \right) = \prod_{k=1}^{n-1} \mathbb P(B_k)
-            \implies
-            \mathbb P \left(
-                \bigcap_{k=1}^{n-1} A_k
-            \right) = \prod_{k=1}^{n-1} \mathbb P(A_k)
-        \]
-        con \(B_k = A_k\) o \(B_k = \Omega \difference A_k\).
-        Da questo otteniamo che
+        Ora dimostriamo che la proprietà vale per le sottofamiglie. Consideriamo senza perdita di generalità i primi \(n-1\) eventi. Sfruttiamo la legge delle probabilità totali per marginalizzare l'evento \(n\)-esimo:
         \begin{align*}
-            \mathbb P\left(
-                \bigcap_{k=1}^{n-1} A_i
-            \right)
-            &= \mathbb P\left(
-                \left[
-                    \bigcap_{k=1}^{n-1} A_i
-                \right]
-                \intersection (\Omega \difference A_n) TODO
-            \right) \\
-            &= \mathbb P \left(
-                \bigcap_{k=1}^n
-            \right) + \mathbb P\left(
-                \bigcap_{k=1} TODO
-            \right)
+            \mathbb P\left( \bigcap_{k=1}^{n-1} B_k \right)
+            &= \mathbb P\left( \left( \bigcap_{k=1}^{n-1} B_k \right) \intersection A_n \right) + \mathbb P\left( \left( \bigcap_{k=1}^{n-1} B_k \right) \intersection (\Omega \difference A_n) \right) \\
+            &= \left( \prod_{k=1}^{n-1} \mathbb P(B_k) \right) \mathbb P(A_n) + \left( \prod_{k=1}^{n-1} \mathbb P(B_k) \right) \mathbb P(\Omega \difference A_n) \\
+            &= \left( \prod_{k=1}^{n-1} \mathbb P(B_k) \right) \Big[ \mathbb P(A_n) + \mathbb P(\Omega \difference A_n) \Big] \\
+            &= \prod_{k=1}^{n-1} \mathbb P(B_k) \cdot 1 = \prod_{k=1}^{n-1} \mathbb P(B_k)
         \end{align*}
+        Abbiamo così dimostrato che la (2) vale anche per i primi \(n-1\) eventi.
+        Per l'ipotesi induttiva, ciò implica che tale sottofamiglia di eventi è indipendente.
+        Lo stesso ragionamento si applica a qualsiasi altra sottofamiglia.
+        Unendo questo risultato alla validità per gli \(n\) eventi congiunti,
+        concludiamo che \(A_1, \cdots, A_n\) sono reciprocamente indipendenti.
     }{
         Lunedì
     }
 \end{snippetproof}
+
+
+
+
+
 
 
 
