@@ -576,15 +576,232 @@ Se \(B\) condiziona negativamente \(A\) allora condiziona positivamente \(\Omega
 
 \subsection{Indipendenza}
 
+\begin{snippetdefinition}{Eventi stocasticamente indipendenti}
+    \(\forall A,B \in \powerset(\Omega)\) diciamo che \(A,B\)
+    sono stocasticamente indipendenti se
+    \[
+        \mathbb P(A \intersection B) = \mathbb P(A) \mathbb P(B)
+    \]
+\end{snippetdefinition}
 
+Assumiamo che siano ambo non-nulle.
+Allora
+\[
+    \mathbb P(A | B) = \mathbb P(A) \implies \mathbb P(A \intersection B) = \mathbb P(A) \mathbb P(B)
+\]
+E inoltre
+\[
+    \mathbb P(A \intersection B) =
+    \mathbb P(A) \mathbb P(B) \implies \mathbb P(A | B) = \frac{\mathbb P(A \intersection B)}{\mathbb P(B)} =
+    \frac{\mathbb P(A)\mathbb P(B)}{\mathbb P(B)} = \mathbb P(A)
+\]
 
+Quindi \(A\) non condiziona \(B\)
+se e solo se \(B\) non condiziona \(A\)
+se e solo se \(\mathbb P(A)\mathbb P(B) = \mathbb P(A \intersection B)\).
 
+Importante: disgiunzione e indipendenza non sono la stessa cosa.
+La disgiunzione è una caratteristica insiemistica, mentre l'indipendenza può variare
+fra modelli. Se due eventi sono disgiunti, allora \(\mathbb P(A \intersection B) = 0\).
+Se \(A,B\) sono indipendenti allora \(0 = \mathbb P(A \intersection B) = \mathbb P(A)\mathbb P(B)\),
+e quindi o \(\mathbb P(A) = 0\) oppure \(\mathbb P(B) = 0\).
+Viceversa, se \(\mathbb P(A) = 0\) o \(\mathbb P(A) = 0\), allora
+\(0 = \mathbb P(A \intersection) = \mathbb P(A)\mathbb P(B)\).
+Quindi, due eventi disgiunti sono indipendenti se e solo se uno dei due è l'evento impossibile.
 
+\begin{snippetproposition}{}
+    Se \(A \intersection B = \emptyset\), allora
+    sono indipendenti se e solo se \(\mathbb P(A) = 0\)
+    oppure \(\mathbb P(B) = 0\).
+\end{snippetproposition}
 
+Quindi nei casi significativi, se due eventi sono disgiunti sono quasi sempre non indipendenti.
 
+\begin{snippetdefinition}{Indipendenza di famiglia di eventi}
+    Siano \(A_1, \cdots, A_n \in \powerset(\Omega)\)
+    diciamo che \(A_1, \cdots, A_n\) sono \emph{eventi indipendenti} se
+    \(\forall k \leq n\) e \(\forall i_1, \cdots, i_k \in \{1, \cdots, n\}\)
+    vale che
+    \[
+        \mathbb P\left(
+            \bigcap_{r=1}^k A_{i_r}
+        \right) = \prod_{r=1}^k \mathbb P\left(
+            A_{i_r}
+        \right)
+    \]
+\end{snippetdefinition}
 
+\begin{snippetexample}{Eventi indipendenti a due a due non sono indipendenti}
+    Lanciamo 3 monete equilibrate e distinguibili \(\Omega = \{T, C\}^3\).
+    Tutti i casi sono equiprobabili. 
+    Consideriamo gli eventi:
+    \begin{itemize}
+        \item \(A_1 \equiv\) il risultato della prima moneta è uguale
+        a quello della seconda.
+        \item \(A_2 \equiv\) il risultato della prima moneta è uguale
+        a quello della terza.
+        \item \(A_3 \equiv\) il risultato della terza moneta è uguale
+        a quello della seconda.
+    \end{itemize}
+    Mostriamo che sono a due a due indipendenti ma non indipendenti.
+    Abbiamo \begin{align*}
+        \Omega = \{
+            (T,T,T)
+            (T,T,C)
+            (T,C,T)
+            (T,C,C)    
+            (C,T,T)
+            (C,T,C)
+            (C,C,T)
+            (C,C,C)
+        \}
+    \end{align*}
+    Le probabilità sono
+    \begin{align*}
+        \mathbb P(A_1) &= \mathbb P(A_2) = \mathbb P(A_3) = \frac12 \\
+        \mathbb P(A_1 \intersection A_2)
+        &= \mathbb P(A_2 \intersection A_3)
+        = \mathbb P(A_1 \intersection A_3) = \frac14 = \frac12 \cdot \frac12
+    \end{align*}
+    Tuttavia,
+    \begin{align*}
+        \mathbb P(A_1 \intersection A_2 \intersection A_3) &= \mathbb P(\{
+            \{(T, T, T), (C, C, C)\}    
+        \}) = \mathbb P(A_1 \intersection A_2) \\
+        &= \mathbb P(A_1 \intersection A_3) = \mathbb P(A_2 \intersection A_3) = \frac{1}{4} \neq \frac18
+        = \mathbb P(A_1)\mathbb P(A_2)\mathbb P(A_2)
+    \end{align*}
+\end{snippetexample}
 
+\begin{snippetexample}{Eventi indipendenti non sono indipendenti a due a due}
+    Lanciamo un dado equilibrato a \(8\) facce numerate da \(1\) a \(8\),
+    quindi \(\Omega = \{1, \cdots, 8\}\) e possiamo prendere la probabilità classica visto che il dato è equilibrato.
+    Consideriamo gli eventi:
+    \begin{itemize}
+        \item \(A = \{1,2,3,4\}\);
+        \item \(B = \{1,5,6,7\}\);
+        \item \(C = \{1,2,3,8\}\).
+    \end{itemize}
+    Chiaramente \(\mathbb P(A) = \mathbb P(B) = \mathbb P(C) = \frac12\).
+    Inoltre
+    \[
+        \mathbb P(A \intersection B \intersection C) = \frac18 = \mathbb P(A)\mathbb P(B)\mathbb P(C)
+    \]
+    e \[
+        \mathbb P(A \intersection B) = \frac18 \neq \mathbb P(A)\mathbb P(B) = \frac14
+    \]
+    Quindi sono a 3 a 3 indipendenti ma non a 2 a 2 indipendenti.
+\end{snippetexample}
 
+Cerchiamo quindi una condizione necessaria e sufficiente che ci garantisca che gli eventi
+siano indipendenti nel senso della nostra definizione. Partiamo dal caso di \(3\)
+eventi \[
+    \mathbb P(A\intersection B \intersection C) = \mathbb P(A)\mathbb P(B)\mathbb P(C)
+\]
+e cerchiamo una condizione aggiuntiva per garantire che siano a due a due indipendenti
+\begin{align*}
+    \mathbb P(A\intersection B) &=
+    \mathbb P(A \union B \intersection (\Omega \difference C)) \\
+    &= \mathbb P((A \intersection B \intersection C) \union (A \intersection B) \intersection (\Omega \difference C))
+    = \mathbb P(A \intersection B \intersection C) + \mathbb P(A \intersection B \intersection (\Omega \difference C)) \\
+    &= \mathbb P(A)\mathbb P(B)\mathbb P(C) + \mathbb P(A \intersection B \intersection (\Omega \difference C))
+\end{align*}
+
+Ci serve che anche \(A, B, \Omega \difference C\)
+verifichino
+\[
+    \mathbb P(A \intersection B \intersection (\Omega \difference C)) = TODO
+\]
+E continuando da prima
+\[
+    = TODO
+\]
+Quindi \(A\) e \(B\) sono indipendenti.
+Sopra abbiamo dimostrare l'uguaglianza
+\[
+    \mathbb P(A \intersection B)
+    = \mathbb P(A)\mathbb P(B)\mathbb P(C) + \mathbb P(A \intersection B \intersection (\Omega \difference C))
+\]
+se da qua assumiamo \(A,B\) indipendenti otteniamo
+\[
+    \mathbb P(A)\mathbb P(B) = \mathbb P(A)\mathbb P(B)\mathbb P(C)
+    + \mathbb P(A \intersection B \intersection (\Omega \difference C))
+\]
+cioè
+\begin{align*}
+    \mathbb P(A \intersection B \intersection (\Omega \difference C))
+    &= \mathbb P(A)\mathbb P(B) - \mathbb P(A)\mathbb P(B)\mathbb P(C) \\
+    &= \mathbb P(A)\mathbb P(B)(1-\mathbb P(C)) = \mathbb P(A)\mathbb P(B)\mathbb P(\Omega \difference C)
+\end{align*}
+Abbiamo quindi trovato che
+\[
+    \mathbb P(A \intersection B)
+    = \mathbb P(A)\mathbb P(B) \iff \mathbb P(A \intersection B \intersection (\Omega \difference C)) = \mathbb P(A)\mathbb P(B)\mathbb(\Omega \difference C)
+\]
+assunto che siano indipendenti.
+
+\begin{snippetproposition}{}
+    Siano \(A_1, \cdots, A_n \in \powerset(\Omega)\) allora sono equivalenti:
+    \begin{enumerate}
+        \item \(A_1, \cdots, A_n\) sono indipendenti;
+        \item \[
+            \mathbb P \left(
+                \bigcap_{k=1}^n B_k
+            \right) = \prod_{k=1}^n \mathbb P(B_k)
+        \]
+        dove \(B_k = A_k\) o \(B_k = \Omega \difference A_k\)
+        per ogni combinazione possibile di \(A_k\) e i suoi complementi.
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    \ffiproof{
+        Procediamo per induzione.
+        Il caso base \(n=2\) segue per induzione prendendo \(B_1 = A_1\)
+        e \(B_2 = A_2\).
+        Assumiamo per \(n-1\) che la tesi sia vera e dimostriamola per \(n\).
+        Dobbiamo dimostrare che \(\forall k \in \{1, \cdots, n\}\)
+        e \(i_1, \cdots, i_k \in \{1, \cdots, n\}\)
+        Abbiamo che
+        \[
+            \mathbb P \left(
+                \bigcap_{r=1}^k A_{i_r}
+            \right) = \prod_{r=1}^k \mathbb P(A_{i_r})
+        \]
+        Per comodità dimostriamolo nel caso \(k=n-1\),
+        \(i_1 = 1, \cdots, i_{n-1} = n-1\).
+        Per il passo \(n-1\) dell'ipotesi induttiva vale la seguente implicazione
+        \[
+            \mathbb P\left(
+                \bigcap_{k=1}^{n-1} B_k
+            \right) = \prod_{k=1}^{n-1} \mathbb P(B_k)
+            \implies
+            \mathbb P \left(
+                \bigcap_{k=1}^{n-1} A_k
+            \right) = \prod_{k=1}^{n-1} \mathbb P(A_k)
+        \]
+        con \(B_k = A_k\) o \(B_k = \Omega \difference A_k\).
+        Da questo otteniamo che
+        \begin{align*}
+            \mathbb P\left(
+                \bigcap_{k=1}^{n-1} A_i
+            \right)
+            &= \mathbb P\left(
+                \left[
+                    \bigcap_{k=1}^{n-1} A_i
+                \right]
+                \intersection (\Omega \difference A_n) TODO
+            \right) \\
+            &= \mathbb P \left(
+                \bigcap_{k=1}^n
+            \right) + \mathbb P\left(
+                \bigcap_{k=1} TODO
+            \right)
+        \end{align*}
+    }{
+        Lunedì
+    }
+\end{snippetproof}
 
 
 
@@ -1539,5 +1756,292 @@ Guardiamo ora la convergenza uniforme e la derivazione.
     \]
     Ma per ipotesi \(\{f_n'\}\) converge uniformemente quindi anche \(\{\Delta_n\}\) converge uniformemente in \([a,b] \difference \{x\}\).
 \end{snippetproof}
+
+\begin{snippetexample}{Successione delle derivate che converge uniformemente ma non la successione}
+    Sia \(S = [0,1]\) e su tale dominio \(f_n(x) = x + n\).
+    Ovviamente \(f_n' \equiv\) 1 per tutte le \(n\), e quindi \(f_n' \to f\)
+    uniformemente con \(f(x) = 1\).
+    Tuttavia, non vi è convergenza nemmeno puntuale per \(\{f_n\}\).
+    Il teorema non funziona in quanto manca un singolo punto di convergenza.
+    Il punto è fondamentale in quanto ci dà la convergenza in quel punto e il resto è dato
+    dalle pendenza della derivata.
+\end{snippetexample}
+
+\begin{snippetexample}{Limite uniforme di funzioni derivabili può non essere derivabile}
+    Sia \(S = [-a, a]\) con \(a > 0\) e su tale dominio definiamo \(f_n(x) = \sqrt{\frac1n + x^2}\).
+    Abbiamo che \(f_n \to f\) puntualmente con \(f(x) = |x|\) in \(S\).
+    TODO Esercizio: mostrare che la convergenza è pure uniforme.
+    Notiamo subito che \(f\) non è derivabile in \(x=0\) e quindi non è derivabile in \(S\).
+    Ovviamente le \(f_n\) sono differenziabili su \(S\) e \[
+        f_n' = \frac{x}{\sqrt{\frac1n + x^2}}
+    \]
+    Notiamo che \(\{f_n'\}\) converge puntualmente a \[
+        h(x) = \begin{cases}
+            -1 & x < 0 \\
+            0 & x = 0 \\
+            +1 & x > 0
+        \end{cases}
+    \]
+    su \(S\).
+    Tuttavia, la convergenza su \(S\) non è unifrome.
+    Il punto critico è chiaramente \(x=0\).
+    Notiamo subito che
+    \begin{align*}
+        \left|f_n'\left(\frac1n\right) - h\left(\frac1n\right)\right|
+        &= \left|
+            \frac{\frac1n}{\sqrt{\frac1n + \frac{1}{n^2}}} - 1
+        \right| \\
+        &= \left|
+            \frac{1}{\sqrt{n+1}} - 1
+        \right| \to 1
+    \end{align*}
+    per \(n \to +\infty\).
+    Quindi,
+    \[
+        \sup_{x \in [-1,1]} |f_n(x) - h(x)| \geq \left|f_n\left(\frac1n\right) - h\left(\frac1n\right)\right| \to 1
+    \]
+    per \(n \to \infty\).
+    Quindi \(f_n\) non converge uniformemente ad \(h\) in \(S\).
+    Se \(S = [\varepsilon, a]\) con \(\varepsilon > 0\) allora convergerebbe.
+\end{snippetexample}
+
+Il teorema di derivazione che abbiamo visto funziona nel caso
+\(S = [a,b]\) con \(a<b\).
+Vediamo quanto è importante questa ipotesi.
+
+\begin{snippetexample}{}
+    Sia \(S = \realnumbers\) e su tale dominio \(f_n(x) = x/n\).
+    È facile dimostrare che converge puntualmente a \(f=0\) su \(S\),
+    e inoltre
+    \(f_n'(x) = \frac1n\).
+    Se potessimo applicare il teorema nel caso di \(S\) non limitato,
+    allora avremmo che \(f_n' \to f'\) uniformemente con \(f' = 0\).
+    Tuttavia, questo è falso in quanto
+    \begin{align*}
+        \sup_{x\in\realnumbers} |f_n(x) - f(x) > |f_n(x) - f(n)| = 1
+    \end{align*}
+    per \(n \to \infty\).
+    Tuttavia, su \(S = [a,b]\) converge uniformemente e infatti
+    \[
+        \sup_{x\in [a,b]} |f_n(x) - f(x)| = \frac{\max\{|a|,|b|\}}{n} \to 0
+    \]
+    per \(n \to \infty\).
+\end{snippetexample}
+
+Questo esempio ci suggerisce di di introdurre
+una nozione di convergenza uniforme locale.
+
+\begin{snippetdefinition}{Convergenza locale}
+    Diciamo che \(\{f_n\}\)
+    \emph{converge localmente uniformemente} a \(f \colon S \fromto \realnumbers\)
+    in \(S\) se \(\forall B \subseteq S\) limitati, \(f_n \to f\) uniformemente in \(B\).
+\end{snippetdefinition}
+
+Riformuliamo il teorema parlando quindi di convergenza uniforme locale
+
+\begin{snippettheorem}{}{}
+    Sia \(\{f_n\}\) un successione di funzioni derivabili su \(S\)
+    tali che \(\exists x_0 \in S\) tale che \(\{f_n(x_0)\}\) converge.
+    Se \(\{f_n'\}\) converge localmente uniformemente in \(S\),
+    allora \(\{f_n\}\) converge localmente uniformemente in \(S\) ad una funzione \(f\colon S \fromto \realnumbers\)
+    e vale
+    \[
+        \lim f_n'(x) = f'(x), \quad \forall x \in S
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Dimostrazione per esercizio (foglio di esercizi).
+\end{snippetproof}
+
+\subsection{Serie di funzioni}
+
+\begin{snippetdefinition}{Serie puntualmente convergente}
+    Diciamo che la serie \(\sum f_n\) \emph{converge puntualmente}
+    se la successione delle somma parziali \(\{S_n\}\) con
+    \[
+        S_n(x) = \triangleq \sum_{k=1}^n f_k
+    \]
+    converge puntualmente ad una funzione \(s \colon S \fromto \realnumbers\).
+\end{snippetdefinition}
+
+Useremo molto il criterio di Cauchy
+applicato alle somme parziali, quindi otteniamo il risultato seguente:
+
+\begin{snippetproposition}{Criterio di Cauchy puntuale}
+    La serie \(\sum f_n\) converge puntualmente in \(S\)
+    se e solo se \(\forall x \in S, \forall \varepsilon > 0, \exists N(x, \varepsilon) \in \naturalnumbers\)
+    tale che
+    \[
+        |S_n(x) - S_m(x)| = \left|
+            \sum_{k=1}^n f_k(x) - \sum_{k=1}^m f_k(x)
+        \right| = \left|
+            \sum_{k=n+1}^m f_k(x)
+        \right| < \varepsilon, \quad \forall m > n \geq N
+    \]
+\end{snippetproposition}
+
+A volte puô essere comodo scegliere \(m=n+h\) con \(h \in \naturalnumbers\).
+
+Analogamente a quano detto per le successioni di funzioni,
+la convergenza puntuale non si comporta bene rispetto alla derivabilità e integrabilità.
+
+\begin{snippetexample}{}
+    Sia \(S = \realnumbers\)
+    e su tale dominio definiamo
+    \[
+        f_n(x) = \frac{x^2}{{(1 + x^2)}^n}
+    \]
+    Studiamo la serie \(f(x) = \sum f_n\).
+    Notiamo che \(f(x) = 0\). Studiamo cosa succede in \(\realnumbers \difference \{0\}\).
+    Abbiamo
+    \begin{align*}
+        \sum_{k=1}^n f_n(x) &= \sum_{k=1}^n \frac{x^2}{{(1 + x^2)}^n} \\
+        &= x^2 \sum_{k=0}^n \left(
+            \frac{1}{1 + x^2}
+        \right)^k - x^2
+    \end{align*}
+    Abbiamo tolto un termine per renderla geometrica.
+    Abbiamo quindi una serie gometrica di ragione \(1 / (1 + x^2)\).
+    Allora per \(n \to \infty\) la serie tende a
+    \[
+        x^2 \left(
+            \frac{1}{1- \frac{1}{1 + x^2}} - 1
+        \right) = 1
+    \]
+    Concludiamo quindi che
+    \[
+        \sum f_n = \begin{cases}
+            0 & x = 0 \\
+            1 & x \neq 0
+        \end{cases}
+    \]
+\end{snippetexample}
+
+\begin{snippetdefinition}{Serie uniformemente convergente}
+    Diciamo che la serie \(\sum f_n\) \emph{converge uniformemente}
+    in \(S\) se \(\forall \varepsilon > 0, \exists N(\varepsilon) \in \naturalnumbers\)
+    tale che
+    \[
+        |S_m(x) - S_n(x)| = \left|
+            \sum_{k=1}^n f_k(x) - S(x)
+        \right| < \varepsilon, \quad \forall n > N
+    \]
+\end{snippetdefinition}
+
+Alternativamente
+\[
+    \sup_{x \in S} |S_n(x) - S(x)| = \sup_{x\in S} \left|
+        \sum_{k=1}^n f_k(x) - S(x)
+    \right| < \varepsilon, \quad \forall n > N
+\]
+
+Anche qua possiamo applicare il criterio di Cauchy.
+
+\begin{snippetproposition}{Criterio di Cauchy}
+    La serie \(\sum f_n\) converge uniformemente in \(S\)
+    se e solo se \(\forall \varepsilon > 0\), \(\exists n \in \naturalnumbers\) tale che
+    \begin{align*}
+        |S_n(x) - S_m(x)| &= \left|
+            \sum_{k=1}^n f_k(x) - \sum_{k=1}^m f_k(x) -
+        \right| \\
+        &= \left|
+            \sum_{k=n+1}^m f_k(x)
+        \right| < \varepsilon, \quad \forall m > n \geq N, \forall x \in S
+    \end{align*}
+\end{snippetproposition}
+
+Analogamente
+\[
+    \sup_{x \in S} \left|
+        \sum_{k=n+1}^m f_k(x)
+    \right| < \varepsilon
+\]
+
+\begin{snippetdefinition}{Convergenza totale}
+    Diciamo che la serie \(\sum f_n\) \emph{converge totalmente}
+    in \(S\) se la serie numerica
+    \[
+        \sum_{n=1}^\infty ||f_n||_\infty
+    \]
+    converge.
+\end{snippetdefinition}
+
+\begin{snippettheorem}{Teorema di Weierstrass}
+    Sia \(\{f_n\}\) successione di fuzioni tale che \(\exists \{M_n\}\)
+    successione di numeri positivi tali che
+    \[
+        ||f_n||_\infty < M_n, \quad \forall n \in \naturalnumbers
+    \]
+    e \[
+        \sum_{m=1}^\infty M_n < \infty
+    \]
+    Allora \(\sum f_n\) converge uniformemente.
+    In particolare, monvergenza totale di serie implica convergenza uniforme di serie.
+\end{snippettheorem}
+
+\begin{snippetproof}{Teorema di Weierstrass}
+    Sfruttiamo il criterio di Cauchy.
+    Dato \(\varepsilon > 0\) cerchiamo \(N(\varepsilon) \in \naturalnumbers\)
+    che verifica il criterio.
+    Siccome \(\sum M_n < \infty\), per il criterio di Cauchy
+    per serie numeriche esiste \(N(\varepsilon)\) naturale tale che
+    \begin{align*}
+        \left|
+            \sum_{k=n+1}^m M_k
+        \right|
+        = \sum_{k=n+1}^m M_k < \varepsilon, \quad \forall m > n \geq N
+    \end{align*}
+    Allora
+    \begin{align*}
+        \left|
+            \sum_{k=n+1}^m f_k(x)
+        \right| &\leq \sum_{k=n+1}^m |f_k(x)| \leq \sum_{k=n+1}^m ||f_k(x)||_\infty
+        \leq \sum_{k=1}^m M_k < \infty
+    \end{align*}
+\end{snippetproof}
+
+\begin{center}
+    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAB12cYAPHYAMIEaMAE4BzGGABedAAQ4IORjAC+IVaXSZc+QigCM5KrUYs2nbn0HCxkmfLpw4EZsrlMwWAGYRRAWzUNLRAMbDwCIgAmY2p6ZlZEDi5efiEwEQkpWTknFzd5NE8cJhV1TW1wvSIjAxN48yTLVJsMu2z5Tx8-QPKQsN1IlBi6uLNE5Ks02yyHOSKwPDKNExgoSQQUUG9RCH8kMhBFJCMQBiwwCagIJgAjBlZqAAsYOigkMCYGBmplLAY2JBLsFtrt9ohTsdEDEzhcrjd7o8QC83h8vj8jnR-oCCKwKiAdnskDCoQAWajnYFJa53B4gZ6vd6IT7fX5YgFJIF4kKE8GQiBIADMFLhbBpiPpyMZaNZmOxnNxIIJYKFvwFiHJsKpIHFdIZqOZ6LZ8vAitUFFUQA
+    \begin{tikzcd}
+    \text{Convergenza totale} \arrow[r, Rightarrow] & \text{Convergenza assoluta uniforme} \arrow[r, Rightarrow] \arrow[d, Rightarrow] & \text{Convergenza assoluta puntuale} \arrow[d, Rightarrow] \\
+                                                    & \text{Convergenza uniforme} \arrow[r, Rightarrow]                                & \text{Convergenza puntiale}                               
+    \end{tikzcd}
+\end{center}
+
+\begin{snippetexample}{Convergenza uniforme non implica convergenza totale}
+    Consideriamo \(S = [1, +\infty)\)
+    e su tale dominio
+    \[
+        f_n(x) = \frac1n \chi_{[n, n+1)}(x)
+    \]
+    Le somme parziali sono date da
+    \[
+        S_n(x) = \sum_{k=1}^n f_k(x) = \begin{cases}
+            \frac1k & x \in [k, k+1) \land k \in \{1,\cdots, n\} \\
+            0 & x \notin [1, n+1)
+        \end{cases}
+    \]
+    Solo un termine della serie è diverso da zero.
+    In questo caso \(k\) è il floor quindi
+    \[
+        f(x) = \frac{1}{\lfloor x \rfloor}, \quad x \in [1, \infty)
+    \]
+    Usiamo il criterio di Cauchy e quindi fissiamo \(\varepsilon > 0\),
+    e per comodità prendo \(m=n+h\) con \(h\) naturale
+    \begin{align*}
+        \left| \sum_{k=n}^{n+1} f_k(x) \right|
+        &= \sum_{k=n}^{n+1} f_k(x) = \sum_{k=n}^{n+1} \frac1n \chi_{[n, n+1)}(x) \\
+        &\leq \frac{1}{n} \to 0
+    \end{align*}
+    per \(n \to \infty\) per ogni \(x \in S\).
+    Abbiamo dimostrato che converge uniformemente.
+    Vediamo subito che non converge totalmente, infatti
+    \begin{align*}
+        \sum_{k=m}^{n+h} ||f_k||_\infty = \sum_{k=m}^{n+h} \frac1n \chi_{[n, n+1)}(x)
+        < \sum_{k=m}^{n+h} \frac{1}{k}
+    \end{align*}
+    che non converge.
+\end{snippetexample}
 
 \end{document}
