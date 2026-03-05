@@ -5,6 +5,7 @@
 \usepackage{stellar}
 \usepackage{parskip}
 \usepackage{fullpage}
+\usepackage{tikz}
 \usepackage{wrapfig}
 
 \title{Differential geometry}
@@ -293,5 +294,330 @@ La seconda intersezione è quella di auto intersecarsi.
         \item se \(\mu\) non è commensurabile con \(b/s\) allora la traiettoria è densa.
     \end{enumerate}
 \end{snippetexample}
+
+TODO 3 lezioni.
+
+\pagebreak
+
+Calcolo della curva di \(\omega \colon I \fromto \realnumbers^n\)
+rsipetto a parametrizzazione arbitraria.
+
+\begin{snippetproposition}{}
+    \[
+        \ddot{\sigma}(s) = \restr{
+            \frac{\sigma''}{
+            |\sigma'|^2
+        } - \frac{
+            \sigma' \langle\sigma'', \sigma'\rangle
+        }{
+            |\sigma'|^4
+        }
+        }{
+            t = t(s)
+        }
+    \]
+    Allora
+    \[
+        \kappa(s) \triangleq ||\ddot{\sigma}(s)|| = \frac{
+            \sqrt{|\sigma'|^2|\sigma''|^2 - \langle\sigma', \sigma''\rangle^2}
+        }{
+            |\sigma'|^3
+        }
+    \]
+    dove il valore assoluto è il modulo \(\sqrt{\langle v, \rangle v}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Abbiamo che
+    \begin{align*}
+        \ddot{\sigma}(s) &= \frac{d}{ds} \dot\sigma(s) = \frac{d}{ds} \left(\frac{\sigma'}{|\sigma'|}\right) \\
+        &= \frac{d}{dt} \left(\frac{\sigma'}{|\sigma'|}\right) \frac{dt}{ds}
+        = \frac{d}{dt} \left(\frac{\sigma'}{|\sigma'|}\right) \frac{1}{|\sigma'|} \\
+        &= \frac{\sigma''|\sigma'| - \sigma' \frac{d}{dt}|\sigma'|}{|\sigma'|^2} \cdot \frac{1}{|\sigma'|} \\
+        &= \frac{\sigma''|\sigma'| - \sigma' \frac{d}{dt} \sqrt{\langle \sigma', \rangle \sigma'}}{|\sigma'|^2} \cdot \frac{1}{|\sigma'|} \\
+        &= \frac{
+            \sigma''|\sigma'| 
+            - \sigma' \cdot \frac12 \langle \sigma', \sigma'\rangle^{-1/2} 
+            \cdot 2 \cdot \langle \sigma'', \sigma'\rangle}{
+            |\sigma'|^2
+        } \cdot \frac{1}{|\sigma'|} \\
+        &= \frac{\sigma''}{|\sigma'|^2} - \sigma' \frac{
+            \langle \sigma'', \sigma' \rangle
+        }{
+            |\sigma'|^4
+        }
+    \end{align*}
+    Che è la prima equazione. Successivamente
+    \begin{align*}
+        \kappa(s) &= |\ddot\sigma(s)| = \left|
+            \frac{\sigma''}{|\sigma'|^2} - \sigma' \frac{
+                \langle \sigma'', \sigma'\rangle
+            }{|\sigma'|^4}
+        \right| \\
+        &= \sqrt{
+            \langle \frac{\sigma''}{|\sigma'|^2} - \sigma' \frac{\langle \sigma'', \sigma'\rangle}{|\sigma'|^4} \rangle,
+            \langle \frac{\sigma''}{|\sigma'|^2} - \sigma' \frac{\langle \sigma'', \sigma'\rangle}{|\sigma'|^4} \rangle
+        } \\
+        &= \sqrt{
+            \frac{\langle \sigma'', \sigma'\rangle}{|\sigma'|^4}
+            - 2 \frac{\langle \sigma'', \sigma'\rangle}{|\sigma'|^6}
+            + \frac{\langle \sigma', \sigma'\rangle\langle \sigma'', \sigma'\rangle^2}{|\sigma'|^8}
+        } \\
+        &= \sqrt{
+            \frac{
+                |\sigma''|^2 |\sigma'|^2 - 2\langle \sigma'', \sigma'\rangle + \langle \sigma'', \sigma'\rangle^2
+            }{
+                |\sigma'|^6
+            }
+        } \\
+        &= \sqrt{
+            \frac{
+                |\sigma''|^2 |\sigma'|^2 - \langle \sigma'', \sigma'\rangle^2
+            }{
+                |\sigma'|^3
+            }
+        } 
+    \end{align*}
+    Potrebbe esserci un quadrato mancante negli ultimi passaggi. TODO.
+\end{snippetproof}
+
+\section{Argomenti di curve piane}
+
+Sappiamo che un'equazione della forma \(F(x,y) = 0\)
+con \(F \colon \Omega \fromto \realnumbers\),
+prendiamo di classe \(\mathcal C^\infty\) definisce una curva
+\(\mathcal C^\infty\) regolare
+\[
+    C_F = \{(x,y) \in \realnumbers^2 \suchthat F(x,y) = 0\}
+\]
+se \[
+    \nabla F(x,y) \neq 0, \quad \forall (x,y) \in C_F
+\]
+Infatti, sotto l'ipotesi di non nullità del gradiente in un punto \((x_0, y_0)\),
+in un intorno di tale punto \(C_F\) è il grafico di una funzione \((x, y(x))\)
+oppure \((x(y), y)\) dove \(y(x), x(y)\) sono funzioni \(\mathcal C^\infty\).
+
+Supponiamo di avere una famiglia di curve piane
+\(C_t\) di equazioni \(F(t,x,y) = 0\) per ogni \(t\).
+
+\begin{snippetdefinition}{Inviluppo}
+    Una curva \(\sigma \colon I \fromto \realnumbers^2\)
+    è detta \emph{inviluppo} della famiglia di curve piane
+    \[
+        C_t = \{(x,y) \suchthat F(t, x,y) = 0\}
+    \]
+    se \(\sigma\) è tangente a \(C_t\) in \(\sigma(t)\)
+    per ogni \(t\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{}
+    Se \(\sigma(t) = (x(t), y(t))\) è inviluppo di \(F(t,x,y)\),
+    allora i punti \((t,x(t), y(t))\) sono soluzioni del sistema 
+    \[
+        \begin{cases}
+            F(t,x(t), y(t)) = 0 \\
+            F_t(t, x(t), y(t)) = 0
+        \end{cases}
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Dalla definizione di inviluppo segue che
+    \[
+        F(t, x(t), y(t)) = 0
+    \]
+    Successivamente la condizione di tangente ci dice che
+    \begin{align*}
+        0 &= \langle \nabla F(t,x(t, y(t))), \sigma'(t) \rangle \\
+        0 &= \frac{\partial F}{\partial x}(t, x(t), y(t))x'(t) + \frac{\partial F}{\partial y}(t, x(t), y(t))y'(t)
+    \end{align*}
+    cioè ortogonalità al gradiente.
+    Derivando totalmente rispetto a \(t\) la prima equazione troviamo
+    \begin{align*}
+        0 &= \frac{d}{dt} F(t,x(t),y(t)) \\
+        &= \frac{\partial F}{\partial t}(t, x(t), y(t))
+        + \frac{\partial F}{\partial x}(t, x(t), y(t))
+        + \frac{\partial F}{\partial y}(t, x(t), y(t))
+    \end{align*}
+    Quindi metendo assieme le due espressioni due termini di derivate parziale si annullano e rimane
+    la condizione della tesi.
+\end{snippetproof}
+
+\pagebreak
+
+\begin{snippetexample}{Involuzione}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+            \begin{tikzpicture}[scale=2]
+                \draw[->, thick] (-0.2, 0) -- (2.3, 0) node[right] {$x$};
+                \draw[->, thick] (0, -0.2) -- (0, 2.3) node[above] {$y$};
+                
+                \clip (-0.2, -0.2) rectangle (2.2, 2.2);
+
+                \foreach \t in {0.6, 1.0, 1.8, 3.0} {
+                    \draw[red, opacity=0.8, thick, shorten >=-10pt, shorten <=-10pt] (0, {1/\t}) -- ({\t}, 0);
+                }
+
+                \draw[blue, very thick, domain=0.12:2.2, samples=100] plot (\x, {1/(4*\x)});
+            \end{tikzpicture}
+        \end{center}
+    \end{wrapfigure}
+    Consideriamo la famiglia di rette \[
+        C_t = \{(x,y) \suchthat F(t, x,y) = 0\}
+    \]
+    con
+    \[
+        F(t,x,y) = y + \frac{1}{t^2}(x-t)
+    \]
+    cioè le rette unenti \((t,0)\) con \((0, 1/t)\).
+    Per trovare l'equazione cartesiana dell'involuzione studiamo il sistema
+    \[
+        \begin{cases}
+            F(t,x(t), y(t)) = 0 \\
+            F_t(t, x(t), y(t)) = 0
+        \end{cases}
+        \rightarrow
+        \begin{cases}
+            y + \frac{1}{t^2}(x-t) = 0 \\
+            \frac{1}{t^2} -\frac{2x}{t^3} = 0
+        \end{cases}
+    \]
+    Ricaviamo \(t = 2x\) e lo sostituiamo
+    per ottenere \[4x^2y + x - 2x = 0\]
+    Semplificando concludiamo quindi che l'equazione cartesiana dell'involuzione è \(4xy = 1\).
+    \wrapfill
+\end{snippetexample}
+
+\begin{snippetexample}{}{Non sempre esiste la curva di inviluppo}
+    Se consideriamo il fascio di rette passanti per un punto, come l'origine, cioè date
+    dall'equazione \(F(t,x,y) = y - tx\), oppure il fascio di rette parallele
+    \(F(x,x,y) = y- t\), la curva di involuzione non può esistere.
+    I sistemi associati sono nel primo caso
+    \[
+        \begin{cases}
+            F(t,x(t), y(t)) = 0 \\
+            F_t(t, x(t), y(t)) = 0
+        \end{cases}
+        \rightarrow
+        \begin{cases}
+            y - tx = 0 \\
+            x = 0
+        \end{cases}
+    \]
+    il che implica che il supporto della curva sia un singolo punto, quindi non è una curva.
+    Nel secondo caso,
+    \[
+        \begin{cases}
+            F(t,x(t), y(t)) = 0 \\
+            F_t(t, x(t), y(t)) = 0
+        \end{cases}
+        \rightarrow
+        \begin{cases}
+            y - t = 0
+            -1 = 0
+        \end{cases}
+    \]
+    non vi è soluzione.
+\end{snippetexample}
+
+\begin{snippetproposition}{}
+    Sia \(F(t, x,y) = 0\)
+    una famiglia di rette.
+    Allora la curva di inviluppo esiste, ed è non-costante, se e solo se
+    \(F\) non esprime un fascio di rette.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Scriviamo \(F(t,x,y) = a(t)x + b(t)y + c(t)\)
+    con \((a(t), b(t)) \neq 0\) per tutte le \(t\)
+    e usare il criterio del sistema imponendo
+    che abbia soluzioni \((t,x,y)\)
+    con \((x,y)\) non costante. Bisogna quindi escludere il fascio di rette.
+    TODO.
+\end{snippetproof}
+
+\begin{snippetproposition}{}
+    Ogni curva piana regolare è inviluppo della faimglia delle sue rette tangenti.
+\end{snippetproposition}
+
+Immaginiamoci di avere uno spago
+avvolto attorno ad un cilindro e di disfarlo
+tenendo il file teso. Allora, il capo si allontana sempre di più dal cilindro
+e la sua traiettoria è data dalla curva di involuzione della circonferenza.
+
+\subsection{Proprietà focali delle coniche}
+
+\begin{snippetproposition}{}
+    Data un'ellisse \[
+        E = \{ p \in \realnumbers^2 \suchthat d(P, F_1) + d(P, F_2) = 2a \}
+    \]
+    Allora gli angoli di incidenza di \(PF_1\) e \(PF_2\)
+    con la tangente ad \(E\) in \(P\) sono uguali.
+    Un raggio di luce partente da \(F_1\) verso \(P\)
+    è riflesso su \(F_2\), se \(E\) è sup. a specchio.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+\begin{tikzpicture}[scale=0.9]
+    \definecolor{giallino}{RGB}{255,255,200}
+    
+    \draw[thick] (0,0) ellipse (3cm and 2cm);
+    
+    \coordinate (F1) at (-2.236, 0);
+    \coordinate (F2) at (2.236, 0);
+    \coordinate (P) at (1.5, 1.732);
+    \coordinate (F2p) at (3.207, 2.523);
+    \coordinate (T1) at (4, 0.769);
+    \coordinate (T2) at (-1, 2.694);
+    
+    \fill[giallino] (P) -- ++(-67:0.4) arc (-67:25:0.4) -- cycle;
+    
+    \draw[->] ([shift={(-67:0.4)}]P) arc (-67:25:0.4);
+    
+    \draw (F1) -- (F2p);
+    \draw (F2) -- (P);
+    
+    \draw[red, thin] (T2) -- (T1) node[right, black] {$b$};
+    
+    \fill (F1) circle (1.5pt) node[below] {$F_1$};
+    \fill (F2) circle (1.5pt) node[below] {$F_2$};
+    \fill (P) circle (1.5pt) node[above left] {$P$};
+    \fill (F2p) circle (1.5pt) node[above right] {$F_2'$};
+    
+    \node at (2.2, 1.75) {$\theta$};
+\end{tikzpicture}
+        \end{center}
+    \end{wrapfigure}
+    Consideriamo al retta \(b\) bisettrice dell'angolo \(\theta\) fra le rette
+    \(PF_2\) e \(PF_1\). Vogliamo dimostrare che \(b\) è tangente all'allisse in \(P\).
+    Consideriamo \(F_2'\) su \(PF_1\) con distanza
+    \[
+        d(P, F_2') = d(P, F_2)
+    \]
+    dunque
+    \[
+        d(F_1, F_2') = d(P, F_1) + d(P, F_2)
+    \]
+    Ogni altro punto \(Q \in b\) con \(Q \neq P\),
+    abbiamo \begin{align*}
+        d(F_1, Q) + d(F_2, Q)
+        &= d(F_1, Q) + d(F_2', Q) \\
+        &> d(F_1, F_2) = d(F_1, P) + d(F_2, P)
+    \end{align*}
+    Notiamo che \(d(Q, F_2) = d(Q, F_2')\) poiché
+    \(Q \in b\) che è anche l'asse del segment \([F_2, F_2']\).
+    Quindi \(Q \in B\) con \(Q \neq P\) che non può appartenere,
+    quindi \(Q \intersection b = \{P\}\) e quindi deve essere tangente.la tesi segue dalla simmetria
+    degli angoli sul vertice.
+    \wrapfill
+\end{snippetproof}
+
+La proprietà analoga vale
+per una parabola, dove \(F_1\) è il fuoco e \(F_2\) è all'infinito, cioè un'ellisse con un fuoco ad infinito.
+Cioè lo specchio parabolico, dove il punto ad infinito è il sole.
+Siccome un'ellisse proiettata propriamente su un cono genera una parabola, si può
+usare un argomento di proiezioni per mostrarlo.
 
 \end{document}

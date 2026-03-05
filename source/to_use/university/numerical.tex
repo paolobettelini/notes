@@ -17,7 +17,7 @@
 \tableofcontents
 
 \section{Numerical}
-\pagebreak
+
 \begin{snippettheorem}{Determinante matrice di Vandermonde}
     Sia \(V\) una matrice di Vandermonde. Allora
     \[
@@ -238,6 +238,184 @@ Se \(A\) è unitaria \(||A||_2 = \rho(I) = 1\), ma si può dire anche che \(Ax =
     \end{align*}
     Con \(\alpha_{j,s} = 0\) se \(1 \leq j \leq n\) e \(T_{j,j} \neq 0\),
     e \(\alpha_{j,s} = -1/s\) se \(1 \leq j \leq n\) e \(T_{j,j} = 0\).
+\end{snippetproof}
+
+\begin{snippetdefinition}{Quoziente di Rayleigh}
+    Sia \(A \in \matrices_{n\times n}(\complexnumbers)\)
+    e \(r_A \colon \complexnumbers^n \difference \{0\} \fromto \complexnumbers\)
+    data da
+    \[
+        r_A(x) \triangleq \frac{x^*Ax}{x^*x}
+    \]
+    è il \emph{Quoziente di Rayleigh} di \(A\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Matrice definita positiva}
+    \(X\) è \emph{definita positiva} se e solo se \(X\) è Hermitiana e \(r_X(v) > 0\)
+    per tutti i \(v\), e tutti gli analoghi.
+\end{snippetdefinition}
+
+Questa è la definizione.
+
+\begin{snippetdefinition}{Matrice normale}
+    Una matrice \(X \in \matrices_{n \times n}(\complexnumbers)\)
+    è \emph{normale} se \(XX^* = X^*X\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{}
+    Una matrice \(X\) normale è semidefinita positiva
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Sia \(B =XX^*\) e allora \(B^* = X^{**} X^* = X X^* = B\).
+    Il quoziente di Rayleigh è dato da
+    \[
+        r_X(v) = \frac{v^*XX^*v}{v^*v}
+    \]
+    chiamando \(W = X^*v\) un vettore, allora \(w^* = v^* X\), quindi
+    \[
+        r_X(v) = \frac{ww^*}{v^*v}
+    \]
+    che è la norma \(2\) e quindi il termine è non-negativo.
+\end{snippetproof}
+
+Per analizzare le varie classi di matrici
+usiamo il teorema di Shur.
+
+\begin{snippettheorem}{}
+    \(A\) è una matrice Hermitiana
+    se e solo se \(A = QDQ^*\), \(Q\) unitaria, e \(D\) diagonale reale.
+\end{snippettheorem}
+
+Cioè il teorema spettrale.
+Sulla matrice diagonale ci sono gli autovalori e stiamo dicendo che sono reali.
+Cioè una matrice è Hermitiana se e solo se tutti gli autovalori sono normali
+e gli autovettori formano una base ortonormale.
+
+\begin{snippetproof}{}
+    Scomponiamo \(A = QTQ^*\) per il teorema di Shur.
+    Vogliamo quindi mostrare che \(T\) è diagonale reale.
+    Siccome \(A\) è Hermitiana,
+    abbiamo \[
+        QTQ^* = A^* = (QTQ^*)^*
+        = Q^* T^* Q
+    \]
+    Ma siccome \(Q\) è unitaria, moltiplicando a sinistra per \(Q^*\)
+    e a destra per \(Q\) otteniamo che pure \(T\) è Hermitiana.
+    L'unico modo per una matrice triangolare di essere Hermitiana è se i valori
+    sopra la diagonale sono nulli. Inoltre,
+    i valori sulla diagonale devono essere reali in quanto corrispondono al loro coniugato.
+\end{snippetproof}
+
+\begin{snippettheorem}{}
+    \(A\) è una matrice normale
+    se e solo se \(A = QDQ^*\), \(D\) diagonale.
+\end{snippettheorem}
+
+Questa è un'estensione del teorema spettrale: tutte e e sole le matrici
+normali ammettono base ortonormata.
+
+\begin{snippetproof}{}
+    Scomponiamo \(A = QTQ^*\) per il teorema di Shur.
+    Siccome \(A\) è normale, \(A^*A = A^*A\),
+    e applicando nuovamente il teorema di Schur, \begin{align*}
+        AA^* &= A^*A = (QTQ^*)^*Q T Q^*
+        = QTQ^* Q T^* Q^* \\
+        &= QT T^* Q^* = QT^* T Q^* 
+    \end{align*}
+    Moltiplicando a sinistra per \(Q^*\)
+    e a destra per \(Q\) otteniamo che pure \(T\) è normale.
+    Siccome \(T^*T = T^*T\) abbiamo un pattern della matrice
+    \[
+        \begin{pmatrix}
+            \ast & \ast \\ 0 & \ast
+        \end{pmatrix}
+        \begin{pmatrix}
+            \ast & 0 \\ \ast & \ast
+        \end{pmatrix}
+        = \begin{pmatrix}
+            \ast & 0 \\ \ast & \ast
+        \end{pmatrix}
+        \begin{pmatrix}
+            \ast & \ast \\ 0 & \ast
+        \end{pmatrix}
+    \]
+    Se consideriamo la prima riga e la prima colonna, abbiamo
+    da una parte un numero solo e dall'altro un prodotto ``intero''
+    \[
+        \sum_{k=1}^n |T_{1,k}|^2 = (T^*T)_{1,1} = |T_{1,1}|^2
+    \]
+    Ciò succede se e solo se \(T_{1,k} = 0\),
+    per \(k\) che va da \(2\) a \(n\).
+    Analogamente guardiamo la seconda riga: sappiamo che uno dei termini è nullo dal passo precedente,
+    quindi \((T^*T)_{2,2} = (TT^*)_{2,2} = |T_{2,2}|^2\).
+    Quindi \(T_{2,k} = 0\) per ogni \(k\) da \(3\) a \(n\).
+    Proseguendo il procedimento troviamo quindi che la matrice è diagonale.
+\end{snippetproof}
+
+\begin{snippettheorem}{}
+    Se \(A\) è una matrice unitaria
+    se e solo se \(A = QDQ^*\), \(D\) diagonale
+    unitaria con \(|D_{i,i}| = 1\).
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Scomponiamo \(A = QTQ^*\) per il teorema di Shur.
+    Siccome \(A\) è identitaria, \(A^* A = I = A A^*\)
+    e quindi è anche normale, allora \(A = QDQ^*\)
+    con \(D\) diagonale. Abbiamo quindi
+    \begin{align*}
+        QD^* D Q = I
+    \end{align*}
+    moltiplicando a sinistra per \(Q^*\)
+    e a destra per \(Q\) otteniamo che \(D^* D = I\) quindi è unitaria.
+\end{snippetproof}
+
+La \(Q\) sarà pure unitaria e consiste negli autovettori.
+
+\begin{snippettheorem}{}
+    \(A\) è definita positiva se e solo se \(A = QDQ^*\) con \(D\)
+    diagonale e \(D_{j,j} > 0\). E analoghi gli altri.
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    \(A\) è definita positiva mediante quoziente di Rayleigh
+    se \(v^* A v > 0\) per ogni \(v \neq 0\), e chiaramente deve essere Hermitiana.
+    Abbiamo quindi la scomposizione \(A = QDQ^*\) con \(D\) 
+    diagonale.
+    Siccome \(Q\) ha come colonne una base ortonomale \(\{q_1, \cdots, q_n\}\),
+    e allora il prodotto scalare con la matrice diagonale
+    è il trasposto coniugato del vettore della base \(q_j^* Q = e_j^t\).
+    Abbiamo quindi \(0 < q_j^* A q_j = e_j^t D e_j = D_{j,j}\).
+    Quindi al variare di \(j\), i valori sulla diagonale sono strettamente positivi.
+\end{snippetproof}
+
+\begin{snippettheorem}{}
+    Se \(A\) è una matrice normale, l'immagine di \(r_A\) 
+    è il segmento fra il minimo autovalore e quello più grande.
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Abbiamo
+    \begin{align*}
+        r_A(v) &= \frac{v^*A v}{v^* v} = \frac{v^* Q D Q^* v}{v^* v} \\
+        &= \frac{w^* D w}{||w||_2^2} 
+    \end{align*}
+    usando \(w = Q^*v\), quindi \(||w||_2^2 = v^*v = ||v||_2^2\).
+    Definiamo \[
+        \hat w = \frac{w}{||w||_2}
+    \]
+    e abbiamo quindi
+    \begin{align*}
+        r_A(v) &=  \hat w^* D \hat w = \sum_{n=1}^n |\hat w_j|^2 \lambda_j(A)
+    \end{align*}
+    dove \(\lambda_j(A)\) sono gli autovalori di \(A\).
+    I coefficienti complessi non sono non-negativi e sommano uno, quindi abbiamo una combinazione convessa.
+    Tutte queste combinazioni disegnano l'involucro convesso (minimo oggetto convesso che contiene il tutto),
+    cioè un poliedro complesso in cui i vertici
+    sono autovalori.
+    Siccome \(A\) è Hermitiana, tutti gli autovalori sono reali, quindi il poliedro è
+    il segmento fra l'autovalore meno alto e il raggio spettrale.
 \end{snippetproof}
 
 \end{document}
