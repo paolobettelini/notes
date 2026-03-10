@@ -31,6 +31,8 @@
 - hopital H =
 - mettere il comando per linear subspace
   possiamo anche non usare underset su lim e sup ma direttamente \sup_
+- DEFINIRE limsup e liminf usando la classe di limite. In r esteso è sempre chiuso quindi ha max e min
+  Definirlo anche come lim_n sup_{k \geq n} che esiste perché la successione è monotona.
 
 # AI promps
 - Translate this LaTeX code from italian to english.
