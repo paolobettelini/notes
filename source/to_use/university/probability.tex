@@ -787,6 +787,144 @@ assunto che siano indipendenti.
     }
 \end{snippetproof}
 
+TODO 9 marzo. \\
+
+\begin{enumerate}
+    \item 
+    \item 
+    \item Facciamo ora le non ordinate senza reimissione.
+    La nostra urna è \(U = \{u_1, \cdots, u_n\}\) e facciamo \(k \in \naturalnumbers\) estrazioni
+    con \(k \leq n\).
+    Rispetto al caso precedente, i vari casi diminuiscono e possiamo
+    rappresentare quest'ultimi come classi di equivalenza rispetto alla relazione
+    di essere uguali a meno di una permutazione.
+    Quindi consideriamo il quoziente delle disposizioni semplici \(D_n^k\)
+    rispetto alla seguente relazione di equivalenza: dati \(v, w \in D_k^n\)
+    con \(v = (v_1, \cdots, v_k)\) e \(w = (w_1, \cdots, w_k)\)
+    abbiamo \(v \sim w\) se e solo se \(\exists \sigma \in \text{Sym}(k)\)
+    tale che \[
+        w = (v_{\sigma(1)}, v_{\sigma(2)}, \cdots, v_{\sigma(k)})
+    \]
+    Indichiamo come \(C_k^n\) l'insieme delle combinazioni di \(k\) elementi estratti da \(n\) elementi
+    \[
+        C_k^n = D_k^n / \sim
+    \]
+    E siccome l'ordine del gruppo simmetrico è \(k!\), l'ordine è dato da
+    \[
+        C_n^k = \frac{n!}{(n-k)!k!} = \binom{n}{k}
+    \]
+    \item Ora studiamo le non ordinate con reimissione.
+    Quindi, rispetto a prima dobbiamo aggiungere anche i casi dove gli elementi si ripetono,
+    Tuttavia, visto che abbiamo vettori co componente che possono essere uguali,
+    la relazione di equivalenza con le permutazioni non è siginficativa come prima,
+    perché scambiare due elementi uguali non cambia il vettore di \(\hat D_k^n\).
+    Quindi dobbiamo trovare una relazione di equivalenza alternativa.
+    Dobbiamo creare una relazione di equivalenza che conti il numero di ogni elemento
+    compaia in und eterminato vettore.
+    Prendiamo \(v = (v_1, \cdots, v_k) \in \hat D_k^n\) e definiamo
+    \[
+        \#_i \triangleq |\{j \in \{1, \cdots, k\} \suchthat v_j = u_i\}|,
+        \quad u_i \in U \land i \in \{1,\cdots, n\}
+    \]
+    cioè quante volte l'elemento \(u_i\) appare nel vettore \(v\).
+    Prendiamo ora il vettore \(\overline v \in \{0,1\}^{k + m -1}\)
+    con
+    \[
+        \overline w = \left(
+            \underbrace{1,1,1,\cdots,1}_{\#_1 \text{ times}},
+            0,
+            \underbrace{1,1,1,\cdots,1}_{\#_2 \text{ times}},
+            0,
+            \cdots
+            0,
+            \underbrace{1,1,1,\cdots,1}_{\#_n \text{ times}}
+        \right)
+    \]
+    Dati \(v_1\) e \(v_2\) appartenenti a \(\hat D_k^n\)
+    definiamo la relazione di equivalenza
+    \(v_1 \dot\sim v_2\) se e solo se \(\overline v_1 = \overline v_2\).
+    Abbiamo quindi l'insieme delle combinazioni con ripetizione dato da
+    \[
+        \hat C_k^n \triangleq \hat D_k^n / {\dot \sim}
+    \]
+    che è in equivalenza con
+    \[
+        V \triangleq \left\{
+            \overline v \in \{0,1\}^{n+k-1} \suchthat
+            \sum_{j=1}^{n+k-1} \overline v_j = k
+        \right\}
+    \]
+    Abiamo che \(|V| = |\hat C_k^n|\),
+    cioè dobbiamo contare il numero di configurazioni con
+    \(k\) 1s in \(n+k-1\) slot (o contiamo gli zeri), cioè
+    \[
+        |\hat C_k^n| = |\hat D_k^n / \dot\sim| = \binom{n+k-1}{k} = 
+        \binom{n+k-1}{n-1} = \frac{
+            (n+k-1)!
+        }{
+            k!(n-1)!
+        }
+    \]
+\end{enumerate}
+
+\begin{snippetexercise}{}
+    Prendiamo \(r\) cassetti distinti,
+    dove in ognuno di essi devo mettere esattamente
+    \(k_i\) elementi di \(U\) urna di palline che vengono estratte,
+    con il vincolo che le devo mettere tutte, cioè
+    \(\sum k_i = r\). Non conta l'ordine delle palline nei cassetti.
+    Quante configurazioni abbiamo?
+    Nel caso \(r=1\) abbiamo solo la possibilità \(k_1 = n\) e quindi una sola combinazione.
+    Nel caso \(r=2\) abbiamo \(k_2 = n-k_1\),
+    quindi abbiamo \(n!\) configurazioni delle nostre palline,
+    ma nel primo cassetti \(k_1!\) combinazioni ridondanti, mentre nel secondo \((n-k_1)!\).
+    Nel caso generale abbiamo \(r\) cassetti e quindi \[
+        \frac{n!}{\prod_{i=1}^r k_i!}
+    \]
+    configurazioni, che è il coefficiente multinomiale cioè 
+    \[
+        \frac{n!}{\prod_{i=1}^r k_i!} =
+        \binom{n}{k_1}
+        \binom{n-k_1}{k_2}
+        \binom{n-k_1-k_2}{k_3} \cdots
+    \]
+\end{snippetexercise}
+
+\subsection{Applicazioni a sistemi di particelle}
+
+Prendiamo un sistema di \(n\)
+particelle che può assumere \(r \in \naturalnumbers\)
+stati diversi.
+Supponiamo che l'energia totale sia sempre costante.
+Quindi, se siamo all'equilibrio termico, tutte e configurazioni
+(di possibili stati per le particelle) hanno la stessa probabilità
+di realizzarsi.
+\begin{enumerate}
+    \item \emph{Le particelle sono distinguibili:}
+    sia \(\Omega_{n,r}\) l'insieme di tutte le possibili configurazioni
+    \[
+    \Omega_{n,r} \triangleq
+        \{1, \cdots, r\}^n
+    \]
+    Sia \(w \in \Omega\) con \(w = (w_1, \cdots, w_n)\).
+    Dalla nostra assunzione usiamo la probabilità classica
+    \[
+        \mathbb P(\{w\}) = \frac{1}{|\Omega_{n,r}|} = \frac{1}{r^n}
+    \]
+    Fissati \(k_1, \cdots, k_r \in \naturalnumbers\)
+    tali che \(\sum k_i = n\), calcolare
+    la probabilità dell'evento
+    \(O_{k_1, \cdots, k_r}\), cioè ``avere esattamente \(k_i\) particelle nello stato \(i\)''.
+    Usiamo dunque la distribuzione multinomiale
+    \[
+        |O_{k_1, \cdots, k_r}| = \binom{n}{k_1, \cdots, k_r}
+    \]
+    di conseguenza,
+    \[
+        \mathbb P(O_{k_1, \cdots, k_r})
+        = \frac{|O_{k_1, \cdots, k_r}|}{|\Omega|} = \frac{n!}{r^n k_1! \cdots k_r!}
+    \]
+\end{enumerate}
 
 
 
