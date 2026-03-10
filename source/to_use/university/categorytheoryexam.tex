@@ -1,0 +1,354 @@
+\documentclass[a4paper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{parskip}
+\usepackage{fullpage}
+\usepackage{enumitem}
+\usepackage{wrapfig}
+\usepackage{tikz}
+
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{cd}
+
+\title{Category theory}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\pagebreak
+
+\part{Fourier-Mukai transform}
+
+\section{Abelian categories}
+
+\begin{snippetdefinition}{Zero objct}
+    Let \(\mathcal C\) be a category.
+    An object \(0 \in \operatorname{Ob}(\mathcal C)\) is said to be a \emph{zero object}
+    if it is both terminal and initial.
+\end{snippetdefinition}
+
+For any object \(X \in \operatorname{Ob}(\mathcal C)\),
+\(\operatorname{Hom}_{\mathcal C}(0, X)\) and
+\(\operatorname{Hom}_{\mathcal C}(X, 0)\) are both singletons.
+
+\begin{snippetdefinition}{Zero morphism}
+    Let \(\mathcal C\) be a category with a zero object \(0\).
+    For any two objects \(X,Y \in \operatorname{Ob}(\mathcal C)\), the \emph{zero morphism}
+    is defined as the unique morphism \(0_{XY} \colon X \fromto Y\) defined by
+    \[
+        0_{XY} \triangleq !_Y \circ !_X
+    \]
+    where \(!_Y \colon 0 \fromto Y\) is the unique morphism
+    from \(0\) to \(Y\) and \(!_X \colon X \fromto 0\) is the unique morphism
+    from \(X\) to \(0\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Category with zero morphisms}
+    Let \(\mathcal C\) be a category.
+    Then, \(\mathcal C\) is said to have \emph{zero morphisms} if there exists
+    a fixed morphism \(0_{XY} \in \operatorname{Hom}_{\mathcal C}(X, Y)\) for every
+    pair \(X,Y \in \operatorname{Ob}(\mathcal C)\) such that for any other
+    object \(Z \in \operatorname{Ob}(\mathcal C)\) and morphisms \(f \colon X \fromto Y\) and \(g \colon Y \fromto Z\),
+    the morphism \(0_{XY}\) absorbs composition, meaning that the following diagram commutes:
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAA0QBfU9TXfIRQBGclVqMWbAJrdeIDNjwEiZYePrNWiELJ58lgoqPXVNUnQC1u4mFADm8IqABmAJwgBbJGRA4ISABMZpLaIC4g1Ax0AEYwDAAK-MpCIG5Y9gAWOHKuHt6Ion4BiADMIVps9rnh+T7U-khF5mHEAPrA7NJcNe5eQQ0l5RKVOu3A0pY9+rX9iL6NZRUWIOPsUzZcQA
+        \begin{tikzcd}
+            X \arrow[d, "f"'] \arrow[r, "0_{XY}"] \arrow[rd, "0_{XZ}"] & Y \arrow[d, "g"] \\
+            Y \arrow[r, "0_{YZ}"]                                      & Z               
+        \end{tikzcd}
+    \end{center}
+\end{snippetdefinition}
+
+A category can also be defined to have zero morphisms without explicitly containing a zero object.
+However, a category with a zero object always has zero morphisms.
+
+\begin{snippetdefinition}{Biproduct}
+    Let \(\mathcal C\) be a category with zero morphisms.
+    Given a finite (possibly empty) collection of objects \(\{X_k\}_{k=1}^n\) in \(\operatorname{Ob}(\mathcal C)\),
+    a \emph{biproduct} of this collection is an object \(\bigoplus_{k=1}^n X_k\)
+    equipped with two families of morphisms:
+    \begin{itemize}
+        \item Projections: \(\pi_j \colon \bigoplus_{k=1}^n X_k \fromto X_j\) for each \(j \in \{1, \dots, n\}\)
+        \item Injections: \(\iota_j \colon X_j \fromto \bigoplus_{k=1}^n X_k\) for each \(j \in \{1, \dots, n\}\)
+    \end{itemize}
+    such that:
+    \begin{enumerate}
+        \item \(\left(\bigoplus_{k=1}^n X_k, \pi_k\right)\) is a product for \(X_k\).
+        \item \(\left(\bigoplus_{k=1}^n X_k, \iota_k\right)\) is a coproduct for \(X_k\).
+        \item The morphisms satisfy the following relation for all \(j, k \in \{1, \dots, n\}\):
+        \[
+            \pi_j \circ \iota_k = \delta_{jk} = \begin{cases}
+                \operatorname{id}_{X_j} & j=k \\
+                0_{X_k X_j} & j \neq k
+            \end{cases}
+        \]
+        where \(0_{X_k X_j}\) is the zero morphism.
+    \end{enumerate}
+    If the collection is empty, the biproduct is defined to be the zero object \(0\) of \(\mathcal C\).
+\end{snippetdefinition}
+
+In the category \(\mathbf{Set}\), the product and coproduct (cartesian product and disjoint union)
+are essentially different. However, in abelian categories, such as the category of abelian groups
+and vector spaces, the direct sum acts as both:
+information can be extract by projecting on the singular spaces, or inserted by injecting from them.
+
+% Preadditiva o Additiva
+
+\begin{snippetdefinition}{Kernel}
+    Let \(\mathcal C\) be a category with zero morphisms, and let \(f \colon X \fromto Y\) be a morphism in \(\mathcal C\).
+    A \emph{kernel} of \(f\) is a pair \((K, \ker f)\), where \(K \in \operatorname{Ob}(\mathcal C)\) and \(\ker f \colon K \fromto X\), such that \(f \circ \ker f = 0_{KY}\), satisfying the following universal property:
+    for every object \(Z \in \operatorname{Ob}(\mathcal C)\) and every morphism \(g \colon Z \fromto X\) such that \(f \circ g = 0_{ZY}\), there exists a unique morphism \(u \colon Z \fromto K\) such that the following diagram commutes:
+    \begin{center}
+        \begin{tikzcd}
+            Z \arrow[rd, "g"] \arrow[d, "u", dashed] & \\
+            K \arrow[r, "\ker f"'] & X \arrow[r, "f"] & Y
+        \end{tikzcd}
+    \end{center}
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Cokernel}
+    Let \(\mathcal C\) be a category with zero morphisms, and let \(f \colon X \fromto Y\) be a morphism in \(\mathcal C\).
+    A \emph{cokernel} of \(f\) is a pair \((C, \operatorname{coker} f)\), where \(C \in \operatorname{Ob}(\mathcal C)\) and \(\operatorname{coker} f \colon Y \fromto C\), such that \(\operatorname{coker} f \circ f = 0_{XC}\), satisfying the following universal property:
+    for every object \(Z \in \operatorname{Ob}(\mathcal C)\) and every morphism \(g \colon Y \fromto Z\) such that \(g \circ f = 0_{XZ}\), there exists a unique morphism \(u \colon C \fromto Z\) such that the following diagram commutes:
+    \begin{center}
+        \begin{tikzcd}
+            X \arrow[r, "f"] & Y \arrow[r, "\operatorname{coker} f"] \arrow[rd, "g"'] & C \arrow[d, "u", dashed] \\
+            & & Z
+        \end{tikzcd}
+    \end{center}
+\end{snippetdefinition}
+
+The kernel is the equalizer of \((f, 0_{XY})\)
+and measures how much information is lost via the map,
+while the cokernel is the coequalizer of \((f, 0_{XY})\)
+and measures how much of the domain is not covered.
+
+\begin{snippetdefinition}{Image}
+    Let \(\mathcal C\) be a category with zero morphisms, kernels, and cokernels.
+    For any morphism \(f \colon X \fromto Y\) in \(\mathcal C\), the \emph{image} of \(f\), denoted \(\operatorname{im} f\), is defined as the kernel of its cokernel.
+    Formally, it is the subobject of \(Y\) given by \(\operatorname{im} f \triangleq \ker(\operatorname{coker} f)\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Coimage}
+    Let \(\mathcal C\) be a category with zero morphisms, kernels, and cokernels.
+    For any morphism \(f \colon X \fromto Y\) in \(\mathcal C\), the \emph{coimage} of \(f\), denoted \(\operatorname{coim} f\), is defined as the cokernel of its kernel.
+    Formally, it is the quotient object of \(X\) given by \(\operatorname{coim} f \triangleq \operatorname{coker}(\ker f)\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Abelian category}
+    A category \(\mathcal A\) is said to be an \emph{abelian category} if it satisfies the following four axioms:
+    \begin{enumerate}
+        \item \emph{Zero object}: \(\mathcal A\) has a zero object \(0\).
+        \item \emph{Biproducts}: \(\mathcal A\) has all binary biproducts (and thus all finite biproducts).
+        \item \emph{Kernels and Cokernels}: Every morphism in \(\mathcal A\) has a kernel and a cokernel.
+        \item \emph{Isomorphism Theorem}: For every morphism \(f\) in \(\mathcal A\), the canonical morphism \(\bar{f} \colon \operatorname{coim} f \fromto \operatorname{im} f\) is an isomorphism.
+    \end{enumerate}
+\end{snippetdefinition}
+
+\section{Derived categories}
+
+\begin{snippetdefinition}{Cochain Complex}
+    Let \(\mathcal A\) be an abelian category. A \emph{cochain complex} \(C^\bullet\) in \(\mathcal A\) is a sequence of objects \(C^n \in \operatorname{Ob}(\mathcal A)\) for \(n \in \mathbb{Z}\), together with a sequence of morphisms \(d^n \colon C^n \fromto C^{n+1}\) called \emph{differentials}, such that the composition of any two consecutive differentials is the zero morphism:
+    \[
+        d^{n+1} \circ d^n = 0
+    \]
+    for all \(n \in \mathbb{Z}\).
+    \begin{center}
+        \begin{tikzcd}
+            \cdots \arrow[r] & C^{n-1} \arrow[r, "d^{n-1}"] & C^n \arrow[r, "d^n"] & C^{n+1} \arrow[r, "d^{n+1}"] & \cdots
+        \end{tikzcd}
+    \end{center}
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Exact sequence}
+    \todo
+\end{snippetdefinition}
+
+Exactness means the elements that ``die'' in the second map are exactly those that came from the first map.
+So nothing extra disappears, and nothing from the previous map is lost.
+
+\begin{snippetdefinition}{Cohomology Object}
+    Let \(C^\bullet\) be a cochain complex in an abelian category \(\mathcal A\).
+    Because \(d^{n} \circ d^{n-1} = 0\), the image of \(d^{n-1}\) is naturally a subobject of the kernel of \(d^n\). 
+    The \(n\)-th \emph{cohomology object} of \(C^\bullet\), denoted \(H^n(C^\bullet)\), is defined as the quotient object:
+    \[
+        H^n(C^\bullet) \triangleq \frac{\ker d^n}{\operatorname{im} d^{n-1}}
+    \]
+    which is well-defined since \(\mathcal A\) is an abelian category.
+\end{snippetdefinition}
+
+The condition \(d^{n} \circ d^{n-1} = 0\)
+can be stated as \(\operatorname{im} d^{n-1} \subseteq \ker d^n\).
+A sequence is said to be \emph{exact} if \(\operatorname{im} d^{n-1} \subseteq \ker d^n\).
+The cohomology measures precisely the error towards being exact.
+If \(H^n(C^\bullet) = 0\), the sequence is exact at that point.
+
+\begin{snippetdefinition}{Morphism of Complexes (Chain Map)}
+    Let \(\mathcal A\) be an abelian category, and let \((C^\bullet, d_C)\) and \((D^\bullet, d_D)\) be two cochain complexes in \(\mathcal A\).
+    A \emph{morphism of complexes} (or \emph{chain map}) \(f^\bullet \colon C^\bullet \fromto D^\bullet\) is a sequence of morphisms \(f^n \colon C^n \fromto D^n\) in \(\mathcal A\) for each \(n \in \mathbb{Z}\), such that they commute with the differentials. 
+    Explicitly, for all \(n \in \mathbb{Z}\), the following relation holds:
+    \[
+        d_D^n \circ f^n = f^{n+1} \circ d_C^n
+    \]
+    meaning that every square in the following diagram commutes:
+    \begin{center}
+        \begin{tikzcd}
+            \cdots \arrow[r] & C^n \arrow[d, "f^n"'] \arrow[r, "d_C^n"] & C^{n+1} \arrow[d, "f^{n+1}"] \arrow[r] & \cdots \\
+            \cdots \arrow[r] & D^n \arrow[r, "d_D^n"'] & D^{n+1} \arrow[r] & \cdots
+        \end{tikzcd}
+    \end{center}
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Quasi-isomorphism}
+    Let \(f^\bullet \colon C^\bullet \fromto D^\bullet\) be a morphism of cochain complexes in an abelian category \(\mathcal A\).
+    Because the sequence \(f^n\) commutes with the differentials, \(f^\bullet\) maps cycles to cycles and boundaries to boundaries, thus inducing a well-defined morphism on the cohomology objects for each \(n \in \mathbb{Z}\):
+    \[
+        H^n(f) \colon H^n(C^\bullet) \fromto H^n(D^\bullet)
+    \]
+    The morphism \(f^\bullet\) is called a \emph{quasi-isomorphism} (often abbreviated as \emph{quis}) if the induced morphism \(H^n(f)\) is an isomorphism in \(\mathcal A\) for every \(n \in \mathbb{Z}\).
+\end{snippetdefinition}
+
+If there exist a quasi-isomorphism between two
+complexes, they contain the same (c)ohomological information.
+The problem is that they are not necessarily actual isomorphisms.
+
+\begin{snippetdefinition}{Category of Cochain Complexes}
+    Let \(\mathcal A\) be an abelian category. The \emph{category of cochain complexes}, denoted \(\operatorname{Ch}(\mathcal A)\), is defined as follows:
+    \begin{itemize}
+        \item \textbf{Objects}: Cochain complexes \((C^\bullet, d_C)\) in \(\mathcal A\).
+        \item \textbf{Morphisms}: Chain maps \(f^\bullet \colon C^\bullet \fromto D^\bullet\).
+        \item \textbf{Composition}: Given chain maps \(f^\bullet \colon C^\bullet \fromto D^\bullet\) and \(g^\bullet \colon D^\bullet \fromto E^\bullet\), their composition \((g \circ f)^\bullet\) is defined component-wise as \((g \circ f)^n \triangleq g^n \circ f^n\).
+        \item \textbf{Identity}: The identity morphism \(\operatorname{id}_{C^\bullet}\) consists of the identity morphisms \(\operatorname{id}_{C^n}\) on each object \(C^n\) for \(n \in \mathbb{Z}\).
+    \end{itemize}
+\end{snippetdefinition}
+
+Since \(\mathcal A\) is abelian, \(\operatorname{Ch}(\mathcal A)\) is also an abelian category, where kernels and cokernels are computed component-wise.
+
+AAAAAAAAAAA
+
+\begin{snippetdefinition}{Chain Homotopy}
+    Let \(f^\bullet, g^\bullet \colon C^\bullet \fromto D^\bullet\) be two chain maps between cochain complexes in an abelian category \(\mathcal A\).
+    A \emph{chain homotopy} between \(f^\bullet\) and \(g^\bullet\) is a sequence of morphisms \(h^n \colon C^n \fromto D^{n-1}\) in \(\mathcal A\) for each \(n \in \mathbb{Z}\) such that:
+    \[
+        f^n - g^n = d_D^{n-1} \circ h^n + h^{n+1} \circ d_C^n
+    \]
+    If such a sequence \(\{h^n\}\) exists, \(f^\bullet\) and \(g^\bullet\) are said to be \emph{chain homotopic}, denoted by \(f^\bullet \sim g^\bullet\).
+    
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAB12BjKCHBAL6l0mXPkIoyARiq1GLNpx59BwkBmx4CRAMzlZ9Zq0QduvfiCEjN43aRnVDCk0vOrrY7SgBM+x-OMQAGEAPWAwAGopAUs1DU8JZCk-OSM2UMIrdVEtROSHVOcQABEQzLic2x97AwC2UvComIFZGCgAc3giUAAzACcIAFskMhAcCCQAViz+oanqcaQAFn80kygAfQzY3oHhxBWxicRvGb2kAHYF450zucQANmvL1aLN0sJqBjoAIxgGAAKlS8ID6WHaAAscDsQLN9skjkgHnd9pNno9XoEemUALTtMowuHLdFXEDfP6A4ESMkwHrQzFsbGNaJ4sKRaKE86INGIxAIpyBCEElHE3lPQqCtlNSwUARAA
+        \begin{tikzcd}
+            \cdots \arrow[r] & C^n \arrow[r, "d_C^n"] \arrow[d, "f^n-g^n"] \arrow[ld, "h^n"] & C^{n+1} \arrow[r] \arrow[d, "f^{n+1}-g^{n+1}"] \arrow[ld, "h^{n+1}"] & \cdots \\
+            \cdots \arrow[r] & D^n \arrow[r, "d_D^n"']                                       & D^{n+1} \arrow[r]                                                    & \cdots
+        \end{tikzcd}
+    \end{center}
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Homotopy Category}
+    Let \(\mathcal A\) be an abelian category. The \emph{homotopy category of cochain complexes}, denoted \(\mathbf{K}(\mathcal A)\), is defined as follows:
+    \begin{itemize}
+        \item \textbf{Objects}: Cochain complexes \((C^\bullet, d_C)\) in \(\mathcal A\) (the same objects as \(\operatorname{Ch}(\mathcal A)\)).
+        \item \textbf{Morphisms}: Equivalence classes of chain maps modulo chain homotopy. Formally, the hom-sets are defined as:
+        \[
+            \operatorname{Hom}_{\mathbf{K}(\mathcal A)}(C^\bullet, D^\bullet) \triangleq \frac{\operatorname{Hom}_{\operatorname{Ch}(\mathcal A)}(C^\bullet, D^\bullet)}{\sim}
+        \]
+    \end{itemize}
+\end{snippetdefinition}
+
+\pagebreak
+
+\part{Category theory exercises}
+
+\section{Problems}
+
+\begin{snippetexercise}{Exercise 8 from Chapter 1 of the book \emph{Sheaves in Geometry and Logic} by S. Mac Lane and I. Moerdijk}
+    Consider a small category \(\mathcal C\). For each object \(B\)
+    of \(\mathcal C\) there is a functor \(D_B \colon \mathcal C/B \fromto \mathcal C\) defined by taking the domain
+    of each arrow to \(B\). Hence, each \(T \colon \mathcal C^{\text{op}} \fromto \mathbf{Set}\) yields
+    \(T_B = T \circ D^{\text{op}} \colon {(\mathcal C/B)}^{\text{op}} \fromto \mathbf{Set}\).
+    Define an exponential \(T^S\) by
+    \[
+        T^S(B) \triangleq \text{Hom}_{\widehat{\mathcal C/B}}(S_B, T_B),
+    \]
+    with the evident evaluations \(e_B \colon T^S(B) \cartesianprod S(B) \fromto T(B)\).
+    Show that \(T^S\) with this evaluation \(e\) is indeed the exponential in the functor
+    category \(\widehat{\mathcal C} = {\mathbf{Set}}^{\mathcal C^{\text{op}}}\).
+\end{snippetexercise}
+
+\begin{snippetexercise}{Exercise 7 from Chapter 2 of the book \emph{Sheaves in Geometry and Logic} by S. Mac Lane and I. Moerdijk}
+    For any set \(T\), the constant presheaf \(T\) on a space \(X\) has
+    \(T(U) = T\) for all open sets \(U\) in \(X\), with all restriction maps the identity.
+    Show, using germs, that the associated ètale space is the projection \(p \colon X \cartesianprod T \fromto X\) of the
+    product, where \(T\) has the discrete topology; conclude that the associated sheaf is te ``constant''
+    sheaf \(\Delta_T\), for which \(\Delta_T(V)\) is the set of all locally constant functions
+    \(V \fromto T\). Prove also that this defined a functor \(\Delta \colon \mathbf{Set} \fromto \mathbf{Sh}(X)\)
+    which is left adjoint to the global sections functor \(\mathbf{Sh}(X) \fromto \mathbf{Set}\),
+    \(F \colon \Gamma F(X)\).
+\end{snippetexercise}
+
+\begin{snippetexercise}{Exercise 8 from Chapter 3 of the book \emph{Sheaves in Geometry and Logic} by S. Mac Lane and I. Moerdijk}
+    Let \(\mathcal C\) be a small category, and let \(P \colon \mathcal C^{\text{op}} \fromto \mathbf{Set}\)
+    be a presheaf on \(\mathcal C\). Recall that the category
+    \(\int_{\mathcal C} P\) of elements of \(P\) has as objects the pairs
+    \((x, C)\) with \(x \in P(C)\), and as morphisms \((x, C) \fromto (x', C')\) the morphisms
+    \(f \colon C \fromto C'\) in \(\mathcal C\) with the property that \(x' \cdot f = x\).
+    \begin{enumerate}[label=\Alph*]
+        \item Prove that there is an equivalence of categories
+        \[
+            \mathbf{Set}^{\mathcal C^{\text{op}}} /P \cong \mathbf{Set}^{{\left(\int_C P\right)}^{\text{op}}}
+        \]
+        \item Suppose that \(J\) is a topology on \(\mathcal C\), and that \(P \colon \mathcal C^{\text{op}} \fromto \mathbf{Set}\)
+        is a \(J\)-sheaf. Describe a topology \(J'\) on \(\int_{\mathcal C} P\) such that
+        the equivalence of \((a)\) restricts to an equivalence
+        \[
+            \mathbf{Sh}\left(
+                \mathcal C, J
+            \right) \cong \mathbf{Sh} \left(
+                \int_C P, J'
+            \right)
+        \]
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetexercise}{}
+    Let \(f\colon A \fromto B\) be an arrow in a Grothendieck topos \(\mathcal E\).
+    Show that the pullback functor \(f^* \colon \mathcal E / B \fromto \mathcal E / A\) is
+    faithful if and only if \(f\) is an epimorphism.
+\end{snippetexercise}
+
+\begin{snippetexercise}{}
+    Recall that a point of a topos \(\mathcal E\)
+    is a geometric morphism \(\mathbf{Set} \fromto \mathcal E\).
+    Show that
+    \begin{enumerate}[label=\Alph*]
+        \item For any precorder \(\mathcal C\) and Grothendieck topology \(J\)
+        on \(\mathcal C\), the points of the topos \(\mathbf{Sh}(\mathcal C, J)\) correspond
+        precisely to the \emph{J-prime filters} on \(\mathcal C\) (by a \(J\)-prime filter
+        on \(\mathcal C\) we mean a subset \(F\subseteq \mathcal C\) such that \(F\) is non-empty,
+        \(a \in F\) implies \(b\in F\) whenever \(a\leq b\), for any \(a,b \in F\) there exists
+        \(c\in F\) such that \(c \leq a\) and \(c\leq b\), and for any \(J\)-covering sieve
+        \(\{a_i \fromto a \suchthat i \in I\}\) in \(\mathcal C\) if
+        \(a \in F\) then there exists \(i\in I\) such that \(a_i \in F\)).
+        \item For any frame \(L\), the points of the topos
+        \(\mathbf{Sh}(L)\) correspond precisely to the frame homomorphisms
+        \(L \fromto \{0,1\}\), equivalently to the \emph{completely prime filters}
+        on \(L\) (i.e., the subsets \(S \subseteq L\) such that \(1 \in S, a \land b \in S\) if
+        and only if \(a \in S\) and \(b \in S\), and for any family of elements
+        \(\{a_i \suchthat i\in I\}\) whose join is \(a\), \(a \in S\) implies \(a_i \in S\) for
+        some \(i\)).
+        \item For any small category \(\mathcal C\) and any object \(c\) of \(\mathcal C\),
+        \item there is a point \(ev_c \colon \mathbf{Set} \fromto [\mathcal C^{\text{op}}, \mathbf{Set}]\)
+        of the topos \([\mathcal C^{\text{op}}, \mathbf{Set}]\) whose inverse image is the evaluation
+        functor at the object \(c\).
+    \end{enumerate}
+\end{snippetexercise}
+
+\section{Solutions}
+
+\end{document}
