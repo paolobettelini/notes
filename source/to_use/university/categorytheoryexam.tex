@@ -99,7 +99,35 @@ are essentially different. However, in abelian categories, such as the category 
 and vector spaces, the direct sum acts as both:
 information can be extract by projecting on the singular spaces, or inserted by injecting from them.
 
-% Preadditiva o Additiva
+\begin{snippetdefinition}{Preadditive category}
+    A category \(\mathcal C\) is said to be \emph{preadditive} 
+    if every hom-set \(\operatorname{Hom}_{\mathcal C}(X,Y)\) has the structure of an abelian group,
+    and the composition of morphisms is bilinear.
+    That is, for any morphisms \(f, f_1, f_2 \colon X \fromto Y\) and \(g, g_1, g_2 \colon Y \fromto Z\):
+    \begin{align*}
+        (g_1 + g_2) \circ f &= g_1 \circ f + g_2 \circ f \\
+        g \circ (f_1 + f_2) &= g \circ f_1 + g \circ f_2
+    \end{align*}
+    The zero element of the abelian group \(\operatorname{Hom}_{\mathcal C}(X, Y)\) is the zero morphism \(0_{XY}\).
+    This group structure allows us to freely use the addition \(f_1 + f_2\) and subtraction \(f_1 - f_2\) of any two parallel morphisms.
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Additive category}
+    A category \(\mathcal C\) is said to be \emph{additive} if it is preadditive, has a zero object, and admits all finite biproducts.
+\end{snippetdefinition}
+
+In an additive category, the abelian group structure on the hom-sets is actually uniquely determined by the biproducts.
+For any two parallel morphisms \(f, g \colon X \fromto Y\), their sum \(f + g\) can be explicitly defined as the composition:
+\[
+    f + g \triangleq \nabla_Y \circ (f \oplus g) \circ \Delta_X
+\]
+where:
+\begin{itemize}
+    \item \(\Delta_X \colon X \fromto X \oplus X\) is the \emph{diagonal morphism}, uniquely defined by the universal property of the product \(X \oplus X\) such that \(\pi_1 \circ \Delta_X = \operatorname{id}_X\) and \(\pi_2 \circ \Delta_X = \operatorname{id}_X\).
+    \item \(f \oplus g \colon X \oplus X \fromto Y \oplus Y\) is the morphism naturally induced by \(f\) and \(g\) on the biproducts.
+    \item \(\nabla_Y \colon Y \oplus Y \fromto Y\) is the \emph{codiagonal morphism}, uniquely defined by the universal property of the coproduct \(Y \oplus Y\) such that \(\nabla_Y \circ \iota_1 = \operatorname{id}_Y\) and \(\nabla_Y \circ \iota_2 = \operatorname{id}_Y\).
+\end{itemize}
+Because of this intrinsic structure, in abelian categories (which are a fortiori additive), we can seamlessly add, subtract, and evaluate linear combinations of morphisms. This structure is essential when studying chain complexes and homological algebra.
 
 \begin{snippetdefinition}{Kernel}
     Let \(\mathcal C\) be a category with zero morphisms, and let \(f \colon X \fromto Y\) be a morphism in \(\mathcal C\).
@@ -143,10 +171,8 @@ and measures how much of the domain is not covered.
 \end{snippetdefinition}
 
 \begin{snippetdefinition}{Abelian category}
-    A category \(\mathcal A\) is said to be an \emph{abelian category} if it satisfies the following four axioms:
+    A category \(\mathcal A\) is said to be an \emph{abelian category} if it is an additive category satisfying the following two additional axioms:
     \begin{enumerate}
-        \item \emph{Zero object}: \(\mathcal A\) has a zero object \(0\).
-        \item \emph{Biproducts}: \(\mathcal A\) has all binary biproducts (and thus all finite biproducts).
         \item \emph{Kernels and Cokernels}: Every morphism in \(\mathcal A\) has a kernel and a cokernel.
         \item \emph{Isomorphism Theorem}: For every morphism \(f\) in \(\mathcal A\), the canonical morphism \(\bar{f} \colon \operatorname{coim} f \fromto \operatorname{im} f\) is an isomorphism.
     \end{enumerate}
@@ -249,6 +275,8 @@ AAAAAAAAAAA
         \end{tikzcd}
     \end{center}
 \end{snippetdefinition}
+
+Notice that the subtraction \(f^n - g^n\) and the addition of compositions are well-defined operations precisely because \(\mathcal A\) is an additive category.
 
 \begin{snippetdefinition}{Homotopy Category}
     Let \(\mathcal A\) be an abelian category. The \emph{homotopy category of cochain complexes}, denoted \(\mathbf{K}(\mathcal A)\), is defined as follows:
