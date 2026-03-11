@@ -5,6 +5,7 @@
 \usepackage{stellar}
 \usepackage{parskip}
 \usepackage{fullpage}
+\usepackage{cancel}
 \usepackage{wrapfig}
 \usepackage{tikz}
 
@@ -925,6 +926,210 @@ di realizzarsi.
         = \frac{|O_{k_1, \cdots, k_r}|}{|\Omega|} = \frac{n!}{r^n k_1! \cdots k_r!}
     \]
 \end{enumerate}
+
+Notiamo che (per esercizio usando l'espansione del multinomio) \[
+    \sum_{\substack{k_1, \cdots, k_r \in \naturalnumbers \\ k_1 + k_2 + \cdots + k_r = n}}
+    \frac{1}{r^n} \frac{n!}{k_1!k_2!\cdots k_r!} = 1
+\]
+cioè
+\[
+    \sum_{\substack{k_1, \cdots, k_r \in \naturalnumbers \\ k_1 + k_2 + \cdots + k_r = n}}
+    \mathbb P(O_{k_1, \cdots, k_r}) = 1
+\]
+Tuttavia in fisica non siamo generalmente interessati in quali particelle sono in un certo stato,
+bensì quante sono in un certo stato.
+Di conseguenza, possiamo definire uno spazio campionario
+che si basa su questo
+\[
+    \hat\Omega_{n,r} \triangleq \left\{
+        (k_1, \cdots, k_r) \in \naturalnumbers^r \suchthat
+        \sum k_i = n
+    \right\}
+\]
+Per quanto detto precedentemente,
+se le particelle sono distinguibili, una misura di probabilità da mettere su questo spazio
+è \(\mathbb P_{\text{BE}} \colon \powerset(\hat\Omega_{n,r}) \fromto [0,1]\)
+tale che
+\[
+    \mathbb P_{\text{BE}}(\{\overline k\})
+    = \frac{1}{r^n} \cdot \frac{n!}{k_1!k_2!\cdots k_r!}
+\]
+con \(\overline k = (k_1, \cdots, k_r) \in \hat\Omega_{n,r}\).
+Quest'ultima viene chiamata statistica di Maxwell-Boltzmann.
+Se le particelle non sono distinguibili,
+usiamo invece un'altra statistica. Non possiamo più usato \(\Omega\),
+ma dobbiamo usare \(\hat\Omega\) dove le particelle sono indistinguibili.
+La cardinalità di quest'ultimo è
+\[
+    |\hat\Omega_{n,r}| = \binom{n+r-1}{n}
+\]
+e nel mondo microscopico questa statistica è sperimentalmente quella corretta e non l'altra.
+Questo significa che non possiamo fare nessun esperimento che ci permetta di distinguere
+una configurazione di particelle dall'altra.
+Quindi, non ha senso lavorare sullo spazio \(\Omega\).
+Di conseguenza, visto che possiamo solo distinguere le configurazioni
+di \(\hat\Omega\), dobbiamo tradurre la nostra assunzione su di cui
+di conseguenza la misura di probabilità da mettere
+è \(\mathbb P_{\text{BE}}\) (Bose-Einstein) tale che
+\[
+    \mathbb P_{\text{BE}}(\{\overline k\})
+    = \frac{1}{|\hat\Omega_{n,r}|}
+\]
+Altre varianti includono la statistica di Dirac-Fermi per i fermioni.
+
+\subsection{Urne varie}
+
+Abbiamo \(k\) monete e \(n\) scatole distinte e vogliamo contare
+in quanti modi possiamo mettere le monete nelle scatole.
+Dobbiamo decidere:
+\begin{enumerate}
+    \item se le monete sono distinguibili o meno;
+    \item se posso mettere più monete in una scatola, quindi serve \(k \leq n\), o meno.
+\end{enumerate}
+Il parallelo con le urne è:
+\begin{itemize}
+    \item reimissione \(\iff\) mettere più di una moneta per scatola;
+    \item non reimissione \(\iff\) una moneta per scatola;
+    \item ordine \(\iff\) monete distinguibili;
+    \item non ordine \(\iff\) monete non distinguibili.
+\end{itemize}
+
+\begin{snippetexercise}{}
+    Consideriamo un'urna contenente \(N \in \naturalnumbers\)
+    palline di cui \(R \leq N\) rosse e le altre blu.
+    Estraiamo \(n\) palline e vogliamo calcolare la probabilità di avere \(k \leq n\) rosse,
+    in questi due casi:
+    \begin{enumerate}
+        \item estrazione con remissione;
+        \item estrazione senza remissione.
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    Per come presentato l'esperimento, le palline non sono distinguibili, tranne per il colore binario.
+    Possiamo immaginarci che le palline siano numerate
+    da \(1\) a \(N\). Adesso conta l'ordine.
+    \begin{enumerate}
+        \item Nel caso con remissione, consideriamo le disposizioni con ripetizioni
+        \[
+            \Omega = \hat D_n^N
+        \] 
+        che ha quindi cardinalità \(N^m\).
+        Visto che l'estrazione è casuale, possiamo prendere la misura uniforme
+        \(\mathbb P \colon \powerset(\Omega) \fromto [0,1]\)
+        tale che \(\mathbb P(C) = |C| / |\Omega|\).
+        Vogliamo calcolare
+        la probabilità di \(A_k\) che è equivalente a dire ``vogliamo estrarre esattamente \(k\) palline rosse''.
+        La cardinalità dell'evento è dato da
+        \[
+            |A_k| = \binom{n}{k} R^k (N-R)^{n-k}
+        \]
+        cioè stiamo moltiplicando ogni possibile cobinazione di posizione per le disposizioni
+        con ripetizioni di \(k\) palline rosse con le disposizioni con ripetizioni di
+        \(N-K\) palline blu.
+        Quindi abbiamo
+        \[
+            \mathbb P(A_k) = \frac{|A_k|}{|\Omega|} = \binom{n}{k}
+            \left(
+                \frac{R}{N}
+            \right)^k
+            \left(
+                1 - \frac{R}{N}
+            \right)^{n-k}
+        \]
+        \item Nel caso senza reimissione, consideriamo le disposizioni semplici
+        \[
+            \Omega = D_n^N
+        \] 
+        che ha quindi cardinalità \(N!/(N-n)!\).
+        Manteniamo la probabilità uniforme.
+        Calcoliamo la probabilità dell'evento
+        \(A_k\) cioè ``estraggo \(k\) palline rosse''.
+        Possiamo usare lo stesso ragionamento di prima,
+        \[
+            |A_k| = \frac{R!}{(R-k)!} \frac{(N-R)!}{(N-R-(n-k))!}
+        \]
+        cioè stiamo moltiplicando le disposizioni senza ripetizioni di \(k\)
+        palline da \(R\) palline rosse con le disposizioni senza ripetizioni di \(m-n\)
+        palline da \(N-R\) palline blu. Da questo deduciamo che
+        \begin{align*}
+            \mathbb P(A_k) &= \frac{
+                \cancel{\binom{n}{k}} \frac{R!}{(R-K)!}
+                \frac{(N-R)!}{(N-R-(n-k))!}
+            }{
+                \frac{N!}{(N-n)!}
+            } 
+            &= \frac{\binom{n}{k}
+            \binom{R}{k}\binom{N-R}{n-k}}{
+                \binom{N}{n}
+            } \cancel{
+                \frac{k!(n-k)!}{n!}
+            } \\
+            &= \frac{
+                \binom{R}{k}\binom{N-R}{n-k}
+            }{
+                \binom{N}{n}
+            }
+        \end{align*}
+        Il primo termine sono le combinazioni non ordinate di \(k\)
+        elementi da \(R\) slot, il secondo di \(n-k\) elementi estratti da \(N-R\) slot
+        rimanenti, e il termine a denominatore è la cardinalità di \(C_n^N\)
+        cioè le combinazioni non ordinate di \(n\) elementi estratti da \(N\).
+        Quindi, avremmo potuto scegliere \(\Omega = C_n^N\), con cardinalità
+        \(\binom{N}{m}\).
+        In questo caso avremmo
+        \[
+            |A_k| = \binom{R}{k} \binom{N-R}{n-k}
+        \]
+    \end{enumerate}
+    Abbiamo moltiplicando per \(k!/k!\) il primo termine, per \((n-k)!/(n-k)!\) il secondo
+    e per \(n!/n!\) il terzo per ottenere i coefficienti binomiali.
+\end{snippetsolution}
+
+Notiamo che
+
+
+\pagebreak
+
+\begin{snippetdefinition}{Legge binomiale}
+    Sullo spazio \(\Omega = \{0, \cdots, n\}\) possiamo definire la probabilità
+    \[
+        \mathbb P(\{k\}) = \binom{n}{k} p^k (1-p)^{n-k}
+    \]
+\end{snippetdefinition}
+
+Che è la probabilità di avere \(k\) successi di probabilità \(p\) in \(n\) tentativi.
+
+\begin{snippetdefinition}{Legge ipergeometrica}
+    \todo
+\end{snippetdefinition}
+
+La differenza con la binomiale sta nel fatto che
+nel caso con ripetizione abbiamo l'indipendenza
+di una estrazione con l'altra.
+
+Notiamo che se il numero delle palline tendesse ad infinito,
+l'idea di reimissione perde di senso perché abbiamo infinite palline.
+Quindi la seconda probabilità deve tendere alla prima, cioè l'ipergeometrica 
+deve tendere a quella binomiale.
+
+\begin{snippetexercise}{}
+    Dimostrare che la seconda probabilità tende alla prima se il numero delle palline
+    tende ad infinito.
+\end{snippetexercise}
+
+\begin{snippetexercise}{}
+    Calcolare la probabilità
+    dell'evento \(R_i\) ``la \(i\)-esima pallina estratta è rossa''
+    in entrambi i casi.
+\end{snippetexercise}
+
+
+
+
+
+
+
 
 
 
@@ -2544,5 +2749,345 @@ Mi estende la convergenza uniforme fino al punto nel bordo dato.
     su tutti i sottoinsiemi del tipo \((\alpha, 1]\)
     con \(\alpha > -1\).
 \end{snippetexample}
+
+\begin{snippetexample}{A volte il lim sup è più facile da calcolare dal limite}
+    Consideriamo la serie di potenze
+    \[
+        \sum_{n=0}^\infty (\sin n)^n x^n
+    \]
+    Usiamo il criterio di Cauchy-Hadamard. Abbiamo
+    il limite
+    \[
+        \lim_n \sqrt[n]{
+            |\sin n|^n
+        } = \lim_n |\sin n|
+    \]
+    non esiste, mentre il lim sup
+    \[
+        \limsup_n \sqrt[n]{
+            |\sin n|^n
+        } = \limsup_n |\sin n| = 1
+    \]
+    in quanto la successione \(\{\sin n\}\) è densa in \([-1, 1]\).
+\end{snippetexample}
+
+\begin{snippetexample}{A volte il lim sup è più facile da calcolare dal limite}
+    Consideriamo la serie di potenze
+    \[
+        \sum_{n=0}^\infty \sin n x^n
+    \]
+    Usiamo il criterio di Cauchy-Hadamard. Abbiamo
+    \[
+        \limsup \sqrt[n]{
+            |\sin n|
+        } = 1
+    \]
+    Mentre calcolare il limite non è banale.
+\end{snippetexample}
+
+% TODO da scrivere un pochino meglio
+\begin{snippetproposition}{}
+    Consideriamo una serie di potenze reale
+    \(\sum a_n x^n\) con raggio di convergenza \(0 < R \leq \infty\)
+    e consideriamo \(x \in (-R, R)\).
+    Sappiamo che converge in almeno un punto, e la serie delle derivate è
+    \[
+        \sum_{n=1}^\infty na_nx^{n-1}
+    \]
+    che è ancora una serie di potenze, con un suo insieme di convergenza.
+    Il raggio di convergenza viene mantenuto.
+    La convergenza può perdere dei punti del bordo, ma il raggio di convergenza è il medesimo.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Consideriamo la serie delle derivate
+    \[
+        g(x) = \sum_{n=1}^\infty na_nx^{n-1}
+    \]
+    Consideriamo la funzione \(xg(x)\) per avere il termine \(na_nx^n\),
+    tanto la convergenza rimane la medesima. Applicando il teorema di Cauchy-Hadamard
+    vediamo che
+    \begin{align*}
+        \limsup_n \sqrt[n]{
+            n|a_n|
+        } = \limsup_n \sqrt[n]{|a_n|}
+    \end{align*}
+    e quindi il raggio di convergenza rimane il medesimo.
+\end{snippetproof}
+
+Ogni serie di potenze con raggio di convergenza positivo è una funzione derivabile,
+che continua a convergere almeno sul cerchio aperto.
+Il medesimo processo può essere iterato per derivate superiori.
+
+\begin{snippetcorollary}{}
+    Sia \[
+        f(x) = \sum_{n=0}^\infty a_nx^n
+    \]
+    con raggio di convergenza \(R > 0\), allora \(f\in \mathcal C^\infty((-R, R))\) e \[
+        f^{(k)}(x) = \sum_{n=k}^\infty n(n-1)\cdots(n-k+1)a_nx^{n-k}
+    \]
+\end{snippetcorollary}
+
+\begin{snippetexample}{}
+    Consideriamo la serie di potenze
+    \[
+        \sum_{n=1}^\infty \frac{x^n}{n}
+    \]
+    che ha raggio di convergenza \(R=1\).
+    Essa converge in \([-1, 1]\). La serie delle derivate è la serie geometrica
+    \[
+        \sum_{n=1}^\infty x^n
+    \]
+    che ha sempre raggio di convergenza \(R=1\)
+    ma converge solo su \((-1, 1)\).
+\end{snippetexample}
+
+\begin{snippetcorollary}{}
+    Consideriamo la serie di potenze
+    \[
+        \sum_{n=1}^\infty \frac{x^n}{n^2}
+    \]
+    ha raggio di convergenza \(R=1\).
+    Nel punto \(x=1\) converge assolutamente, e quindi converge totalmente in tutto il cerchio
+    chiuso \([-1, 1]\). La serie delle derivate è
+    \[
+        \sum_{n=1}^\infty x^{n-1}{n}
+    \]
+    che converge in \([-1, 1)\). La derivata seconda
+    \[
+        \sum_{n=2}^\infty \frac{n-1}{n}x^{n-2}
+    \]
+    che converge solamente in \((-1, 1)\), e così via.
+\end{snippetcorollary}
+
+Abbiamo la formula \[
+    f^{(k)}(x) = \sum_{n=k}^\infty n(n-1)\cdots(n-k+1)a_nx^{n-k}
+\]
+In \(x=0\) otteniamo \(f^{(k)}(0) = k! a_k\), cioè \(a_k = \frac{1}{k!}f^{(k)}(0)\).
+Quindi conoscendo le derivate della serie di potenze in un intorno arbitrariamente piccolo,
+conosciamo interamente la serie di funzioni su tutto il suo cerchio di convergenza.
+È quindi impossibili avere fenomeni di biforcazione.
+Non tutte le funzioni \(\mathcal C^\infty\) sono quindi serie di potenze.
+
+\begin{snippetexample}{}
+    La funzione
+    \[
+        f(x) = \begin{cases}
+            e^{-\frac{1}{x^2}} & x \neq 0 \\
+            0 & x = 0
+        \end{cases}
+    \]
+    non è analitica, in quanto tutte le derivate nell'origine sono nulle
+    ma non posso ricostruire interamente la funzione.
+    La sua serie di Maclaurin converge alla funzione identicamente nulla.
+\end{snippetexample}
+
+In generale posso sempre associare ad una funzione \(f(x)\) una serie di potenze,
+cioè la serie di Taylor.
+
+\begin{snippetproposition}{}
+    Una successionoe reale \(\{b_n\}\)
+    si dimostra che \(\exists f \in \mathcal C^\infty((a,b))\)
+    tale che se \(x_0 \in (a,b)\), allora \(f^{(k)} = b_n\).
+\end{snippetproposition}
+
+Quindi per esempio scegliendo \(b_n = \{(n!)^2\}\), la funzione \(f\)
+che ha \(\{b_n\}\) come coefficienti ha serie di Taylor che converge solo in \(x_0\),
+quindi \(R=0\).
+
+\begin{snippetdefinition}{Funzioni analitiche}
+    Le funzioni \(f\in\mathcal C^\infty((a,b))\)
+    che almeno localmente \(\forall x_0 \in (a,b)\)
+    coincide sono somma della loro serie di Taylor costituiscono una sotoclasse di
+    \(\mathcal C^\infty((a,b))\) detta \emph{classe delle funzioni analitiche}
+    in \((a,b)\). Tale classe viene indicata come \(\mathcal C^\omega((a,b))\).
+\end{snippetdefinition}
+
+In una funzione analitica la convergenza locale implica quella globale.
+Sono la generalizzazione più immediata dei polinomi, in quanto
+pure loro sono una classe di tali funzioni.
+
+Nota: per ogni punto bisogna trovare almeno un intorno dove converge, non è detto
+che la serie di Taylor in \(x_0\) in quel punto converge su tutto l'intervallo.
+
+\begin{snippetexample}{}
+    Consideriamo la funzione \(f(x) = \sum_{n=0}^\infty x^n\)
+    che possiamo scrivere come serie geometrica, che converge nell'intervallo \((-1, 1)\).
+    Tuttavia, la funzione \(f\) è analitica in tutto l'intervallo
+    \(f\in \mathcal C^\omega((-\infty, 1))\).
+    Il raggio \(R=1\) è il massimo raggio possibile per la serie centrata nell'origine,
+    in quanto se oltrepassassi l'asintoto.
+    Se fosse centrata in \(x=\frac13\), il raggio può essere al massimo \(R=\frac23\)
+    e infatti si dimostra che lo è.
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Consideriamo la funzione \(f(x) = \frac{1}{1 + x^2} = \sum_{n=0}^\infty {(-1)} x^{2n}\)
+    che possiamo scrivere come serie di potenza con raggio di convergenza \(R=1\).
+    Tuttavia, la funzione originale è definita su tutto \(\realnumbers\).
+    Se consideriamo la funzione sul piano complesso, abbiamo due pali a \(\pm i\),
+    e quindi il raggio di convergenza non può superare quei punti.
+    Se invece la centrassimo in \(x=2\), il raggio di convergenza sarebbe \(\sqrt{5}\)
+    cioè la distanza fra \(2\) ed \(i\).
+\end{snippetexample}
+
+\begin{snippettheorem}{}
+    Sia \(f \in \mathcal C^\infty((a,b))\).
+    Se \(\exists M, L \in \realnumbers\)
+    tale che \(\forall x \in (a,b)\) e \(\forall n\) vale
+    \(|f^{(k)}(x)| < M \cdot L^n\), allora
+    \[
+        f(x) = \sum_{n=0}^\infty \frac{f^{(n)}(x)}{n!}(x-x_0)^n
+    \]
+    per tutte le \(x_0, x \in (a,b)\).
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Sia \(x_0 \in (a,b)\) fissato come centro della serie e scriviamo
+    il polinomio di Taylor di ordine \(k\) con il resto di Lagrange.
+    Esiste quindi \(c(x, x_0, k)\) tra \(x\) e \(x_0\) tale che
+    \[
+        f(x) = \sum_{n=0}^k \frac{f^{(k)}(x_0)}{n!}(x-x_0)^n
+        + \frac{f^{(k+1)}(c)}{(k+1)!}(x-x_0)^{k+1}
+    \]
+    vogliamo mostrare che il resto in forma di Lagrange tende a zero. Stimiamone quindi il modulo
+    \begin{align*}
+        \left|
+            \frac{f^{(k+1)}(c)}{(k+1)!}(x-x_0)^{k+1}
+        \right| \leq \frac{M \cdot (L |x-x_0|)^{k+1}}{(k+1)!} \to 0
+    \end{align*}
+    per \(n \to \infty\).
+\end{snippetproof}
+
+Questa condizione è solo sufficiente e implica la convergenza in tutto l'intervallo \((a,b)\),
+e può essere usata localmente.
+
+\begin{snippetexample}{}
+    Consideriamo la funzione \(f(x) = 1 / (1-x)\)
+    che è analitica su \((-\infty, 1)\).
+    Non esistono \(M\) ed \(L\) tale che
+    la condizione del teorema % TODO CITE
+    sia soddisatta su tutto \((-\infty, 1)\).
+\end{snippetexample}
+
+\begin{snippetproposition}{}
+    Sia \(f \in \mathcal C^\infty\) tale che la sa successione delle derivate sia equilimitate,
+    allora è analitica.
+\end{snippetproposition}
+
+\begin{snippetproposition}{}
+    Se le derivate sono equilimitate con costante \(K\), basta scegliere \(L=\) e \(M=K\)
+    nel teorema. % TODO CITE Theorem
+\end{snippetproposition}
+
+Quindi \(\sin(x)\) e \(\cos(x)\) sono analitiche in quanto le derivate sono equilimitate.
+La funzione \(e^x\) non è limitata ma possiamo applicare il criterio negli intervalli
+\((-\infty, a)\), e quindi è una funzione intera.
+
+La serie di Taylor ci permette di estendere la funzione esponenziale ai complessi.
+
+Le serie di potenza possono essere integrate termine a termine.
+\[
+    \integral[0][x][
+        \sum_{n=0}^\infty a_nt^n
+    ][t]
+    = \sum_{n=0}^\infty \frac{a_nx^{n+1}}{n+1}
+\]
+
+\begin{snippetexample}{}
+    Integrando la serie geometrica, che ha raggio di convergenza \(R=1\), otteniamo
+    \[
+        \ln(1-x) = - \sum_{n=0}^\infty \frac{x^{n+1}}{n+1}=
+        - \sum_{n=1}^\infty \frac{x^n}{n}
+    \]
+    Ne segue che \[
+        \ln(1 + x) = \sum_{n=1}^\infty {(-1)}^{n} \frac{x^n}{n}
+    \]
+    che è quindi analitica
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Consideriamo \(f(x) = 1/(1 + x^2)\)
+    che possiamo scrivere come \(\sum_{n=0}^\infty {(-1)}^n x^{2n}\), allora integrando otteniamo
+    \[
+        \arctan(x) = \sum_{n=0}^\infty {(-1)}^{2n + 1} \frac{x^{2n+1}}{2n+1}
+    \]
+    che è quindi analitica.
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Mostriamo che \(f(x) = (1 + x)^\alpha\) con \(\alpha \in \realnumbers\).
+    La sua serie di Taylor è data da
+    \[
+        g(x) = \sum_{n=0}^\infty \binom{\alpha}{n}x^n, \quad x\in(-1,1)
+    \]
+    Ci aspettiamo che il raggio di convergenza sia
+    \(R=1\). Usiamo il criterio del rapporto
+    \[
+        \left|
+            \frac{\alpha(\alpha-1)\cdots(\alpha - n + 1)}{n!}
+        \right| \cdot \frac{(n+1!)}{|\alpha(\alpha-1)\cdots(\alpha-n)|}
+        = \frac{n+1}{|\alpha- n|} \to 1
+    \]
+    Quindi il raggio è \(R=1\).
+    Notiamo la relazione \((1 + x)g'(x) = \alpha g(x)\).
+    Inoltre, sappiamo che \(g(0) = 1\).
+    Otteniamo quindi il problema di Cauchy
+    \[
+        \begin{cases}
+            g'(x) = \frac{\alpha}{1 + x}g(x) \\
+            g(0) = 1
+        \end{cases}
+    \]
+    La soluzione nulla non rispetta il punto fissato, altrimenti l'equazione è separabile e integrando
+    \[
+        \frac{g'(x)}{g(x)} = \frac{\alpha}{1 + x}
+    \]
+    otteniamo
+    \[
+        \ln|g(x)| = \alpha \ln |1 + x| =  \alpha \ln (1 + x)
+    \]
+    siccome \(x > -1\). Possiamo pure togliere il modulo di \(g(x)\)
+    siccome la nostra soluzione non può mai diventare negativa, in quanto non può
+    intersecare la soluzione costante dell'equazione differenziabile. Abbiamo quindi dimostrato che
+    \[
+        g(x) = {(1 + x)}^\alpha
+    \]
+    ed è una funzione analitica.
+\end{snippetexample}
+
+Sappiamo già dal teorema di Stone-Weierstrass che tutte le funzioni continue
+possono essere approssimate da polinomi.
+La differenza è che per migliore una approssimazione basta aggiungere termini
+al polinomi di Taylor, mentre per il teorema di Stone-Weierstrass
+dobbiamo rifare tutto da zero.
+
+\begin{snippetexercise}{}
+    Studiare la convergenza della serie
+    \[
+        S(x) = \sum_{n=0}^\infty 2^n \sin\left(\frac{x}{3^n}\right)
+    \]
+    e calcolare
+    \[
+        \lim_{x \to 0} \frac{S(x)}{x}
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    Possiamo cominciare stimando
+    \[
+        |f_n(x)| \leq 2^n\frac{|x|}{3^n} = \left(\frac23\right)^n |x| \to 0
+    \]
+    quindi la serie converge puntualmente.
+    Notiamo che su un insieme limitato, \(|x| < R\),
+    \(|f_n(x)| \leq R \left(\frac23\right)^n\)
+    e converge totalmente, e la convergenza è localmente uniforme.
+    La convergenza è uniforme dappertutto?
+    Per il limite notiamo che
+    \[
+        \lim_{x \to x_0} \frac{S(x) - S(0)}{x-0} = S'(0)
+    \]
+    quindi dobbiamo studiare la derivabilità.
+\end{snippetsolution}
 
 \end{document}
