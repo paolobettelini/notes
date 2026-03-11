@@ -418,4 +418,228 @@ La \(Q\) sarà pure unitaria e consiste negli autovettori.
     il segmento fra l'autovalore meno alto e il raggio spettrale.
 \end{snippetproof}
 
+\begin{snippetdefinition}{}
+    Sia \(X \in \matrices_{n \times n}(\complexnumbers)\),
+    diciamo che \(X\) è \(\omega\)-Hermitiana se \(X^* = \omega X\).
+\end{snippetdefinition}
+
+Una matrice è Hermitiana se e solo se è \(1\)-Hermitiane, e i suoi autovalori sono reali.
+Una matrice è anti-Hermitiana se e solo se è \(-1\)-Hermitiana.
+Moltiplicare per \(i\) trasforma una matrice anti-Hermitiana in una matrice Hermitiana.
+Le matrici \(\omega\)-Hermitiane sono uno spazio vettoriale reale ma non complesso.
+
+In generale, siccome \(X^{**}=X\) è un'involuzione sulle matrici \(\omega\)-Hermitiane otteniamo
+\[
+    (\omega X)^* = \overline \omega X^* = |\omega|^2 X
+\]
+Quindi ci serve per forza che \(\omega\) sia un versore, altrimenti lo spazio vettoriale è degenere e contiene solo
+il vettore nullo (matrice nulla).
+Vogliamo quindi \(\omega = e^{i\theta}\).
+Notiamo che per \(\theta = 0\), gli autovalori sono reali.
+Per \(\theta = \pi\), gli autovalori sono puramente immaginari,
+e più in generale gli autovalori stanno sulla retta di angolo \(\theta/2\).
+Partendo da \(Ax = \lambda x\) abbiamo
+\begin{align*}
+    x^* A x &= \lambda ||x||_2^2 \\
+    (x^* A x)^* &= (\lambda ||x||_2^2)^* \\
+    x^* A^* x &= \overline \lambda ||x||_2^2 \\
+    x \omega A x &= \overline \lambda ||x||_2^2 \\
+    e^{i\theta} x^* A x &= e^{i\theta} \lambda ||x||_2^2 \\
+    &= \overline \lambda ||x||_2^2 \\
+    e^{i\theta} \lambda &= \overline \lambda
+\end{align*}
+
+\begin{snippetdefinition}{Diadi}
+    Sia \(A \in \matrices_{n \times n}(\complexnumbers)\).
+    \(A\) si dice \emph{diade}
+    se \(\exists x,y \in \complexnumbers^n\) tale che \(A = xy^*\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Matrice elementare}
+    Sia \(A \in \matrices_{n \times n}(\complexnumbers)\).
+    \(A\) si dice \emph{elementare} se \(A = I_n + F\)
+    con \(F\) diade.
+\end{snippetdefinition}
+
+Matrici elementari nel senso dell'eliminazione gaussiana.
+
+\begin{snippetproposition}{}
+    Sia \(A\) diade non banale. Allora, i suoi autovalori sono
+    \begin{enumerate}
+        \item \(0\) con molteplicità geometrica \(n-1\),
+        e \(y^*x\) come autovalore non banale.
+        \item se \(y^*x = 0\) allora \(0\) ha molteplicità algebrica \(n\) e geometrica \(n-1\),
+        e tutti gli autovettori sono gli \(z\) tali che \(y^*z = 0\), che è un sottospazio di dimensione \(n-1\), cioè quelli ortogonali a \(y\).
+        Se \(y^*x \neq 0\) le molteplicità coincidono ed è diagonalizzabile, l'autovalore rimanente è precisamente \(x\),
+        cioè l'autospazio relativo a \(\lambda = y^*x\) è generato da \(x\). 
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Siano \(x,y\) vettori complessi non banale, quindi \(xy^*\) ha rango \(1\)
+    in quanto ogni riga è un multiplo di \(y^*\).
+    Quindi \(n-1\) autovalori sono nulli.
+    Dunque per tutti gli \(z\) ortogonali a \(y\) ovvero \(y^*z = 0\),
+    vale che \(Az = xy^*z = x \cdot 0 = 0\).
+    Studiamo ora i vari casi. Se \(xy^*=0\) la traccia è nulla, quindi l'autovalore rimanente è zero.
+    La moltiplicità algebrica sale a \(n\) mentre quella geometrica rimane \(n-1\). 
+    Se invece \(y^*x \neq 0\), cioè non è ortogonale, allora \(Ax = (y^*x)\cdot x\).
+\end{snippetproof}
+
+\begin{snippettheorem}{}
+    Sia \(A = I_n + y^*x\) con \(x,y \neq 0\).
+    Allora, \(A\) è invertibile se e solo se \(y^*x \neq 0\).
+    In tal caso,
+    \[
+        A^{-1} = I + \frac{1}{1 + y^*x} xy^*
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Lo spettro di \(A\) è della forma
+    \(1 + \lambda(xy^*)\). Dalla caratterizzazione degli autovalori di una tale matrice, % TODO cite
+    abbiamo
+    \[
+        1 + \lambda(xy^*) = \begin{cases}
+            1 & \mu_g = n - 1 \\
+            1 + y^*x
+        \end{cases}
+    \]
+    quindi nel secondo caso vogliamo assicurarsi che \(y^*x \neq -1\).
+    Se la matrice è invertibile,
+    \[
+        A^{-1} = I + \alpha xy^*
+    \]
+    Per trovare \(\alpha\) abbiamo
+    \begin{align*}
+        (I + \alpha xy^*)(I + xy^*) &= I + \alpha x y^* + xy^* + (\alpha y^* x)xy^* \\
+        &= I + \left[\alpha(1 + y^* x) + 1\right]xy^* \\
+        \alpha &= \frac{1}{1 + y^*x}
+    \end{align*}
+\end{snippetproof}
+
+Dato un sistema lineare \(Bv = C\)
+con \(B = A + xy^*\), dove \(x,y \neq 0\),
+supponiamo di volerci ricondurre alla soluzione del sistema \(Av = C\)
+(cioè abbiamo perturbato il sistema con una matrice di rango 1) perché supponiamo di avere un algoritmo
+ottimale per risolvere un sistema associato ad \(A\).
+Abbiamo che \[
+    B = A(I + A^{-1}xy^*)
+\]
+e quindi il sistema si risolve come
+\begin{align*}
+    Bv &= c \\
+    v &= B^{-1} c = (I + r_1y^*)^{-1} A^{-1} c
+\end{align*}
+dove \(r_1\) lo sappiamo risolvere da \(Ar1 = x\).
+Pure l'inversa \(A^{-1}\) può essere calcolata risolvendo \(A\hat c = c\).
+Quindi alla fine dobbiamo applicare l'algoritmo iniziale due volte.
+Quindi otteniamo
+\[
+    B^{-1} = \left(
+        I - \frac{A^{-1} x y^*}{1 + y^* A^{-1} x}
+    \right) A^{-1}
+    = A^{-1} - \frac{A^{-1} x y^*A^{-1}}{1 + y^* A^{-1} x}
+\]
+In generale se perturbo una matrice grande con, per esempio, una matrice di norma \(5\),
+in generale è grande ma se il rango è 1 allora si risolve semplicemente il problema.
+Quindi in astratto la distanza fra matrici in un certo senso non è solo la norma ma anche il rango.
+
+\pagebreak
+
+\begin{snippetexercise}{}
+    Sia \(\alpha \geq 1\) reale e consideriamo la matrice
+    \[
+        A_n(\alpha) = \begin{pmatrix}
+            \alpha & 1 & 1 & \cdots & 1 \\
+            1 & \alpha & 1 & \cdots & 1 \\
+            1 & 1 & \alpha & \cdots & 1 \\
+            \vdots & \vdots & \ddots & \ddots & 1 \\
+            1 & 1 & \cdots & 1 & \alpha
+        \end{pmatrix}
+    \]
+    e
+    \[
+        B_n(\alpha) = \begin{pmatrix}
+            \alpha & -1 & -1 & \cdots & -1 \\
+            1 & \alpha & -1 & \cdots & -1 \\
+            1 & 1 & \alpha & \cdots & -1 \\
+            \vdots & \vdots & \ddots & \ddots & -1 \\
+            1 & 1 & \cdots & 1 & \alpha
+        \end{pmatrix}
+    \]
+    \begin{enumerate}
+        \item Si consideri nella maniera più precisa possibile lo spettro di \(A_n\)
+        e \(B_n\).
+        \item In particolari, si studi per quale \(\alpha\)
+        le matrici risultano invertibili.
+        sono invertibili?
+        \item Indicato con \(e_1\) il primo vettore
+        della base canonica, è vero che \(A_n^{(2)} + e_1e_1^T\) è definita positiva?
+        \item È vero che \(A_n^{(1)} + e_1e_1^T\) è semidefinita positiva?
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    Cominciamo notando che \(A_n^*(\alpha) = A_n^T(\alpha) = A_n(\alpha)\)
+    quindi è Hermitiana e il suo spettro è reale.
+    Possiamo notare che \(X_n + \alpha I_n = B_n(\alpha)\)
+    dove
+    \[
+        X_n =\begin{pmatrix}
+            0 & -1 & \cdots & -1 \\
+            1 & 0 & \cdots & -1 \\
+            \vdots & \vdots & \ddots & \vdots \\
+            1 & 1 & \cdots & 0
+        \end{pmatrix}
+    \]
+    % TODO definire pure Y_n e scrivere meglio
+    Moltiplicando \(iX_n = Y_n\) diventa hermitiana \(Y_n^*  = Y_n\).
+    In generale se moltiplichiamo una matrice per qualcosa, pure i suoi valori vengono moltiplicati per tale quantità.
+    Quindi \(Y_n x = \lambda x\) con \(\lambda \in \realnumbers\)
+    ci porta a dire che \(X_n\) può avere solo autovalori immaginari puri.
+    Se \(X_n v = \lambda v\),
+    allora \begin{align*}
+        (\alpha I + X_n)v &= \alpha v + X_n v = (\alpha + \lambda)v
+    \end{align*}
+    quindi gli autovalori di \(B_n(\alpha)\)
+    sono della forma \(\alpha + i\beta\) con \(\beta \in \realnumbers\).
+    Per struttura degli autovalori, siccome non toccano mai lo zero, sono tutte invertibili.
+    Consideriamo il caso \(\alpha = 1\). In tal caso la matrice \(A_n\) è singolare,
+    quindi non è invertibile. Consideriamo \(\alpha > 1\).
+    Abbiamo
+    \begin{align*}
+        A_n(\alpha) &= (\alpha - 1)I_n + \begin{pmatrix}
+            1 & 1 & \cdots & 1 \\
+            1 & 1 & \cdots & 1 \\
+            \vdots & \vdots & \ddots & \vdots \\
+            1 & 1 & \cdots & 1
+        \end{pmatrix} \\
+        &=  (\alpha - 1) I_n + \begin{pmatrix}
+            1 \\ 1 \\ \vdots \\ 1
+        \end{pmatrix}
+        \begin{pmatrix}
+            1 & 1 & \cdots & 1
+        \end{pmatrix}
+        = (\alpha -1)I_n + e_1e_1^T
+    \end{align*}
+    Il primo termine è definito positivo,
+    mentre il secondo è la matrice di uni che ha rango \(1\),
+    quindi la si può scrivere come prodotto di colonna per riga.
+    Vogliamo verificare che la forma quadratica sia definita positiva,
+    cioè studiamo \(x^* A_n(\alpha)x\). Sappiamo che
+    \begin{align*}
+        x^*A_n(\alpha)x &= \underbrace{x(\alpha - 1)I_n x}_{> 0} + xe_1e_1^T x \\
+        &= \underbrace{x(\alpha - 1)I_n x}_{> 0} + (e_1^T x)^2
+    \end{align*}
+    e quindi abbiamo un termine positivo psommato ad una quantità non-negativa.
+    Scomponiamo ora invece l'altra matrice come
+    \begin{align*}
+        B_n(\alpha) = \alpha I_n + V_n
+    \end{align*}
+    dove abbiamo già verificato che \((iV_n)^* = i V_n = -i V_n\),
+    quindi otteniamo che \(V_n\) è anti-Hermitiana, cioè \(V_n^* = -V_n\).
+
+\end{snippetsolution}
+
 \end{document}

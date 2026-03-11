@@ -2,11 +2,17 @@
 
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{cancel}
 \usepackage{stellar}
 \usepackage{parskip}
 \usepackage{fullpage}
 \usepackage{tikz}
 \usepackage{wrapfig}
+
+\usetikzlibrary{calc}
+
+% Cancel color
+\renewcommand{\CancelColor}{\color{red}}
 
 \title{Differential geometry}
 \author{Paolo Bettelini}
@@ -327,6 +333,34 @@ rsipetto a parametrizzazione arbitraria.
     dove il valore assoluto indica il modulo \(\sqrt{\langle v, v \rangle}\).
 \end{snippetproposition}
 
+È facile ricavare la formual ricordando che \(\langle \ddot \sigma, \sigma'\rangle = 0\)
+e che \(\ddot \sigma = \alpha \sigma'' + \beta \sigma'\)
+con \(\alpha\) ricavato nel modo seguente:
+nel caso particolare di \(t = as\) con \(a>0\) costante,
+\[
+    \frac{ds}{dt} = \frac1a = |\sigma'(t)|
+\]
+cosicché \(\tilde \sigma(s) = \sigma(as)\) e \(\dot{\tilde{\sigma}}(s) = \sigma'(as)\)
+cioè
+\[
+    \ddot{\tilde{\sigma}}(s) = a^2 \sigma''(as) = \frac{\sigma''}{|\sigma'|^2}
+\]
+Dunque \begin{align*}
+    \ddot\sigma &= \alpha\sigma'' + \beta\sigma' \\
+    &= \frac{\sigma''}{|\sigma'|^2} + \beta\sigma'
+\end{align*}
+con \(\alpha = 1 / |\sigma'|^2\)
+e  \(\beta\) determinato da \(\langle \ddot \sigma, \sigma' \rangle = 0\)
+quindi
+\[
+    0 = \langle \ddot\sigma, \sigma'\rangle = \frac{\langle \sigma'',\sigma'\rangle}{|\sigma'|^2}
+    + \beta |\sigma'|^2
+\]
+Da cui
+\[
+    \beta = - \frac{\langle \sigma'', \sigma'\rangle}{|\sigma'|^2}
+\]
+
 \begin{snippetproof}{}
     Abbiamo che
     \begin{align*}
@@ -645,5 +679,322 @@ per una parabola, dove \(F_1\) è il fuoco e \(F_2\) è all'infinito, cioè un'e
 Cioè lo specchio parabolico, dove il punto ad infinito è il sole.
 Siccome un'ellisse proiettata propriamente su un cono genera una parabola, si può
 usare un argomento di proiezioni per mostrarlo.
+
+\subsection{Centro di curvatura}
+
+\begin{snippetdefinition}{Centro di curvatura}
+    Il centro di curvatura \(P_C\) di una curva biregolare \(\sigma\)
+    on \(P\) è il centro della circonferenza osculatrice a \(\sigma\)
+    in \(P\).
+\end{snippetdefinition}
+
+\begin{center}
+    \begin{tikzpicture}[>=latex]
+        \def\a{-0.25}
+        \def\b{0.57735}
+        \def\c{1}
+        \def\xoff{-1}
+        \draw[blue, ultra thick, smooth, domain=-3:1.8] plot (\x, {\a*(\x-\xoff)^2 + \b*(\x-\xoff) + \c});
+        \node[blue, above right] at (1.5, 0.7) {$c$};
+        \coordinate (P) at (-1, 1);
+        \fill (P) circle (2.5pt);
+        \node[above left] at (P) {$P$};
+        \draw[thick] ($(P) - (1.5, {1.5*\b})$) -- ($(P) + (2.8, {2.8*\b})$);
+        \coordinate (sigma_end) at ($(P) + (2.8, {2.8*\b})$);
+        \node[below right] at (sigma_end) {$\sigma'$};
+        \coordinate (Pc) at ($(P) + (-60:3)$);
+        \fill (Pc) circle (2.5pt);
+        \node[below right] at (Pc) {$P_c$};
+        \draw[dashed, thick] (P) -- (Pc);
+        \path (P) -- (Pc) node[midway, right, xshift=3pt] {$1/\kappa$};
+        \draw ($(P) + (30:0.3)$) -- ($(P) + (30:0.3) + (-60:0.3)$) -- ($(P) + (-60:0.3)$);
+        \end{tikzpicture}
+\end{center}
+
+In particolare \(P_C\) è sulla retta perpendicolare a \(\sigma\) in \(P\),
+sul semipiano rispetto a \(\sigma'(t_0)\) contenente \(\sigma''(t_0)\)
+e \(d(P, P_C) = 1/\kappa_P\).
+
+\begin{snippetdefinition}{Evoluta}
+    La \emph{evoluta} di una curva piana \(\sigma\)
+    è la curva \(\sigma_C\) dei centri di curvatura
+    \(P_C\), al variare di \(P=\sigma(t)\).
+\end{snippetdefinition}
+
+In particolare, una parametrizzazione di \(\sigma_C\) è data da
+\[
+    \sigma_C(t) = \sigma(t) + \rho(t)n(t)
+\]
+dove
+\[
+    \rho(t) = \frac{1}{\kappa(t)}
+\]
+e \(n(t)\) è il vettore unitario ottenuto come il secondo vettore
+di una base ortogonale di \(\realnumbers^2\),
+che possiamo calcolare facilmente applicando Gram-Schmidt alla base
+\(\sigma'(t), \sigma''(t)\). Abbiamo quindi i vettori
+\[
+    \begin{cases}
+        v(t) = \frac{\sigma'(t)}{|\sigma'(t)|} = \dot\sigma \\
+        n(t) = \frac{
+            \sigma'' - \sigma'\frac{\langle \sigma'', \sigma'\rangle}{\langle \sigma', \sigma'\rangle}
+        }{
+            \left|\left|
+                \sigma'' - \sigma'\frac{\langle \sigma'', \sigma'\rangle}{\langle \sigma', \sigma'\rangle}
+            \right|\right|
+        } = \frac{\ddot\sigma}{\kappa}
+   \end{cases}
+\]
+
+\begin{snippetproposition}{}
+    Assumiamo \(\sigma=\sigma(s)\) parametrizzazione per lunghezza d'arco.
+    Sia \(s_C\) un parametro per lunghezza d'arco di \(\sigma_C\)
+    corrisponde a \(s\), cioè
+    \[
+        \restr{s_C}{s=0} = 0, \quad \frac{ds_C}{ds} \geq 0
+    \]
+    Allora, si trova
+    \[
+        \dot s_C = \frac{ds_C}{ds} = \dot\rho
+    \]
+    cioè \[
+        \begin{cases}
+            s_C = \frac{1}{\kappa} + C \\
+            \restr{
+                \frac{d\sigma_C}{ds_C}
+            }{
+                s_C = s_C(s)
+            } = n(s)
+        \end{cases}
+    \]
+    con \(C\) costante.
+\end{snippetproposition}
+
+Se la curva ha due flessi, allora la curva evoluta va verso (ad infinito) alle due rette perpendicolari
+alla curva sui flessi.
+
+\begin{center}
+    \begin{tikzpicture}[>=latex, scale=1.2]
+        \clip (-3.5, -2.5) rectangle (3.5, 2.5);
+        
+        \draw[blue, ultra thick, smooth, samples=100, domain=-4:4] plot (\x, {cos(\x*180/pi)});
+        
+        \coordinate (I1) at (-1.5708, 0);
+        \coordinate (I2) at (1.5708, 0);
+        \fill (I1) circle (2pt) node[below] {$I_1$};
+        \fill (I2) circle (2pt) node[below] {$I_2$};
+        
+        \draw[red, thick] (-4, 2.429) -- (2, -3.571);
+        \draw[red, thick] (-2, -3.571) -- (4, 2.429);
+        
+        \draw[green!50!black, dashed, thick, smooth, samples=80, domain=-1.5:1.5] 
+            plot ({\x - tan(\x*180/pi)*(1+(sin(\x*180/pi))^2)}, {cos(\x*180/pi) - (1+(sin(\x*180/pi))^2)/cos(\x*180/pi)});
+            
+        \draw[green!50!black, dashed, thick, smooth, samples=80, domain=1.65:4.5] 
+            plot ({\x - tan(\x*180/pi)*(1+(sin(\x*180/pi))^2)}, {cos(\x*180/pi) - (1+(sin(\x*180/pi))^2)/cos(\x*180/pi)});
+            
+        \draw[green!50!black, dashed, thick, smooth, samples=80, domain=-4.5:-1.65] 
+        plot ({\x - tan(\x*180/pi)*(1+(sin(\x*180/pi))^2)}, {cos(\x*180/pi) - (1+(sin(\x*180/pi))^2)/cos(\x*180/pi)});
+    \end{tikzpicture}
+\end{center}
+
+\begin{snippetproof}{}
+    Calcolaimo \begin{align*}
+        \frac{d}{ds} \sigma_C(s_C(s))
+        &= \restr{
+            \frac{ds_C}{ds} \cdot \frac{d\sigma_C}{ds_C}
+        }{
+            s_C=s_C(s)
+        } = \frac{d}{d\sigma} \left(
+            \sigma(s) + \rho(s)n(s)
+        \right) \\
+        &= \dot\sigma(s) + \dot\rho(s)n(s) + \rho(s)\dot n(s)
+    \end{align*}
+    Osserviamo che \(\langle \dot n, n \rangle = 0\) poiché \(\langle n, n \rangle = 1\).
+    Dunque \(\dot n = \lambda \dot\sigma\). Essendo \(n = \ddot\sigma / \kappa = \rho \ddot \sigma\).
+    Troviamo \begin{align*}
+        0 &= \frac{d}{ds} \langle n, \sigma \dot \rangle = \langle \dot n, \sigma''\rangle + \langle n, \sigma''\rangle \\
+        &= \langle \dot n, \dot\sigma \rangle + \langle n, \kappa n\rangle \\
+        &= \langle \dot n, \dot\sigma \rangle + \kappa
+    \end{align*}
+    Cioè \(\langle \dot n, \dot \sigma \rangle =-\kappa\), quindi
+    \[
+        \dot n = \lambda \dot \sigma = - \kappa \dot \sigma, \quad \lambda = - \kappa
+    \]
+    Sostituendo nell'espressione iniziale otteniamo
+    \begin{align*}
+        \frac{ds_C}{ds} \cdot \frac{\sigma_C}{ds_C}
+        &= \frac{\sigma_C}{ds} = \dot\sigma + \rho \dot n + \rho n \\
+        &= \cancel{\dot \sigma} - \cancel{\rho \kappa \dot \sigma} + \dot \rho n \\
+        &= \dot \rho n
+    \end{align*}
+    Ricordiamo che \(\frac{d\sigma_C}{ds_C} = \dot\sigma_C\) vettore unitario e quindi troviamo
+    \[
+        \frac{ds_C}{s}\left(\dot\sigma_C\right) = \dot\rho n \iff
+        \begin{cases}
+            \frac{ds_c}{ds} = \dot\rho \\
+            \dot\sigma_C = n
+        \end{cases}
+    \]
+    Ciò significa \begin{align*}
+        \begin{cases}
+            s_C = \rho + \cos t = \frac{1}{\kappa} + C = d(P, P_C) + C \\
+            n = \dot\sigma_C
+        \end{cases}
+    \end{align*}
+    con \(C\) costante
+\end{snippetproof}
+
+\pagebreak
+
+\begin{snippetnote}{Interpretazione geometrica}
+    Possiamo imporre uguale a \(0\) la costante
+    in \(s_C = \frac1\kappa + C\), cioè
+    \[
+        s_C = \frac1\kappa = d(P, P_C)
+    \]
+    Ricordiamo che \(P_C = P + \frac{1}{\kappa}n\) da cui segue
+    \begin{align*}
+         P &= P_C - \frac{1}{\kappa}n \\
+         &= P_C - s_C \cdot \dot\sigma_C \\
+         \restr{\sigma}{s=s(s_c)} &= \restr{\sigma_C - s_C \cdot \dot\sigma_C}{s=s(s_c)}
+    \end{align*}
+\end{snippetnote}
+
+\begin{snippetdefinition}{Involuta di una curva}
+    L'involuta \(\varphi_{\text{inv}}\) di una curva \(\varphi(s)\), parametrizzata per lunghezza d'arco,
+    è una curva della forma 
+    \[
+        \varphi_{\text{inv}}(s) \triangleq \varphi(s) \pm s \dot \varphi(s)
+    \]
+\end{snippetdefinition}
+
+Cioè i suoi punti \(P'\) sono corrispoettivi ai punti
+\(P\) di \(\varphi\) nel modo seguente:
+\[
+    \begin{cases}
+        P' \text{ è tangente a } \varphi \text{ in } P \\
+        d(P', P) = \text{ parametro } s \text{ tale che } P = \varphi(s)
+    \end{cases}
+\]
+cioè geometricamente la otteniamo ``svolgendo'' un filo inelastico arrotolato su
+\(\operatorname{Im}\varphi\) ``tenendo teso il filo''.
+
+\begin{snippetcorollary}{}
+    Una curva \(\sigma\) è involuta della propria evoluta.
+\end{snippetcorollary}
+
+\begin{snippetproof}{}
+    Segue dalla formula
+    \[
+        \sigma = \sigma_C + s_C \cdot \dot \sigma_C
+    \]
+\end{snippetproof}
+
+\pagebreak
+
+\begin{snippetexample}{Involuta di una circonferenza}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+            \begin{tikzpicture}[scale=1.5]
+                \draw[thick] (0,0) circle (1);
+                
+                \draw[thick, blue, domain=0:180, samples=100] 
+                    plot ({cos(\x) + \x*pi/180*sin(\x)}, {sin(\x) - \x*pi/180*cos(\x)});
+                    
+                \draw[dashed] (0,1) -- ({pi/2}, 1);
+                \draw[dashed] (-1,0) -- (-1, {pi});
+                
+                \draw[thin] (0,0) -- (0,1);
+                \draw[thin] (0,0) -- (-1,0);
+                
+                \fill (1,0) circle (1.5pt);
+                \fill ({pi/2}, 1) circle (1.5pt);
+                \fill (-1, {pi}) circle (1.5pt);
+                
+                \fill (0,1) circle (1pt);
+                \fill (-1,0) circle (1pt);
+            \end{tikzpicture}
+        \end{center}
+        \vspace{-2.5cm}
+    \end{wrapfigure}
+    Consideriamo la curva
+    \[
+        \sigma(\theta) = (\cos\theta, \sin\theta)
+    \]
+    L'involuta è data da
+    \begin{align*}
+        \sigma_{\text{inv}}(\theta) &= \sigma(\theta) + \theta \dot\sigma(\theta) \\
+        &= (\cos\theta - \theta\sin\theta, \sin\theta + \theta\cos\theta) \\
+        d(\sigma_{\text{inv}}(\theta), 0) &= \sqrt{
+            {(\cos\theta - \theta\sin\theta)}^2 + {(\sin\theta + \theta\cos\theta)}^2
+        } \\
+        &= \sqrt{1 + \theta^2} = O(\theta) % TODO bigO
+    \end{align*}
+    che ha forma di spirale logaritmica.
+    \wrapfill
+\end{snippetexample}
+
+\begin{snippetcorollary}{}
+    L'evoluta \(\sigma_C\) di una curva biregolare \(\sigma\)
+    è la curva inviluppo delle rette normali a \(\sigma\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{}
+    la dimostrazione segue dal fatto che
+    \(\dot\sigma_C\) vettore tangente a \(\sigma_C\) coincide
+    con \(n\) che è il vettore normale a \(\sigma\) nel punto \(\sigma(s)\)
+    corrispondente a \(\sigma_C(s_C)\).
+\end{snippetproof}
+
+\begin{snippetexercise}{
+    Calcolare la curva evoluta della curva definita dall'equazione \(f(x,y) = 0\)
+}
+    Sia \(\sigma\) la curva definita da \(f=0\), allora la sua evoluta sarà ottenuta
+    come inviluppo delle rette normali a \(\sigma\), che hanno equazioni
+    \[
+    \begin{cases}
+        f(u,v) = 0 \\
+        (x-u) \frac{\partial f(u,v)}{\partial x} + (y-v) \frac{\partial f(u,v)}{\partial y} = 0
+    \end{cases}
+    \]
+    Che è la famiglia di rette al variare di \((u,v)\)
+    tale che \((f(u,v) = 0)\).
+    Supponiamo che \(\sigma\)
+    sia del tipo \((u, v(u))\) tale che \(f(u, v(u)) = 0\)
+    allora la famiglia di sopra dipende solo da \(u\).
+    Calcoliamo
+    \begin{align*}
+        \frac{\partial F}{u,x,y} &=
+        - \cancel{\frac{\partial f}{\partial x}(u, v(u))}
+        + (x-u)\left[
+            \frac{\partial^2 f}{\partial x^2}(u, v(u)) + \frac{\partial^2 f}{\partial^2}(u, v(u))
+            v'(u')
+        \right]
+        - \cancel{v'(u) \frac{\partial f}{\partial y}(u, v(u))} \\
+        & + (y-v(u')) \left[
+            \frac{\partial^2 f}{\partial x\partial y}(u,v(u)) + \frac{\partial^2 f}{\partial y^2}(u, v(u))v'(u)
+        \right]
+    \end{align*}
+    I termini si cancellano siccome \[
+        v'(u) = - \frac{
+            \frac{\partial f}{\partial x}
+        }{
+            \frac{\partial f}{\partial y}
+        }
+    \]
+    che segue derivando \(0 = f(u, v(u))\).
+    Sostituendo e semplificando rimane quindi il sistema
+    \[
+        \begin{cases}
+            f(u, v(u)) = 0 \\
+            (x-u) \left[
+                \frac{\partial^2 f}{\partial x^2}(u,v(u)) - \frac{\partial^2 f}{\partial x\partial y}(u, v(u))
+                \frac{\frac{\partial f}{\partial x}}{\frac{\partial f}{\partial y}}
+            \right]
+        \end{cases}
+    \]
+    TODO
+\end{snippetexercise}
 
 \end{document}
