@@ -9,6 +9,8 @@
 \usepackage{tikz}
 \usepackage{wrapfig}
 
+% coxeter: introduction to geometry 2nd ed 1969 
+
 \usetikzlibrary{calc}
 
 % Cancel color
@@ -990,11 +992,95 @@ cioè geometricamente la otteniamo ``svolgendo'' un filo inelastico arrotolato s
             f(u, v(u)) = 0 \\
             (x-u) \left[
                 \frac{\partial^2 f}{\partial x^2}(u,v(u)) - \frac{\partial^2 f}{\partial x\partial y}(u, v(u))
-                \frac{\frac{\partial f}{\partial x}}{\frac{\partial f}{\partial y}}
+                \frac{\frac{\partial f}{\partial x}}{\frac{\partial f}{\partial y}} TODO
             \right]
         \end{cases}
     \]
     TODO
 \end{snippetexercise}
+
+\begin{snippetexample}{Catenaria}
+    La catenaria è parametrizzata come
+    \[
+        \sigma(u) = (au, a\cosh u), \quad a>0
+    \]
+    Allora la lunghezza d'arco è data da
+    \[
+        s(u) = \integral[0][u][\sqrt{a^2 + a^2\sinh^2(v)}][v] = a\sinh(u)
+    \]
+    Scegliamo \(a=1\) per semplicità.
+    Ne segue che \(\sigma'(u) = |\sigma'(u)| \dot\sigma(s(u)) = \cosh u \dot\sigma(s(u))\), e quindi
+    \[
+        \dot\sigma(s(u)) = \left(
+            \frac{1}{\cosh u}, \tanh(u)
+        \right)
+    \]
+    \begin{wrapfigure}{r}{7cm}
+        \begin{center}
+            \begin{tikzpicture}
+             \draw[->] (-3, 0) -- (3, 0) node[right] {$x$};
+                \draw[->] (0, -0.5) -- (0, 4) node[above] {$y$};
+                \draw[thick, blue, domain=-2:2, samples=100] plot (\x, {cosh(\x)});
+                \draw[thick, red, domain=-3:3, samples=150] plot ({\x - tanh(\x)}, {1/cosh(\x)});
+                \fill (0,1) circle (1.5pt);
+                \node[blue, left] at (-2.1, 3.8) {$\cosh(x)$};
+                \draw[dashed] (0.595, 0.425) -- (1.5, 2.352);
+                \fill (0.595, 0.425) circle (1.2pt);
+                \fill (1.5, 2.352) circle (1.2pt);
+            \end{tikzpicture}
+        \end{center}
+        \vspace{-3cm}
+    \end{wrapfigure}
+    L'involuta della catenaria è detta la \emph{trattrice},
+    definita scegliendo un'origine.
+    Tale curva ha forma parametrizzata
+    \begin{align*}
+        \tau(s(u)) &= \sigma(s(u)) - s(u) \dot\sigma(s(u)) \\
+        &= (u, \cosh u) - \sinh u \left(
+            \frac{1}{\cosh u, \tanh u}
+        \right) \\
+        &= \left(
+            u - \tanh u, \cosh u - \frac{
+                \cosh^2(u) - 1
+            }{\cosh^2(u)}
+        \right) \\
+        &= \left(
+            u - \tanh(u), \frac{1}{\cosh u}
+        \right)
+    \end{align*}
+    \wrapfill
+\end{snippetexample}
+
+\pagebreak
+
+\begin{snippetexample}{Spirale logaritmica coincide con la propria involuta o evoluta}
+    La spirale logaritmica è parametrizzata come
+    \[
+        \sigma(t) = e^t(\cos t, \sin t)
+    \]
+    Il parametro di lunghezza d'arco da \(-\infty\) è dato da
+    \[
+        s(t) = \integral[-\infty][t][\sqrt{2}e^\tau][\tau] = \sqrt{2}e^t
+    \]
+    Possiamo calcolare la sua involuta (la curva tracciata srotolando un filo teso lungo le sue rette tangenti).
+    Sia \( T(t) \) il versore tangente a \(\sigma\) in \(\sigma(t)\):
+    \begin{align*}
+        T(t) &= \frac{\sigma'(t)}{|\sigma'(t)|} = \frac{e^t(\cos t - \sin t, \sin t + \cos t)}{\sqrt{2}e^t} \\
+        &= \frac{1}{\sqrt{2}}(\cos t - \sin t, \sin t + \cos t)
+    \end{align*}
+    Allora l'involuta di \(\sigma\) è la curva data da:
+    \begin{align*}
+        \sigma_{inv}(t) &= \sigma(t) - s(t) T(t) \\
+        &= e^t(\cos t, \sin t) - \sqrt{2}e^t \left( \frac{\cos t - \sin t}{\sqrt{2}}, \frac{\sin t + \cos t}{\sqrt{2}} \right) \\
+        &= e^t(\cos t, \sin t) - e^t(\cos t - \sin t, \sin t + \cos t) \\
+        &= e^t \big( \cos t - \cos t + \sin t, \sin t - \sin t - \cos t \big) \\
+        &= e^t(\sin t, -\cos t)
+    \end{align*}
+    Possiamo riscrivere questo risultato usando le proprietà trigonometriche per evidenziare la rotazione:
+    \[
+        \sigma_{inv}(t) = e^t \left( \cos\left(t - \frac{\pi}{2}\right), \sin\left(t - \frac{\pi}{2}\right) \right)
+    \]
+    Questo dimostra che l'involuta è esattamente la stessa spirale logaritmica di partenza, ruotata di \(-\pi/2\).
+\end{snippetexample}
 
 \end{document}
