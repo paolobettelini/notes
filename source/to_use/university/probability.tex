@@ -9,6 +9,8 @@
 \usepackage{cancel}
 \usepackage{wrapfig}
 \usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 
 \usetikzlibrary{cd}
 
@@ -2681,7 +2683,7 @@ Analogamente
 
 \pagebreak
 
-\section{Serie di potenze}
+\subsection{Serie di potenze}
 
 È una serie di funzioni della forma \(f_n(x) = a_n(x-x_n)^n\).
 Di sicuro la serie converge almeno nel centro della serie di potenze.
@@ -3291,6 +3293,270 @@ dobbiamo rifare tutto da zero.
         \lim_{x \to x_0} \frac{S(x) - S(0)}{x-0} = S'(0)
     \]
     quindi dobbiamo studiare la derivabilità.
+    La convergenza è uniforme sui reali se 
+    \[
+        \sup_{x\in \realnumbers} \left|
+            \sum_{k=n}^\infty f_n(x)
+        \right| \to 0
+    \]
+    per \(n \to \infty\).
+    Proviamo a prendere un punto di massimo delle \(f_n\),
+    ossia \(\hat x_n = 3^n\frac{n}{2}\) che è il primo massimo di \(f_n\),
+    e quindi \(f(\hat x_n) = 2^n\).
+    Per \(k > n\) possiamo dire che
+    \(f_k\) è dilatata, quindi il primo massimo si trova più a destra del primo massimo con
+    \(f_n\). Quindi, in \([0, \hat x_n]\) la \(f_k\) è crescente,
+    e siccome parte da 0 è quindi positiva.
+    Abbiamo quindi che la coda della serie calcolata nel punto \(\hat x_n\)
+    \[
+        \sup_{x\in \realnumbers} \left|
+            \sum_{k=n}^\infty f_n(x)
+        \right| \leq \sum_{k=n}^\infty f_k(\hat x_n) \geq f(\hat x_n) = 2^n \to \infty
+    \]
+    Quindi il sup non tende a zero e non abbiamo convergenza uniforme.
+    Per il limite notiamo che
+    \[
+        \lim_{x \to x_0} \frac{S(x) - S(0)}{x-0} = S'(0)
+    \]
+    quindi dobbiamo studiare la derivabilità.
+    Nell'origine tutti gli addendi sono \(0\),
+    quindi abbiamo la convergenza uniforme.
+    Ci serve la convergenza uniforme locale, in quanto la derivata è una operazione locale.
+    Abbiamo
+    \[
+        f_n'(x) = \frac{2^n}{3^n} \cos \frac{x}{3^n}
+    \]
+    Dobbiamo qunidi verificare se
+    \(\sum_{n=0}^\infty f_n'\) converge. Ma chiaramente converge totalmente e quindi uniformemente in quanto
+    \[
+        \sum_{n=0}^\infty |f_n'| \leq \sum_{n=0}^\infty \left(\frac{2}{3}\right)^n
+    \]
+    Abbiamo quindi
+    \[
+        S'(0) = \sum_{n=0}^\infty f_n'(0) = \sum_{n=0}^\infty \left(\frac{2}{3}\right)^n = 3
+    \]
 \end{snippetsolution}
+
+\pagebreak
+
+\subsection{Equazioni differenziali}
+
+\begin{snippetdefinition}{Curva integrale}
+    Una curva integrale è una curva nel piano che in ogni punto è
+    dotata di retta tangente e che sia localmente
+    il grafico di qualche soluzione
+    di una equazione differenziale.
+\end{snippetdefinition}
+
+Siamo ammettendo anche il caso in cui la tangente sia verticale in qualche punto.
+
+\begin{snippetexample}{}
+    La funzione \(y = \sqrt[3]{x}\)
+    è soluzione dell'equazione \(y' = 3x^{-2/3}\).
+    Abbiamo una pendenza verticale in \(x=0\), e l'equazione amette
+    due soluzioni separate per le due parti separate.
+    Tuttavia, l'intera funzione è una curva integrale in quanto ammette una tangente,
+    anche verticale, ed è localmente il grafico di una funzione.
+\end{snippetexample}
+
+In generale, se una famiglia di soluzioni
+di un'equazione differenziale scalare del primo ordine ammette
+un inviluppo, allora anch'esso è soluzione.
+
+\begin{snippetexample}{}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+            \begin{tikzpicture}[scale=0.75]
+                \begin{axis}[
+                    axis lines = middle,
+                    xlabel = \(x\),
+                    ylabel = \(y\),
+                    xmin=-2, xmax=5,
+                    ymin=-5, ymax=10,
+                    domain=-2:6,
+                    samples=100,
+                    restrict y to domain=-10:15,
+                ]
+                \addplot[blue, thick] {(x-0)^3};
+                \addplot[red, thick] {(x-1)^3};
+                \addplot[green!70!black, thick] {(x-2)^3};
+                \addplot[orange, thick] {(x-3)^3};
+                \addplot[black, ultra thick, dashed, domain=-2:6] {0};
+                \end{axis}
+            \end{tikzpicture}
+        \end{center}
+    \end{wrapfigure}
+    Consideriamo \(y_k = (x-k)^3\) che sono delle cubiche traslate orizzontalmente,
+    con inviluppo la retta \(y=0\).
+    Questa famiglia è soluzione, per esempio, dell'equazione
+    \[
+        y' = 3y^{\frac23}
+    \]
+    di cui sembrerebbe l'integrale generale, mentre \(y=0\) l'integrale singolare.
+    Ma ciò è sbagliato sbagliato in quanto ci sono altre soluzioni,
+    cioè le funzioni che sono costanti a sinistra e poi si coniugano in una delle cubiche,
+    o nell'altra direzione, o che percorrono un pezzo di cubica, poi diventano costanti e poi seguono una cubica successiva.
+    Cioè tutte le possibili saldature.
+    L'unicità dove due soluzioni si intersecano
+    con la medesima tangente. Se invece considero una soluzione sull'asse delle \(x\),
+    non ho unicità nemmeno localmente, mentre ce l'abbiamo sulle soluzioni cubiche.
+    \wrapfill
+\end{snippetexample}
+
+\begin{snippetdefinition}{Forma differenziali esatte}
+    È un'equazione differenziale della forma
+    \[
+        y' = \frac{a(x,y)}{b(x,y)}
+    \]
+    tali che \(a(x,y)\,\text{d}x - b(x,y)\,\text{d}y\) è una forma differenziale esatta.
+\end{snippetdefinition}
+
+Sia \(V(x,y)\) un potenziale della forma differenziale. Ogni funzione definita implicitamente da
+\(V(x,y) = 0\) è soluzione dell'equazione differenziale.
+Le equazioni separabili sono un caso particolare delle equazioni esatte.
+
+\pagebreak
+
+\begin{snippetexample}{}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+            % Puoi Spostare il label di 3\sqrt pi a tutto sinistra del grafico, 2 \sqrt pi a destra, \sqrt pi a sinistra
+\begin{tikzpicture}
+\begin{axis}[
+    width=5cm,
+    height=5cm,
+    xmin=-2, xmax=2,
+    ymin=0, ymax=3.5,
+    axis lines=middle,
+    yticklabel pos=right,
+    xtick=\empty,
+    ytick={1.7724, 2.5066, 3.0699},
+    yticklabels={\(\sqrt{\pi}\), \(\sqrt{2\pi}\), \(\sqrt{3\pi}\)},
+    domain=-2:2,
+    samples=60
+]
+\addplot[black, thick, dashed] {1.7724};
+\addplot[black, thick, dashed] {2.5066};
+\addplot[black, thick, dashed] {3.0699};
+
+\addplot[blue, thick] {1.7724 / (1 + exp(-3*(x+1)))};
+\addplot[blue, thick] {1.7724 / (1 + exp(-3*x))};
+\addplot[blue, thick] {1.7724 / (1 + exp(-3*(x-1)))};
+
+\addplot[blue, thick] {1.7724 + 0.7342 / (1 + exp(3*(x+1)))};
+\addplot[blue, thick] {1.7724 + 0.7342 / (1 + exp(3*x))};
+\addplot[blue, thick] {1.7724 + 0.7342 / (1 + exp(3*(x-1)))};
+
+\addplot[blue, thick] {2.5066 + 0.5633 / (1 + exp(-3*(x+1)))};
+\addplot[blue, thick] {2.5066 + 0.5633 / (1 + exp(-3*x))};
+\addplot[blue, thick] {2.5066 + 0.5633 / (1 + exp(-3*(x-1)))};
+\end{axis}
+\end{tikzpicture}
+        \end{center}
+    \end{wrapfigure}
+    Consideriamo l'equazione differenziale \[
+        y' = \sin(y^2)
+    \]
+    Le soluzioni costante sono \(y = \pm \sqrt{k\pi}\) per \(k \in \integernumbers\).
+    Separando l'equazione otteniamo \(y' / \sin(y^2) = 1\), e quindi
+    \[
+        x = \integral[1][y][\frac{1}{\sin(t^2)}][t]
+    \]
+    Non riusciamo a ricavare \(y\) in funzione di \(x\),
+    ma abbiamo la funzione inversa, e quindi possiamo ribaldare il grafico di quest'ultima.
+    Consideriamo il punto iniziale \(y(0) = 1\).
+    La funzione passante per questo punto non può intersecare le due soluzioni costanti
+    per il teorema di unicità locale (in quanto \(f(x,y) = \sin(y^2)\) che è in \(\mathcal C^\infty(\realnumbers^2)\)).
+    La sua derivata è positiva, e quindi crescente e allora
+    ha un asintoto un asintoto orizzontale.
+    Questo asintoto può essere \(y = \sqrt{\pi}\)
+    oppure uno più piccolo.
+    Sia \(y=L\) tale asintoto, quindi \(1 < L \leq \sqrt{\pi}\).
+    Per trovare tale quota facciamo quindi il limite. Per \(x \to \infty\) abbiamo
+    \begin{align*}
+        \integral[1][y(x)][\frac{1}{\sin(t^2)}][t] \to L
+    \end{align*}
+    L'unico modo purché questo integrale sia improprio
+    è quando \(t\) tende a \(\sqrt{\pi}\).
+    In tal caso per \(t \to \sqrt{\pi}\), \(\sin(t^2) = - \sin(t^2 - \pi)\),
+    quindi è asintotico a \(-(t^2 - \pi) = -(t-\sqrt{\pi})(t+\sqrt{\pi})\),
+    che a sua volta è asintotico a \(-2\sqrt{\pi}(t-\sqrt{\pi})\).
+    Quindi non è integrabile in quanto
+    \[
+        \frac{1}{\sin(t^2)}
+        \sim
+        \frac{1}{
+            2\sqrt{\pi}(t-\sqrt\pi)
+        }
+    \]
+    Per cui l'asintoto è \(\sqrt{\pi}\).
+    Se così non fosse stato, la curva avrebbe raggiunto l'asintoto in tempo finito,
+    e quindi avremmo avuto una saldatura, ma non siamo in regime di biforcazioni.
+    Invece, per \(x \to - \infty\), abbiamo sempre un asintoto orizzontale
+    di quota \(0 \leq l < 1\). Non può essere un numero maggiore di zero,
+    in quanto l'integrale non sarebbe improprio e sarebbe finito.
+    Quindi, per forza vale \(l=0\).
+    Infatti,
+    \[
+        \integral[0][1][\frac{1}{\sin(t^2)}][t]
+    \]
+    diverge.
+    Quindi, nella prima striscia sono crescenti, mentre nella seconda
+    sono decrescenti alternandosi.
+    Visto che abbiamo due asintoti abbiamo
+    un fleso. Per trovarlo basta derivare
+    \[
+        \frac{d}{dx} \frac{1}{\sin(y^2)} = - \frac{2y \cos(y^2)}{\sin^2(y^2)}
+    \]
+    che si annulla quando \(y^2 = \frac{\pi}{2}\),
+    e quindi il flesso si ha per \(y = \frac{\sqrt{\pi}}{2}\).
+    \wrapfill
+\end{snippetexample}
+
+Consideriamo \(y^{(k)} = f(x,y,y', \cdots, y^{(k-1)})\)
+con \(f \in \mathcal C^(\Omega, \realnumbers^n)\)
+e \[
+    \Omega \subseteq \realnumbers \cartesianprod
+    \underbrace{\realnumbers^n \cartesianprod \cdots \cartesianprod \realnumbers^n}_{n \text{ times}}
+\]
+Per fissare un'unica soluzione è necessario imporre molteplici condizioni.
+Possiamo fissare \(k\) punti di \(\Omega\), cioè
+\[
+    \begin{cases}
+        y^{(k)} = f(x,y,y', \cdots, y^{(k-1)}) \\
+        y(x_1) = y_1 \\
+        y(x_2) = y_2 \\
+        \cdots \\
+        y(x_n) = y_n \\
+    \end{cases}
+\]
+che viene detto problema ai limiti.
+Alternativamente possiamo imporre il probelma di Cauchy di ordine \(k\)
+\[
+    \begin{cases}
+        y^{(k)} = f(x,y,y', \cdots, y^{(k-1)}) \\
+        y(x_0) = y_1 \\
+        y'(x_0) = y_2 \\
+        \cdots \\
+        y^{(n-1)}(x_0) = y_{n-1} \\
+    \end{cases}
+\]
+Oppure ancora un problema misto fra i due.
+Se vogliamo studiare il comportamento locale di una soluzione,
+l'unico sensato è quello di Cauchy.
+Gli altri due possono essere studiati solo dal punto di vista globale.
+
+Dato un problema
+\[
+    \begin{cases}
+        y' = f(x,y) \\
+        y(x_0) = y_0
+    \end{cases}
+\]
+con \(f \in \mathcal C(\Omega)\) con \(\Omega \subseteq \realnumbers^{n+1}\) aperto e
+\((x_0, y_0) \in \Omega\).
+L'intervallo più grande su cui la soluzione può essere definita è la proiezione di
+\(\Omega\) sull'asse delle \(x\). Una soluzione può terminare prima se sbatte
+prima sul bordo di \(\Omega\). 
 
 \end{document}
