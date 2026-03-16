@@ -949,6 +949,8 @@ cioè geometricamente la otteniamo ``svolgendo'' un filo inelastico arrotolato s
     corrispondente a \(\sigma_C(s_C)\).
 \end{snippetproof}
 
+\pagebreak
+
 \begin{snippetexercise}{
     Calcolare la curva evoluta della curva definita dall'equazione \(f(x,y) = 0\)
 }
@@ -957,46 +959,55 @@ cioè geometricamente la otteniamo ``svolgendo'' un filo inelastico arrotolato s
     \[
     \begin{cases}
         f(u,v) = 0 \\
-        (x-u) \frac{\partial f(u,v)}{\partial x} + (y-v) \frac{\partial f(u,v)}{\partial y} = 0
+        (x-u) \frac{\partial f(u,v)}{\partial y} - (y-v) \frac{\partial f(u,v)}{\partial x} = 0
     \end{cases}
     \]
-    Che è la famiglia di rette al variare di \((u,v)\)
-    tale che \((f(u,v) = 0)\).
-    Supponiamo che \(\sigma\)
-    sia del tipo \((u, v(u))\) tale che \(f(u, v(u)) = 0\)
-    allora la famiglia di sopra dipende solo da \(u\).
-    Calcoliamo
+    Questa è la famiglia di rette normali al variare di \((u,v)\)
+    tale che \(f(u,v) = 0\).
+    
+    Supponiamo che \(\sigma\) sia del tipo \((u, v(u))\) tale che \(f(u, v(u)) = 0\),
+    allora la famiglia di sopra dipende solo da \(u\). Sia \(F(u, x, y) = (x-u)f_y - (y-v)f_x = 0\) l'equazione della retta normale.
+    Calcoliamo la derivata parziale rispetto a \(u\), omettendo i punti di valutazione \((u, v(u))\) per brevità:
     \begin{align*}
-        \frac{\partial F}{u,x,y} &=
-        - \cancel{\frac{\partial f}{\partial x}(u, v(u))}
+        \frac{\partial F}{\partial u} &=
+        - \frac{\partial f}{\partial y}
         + (x-u)\left[
-            \frac{\partial^2 f}{\partial x^2}(u, v(u)) + \frac{\partial^2 f}{\partial^2}(u, v(u))
-            v'(u')
+            \frac{\partial^2 f}{\partial x \partial y} + \frac{\partial^2 f}{\partial y^2} v'(u)
         \right]
-        - \cancel{v'(u) \frac{\partial f}{\partial y}(u, v(u))} \\
-        & + (y-v(u')) \left[
-            \frac{\partial^2 f}{\partial x\partial y}(u,v(u)) + \frac{\partial^2 f}{\partial y^2}(u, v(u))v'(u)
-        \right]
+        + v'(u) \frac{\partial f}{\partial x} \\
+        & \quad - (y-v(u)) \left[
+            \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial x\partial y} v'(u)
+        \right] = 0
     \end{align*}
-    I termini si cancellano siccome \[
+    I primi termini (quelli non moltiplicati per \(x\) o \(y\)) questa volta non si cancellano. Ricordando che:
+    \[
         v'(u) = - \frac{
             \frac{\partial f}{\partial x}
         }{
             \frac{\partial f}{\partial y}
         }
     \]
-    che segue derivando \(0 = f(u, v(u))\).
-    Sostituendo e semplificando rimane quindi il sistema
+    che segue derivando \(0 = f(u, v(u))\), possiamo riscrivere la somma \(-f_y + v'f_x\) come:
+    \[
+        - \frac{\partial f}{\partial y} - \frac{\left(\frac{\partial f}{\partial x}\right)^2}{\frac{\partial f}{\partial y}} 
+        = - \frac{\left(\frac{\partial f}{\partial x}\right)^2 + \left(\frac{\partial f}{\partial y}\right)^2}{\frac{\partial f}{\partial y}}
+    \]
+    Sostituendo \(v'(u)\) anche all'interno delle parentesi e moltiplicando tutto per \(\frac{\partial f}{\partial y}\) per eliminare i denominatori, il sistema dell'inviluppo diventa:
     \[
         \begin{cases}
-            f(u, v(u)) = 0 \\
-            (x-u) \left[
-                \frac{\partial^2 f}{\partial x^2}(u,v(u)) - \frac{\partial^2 f}{\partial x\partial y}(u, v(u))
-                \frac{\frac{\partial f}{\partial x}}{\frac{\partial f}{\partial y}} TODO
-            \right]
+            (x-u) \frac{\partial f}{\partial y} - (y-v(u)) \frac{\partial f}{\partial x} = 0 \\[10pt]
+            -\left[ \left(\frac{\partial f}{\partial x}\right)^2 + \left(\frac{\partial f}{\partial y}\right)^2 \right] 
+            + (x-u) \left[ \frac{\partial^2 f}{\partial x \partial y} \frac{\partial f}{\partial y} - \frac{\partial^2 f}{\partial y^2} \frac{\partial f}{\partial x} \right] 
+            - (y-v(u)) \left[ \frac{\partial^2 f}{\partial x^2} \frac{\partial f}{\partial y} - \frac{\partial^2 f}{\partial x \partial y} \frac{\partial f}{\partial x} \right] = 0
         \end{cases}
     \]
-    TODO
+    Sostituendo la prima equazione nella seconda (sapendo che \((x-u)\) e \((y-v)\) sono proporzionali alle derivate parziali), risolviamo per \((x, y)\) ottenendo le equazioni parametriche dell'evoluta (i centri di curvatura):
+    \[
+        \begin{cases}
+            x = u - \frac{\partial f}{\partial x} \frac{\left(\frac{\partial f}{\partial x}\right)^2 + \left(\frac{\partial f}{\partial y}\right)^2}{\frac{\partial^2 f}{\partial x^2} \left(\frac{\partial f}{\partial y}\right)^2 - 2 \frac{\partial^2 f}{\partial x \partial y} \frac{\partial f}{\partial x} \frac{\partial f}{\partial y} + \frac{\partial^2 f}{\partial y^2} \left(\frac{\partial f}{\partial x}\right)^2} \\[15pt]
+            y = v(u) - \frac{\partial f}{\partial y} \frac{\left(\frac{\partial f}{\partial x}\right)^2 + \left(\frac{\partial f}{\partial y}\right)^2}{\frac{\partial^2 f}{\partial x^2} \left(\frac{\partial f}{\partial y}\right)^2 - 2 \frac{\partial^2 f}{\partial x \partial y} \frac{\partial f}{\partial x} \frac{\partial f}{\partial y} + \frac{\partial^2 f}{\partial y^2} \left(\frac{\partial f}{\partial x}\right)^2}
+        \end{cases}
+    \]
 \end{snippetexercise}
 
 \begin{snippetexample}{Catenaria}
