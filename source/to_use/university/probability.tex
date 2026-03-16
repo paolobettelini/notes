@@ -6,10 +6,14 @@
 \usepackage{parskip}
 \usepackage{fullpage}
 \usepackage{cancel}
+\usepackage{cancel}
 \usepackage{wrapfig}
 \usepackage{tikz}
 
 \usetikzlibrary{cd}
+
+% Cancel color
+\renewcommand{\CancelColor}{\color{red}}
 
 \title{Probability}
 \author{Paolo Bettelini}
@@ -1124,7 +1128,205 @@ deve tendere a quella binomiale.
     in entrambi i casi.
 \end{snippetexercise}
 
+\subsection{Variabili aleatorie}
 
+Consideriamo l'esperimento di \(N\) lanci di una moneta
+con probabilità \(p \in [0,1]\) che esca testa e \(1-p\)
+che esca croce. Vogliamo probabilizzare l'esperimento, abbiamo quindi
+\[
+    \Omega = \{0,1\}^N
+\]
+Un evento è 
+\[
+    \omega = (\omega_1, \omega_2, \cdots, \omega_N) \in \Omega
+\]
+Solo nel caso \(p=\frac12\) possiamo usare la probabilità uniforme.
+Se per esempio fosse \(p=1\) avremmo
+\[
+    \mathbb P(\{1, \cdots, 1\}) = 1, \quad
+    \mathbb P(\{0, \cdots, 0\}) = 0
+\]
+quindi non sono equiprobabili-
+A questo punto per identificare la misura dobbiamo
+dedurre delle assunzioni su di essa derivanti
+dal nostro esperimento.
+Ci servono assicurazioni che permettanod i determinare unicamente la misura.
+L'assunzione è la seguente:
+il risultato dell'\(i\)-esimo lancio di moneta è indipendente
+(o non condizionato) dai risultati degli lanci \(\forall i\).
+Consideriamo gli eventi \(T_i\) equivalente a
+``all'\(i\)-esimo lancio esce testa''
+e \(C_i\) ``all'\(i\)-esimo lancio esce croce'',
+cioè
+\[
+    T_i = \{
+        \omega = (\omega_1, \cdots, \omega_N) \in \Omega \suchthat
+        \omega_i = 1    
+    \}, \quad
+    C_i = \{
+        \omega = (\omega_1, \cdots, \omega_N) \in \Omega \suchthat
+        \omega_i = 0    
+    \}
+\]
+cioè uno è complementare dell'altro.
+Abbiamo visto che questi eventi \(T_1, \cdots, T_N\)
+o \(C_1, \cdots, C_N\)
+sono indipendenti se e solo se
+\[
+    \mathbb P \left(
+        L_1 \intersection \cdots \intersection L_n
+    \right) = \prod \mathbb P(L_i)
+\]
+con \(L_i = T_i\) oppure \(L_i = C_i = \Omega \difference T_i\).
+Quindi una misura adeguata che modellizza l'esperimento
+deve verificare le seguenti condizioni
+\begin{enumerate}
+    \item Per ogni \(i\) \[
+        \mathbb P(T_i) = p = 1 - \mathbb P(C_i)
+    \]
+    \item \[
+        \mathbb P \left(
+            \bigcap_{i=1}^N L_i
+        \right) = \prod_{i=1}^N \mathbb P(L_i)
+    \]
+    con \(L_i = T_i\) oppure \(L_i = C_i = \Omega \difference T_i\).
+    \item \(\mathbb P\) sia una misura di probabilità.
+\end{enumerate}
+
+Siccome riusciamo a calcolare la probabilità dei singoletti,
+possiamo calcolare la probabilità di tutti gli eventi, quindi è univoca.
+Possiamo infatti rappresentare
+\[
+    \{w\} = \bigcap_{i=1}^N L_i
+\]
+con \(L_i = T_i\) se \(w_i = 1\) e \(L_i = C_i\) se \(w_i = 0\).
+Di conseguenza,
+\begin{align*}
+    \mathbb P(\{\omega\}) &= \mathbb P\left(
+        \bigcap_{i=1}^n L_i
+    \right) = \prod_{i=1}^N \mathbb P(L_i) \\
+    &= \prod_{i=1}^N p^{\omega_i}
+    (1-p)^{1-\omega_i} = p^{
+        \sum_{i=1}^M \omega_i
+    }
+    (1-p)^{
+        N - \sum_{i=1}^M \omega_i
+    }
+\end{align*}
+
+\begin{snippetexercise}{}
+    Vediamo alcuni eventi significativi
+    \begin{enumerate}
+        \item \(S_k\) equivalente a dire ``ottengo esattamente \(k\) teste''.
+        \item \(B_n\) equivalente a dire ``ottengo la prima testa all'\(n\) esimo lancio''.
+        \item \(D_n\) equivalente a dire ``ottengo almeno una testa nei primi \(n\) lanci''.
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    \begin{enumerate}
+        \item Abbiamo
+        \begin{align*}
+            \mathbb P(\{\omega\})
+            &= \sum_{\omega \in S_k} \mathbb P(\{\omega\})
+            = \sum_{\omega \in S_k} p^{
+                \sum_{i=1}^M \omega_i
+            }
+            (1-p)^{
+                N - \sum_{i=1}^M \omega_i
+            } \\
+            &= \sum_{\omega \in S_k} p^k(1-p)^{N-k}
+            = |S_k|  p^k(1-p)^{N-k} \\
+            &= \binom{N}{k} p^k(1-p)^{N-k}
+        \end{align*}
+        che è la binomiale.
+        Notiamo che \(S_i \intersection S_j = \emptyset\)
+        per \(i \neq j\), quindi \(\bigcup_{k=0}^{N} S_k = \Omega\)
+        Quindi
+        \[
+            \mathbb P\left(
+                \bigcup_{k=0}^N S_k
+            \right) = \sum_{k=0}^N \binom{N}{k} p^k (1-p)^{N-k} = 1
+        \]
+        \item Notiamo che
+        \[
+            B_n = \bigcup_{k=0}^N (B_n \intersection S_k)
+            = \bigcup_{k=1}^{N-n+1} (B_n \intersection S_k)
+        \]
+        e \(B_n \intersection S_0\) in quanto dobbiamo avere almeno una testa,
+        mentre \(B_n \intersection S_k = \emptyset\) con \(k > N-n+1\)
+        in quanto le prime \(n-1\) devono essere croci.
+        Visto che \(S_i \intersection S_j = \emptyset\) per \(i \neq j\), otteniamo
+        \begin{align*}
+            \mathbb P(B_n) &=\sum_{k=1}^{N-n+1} \mathbb P\left(
+                B_n \intersection S_k
+            \right)
+            = \sum_{k=1}^{N-n+1} \mathbb P(B_n | S_k) \mathbb P(S_k)
+        \end{align*}
+        È facile calcolare la probabilità per ambo i termini:
+        \begin{enumerate}
+            \item Calcoliamo \(\mathbb P(B_n | S_k)\),
+            cioè la probabilità di avere la prima testa all'\(n\)-esimo lancio,
+            sapendo che abbiamo ottenuto \(k\) teste totali.
+            Sappiamo quindi che i primi \(n-1\) sono \(0\)
+            e quello alla posizione \(n\) è \(1\),
+            quindi per gli altri termini abbiamo \(\binom{N-m}{k-1}\) combinazioni, e quindi
+            \[
+                \mathbb (P_n | S_k) = \frac{
+                    \binom{N-n}{k-1}
+                }{
+                    \binom{N}{k}
+                }
+            \]
+            ossia il numero di modi in cui posso mettere \(k-1\) uni in \(N-n\)
+            posti restanti, divido per i omdi possibili di mettere \(k\) uni in \(N\) posti.
+            Mettendo tutto assieme otteniamo
+            \begin{align*}
+                \mathbb P(B_n) &= \sum_{k=1}^{N-n+1}
+                \mathbb P(B_n | S_k) \mathbb P(S_k) \\
+                &= \sum_{k=1}^{N-n+1} \frac{
+                    \cancel{\binom{N}{n}} p^k (1-p)^{N-k} \binom{N-m}{k-1}
+                }{
+                    \cancel{\binom{N}{n}}
+                } \\
+                &= \sum_{k=1}^{N-n+1} \binom{N-n}{k-1} p^k (1-p)^{N-k} \\
+                &= \sum_{h=0}^{N-n} \binom{N-n}{h} p^h (1-p)^{N-h-1} \\
+                &= p (1-p)^{n-1} \sum_{h=0}^{N-n} \binom{N-n}{h} p^h (1-p)^{N-n-h} \\
+                &= p(1-p)^{n-1}\left[p + 1 - p\right]^{N-n} = p(1-p)^{n-1}
+            \end{align*}
+            \item Calcoliamolo anche nell'altra versione: per ogni \(k\)
+            in \(\{1, \cdots, N-n+1\}\) vale
+            \begin{enumerate}
+                \item \[
+                    B_n \intersection S_k= \{
+                        \omega \in \Omega \suchthat (0, \cdots, 0, 1, \omega_{n+1}, \cdots, \omega_N)    
+                        \suchthat \sum_{k=n+1}^N \omega_k = 1
+                    \}
+                \]
+                \item \[
+                    \mathbb P(\{\omega\}) = p^k(1-p)^{N-k}
+                \]
+            \end{enumerate}
+            Abbiamo quindi che la cardinalità è
+            \[
+                |B_n \intersection S_k| = \binom{N-m}{k-1}
+            \]
+            e allora \[
+                \mathbb P(B_n) = \sum_{k=1}^{N-n+1} \mathbb P(B_n \intersection S_k)
+                = \sum_{k=1}^{N-n+1} \binom{N-n}{k-1} p^k (1-p)^{N-k}
+            \]
+            e il resto segue come prima.
+        \end{enumerate}
+        Il risultato è consistente con la nostra intuizione e non dipende da \(N\),
+        in quanto i lanci dopo l'\(n\)-esimo sono irrilevanti.
+        \item Possiamo scrivere la probabilità come la complementare di
+        ``ottengo tutte croci nei primi \(n\) lanci''.
+        Abbiamo quindi
+        \begin{align*}
+            \mathbb P(D_n) &= 1 - \mathbb P(D_n^c) = 1 - (1-p)^n
+        \end{align*}
+    \end{enumerate}
+\end{snippetsolution}
 
 
 

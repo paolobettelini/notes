@@ -545,6 +545,259 @@ In generale se perturbo una matrice grande con, per esempio, una matrice di norm
 in generale è grande ma se il rango è 1 allora si risolve semplicemente il problema.
 Quindi in astratto la distanza fra matrici in un certo senso non è solo la norma ma anche il rango.
 
+\subsection{Eliminazione di Gauss}
+
+Per una matrice elementare abbiamo
+\[
+    E^{-1}_{x,y} = 1 - \frac{1}{1 + y^*x}xy^*
+\]
+purché \(y^*x \neq -1\).
+Sia \(a \in \complexnumbers^n\), \(a_1 \neq 0\).
+Allora \[
+    E = I - \begin{pmatrix}
+        0 \\ a_1/a_1 \\ \vdots \\ a_n/a_1
+    \end{pmatrix}
+    e_1^t
+\]
+e quindi
+\[
+    Ea = a_1 \begin{pmatrix}
+        1 \\ 0 \\ 0 \vdots \\ 0
+    \end{pmatrix}
+\]
+Nel nostro caso il termine \[
+    y^*x = e_1^t \begin{pmatrix}
+        0 \\ - \frac{a_2}{a_1} \\ \cdots \\ - \frac{a_n}{a_1}
+    \end{pmatrix}
+\]
+e
+\[
+    E^{-1} = I + \begin{pmatrix}
+        0 \\ \frac{a_2}{a_1} \\ \cdots \\ \frac{a_n}{a_1}
+    \end{pmatrix} e_1^t
+\]
+
+Quando una matrice è fortemente non-singolare allora l'algoritmo
+di eliminazione di gauss senza pivoting
+non ha breakdown (se e solo se).
+Sia \(\hat A_1 = A_1 = A\) la matrice di innesco.
+Vogliamo trasformare questa matrice in \(U\) triangolare superiore,
+mantenendo l'equivalenza del sistema lineare.
+Sia \(\hat a_j\)
+la prima colonna della matrice quadrata
+di ordine \(n+1-j\),
+cioè al primo passo annullo tutto sotto al pivot, quindi vado avanti
+con matrici di quell'ordine.
+Allora
+\[
+    E_1 = I - \begin{pmatrix}
+        0 \\ \v_1
+    \end{pmatrix}e_1^t, E_2 = \left(
+            \begin{array}{c@{\hspace{1em}}|@{\hspace{1em}}cccc}
+            1 & 0 & 0 & 0 & 0 \\
+            \hline
+            0 & 1 & 0 & 0 & 0 \\
+            \vdots & \vdots & \ddots & \vdots & \vdots \\
+            0 & 0 & \dots & 1 & 0 \\
+            0 & 0 & \dots & 0 & 1
+            \end{array}
+            \right)  = I - \begin{pmatrix}
+        0 \\ 0 \\ v_2
+    \end{pmatrix}
+\]
+E in generale
+\[
+    E_{n-1} = I - \begin{pmatrix}
+        0 \\ 0 \\ \vdots \\ v_{n-1}
+    \end{pmatrix}e_{n-1}^t
+\]
+e la matrice diventa
+\[
+    A_j = \left(
+    \begin{array}{cc|ccc}
+    \ast & \ast & \ast & \cdots & \ast \\
+    0 & \ast & \ast & \cdots & \ast \\
+    \hline
+    0 & 0 & & & \\
+    \vdots & \vdots & & \hat{A}_j & \\
+    0 & 0 & & &
+    \end{array}
+    \right)
+\]
+e \(A_{j+1} = E_jA_j\).
+Infine troviamo
+\[
+    A_n = U
+\]
+Quindi abbiamo \(U=A_n = E_{n-1}\cdots E_2E_1 A\).
+Per trovare \(A\) bisogna moltiplicare a sinistra per l'inversa, quindi
+\[
+    A = E_1^{-1}E_2^{-1}\cdots E_{n-1}^{-1} U
+    = \left(
+        I + \begin{pmatrix}0 \\ v_1\end{pmatrix}e_1^t
+    \right)
+    \left(
+        I + \begin{pmatrix}0 \\ 0 \\ v_2\end{pmatrix}e_2^t
+    \right)
+    \cdots
+    \left(
+        I + \begin{pmatrix}0 \\ 0 \\ \cdots 0 \\ v_{n-1}\end{pmatrix}e_{n-1}^t
+    \right)U
+\]
+Dalla struttura sappiamo che questo termine che moltiplica \(U\)
+è triangolare inferiore.
+Consideriamo i primi due termini del prodotto,
+\begin{align*}
+    \left(
+        I + \begin{pmatrix}0 \\ v_1\end{pmatrix}e_1^t
+    \right)
+    \left(
+        I + \begin{pmatrix}0 \\ 0 \\ v_2\end{pmatrix}e_2^t
+    \right)
+    &= I + \begin{pmatrix}0 \\ v_1\end{pmatrix}e_1^t
+    + \begin{pmatrix}0 \\ 0 \\ v_2\end{pmatrix}e_2^t + 0
+\end{align*}
+quindi i prodotti misti delle diadi si annullano.
+Questo per induzione si estende a tutti i prodotti e quindi abbiamo una bella semplificazione.
+Notiamo che nella struttura del moltiplicazione \(A=LU\),
+per come si svolge il prodotto, possiamo considerare la matrice a blocchi
+mettendo in evidenza il minore \(A_k\),
+e da questa osservazione sul prodotto di matrici a blocchi,
+notiamo il se e solo se con la forte non-singolarità. Vale \(A_k = U_k L_k\)
+e l'ipotesi di invertibilità è equivalente a dire che i pivot non sono nulli.
+
+\subsection{Matrici elementari unitarie}
+
+Definiamo una generalizzazione per considerare anche la fattorizzazione \(QR\),
+cioè unitaria per triangolare superiore.
+
+\begin{snippetdefinition}{Matrice elementare di Hauseholder}
+    Sia \(v \in \complexnumbers^n\) con \(v \neq 0\).
+    La \emph{matrice elementare di Hauseholder} è definita come
+    \[
+        H_v = I - \frac{2}{||v||_2^2} vv^*
+    \]
+    e definiamo \(H_0 = I_0\).
+\end{snippetdefinition}
+
+È una correzione di rango \(1\) dell'identità.
+
+\begin{snippetproposition}{}
+    Per ogni \(v \in \complexnumbers\),
+    la matrice \(H_v\)
+    \begin{enumerate}
+        \item è Hermitiana;
+        \item è unitaria;
+        \item \(H_{\alpha v} = H_v\) per ogni \(\alpha \neq 0\);
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    \begin{enumerate}
+        \item L'identità è Hermitiana, quindi \(H_0\) è Hermitiana.
+        Negli altri casi abbiamo
+        \begin{align*}
+            H_v^* &= \left(
+                I - \frac{2}{||v||_2^2} vv^*
+            \right)^* \\
+            &= I^* - \frac{2}{||v||_2^2} (vv^*)^* \\
+            &= I - \frac{2}{||v||_2^2} vv^*
+        \end{align*}
+        \item L'identità è unitaria, quindi \(H_0\) è unitaria.
+        Negli altri casi abbiamo \begin{align*}
+            H_v^*H_v = H_v^2 &= I - \frac{4}{||v||_2^2}vv^*
+            + \frac{4}{||v||_2^4} vv^*vv^* = I
+        \end{align*}
+        siccome \(vv^* = ||v||_2^2\).
+        \item Se \(v=0\) allora la proposizione è banale.
+        Sia \(v \neq 0\). Abbiamo
+        \begin{align*}
+            H_{\alpha v} &= I - \frac{2}{||\alpha v||_2^2} (\alpha v){(\alpha v)}^* \\
+            &= I - \frac{2\alpha \overline \alpha}{
+                |\alpha^2| ||v||_2^2
+            } vv^* = H_v
+        \end{align*}
+    \end{enumerate}
+\end{snippetproof}
+
+Siccome è una matrice Hermitiana e unitaria, quindi ha autovalori reali
+di modulo \(1\).
+Inoltre è elementare quindi ha \(1\) con molteplicità \(n-1\)
+e \(-1\) con molteplicità \(1\).
+È diagonalizzabile quindi non distinguo il tipo di moltiplicità.
+D'altro canto,
+\begin{align*}
+    (H_v) v &= v - \frac{2}{||v||_2^2} vv^*v = -v
+\end{align*}
+quindi \(H_v w = w\) per \(w \in v^\perp\).
+Consideriamo \(x \in \complexnumbers^n\), possiamo decomporre lo spazio nella direzione dello
+\(v\) e nella sua componente ortogonale.
+Abbiamo quindi
+\[
+    \operatorname{span}(v) \oplus v^\perp = \complexnumbers^n
+\]
+e quindi scriviamo \(x = \alpha v = w\).
+Quindi l'applicazione è
+\[
+    H_v x = H_v(\alpha v + w) = \alpha H_v v + H_v w =
+    w - \alpha v
+\]
+Quindi applicare \(H_v\) ad \(x\) è come coniugare \(x\)
+nel piano \(-v^\perp, v\).
+
+\begin{snippettheorem}{}
+    Per ogni \(x \in \complexnumbers\),
+    esistono \(v \in \complexnumbers^n\)
+    e \(\alpha \in \complexnumbers\) tale che \(H_vx = \alpha e_1\).
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Se \(x = \beta e_1\) allora \(H_v = I\) e \(\alpha = \beta\) con \(v=0\),
+    che è il caso banale.
+    Altrimenti (in particolare \(x \neq 0\)), osserviamo che
+    \(||x||_2 = |\alpha|\) in quanto le matrici unitarie conversano la norma
+    (se la dimostrazione va a buon fine).
+    Allora possiamo scrivere \(\alpha = |\alpha|e^{i\psi} = ||x||_2^2 e^{i\psi}\).
+    Dobbiamo trovare l'angolo.
+    Siccome \(H_vx = \alpha e_1\), dobbiamo usare proprio quella \(x\).
+    Siccome \(H_v\) è Hermitiana e \(y^* H y \in \realnumbers\)
+    per tutte le \(y \in \complexnumbers^n\),
+    allora \(x^* H_v x = x^* \alpha e_1 = \alpha \overline{x}_1\).
+    Quindi, se scriviamo \(x_1 = |x_1| e^{i\theta}\),
+    allora \[\alpha \overline{x}_1 = ||x||_2 ||x|| e^{i(\psi - \theta)}\]
+    Dunque \(\psi = \theta\) oppure \(\psi = \theta + \pi\).
+    Abbiamo quindi due possibili soluzioni
+    \(\alpha = \pm ||x||_2 e^{i\theta}\).
+    Avendo informazioni su \(\alpha\), impoiamo \(H_v x = \alpha e_1\).
+    Usando la definizione
+    \begin{align*}
+        H_v x &= \alpha e_1 \\
+        \left(I - \frac{2}{||x||_2^2}vv^*\right)x &= \alpha e_1
+        x - \frac{2v^* x}{||x||_2^2} v &= \alpha e_1 \\
+        \frac{2v^* x}{||x||_2^2} v &= x - \alpha e_1 \\
+        v &= x - \alpha e_1
+    \end{align*}
+    dove abbiamo usato il fatto che \(H_{xv} = H_v\), che funziona a patto che \(v^*x \neq 0\).
+    La condizione ci impone che
+    \begin{align*}
+        x^* v &= x^*(x-\alpha e_1) \\
+        &= ||x||_2^2 - \alpha \overline x_1 \\
+        &= ||x||_2^2 - (\pm ||x||_2^2 e^{i\theta} ||x_1||_2 e^{-i\theta}) \\
+        &= ||x||_2^2 \mp ||x||_2 |x_1|
+    \end{align*}
+    abbiamo scritto \(x^*v\) al posto di \(v^*x\) ma tanto è non-nullo.
+    Scegliendo la versione con il \(+\) siamo sicuro che non si annulli
+    (in realtà anche l'altra funziona, ma la prima garantisce più stabilità numerica).
+    Quindi scegliamo \(\alpha = - ||x||_2 e^{i\theta}\).
+\end{snippetproof}
+
+\begin{snippetexercise}{}
+    Costruire base ortonormale partendo da k vettori linearmente indipendenti
+    Che serve per la forma normale di Schur.
+    Cioè che contenga lo span di quei primi \(k\) vettori
+    e che sia ortonormale.
+\end{snippetexercise}
+
 \pagebreak
 
 \begin{snippetexercise}{}
