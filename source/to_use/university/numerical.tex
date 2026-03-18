@@ -671,9 +671,9 @@ e l'ipotesi di invertibilità è equivalente a dire che i pivot non sono nulli.
 Definiamo una generalizzazione per considerare anche la fattorizzazione \(QR\),
 cioè unitaria per triangolare superiore.
 
-\begin{snippetdefinition}{Matrice elementare di Hauseholder}
+\begin{snippetdefinition}{Matrice elementare di Householder}
     Sia \(v \in \complexnumbers^n\) con \(v \neq 0\).
-    La \emph{matrice elementare di Hauseholder} è definita come
+    La \emph{matrice elementare di Householder} è definita come
     \[
         H_v = I - \frac{2}{||v||_2^2} vv^*
     \]
@@ -857,7 +857,7 @@ nel piano \(-v^\perp, v\).
     \[
         \hat H^{(j)} = I_{j-1} \oplus H^{(j)}
     \]
-    Il primo blocco è quindi la matrice unitarie e il secodno una matrice di Hauseholder.
+    Il primo blocco è quindi la matrice unitarie e il secodno una matrice di Householder.
     Essendo l'insieme delle matrici unitarie un gruppo moltiplicativo, \(R\) è anch'essa unitaria.
     Quindi \(R = PA\) con \[
         P = \hat H^{(n-1)}
@@ -900,7 +900,7 @@ nel piano \(-v^\perp, v\).
     \]
     per \(j \in \{2, \cdots, n\}\).
     Il costo da iterare è quindi quello di una moltiplicazione di un vettore
-    per una matrice di Hauseholder, cioè il costo di \((I + xy^*) c\)
+    per una matrice di Householder, cioè il costo di \((I + xy^*) c\)
     per \(c \in \complexnumbers^n\).
     Sia \(\gamma = y^* c\), che è un prodotto scalare, quindi \(m\)
     moltiplicazioni ed \(n-1\) somme (parallelizzabile).
@@ -962,75 +962,75 @@ Ci serve che il raggio spettrale sia minore di \(1\).
 \end{snippettheorem}
 
 \begin{snippetproof}{}
-    Consideriamo inizialmente \(P\) diagonalizzabile.
-    Abbiamo quindi \(P = TDT^{-1}\)
-    dove \(D\) è la matrice diagonale degli autovalori \(\lambda_i\).
-    Abbiamo quindi \[
-        P^k = \prod_k TDT^{-1} = T D^k T^{-1}
-    \]
-    Quindi, se esiste, per continuità abbiamo
-    \[
-        \lim_n P^k = T \left(\lim_n D^k\right) T^{-1}
-    \]
-    Ma dalla forma di \(D\), il limite tende a \(0\)
-    se e solo se \(|\lambda_j| < 1\).
-    Ci serve quindi che il raggio spettrale sia minore di \(1\).
-    Sia \(P\) non diagonalizzabile.
-    Utilizzando la scomposizione di Schur otteniamo
-    \(P = QTQ^*\) con \(Q\) unitaria e \(T\) triangolare superiore.
-    Abbiamo
-    \begin{align*}
-        \lim_n P^k = 0
-    \end{align*}
-    se e soltanto se
-    \[
-        \lim_n T^k = 0
-    \]
-    in quanto \(P^k = QT^k Q\).
-    Notiamo che \[
-        0_{\matrices_{n \times n}(\complexnumbers)} \leq |T|
-        = \begin{pmatrix}
-            |\lambda_1| &  &  & \ast \\
-             & |\lambda_2| & &  \\
-             &  & \ddots &  \\
-            0 &  &  & |\lambda_n| \\
-        \end{pmatrix} \leq 
-        \begin{pmatrix}
-            |\gamma_1| &  &  & \ast \\
-             & |\gamma_2| &  &  \\
-             &  & \ddots &  \\
-            0 &  &  & |\gamma_n| \\
-        \end{pmatrix} = \hat T
-    \]
-    Stiamo usando l'ordinamento parziale indotto sulle matrici.
-    Nella forma di Schur, possiamo permutare gli elementi della diagonale come voglio,
-    quindi scegliamo l'ordine come
-    \[
-        |\gamma_j| = |\gamma_{j+1}| = \cdots = |\gamma_q| \leq |\gamma_{q+1}|
-    \]
-    Dove \(j\) il primo indice tale che ciò è vero.
-    Da questa catena troviamo che
-    \begin{align*}
-        |\gamma_j| \leq |\gamma_j| + \frac{\varepsilon}{N}
-        < |\gamma_j| + \frac{2\varepsilon}{N},
-        \quad \varepsilon = |\gamma_{q+1}| - |\gamma_{j}|
-    \end{align*}
-    per \(N < 1 + 1 - j\).
-    L'idea è la seguente: se la matrice è diagonalizzabile, allora
-    almeno due termini sulla diagonale coincidono.
-    Noi li vogliamo a due a due distinti, quindi ogni qualvolta che ne trovo due
-    che coincidono, aggiungo un valore ad uno tale da non fargli superare il successivo nella catena.
-    Imponiamo che \(\gamma_n < 1\) in maniera tale da avere tutti numeri non negativi, a due a due distinti,
-    e tutti minori di 1.\\
-    Notiamo che \(|T| \leq |T^k|\) per espansione del prodotto e applicando la disuglianza triangolare.
-    Passando all'esponente abbiamo
-    \[
-        0_{\matrices_{n \times n}(\complexnumbers)}
-        \leq |T| \leq |T^k| = |T| \cdot |T^{k-1}|
-        \leq |T|^k \leq |\hat T|
-    \]
-    Ma siccome \(\hat T\) è diagonalizzabile, per il caso canale il suo limite tende a zero,
-    e quindi il limite della catena collassa a 0.
+    \begin{enumerate}
+        \item \emph{Caso diagonalizzabile:}
+        Abbiamo \(P = TDT^{-1}\)
+        dove \(D\) è la matrice diagonale degli autovalori \(\lambda_i\).
+        Elevando alla \(k\) abbiamo quindi \[
+            P^k = (TDT^{-1})^k = T D^k T^{-1}
+        \]
+        Quindi, per continuità del prodotto matriciale, abbiamo
+        \[
+            \lim_k P^k = T \left(\lim_k D^k\right) T^{-1}
+        \]
+        Ma dalla forma di \(D\), il limite tende a \(0\)
+        se e solo se \(|\lambda_i| < 1\).
+        Ci serve quindi che il raggio spettrale sia minore di \(1\).
+
+        \item \emph{Caso non diagonalizzabile:}
+        Utilizzando la scomposizione di Schur otteniamo
+        \(P = QTQ^*\) con \(Q\) unitaria e \(T\) triangolare superiore.
+        Abbiamo
+        \[
+            \lim_k P^k = 0
+        \]
+        se e soltanto se
+        \[
+            \lim_k T^k = 0
+        \]
+        in quanto \(P^k = QT^k Q^*\).
+        Notiamo che \[
+            0_{\matrices_{n \times n}(\complexnumbers)} \leq |T|
+            = \begin{pmatrix}
+                |\lambda_1| &  &  & \ast \\
+                 & |\lambda_2| & &  \\
+                 &  & \ddots &  \\
+                0 &  &  & |\lambda_n| \\
+            \end{pmatrix} \leq 
+            \begin{pmatrix}
+                \gamma_1 &  &  & \ast \\
+                 & \gamma_2 &  &  \\
+                 &  & \ddots &  \\
+                0 &  &  & \gamma_n \\
+            \end{pmatrix} = \hat T
+        \]
+        Stiamo usando l'ordinamento parziale indotto sulle matrici.
+        Nella forma di Schur, possiamo permutare gli elementi della diagonale come vogliamo,
+        quindi scegliamo di ordinarli in modo crescente:
+        \[
+            |\lambda_1| \leq |\lambda_2| \leq \dots \leq |\lambda_n|
+        \]
+        L'idea è la seguente: affinché \(\hat T\) sia sicuramente diagonalizzabile, vogliamo che i suoi elementi diagonali \(\gamma_i\) siano a due a due distinti. 
+        Ogni qualvolta troviamo dei termini in \(|T|\) che coincidono, aggiungiamo un valore ad uno tale da non fargli superare il successivo nella catena.
+        Ad esempio, se abbiamo un blocco di autovalori con lo stesso modulo:
+        \[
+            |\lambda_j| = |\lambda_{j+1}| = \cdots = |\lambda_q| < |\lambda_{q+1}|
+        \]
+        poniamo \(\varepsilon = |\lambda_{q+1}| - |\lambda_j|\) e definiamo i nuovi valori aggiungendo incrementi successivi di \(\frac{\varepsilon}{N}\) (con \(N\) opportunamente grande):
+        \[
+            \gamma_j = |\lambda_j|, \quad \gamma_{j+1} = |\lambda_j| + \frac{\varepsilon}{N}, \quad \gamma_{j+2} = |\lambda_j| + \frac{2\varepsilon}{N}, \dots
+        \]
+        facendo attenzione a restare strettamente minori del valore distinto successivo.
+        Imponiamo infine che l'ultimo termine \(\gamma_n < 1\) (il che è possibile poiché \(\rho(P) < 1\)), in maniera tale da avere tutti numeri non negativi, a due a due distinti, e tutti minori di \(1\).\\
+        
+        Notiamo che \(|T^k| \leq |T|^k\) per espansione del prodotto e applicando la disuguaglianza triangolare.
+        Passando all'esponente per \(k\), abbiamo la seguente catena:
+        \[
+            0_{\matrices_{n \times n}(\complexnumbers)} \leq |T^k| \leq |T|^k \leq \hat T^k
+        \]
+        Ma siccome \(\hat T\) ha autovalori tutti distinti è diagonalizzabile, e avendo \(\rho(\hat T) < 1\), per il caso precedente il suo limite tende a zero. 
+        Per il teorema del confronto, il limite della catena collassa a \(0\), implicando \(\lim_k |T^k| = 0\), e dunque \(\lim_k P^k = 0\).
+    \end{enumerate}
 \end{snippetproof}
 
 
