@@ -8,6 +8,7 @@
 \usepackage{cancel}
 \usepackage{cancel}
 \usepackage{wrapfig}
+\usepackage{enumitem}
 \usepackage{tikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
@@ -1330,14 +1331,454 @@ Di conseguenza,
     \end{enumerate}
 \end{snippetsolution}
 
+Basandoci su questo esercizio, supponiamo di fare tendere il numero
+di tentativi \(N\) all'infinito. Notiamo che
+\[
+    \sum_{n=1}^\infty \mathbb P(B_n)
+    = \sum_{n=1}^\infty p(1-p)^{n-1}
+    = p \sum_{n=1}^\infty (1-p)^{n-1}
+    = \sum_{k=0}^\infty (1-p)^k
+\]
+Allora intuitiamente questo sempre coerente in quanto
+\[
+    \bigcup_{n=1}^\infty B_n
+\]
+è equivalente all'evento ``ottengo almeno una testa in un numero infinito di tentativi''.
+Se \(p>0\), allora questo è un evento certo.
+Per rendere rigoroso questo argomento ci serve uno
+spazio di probabilità tale che
+\[
+    \mathbb P\left(
+        \bigcup_{n=1}^\infty B_n
+    \right) = \sum_{n=1}^\infty \mathbb P(B_n)
+\]
+In teoria per modellizzare infiniti lanci di moneta
+abbiamo bisogno di \(\Omega = \{0,1\}^{\naturalnumbers}\).
+Ma \(\Omega\) non è numerabile. Inoltre ci serve una proprietà
+di additività più forte per ottenere
+quello che vogliamo.
+Possiamo anche vedere il problema
+anche dal punto di vista \(\mathbb P(D_n) = 1 - (1-p)^n\).
+Come prima se facciamo andare il numero di tentativi a
+\(+\infty\), ci aspettiamo di ottenere l'evento certo.
+Notiamo che per tutte le \(n\) \[
+    D_n \leq D_{n+1}
+\]
+e inoltre \[
+    D_\infty = \bigcup_{n=1}^\infty D_n
+\]
+che dovrebbe essere un evento certo.
+Possiamo fare il seguente conto
+\[
+    \mathbb P(D_\infty) = \mathbb P\left(
+        \lim_n \bigcup_{k=1}^n D_k
+    \right) = \lim_n \mathbb P(D_n)
+    = \lim_n 1 - (1-p)^n = 1
+\]
+Senza ipotesi aggiuntive sulla misura di probabilità non sappiamo
+se possiamo fare quel passaggio di estrazione dal limite,
+in quanto serve una continuità dal basso poiché
+\(\{D_n\}_{n \in \naturalnumbers}\) è una successione crescente.
+Di conseguenza la necessità di modellizzare alcuni esperimenti
+ci spinge a generalizzare la nozione di spazio di probabilità
+rispetto a due aspetti:
+\begin{enumerate}
+    \item L'insieme \(\Omega\) può essere infinito, in particolare
+    \begin{enumerate}
+        \item al più numerabile,
+        \item arbitrario (qua nascono problemi di misurabilità).
+    \end{enumerate}
+    \item Dobbiamo trovare una proprietà da assumere per la misura che garantisca che si comporti bene rispetto a
+    famiglie numerabili di insiemi.
+\end{enumerate}
 
+\begin{snippetdefinition}{Spazio di probabilità su insieme al più numerabile}
+    Sia \(\Omega \neq \emptyset\) al più numerabile.
+    Chiamiamo misura di probabilità su \((\Omega, \powerset(\Omega))\)
+    una funzione \(\mathbb P\colon \powerset(\Omega)\fromto [0,1]\)
+    tale che
+    \begin{enumerate}
+        \item \(\mathbb P(\Omega) = 1\);
+        \item \emph{\(\sigma\)-additività:} \(\forall \{A_n\}_{n\in\naturalnumbers} \subseteq \powerset(\Omega)\)
+        tali che \(A_i \intersection A_j = \emptyset\) per \(i \neq j\), vale
+        \[
+            \mathbb P \left(
+                \bigcup_{n=1}^\infty A_n 
+            \right) = \sum_{n=1}^\infty \mathbb P(A_n)
+        \]
+        Chiamiamo \((\Omega, \powerset(\Omega), \mathbb P)\) spazio di probabilità.
+    \end{enumerate}
+\end{snippetdefinition}
 
+Notiamo che la \(\sigma\)-additività
+implica l'additività.
+In generale il converso non vale.
+Studiamo se questa definizione si comporta bene con i limiti.
 
+\begin{snippetdefinition}{Convergenza per insiemi}
+    Sia \(\{A_n\}_{n \in \naturalnumbers} \subseteq \powerset(\Omega)\)
+    e \(A \in \powerset(\Omega)\).
+    Indichiamo con
+    \begin{enumerate}
+        \item \(A_n \uparrow A\)
+        se \(A_n \subseteq A_{n+1}\) e \[
+            A = \bigcup_{n=1}^\infty A_n
+        \]
+        \item \(A_n \downarrow A\)
+        se \(A_n \supseteq A_{n+1}\) e \[
+            A = \bigcup_{n=1}^\infty A_n
+        \]
+    \end{enumerate}
+\end{snippetdefinition}
 
+\begin{snippettheorem}{}
+    Sia \(\mathbb P \colon \powerset(\Omega) \fromto [0,1]\) funzione tale che
+    \begin{enumerate}
+        \item \(\mathbb P(\Omega) = 1\)
+        \item \(\forall A,B \in \powerset(\Omega)\)
+        tale che \(A \intersection B = \emptyset\) vale
+        \(\mathbb P(A\union B) = \mathbb P(A) + \mathbb P(B)\).
+    \end{enumerate}
+    Allora le seguenti condizioni sono equivalenti:
+    \begin{enumerate}[label=\Alph*]
+        \item \emph{\(\sigma\)-additività:}
+        \(\mathbb P\) è una misura di probabilità su
+        \((\Omega, \powerset(\Omega))\);
+        \item \emph{continuità dal basso:}
+        \(\forall \{A_n\}_{n \in \naturalnumbers} \subseteq \powerset(\Omega)\)
+        tale che \(A_n \uparrow A\)
+        vale \[
+            \mathbb P(A)
+            = \mathbb P\left(
+                \bigcup_{n=1}^\infty A_n
+            \right)
+            = \mathbb P\left(
+                \lim_n \bigcup_{k=1}^n A_k
+            \right)
+            = \lim_n \mathbb P(A_n)
+        \] 
+        \item \(\{A_n\}_{n \in \naturalnumbers} \subseteq \powerset(\Omega)\)
+        tale che \(A_n \uparrow \Omega\) vale \[
+            \lim_n \mathbb P(A_n) = 1
+        \]
+        \item \emph{continuità dall'alto:}
+        \(\{A_n\}_{n \in \naturalnumbers} \subseteq \powerset(\Omega)\)
+        tale che \(A_n \downarrow \Omega\) vale \[
+            \lim_n \mathbb P(A_n) = \mathbb P(A)
+        \]
+        \item \(\{A_n\}_{n \in \naturalnumbers} \subseteq \powerset(\Omega)\)
+        tale che \(A_n \downarrow \emptyset\) vale \[
+            \lim_n \mathbb P(A_n) = 0
+        \]
+    \end{enumerate}
+\end{snippettheorem}
 
+\begin{snippetproof}{}
+    Dimostriamo il seguente schema:
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAAo6BKEAX1PSZc+QigCM5KrUYs27AEY9+g7HgJEJYqfWatEHAMZKBIDKpFEATJOo7Z+9lGMrh6lNa22ZejjCVSYKABzeCJQADMAJwgAWyQyEBwIJAkQBiwwHygIJnkGVmoACxg6KCQwJgYGahw6LAY2SEyQankYMDLEAGZiZRAo2JSa5MQE9Ob9bNz8lpBi0vLK6sS6hv0mgpA2jqQevoG4xFSk3epxrJy8zfnOiqqa1caCTe3OvZMD08SR1NfdsYyF2m1xKtyWD3qT2a+2ihy6wyQABYzoC2FMrrMbot7itIetnrM-ogALTvCKwpEI7ooiYgdEzIqg7HLWp48AE1rtTqk3ofCmIazfIZpVGTS4MuZMxB3FmPfHNTk7Elk-r844jQVEnk0oEYxkLaXg3FrdnQii8IA
+        \begin{tikzcd}
+        (a) \arrow[r, Rightarrow, bend left] & (b) \arrow[l, Rightarrow, bend left] \arrow[r, Rightarrow, bend left] \arrow[d, Rightarrow, bend right] & (d) \arrow[l, Rightarrow, bend left] \arrow[d, Rightarrow, bend right] \\
+                                            & (c) \arrow[u, Rightarrow, bend right]                                                                   & (e) \arrow[u, Rightarrow, bend right]                                 
+        \end{tikzcd}
+    \end{center}
+    Se \(\Omega\) è finito non c'è nulla da dimostrare.
+    Supponiamo invece che sia infinito numerabile.
+    \begin{enumerate}
+        \item \emph{\((b) \implies (c)\)}: basta prendere \(A = \Omega\) in (b);
+        \item \emph{\((d) \implies (e)\)}: basta prendere \(A = \emptyset\) in (d);
+        \item \emph{\((c) \implies (b)\)}: prendiamo \(A_n \uparrow A\).
+        Usiamo il fatto che \(\Omega = A \union A^c\).
+        Prendiamo \(B_n = A_n \union A\) e notiamo che
+        \begin{enumerate}
+            \item \(B_n = A_n \intersection A^c \subseteq A_{n+1} \union A^c = B_{n+1}\).
+            \item \[
+                \bigcup_{n=1}^\infty B_n = \bigcup_{n=1}^\infty
+                A_n \union A^c \subseteq A_{n+1} \union A^c = B_{n+1}
+            \]
+        \end{enumerate}
+        Quindi \(B_n \uparrow \Omega\).
+        Possiamo applicare (c) su \(\{B_n\}\)
+        quindi \[
+            1 = \mathbb P(\Omega) = \lim_n \mathbb P(B_n) = \lim_n \mathbb P(A_n) + \mathbb P(A^c)
+        \]
+        e di conseguenza \[
+            \lim_n \mathbb P(A_n) = 1 - \mathbb P(A^c) = \mathbb P(A)
+        \]
+        \item \emph{\((e) \implies (d)\)}: analogo;
+        \item \emph{\((b) \implies (d)\)}: 
+        per prima cosa notiamo che presi \(\{C_n\} \subseteq \powerset(\Omega)\)
+        allora \(C_n \uparrow C\) è equivalente a dire che \(C_n^c \uparrow C^c\).
+        Prendiamo \(\{A_n\} \subseteq \powerset(\Omega)\)
+        tali che \(A_n \downarrow A\).
+        Per quello che abbiamo scritto prima,
+        \(A_n \downarrow A\) implica che \(A_n^c \uparrow A^c\) e quindi
+        \[
+            \lim_n \mathbb P(A_n^c) = \mathbb P(A^c) = 1 - \mathbb P(A)
+        \]
+        di conseguenza
+        \[
+            \cancel{1}
+            - \mathbb P(A)
+            = \lim_n \mathbb P(A_n^c)
+            = \lim_n 1 - \mathbb P(A_n)
+            = \cancel{1} - \lim_n \mathbb P(A_n)
+        \]
+        \item \emph{\((d) \implies (b)\)}: \todo.
+        \item \emph{\((d) \implies (c)\)}:
+        Prendiamo \(\{A_n\} \subseteq \powerset(\Omega)\)
+        tali che \(A_n \uparrow A\).
+        Nello stesso modo di prima otteniamo
+        che \(A_n \uparrow A\) implica \(A_n^c \downarrow A^c\)
+        e quindi per (b) vale
+        \[
+            \mathbb P(A_n^c) = \mathbb P(A^c) = 1-\mathbb P(A)
+        \]
+        e come prima
+        \[
+            1 - \mathbb P(A)
+            = \lim_n \mathbb P(A_n^c)
+            = 1- \lim_n \mathbb P(A_n)
+        \]
+        \item \emph{\((a) \implies (b)\)}:
+        Prendiamo \(\{A_n\} \subseteq \powerset(\Omega)\)
+        tali che \(A_n \uparrow A\).
+        Definiamo \(B_1 = A_1\) e \(B_n = A_n / A_{n-1}\)
+        per tutte le \(n > 1\).
+        Il diagramma di Wenn forma delle corone annidate.
+        Per definizione di \(A_n \uparrow A\),
+        \(\{B_n\}\) sono digiunti e \[
+            \bigcup_{n=1}^\infty B_n = \bigcup_{n=1}^\infty A_n = A
+        \]
+        Quindi concludiamo che
+        \begin{align*}
+            \mathbb P(A) &= \mathbb P\left(
+                \bigcup_{n=1}^\infty A_n
+            \right)
+            = \mathbb P\left(
+                \bigcup_{n=1}^\infty B_n
+            \right)
+            = \sum_{n=1}^\infty \mathbb P(B_n)
+            = \lim_n \sum_{k=1}^n \mathbb P(B_k) \\
+            &= \lim_n \sum_{k=1}^n \mathbb P(A_k / A_{k-1})
+            = \lim_n \sum_{k=1}^n \mathbb P(A_k) - \mathbb P(A_{k-1})
+            = \lim_n \mathbb P(A_n)
+        \end{align*}
+        Quindi abbiamo dimostrato che vale (b).
+        \item \emph{\((b) \implies (a)\)}:
+        Prendiamo \(\{A_n\} \subseteq \powerset(\Omega)\)
+        tale che sono disgiunti.
+        Definiamo \[
+            B_n = \bigcup_{k=1}^n A_k
+        \]
+        Quindi abbiamo che \(B_n \subseteq B_{n+1}\)
+        per tutte le \(n\) e \[
+            \bigcup_{n=1}^\infty B_n
+            = \bigcup_{n=1}^\infty A_n
+            = A
+        \]
+        quindi \(B_n \uparrow A\),
+        e allora possiamo applicare (b)
+        \[
+            \mathbb P \left(
+                \bigcup_{n=1}^\infty A_n
+            \right)
+            = \mathbb P(A)
+            = \lim_n \mathbb P(B_n)
+            = \lim_n \mathbb P \left(
+                \bigcup_{k=1}^n Ak
+            \right)
+            = \lim_n \sum_{k=1}^n \mathbb P(A_k)
+            = \sum_{k=1}^\infty \mathbb P(A_n)
+        \]
+    \end{enumerate}
+    Quindi abbiamo mostrato che vale (a).
+    È fondamentale l'additività di \(\mathbb P\),
+    il che è legato ai risultati di estensione.
+    Infatti, per estendere unicamente una funzione da un'algebra
+    ad una \(\sigma\)-algebra ci serve la \(\sigma\)-additività sull'algebra.
+\end{snippetproof}
 
+la \(\sigma\)-additività sembra più un'assunzione tecnica che ci garantisce di poter usare i risultati classici della
+teoria della misura, come per esempio al continuità dall'alto o dal basso.
+Si possonos tudiare anche modelli senza quest'ultima.
 
+\begin{snippetproposition}{\(\sigma\)-sub additività}
+    Sia \(\{A_n\}_{n \in \naturalnumbers} \subseteq \powerset(\Omega)\).
+    Allora, \[
+        \mathbb P \left(
+            \bigcup_{n=1}^\infty A_n
+        \right) \leq \sum_{n=1}^\infty \mathbb P(A_n)
+    \]
+\end{snippetproposition}
 
+Questa è significativa solo se il termine destro è minore di \(1\).
+
+\begin{snippetproof}{}
+    Nel caso finito abbiamo visto la formula di inclusione/esclusione
+    che implica che per ogni \(n\) 
+    \begin{align*}
+        \mathbb P \left(
+            \bigcup_{k=1}^n A_k
+        \right)
+        \leq \sum_{k=1}^n \mathbb P(A_k)
+    \end{align*}
+    Quindi se definiamo \[
+        B_n = \bigcup_{k=1}^n A_k
+    \]
+    Allora, per definizione, \(B_n \uparrow \bigcup_{n=1}^\infty A_n\)
+    quindi
+    \begin{align*}
+        \mathbb P\left(
+            \bigcup_{n=1}^\infty 
+        \right)
+        &= \lim_n \mathbb P(B_n)
+        = \lim_n \mathbb P \left(
+            \bigcup_{k=1}^n A_k
+        \right) \\
+        &\leq \lim_n \sum_{k=1}^n \mathbb P(A_k)
+        = \sum_{k=1}^\infty \mathbb P(A_k)
+    \end{align*}
+\end{snippetproof}
+
+Visto che \(\Omega\) è al più numerabile, \(\powerset(\Omega)\) non è necessariamente numerabile.
+Tuttavia, come nel caso finito, tutti gli elementi di \(\powerset(\Omega)\)
+possono essere scritti come unioni numerabili di insiemi del tipo
+\(\{\omega\}\) con \(\omega \in \Omega\).
+Quindi possiamo provare un teorema di caratterizzazione per le misure di probabilità
+su \(\powerset(\Omega)\) analogo a quello nel caso finito.
+
+\begin{snippetdefinition}{Densità discreta}
+    Chiamiamo \emph{densità discreta}
+    una qualsiasi funzione \(p \colon \Omega \fromto [0,1]\) tale che
+    \[
+        \sum_{\omega \in \Omega} p(\omega) = 1
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{}
+    Sia \(\mathbb P\) una misura di probabilità su \((\Omega, \powerset(\Omega))\).
+    Allora, la funzione \(p \colon \Omega \fromto [0,1]\) definita da
+    \[
+        p(\omega) \triangleq \mathbb P(\{\omega\})
+    \]
+    è una densità discreta.
+\end{snippetproposition}
+
+In questo caso diciamo che \(p\) è la densità discreta associata a \(\mathbb P\).
+
+\begin{snippetproof}{}
+    Segue immediatamente usando la \(\sigma\)-additività
+    \[
+        \sum_{\omega \in \Omega} p(\omega) = \sum_{\omega \in \Omega} \mathbb P(\{\omega\}) = \mathbb P(\Omega) = 1
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{}
+    Una misura di probabilità \(\mathbb P\) su \((\Omega, \powerset(\Omega))\)
+    è univocamente determinata dalla sua densità discreta
+    \(p\), in particolare
+    \[
+        \mathbb P(A) = \sum_{\omega \in \Omega} p(\omega)
+    \]
+    per tutte le \(A \in \powerset(\Omega)\).
+    In particolare, se due misure di probabilità \(\mathbb P_1, \mathbb P_2\)
+    su \((\Omega, \powerset(\Omega))\) con densità discrete rspettivi \(p_1, p_2\),
+    allora \(p_1 = p_2\) se e solo se \(\mathbb P_1 = \mathbb P_2\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    \iffproof{
+        Mostriamo che se due misure di probabilità hanno le medesima densità, allora coincidono.
+        Siano \(\mathbb P_1, \mathbb P_2\) misure di probabilità
+        su \((\Omega, \powerset(\Omega))\)
+        tali che abbiamo la medesima densità discreta \(p\).
+        Allora, per ogni \(A \in \powerset(\Omega)\) vale
+        \begin{align*}
+            \mathbb P_1(A) &= \sum_{\omega \in A} \mathbb P_1(\{\omega\})
+            = \sum_{\omega \in A} = p(\omega)
+            = \sum_{\omega \in A} \mathbb P_2(\{\omega\}) = \mathbb P_2(A)
+        \end{align*}
+    }{
+        Siano \(\mathbb P_1\) e \(\mathbb P_2\)
+        misure di probabilità su \((\Omega, \powerset(\Omega))\)
+        con densità \(p_1\) e \(p_2\)
+        rsiepttivamente. Assumiamo
+        che per tutte le \(A \in \powerset(\Omega)\), \(\mathbb P_1(A) = \mathbb P_2(A)\).
+        Allora
+        \[
+            p_1(\omega) = \mathbb P_1(\{\omega\})
+            = \mathbb P_2(\{\omega\}) = p_2(\omega)
+        \]
+        per tutte le \(\omega \in \Omega\).
+    }
+\end{snippetproof}
+
+Come nel caso finito, qua la \(\sigma\)-additività è fondamentale per garantire che \(p\)
+determina univocamente \(\mathbb P\).
+
+TODO c'è un errore nel corollario.
+\begin{snippetcorollary}{}
+    Sia \(\mathbb P\) misura di probabilità su \((\Omega, \powerset(\Omega))\) con densità discreta \(p\).
+    Allora sono equivalenti:
+    \begin{enumerate}
+        \item \(\exists S \subseteq \Omega\) tale che \(|S| < \infty\) e \(\mathbb P(S) = 1\);
+        \item \(\exists S \subseteq \Omega\) tale che \(|S| < \infty\) e \(p(\omega) > 0 \iff \omega \in S\).
+    \end{enumerate}
+\end{snippetcorollary}
+
+\begin{snippetproof}{}
+    \iffproof{
+        Dire che \(p(S) = 1\) è equivalente a dire che \(\mathbb P(S^c) = 0\).
+        Se per assurdo esistesse \(\omega \in S^c\) tale che \(p(\omega)>0\),
+        allora \[
+            \mathbb P(S^c) > \mathbb P(\{\omega\}) = p(\omega) > 0
+        \]
+        Quindi è assurdo e tale insiemi non esiste.
+    }{
+        Notiamo che \[
+            \mathbb P(S^c) = \sum_{\omega \in S^c} \mathbb P(\{\omega\})
+            = \sum_{\omega \in S^c} p(\omega) = 0
+        \]
+        quindi
+        \[
+            \mathbb P(S) = 1 - \mathbb P(S^c) = 0
+        \]
+    }
+\end{snippetproof}
+
+In generale possiamo dire che \[
+    S = \{
+        \omega \in \Omega \suchthat p(\omega) > 0    
+    \}
+\]
+allora \(\mathbb P(S) = 1\).
+
+Tutti i risultati precedenti valgono anche nel caso con \(\Omega\)
+al più numerabile.
+Il teorema delle probabilità totali si può estendere al caso di partizioni numerabili.
+
+\begin{snippettheorem}{}
+    Sia \(\{\Omega_n\}_{n \in \naturalnumbers} \subseteq \powerset(\Omega)\)
+    tale che \(\Omega_i \intersection \Omega_j = \emptyset\) per \(i \neq j\) e \[
+        \bigcup_{n=1}^\infty \Omega_n = \Omega    
+    \]
+    Allora, per tutte le \(A \in \powerset(\Omega)\) vale
+    \[
+        \mathbb P(A) = \sum_{n=1}^\infty \mathbb P(A \intersection \Omega_n) = \sum_{n=1}^\infty \mathbb P(A | \Omega_n) \mathbb P(\Omega_n)
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Abbiamo \begin{align*}
+        \mathbb P(A) &= \mathbb P(A \intersection \Omega) = \mathbb P\left(
+            A \intersection \bigcup_{n=1}^\infty \Omega_n
+        \right) \\
+        &= \mathbb P\left(
+            \bigcup_{n=1}^\infty (A \intersection \Omega_n)
+        \right) = \sum_{n=1}^\infty \mathbb P(A \intersection \Omega_n)
+    \end{align*}
+\end{snippetproof}
 
 
 
