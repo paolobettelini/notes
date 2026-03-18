@@ -8,10 +8,10 @@
 \usepackage{fullpage}
 \usepackage{tikz}
 \usepackage{wrapfig}
-
-% coxeter: introduction to geometry 2nd ed 1969 
+%\usepackage{pgfplots}
 
 \usetikzlibrary{calc}
+%\pgfplotsset{compat=1.18}
 
 % Cancel color
 \renewcommand{\CancelColor}{\color{red}}
@@ -1093,5 +1093,316 @@ cioè geometricamente la otteniamo ``svolgendo'' un filo inelastico arrotolato s
     \]
     Questo dimostra che l'involuta è esattamente la stessa spirale logaritmica di partenza, ruotata di \(-\pi/2\).
 \end{snippetexample}
+
+TODO 17 marzo e le cose prima.
+Teorema che dice che esiste una spirale logaritmica
+la cui evoluta coincide con sè stessa.
+
+\pagebreak
+
+\section{Lezione 18/03/2026}
+
+\begin{snippetdefinition}{sistema di Frenet}
+    Sia \(\sigma \colon I \fromto \realnumbers^3\)
+    una curva biregolare parametrizzata per lunghezza d'arco.
+    Il \emph{sistema di Frenet} è un sistema di riferimento di assi cartesiani
+    mobile lungo \(\sigma(s)\) con:
+    \begin{enumerate}
+        \item origine in \(\sigma(s)\);
+        \item versori \[
+            v(s) \triangleq \dot\sigma(s),
+            \quad
+            n(s) \triangleq  \frac{\ddot \sigma(s)}{\kappa(s)},
+            \quad
+            b(s) \triangleq v \wedge n
+        \]
+    \end{enumerate}
+\end{snippetdefinition}
+
+Siccome \(\langle \dot\sigma, \ddot\sigma \rangle = 0\),
+\(v\) ed \(n\) sono ortogonali.
+Quindi la terna \(v,n,b\) sono una base ortonormale di \(\realnumbers^3\)
+orientata positivamente. Infatti \(\det(v,n,b) = 1 > 0\) di una matrice del gruppo ortogonale speciale.
+I vettori \(\sigma(s), v, n\) generano il piano osculatore in \(\sigma(s)\)
+e \(b\) è ortogonale al piano osculatore.
+
+C'è un movimento continua fra la base canonica e la base di Frenet,
+infatti entrambi hanno lo stesso orientamento in quanto il segno del determinante coincide,
+e il movimento continuo preserva il determinante.
+
+\begin{snippetproposition}{}
+    Esistono formule per calcolare il sistema di Frenet per una curva \(\sigma(t)\) parametrizzata arbitrariamente,
+    purché biregolare.
+    \begin{align*}
+        v &= \frac{\sigma'(t)}{||\sigma'(t)||} \\
+        b &= \frac{\sigma' \wedge \sigma''}{\sigma' \wedge \sigma''} \\
+        n &= \frac{
+            (\sigma' \wedge \sigma'') \wedge \sigma'
+        }{
+            ||\sigma' \wedge \sigma''|| \cdot ||\sigma'||
+        }
+    \end{align*}
+\end{snippetproposition}
+
+\begin{snippettheorem}{Equazioni differenziali di Frenet-Serret}
+    Data una curva biregolare \(\sigma\colon I \fromto \realnumbers^3\)
+    parametrizzata per lunghezza d'arco, esistono
+    funzioni reali \(\kappa \colon I \fromto \realnumbers^{\geq 0}\),
+    cioè la curvatura, e \(\tau \colon I \fromto \realnumbers\),
+    cioè la torsione, tale che vale il sistema di equazioni differenziali linear \[
+        \begin{cases}
+            \dot v = kn \\
+            \dot n = -\kappa v + \tau b\\
+            \dot b = -\tau n
+        \end{cases}
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Ricaviamo solo la formula di \(\dot b\) che definisce la funzione di torsione.
+    Abbiamo che \(|b|^2 = 1\), cioè \(\langle b,b\rangle = 1\) e quindi \(\langle \dot b, b \rangle =0\).
+    Quindi \(b \perp b\) sono ortogonali.
+    Similmente, derivando, otteniamo \(\dot b = \dot v \wedge n + v \wedge \dot n\).
+    Osserviamo che \(\dot v = \ddot \sigma = \kappa n\),
+    cioè \[
+        \dot v \wedge n = \kappa n \wedge n = 0
+    \]
+    Quindi \(\dot b = v \wedge \dot n\) da cui segue
+    \(\dot b \perp v\).
+    Ne segue anche che \(\dot b\) è perpendicolare a \(n = b \wedge v\),
+    cioè \[
+        \dot b = - \tau n
+    \]
+    per \(\tau \colon I \fromto \realnumbers\) opportuna.
+\end{snippetproof}
+
+Grazie all'esistenza di questo sistema si ottiene il seguente teorema di classificazione.
+
+\begin{snippettheorem}{}
+    Siano \(\sigma_1, \sigma_2 \colon I \fromto \realnumbers^3\)
+    due curve biregolari con le medesime funzioni di curvatura \(\kappa_1 = \kappa_2\) e torsione
+    \(\tau_1 = \tau_2\).
+    Allora esiste \(g\) isometria di \(\realnumbers^3\)
+    tale che \(g\sigma_1 = \sigma_2\).
+    Vale anche il viceversa, cioè se le due curve sono collegate per isometria, allora
+    hanno le medesime curvature e torsioni.
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    \ffiproof{
+        Se \(\sigma_2 = g \sigma_1\), cioè
+        \[
+            gx = Ax + C, \quad A \in O(3), C \in \realnumbers^3
+        \]
+        Allora \[
+            \dot\sigma_2 = A \cdot \dot \sigma_1, \quad \ddot \sigma_2 = A \cdot \ddot\sigma_1
+        \]
+        Abbiamo quindi che \[
+            v_2 = Av_1, \cdots n_2 = An_1
+        \]
+        e per le proprietà del prodotto vettoriale
+        \begin{align*}
+            b_2 &= v_2 \wedge n_2 = Av_1 \wedge An_1 \\
+            &= A(v_1 \wedge n_1) = Ab_1
+        \end{align*}
+        e quindi anche \(\dot b_2 = A\dot b_1\).
+        Siccome \(\kappa = |\ddot \sigma|\) e \(\tau = |\dot b|\)
+        troviamo che \(\kappa_1 = \kappa_2\) e \(\tau_1 = \tau_2\).
+    }{
+        Siano \(\kappa_1 = \kappa_2 = \kappa\) e
+        \(\tau_1 = \tau_2 = \tau\) e assumiamo con un movimento rigido che
+        \(\sigma(t_0) = \sigma_2(t_0)\) e \[
+            (v_1(t_0), n_1(t_0), b_1(t_0)) = (v_2(t_0), n_2(t_0), b_2(t_0))
+        \]
+        Allora \(v_i, n_i, b_i\) sono soluzioni dello stesso problema di Cauchy
+        \[
+            \begin{cases}
+                \dot v = \kappa n \\
+                \dot n = -\kappa v + \tau b \\
+                \dot b = - \tau n \\
+                v(t_0) = v_0
+                n(t_0) = n_0
+                b(t_0) = b_0
+            \end{cases}
+        \]
+        Per unicità delle soluzioni, per tutte le \(t \in I\)
+        \[
+            (v_1(t), n_1(t), b_1(t))
+            = (v_2(t), n_2(t), b_2(t))
+        \]
+        In particolare, \(\sigma_1, \sigma_2\) sono soluzioni del sistema
+        \[
+            \begin{cases}
+                \dot \sigma(t) = v(t) \\
+                v(t) = v_0                
+            \end{cases}
+        \]
+        con \(v(t) = v_1(t) = v_2(t)\).
+        Nuovamente per il teorema di unicità
+        \(\sigma_1 = \sigma_2\).
+    }
+\end{snippetproof}
+
+Esistono tante curve a meno di isometria tante quante sono le copie
+di funzioni \((\kappa, \tau)\).
+
+In particoalre, per le curve piane (immerse in \(\realnumbers^3\)) è sufficiente solo la curvatura \(\kappa\)
+per classificare una curva a meno di isometria.
+Infatti \(b = b_3\) costante per una curva piana.
+Serve  \(\tau = 0\), cioè per curve piane \((\kappa, \tau) = (\kappa, 0)\).
+
+\begin{snippetexercise}{Mostrare il viceversa di quanto appena detto}
+    Dimostrare che se
+    la torsione \(\tau = 0\), allora,
+    \(\operatorname{Im}(\sigma)\) è contenuta in un piano.
+\end{snippetexercise}
+
+\pagebreak
+
+\begin{snippetexample}{}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+            \begin{tikzpicture}
+                \path (-2.5,-2.5) rectangle (2.5,2.5);
+                \foreach \i in {0,1,2,3,4} {
+                    \draw[thick, blue!30!black, domain=\i*360:\i*360+180, variable=\t, samples=30]
+                        plot ({1.2*cos(\t)}, {0.3*sin(\t) + \t/450 - 2});
+                    \draw[ultra thick, blue!80!white, domain=\i*360+180:\i*360+360, variable=\t, samples=30]
+                        plot ({1.2*cos(\t)}, {0.3*sin(\t) + \t/450 - 2});
+                }
+            \end{tikzpicture}
+        \end{center}
+    \end{wrapfigure}
+    Consideriamo l'elica \(\sigma(t) = (\cos(t), \sin(t), at)\)
+    per \(a>0\). Calcoliamo il sistema di Frenet.
+    Abbiamo \(\sigma'(t) = (-\sin(t), \cos t, a)\) e dunque
+    \(|\sigma'| = \sqrt{1 + a^2}\).
+    Da questo trovaimo il primo vettore
+    \[
+        v(t) = \frac{\sigma'(t)}{|\sigma'(t)|}
+        = \frac{
+            (-\sin(t), \cos t, a)
+        }{
+            \sqrt{1 + a^2}
+        } = \dot\sigma(s(t))
+    \]
+    Inoltre \(\frac{ds}{dt} = |\sigma'(t)| = \sqrt{1 + a^2}\)
+    quindi il parametro è dato da
+    \[
+        s = \sqrt{1 + a^2} t, \quad t = \frac{s}{\sqrt{1 + a^2}}
+    \]
+    Otteniamo quindi la parametrizzazione per arco
+    \[
+        \sigma(s) = \left(
+            \cos\left(\frac{s}{\sqrt{1 + a^2}}\right), \sin\left(\frac{s}{\sqrt{1 + a^2}}\right), \frac{as}{\sqrt{1 + a^2}}t
+        \right)
+    \]
+    Da cui il prossimo termine
+    \[
+        v(s) = \dot\sigma(s) = \frac{
+            \left(
+                -\sin\left(\frac{s}{\sqrt{1 + a^2}}\right), \cos \left(\frac{s}{\sqrt{1 + a^2}}\right), a
+            \right)
+        }{
+            \sqrt{1 + a^2}
+        }
+    \]
+    E quello successivo
+    \[
+        \ddot \sigma(s) = \frac{1}{1 + a^2} \left(
+            -\cos \frac{s}{\sqrt{1 + a^2}},
+            -\sin(\frac{s}{\sqrt{1 + a^2}}),
+            0
+        \right)
+    \]
+    E quindi la cuevatura è data da \(\kappa = \frac{1}{1 + a^2}\).
+    Il secodno vettore è quindi
+    \[
+        n(s) = \frac{\ddot \sigma}{\kappa} = - \left(
+            \cos\left(\frac{s}{\sqrt{1 + a^2}}\right),
+            \sin\left(\frac{s}{\sqrt{1 + a^2}}\right),
+            0
+        \right)
+    \]
+    Per trovare il terzo vettore calcoliamo il prodotto vettoriale
+    \[
+        b(s) = v(s) \wedge n(s) = - \frac{1}{\sqrt{1 + a^2}} \restr{
+            \begin{pmatrix}
+                a \sin(t) \\
+                - a \cos(t) \\
+                1
+            \end{pmatrix}
+        }{t = \frac{1}{\sqrt{1 +a^2}}}
+    \]
+    Inoltre, la torsione è data da \(\tau(s) = \frac{a}{1 + a^2}\)
+    che è costante come la curvatura.
+    \wrapfill
+\end{snippetexample}
+
+\begin{snippetexercise}{}
+    Mostrare che le uniche curve di \(\realnumbers^3\)
+    con \(\kappa(s)\) costante positiva e \(\tau(s)\) costante non nulla sono
+    precisamente le eliche circolari della forma
+    \[
+        \sigma(t) = (a\cos(t), a \sin(t), bt)
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    Vogliamo usare il teorema di classificazione. \todo
+\end{snippetsolution}
+
+\begin{snippetproposition}{}
+    Siano \(v = (a,b,c)\), \(w = (a', b', c')\) e \(u = (a'', b'', c'')\).
+    Il prodotto vettoriale \(\wedge \colon \realnumbers^3 \cartesianprod \realnumbers^3 \fromto \realnumbers^3\)
+    ha le seguenti proprietà:
+    \begin{enumerate}
+        \item \(\wedge\) è bilineare e antimmetrica
+        \item \(e_1 \wedge e_2 = e_3\), \(e_2 \wedge e_3 = e_1\)
+        e \(e_3 \wedge e_1 = e_2\) % tikzcd circle?
+        \item \emph{formula algebrica:}
+        abbiamo \(v \wedge w = (\lambda, \nu, \mu)\) tale che
+        \[
+            \det \begin{pmatrix}
+                x & y & z \\
+                a & b & c \\
+                a' & b' & c'
+            \end{pmatrix} = \lambda x + \nu y + \mu z
+        \]
+        cioè i complementi algebrici.
+        \item \emph{formula trigonometrica:}
+        \[
+            |v \wedge w| = |v| \cdot |w| \sin \theta
+        \]
+        dove \(\theta\) è l'angolo fra \(v\) e \(w\).
+        \item sia \(g \in O(3)\), allora
+        \[
+            gv \wedge gw = g(v \wedge w)
+        \]
+        \item corrisponde all'area del parallelogramma con due lati adiacenti
+        i vettori \(v\) e \(w\)
+        \[
+            A = |v \wedge w| = \sqrt{
+                \langle v,v\rangle
+                \langle w,w\rangle - \langle v,w\rangle^2
+            }
+        \]
+        \item \emph{prodotti misti:}
+        abbiamo \begin{align*}
+            u \cdot (v \wedge w) &= \det\begin{pmatrix}u \\ v \\ w\end{pmatrix}
+            = \det\begin{pmatrix}v \\ w \\ u\end{pmatrix}
+            = \det\begin{pmatrix}w \\ u \\ v\end{pmatrix}
+        \end{align*}
+        cioè \[
+            u \cdot (v \wedge w) = v \cdot (w \wedge u) = w \cdot (u \wedge v)
+        \]
+        \item \emph{formula di Jacobi}
+        \[
+            u \wedge (v \wedge w) = (u \wedge v) \wedge w + v \wedge (u \wedge w)
+        \]
+        che è simile alla forma di Leibniz per la derivazione di \(u \wedge \bullet\).
+        Questa formula ci dice che è la linearizzazione di un gruppo, cioè un'algebra di Lie.
+    \end{enumerate}
+\end{snippetproposition}
 
 \end{document}

@@ -773,7 +773,7 @@ nel piano \(-v^\perp, v\).
     \begin{align*}
         H_v x &= \alpha e_1 \\
         \left(I - \frac{2}{||x||_2^2}vv^*\right)x &= \alpha e_1
-        x - \frac{2v^* x}{||x||_2^2} v &= \alpha e_1 \\
+        x - \frac{2v^* x}{||x||_2^2} v = \alpha e_1 \\
         \frac{2v^* x}{||x||_2^2} v &= x - \alpha e_1 \\
         v &= x - \alpha e_1
     \end{align*}
@@ -798,7 +798,246 @@ nel piano \(-v^\perp, v\).
     e che sia ortonormale.
 \end{snippetexercise}
 
+\begin{snippettheorem}{Fattorizzazione \(QR\)}
+    Sia \(A \in \matrices_{n \times n}(\complexnumbers)\).
+    Allora \(\exists Q\) matrice unitaria e
+    \(\exists R\) matrice triangolare superiore tale che
+    \[
+        A = QR
+    \]
+\end{snippettheorem}
+
+% todo check
+\begin{snippetproof}{Fattorizzazione \(QR\)}
+    Partiamo dal primo passo considerando
+    \(H_v\) tale che \(H_v a^{(1)} = \alpha^{(1)}e_1\)
+    dove \(e_1\) è la prima colonna di \(A\).
+    Data quindi \(A^{(1)} = A\) possiamo costruire
+    \[
+        A^{(2)} = H_v^{(1)} A^{(1)} = \left(
+            \begin{array}{c|ccc}
+            \alpha^{(1)} & \ast & \cdots & \ast \\
+            \hline
+            0 & & & \\
+            \vdots & & \hat{A}^{(2)} & \\
+            0 & & &
+            \end{array}
+        \right)
+    \]
+    Il secondo passo è quindi quello di definire \[
+        A^{(3)} = \left(
+            \begin{array}{c|ccc}
+            1 & 0 & \cdots & 0 \\
+            \hline
+            0 & & & \\
+            \vdots & & H_v^{(2)} & \\
+            0 & & &
+            \end{array}
+        \right) A^{(2)}
+    \]
+    e cotinuando in generale otteniamo \[
+        A^{(k)} = \underbrace{\left(
+            \begin{array}{c|ccc}
+            I_{k-2} & & 0 & \\
+            \hline
+             & & & \\
+            0 & & H_v^{(k-2)} & \\
+             & & &
+            \end{array}
+        \right)}_{\hat H^{(k-1)}} A^{(k-1)}
+    \]
+    Continuiamo fino all'iterazione \(k=n\), ottenendo quindi
+    \(A^{(n)} = R\) che è nella forma triangolare superiore
+    \[
+        R=A^{(n)} = \hat H^{(n-1)}
+        \hat H^{(n-2)} \cdots
+        \hat H^{(1)} A
+    \]
+    In generale
+    \[
+        \hat H^{(j)} = I_{j-1} \oplus H^{(j)}
+    \]
+    Il primo blocco è quindi la matrice unitarie e il secodno una matrice di Hauseholder.
+    Essendo l'insieme delle matrici unitarie un gruppo moltiplicativo, \(R\) è anch'essa unitaria.
+    Quindi \(R = PA\) con \[
+        P = \hat H^{(n-1)}
+        \hat H^{(n-2)} \cdots
+        \hat H^{(1)} 
+    \]
+    che è unitaria in quanto prodotto di unitarie.
+    Infine, possiamo scrivere \(A=QR\) con \(Q = P^*\), che è unitaria.
+\end{snippetproof}
+
 \pagebreak
+
+\begin{snippetproposition}{}
+    La complessità
+    dell'algoritmo di fattorizzazione \(QR\) è \(O(...)\). % todo bigO
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    La matrice \(H_v = I + xy^*\) viene scritta come diade
+    dove \[
+        x = -\frac{2}{||v||_2^2} v, \quad y = v
+    \]
+    Al primo passaggio abbiamo \(\hat H^{(1)} = H^{(1)}\)
+    e per passare da \(A^{(1)}\) ad \(A^{(2)}\)
+    abbiamo una matrice la cui prima colonna ha in cima \(\alpha^{(1)}\)
+    e sotto zeri, il resto delle colonne sono i vettori \(s_j\)
+    \[
+        \left(
+            \begin{array}{c|c|c|c}
+            \alpha^{(1)} & & & \\
+            0 & s_2 & \cdots & s_n \\
+            \vdots & & & \\
+            0 & & &
+            \end{array}
+        \right)
+    \]
+    quindi la colonna è data da
+    \[
+        s_j = H^{(1)} \text{col}_j(A^{(1)})
+    \]
+    per \(j \in \{2, \cdots, n\}\).
+    Il costo da iterare è quindi quello di una moltiplicazione di un vettore
+    per una matrice di Hauseholder, cioè il costo di \((I + xy^*) c\)
+    per \(c \in \complexnumbers^n\).
+    Sia \(\gamma = y^* c\), che è un prodotto scalare, quindi \(m\)
+    moltiplicazioni ed \(n-1\) somme (parallelizzabile).
+    Dopodiché \(\hat x = \gamma x\)
+    costa \(n\) moltiplicazioni. Infine
+    \(I + \hat x\) sono \(n\) somme.
+    Abbiamo quindi un costo complessivo di \((n-1)(4n-1)\) operazioni.
+    Considerando tutti i passaggi abbiamo una somma
+    \begin{align*}
+        \sum_{\tau = n}^2 (n-1)(4n-1)
+        &= \sum_{\tau = 2}^n (n-1)(4n-1) = \sum_{\tau = 2}^n
+        \left(4\tau^2 - 5\tau + 1\right) \\
+        &= \sum_{\tau = 2}^n 4\tau^2 + \mathcal O(n^2) = \frac{4}{3}n^3 + \mathcal O(n^2)
+    \end{align*}
+\end{snippetproof}
+
+% Riguardare complessità algoritmo di Gauss prima lezione 2/3 n^3
+
+\section{Metodi iterativi stazionari}
+
+Consideriamo \(A \in \matrices_{n\times n}(\complexnumbers)\)
+invertibile.
+Abbiamo lo \emph{splitting regolare} \((M, N)\)
+se \(A = M-N\)
+tale che \(M\) è invertibile.
+Consideriamo quindi il sistema lineare \(Ax = b\) con \(b \in \complexnumbers^n\)
+con un suo splitting regolare.
+Il sistema è quindi equivalente a \((M-N)x = b\),
+oppure \(Mx = b + Nx\).
+Siccome \(M\) è invertibile, \(x = Px + c\)
+dove \(P = M^{-1}N\) e \(c = M^{-1}b\).
+Siccome \(x=Px + c\), allora la soluzione è punto fisso di una trasformazione lineare
+\(T\colon \complexnumbers^n \fromto \complexnumbers^n\)
+tale che \(T(y) = Py + c\).
+Vogliamo quindi trovare il punto fisso di \(T\).
+Il metodo iterativo collegato è
+\(x^{(k+1)} = Px^{(k)} + c\) dato un punto iniziale \(x^{(0)}\).
+Quindi, definito \(e^{(j)} = x^{(j)} - x\), abbiamo che
+\(e^{(k+1)} = Pe^{(k)}\), e quindi \(e^{k} = P^k e^{(0)}\).
+Abbiamo quindi convergenza se e solo se \[
+    \lim_{k \to \infty} P^k = 0
+\]
+Ci serve che il raggio spettrale sia minore di \(1\).
+
+\begin{snippetdefinition}{Modulo di una matrice}
+    Sia \(X \in \matrices_{n \times n}(\complexnumbers)\).
+    Definiamo
+    \[
+        |X| = \left(|X_{j,k}|\right)_{j,k}^n
+    \]
+\end{snippetdefinition}
+
+\begin{snippettheorem}{}
+    Sia \(P \in \matrices_{n\times n}(\complexnumbers)\). Allora,
+    \[
+        \lim_n P^k = 0
+    \]
+    se e solo se \(\rho(P) < 1\).
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Consideriamo inizialmente \(P\) diagonalizzabile.
+    Abbiamo quindi \(P = TDT^{-1}\)
+    dove \(D\) è la matrice diagonale degli autovalori \(\lambda_i\).
+    Abbiamo quindi \[
+        P^k = \prod_k TDT^{-1} = T D^k T^{-1}
+    \]
+    Quindi, se esiste, per continuità abbiamo
+    \[
+        \lim_n P^k = T \left(\lim_n D^k\right) T^{-1}
+    \]
+    Ma dalla forma di \(D\), il limite tende a \(0\)
+    se e solo se \(|\lambda_j| < 1\).
+    Ci serve quindi che il raggio spettrale sia minore di \(1\).
+    Sia \(P\) non diagonalizzabile.
+    Utilizzando la scomposizione di Schur otteniamo
+    \(P = QTQ^*\) con \(Q\) unitaria e \(T\) triangolare superiore.
+    Abbiamo
+    \begin{align*}
+        \lim_n P^k = 0
+    \end{align*}
+    se e soltanto se
+    \[
+        \lim_n T^k = 0
+    \]
+    in quanto \(P^k = QT^k Q\).
+    Notiamo che \[
+        0_{\matrices_{n \times n}(\complexnumbers)} \leq |T|
+        = \begin{pmatrix}
+            |\lambda_1| &  &  & \ast \\
+             & |\lambda_2| & &  \\
+             &  & \ddots &  \\
+            0 &  &  & |\lambda_n| \\
+        \end{pmatrix} \leq 
+        \begin{pmatrix}
+            |\gamma_1| &  &  & \ast \\
+             & |\gamma_2| &  &  \\
+             &  & \ddots &  \\
+            0 &  &  & |\gamma_n| \\
+        \end{pmatrix} = \hat T
+    \]
+    Stiamo usando l'ordinamento parziale indotto sulle matrici.
+    Nella forma di Schur, possiamo permutare gli elementi della diagonale come voglio,
+    quindi scegliamo l'ordine come
+    \[
+        |\gamma_j| = |\gamma_{j+1}| = \cdots = |\gamma_q| \leq |\gamma_{q+1}|
+    \]
+    Dove \(j\) il primo indice tale che ciò è vero.
+    Da questa catena troviamo che
+    \begin{align*}
+        |\gamma_j| \leq |\gamma_j| + \frac{\varepsilon}{N}
+        < |\gamma_j| + \frac{2\varepsilon}{N},
+        \quad \varepsilon = |\gamma_{q+1}| - |\gamma_{j}|
+    \end{align*}
+    per \(N < 1 + 1 - j\).
+    L'idea è la seguente: se la matrice è diagonalizzabile, allora
+    almeno due termini sulla diagonale coincidono.
+    Noi li vogliamo a due a due distinti, quindi ogni qualvolta che ne trovo due
+    che coincidono, aggiungo un valore ad uno tale da non fargli superare il successivo nella catena.
+    Imponiamo che \(\gamma_n < 1\) in maniera tale da avere tutti numeri non negativi, a due a due distinti,
+    e tutti minori di 1.\\
+    Notiamo che \(|T| \leq |T^k|\) per espansione del prodotto e applicando la disuglianza triangolare.
+    Passando all'esponente abbiamo
+    \[
+        0_{\matrices_{n \times n}(\complexnumbers)}
+        \leq |T| \leq |T^k| = |T| \cdot |T^{k-1}|
+        \leq |T|^k \leq |\hat T|
+    \]
+    Ma siccome \(\hat T\) è diagonalizzabile, per il caso canale il suo limite tende a zero,
+    e quindi il limite della catena collassa a 0.
+\end{snippetproof}
+
+
+
+\pagebreak
+
+\section{Esercizi}
 
 \begin{snippetexercise}{}
     Sia \(\alpha \geq 1\) reale e consideriamo la matrice
@@ -892,7 +1131,35 @@ nel piano \(-v^\perp, v\).
     \end{align*}
     dove abbiamo già verificato che \((iV_n)^* = i V_n = -i V_n\),
     quindi otteniamo che \(V_n\) è anti-Hermitiana, cioè \(V_n^* = -V_n\).
+\end{snippetsolution}
 
+\begin{snippetdefinition}{Matrice di Vandermonde generalizzata}
+    Siano \(x_0, x_1, \cdots, x_n \in \complexnumbers\)
+    e siano \(p_0, p_1, \cdots, p_n \in \complexnumbers[x]\), \(n+1\) polinomi linearmente indipendenti.
+    La \emph{matrice di Vandermonde generalizzata è definita come}
+    \[
+        W_n \triangleq (p_k(x_j))_{j,k=0}^n \in \matrices_{n+1}(\complexnumbers)
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexercise}{Matrice di Vandermonde generalizzata}
+    Consideriamo una matrice di Vandermonde generalizzata \(W_n\).
+    Sia \[
+        K_n = \max_{0 \leq k \leq n} \{ \deg (p_k) \} % polynomialdeg
+    \]
+    \begin{enumerate}
+        \item Si dimostri che \(\det W_n \neq 0\)
+        implica che \(x_0, x_1, \cdots, x_n\) sono a due a due distinti.
+        \item Se \(K_n = n\) e \(x_0, x_1, \cdots, x_n\)
+        sono a due a due distinti è vero che \(\det W_n \neq 0\)? (Unisolvenza)
+        \item Se \(K_n > n\) e \(x_0, x_1, \cdots, x_n\)
+        sono a due a due distinti è ancora vero che si ha unisolvenza,
+        ovvero \(\det W_n \neq 0\)?. 
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{Matrice di Vandermonde generalizzata}
+    \todo
 \end{snippetsolution}
 
 \end{document}
