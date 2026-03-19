@@ -11,6 +11,8 @@
 %\usepackage{pgfplots}
 
 \usetikzlibrary{calc}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{cd}
 %\pgfplotsset{compat=1.18}
 
 % Cancel color
@@ -1316,7 +1318,7 @@ Serve  \(\tau = 0\), cioè per curve piane \((\kappa, \tau) = (\kappa, 0)\).
         \right)
     \]
     E quindi la cuevatura è data da \(\kappa = \frac{1}{1 + a^2}\).
-    Il secodno vettore è quindi
+    Il secondo vettore è quindi
     \[
         n(s) = \frac{\ddot \sigma}{\kappa} = - \left(
             \cos\left(\frac{s}{\sqrt{1 + a^2}}\right),
@@ -1404,5 +1406,289 @@ Serve  \(\tau = 0\), cioè per curve piane \((\kappa, \tau) = (\kappa, 0)\).
         Questa formula ci dice che è la linearizzazione di un gruppo, cioè un'algebra di Lie.
     \end{enumerate}
 \end{snippetproposition}
+
+\section{Winding numbers su curve piane}
+
+\begin{snippetdefinition}{}
+    Sia \(X\) uno spazio topologico e \(\sigma \colon X \fromto S^1\)
+    una funzione continua. Una \emph{determinazione dell'angolo}
+    \(\tilde \sigma \colon X \fromto \realnumbers\) di \(\sigma\)
+    è una funzione continua tale che
+    sia commutativo il diagramma
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAA0QBfU9TXfIRQBGclVqMWbADrSATjEZgmAWwBGMOQh59seAkVHDx9Zq0QgAygD1h3cTCgBzeEVAAzORBVIyIHBBIAEzUplIWsthOKnQg1Ax0GgwACvz6QiByWE4AFjjcvCCe3r7UAUiiEmYy0ngMsAAEkdkxBR5ePoiV5YghIAlJqXqCbAww7vmhkuYgsmhY9lxAA
+        \begin{tikzcd}
+        X \arrow[rd, "\sigma"'] \arrow[r, "\tilde \sigma"] & \realnumbers \arrow[d, "\pi"] \\
+                                                        & S^1                          
+        \end{tikzcd}
+    \end{center}
+    dove \(\pi\) è la proiezione canonica \(\pi(\theta) = (\cos\theta, \sin\theta)\).
+\end{snippetdefinition}
+
+Questo è un sollevamento di \(\sigma\) ad \(\realnumbers\).
+
+\begin{snippetdefinition}{Teorema di Geometria I sollevamento di omotopie fra punti o curve a valori in \(S^1\)}
+    Sia \(D\) un intervallo reale oppure uno spazio omeomorfo
+    ad un quadrato
+    di \(\realnumbers^2\)
+    e sia \(\sigma \colon D \fromto S^1\) una mappa continua.
+    Allora per ogni \(\theta_0 \in \realnumbers\) tale che per un fissato
+    \(x_0 \in D\) si abbia \(\sigma(x_0) = (\cos\theta_0, \sin\theta_0) \in S^1\),
+    esiste un'unica determinazione dell'angolo
+    \(\tilde \sigma \colon D \fromto \realnumbers\) tale che \(\tilde \sigma(x_0) = \theta_0\).
+\end{snippetdefinition}
+
+In realtà tale con qualsiasi \(D\) semplicemente connesso.
+C'è un sollevamento per ogni punto fissato.
+Due diversi tali sollevamenti differiscono per una costante \(2k\pi\) con \(k \in \integernumbers\).
+
+Nel caso \(D=[a,b]\) e \(\sigma \colon D \fromto S^1\) curva chiusa,
+\(\sigma \colon D \fromto \realnumbers\) è una determinazione dell'angolo, allora
+\begin{enumerate}
+    \item \(\tilde \sigma(b) - \tilde \sigma(a) = 2k\pi\) per \(k \in \integernumbers\);
+    \item la classe di omotopia di 
+    \[
+        [\sigma] \in \pi-1(S^1) \cong \integernumbers
+    \]
+    è \(k\).
+    Ciò è dato dalla costruzione dell'isomorfismo calcolando
+    \(\tilde \sigma(1) - \tilde \sigma(0) = 2\pi k \to k\).
+\end{enumerate}
+
+Vogliamo quindi calcolare il winding number di una curva piana attorno ad un punto.
+
+\begin{snippetdefinition}{Winding number di curve piane}
+    Sia \(\sigma \colon [a,b] \fromto \realnumbers^2\) curva chiusa e sia
+    \(P \in \realnumbers^2 \difference \operatorname{Im}(\sigma)\).
+    Allora, il \emph{winding number}
+    di \(\sigma\) intorno a \(P\)
+    è dato da
+    \[
+        i(\sigma, P) \triangleq \frac{\theta(b) - \theta(a)}{2\pi}
+    \]
+    dove \(\theta\) è una determinazione dell'angolo di \(\overline \sigma \colon [a,b] \fromto S^1\)
+    definita da \[
+        \overline\sigma(t) \triangleq \frac{\sigma(t) - P}{|\sigma(t) - P|}
+    \]
+\end{snippetdefinition}
+
+Cioè stiamo normalizzando la curva per centrarla su \(S^1\) e poi calcoliamo il suo winding number.
+
+\begin{snippetproposition}{}
+    Il winding number \(i(\sigma, P)\) è indipendente da
+    \begin{enumerate}
+        \item la classe di omotopia di \[
+            [\sigma] \in \pi_1(\realnumbers^2 \difference \{P\}) \cong \pi_1(S^1)
+        \]
+        \item la posizione di \(P\) nella componente connessa di
+        \(\realnumbers^2 \difference \operatorname{Im}(\sigma)\) a cui \(P\) appartiene.
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Ricordiamo che \(S^1\) è retratto di \(\realnumbers^2 \difference \{P\}\)
+    tramite la mappa \[
+        r \colon \realnumbers^2 \difference \{P\} \fromto
+        S^1 \subseteq \realnumbers^2 \difference \{P\}
+    \]
+    cioè la circonferenza di centro \(P\), dato da
+    \[
+        r(x) \triangleq P + \frac{x - P}{|x-P|}
+    \]
+    Questa retrazione definisce l'isomorfismo canonico
+    \[
+        r^\ast \colon \pi_1(\realnumbers^2 \difference \{P\})
+        \fromto \pi_1(S^1)
+    \]
+    Se \(\sigma \colon [a,b] \fromto \realnumbers^2 \difference \{P\}\)
+    curva chiusa allora \(r^\ast([\sigma]) = [\overline\sigma] \in S^1\)
+    dove \[
+        \overline\sigma(t) = r(\sigma(t))
+    \]
+    Quindi \(i(\sigma, P)\) è pari alla classe di \([\overline\sigma]\)
+    in \(\integernumbers \cong \pi_1(S^1)\)
+    che è indipendente dalla classe di omotopia di \(\sigma\).
+    Abbiamo quindi provato il primo punto.
+    Se \(P(s)\) è un cammino in \(\realnumbers^2 \difference \operatorname{Im}(\sigma)\),
+    allora \[
+        i(\sigma, P(s)) = \frac{
+            \theta_s(b)  \theta_s(a)
+        }{
+            2\pi
+        }
+    \]
+    è funzione continua di \(s\),
+    usando \(\theta_s\) determinazione dell'angolo definita su \(\{(s,t) \suchthat s \in [0,1] \land t \in [a,b]\}\),
+    ed assume valori interi. Per tutte le \(s \in [0,1]\),
+    \(i(\sigma, P(s))\) è costante.
+    Cioè se due punti possono essere connessi da un cammino, il loro winding number è il medesimo.
+\end{snippetproof}
+
+Se la curva proiettata sul cerchio unitario centrato in \(P\)
+è solo un arco di circonferenza, il winding number è 0. Il converso non è necessariamente vero.
+Una curva a forma di 8 ha punti in una componente con indice \(-1\), mentre l'altra \(1\),
+e tutti i punti esterni \(1\). Infatti, il punto di intersezione non è separabile per omotopia.
+
+% TODO l'ultimo disegno deve essere come una salsiccia che si tocca gli estremi
+\begin{center}
+    \begin{tikzpicture}[
+        scale=0.6,
+        >=stealth,
+        ->-/.style={decoration={markings, mark=at position #1 with {\arrow{>}}},postaction={decorate}}
+    ]
+
+    \draw[thick, ->-=.125, ->-=.375, ->-=.625, ->-=.875] 
+        (0,0) .. controls (1,2) and (3,2) .. (3,0) .. controls (3,-2) and (1,-2) .. (0,0) 
+        .. controls (-1,2) and (-3,2) .. (-3,0) .. controls (-3,-2) and (-1,-2) .. (0,0);
+    \node at (1.5,0) {$i=1$};
+    \node at (-1.5,0) {$i=-1$};
+    \node at (0,-2.5) {$i=0$};
+
+    \draw[thick, ->-=.125, ->-=.375, ->-=.625, ->-=.875] 
+        (7,0) .. controls (6,-3) and (11,-3) .. (11,0) .. controls (11,3) and (6,3) .. (7,0) 
+        .. controls (7.5,-1.5) and (9,-1.5) .. (9,0) .. controls (9,1.5) and (7.5,1.5) .. (7,0);
+    \node at (8,0) {$i=2$};
+    \node at (10,0) {$i=1$};
+    \node at (8.5,-3.5) {$i=0$};
+
+    \draw[thick, ->-=.125, ->-=.375, ->-=.625, ->-=.875] 
+        (16,0) .. controls (17,3) and (13,4) .. (13,0) .. controls (13,-4) and (17,-3) .. (16,0) 
+        .. controls (15.5, 1.5) and (14.5, 1.5) .. (14.5, 0) .. controls (14.5, -1.5) and (15.5, -1.5) .. (16,0);
+    \node at (15.2,0) {$i=0$};
+    \node at (13.8,0) {$i=1$};
+    \node at (15,-3.5) {$i=0$};
+
+    \end{tikzpicture}
+\end{center}
+
+Per una curva chiuse e semplice, è facile definire la nozione di punto esterno o interno alla curva.
+Invece, se la curva è intersecata è più difficile.
+
+\begin{snippettheorem}{Teorema di Jordam-Browner}
+    Sia \(\sigma \colon [a,b] \fromto \realnumbers^2\)
+    una curva di Jordan chiusa.
+    Allora, \(\realnumbers^2 \difference \operatorname{Im}(\sigma)\)
+    ha due sole componenti connesse
+    \begin{align*}
+        A &= \left\{
+            P \in \realnumbers^2 \difference \operatorname{Im}(\sigma) \suchthat i(\sigma, P) = 0
+        \right\} \\
+        B &= \left\{
+            P \in \realnumbers^2 \difference \operatorname{Im}(\sigma) \suchthat i(\sigma, P) = 1 \lor i(\sigma, P) = -1
+        \right\}
+    \end{align*}
+    Inoltre, \(A\) è illimitata e \(B\) è limitata.
+\end{snippettheorem}
+
+Il punto è la che curva è semplice e non si autointerseca, quindi o fa un giro in senso orario attorno
+ad un punto, o uno antiorario, o nessun giro completo.
+
+\begin{snippetproposition}{}
+    Sia \(P \in \realnumbers^2\) e
+    sia \(\sigma \colon [a,b] \fromto \complexnumbers\),
+    scritta in forma \(\sigma(t) = \varphi_1(t) + i \varphi_2(t)\)
+    con \(\varphi_i \colon [a,b] \fromto \realnumbers\).
+    Allora, se \(\sigma(t) \neq P\) per tutte le \(t \in [a,b]\),
+    si ha
+    \[
+        i(\sigma, P) = \frac{1}{2\pi i}
+        \integral[a][b][
+            \frac{\sigma'(t)}{\sigma(t) - P}
+        ][t]
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Mostriamo il teorema per \(P=0\).
+    Scriviamo \(\sigma(t) = \rho(t) e^{i \theta(t)}\)
+    con \(\rho(t) = |\sigma(t)|\) e \(\theta(t)\) determinazione dell'angolo di \(\sigma/|\sigma|\).
+    Allora, siccome \(\sigma(a)=\sigma(b)\) abbiamo anche
+    \(\rho(a) = \rho(b)\). Dunque, \begin{align*}
+        \sigma'(t) &= \rho'(t)e^{i\theta(t)} + i\rho(t)\theta'(t)e^{i\theta(t)} \\
+        \frac{1}{2\pi i} \integral[a][b][\frac{\sigma'}{\sigma}][t]
+        &= \frac{1}{2\pi i} \integral[a][b][
+            \frac{
+                \rho'(t) \cancel{e^{i\theta(t)}} + \rho(t) i \theta'(t) \cancel{e^{i \theta(t)}}
+            }{
+                \rho(t) \cancel{e^{i\theta(t)}}
+            }
+        ][t] \\
+        &= \cancel{
+            \frac{1}{2\pi i} \integral[\rho(a)][\rho(b)][
+                \frac{1}{\rho}
+            ][\rho]
+        } + \frac{2\pi} \integral[\theta(a)][\theta(b)][][\theta] \\
+        &= \frac{\theta(b) - \theta(a)}{2\pi} = i(\sigma, 0)
+    \end{align*}
+    Quindi corollario abbiamo la versione con il punto \(P\) generico.
+\end{snippetproof}
+
+\begin{snippetcorollary}{}
+    Sia \(\sigma \colon [a,b) \fromto \realnumbers^2\)
+    tale che \(0 \notin \operatorname{Im}(\sigma)\),
+    dove scriviamo
+    \(\sigma(t) = (\varphi_1(t), \varphi_2(t))\). Allora,
+    \[
+        i(\sigma, 0) = \frac{1}{2\pi} \integral[a][b][
+            \frac{
+                \varphi_1 \varphi_2' - \varphi_2 \varphi_1'
+            }{
+                \varphi_1^2 + \varphi_2^2
+            }
+        ][t]
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{}
+    usando la scrittura complessa \(\sigma = \varphi_1 + i\varphi_2\)
+    troviamo
+    \begin{align*}
+        \frac{\sigma'}{\sigma} &= \frac{
+            \varphi_1 + i\varphi_2'
+        }{
+            \varphi_1 + i\varphi_2
+        } = \frac{
+            \varphi_1' + i\varphi_2'
+        }{
+            \varphi_1^2 + \varphi_2^2
+        } \cdot (\varphi_1 - i\varphi_2) \\
+        &= \frac{
+            \varphi_1\varphi_1' + \varphi_2\varphi_2'
+        }{
+            \varphi_1^2 + \varphi_2^2
+        } + 
+        i\frac{
+            \varphi_1\varphi_1' - \varphi_2\varphi_2'
+        }{
+            \varphi_1^2 + \varphi_2^2
+        }
+    \end{align*}
+    Per il teorema % TODO LINK
+    \[
+        i(\sigma, 0) = \frac{1}{2\pi i}
+        \integral[a][b][
+            \frac{\sigma'(t)}{\sigma(t)}
+        ][t]
+    \]
+    abbiamo in particolare che
+    \[
+        \frac{1}{2\pi i} \integral[a][b][
+            \Re \frac{\sigma'}{\sigma}
+        ][t] = 0
+    \]
+    e quindi \(i(\sigma, 0)\) si riduce a
+    \begin{align*}
+        i(\sigma, 0) &= \frac{1}{2\pi i} \integral[a][b][
+            i \Im \frac{\sigma'}{\sigma}
+        ][t] \\
+        &= \frac{1}{2\pi} \integral[a][b][
+            \frac{
+                \varphi_1 \varphi_2' - \varphi_2 \varphi_1'
+            }{
+                \varphi_1^2 + \varphi_2^2
+            }
+        ][t]
+    \end{align*}
+\end{snippetproof}
 
 \end{document}
