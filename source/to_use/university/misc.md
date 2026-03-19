@@ -62,7 +62,6 @@ A volte ha senso modificare l'ordine delle cose per avere pagine che mantengano 
 Usa sempre il mio stesso stile di scrittura in LaTeX e scrivi sempre in inglese.
 Non hai il permesso di fare un overhaul delle mie dimostrazioni etc., solo se strettamente necessario in caso di errori, sviste o mancanze.
 Sii preciso con le definizioni e le dimostrazioni e quando uso un teormea /lemma in una dimostrazione, lo puoi linkare usando snippetref (e.g \snippetref[set-equivalence-with-subsets][set equivalence with subsets]), cioè il primo argomento è l'ID e il secondo è il testo a schermo.
-Guarda anche i comandi in @bettelini.sty, per esempio per fare le dimostrazioni con \iffproof o simili, o integrali.
 Mantieni sempre quello che scrivo io a meno che non sia strettamente necessario cambiare qualcosa per mancanze o errori, quindi mantieni anche la stessi sintassi e struttura e spaziatura
 Ogni volta che c'è una contraddizione termina la frase con \lighning.
 Ecco una serie di pagine che puoi leggere per imparare la sintassi:

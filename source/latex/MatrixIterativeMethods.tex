@@ -1,0 +1,116 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{matrix-iterative-methods}
+\genpage
+
+\section{Matrix iterative methods}
+
+\begin{snippettheorem}{matrix-power-convergence-condition}{Matrix power convergence}
+    Sia \(P \in \matrices_{n\times n}(\complexnumbers)\) e \(k \in \naturalnumbers\). Allora,
+    \[
+        \lim_k P^k = 0
+    \]
+    se e solo se \(\rho(P) < 1\).
+\end{snippettheorem}
+
+\begin{snippetproof}{matrix-power-convergence-condition-proof}{matrix-power-convergence-condition}{Matrix power convergence}
+    \begin{iffproof}
+        \item Sappiamo che \[
+            \lim_k P^k = 0
+        \]
+        e consideriamo \(\lambda\) autovalore
+        di \(P\) con autovettore associato \(x \neq 0\).
+        \begin{enumerate}
+            \item Da un lato sappiamo che \(P^k x = \lambda^k x\);
+            \item Dall'altro sappiamo che 
+            \[
+                \lim_k (P^k y) = \left(
+                    \lim_k P^k
+                \right) y = 0, \quad \forall y \in \complexnumbers^n
+            \]
+        \end{enumerate}
+        Ciò implica che
+        \[
+            \lim_k \lambda^k x = 0
+        \]
+        che necessita \(|\lambda| < 1\).
+        \item Consideriamo separatamente il caso diagonalizzabile e quello non diagonalizzabile:
+        \begin{enumerate}
+            \item \emph{Caso diagonalizzabile:}
+            Abbiamo \(P = TDT^{-1}\)
+            dove \(D\) è la matrice diagonale degli autovalori \(\lambda_i\).
+            Elevando alla \(k\) abbiamo quindi \[
+                P^k = (TDT^{-1})^k = T D^k T^{-1}
+            \]
+            Quindi, per continuità del prodotto matriciale, abbiamo
+            \[
+                \lim_k P^k = T \left(\lim_k D^k\right) T^{-1}
+            \]
+            Ma dalla forma di \(D\), il limite tende a \(0\)
+            se e solo se \(|\lambda_i| < 1\).
+            Ma siccome il raggio spettrale è minore di \(1\) allora vale.
+            \item \emph{Caso non diagonalizzabile:}
+            Utilizzando la scomposizione di Schur otteniamo
+            \(P = QTQ^*\) con \(Q\) unitaria e \(T\) triangolare superiore.
+            Abbiamo
+            \[
+                \lim_k P^k = 0
+            \]
+            se e soltanto se
+            \[
+                \lim_k T^k = 0
+            \]
+            in quanto \(P^k = QT^k Q^*\).
+            Notiamo che \[
+                0_{\matrices_{n \times n}(\complexnumbers)} \leq |T|
+                = \begin{pmatrix}
+                    |\lambda_1| &  &  & \ast \\
+                    & |\lambda_2| & &  \\
+                    &  & \ddots &  \\
+                    0 &  &  & |\lambda_n| \\
+                \end{pmatrix} \leq 
+                \begin{pmatrix}
+                    \gamma_1 &  &  & \ast \\
+                    & \gamma_2 &  &  \\
+                    &  & \ddots &  \\
+                    0 &  &  & \gamma_n \\
+                \end{pmatrix} = \hat T
+            \]
+            Stiamo usando l'ordinamento parziale indotto sulle matrici.
+            Nella forma di Schur, possiamo permutare gli elementi della diagonale come vogliamo,
+            quindi scegliamo di ordinarli in modo crescente:
+            \[
+                |\lambda_1| \leq |\lambda_2| \leq \dots \leq |\lambda_n|
+            \]
+            L'idea è la seguente: affinché \(\hat T\) sia sicuramente diagonalizzabile, vogliamo che i suoi elementi diagonali \(\gamma_i\) siano a due a due distinti. 
+            Ogni qualvolta troviamo dei termini in \(|T|\) che coincidono, aggiungiamo un valore ad uno tale da non fargli superare il successivo nella catena.
+            Ad esempio, se abbiamo un blocco di autovalori con lo stesso modulo:
+            \[
+                |\lambda_j| = |\lambda_{j+1}| = \cdots = |\lambda_q| < |\lambda_{q+1}|
+            \]
+            poniamo \(\varepsilon = |\lambda_{q+1}| - |\lambda_j|\) e definiamo i nuovi valori aggiungendo incrementi successivi di \(\frac{\varepsilon}{N}\) (con \(N\) opportunamente grande):
+            \[
+                \gamma_j = |\lambda_j|, \quad \gamma_{j+1} = |\lambda_j| + \frac{\varepsilon}{N}, \quad \gamma_{j+2} = |\lambda_j| + \frac{2\varepsilon}{N}, \dots
+            \]
+            facendo attenzione a restare strettamente minori del valore distinto successivo.
+            Imponiamo infine che l'ultimo termine \(\gamma_n < 1\) (il che è possibile poiché \(\rho(P) < 1\)), in maniera tale da avere tutti numeri non negativi, a due a due distinti, e tutti minori di \(1\).\\
+            Notiamo che \(|T^k| \leq |T|^k\) per espansione del prodotto e applicando la disuguaglianza triangolare.
+            Passando all'esponente per \(k\), abbiamo la seguente catena:
+            \[
+                0_{\matrices_{n \times n}(\complexnumbers)} \leq |T^k| \leq |T|^k \leq \hat T^k
+            \]
+            Ma siccome \(\hat T\) ha autovalori tutti distinti è diagonalizzabile, e avendo \(\rho(\hat T) < 1\), per il caso precedente il suo limite tende a zero. 
+            Per il teorema del confronto, il limite della catena collassa a \(0\), implicando \(\lim_k |T^k| = 0\), e dunque \(\lim_k P^k = 0\).
+        \end{enumerate}
+    \end{iffproof}
+\end{snippetproof}
+
+\end{document}

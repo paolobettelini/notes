@@ -2,6 +2,7 @@
 
 \RequirePackage{xparse}
 \RequirePackage{makecell}
+\RequirePackage{enumitem}
 
 % Disable hyphenation globally
 \newcommand{\nohyphenation}{
@@ -73,40 +74,45 @@
 
 %%%%% DOUBLE PROOF ENVIRONMENTS %%%%%
 
-\newcommand{\doubleproof}[4]{%
-    \noindent
-    \begin{minipage}[t]{0.075\textwidth}
-        \raggedright
-        \textbf{{\thickmuskip=0mu plus 0mu #1}}
-    \end{minipage}%
-    \begin{minipage}[t]{0.925\textwidth}
-        #3
-    \end{minipage}\\[0.5em]
-    \begin{minipage}[t]{0.075\textwidth}
-        \raggedright
-        \textbf{{\thickmuskip=0mu plus 0mu #2}}
-    \end{minipage}%
-    \begin{minipage}[t]{0.925\textwidth}
-        #4
-    \end{minipage}%
+% Helper function
+\makeatletter
+\DeclareRobustCommand{\proofsymbol}[2]{%
+    \bgroup % Isolation
+    \thickmuskip=0mu plus 0mu\relax
+    \ifcase\value{\@listctr}%
+        #1% Case 0
+    \or
+        #1
+    \or
+        #2
+    \else
+        \((\dots)\)% Fallback
+    \fi
+    \egroup
+}
+\makeatother
+
+\newlist{baseprooflist}{enumerate}{3} % 3 is the maximal nesting depth
+\setlist[baseprooflist]{
+    leftmargin=0.075\textwidth,
+    labelsep=0.5em,
+    labelwidth=\dimexpr 0.075\textwidth - 0.5em \relax,
+    align=left,
+    font=\normalfont\bfseries,
+    itemsep=0.5em
+}
+
+\newcommand{\createdoubleproof}[3]{%
+    \newenvironment{#1}%
+    {\begin{baseprooflist}[label=\proofsymbol{#2}{#3}]}%
+    {\end{baseprooflist}}%
 }
 
 % (=>) then (<=)
-\newcommand{\iffproof}[2]{%
-    \doubleproof{\((\implies)\)}{\((\impliedby)\)}{#1}{#2}%
-}
-
+\createdoubleproof{iffproof}{\((\implies)\)}{\((\impliedby)\)}
 % (<=) then (=>)
-\newcommand{\ffiproof}[2]{%
-    \doubleproof{\((\impliedby)\)}{\((\implies)\)}{#1}{#2}%
-}
-
+\createdoubleproof{ffiproof}{\((\impliedby)\)}{\((\implies)\)}
 % (⊆) then (⊇)
-\newcommand{\doubleinclusionproof}[2]{%
-    \doubleproof{\((\subseteq:)\)}{\((\supseteq:)\)}{#1}{#2}%
-}
-
+\createdoubleproof{doubleinclusion}{\((\subseteq)\)}{\((\supseteq)\)}
 % (≤) then (≥)
-\newcommand{\doubleleqproof}[2]{%
-    \doubleproof{\((\leq)\)}{\((\geq)\)}{#1}{#2}%
-}
+\createdoubleproof{doubleleq}{\((\le)\)}{\((\ge)\)}
