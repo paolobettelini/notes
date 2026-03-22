@@ -3166,8 +3166,61 @@ Analogamente
     uniforme e quindi converge uniformemente.
 \end{snippetproof}
 
-% 2.5 es sum cbrt dimostrare che f è continua
-% TODO
+\begin{snippetexercise}{}
+    Consideriamo \[
+        f(x) = \sum_{n=1}^\infty \frac{
+            \sqrt[3]{\sin(x)}
+        }{
+            n^2 + x^2
+        }
+    \]
+    Dimostrare che \(f\) è continua a stabilire in quali punti è differenziabile.
+    Stabilire se \(f\) è integrabile in \(\realnumbers\). 
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    Non possiamo dedurre la convergenza uniforme di \(f\) dalla convergenza uniforme della serie
+    di \(\frac{1}{n^2 + x^2}\). Tuttavia, possiamo dedurrne la continuità dalla continuità della serie di \(\frac{1}{n^2 + x^2}\).
+    Siccome \[
+        \frac{1}{n^2 + x^2} \leq \frac{1}{n^2}
+    \]
+    allora serie converge totalmente, e quindi converge uniformemente, allora \(f\) è continua.
+    Stabiliamo ora se
+    \[
+        \sum \frac{1}{n^2 + x^2}
+    \]
+    è differenziabile.
+    Calcoliamo la serie delle derivata, ossia
+    \[
+        - \sum_{n=1}^\infty \frac{2x}{(n^2 + x^2)^2}
+    \]
+    Verifichiamo che converga localmente uniformemente: sia \(x\in(a,b)\), allora
+    \[
+        \left|
+            \frac{2x}{(n^2 + x^2)^2}
+        \right| \leq \frac{
+            2\max\{|a|, |b|\}
+        }{n^4}, \quad \forall x, \forall n
+    \]
+    Per il teorema di derivazione per serie poniamo derivate termine a termine
+    \[
+        \left(
+            \sum_{n=1}^\infty \frac{1}{n^2 + x^2}
+        \right)' = - \sum_{n=1}^\infty \frac{2x}{(n^2 + x^2)^2}, \quad \forall x \in \realnumbers
+    \]
+    Sicuramente \(f\) è derivabile per \(x\neq k\pi\) con \(k\in\integernumbers\).
+    Se \(f = gh\) con \(g(x) \neq 0\) e tale che non esiste \(h'(\overline x)\) con
+    \(h'(\overline x) = 0\), allora non esiste \((gh)'(\overline x)\).
+    Infatti, se esistesse allora siccome \(f = gh\) avremmo che \(h = f/g\),
+    ma allora sarebbe derivabile in \(\overline x\) perché quoziente di funzioni derivabili è derivabile.
+    Siccome la serie di \(\frac{1}{n^2 + x^2}\) non si annulla mai, \(f\) non è derivabile
+    per \(x = k\pi\) con \(k\) intero.
+    Siccome \(f\) è dispari, se è integrabile sulla retta reale, allora l'integrale vale zero.
+    Basta studiare \(f\) su \((0, \infty)\).
+    La nostra funzione è il prodotto di una funzione periodica e media nulla per una funzione per una funzione che tende
+    a zero momentaneamente, quindi \(f\) è integrabile.
+\end{snippetsolution}
+
 
 \pagebreak
 
@@ -3908,38 +3961,41 @@ Le equazioni separabili sono un caso particolare delle equazioni esatte.
 \begin{snippetexample}{}
     \begin{wrapfigure}{r}{6cm}
         \begin{center}
-            % Puoi Spostare il label di 3\sqrt pi a tutto sinistra del grafico, 2 \sqrt pi a destra, \sqrt pi a sinistra
-\begin{tikzpicture}
-\begin{axis}[
-    width=5cm,
-    height=5cm,
-    xmin=-2, xmax=2,
-    ymin=0, ymax=3.5,
-    axis lines=middle,
-    yticklabel pos=right,
-    xtick=\empty,
-    ytick={1.7724, 2.5066, 3.0699},
-    yticklabels={\(\sqrt{\pi}\), \(\sqrt{2\pi}\), \(\sqrt{3\pi}\)},
-    domain=-2:2,
-    samples=60
-]
-\addplot[black, thick, dashed] {1.7724};
-\addplot[black, thick, dashed] {2.5066};
-\addplot[black, thick, dashed] {3.0699};
+            \begin{tikzpicture}
+            \begin{axis}[
+                width=5cm,
+                height=5cm,
+                xmin=-2, xmax=2,
+                ymin=0, ymax=3.5,
+                axis lines=middle,
+                xtick=\empty,
+                ytick=\empty,
+                clip=false,
+                domain=-2:2,
+                samples=60
+            ]
+            \addplot[black, thick, dashed] {1.7724};
+            \addplot[black, thick, dashed] {2.5066};
+            \addplot[black, thick, dashed] {3.0699};
 
-\addplot[blue, thick] {1.7724 / (1 + exp(-3*(x+1)))};
-\addplot[blue, thick] {1.7724 / (1 + exp(-3*x))};
-\addplot[blue, thick] {1.7724 / (1 + exp(-3*(x-1)))};
+            \node[anchor=east] at (axis cs:-2, 1.7724) {\(\sqrt{\pi}\)};
+            \node[anchor=east] at (axis cs:-2, 3.0699) {\(\sqrt{3\pi}\)};
 
-\addplot[blue, thick] {1.7724 + 0.7342 / (1 + exp(3*(x+1)))};
-\addplot[blue, thick] {1.7724 + 0.7342 / (1 + exp(3*x))};
-\addplot[blue, thick] {1.7724 + 0.7342 / (1 + exp(3*(x-1)))};
+            \node[anchor=west] at (axis cs:2, 2.5066) {\(\sqrt{2\pi}\)};
 
-\addplot[blue, thick] {2.5066 + 0.5633 / (1 + exp(-3*(x+1)))};
-\addplot[blue, thick] {2.5066 + 0.5633 / (1 + exp(-3*x))};
-\addplot[blue, thick] {2.5066 + 0.5633 / (1 + exp(-3*(x-1)))};
-\end{axis}
-\end{tikzpicture}
+            \addplot[blue, thick] {1.7724 / (1 + exp(-3*(x+1)))};
+            \addplot[blue, thick] {1.7724 / (1 + exp(-3*x))};
+            \addplot[blue, thick] {1.7724 / (1 + exp(-3*(x-1)))};
+
+            \addplot[blue, thick] {1.7724 + 0.7342 / (1 + exp(3*(x+1)))};
+            \addplot[blue, thick] {1.7724 + 0.7342 / (1 + exp(3*x))};
+            \addplot[blue, thick] {1.7724 + 0.7342 / (1 + exp(3*(x-1)))};
+
+            \addplot[blue, thick] {2.5066 + 0.5633 / (1 + exp(-3*(x+1)))};
+            \addplot[blue, thick] {2.5066 + 0.5633 / (1 + exp(-3*x))};
+            \addplot[blue, thick] {2.5066 + 0.5633 / (1 + exp(-3*(x-1)))};
+            \end{axis}
+            \end{tikzpicture}
         \end{center}
     \end{wrapfigure}
     Consideriamo l'equazione differenziale \[
@@ -4045,6 +4101,184 @@ con \(f \in \mathcal C(\Omega)\) con \(\Omega \subseteq \realnumbers^{n+1}\) ape
 \((x_0, y_0) \in \Omega\).
 L'intervallo più grande su cui la soluzione può essere definita è la proiezione di
 \(\Omega\) sull'asse delle \(x\). Una soluzione può terminare prima se sbatte
-prima sul bordo di \(\Omega\). 
+prima sul bordo di \(\Omega\).
+
+Un problema è ben posto se:
+\begin{enumerate}
+    \item la soluzione esiste;
+    \item la soluzione è unica;
+    \item dipendenza continua del dato iniziale, cioè cambiando di poco
+    il dato iniziale la soluzione cambia di poco.
+    Serve una dipendenza continua della soluzione anche da \(f\).
+    Se salta anche solo una delle tre richieste, diremo che il problema è mal posto.
+\end{enumerate}
+
+\begin{snippetdefinition}{Problema di Cauchy di ordine \(k\) scalare}
+    Problema di Cauchy di ordine \(k\) scalare
+    \[
+        \begin{cases}
+            y^{(k)} = f(t,y,y',\cdots, y^{(k-1)}) \\
+            y(t_0) = y_0 \\
+            y'(t_0) = y_1 \\
+            \vdots \\
+            y^{(k-1)}(t_0) = y_{(k-1)}
+        \end{cases}
+    \]
+\end{snippetdefinition}
+
+Un problema di Cauchy di ordine \(k\) è equivalente ad un problema di Cauchy del primo ordine vettoriale.
+Possiamo infatti porre un problema di Cauchy vettoriale analogo ponendo
+\[
+    x = \begin{pmatrix}
+        x_1 = y \\
+        x_2 = y' \\
+        \vdots \\
+        x_k = y^{(k-1)}
+    \end{pmatrix}
+\]
+Derivando otteniamo
+\[
+    \begin{pmatrix}
+        x_1' = x_2 \\
+        x_2' = x_3 \\
+        \vdots \\
+        x_{k-1'} = x_k
+        x_k' = f(t,x_1, x_2, \cdots, x_k)
+    \end{pmatrix}
+\]
+quindi abbiamo il sistema del primo ordine in forma vettoriale
+\[
+    x' = F(t,x)
+\]
+Quindi i due problemi sono equivalenti.
+Se \(\varphi \in \mathcal C^k(I)\) soddisfa le equazioni di ordine \(k\),
+tramite \(\varphi\) (e le sue derivate) riesco a
+costruire un vettore \(\Phi = (\varphi_1, \cdots, \varphi_k)\) con \(\varphi_k = \varphi_{k-1}'\) tale che
+\(\varphi \in \mathcal C'(I, \realnumbers^k)\) e soddisfa l'equazione data.
+Viceversa, se il vettore \(\Phi\) soddisfa le equazioni,
+la sua prima componente \(\varphi_1\), è automaticamente una funzione di classe \(\mathcal C^k(I)\) che soddisfa l'equazione
+di ordine \(k\).
+
+Il medesimo procedimento vale anche per equazioni vettoriali di ordine \(k\),
+basta aumentare la dimensione.
+Per questo motivo si sviluppa la teoria delle equazioni differenziali considerando solo
+problemi di Cauchy vettoriali al primo ordine.
+
+Consideriamo \(y' = f(x,y)\) con \(|f(x,y)| \leq M\),
+cioè \(|y'| \leq M\).
+Per il teorema dell'incremento finito, il grafico di \(y\) deve essere contenuto in un cono
+centrato nel punto iniziale \((x_0, y_0)\) e di semiampiezza \(\arctan M\).
+La condizione di limitatezza implica che se la soluzione esiste allora soddisfa \[
+    |y(x) - y(x_0)| \leq M|x-x_0|
+\]
+Allora il grafico di \(y(x)\) sta dentro il cono \(|y-y_0| \leq M|x-x_0|\).
+Supponiamo che l'ipotesi di limitatezza sia soddisfatta su tutti i \((a,b) \cartesianprod \realnumbers\).
+In questo caso la soluzione è globale: esiste su tutto \(I=(a,b)\).
+Non può terminare prima perché dovrebbe avere un asintoto verticale,
+ma questo violerebbe la proprietà del cono.
+
+Supponiamo invece che l'ipotesi sia soddisfatta su \(I \cartesianprod J\) con \(I, J\) intervalli.
+Se l'ampiezza del cono \(;\) è troppo grande, il cono interseca il rettangolo sui lati orizzontali.
+In questo caso non possiamo più garantire che la soluzione sia definita su tutto l'intervallo \(I\).
+
+\begin{snippettheorem}{di esistenza e unicità locale di Cauchy-Lipschitz}
+    Sia \(f\colon \Omega \fromto \realnumbers^n\) con \(\Omega \subseteq \realnumbers^{n+1}\) aperto
+    tale che \(f \in \mathcal C(\Omega, \realnumbers^n)\)
+    e consideriamo il problema di Cauchy
+    \[
+        \begin{cases}
+            y' = f(x,y) \\
+            y(x_0) = y_0
+        \end{cases}
+    \]
+    Supponiamo che \(\exists I \subseteq \realnumbers\) intervallo chiuso e limitato con \(x_0 \in I^\circ\) e
+    \(\exists J \subseteq \realnumbers^n\) con \(J = \overline{B_r(y_0)}\) per qualche \(r>0\) tale che
+    \(I \cartesianprod J \subseteq \Omega\). Supponiamo che \(f\) sia lipschitziano
+    in \(J\) uniformemente rispetto ad \(x \in I\), cioè supponiamo che \(\exists L > 0\) tale che
+    \[
+        ||f(x,y_1) - f(x, y_2)|| \leq L||y_1-y_2||, \quad \forall y_1, y_2 \in J, \forall x \in I
+    \]
+    Allora \(\exists \tilde I \subseteq I\) intervallo con \(x_0 \in \tilde I^\circ\) su cui il problema di Cauchy
+    ha una e una sola soluzione. In particolare, se \(I=[a,b]\), con \(a < x_0 < b\), \(\tilde I = [\alpha, \beta]\),
+    con \(\alpha < x_0 < \beta\) dove
+    \[
+        \beta-x_0 = \min\left\{b-x_0, \frac{r}{M}\right\}, \quad
+        x_0-\alpha = \min\left\{x_0-a, \frac{r}{M}\right\}, \quad
+        M = \max_{(x,y) \in I \cartesianprod J} ||f(x,y)||
+    \]
+\end{snippettheorem}
+
+L'ipotesi di lipschitzianità non è sufficiente a garantire la continuità
+di \(f\), perché si tratta di una lipschitzianità solo nella \(y\).
+
+Per esempio \(f(x,y) = \chi_{\rationalnumbers}(x)\) è discontinua in ogni punto, ma è lipschitziana rispetto ad \(y\) con \(L=0\).
+Infatti, \(f\) è costante sulle rette verticali.
+
+Il teorema di Peano assume solo la continuità, non la lipschitzianità, e garantisce solo l'esistenza di una soluzione, ma non l'unicità.
+
+\begin{snippettheorem}{di esistenza e unicità globale}
+    Sia \(f\colon \Omega \fromto \realnumbers^n\) con \(\Omega \subseteq \realnumbers^{n+1}\) aperto
+    tale che \(f \in \mathcal C(\Omega, \realnumbers^n)\)
+    e consideriamo il problema di Cauchy
+    \[
+        \begin{cases}
+            y' = f(x,y) \\
+            y(x_0) = y_0
+        \end{cases}
+    \]
+    Supponiamo che \(\exists I \subseteq \realnumbers\) intervallo
+    chiuso e limitato con \(x_0 \in I^\circ\) tale che \(I \cartesianprod \realnumbers^n \subseteq \Omega\) e che \(f\)
+    sia lipschitziana rispetto a \(y\) uniformemente a \(x\in I\). Allora esiste una unica soluzione al problema in \(I\).
+\end{snippettheorem}
+
+La dimostrazione sfrutta il fatto che \(I\) sia compatto, ma la tesi è vera anche per intervalli non copatti.
+Infatit, ogni intervallo è unione di intervalli compatti.
+Su ognuno di questi la soluzione esiste ed è unica.
+Se \([a_1, b_1] \subseteq [a_2, b_2]\), la soluzione su \([a_2, b_2]\) deve essere un prolungamento
+di quella definita su \([a_1, b_1]\), altrimenti avremmo due soluzioni.
+In questo modo si può definire la soluzione in tutti i punti
+dell'intervallo anche se questo non è compatto.
+
+\begin{snippettheorem}{di esistenza e unicità globale}
+    Sia \(f \in \mathcal C(\Omega; \realnumbers^n)\) con \(\Omega \subseteq \realnumbers^{n+1}\) aperto.
+    Se \(\exists I \subseteq \realnumbers\) intervallo tale che
+    \(I \cartesianprod \realnumbers^n \subseteq \Omega\), se \(f\) è lipschitziana rispetto a \(y \in \realnumbers^n\) uniformemente
+    rispetto a \(x\in I\), allora \(\forall (x_0, y_0) \in I \cartesianprod \realnumbers \realnumbers^n\),
+    esiste un'unica soluzione al problema di Cauchy
+    \[
+                \begin{cases}
+            y' = f(x,y) \\
+            y(x_0) = y_0
+        \end{cases}
+    \]
+    su \(I\).
+\end{snippettheorem}
+
+Notiamo che \(f \in \mathcal C(\Omega; \realnumbers^n)\) non è sufficiente a garantire le ipotesi del teorema in grande.
+
+\begin{snippetexample}{}
+    Consideriamo \(y' = xy^3 = f(x,y)\), quindi \(f \in \mathcal C^1(\realnumbers^2)\),
+    ma \(f\) non è lipschitziana rispetto alla \(y\).
+    Abbiamo \(y=0\) che è la soluzione costante. Se \(y \neq 0\),
+    possiamo separare le variabili
+    \begin{align*}
+        \integral[y_0][y][
+            \frac{1}{t^3}
+        ][t]
+        &= \frac12(x^2 - x_0^2) \\
+        - \frac{1}{y^2} + \frac{1}{y_0^2} &= x^2 - x_0^2 \\
+        y &= \operatorname{sign}(y_0) \frac{1}{\sqrt{
+            \frac{1}{\sqrt{y_0^2}} + x_0^2 - x^2
+        }}
+    \end{align*}
+    Qui \(I = \realnumbers\) però le soluzioni hanno degli asintoti verticali e sono definite solo nell'intervallo
+    \((-\infty, \alpha)\) dove 
+    \[
+        \alpha = \sqrt{
+            \frac{1}{y_0^2} + x_0^2
+        }
+    \]
+    Queste succede perché \(y^3\) cresce troppo velocemente.
+\end{snippetexample}
 
 \end{document}
