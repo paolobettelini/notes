@@ -1132,8 +1132,6 @@ deve tendere a quella binomiale.
     in entrambi i casi.
 \end{snippetexercise}
 
-\subsection{Variabili aleatorie}
-
 Consideriamo l'esperimento di \(N\) lanci di una moneta
 con probabilità \(p \in [0,1]\) che esca testa e \(1-p\)
 che esca croce. Vogliamo probabilizzare l'esperimento, abbiamo quindi
@@ -1828,6 +1826,347 @@ Verifichiamo che sia una dnsità discreta e che quindi definita una misura di pr
     = e^{-\lambda} \sum_{k=0}^\infty \frac{\lambda^k}{k!} = 1
 \]
 Modellizza il numero di arrivi in una coda in un certo lasso temporale
+
+\subsection{Variabili aleatorie}
+
+\begin{snippetdefinition}{Variabile aleatorie}
+    Una \emph{variabile aleatoria} è una quantità che dipende
+    dal risultato di un esperimento aleatorio.
+\end{snippetdefinition}
+
+Sia \((\Omega, \powerset(\Omega), \mathbb P)\) uno spazio di probabilità numerabile.
+
+\begin{snippetdefinition}{Variabile aleatoria discreta}
+    Una \emph{variabile aleatoria discreta} è una funzione
+    \(X \colon \Omega \fromto E\) dove \(E \subseteq \realnumbers^n\) discreto.
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Legge della variabile aleatoria}
+    Chiamiamo \emph{legge della variabile aleatoria}
+    \(X\) la funzione
+    \(\mu_X \colon \powerset(E) \fromto [0,1]\)
+    definita da \[
+        \mu_X(A) \triangleq \mathbb P(X \in A)
+        \triangleq \mathbb P(
+            \{\omega\} \in \Omega \suchthat X(\omega) \in A
+        ), \quad A \in \powerset(E)
+    \]
+\end{snippetdefinition}
+
+Cioè vogliamo la probabilità che \(X\) appartenga ad un sottoinsieme.
+
+Per esempio, identificare l'insieme testa e croce con \(\{0,1\}\)
+corrisponde alla definizione di una variabile aleatoria \(X \colon \{T, C\} \fromto \{0,1\}\)
+tale che \(X(T) = 1\) e \(X(C) = 0\).
+In questo caso la legge è \begin{align*}
+    \mu_X(\{1\}) &= \mathbb P(X = 1) = \mathbb P(\{T\}) = p \\
+    \mu_X(\{0\}) &= \mathbb P(X = 0) = \mathbb P(\{C\}) = 1-p
+\end{align*}
+In questo caso \(\mu_X\) è una bernoulliana di parametri \(p\).
+
+\begin{snippetproposition}{}
+    Sia \(X \colon \Omega \fromto E\) con \(E \subseteq \realnumbers^n\)
+    discreto.
+    Allora, la legge di variabili aleatoria discreta \(\mu_X\) di \(X\) è una misura di probabilità
+    sullo \((E, \powerset(E))\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    \begin{enumerate}
+        \item \begin{align*}
+            \mu_X(E) &= \mathbb P(\{
+                \omega \in \Omega \suchthat
+                X(\omega) \in E
+            \})
+            = \mathbb P(\Omega) = 1
+        \end{align*}
+        \item \emph{\(\sigma\)-additività}:
+        siano \(\{A_n\}_{n \in \naturalnumbers} \subseteq \powerset(\Omega)\)
+        tali che \(A_i \intersection A_j = \emptyset\).
+        Allora, \begin{align*}
+            \mu_X\left(
+                \bigcup_{n=1}^\infty A_n
+            \right)
+            &= \mathbb P\left(
+                \{\omega \in \Omega \suchthat
+                    X(\omega) \in \bigcup_{n=1}^\infty A_n
+                \}
+            \right) \\
+            &= \mathbb P \left(
+                \bigcup_{n=1}^\infty \underbrace{
+                    \left\{
+                    \omega \in \Omega \suchthat X(\omega) \in A_n
+                \right\}
+                }_{C_n \in \powerset(\Omega)}
+            \right)
+        \end{align*}
+        Se i \(C_n\) sono disgiunti, abbiamo finito perché usiamo la \(\sigma\)-additività di \(\mathbb P\).
+        Supponiamo per assurdo che esistano \(i,j\) naturali tale che \(i\neq j\)
+        e \(\omega \in \Omega\)
+        tale che \[
+            \omega \in C_i \intersection C_j
+        \]
+        Per definizione dei \(C_n\)
+        vale che \[
+            X(\omega) \in A_i \intersection A_j
+        \]
+        per il fatto che \(X\) è una funzione quindi ogni elemento di \(\Omega\)
+        associa uno e un solo elemento di \(E\).
+        Tuttavia, \(A_i\) e \(A_j\) sono disgiunti per ipotesi, quindi è assurdo \lightning.
+        Quindi, \(C_i \intersection C_j = \emptyset\) per ogni \(i \neq j\).
+        Di conseguenza, vale la \(\sigma\)-additività grazie alla
+        \(\sigma\)-additività di \(\mathbb P\).
+        \item chiaramente \(\mu_X(A) \in [0,1]\).
+    \end{enumerate}
+\end{snippetproof}
+
+Abbiamo anche quindi una densità associta a questa misura.
+Quindi, ci basta conoscere la densità discreta alla variabile aleatoria per conoscerne la legge.
+
+\begin{snippetdefinition}{Densità discreta di \(X\)}
+    Sia \(X \colon \Omega \fromto E\) una variabile aleatoria discreta con \(E \subseteq \realnumbers^n\)
+    discreto. Chiamiamo \emph{densità discreta} di (o associata)
+    ad \(X\) la densità discreta \(p_x \colon E \fromto [0,1]\)
+    associata alla legge
+    \(\mu_X\) di \(X\). Cioè,
+    \[
+        p_X(x) \triangleq
+        \mu_X(\{x\}) = \mathbb P \left(X = x\right)
+        = \mathbb P \left(
+            \left\{\omega\in \Omega
+            \suchthat X(\omega) = x
+            \right\}
+        \right), \quad \forall x \in E
+    \]
+    \emph{Syntax:} usiamo la notazione \(X \sim \gamma\)
+    per intendere che \(X\) ha legge \(\gamma\), cioè \(\mu_X = \gamma\).
+\end{snippetdefinition}
+
+Quindi \(X \sim \gamma\) se \(X\) ha densità discreta
+uguale alla densità discreta di \(\gamma\).
+
+\begin{snippetexample}{}
+    Consideriamo \(X \sim \text{bin}(n,p)\).
+    Ciò significa che \(X \colon \Omega \fromto \{0, \cdots, n\}\)
+    con densità discreta
+    \(p_X\) data da \[
+        p_X(k) = \binom{n}{k} p^k(1-p)^{n-k},
+        \quad \forall k \in \{0, \cdots, n\}
+    \]
+\end{snippetexample}
+
+Sia \(X \colon \Omega \fromto E \subseteq \realnumbers^n\)
+con densità discreta \(p_X \colon E \fromto [0,1]\).
+Allora, \(\forall A \in \powerset(E)\), vale
+\begin{align*}
+    \mu_X(A) &= \mathbb P(X \in A)
+    = \mathbb P(X^{-1}(A)) = \sum_{x \in A} \mathbb P(X = x) \\
+    &= \sum_{x \in A} p_X(x)
+\end{align*}
+La serie è ben definita in quanto \(A\) è discreto, quindi abbiamo unione al più numerabile
+di \(\{x\}\) (al più una serie, non un integrale).
+Quindi la probabilità che \(X\) prenda valore in \(A\) è data
+dalla somma delle probabilità che \(X\)
+assuma nei singoletti di \(A\).
+Notiamo che definito
+\[
+    S = \{x \in E \suchthat p_X(x) = \mathbb P(X = x) > 0 \}
+\]
+Notiamo allora che, per definizione di densità discreta, vale
+\[
+    \mu_X(S) = \mathbb P(X \in S) = 1
+\]
+In particolare, \(S\) è il più piccolo sottoinsieme
+di \(E\) su cui \(\mu_X\) assume valore \(1\).
+Di solito viene chiamato \emph{supporto} della misura \(\mu_X\)
+(oppure di \(X\)).
+Visto che siamo nel caso discreto, \(\mathbb P(X \in A) > 0\)
+se e solo se \(A \intersection S \neq \emptyset\).
+Nel continui questo non è detto.
+
+Le funzioni indicatrici di \(A \in \powerset(\Omega)\)
+sono un caso particolare di variabili aleatorie.
+Abbiamo che
+\begin{align*}
+    \mathbb P(\chi_A = 0) &= 
+    \mathbb P\left(
+        \{
+            \omega\in\Omega \suchthat \chi_A(\omega) = 0    
+        \}
+    \right)
+    = \mathbb P(A^c) \\
+    \mathbb P(\chi_A = 1) &= 
+    \mathbb P\left(
+        \{
+            \omega\in\Omega \suchthat \chi_A(\omega) = 1    
+        \}
+    \right)
+    = \mathbb P(A)
+\end{align*}
+Da questo ricaviamo che \(\chi_A \sim \text{ber}(\mathbb P(A))\).
+
+\begin{snippetproposition}{Proprietà funzioni indicatrici}
+    Siano \(A,B \in \powerset(\Omega)\). Allora
+    \begin{enumerate}
+        \item \(\chi_A = 1- \chi_{\Omega \difference A}\)
+        \item \[
+            \chi_{A\union B} = \chi_A + \chi_B - \chi_{A \intersection B}
+            = \max\{\chi_A, \chi_B\}
+        \]
+        \item \[
+            \chi_{A \intersection B} = \chi_A \chi_B = \min\{\chi_A, \chi_B\}
+        \]
+        \item se \(A \subseteq B\), allora
+        \[
+            \chi_{B \difference A} = \chi_B - \chi_A
+        \]
+    \end{enumerate}
+\end{snippetproposition}
+
+% todo mettere tutti i \cancelto{0} o \cancelto{1}
+\begin{snippetproof}{}
+    \begin{enumerate}
+        \item Distinguiamo due casi:
+        \begin{enumerate}
+            \item se \(\omega \in A\), allora
+            \begin{align*}
+                0 &= \chi_{\Omega \difference A}(\omega) = 1 - \chi_A(\Omega)
+            \end{align*}
+            \item se \(\omega \in \Omega \difference A\), allora
+            \begin{align*}
+                1 &= \chi_{\Omega \difference A}(\omega) = 1 - \chi_A(\Omega)
+            \end{align*}
+        \end{enumerate}
+        \item Distinguiamo quattro casi:
+        \begin{enumerate}
+            \item se \(\omega \in A \intersection B\), allora
+            \begin{align*}
+                1 &= \chi_{A \union B}(\omega) = \max\{\chi_A(\omega), \chi_B(\omega)\} \\
+                &= \chi_A(\omega) + \chi_B(\omega) - \chi_{A \intersection B}(\omega)
+            \end{align*}
+            \item se \(\omega \in A \intersection (\Omega \difference B)\), allora
+            \begin{align*}
+                1 &= \chi_{A \union B}(\omega) = \max\{\chi_A(\omega), \chi_B(\omega)\} \\
+                &= \chi_A(\omega) + \chi_B(\omega) - \chi_{A \intersection B}(\omega)
+            \end{align*}
+            \item se \(\omega \in (\Omega \difference A) \intersection (\Omega \difference B)\), allora
+            \begin{align*}
+                0 &= \chi_{A \union B}(\omega) = \max\{\chi_A(\omega), \chi_B(\omega)\} \\
+                &= \cancelto{0}{\chi_A(\omega)} + \cancelto{0}{\chi_B(\omega)} - \cancelto{0}{\chi_{A \intersection B}(\omega)}
+            \end{align*}
+        \end{enumerate}
+        \item \todo
+        \item \todo
+    \end{enumerate}
+\end{snippetproof}
+
+Prendiamo \(X \colon \Omega \fromto E\) discreta con \(E \subseteq \realnumbers^n\)
+discreto. Definiamo
+\[
+    \Omega_x \triangleq \left\{
+        \omega \in \Omega \suchthat X(\omega) = x
+    \right\}, \quad \forall x \in E
+\]
+cioè la fibra di \(x\).
+Notiamo che \(\{\Omega_x\}\) è una famiglia numerabile.
+Inoltre \(\Omega_x \intersection \Omega_y = \emptyset\) per \(x \neq y\),
+in quanto \(X\) è una funzione.
+Inoltre,
+\[
+    \Omega = \bigcup_{x \in E} \Omega_x
+\]
+unione al più numerabile.
+Definiamo la variabile aleatoria
+\[
+    \hat X = \sum_{x\in E} x \chi_{\Omega_x}
+\]
+Ma notiamo che \(\hat X(\omega) = x = X(\omega)\).
+Possiamo quindi scrivere una variabile aleatoria discreta come sommatoria o serie
+di funzioni indicatrici.
+
+Data una variabiel aleatoria discreta, possiamo sempre associarne la legge, che è una misura di probabilità
+sullo spazio di arrivo. Possiamo fare il converso, cioè: fissato \(E \subseteq \realnumbers^n\)
+discreto e \(\mu\) misura di probabilità su \((E, \powerset(E))\), allora esiste uno spazio
+di probabilità \((\Omega, \powerset(\Omega), \mathbb P)\)
+discreto e \(X \colon \Omega \fromto E\) tale che \(\mu_X = \mu\),
+cioè \(X\) ha legge \(\mu\)?
+La risposta è sì: come spazio di probabilità prendiamo \((E, \powerset(E), \mu)\)
+cioè \(\Omega = E\),
+e come variabile aleatoria prendiamo \(X \colon \Omega \fromto E\)
+tale che \(X(\omega) = \omega\).
+Di conseguenza, per definizione delle legge di \(X\), per tutte le \(A\) vale
+\[
+    \mu_X(A) = \mathbb P(\left\{
+        \omega \in \Omega \suchthat X(\omega) \in A
+    \right\})
+    = \mathbb P(\left\{
+        \omega \in \Omega = E \suchthat \omega \in A
+    \right\}) = \mathbb P(A) = \mu(A)
+\]
+Questa si chiama costruzione canonica di una variabile aleatoria.
+
+Come facciamo a capire se due variabili aleatorie coincidono?
+
+\begin{snippetdefinition}{}
+    Siano \((\Omega_1, \powerset(\Omega_1), \mathbb P_1), (\Omega_2, \powerset(\Omega_2), \mathbb P_2)\)
+    spazi di probabilità discreti
+    e \(X_1 \colon \Omega_1 \fromto E, X_2 \colon \Omega_2 \fromto E\)
+    variabili aleatorie discrete con \(E \subseteq \realnumbers^n\).
+    Supponiamo che \(X_1 \sim \mu_1\) con densità \(p_1\)
+    e \(X_2 \sim \mu_1\) con densità \(p_2\).
+    \begin{enumerate}
+        \item Diciamo che \(X_1\) e \(X_2\) sono uguali \emph{in legge}
+        (o in distribuzione o debolmente)
+        se \(\mu_1 = \mu_2\), o in modo equivalente \(p_1 = p_2\).
+        \item Diciamo che \(X_1\) e \(X_2\) sono uguali \emph{quasi certamente}
+        se \(\Omega_1 = \Omega_2 = \Omega\) e \(\mathbb P_1 = \mathbb P_2 = \mathbb P\)
+        e vale che
+        \[
+            \mathbb P\left(
+                \{
+                    \omega \in \Omega \suchthat X_1(\omega) = X_2(\Omega)    
+                \}
+            \right) = 1
+        \]
+    \end{enumerate}
+\end{snippetdefinition}
+
+Cioè per la misura quasi certa, vogliamo che coincidano ove la misura è non nulla.
+Non è l'uguaglianza insiemistica delle funzioni.
+È simile ma possiamo escludere dalla variabile aleatorea insiemi di misura nulla
+rispetto a \(\mathbb P\).
+In altri modi
+\[
+    \mathbb P(\{
+        \omega\in \Omega \suchthat X_1(\omega) \neq X_2(\omega)    
+    \}) = 0
+\]
+
+Anche nel caso in cui \(\Omega_1 = \Omega_2 = \Omega\) e \(\mathbb P_1 = \mathbb P_2 = \mathbb P\),
+in generale l'uguaglianza in distrubzione non implica quella quasi certa.
+
+\begin{snippetexample}{Uguaglianza in distrubzione non implica quella quasi certa}
+    Consideriamo \(\Omega = \{T,C\}\)
+    e \(X \colon \Omega \fromto [0,1]\) tale che \(X(T) = 1\)
+    e \(X(C) = 0\) e \(\mathbb P(X = 1) = \mathbb P(X=0) = \frac12\).
+    Quindi, \(X\) è una bernoulliana di parametro \(\frac12\).
+    Possiamo scambiare testa e croce, quindi \(Y = 1-X\),
+    quindi \[
+        \mathbb P(Y = 1) = \mathbb P(1-X = 1) = \mathbb P(X=0) = \frac12\\
+        \mathbb P(Y = 0) = \mathbb P(1-X = 0) = \mathbb P(X=1) = \frac12
+    \]
+    Quindi, \(X\) e \(Y\) sono uguali in legge ma
+    non quasi certamente, in quanto \(1 = X(T) \neq Y(T) = 0\)
+    e \(0 = X(C) \neq Y(C) = 1\).
+    Quindi le due funzioni sono divderse in ogni punti di \(\Omega\),
+    e non è trascurabile.
+\end{snippetexample}
+
+
+
+
+
+
 
 
 

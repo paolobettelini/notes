@@ -1201,10 +1201,10 @@ spostarsi interamente in uno dei cerchio ma non nell'altro.
     \]
     Abbiamo i seguenti cerchi di Gershgorin
     \begin{align*}
-        C_1 &= { z \in \complexnumbers \suchthat |z-10| \leq 7} \\
-        C_2 &= { z \in \complexnumbers \suchthat |z-4| \leq 2} \\
-        C_3 &= { z \in \complexnumbers \suchthat |z-4| \leq 3} \\
-        C_4 &= { z \in \complexnumbers \suchthat |z-3i| \leq \sqrt{2}}
+        C_1 &= \{ z \in \complexnumbers \suchthat |z-10| \leq 7\} \\
+        C_2 &= \{ z \in \complexnumbers \suchthat |z-4| \leq 2\} \\
+        C_3 &= \{ z \in \complexnumbers \suchthat |z-4| \leq 3\} \\
+        C_4 &= \{ z \in \complexnumbers \suchthat |z-3i| \leq \sqrt{2}\}
     \end{align*}
     Possiamo notare che sicuramente il determinante della matrice non è nullo.
     \wrapfill
@@ -1258,9 +1258,9 @@ spostarsi interamente in uno dei cerchio ma non nell'altro.
     \(\lambda = \rho(A)\). \\
     Abbiamo i cerchi
         \begin{align*}
-        C_1 &= { z \in \complexnumbers \suchthat |z+10| \leq 1} \\
-        C_2 = C_3 = C_4 = C_5 &= { z \in \complexnumbers \suchthat |z+10| \leq 2} \\
-        C_6 &= { z \in \complexnumbers \suchthat |z-77| \leq 1}
+        C_1 &= \{ z \in \complexnumbers \suchthat |z+10| \leq 1\} \\
+        C_2 = C_3 = C_4 = C_5 &= \{ z \in \complexnumbers \suchthat |z+10| \leq 2\} \\
+        C_6 &= \{ z \in \complexnumbers \suchthat |z-77| \leq 1\}
     \end{align*}
     C'è quindi un singolo autovalore in \(C_6\),
     ma quest'ultimo non può essere propriamente complesso in quanto ci sarebbe un'altro
@@ -1290,6 +1290,200 @@ spostarsi interamente in uno dei cerchio ma non nell'altro.
 \end{snippetexample}
 \end{radioactive}
 
+\begin{snippettheorem}{Teorema di Gershgorin III}
+    Sia \(A \in \matrices_{n \times n}(\complexnumbers)\),
+    \(A\) irriducibile e tale
+    l'autovalore \(\lambda\) sta sul bordo dell'unione dei cerchi
+    \[
+        \lambda \in \partial \left(\bigcup_{j=1}^n C_j\right)  
+    \]
+    Allora \(\lambda\) sta sul bordo di tutti i cerchi
+    \(\lambda \in \partial C_j, \forall J \in \{1, \cdots, n\}\).
+\end{snippettheorem}
+
+Non si verifica quasi mai l'ipotesi, quindi conviene usare la contronominale.
+
+\begin{snippetproof}{Teorema di Gershgorin III}
+    Sia \(\lambda\) un autovalore e sia \(x\) un suo autovettore.
+    Consideriamo la relazione
+    \[
+        \sum_{k=1}^n A_{j,k} x_k = \lambda x_j
+    \]
+    dove scegliamo \(j\) come indice \(p\) tale che \(|x_p| = ||x||_\infty > 0\),
+    cioè vogliamo massimizzare la parte destra.
+    \begin{align*}
+        \lambda x_p - A_{p,p} x_p &\leq
+        \sum_{\substack{k=1 \\ k \neq p}}^n |A_{p,k}| \cdot |x_k| \leq |x_p| \cdot r_p \\
+        \lambda x_p - A_{p,p} x_p &=
+        \sum_{\substack{k=1 \\ k \neq p}}^n |A_{p,k}| \cdot |x_k| = |x_p| \cdot r_p
+    \end{align*}
+    Ma per l'ipotesi l'autovalore sta sul bordo, quindi \(r_p\) è precisamente il raggio
+    del cerchio.
+    Scelgo \(u = p\) e guardiamo con attenzione alla relazione
+    \begin{align*}
+        \sum_{\substack{k=1 \\ k \neq p}}
+        |A_{p,k}| \cdot |x_k| &= \left(
+            \sum_{\substack{u=1 \\ p \neq p}} |A_{p,k}|
+        \right) |x_p|
+    \end{align*}
+    Visto che è irriducibile, almeno un termine \(i_2 \neq p\)
+    esiste tale che \(A_{p,i_2} \neq 0\).
+    Abbiamo quindi necessariamente che \(|x_{i_2}| = |x_p|\).
+    Ma allora, tornando a Gershgorin I, avremmo potuto seguire la medesima dimostrazione
+    su \(i_2 \neq p\) al posto di \(p\).
+    Quindi, \(\lambda \in C_{i_2}\), e per ipotesi
+    \(\lambda\) sta quindi in \(\partial C_{i_2}\).
+    Iterando questo argomento \(n-1\), esaurendo l'insieme dei nodi, otteniamo la tesi.
+\end{snippetproof}
+
+\begin{snippetexample}{Teorema di Gershgorin III}
+    Consideriamo la matrice
+    \[
+        A = \begin{pmatrix}
+            0 & 1   &     &     &                &    \\
+               & 0 & 1   &     & \text{\huge 0} &    \\
+                &    & \ddots & \ddots   &                &    \\
+                &     &    & \ddots & \ddots              &    \\
+                & \text{\huge 0} &&         & 0 & 1  \\
+            1    &     &     &     &              & 0 
+        \end{pmatrix}
+    \]
+    Ha autovalori pari a
+    \[
+        \lambda_j = e^{i \frac{2\pi j}{n}}
+    \]
+    e autovettori relativi
+    \[
+        v^{(j)} = \left(
+            \frac{1}{\sqrt{n}} e^{i\frac{2\pi j}{n}k}
+        \right)_{k=1}^n
+    \]
+    Il suo grafo associato è fortemente connesso: \\
+    \begin{center}
+        \begin{tikzpicture}[>=stealth, node distance=2cm]
+            \node[circle, draw, thick, minimum size=8mm] (1) at (0,0) {1};
+            \node[circle, draw, thick, minimum size=8mm] (2) at (2.5,0) {2};
+            \node[circle, draw, thick, minimum size=8mm] (3) at (5,0) {3};
+            \node[circle, draw, thick, minimum size=8mm] (4) at (7.5,0) {\(\cdots\)};
+            \node[circle, draw, thick, minimum size=8mm] (5) at (10,0) {\(n\)};
+
+            \foreach \i/\j in {1/2, 2/3, 3/4, 4/5} {
+                \draw[->, thick] (\i) to[bend left=20] (\j);
+            }
+
+            \draw[->, thick] (5) to[bend left=20] (1);
+        \end{tikzpicture}
+    \end{center}
+\end{snippetexample}
+
+\pagebreak
+
+%todo spiegazione aggiuntiva sugli esempi
+\begin{snippetexample}{Teorema di Gershgorin III}
+    Consideriamo la matrice
+    \[
+        A = \begin{pmatrix}
+            2 & -1   &     &     &                &    \\
+            -1   & 2 & -1   &     & \text{\huge 0} &    \\
+                &   \ddots & \ddots & \ddots   &                &    \\
+                &     &  \ddots  & \ddots & \ddots              &    \\
+                & \text{\huge 0} &&       -1  & 2 & -1  \\
+                &     &     &     &            -1  & 2 
+        \end{pmatrix}
+    \]
+    che discretizza l'equazione differenziale
+    \[
+        \begin{cases}
+            -u''(x) = f(x), \quad x \in (0,1) \\
+            u(0) = \alpha \\
+            u(1) = \beta \\
+        \end{cases}
+    \]
+    con \(A_n u = v\).
+    Cominciamo notando che \(A_n\) è simmetrica, reale quindi Hermitiana,
+    allora i suoi autovalori sono reali.
+        Abbiamo i cerchi
+        \begin{align*}
+        C_1 &= C_n = \{ z \in \complexnumbers \suchthat |z-2| \leq 1\} \\
+        C_2 = C_3 = \cdots = C_{n-1} &= \{ z \in \complexnumbers \suchthat |z-2| \leq 2\}
+    \end{align*}
+    \begin{wrapfigure}{r}{8cm}
+        \begin{center}
+            \vspace{1cm}
+            \begin{tikzpicture}[scale=0.3]
+            \draw[->, thick] (-1,0) -- (5,0);
+            \draw[->, thick] (0,-3) -- (0,3);
+
+            \draw[red, thick, fill=red!10, fill opacity=0.5] (2,0) circle (2);
+
+            \draw[blue, thick, fill=blue!10, fill opacity=0.5] (2,0) circle (1);
+
+            \filldraw[black] (2,0) circle (3pt);
+            \filldraw[black] (0,0) circle (3pt);
+            \draw[dashed] (1,0) circle (1pt);
+            \draw[dashed] (3,0) circle (1pt);
+            \draw[dashed] (4,0) circle (1pt);
+
+            \end{tikzpicture}
+        \end{center}
+        \vspace{-3cm}
+    \end{wrapfigure}
+    Dai teoremi di Gershgorin, siccome gli autovalori sono reali, 
+    sappiamo quindi che \(\lambda \in [0,4]\).
+    La matrice associata è irriducibile in quanto tridiagonale.
+    Tuttavia, \(0,4 \notin \partial C_1\), mentre
+    \[
+        0,4 \in \partial \left(
+            \bigcup_{j=2}^n C_j
+        \right)
+    \]
+    dunque \(\lambda \in (0,4)\).
+    Sappiamo che se \(B = A^*\), allora \[
+        \lambda_{\text{min}}(B)
+        = \min_{\substack{x \in \complexnumbers^n \\ x \neq 0}} \frac{x^* B x}{x^* x}
+    \]
+    Ci aspettiamo che \(r_n\) sia piccolo con \(e\) il vettore di \(1\)
+    \[
+        A_n e = \begin{pmatrix} 1 & 0 & \cdots & 0 & 1 \end{pmatrix}
+    \]
+    e il raggio \(r_n = 2/n \to 0\) per \(n \to \infty\).
+    Se scegliessimo il vettore con elementi che si alternano \(1, -1\),
+    abbiamo più sovrapposizione possibili. I coefficienti oscillano,
+    il vettore oscilla e quindi risuoniamo il più possibile.
+    In tal caso otteniamo un valore appena inferiore al \(4\).
+    \wrapfill
+\end{snippetexample}
+
+Supponiamo che \(A \in \matrices_n(\complexnumbers)\) con \(n\) grande.
+Come facciamo a verificare in maniera algoritmica se la matrice è fortemente connessa?
+Sia \(G_A\) il suo grafo associato.
+Consideriamo \(X\) la matrice di adiacenza di \(G_A\).
+Consideriamo \(Y=X^2\), cioè
+\[
+    (Y)_{j,k} = \sum_{l=1}^n x_{j,l} x_{l,k}
+\]
+Cioè visto che i termini sono booleani, allora fa \(1\)
+se posso muovermi da \(j\) a \(e\) e da \(e\) a \(k\),
+quindi muoversi fra \(j\) a \(k\) in due passi.
+Quindi il termine \((Y)_{j,k}\) è il numero di modi di traversare i due nodi in \(2\) passi.
+Possiamo semplificare usando una or iterata
+\[
+    (Y)_{j,k}
+    = \bigvee_{l=1}^n x_{j,e} \cdot x_{e,k}
+\]
+In generale, \((X^n)_{j,k}\) ci mostra il numero di cammini
+per connettere i nodi \(j, k\).
+Sia \[
+    \tilde X = I_n \vee \bigvee_{k=1}^{n-1} X^k
+\]
+Se tale matrice è tutta piena di \(1\),
+significa che \(X\) è fortemente connessa.
+L'identità serve per assicurarci che abbiamo uni sulla diagonale, cioè ogni elemento
+ha un percorso verso sè stesso, cioè il percorso nullo.
+
+Tuttavia, l'algoritmo più ottimale è quello
+di fare un traversamento DFS sul grafo, controllare, e poi un traversamente DFS
+sul grafo invertito (che è associato alla matrice trasposta).
 
 
 
