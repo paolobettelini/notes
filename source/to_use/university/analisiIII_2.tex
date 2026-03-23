@@ -1,0 +1,2665 @@
+\documentclass[a4paper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{parskip}
+\usepackage{fullpage}
+\usepackage{cancel}
+\usepackage{cancel}
+\usepackage{wrapfig}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{witharrows}
+
+\pgfplotsset{compat=1.18}
+\WithArrowsOptions{displaystyle}
+\usetikzlibrary{cd}
+
+% Cancel color
+\renewcommand{\CancelColor}{\color{red}}
+
+\title{Probability}
+\author{Paolo Bettelini}
+\date{}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\pagebreak
+
+\section{Successione di funzioni}
+
+\begin{snippettheorem}{Criterio di Cauchy}
+    Una successione di funzioni \(\{f_n\}\) converge uniformemente a \(f \colon S \fromto \realnumbers\)
+    in \(S\) se e solo se per ogni \(\varepsilon > 0\) esiste \(N(\varepsilon)\) naturale tale che
+    \[
+        \forall m,n > N,
+        |f_n(x) - f_m(x)| < \varepsilon, \forall x \in S
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    \begin{iffproof}
+        \item Fissiamo \(\varepsilon > 0\).
+        Dalla definizione di convergenza uniforme,
+        esiste \(N\left(\frac{\varepsilon }{2}\right)\) tale che
+        \[
+            \left|f_n(x) - f(x)\right| < \frac{\varepsilon}{2}
+        \]
+        per ogni \(n > N\) e \(x \in S\).
+        Quindi, \begin{align*}
+            \left|f_n(x) - f(x)\right| &\leq \left|f_n(x) - f(x)\right| + \left|f_n(x) - f(x)\right| \\
+            &\leq \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon
+        \end{align*}
+        \item Mostriamo la convergenza uniforme. Fissiamo \(x \in S\).
+        Allora, per la condizione soddisfatta, \(\{f_n(x)\}\) è una successione
+        numerica che verifica il criterio di Cauchy. Di conseguenza, esiste
+        \(f_x\) tale che
+        \[
+            \lim_{n \to \infty} f_n(x) = f_x
+        \]
+        per ogni \(x \in S\) siccome l'ipotesi vale per tutte le \(x\).
+        Definiamo \(f \colon S \fromto \realnumbers\) data da
+        \[
+            f(x) \triangleq f_x
+        \]
+        Per iptoesi per ogni \(\varepsilon > 0\) esiste \(N(\varepsilon)\) naturale tale che
+        \begin{align*}
+            |f_n(x) - f_m(x)| < \varepsilon
+        \end{align*}
+        per tutte le \(m,n > N\) e \(x \in S\).
+        Prendendo il limite con \(m \to \infty\), per definizione di \(f\), otteniamo
+        \[
+            |f_n(x) - f(x)| < \varepsilon
+        \]
+        per tutte le\(m,n > N\) e \(x \in S\).
+    \end{iffproof}
+\end{snippetproof}
+
+Vediamo ora come si comporta la convergenza uniforme rispetto
+alle proprietà studiate precedentemente.
+
+\begin{snippetdefinition}{Limitatezza successione di funzioni}
+    Diciamo che la successione di funzioni \(\{f_n\}\)
+    è \emph{limitata} in \(S\) se \(\forall n \in \naturalnumbers\), \(\exists r_n > 0\)
+    tale che \(|f_n(x) \leq M_n\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Equilimitatezza successione di funzioni}
+    Diciamo che la successione di funzioni \(\{f_n\}\)
+    è \emph{equilimitata} in \(S\) se \(\exists M > 0\) tale che
+    \(\forall n \in \naturalnumbers\), \(|f_n(x) \leq M\).
+\end{snippetdefinition}
+
+Equilimitato implica limitato.
+
+\begin{snippetproposition}{}
+    Sia \(\{f_n\}\) convergente uniformemente a \(f\) in \(S\)
+    con \(f \colon S \fromto \realnumbers\).
+    Se \(f_n\) è limitata per ogni \(n \in \naturalnumbers\),
+    allora \(f\) è limitata in \(S\) e \(\{f_n\}\) è equilimitata.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Per la definizione di convergenza uniforme, per ogni \(\varepsilon > 0\)
+    esiste \(N(\varepsilon)\) naturale tale che
+    \[
+        |f_n(x) - f(x)| < \varepsilon, \quad \forall n > N, x \in S
+    \]
+    Fissiamo arbitrariamente \(\varepsilon = 1\) e prendiamo
+    \(N_1 = N(1)\), che verifica la defiinzionoe di convergenza uniforme con \(\varepsilon = 1\).
+    Allora,
+    \begin{align*}
+        |f(x)| &\leq |f(x) - f_{N_1}(x)| + |f_{N_1}(x)| \\
+        &\leq 1 + |f_{N_1}(x)| \leq 1 + M_{N_1}
+    \end{align*}
+    dove \(M_{N_1} > 0\) tale che \(|f_{N_1}(x)| \leq M_{N_1}\) per ogni \(x \in S\), siccome è limitata.
+    Siccome \(N_1\) è fissato, esiste \(M>0\) tale che \(|f(x)| \leq M\) per \(x \in S\).
+    Proviamo ora la equilimitatezza di \(\{f_n\}\) in \(S\).
+    Abbiamo visto che \begin{align*}
+        |f_n(x)| \leq |f_n(x) - f(x)| + |f(x)| \leq 1 + M 
+    \end{align*}
+    Ma per ipotesi sappiamo che per ogni \(n \in \naturalnumbers\),
+    esiste \(M_n\) tale che \(|f_n(x)| < M_n\) per ogni \(x \in S\).
+    Allora definiamo \(M' = \max\{M_1, \cdots, M_{N_1}, 1 + M\}\), vale che
+    \[
+        |f_n(x)| \leq M', \quad \forall x \in S, \forall n \in \naturalnumbers
+    \]
+\end{snippetproof}
+
+Non vale il viceversa.
+
+\begin{snippetexample}{L'equilimitatezza non implica nemmeno la convergenza puntuale.}
+    Consideriamo \(f_n(x) = \sin(nx)\), che ovviamente è equilimitata da \(M=1\).
+    Tuttavia, non converge puntualmente in \(S = [0, 2\pi]\). Basta prendere \(x = \frac{\pi}{2}\)
+    \begin{align*}
+        \sin(n \frac{\pi}{2}) = \begin{cases}
+            1 & n = 1 + 4k \\
+            0 & n = 2k \\
+            -1 & n = 3 + 4k
+        \end{cases}
+    \end{align*}
+\end{snippetexample}
+
+Non vale nemmeno un analogo di Bolzano Weierstrass.
+
+\begin{snippetexample}{L'equilimitatezza non implica un analogo di Bolzano Weierstrass con convergenza puntuale.}
+    Consideriamo \(f_n(x) = \sin(nx)\), che ovviamente è equilimitata da \(M=1\).
+    Supponiamo che esista una sottosuccessione \(\{f_{n_k}\}\) che converge puntualmente
+    con \(n_k \to \infty\) per \(k \to \infty\).
+    Definisco
+    \[
+        g_k(x) = \left(f_{n_k}(x) - f_{n_{k+1}}(x)\right)^2
+        = \left(\sin(n_k x) - \sin(n_{k+1}x)\right)^2
+    \]
+    è immediato verificare che \(g_k\) converge puntualmente a zero in \(S\),
+    poiché \(\{f_{n_k}\}\) converge in \(S\).
+    Inoltre, \(|g_k| \leq 4\).
+    Per il teorema della convergenza dominata, che vedremo in futuro,
+    vale \begin{align*}
+        \lim_{k \to \infty} \integral[0][2\pi][g_k(x)][x]
+        = \integral[0][2\pi][\lim_{k\to\infty} g_k(x)][x] = 0
+    \end{align*}
+    Tuttavia, abbiamo che \(\forall k \in \naturalnumbers\),
+    \[
+        \integral[0][2\pi][g_k(x)][x]
+        = \integral[0][2\pi][\left(\sin(n_k x) - \sin(n_{k+1}x)\right)^2][x]
+        = 2\pi
+    \]
+    che è assurdo \lightning.
+\end{snippetexample}
+
+\begin{snippetexercise}{}
+    Dimostrare che per ogni \(i,j\) naturali vale \[
+        \integral[0][2\pi][\sin(ix)\sin(jx)][x] = \begin{cases}
+            0 & i \neq j \\
+            \pi & i = j
+        \end{cases}
+    \]
+\end{snippetexercise}
+
+Studiamo ora la continuità e la convergenza uniforme.
+
+\begin{snippettheorem}{Scambio del limite}
+    Siano \(\{f_n\}\) una successione di funzioni uniformemente convergente ad \(f\)
+    in \(S\) con \(f \colon S \fromto \realnumbers\).
+    Sia \(x_0 \in S\) punto di accumulazione tale che
+    \[
+        \exists \lim_{x\to x_0} f_n(x) \in \realnumbers, \quad \forall n \in \naturalnumbers
+    \]
+    Allora, vale che
+    \[
+        \lim_{n \to \infty} \lim_{x \to \infty} f_n(x)
+        = \lim_{x \to \infty} \lim_{n \to \infty} f_n(x)
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Fissiamo \(x_0 \in S\) punto di accumulazione
+    e definiamo \[ A_n \triangleq \lim_{x \to x_0} f_n(x) \] per \(n \in \naturalnumbers\).
+    Per il criterio di Cauchy, siccome abbiamo convergenza uniforme,
+    esiste \(N(\varepsilon)\) naturale tale che
+    \[
+        |f_n(x) - f_m(x)| < \varepsilon
+    \]
+    per tutte le \(m,n > N\) e \(x \in S\).
+    La funzione \(x \to |x|\) è continua quindi se
+    facciamo tendere \(x \to x_0\) nell'ultima espressione,
+    otteniamo
+    \[
+        |A_m - A_n| < \varepsilon
+    \]
+    per tutte le \(m,n > N\) e \(x \in S\).
+    Di conseguenza, \(\{A_n\}\) è una successione numerica che verifica il criterio di Cauchy.
+    Quindi, converge e definiamo
+    \[
+        A \triangleq \lim_{n \to \infty} A_n
+    \]
+    Quindi la parte sinistra di 
+        \[
+        \lim_{n \to \infty} \lim_{x \to \infty} f_n(x)
+        = \lim_{x \to \infty} \lim_{n \to \infty} f_n(x)
+    \]
+    ha un senso. Ci manca da dimostrare che
+    \[
+        \lim_{x\to x_0} f(x) = A
+    \]
+    Cioè, \(\forall \varepsilon > 0\), \(\exists \delta(\varepsilon, x)\)
+    tale che \(|f(x) - A| < \epsilon\) per ogni \(x\in S \difference \{x_0\}\) tale che \(|x-x_0| < \delta\).
+    Sappiamo che \(f_n\) converge uniformemente a \(f\) quindi esiste \(N\left(\frac{\varepsilon}{3}\right)\)
+    naturale tale che
+    \begin{align*}
+        |f_n(x) - f(x)| < \frac{\varepsilon}{3}, \quad \forall n > N, x \in S
+    \end{align*}
+    Inoltre, sappiamo che \(A_n\) converge ad \(A\) per \(n \to +\infty\),
+    e quindi esiste \(N_2\left(\frac{\varepsilon}{3}, x_0\right)\) naturale tale che 
+    \[
+        |A_m - A| < \frac{\varepsilon}{3}, \quad \forall n \geq N_2
+    \]
+    Per definizione, sappiamo che per ogni \(n \in \naturalnumbers\),
+    \[
+        A_n \triangleq \lim_{x\to x_0} f_n(x)
+    \]
+    quindi fissato \(M > \max\{N_1, N_2\}\), esiste
+    \(\overline\delta(M, x_0, \varepsilon)\) tale che
+    
+    \[
+        |f_{M}(x) - A_{M}| < \frac{\varepsilon}{3},
+        \quad \forall x \in S \difference \{x_0\} \suchthat |x-x_0| < \overline\delta
+    \]
+    Combinando tutto, otteniamo che
+    \begin{align*}
+        |f(x) - A| &\leq |f(x) - f_{M}(x)| + |f_{M}(x) - A_{M}| + |A_{M} - A| \\
+        &\leq \frac{\varepsilon}{3} + \frac{\varepsilon}{3} + \frac{\varepsilon}{3} = \varepsilon
+    \end{align*}
+    per tutte le \(x \in S \difference \{x_0\}\) tale che \(|x-x_0| < \overline\delta\).
+\end{snippetproof}
+
+Notiamo che se \(\{f_n\}\) converge a \(f\), \(x_0 \in S\)
+punto di accumulazione tale che
+\[
+    \lim_{x\to x_0} f(x) = +\infty, \quad \forall n \in \naturalnumbers
+\]
+allora
+\[
+    \lim_{x \to x_0} f(x) = +\infty
+\]
+e analogamente per \(-\infty\).
+Avremmo potuto unificare il tutto con gli intorni della retta reale estesa.
+
+
+Se richiediamo che \(f_n(x)\) siano continue allora il limite per \(x \to x_0\)
+è precisamente \(f_n(x_0)\), e quindi da questo teorema otteniamo immediatamente il corollario.
+
+\begin{snippetcorollary}{}
+    Siano \(\{f_n\}\) una successione di funzioni continue uniformemente convergente ad \(f\)
+    in \(S\) con \(f \colon S \fromto \realnumbers\).
+    Allora \(f\) è continua su \(S\) e \(\forall x_0 \in S\) punto di accumulazione vale
+    \[
+        \lim_{n \to \infty} \lim_{x \to \infty} f_n(x)
+        = \lim_{x \to \infty} \lim_{n \to \infty} f_n(x) = f(x_0)
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{}
+    per esercizio dimostrarla usando la continuità
+    per successioni. Ora la dimostriamo con la definizione classica.
+    Dobbimo mostrare che per ogni \(x_0 \in S\),
+    la funzione \(f\) è continua in \(x_0\),
+    cioè \(\forall \varepsilon > 0\) esiste \(\delta(x_0, \varepsilon) > 0\)
+    tale che \[
+        |f(x) - f(x_0)| < \varepsilon, \quad \forall x \in S \suchthat |x-x_0| < \delta
+    \]
+    Fissiamo \(x_0 \in S\) e \(\varepsilon > 0\).
+    Visto che \(f_n\) converge uniformemente ad \(f\), esiste \(N\left(\frac{\varepsilon}{2}\right)\)
+    naturale tale che
+    \[
+        |f_n(x) - f(x)| < \frac{\varepsilon}{3}, \quad \forall n > N, \forall x \in S
+    \]
+    Fissiamo \(n_0 > N\).
+    Per ipotesi, \(f_{n_0}\) è continua in \(x_0\),
+    quindi esiste \(\overline \delta\left(x_0, n_0, \frac{\varepsilon}{3}\right)\) tale che
+    \[
+        |f_{n_0}(x) - f_{n_0}(x_0)| < \frac{\varepsilon}{3},
+        \quad \forall x \in S \suchthat |x-x_0| \leq \overline\delta
+    \]
+    Combinando il tutto otteniamo che \(\forall x \in S\) tale che \(|x-x_0| < \overline\delta\) vale
+    \begin{align*}
+        |f(x) - f(x_0)| &\leq |f(x) - f_{n_0}(x)| + |f_{n_0}(x) - f(x_0)|
+        + |f_{n_0}(x) - f_{n_0}(x_0)| \\
+        &\leq \frac{\varepsilon}{3} + \frac{\varepsilon}{3} + \frac{\varepsilon}{3} = \varepsilon
+    \end{align*}
+    Quindi scegliendo \(\delta = \overline \delta\) viene verifica la definizione di continuità in \(x_0\)
+    per \(f\).
+\end{snippetproof}
+
+\begin{snippetexample}{Convergenza puntuale non implica convergenza uniforme}
+    Prendiamo \(S = [0,1]\) come dominio e \(f_n(x) = n^2 x (1-x^2)^n\)
+    converge puntualmente a \(f(x) = 0\) ma non in maniera uniforme.
+\end{snippetexample}
+
+\begin{snippettheorem}{Teorema del dini (un altro)}
+    Supponiamo di avere un compatto \(S=K\) compatto. Prendiamo
+    \begin{enumerate}
+        \item \(\{f_n\}\) successione di funzioni continue su \(K\);
+        \item \(\{f_n\}\) converge puntualmente a \(f \colon K \fromto \realnumbers\) continua;
+        \item \(\{f_n\}\) successione monotona non crescente, cioè
+    \end{enumerate}
+    Allora, \(\{f_n\}\) converge uniformemente in \(K\) a \(f\).
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Definiamo \(g_n \triangleq f_n - f\).
+    Notiamo che, dalle ipotesi, valgono:
+    \begin{enumerate}
+        \item \(g_n \to g\) puntualmente con \(g=0\);
+        \item \(g_n \colon K \fromto \realnumbers\) continua per tutte le \(n\in\naturalnumbers\);
+        \item \(\{g_n\}\) monotona non crescente
+    \end{enumerate}
+    Inoltre, notiamo che se dimostriamo che \(g_n\) converge uniformemente a \(g\), allora abbiamo finito.
+    Fissiamo \(\varepsilon>0\). Definiamo
+    \[
+        K_n \triangleq \left\{
+            x \in K \suchthat |g_n(x)| \geq \varepsilon
+        \right\}
+    \]
+    cioè dove non è verificata la definizione di convergenza uniforme.
+    Siccome \(x \fromto |g_n(x)|\) è continua, abbiamo che \(K_n\) è chiuso e \(K_n \subseteq K\).
+    Siccome è un sottoinsieme chiuso di un compatto, è compatto. Inoltre dalla monotonia di
+    \(\{g_n\}\) sono annidati \(K_{n+1} \subseteq K_n\).
+    Prendiamo \(x \in K\). Per ipotesi, \(g_n(x) \to 0\) per \(n \to +\infty\).
+    Di conseguenza, esiste \(N(x) \in \naturalnumbers\) tale che \(x \notin K_n\)
+    \(\forall n \geq N\).
+    Quindi, \[ x \notin \bigcap_{k=1}^\infty K_n \]
+    Possiamo ripetere il medesimo ragionamento per tutte le \(x \in K\) quindi otteniamo
+    \[
+        \bigcap_{n=1}^\infty K_n = \emptyset
+    \]
+    Sappiamo che l'intersezione numerabile di compatti annidati è non vuota (topologia citare il teorema).
+    Quindi se l'intersezione è vuota, almeno uno deve essere vuota (contronominale).
+    Per definizione di \(K_n\), esiste un vale che
+    \begin{align*}
+        |g_n(x)| \leq \varepsilon, \quad \forall x \in K \difference K_n = K \difference \emptyset = K
+    \end{align*}
+    per ogni \(n > N\).
+\end{snippetproof}
+
+\begin{snippetexample}{}
+    Consideriamo \(S = (0, 1]\) e
+    \[
+        f_n(x) = \frac{1}{nx + 1}
+    \]
+    È facile verificare che \(f_n \to f\) puntualmente con \(f = 0\).
+    Non possiamo applicare il teorema in quanto il dominio non è compatto.
+    Infatti, preso \(\varepsilon = \frac12\), comunque io prenda \(N \in \naturalnumbers\)
+    per soddisfare la definizione, troov sempre un \(x \in S\) tale che \(x \in K_n\)
+    con \(n > N\).
+    Devo trovare \(x \in S\) tale che \(|f_N(x)| > \frac12\) \begin{align*}
+       |f_N(x)| &= \frac{1}{nx + 1} > \frac12 \\
+       Nx + 1 &< 2 \implies x < \frac{1}{N}
+    \end{align*}
+    Quindi se mi avvicino a \(0\) trovo sempre un \(x\) che rende falsa la definizione
+    di convergenza uniforme.
+    \begin{center}
+        \begin{tikzpicture}[scale=7, >=stealth]
+            \draw[->, thick] (-0.1, 0) -- (1.2, 0) node[right] {$x$};
+            \draw[->, thick] (0, -0.1) -- (0, 1.2) node[above] {$y$};
+
+            \draw (1, 0.02) -- (1, -0.02) node[below] {$1$};
+
+            \draw (0.02, 1) -- (-0.02, 1) node[left] {$1$};
+            \draw (0.02, 1/2) -- (-0.02, 1/2) node[left] {$\frac{1}{2}$};
+            \draw (0.02, 1/3) -- (-0.02, 1/3) node[left] {$\frac{1}{3}$};
+            \draw (0.02, 1/4) -- (-0.02, 1/4) node[left, yshift=4pt] {$\frac{1}{4}$};
+            \draw (0.02, 1/5) -- (-0.02, 1/5) node[left, yshift=-4pt] {$\frac{1}{5}$};
+
+            \foreach \n/\col/\yval in {
+                1/red/0.5,
+                2/blue/0.3333,
+                3/teal/0.25,
+                4/orange/0.2
+            } {
+                \draw[\col, thick, domain=0:1, samples=100] plot (\x, {1/(\n*\x + 1)});
+                \draw[\col, dashed, thin] (1, \yval) -- (0, \yval);
+                \filldraw[\col] (1, \yval) circle (0.01);
+                \node[\col, right] at (1, \yval) {$f_\n$};
+            }
+
+            \draw[purple, very thick] (0.015, 0) -- (1.1, 0);
+            \node[purple, above] at (0.6, 0.02) {$f=0$};
+
+            \filldraw[fill=white, draw=purple, thick] (0,0) circle (0.015);
+            \filldraw[fill=white, draw=black, thick] (0,1) circle (0.015);
+        \end{tikzpicture}
+    \end{center}
+    Anche se prendessimo \(S = [0,1]\), cioè la chiusura per avere un compatto, non funzionerebbe comunque
+    per mancanza di continuità.
+\end{snippetexample}
+
+Alternatively, we can say that the condition is
+\[
+    \forall \varepsilon > 0, \exists N \suchthat \forall n>N, ||f_n-f||_{\infty, E} < \varepsilon
+\]
+We should say that the difference
+\[
+    |f_n(x) - f| \leq \varepsilon
+\]
+but since this must hold for all \(x\), we can use the supremum.
+Questo è come dire che il limite della successione
+\[
+    \lim_n \left(\sup_{x\in S} |f_n(x) - f(x)\right) = 0
+\]
+
+\begin{snippetproposition}{Criteri convrgenza uniforme}
+    Supponiamo che esista una successione \(\{g_n\}\) e \(C>0\) tale che
+    \[
+        \sup_{x\in S} |f_n(x) - f_m(x)| \leq C \cdot \sup_{x\in S |g_n(x) - g_m(x)}|
+    \]
+    Allora se \(\{g_n\}\) converge uniformemente, anche \(\{f_n\}\) converge uniformemente.
+    Viceversa, se troviamo una successione di punti \(\{x_n\} \subseteq S\)
+    tali che
+    \begin{align*}
+        \lim_n |f_n(x_n) - f(x_n)| > 0
+    \end{align*}
+    Allora \[
+        \sup_{x\in S} |f_n(x) - f(x)| \geq |f_n(x_n) - f(x_n)|
+    \]
+    cioè il supremum è sicuramente maggiore dell'espressione valutata in un singolo punto.
+    In questo caso \(\{f_n\}\) non converge uniformemente.
+\end{snippetproposition}
+
+\begin{snippetdefinition}{Spazio funzioni continue limitate}
+    \[
+        C_b(S) = \{
+            f \colon S \fromto \realnumbers \suchthat
+            f \text{ continua e limitata}    
+        \}
+    \]
+\end{snippetdefinition}
+
+Su questo spazio abbiamo la norma
+\[
+    ||f||_{\infty} \triangleq \sup_{x \in S} |f(x)|
+\]
+Notiamo che \(||f_n-f||_\infty\) non è altro che la distanza \(d_\infty\)
+indotta dalla \(||\cdot||_\infty\) sullo spazio \(C_b(S)\),
+dove \(d_\infty(g, f) = ||f-g||_\infty\).
+
+Abbiamo dimostrato complessivamente che \(C_b(S)\) è uno spazio completo.
+
+\begin{snippettheorem}{}
+    \(C_b(S)\) è uno spazio di Banach rispetto alla norma infinito.
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Consideriamo una successione \(\{f_n\}\) nello spazio \(C_b(S)\) di Cauchy, cioè
+    \[
+        \lim_{m,n} d_\infty(f_n, f_m) = \lim_{m,n} ||f_n - f_m||_\infty = 0
+    \]
+    Vogliamo verificare che esiste quindi \(f \in C_b(S)\) tale che
+    \[
+        \lim_n d_\infty(f_n, f) = \lim_n ||f_n - f|| = 0
+    \]
+    Ma questo seguente dai risultati precedente e dalle definizioni equivalenti di convergenza uniforme.
+    Infatti, il criterio di Cauchy implica
+    che esista \(f \colon S \fromto \realnumbers\) tale che \(f_n\) converge uniformemente a \(f\) in \(S\).
+    Inoltre, per ipotesi \(f_n\) continua e limitata.
+    Quindi, \(f\) è pure continua e limitata su \(S\), cioè \(f \in C_b(S)\).
+\end{snippetproof}
+
+\begin{snippettheorem}{Stone-Weierstrass}
+    Sia \(S=K\) compatto.
+    Allora \(\forall f \in C_b(K)\), esiste \(\{P_n\}\) successione di polinomi
+    \(\realnumbers[x]\) (anche complessi) tali che \(P_n \to f\) uniformemente in \(K\).
+    In altre parole, se consideriamo \(P(K)\) l'insieme dei polinomi a coefficienti reali, abbiamo che
+    \(P(K)\) è denso in \(C_b(K)\) rispetto alla topologia indotta
+    dalla norma infinito.
+\end{snippettheorem}
+
+\section{Teorem di Ascoli-Arzelà}
+
+Il seguente teorema è un analogo di Bolzano-Weierstrass, ma bisogna aggiungere una condizione.
+Cerchiamo delle condizioni sulla nostra successione di funzioni che garantisca che
+si possa estrarre una sottosuccessione convergente.
+Oltre all'equilimitatezza ci serve l'equicontinuità.
+
+\begin{snippetdefinition}{Equicontinuità}
+    Diciamo che la successione \(\{f_n\}\) è \emph{equicontinua}
+    su \(S\), se \(\forall \varepsilon > 0\) esiste \(\delta(\varepsilon) > 0\)
+    tale che se \(|x-y| < \delta\) per \(x,y \in S\), allora
+    \[
+        |f_n(x) - f_n(y)| < \varepsilon
+    \]
+    per \(n \in \naturalnumbers\).
+\end{snippetdefinition}
+
+Quindi è una sorta di continuità uniforme 
+L'equicontinuità implica che \(f_n\) sia uniformemente continua su \(S\), ma non il contrario,
+cioè se tutti le \(f_n\) sono uniformemente continue il \(\delta\) dell'uniforme continuità delle \(f_n\)
+potrebbe dipendere da \(n\).
+
+\begin{snippetproposition}{}
+    Se tutte le \(f_n\) sono lipschitziane su \(S\),
+    un criterio di equicontinuità è che esista \(L > 0\) indipendente da \(n\)
+    che verifica la definizione di lipschitzianità per ogni \(f_n\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Abbiamo \[
+        |f_n(x) - f_n(y)| \leq L|x-y|
+    \]
+    e prendiamo \(\delta < \varepsilon / L\).
+\end{snippetproof}
+
+In particolare se \(f_n\) è \(\mathcal C^1\),
+allora è sufficiente che \(\{f_n'\}\) sia equilimitata per garantire l'equilipschizianità,
+come in analisi I.
+
+\begin{snippetproposition}{}
+    Sia \(S=K\) compatto e \(\{f_n\}\) successione di funzioni continue
+    su \(K\) tali che \(f_n\) converge uniformemente a \(f\) in \(K\)
+    con \(f \colon K \fromto \realnumbers\).
+    Allora, \(\{f_n\}\) è equicontinua.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Notiamo che, visto che \(K\) è compatto, questa proposizione si lega con il fatto
+    che se \(f_n\) continua su un compatto, quindi limitata, allora \(\{f_n\}\)
+    equilimitata poiché converge uniformemente. % link prop
+    Vogliamo mostrare che \(\forall \varepsilon > 0\)
+    esiste \(\delta(\varepsilon) > 0\) tale che
+    per ogni \(x,y \in K\) quando \(|x-y|<\delta\) vale
+    \[
+        |f_n(x) - f_n(y)| < \epsilon 
+    \]
+    Per la definizione di convergenza uniforme esiste
+    \(N\left(\frac{\varepsilon}{3}\right)\)
+    naturale tale che
+    per ogni \(n \geq N\) e \(x \in K\)
+    vale \[
+        |f_n(x) - f(y)| < \varepsilon
+    \]
+    inoltre, \(f\) è limite unifome di funzioni continue,
+    quindi è continua.
+    Siccome è continua su un compatto, è uniformemente continua.
+    Di conseguenza esiste \(\delta_0\left(\frac{\varepsilon}{3}\right)\) tale che
+    \[
+        |f(x) - f(y)| < \frac{\varepsilon}{3}
+    \]
+    per tutte le \(x,y \in K\) ove \(|x-y| < \delta_0\).
+    Combinando tutto otteniamo che \(\forall n > N\)
+    \begin{align*}
+        |f_n(x) - f_m(y)| &\leq |f_n(x) - f(x)| + |f(x) - f(y)| + |f_n(y) - f(y)| \\
+        &\leq \frac{\varepsilon}{3} + \frac{\varepsilon}{3} + \frac{\varepsilon}{3}
+        = \varepsilon
+    \end{align*}
+    Però per dimostrare l'equicontinuità
+    dobbiamo trovare un \(\delta\) che vada bene anche per \(f_1, \cdots, f_{N}\).
+    Anche loro sono continue su un compatto quindi uniformemente continue.
+    Di conseguenza,
+    esistono \(\delta_i(\varepsilon) > 0\) tale che
+    \[
+        |f_i(x) - f_i(y)| < \varepsilon
+    \]
+    per ogni \(x,y \in K\)
+    dove \(|x-y| < \delta_i\).
+    Possiamo quindi prendere \(\min\{\delta_0, \delta_1, \cdots, \delta_N\}\).
+\end{snippetproof}
+
+\begin{snippetlemma}{Lemma di Ascoli-Arzelà}
+    Sia \(S=K\) compatto e \(\{f_n\}\) una successione di funzioni equicontinua
+    su \(K\) che converge puntualmente ad \(f \colon S \fromto \realnumbers\) in \(K\).
+    Allora, \(\{f_n\}\) converge uniformemente a \(f\).
+\end{snippetlemma}
+
+Quindi \(f\) è pure continua.
+
+\begin{snippetproof}{}
+    Per il criterio di Cauchy,
+    ci basta dimostrare che per ogni \(\varepsilon > 0\) esiste \(N(\varepsilon)\) naturale tale che
+    \[
+        \forall m,n > N,
+        |f_n(x) - f_m(x)| < \varepsilon, \forall x \in K
+    \]
+    Dall'equicontinuità, \(\exists \delta\left(\frac{\varepsilon}{3}\right) > 0\)
+    tale che \(\forall x,y \in K\) e \(i \in \naturalnumbers\)
+    \[
+        |x-y| < \delta \implies
+        |f_i(x) - f_i(y)| < \varepsilon
+    \]
+    Visto che \(K\) è compatto, esistono \(x_1, \cdots, x_N \in K\)
+    tale che
+    \[
+        K \subseteq \bigcup_{j=1}^N B_\delta(x_j)
+    \]
+    Visto che \(\{f_n\}\) converge puntualmente, in \(K\)
+    per il criterio di Cauchy per successioni numeriche,
+    \(\forall J \in \{1, \cdots, N\}\) esiste \(N_J\left(\frac{\varepsilon}{3}, x_j\right)\)
+    naturale tale che
+    \[
+        |f_n(x_j) - f_m(x_j)| < \frac{\varepsilon}{3}
+    \]
+    per tutte le \(m,n > N_J\).
+    Prendiamo \(\overline N = \max \{N_1, \cdots, N_N\}\).
+    Combinando tutto
+    \begin{align*}
+        |f_n(x) - f_m(x)| &\leq |f_n(x) - f_n(x_i)| + |f_m(x_i) - f_m(x)|
+        + |f_n(x_i) - f_m(x_i)|
+    \end{align*}
+    dove \(x_i \in K\) tale che \(x \in B_\delta(x_i)\), che esiste sempre.
+    Quindi, \(|x-x_i| < \delta \) e di conseguenza
+    \[
+        |f_n(x) - f_m(x)| < \frac{\varepsilon}{3} + \frac{\varepsilon}{3} + \frac{\varepsilon}{3} = \varepsilon
+    \]
+\end{snippetproof}
+
+\begin{snippettheorem}{Ascoli-Arzelà}
+    Prendiamo \(S=K\) compatto e consideriamo
+    \(\{f_n\}\) successione di funzioni
+    \begin{enumerate}
+        \item equicontinua su \(K\);
+        \item equilimitata su \(K\);
+    \end{enumerate}
+    Allora, esiste una sottosuccessione uniformemente convergente in \(K\).
+\end{snippettheorem}
+
+\begin{snippetproof}{Ascoli-Arzelà}
+    Per il lemma ci basta mostrare che esiste una sottosuccessione
+    che converge puntualmente.
+    Prendimo \(r_1 \in K \intersection \rationalnumbers\).
+    Consideriamo la successione \(\{f_n(r_1)\}\).
+    Grazie all'equilimitatezza essa è limitata, e quindi per
+    Bolzano-Weierstrass esiste una sottosuccessione \(\{f_{n_k}(r_1)\}\)
+    convergente. Denotiamo per comodità \(f^1_n \triangleq f_{n_k}\).
+    Ripetiamo il ragionamento prendendo \(r_2 \in K \intersection \rationalnumbers\)
+    diverso da \(r_1\) e consideriamo la successione \(\{f^1_n(r_2)\}_{n \in J}\)
+    con \(J \subseteq \naturalnumbers\) infinito.
+    Per lo stesso ragionamento di prima estratto una sottosuccessione convergente
+    \(\{f^2_{n_k}(r_2)\}_{k\in\naturalnumbers}\) e denotiamo \(f^2_n \triangleq f^1_{n_k}\).
+    Ripetiamo il processo all'infinito e quindi otteniamo una famiglia di sottosuccessioni
+    \[
+        \{f_n\} \supseteq \{f_n^1\} \supseteq \{f_n^3\} \cdots
+    \]
+    Consideriamo la diagonale del seguente diagramma:
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRADMB9ARgD1uQAX1LpMufIRTdyVWoxZsuAJn5CRIDNjwEiSmdXrNWiDpwDMq4aK0SiZ-XKOLOAFkvrN4nSjLdZhhRMuPiU1ay9JZGk-A3ljUxVQqw0xbUi9GMdA0wskj1TbFHtMgPiuNzzwtLtSJX845zczMJSbb2Q9OtinIPNeZuTPaqla+p6E-pahwpJR7uzgycGC9rIzMYWeXhcplcjpdfmyzhUd5bb00kOs44sz-Iua69LG7d3HlBcrjfiAHV+AMZQCA4BDnCJEL5dG5sf5AkFgh4Qz6kEoNExw4Gg97I5BfShHWGArGIqozMguH5EmgknHDKKkSmEjG-GkIukzPRMmEstnY8H0+zcl682kCmZfYXokD-KBi2QwKAAc3gRFA7AAThAALZIMggHAQJAAVmSmp1JuohqQAE4zVrdYgbVajYhuKaKIIgA
+        \begin{tikzcd}
+        f_1^1 \arrow[rd] & f_2^1            & f_3^1            & f_4^1  & \cdots \\
+        f_1^2            & f_2^2 \arrow[rd] & f_3^2            & f_4^2  & \cdots \\
+        f_1^3            & f_2^3            & f_3^3 \arrow[rd] & f_4^3  & \cdots \\
+        f_1^4            & f_2^4            & f_3^4            & f_4^4  & \cdots \\
+        \vdots           & \vdots           & \vdots           & \vdots & \ddots
+        \end{tikzcd}
+    \end{center}
+    Impostiamo
+    \(g_k = f_k^k\).
+    Per costruzione \(\forall x \in K \intersection \rationalnumbers\)
+    vale che \(\{g_k(x)\}_{k \in \naturalnumbers}\)
+    converge per come abbiamo costruito
+    le \(f_k^k\). Dobbiamo dimostrare che questa successione converga su tutto \(K\).
+    Visto che \(\{g_k\}\)
+    è contenuta in \(\{f_n\}\)
+    allora è equicontinua, quindi esiste per ogni \(\varepsilon > 0\) un \(\delta\left(\frac{\varepsilon}{3}\right)\)
+    tale che \[ |g_k(x) - g_k(y)| < \varepsilon\]
+    per ogni \(k \in \naturalnumbers\) e per ogni \(x,y \in K\)
+    quando \(|x-y| < \delta\).
+    Ma per tutte le \(x \in K\) esiste \(x_0 \in K \intersection \rationalnumbers\)
+    tale che \(|x-x_0| < \delta\).
+    Inoltre per il criterio di Cauchy per successioni numeriche esiste \(N\left(\frac{\varepsilon}{3}, x_0\right)\)
+    tale che \[
+        |g_n(x_0)- g_m(x_0)| < \frac{\varepsilon}{3}, \quad \forall n,m \geq N
+    \]
+    Combinando il tutto ottengo che
+    \begin{align*}
+        |g_n(x) - g_m(x)| &\leq |g_n(x) - g_m(x)| + |g_m(x_0) - g_m(x)| + |g_m(x_0) - g_m(x_0)| \\
+        &\leq \frac{\varepsilon}{3} + \frac{\varepsilon}{3} + \frac{\varepsilon}{3} = \varepsilon
+    \end{align*}
+    per tutte le \(n,m > N\), visto che \(|x-x_0| < \delta\).
+    L'epsilon dipende da \(x\) ma noi vogliamo la convergenza puntuale.
+\end{snippetproof}
+
+\begin{snippetexample}{}
+    Questo teorema ha ipotesi molto forti,
+    ma il risultato è tuttavia banale-
+    Anche in casi ``buoni'' non è scontato poter estrarre una sottosuccssione convergente.
+    Prendiamo \(S = K = [0,1]\) come dominio e
+    \[
+        f_n(x) = \frac{x^2}{x^2 + (1-nx)^2}
+    \]
+    È facile notare che questa converge puntualmente ad \(f=1\).
+    Inoltre \(|f_n(x)| \leq 1\)
+    e \(f_n(1/n) = 1\).
+    Se esistesse una sottosuccessione
+    \(\{f_n\}\) dovrebbe convergere ad \(f\), tuttavia
+    \[
+        \sup_{x \in [0,1]} |f_{n_k} - f| = \sup_{x \in [0,1]}
+        |f_{n_k}(x)| > f_{n_k}(\frac{1}{n_k}) > 1
+    \]
+    che è assurdo perché il sup è sempre maggiore o uguale della funzione valutata in un punto.
+\end{snippetexample}
+
+\begin{snippetexercise}{}
+    Siano \(I\) un intervallo e \(f_n\colon I \fromto \realnumbers\) una successione di funzioni derivabili su \(I\). Provare che
+    se \(\{f_n(x_0)\}\) converge per qualche \(x_0 \in I\) e se \(\{f'\}\) converge localmente uniformemente in \(I\),
+    allora \(\{f_n\}\) converge localmente uniformemente in \(I\) ad una primitiva di \[\lim_{n\to \infty} f_n'\].
+\end{snippetexercise}
+
+Studiamo ora la convergenza uniforme e l'integrazione.
+
+\begin{snippettheorem}{}
+    Sia \(S = [a,b]\) intervallo reale e \(\{f_n\}_{n \in \naturalnumbers}\) una successione di funzioni Riemann integrabili
+    su \(S\) e \(f_n \to f\) uniformemente con \(f \colon [a,b] \fromto \realnumbers\). Allora, \(f\) è Riemann integrabile
+    in \([a,b]\) e vale
+    \[
+        \integral[a][b][f(x)][x] = \lim_{n} \integral[a][b][f_n(x)][x]
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Come prima cosa dobbiamo dimostrare che \(f\) è Riemann integrabile su \(S\). Data la convergenza uniforme, 
+    \(\forall \varepsilon > 0\) esiste \(N(\varepsilon)\) naturale tale che
+    \[
+        \sup_{x\in [a,b]} |f_n(x) - f(x)| < \varepsilon, \quad \forall n \geq N
+    \]
+    Quindi
+    \[
+        f_n(x) - \frac{\varepsilon}{b-a} \leq f(x) \leq f_n(x) + \frac{\varepsilon}{b-a}, \quad \forall x \in [a,b]
+    \]
+    Presa una partizione finita di \([a,b]\) \(a = t_0 < t_1 < \cdots < t_n = b\) definiamo
+    \(I_k = [x_{k-1}, x_k]\) con \(k \in \{1,\cdots, n\}\). Dall'espressione sopra otteniamo che per tutti i \(k\),
+    \[
+        \inf_{x\in I_k} f_n(x) - \frac{\varepsilon}{b-a} \leq \inf_{x \in I_k} f(x) \leq \inf_{x\in I_k} f_n(x) + \frac{\varepsilon}{b-a}
+    \]
+    e
+    \[
+        \sup_{x\in I_k} f_n(x) - \frac{\varepsilon}{b-a} \leq \sup_{x \in I_k} f(x) \leq \sup_{x\in I_k} f_n(x) + \frac{\varepsilon}{b-a}
+    \]
+    Otteniamo quindi che
+    \begin{align*}
+        \sum_{k=1}^n \left(\sup_{x\in I_k} f_n(x)\right)(t_k - t_{k-1}) - \frac{\varepsilon}{b-a} \sum_{k=1}^n (t_k - t_{k-1})
+        &\leq \sum_{k=1}^n \left(\sup_{x\in I_k} f(x)\right)(t_k - t_{k-1}) \\
+        &\leq \sum_{k=1}^n \left(\sup_{x\in I_k} f_n(x)\right)(t_k - t_{k-1}) + \frac{\varepsilon}{b-a} \sum_{k=1}^n (t_k - t_{k-1})
+    \end{align*}
+    che sono quindi le somme \(S(f_n, P)\) e \(S(f, P)\).
+    Allora
+    \[
+        S(f_n, P) - \varepsilon \leq S(f, P) \leq S(f_n, P) + \varepsilon
+    \]
+    dove \(P\) è la partizione data.
+    Nello stesso modo, usando la versione con l'infimum, otteniamo
+    \[
+        s(f_n, P) - \varepsilon \leq s(f, P) \leq s(f_n, P) + \varepsilon
+    \]
+    dove
+    \[
+        s(f, P) = \sum_{k=1}^n \inf_{x\in I_k} f(x)(t_k-t_{k-1})
+    \]
+    Questo vale per ogni partizione \(P\) di \([a,b]\). Per defininizione di inegrale di Riemann \(f\) è integrabile se
+    \[
+        \sup_P S(f,P) = \sup_P s(f,P) < \infty
+    \]
+    dove \(P\) rappresenta tutte le possibili partizioni.
+    Se questo è vero
+    \[
+        \integral[a][b][f(x)][x] = \sup_P S(f, P) = \sup_P s(f,P)
+    \]
+    applicando questa definizione di integrabilità e facendo il supremum sulle partizioni otteniamo 
+    \[
+        \integral[a][b][f_n(x) - \varepsilon][x] \leq \sup_P s(f,P) \leq \sup_P S(f, P) \leq \integral[a][b][f_n(x)] + \varepsilon[x]
+    \]
+    che possiamo fare siccome \(f_n\) è integrabile.
+    Quindi concludiamo che
+    \[
+        \left|
+            \sup_P S(f, P) - \sup_P s(f,P)
+        \right| \leq \varepsilon
+    \]
+    di conseguenza
+    \[
+        \integral[a][b][f(x)][x] = \sup_P S(f, P) = \sup_P s(f, P)
+    \]
+    cioè \(f\) è integrabile.
+    Mostriamo ora la proposizione con il limite.
+    Sappiamo che \(\forall \varepsilon > 0\) esiste \(N(\varepsilon)\) naturale tale che
+    \[ |f_n(x) - f(x)| \leq \frac{\varepsilon}{b-a} \]
+    per \(n \geq N\).
+    Allora otteniamo
+    \begin{align*}
+        \left|
+            \integral[a][b][f(x)][x] - \integral[a][b][f_n(x)][x]
+        \right| &\leq \integral[a][b][|f_n(x) - f(x)|][x] \\
+        &< \integral[a][b][\frac{\varepsilon}{b-a}][x] = \varepsilon
+    \end{align*}
+\end{snippetproof}
+
+Questo risultato non vale per integrali impropri.
+
+\begin{snippetexample}{Controesempio - Limite di funzioni integrabili non integrabile su dominio illimitato}
+    Sia \(S = [1, +\infty)\) e consideriamo su tale dominio
+    \[
+        f_n(x) \triangleq \frac{1}{x} \chi_{[1,n]} = \begin{cases}
+            \frac1x & x \in [1,n] \\
+            0 & x \in (n, \infty)
+        \end{cases}
+    \]
+    È facile mostrare che le \(f_n\) sono integrabili su \(S\), infatti fissato \(n\) abbiamo che
+    \begin{align*}
+        \integral[1][\infty][f_n(x)][x] &= \lim_{t \to \infty} \integral[1][t][\frac{1}{x}\chi_{[1,n]}][x] \\
+        &= \lim_{t\to\infty} \integral[1][\min\{t,n\}][\frac1x][x] \\
+        &= \integral[1][n][\frac1x][x] = \ln|n|
+    \end{align*}
+    Mostriamo ora la convergenza uniforme a \(f(x) = 1/x\) in \([1, +\infty)\). Abbiamo
+    \begin{align*}
+        \sup_{x\in [1, +\infty)} |f_n(x) - f(x)| &= \sup_{x\in [1, +\infty)} \left|
+            \frac{1}{x} \chi_{[1,n]}(x) - \frac1x
+        \right| \\
+        &= \sup_{x\in [1, +\infty)} \frac{1}{x} \chi_{[1, n]}(x) = \frac{1}{n} \to 0
+    \end{align*}
+    per \(n\to\infty\).
+    Quindi \(f_n\) converge uniformemente a \(f(x)\), che tuttavia non è Riemann integrabile su \([1, +\infty)\).
+\end{snippetexample}
+
+\begin{snippetexample}{Controesempio - Il limite degli integrali è diverso dall'integrale del limite}
+    Sia \(S=\realnumbers\) e su tale dominio definiamo
+    \[
+        f_n(x) \triangleq \frac{1}{n} \chi_{[n, 2n]}(x) = \begin{cases}
+            \frac1n & x \in [n,2n] \\
+            0 & x \notin [n, 2n]
+        \end{cases}
+    \]
+    Mostriamo l'integrabilità fissato \(n\),
+    \begin{align*}
+        \integral[-\infty][+\infty][f_n(x)][x] &= \lim_{\gamma \to -\infty} \lim_{\mu \to +\infty}
+        \integral[\gamma][\mu][\frac{1}{n}\chi_{[n,2n]}(x)][x] \\
+        &= \lim_{\mu \to +\infty} \integral[n][\min\{\mu, 2n\}][\frac{1}{n}][x] \\
+        &= \integral[n][2n][\frac1n][x] = 1
+    \end{align*}
+    Mostriamo che \(\{f_n\}\) converge uniformemente a \(f(x) = 0\) su \(\realnumbers\). Abbiamo
+    \begin{align*}
+        \sup_{x\in \realnumbers} |f_n(x) - f(x)| &= \sup_{x\in \realnumbers} \left|
+            \frac{1}{n} \chi_{[n,2n]}(x)
+        \right| \\
+        &= \frac{1}{n} \to 0
+    \end{align*}
+    per \(n\to\infty\). Tuttavia,
+    \[
+        \integral[-\infty][\infty][f(x)][x] = 0 \neq 1 = \lim_n \integral[-\infty][+\infty][f_n(x)][x]
+    \]
+\end{snippetexample}
+
+Guardiamo ora la convergenza uniforme e la derivazione.
+
+\begin{snippettheorem}{}
+    Sia \(S = [a,b]\) intervallo reale e \(\{f_n\}\) successione di funzioni \(f_n \colon [a,b] \fromto \realnumbers\) derivabili
+    tale che \(\exists x_0 \in [a,b]\) tale che \(\{f_n(x_0)\}\) è convergente.
+    Se la successione \(\{f_n'\}\) converge uniformementein \(S\), allora \(\exists f \colon S \fromto \realnumbers\) tale che
+    \(f_n \to f\) uniformemente e \(f_n' \to f'\) uniformemente in \(S\).
+    In particolare,
+    \[
+        \lim_n f_n'(x) = f'(x), \quad x \in [a,b]
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Cominciamo con un caso facile, cioè \(f_n \in \mathcal C^1([a,b])\) per tutte le \(n\).
+    In questo caso posso usare il teorema fondamentale del calcolo integrale,
+    \[
+        f_n(x) = f_n(x_0) + \integral[x_0][x][x][f_n'(y)][y]
+    \]
+    Per ipotesi \(f_n(x_0) \to c \in \realnumbers\) per \(n \to \infty\),
+    \(f_n' \to h\) uniformemente con \(h \colon S \fromto \realnumbers\) continua perché le \(f_n'\) sono continue.
+    Inoltre, per il teorema d'integrazione precedente
+    \[
+        \lim_n \integral[x_0][x][f_n'(y)][y] =\integral[x_0][x][h(y)][y]
+    \]
+    Da questo deduciamo che \(f_n \to f\) puntualmente con \[
+        f(x) = c + \integral[x_0][x][h(y)][y]
+    \]
+    Per il teorema fondamentale del calcolo integrale \(f'(x) = h(x)\) per tutte le \(x\in[a,b]\).
+    Ci manca da dimostrare che \(f_n \to f\) uniformemente in \([a,b]\). Abbiamo
+    \begin{align*}
+        \sup_{x\in[a,b]} |f_n(x) - f(x)| &= \sup_{x\in [a,b]} \left|f_n(x_0) + \integral[x_0][x][f_n'(y)][y] - c - \integral[x_0][x][h(y)][y]\right| \\
+        &\leq |f_n(x_0) - c| + \sup_{x\in[a,b]} \integral[x_0][x][|f_n'(y) - h(y)|][y] \\
+        &\leq |f_n(x_0) - c| + \sup_{x\in[a,b]} \integral[a][b][|f_n'(y) - h(y)|][y] \\
+        &\leq |f_n(x_0) - c| + (b-a) \sup_{x\in [a,b]} |f_n'(x) - h(x)| \to 0
+    \end{align*}
+    per \(n\to\infty\). Il primo termine tende a zero per la convergenza a \(c\) e il secondo per la convergenza uniforme ad \(h\). \\
+    Questa dimostrazione ci fa interpretare questo teorema come una sorta di corollario del precedente, infatti abbiamo chiesto che \(f_n' \to h\)
+    uniformemente e poi abbiamo dimostrato che \(f_n\) converge uniformemente ad una primitiva di \(h\). \\
+    Passiamo ora al caso dove \(f_n\) non è necessariamente \(\mathcal C^1([a,b])\).
+    Cominciamo utilizzato il criterio di Cauchy per dimostrare che \(\{f_n\}\) converge uniformemente a qualcosa, cioè
+    \(\forall \varepsilon > 0\), \(\exists N(\varepsilon)\) naturale tale che
+    \[
+        |f_n(x) - f_m(x)| < \varepsilon, \quad \forall n,m>N, \forall x \in [a,b]
+    \]
+    Per comodità definiamo \(g_{m,n} = f_n - f_m\).
+    Dalle ipotesi deduciamo che:
+    \begin{enumerate}
+        \item \(\exists x_0 \in [a,b]\) tale che \(\exists N_0\left(\frac{\varepsilon}{2}, x_0\right)\) naturale tale che
+        \[
+            |g_{n,m}(x_0)| = |f_n(x_0) - f_m(x_0)| < \frac{\varepsilon}{2(b-a)}, \quad \forall n,m>N_0, \forall x \in [a,b]
+        \]
+        \item \(\{f_n'\}\) converge uniformemente quindi \(\exists N_1\left(\frac{\varepsilon}{2}\right)\) naturale
+        tale che 
+        \[
+            |g_{n,m}'| = |f_n'(x) - f_n'(x)| < \varepsilon,  \forall n,m>N_1, \forall x \in [a,b]
+        \]
+    \end{enumerate}
+    Fissiamo \(\overline N = \max\{N_0, N_1\}\). Applichiamo il teorema del valor medio sulla funzione
+    \(g_{n_m}\) con \(n,m > N\), quindi \(\forall x \in [a,b]\), esiste \(t_0 \in \left(\min\{x,x_0\}, \max\{x,x_0\}\right)\) tale che
+    \[
+        |g_{n,m}(x) - g_{n,m}(x_0)| \leq |x-x_0| \cdot |g_{n,m}'(x_0)| < (b-a) \cdot \frac{\varepsilon}{2(b-a)} = \frac{\varepsilon}{2}
+    \]
+    Combinando tutto otteniamo che
+    \begin{align*}
+        |f_n(x) - f_m(x)| &= |g_{n,m}(x)| \leq |g_{n,m}(x) - g_{n,m}(x_0)| + |g_{n,m}(x_0)| \\
+        &< \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon, \quad \forall n,m \geq N, \forall x \in [a,b]
+    \end{align*}
+    Abbiamo mostrato che esiste \(f\) continua tale che \(f_n \to f\) uniformemente.
+    Ora dobbiamo mostrare che \(f\) è derivabile e \(f_n' \to f'\) uniformemente.
+    Per ipotesi sappiamo già che \(\{f_n'\}\) converge uniformente
+    a qualcosa, quindi per unicità del limite basta dimostrare che \(f_n' \to f\) puntualmente in \([a,b]\).
+    Fissato \(x\in [a,b]\) e \(n\) naturale definiamo
+    \[
+        \Delta_n (t) \triangleq \frac{f_n(x) - f_n(t)}{x-t}, \quad \forall t \in [a,b] \difference \{x\}
+    \]
+    Notiamo che
+    \begin{itemize}
+        \item \[ \lim_{t\to x} \Delta_n(t) = f_n'(x), \quad \forall n \in \naturalnumbers \]
+        \item \[ \lim_n \Delta_n(t) = \Delta(t) = \frac{f(x) - f(t)}{x-t}, \quad t \in [a,b] \difference \{x\} \]
+    \end{itemize}
+    Per concludere ci basta dimostrare che
+    \begin{align*}
+        \lim_{t\to x} \lim_n \Delta_n(t) &\overset{(1)}{=} \lim_n \lim_{t \to x} \Delta_n(t) \\
+        &= \lim_{t\to x} \Delta(t) = \lim_{t\to x} \frac{f(x) - f(t)}{x-t} \\
+        &\overset{(2)}{=} \lim_{n} f_n'(x)
+    \end{align*}
+    Se dimostriamo che vale la \((1)\) otteniamo \((2)\) abbiamo finito.
+    Se \(\{\Delta_n\}\) converge uniformemente in \([a,b]\difference \{x\}\), visto
+    che \(x\) è un punto di accumulazione, per il teorema di cambio limite otteniamo \((1)\).
+    Per il teorema del valor medio applicato a \(f_n - f_m\), \(\exists t_0 \in \left(\min\{x, t\}, \max\{x,t\}\right)\) tale che
+    \begin{align*}
+        |\Delta_n(t) - \Delta_m(t)| &= \frac{
+            |f_n(x) - f_n(t) - f_m(x) + f_m(t)
+        }{
+            |t-x|
+        } \\
+        &\leq \frac{|t-x|}{|t-x|} \cdot |f_n'(t_0) - f_m'(t_0)| \\
+        &= |f_n'(t_0) - f_m'(t_0)|, \quad \forall t \in [a,b]\difference \{x\}
+    \end{align*}
+    Di conseguenza 
+    \[
+        \sup_{t\in [a,b]\difference \{x\}} |\Delta_n(t) - \Delta_m(t)| \leq
+        \sup_{t\in [a,b] \difference \{x\}} |f_n'(t) - f_m'(t)|
+    \]
+    Ma per ipotesi \(\{f_n'\}\) converge uniformemente quindi anche \(\{\Delta_n\}\) converge uniformemente in \([a,b] \difference \{x\}\).
+\end{snippetproof}
+
+\begin{snippetexample}{Successione delle derivate che converge uniformemente ma non la successione}
+    Sia \(S = [0,1]\) e su tale dominio \(f_n(x) = x + n\).
+    Ovviamente \(f_n' \equiv\) 1 per tutte le \(n\), e quindi \(f_n' \to f\)
+    uniformemente con \(f(x) = 1\).
+    Tuttavia, non vi è convergenza nemmeno puntuale per \(\{f_n\}\).
+    Il teorema non funziona in quanto manca un singolo punto di convergenza.
+    Il punto è fondamentale in quanto ci dà la convergenza in quel punto e il resto è dato
+    dalle pendenza della derivata.
+\end{snippetexample}
+
+\begin{snippetexample}{Limite uniforme di funzioni derivabili può non essere derivabile}
+    Sia \(S = [-a, a]\) con \(a > 0\) e su tale dominio definiamo \(f_n(x) = \sqrt{\frac1n + x^2}\).
+    Abbiamo che \(f_n \to f\) puntualmente con \(f(x) = |x|\) in \(S\).
+    TODO Esercizio: mostrare che la convergenza è pure uniforme.
+    Notiamo subito che \(f\) non è derivabile in \(x=0\) e quindi non è derivabile in \(S\).
+    Ovviamente le \(f_n\) sono differenziabili su \(S\) e \[
+        f_n' = \frac{x}{\sqrt{\frac1n + x^2}}
+    \]
+    Notiamo che \(\{f_n'\}\) converge puntualmente a \[
+        h(x) = \begin{cases}
+            -1 & x < 0 \\
+            0 & x = 0 \\
+            +1 & x > 0
+        \end{cases}
+    \]
+    su \(S\).
+    Tuttavia, la convergenza su \(S\) non è unifrome.
+    Il punto critico è chiaramente \(x=0\).
+    Notiamo subito che
+    \begin{align*}
+        \left|f_n'\left(\frac1n\right) - h\left(\frac1n\right)\right|
+        &= \left|
+            \frac{\frac1n}{\sqrt{\frac1n + \frac{1}{n^2}}} - 1
+        \right| \\
+        &= \left|
+            \frac{1}{\sqrt{n+1}} - 1
+        \right| \to 1
+    \end{align*}
+    per \(n \to +\infty\).
+    Quindi,
+    \[
+        \sup_{x \in [-1,1]} |f_n(x) - h(x)| \geq \left|f_n\left(\frac1n\right) - h\left(\frac1n\right)\right| \to 1
+    \]
+    per \(n \to \infty\).
+    Quindi \(f_n\) non converge uniformemente ad \(h\) in \(S\).
+    Se \(S = [\varepsilon, a]\) con \(\varepsilon > 0\) allora convergerebbe.
+\end{snippetexample}
+
+Il teorema di derivazione che abbiamo visto funziona nel caso
+\(S = [a,b]\) con \(a<b\).
+Vediamo quanto è importante questa ipotesi.
+
+\begin{snippetexample}{}
+    Sia \(S = \realnumbers\) e su tale dominio \(f_n(x) = x/n\).
+    È facile dimostrare che converge puntualmente a \(f=0\) su \(S\),
+    e inoltre
+    \(f_n'(x) = \frac1n\).
+    Se potessimo applicare il teorema nel caso di \(S\) non limitato,
+    allora avremmo che \(f_n' \to f'\) uniformemente con \(f' = 0\).
+    Tuttavia, questo è falso in quanto
+    \begin{align*}
+        \sup_{x\in\realnumbers} |f_n(x) - f(x) > |f_n(x) - f(n)| = 1
+    \end{align*}
+    per \(n \to \infty\).
+    Tuttavia, su \(S = [a,b]\) converge uniformemente e infatti
+    \[
+        \sup_{x\in [a,b]} |f_n(x) - f(x)| = \frac{\max\{|a|,|b|\}}{n} \to 0
+    \]
+    per \(n \to \infty\).
+\end{snippetexample}
+
+Questo esempio ci suggerisce di di introdurre
+una nozione di convergenza uniforme locale.
+
+\begin{snippetdefinition}{Convergenza locale}
+    Diciamo che \(\{f_n\}\)
+    \emph{converge localmente uniformemente} a \(f \colon S \fromto \realnumbers\)
+    in \(S\) se \(\forall B \subseteq S\) limitati, \(f_n \to f\) uniformemente in \(B\).
+\end{snippetdefinition}
+
+Riformuliamo il teorema parlando quindi di convergenza uniforme locale
+
+\begin{snippettheorem}{}{}
+    Sia \(\{f_n\}\) un successione di funzioni derivabili su \(S\)
+    tali che \(\exists x_0 \in S\) tale che \(\{f_n(x_0)\}\) converge.
+    Se \(\{f_n'\}\) converge localmente uniformemente in \(S\),
+    allora \(\{f_n\}\) converge localmente uniformemente in \(S\) ad una funzione \(f\colon S \fromto \realnumbers\)
+    e vale
+    \[
+        \lim f_n'(x) = f'(x), \quad \forall x \in S
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Dimostrazione per esercizio (foglio di esercizi).
+\end{snippetproof}
+
+\section{Serie di funzioni}
+
+\begin{snippetdefinition}{Serie puntualmente convergente}
+    Diciamo che la serie \(\sum f_n\) \emph{converge puntualmente}
+    se la successione delle somma parziali \(\{S_n\}\) con
+    \[
+        S_n(x) \triangleq \sum_{k=1}^n f_k
+    \]
+    converge puntualmente ad una funzione \(s \colon S \fromto \realnumbers\).
+\end{snippetdefinition}
+
+Useremo molto il criterio di Cauchy
+applicato alle somme parziali, quindi otteniamo il risultato seguente:
+
+\begin{snippetproposition}{Criterio di Cauchy puntuale}
+    La serie \(\sum f_n\) converge puntualmente in \(S\)
+    se e solo se \(\forall x \in S, \forall \varepsilon > 0, \exists N(x, \varepsilon) \in \naturalnumbers\)
+    tale che
+    \[
+        |S_n(x) - S_m(x)| = \left|
+            \sum_{k=1}^n f_k(x) - \sum_{k=1}^m f_k(x)
+        \right| = \left|
+            \sum_{k=n+1}^m f_k(x)
+        \right| < \varepsilon, \quad \forall m > n \geq N
+    \]
+\end{snippetproposition}
+
+A volte puô essere comodo scegliere \(m=n+h\) con \(h \in \naturalnumbers\).
+
+Analogamente a quano detto per le successioni di funzioni,
+la convergenza puntuale non si comporta bene rispetto alla derivabilità e integrabilità.
+
+\begin{snippetexample}{}
+    Sia \(S = \realnumbers\)
+    e su tale dominio definiamo
+    \[
+        f_n(x) = \frac{x^2}{{(1 + x^2)}^n}
+    \]
+    Studiamo la serie \(f(x) = \sum f_n\).
+    Notiamo che \(f(x) = 0\). Studiamo cosa succede in \(\realnumbers \difference \{0\}\).
+    Abbiamo
+    \begin{align*}
+        \sum_{k=1}^n f_n(x) &= \sum_{k=1}^n \frac{x^2}{{(1 + x^2)}^n} \\
+        &= x^2 \sum_{k=0}^n \left(
+            \frac{1}{1 + x^2}
+        \right)^k - x^2
+    \end{align*}
+    Abbiamo tolto un termine per renderla geometrica.
+    Abbiamo quindi una serie gometrica di ragione \(1 / (1 + x^2)\).
+    Allora per \(n \to \infty\) la serie tende a
+    \[
+        x^2 \left(
+            \frac{1}{1- \frac{1}{1 + x^2}} - 1
+        \right) = 1
+    \]
+    Concludiamo quindi che
+    \[
+        \sum f_n = \begin{cases}
+            0 & x = 0 \\
+            1 & x \neq 0
+        \end{cases}
+    \]
+\end{snippetexample}
+
+\begin{snippetdefinition}{Serie uniformemente convergente}
+    Diciamo che la serie \(\sum f_n\) \emph{converge uniformemente}
+    in \(S\) se \(\forall \varepsilon > 0, \exists N(\varepsilon) \in \naturalnumbers\)
+    tale che
+    \[
+        |S_m(x) - S_n(x)| = \left|
+            \sum_{k=1}^n f_k(x) - S(x)
+        \right| < \varepsilon, \quad \forall n > N
+    \]
+\end{snippetdefinition}
+
+Alternativamente
+\[
+    \sup_{x \in S} |S_n(x) - S(x)| = \sup_{x\in S} \left|
+        \sum_{k=1}^n f_k(x) - S(x)
+    \right| < \varepsilon, \quad \forall n > N
+\]
+
+Anche qua possiamo applicare il criterio di Cauchy.
+
+\begin{snippetproposition}{Criterio di Cauchy}
+    La serie \(\sum f_n\) converge uniformemente in \(S\)
+    se e solo se \(\forall \varepsilon > 0\), \(\exists n \in \naturalnumbers\) tale che
+    \begin{align*}
+        |S_n(x) - S_m(x)| &= \left|
+            \sum_{k=1}^n f_k(x) - \sum_{k=1}^m f_k(x) -
+        \right| \\
+        &= \left|
+            \sum_{k=n+1}^m f_k(x)
+        \right| < \varepsilon, \quad \forall m > n \geq N, \forall x \in S
+    \end{align*}
+\end{snippetproposition}
+
+Analogamente
+\[
+    \sup_{x \in S} \left|
+        \sum_{k=n+1}^m f_k(x)
+    \right| < \varepsilon
+\]
+
+\begin{snippetdefinition}{Convergenza totale}
+    Diciamo che la serie \(\sum f_n\) \emph{converge totalmente}
+    in \(S\) se la serie numerica
+    \[
+        \sum_{n=1}^\infty ||f_n||_\infty
+    \]
+    converge.
+\end{snippetdefinition}
+
+È equivalente a dire che esiste una successione numerica convergente che maggior termine-per-termine.
+
+\begin{snippettheorem}{Teorema di Weierstrass}
+    Sia \(\{f_n\}\) successione di fuzioni tale che \(\exists \{M_n\}\)
+    successione di numeri positivi tali che
+    \[
+        ||f_n||_\infty < M_n, \quad \forall n \in \naturalnumbers
+    \]
+    e \[
+        \sum_{m=1}^\infty M_n < \infty
+    \]
+    Allora \(\sum f_n\) converge uniformemente.
+    In particolare, monvergenza totale di serie implica convergenza uniforme di serie.
+\end{snippettheorem}
+
+\begin{snippetproof}{Teorema di Weierstrass}
+    Sfruttiamo il criterio di Cauchy.
+    Dato \(\varepsilon > 0\) cerchiamo \(N(\varepsilon) \in \naturalnumbers\)
+    che verifica il criterio.
+    Siccome \(\sum M_n < \infty\), per il criterio di Cauchy
+    per serie numeriche esiste \(N(\varepsilon)\) naturale tale che
+    \begin{align*}
+        \left|
+            \sum_{k=n+1}^m M_k
+        \right|
+        = \sum_{k=n+1}^m M_k < \varepsilon, \quad \forall m > n \geq N
+    \end{align*}
+    Allora
+    \begin{align*}
+        \left|
+            \sum_{k=n+1}^m f_k(x)
+        \right| &\leq \sum_{k=n+1}^m |f_k(x)| \leq \sum_{k=n+1}^m ||f_k(x)||_\infty
+        \leq \sum_{k=1}^m M_k < \infty
+    \end{align*}
+\end{snippetproof}
+
+\begin{center}
+    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAB12cYAPHYAMIEaMAE4BzGGABedAAQ4IORjAC+IVaXSZc+QigCM5KrUYs2nbn0HCxkmfLpw4EZsrlMwWAGYRRAWzUNLRAMbDwCIgAmY2p6ZlZEDi5efiEwEQkpWTknFzd5NE8cJhV1TW1wvSIjAxN48yTLVJsMu2z5Tx8-QPKQsN1IlBi6uLNE5Ks02yyHOSKwPDKNExgoSQQUUG9RCH8kMhBFJCMQBiwwCagIJgAjBlZqAAsYOigkMCYGBmplLAY2JBLsFtrt9ohTsdEDEzhcrjd7o8QC83h8vj8jnR-oCCKwKiAdnskDCoQAWajnYFJa53B4gZ6vd6IT7fX5YgFJIF4kKE8GQiBIADMFLhbBpiPpyMZaNZmOxnNxIIJYKFvwFiHJsKpIHFdIZqOZ6LZ8vAitUFFUQA
+    \begin{tikzcd}
+    \text{Convergenza totale} \arrow[r, Rightarrow] & \text{Convergenza assoluta uniforme} \arrow[r, Rightarrow] \arrow[d, Rightarrow] & \text{Convergenza assoluta puntuale} \arrow[d, Rightarrow] \\
+                                                    & \text{Convergenza uniforme} \arrow[r, Rightarrow]                                & \text{Convergenza puntiale}                               
+    \end{tikzcd}
+\end{center}
+
+\begin{snippetexample}{Convergenza uniforme non implica convergenza totale}
+    Consideriamo \(S = [1, +\infty)\)
+    e su tale dominio
+    \[
+        f_n(x) = \frac1n \chi_{[n, n+1)}(x)
+    \]
+    Le somme parziali sono date da
+    \[
+        S_n(x) = \sum_{k=1}^n f_k(x) = \begin{cases}
+            \frac1k & x \in [k, k+1) \land k \in \{1,\cdots, n\} \\
+            0 & x \notin [1, n+1)
+        \end{cases}
+    \]
+    Solo un termine della serie è diverso da zero.
+    In questo caso \(k\) è il floor quindi
+    \[
+        f(x) = \frac{1}{\lfloor x \rfloor}, \quad x \in [1, \infty)
+    \]
+    Usiamo il criterio di Cauchy e quindi fissiamo \(\varepsilon > 0\),
+    e per comodità prendo \(m=n+h\) con \(h\) naturale
+    \begin{align*}
+        \left| \sum_{k=n}^{n+1} f_k(x) \right|
+        &= \sum_{k=n}^{n+1} f_k(x) = \sum_{k=n}^{n+1} \frac1n \chi_{[n, n+1)}(x) \\
+        &\leq \frac{1}{n} \to 0
+    \end{align*}
+    per \(n \to \infty\) per ogni \(x \in S\).
+    Abbiamo dimostrato che converge uniformemente.
+    Vediamo subito che non converge totalmente, infatti
+    \begin{align*}
+        \sum_{k=m}^{n+h} ||f_k||_\infty = \sum_{k=m}^{n+h} \frac1n \chi_{[n, n+1)}(x)
+        < \sum_{k=m}^{n+h} \frac{1}{k}
+    \end{align*}
+    che non converge.
+\end{snippetexample}
+
+\begin{snippetproposition}{}
+    Se una serie converge uniformemente allora il termine generale tende uniformemente a zero.
+\end{snippetproposition}
+
+\begin{snippetexercise}{}
+    Consideriamo \(f_i(x) = 1/i\). Questa funzione tende uniformemente a \(0\),
+    ma la sua serie non converge uniformemente.
+\end{snippetexercise}
+
+\begin{snippetexercise}{}
+    La serie \(\frac{1}{n^x}\) converge se e solo se \(x>1\), cioè sul dominio \(D = (1, \infty)\).
+    Su \(D\) ha convergenza puntuale
+    \[
+        f_n(x) = \frac{1}{n^x} \leq \frac{1}{n} \to 0
+    \]
+    per \(n \to \infty\).
+    Il termine generale tende uniformemente a \(0\).
+    Supponiamo per assurdo che la serie converga uniformemente. Allora vale il teorema del doppio limite
+    \[
+        \lim_{x\to 1}
+        \left(
+            \lim_n \sum_{i=1}^n f_i(x)
+        \right)
+        \lim_n \left(
+            \lim_{x\to 1}\lim_n \sum_{i=1}^n f_i(x)
+        \right)
+    \]
+    However, \(l_n = \sum^n f_i(1) = \sum \frac1i\) does not converge, which is absurd \lightning.
+\end{snippetexercise}
+
+\begin{snippetproposition}{}
+    Siano \(f_i\) continue su \([a,b)\) e sia \(\sum f_i(x)\) converge in \((a,b)\),
+    ma \(\sum f_i(a)\) non convergente.
+    Allora la serie \(\sum f_i\) non converge uniformemente in \((a,b)\).
+\end{snippetproposition}
+
+\begin{snippetproposition}{}
+    Siano \(f_i \geq 0\), \(f_i \to 0\) in \(S\).
+    Se \(\{f_i\}\) tende uniformemente a zero, allora
+    \[
+        \sum_{i=1}^\infty {(-1)}^i f_i(x)
+    \]
+    converge uniformemente in \(S\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Infatti
+    \[
+        \left|
+            \sum_{i=1}^\infty {(-1)}^i f_i(x)-
+            \sum_{i=1}^n {(-1)}^i f_i(x)
+        \right| \leq f_{n+1}(x)
+    \]
+    è evidente che se \(f_n \to 0\) per \(n\to\infty\) la serie converge uniformemente.
+\end{snippetproof}
+
+\begin{snippetexample}{Convergenza uniforme non implica convergenza assoluta}
+    \[
+        \sum {(-1)}^n \frac1n
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Sia \(S = \realnumbers^+\) e su tale dominio \(f_n(x) = \frac1n\chi_{[n-1, n)}(x)\). Allora la serie
+    \[
+        \sum_{n=1}^\infty f_n(x)
+    \]
+    è una funzione a scala. La convergenza è uniforme ed è assoluta.
+    La convergenza non è tuttavia totale, infatti
+    \[
+        \sum_{n=1}^\infty \sup_{x \in \realnumbers^+} |f_n(x)| = \sum_{i=1}^\infty \frac1n
+    \]
+    che diverge. Infatti,
+    \[
+        \sup_{x \in \realnumbers^+} |f_n(x)| = \frac1n
+    \]
+\end{snippetexample}
+
+\begin{snippetproposition}{}
+    Siano \(f_i \colon S \fromto \realnumbers\). Se \(\sum f_i\) converge totalmente, allora convrge uniformemente in \(S\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Per ipotesi \(|f_i(x)| \leq M_i\) per \(\sum M_i\) convergente.
+    Mostriamo che questo implica la condizione di Cauchy uniforme.
+    \[
+        |f_{\tilde n}(x) + f_{{\tilde n} + 1}(x) + \cdots + f_{{\tilde n} + \varphi}| \leq
+        \sum_{i=f_{\tilde n}}^{{\tilde n} + \varphi} |f_i(x)| \leq 
+        sum_{i=f_{\tilde n}}^{{\tilde n} + \varphi} M_i < \varepsilon
+    \]
+    pur di prendere \(\tilde n\) arbitrariamente grande, perché
+    \(\sum M_i\) converge, allora soddisfa le condizioni di Cauchy.
+    Dat oche la stima vale per tutte le \(x\in S\), abbiamo trovato che \(\sum f_i\) soddisfa la condizione di Cauchy
+    uniforme e quindi converge uniformemente.
+\end{snippetproof}
+
+\begin{snippetexercise}{}
+    Consideriamo \[
+        f(x) = \sum_{n=1}^\infty \frac{
+            \sqrt[3]{\sin(x)}
+        }{
+            n^2 + x^2
+        }
+    \]
+    Dimostrare che \(f\) è continua a stabilire in quali punti è differenziabile.
+    Stabilire se \(f\) è integrabile in \(\realnumbers\). 
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    Non possiamo dedurre la convergenza uniforme di \(f\) dalla convergenza uniforme della serie
+    di \(\frac{1}{n^2 + x^2}\). Tuttavia, possiamo dedurrne la continuità dalla continuità della serie di \(\frac{1}{n^2 + x^2}\).
+    Siccome \[
+        \frac{1}{n^2 + x^2} \leq \frac{1}{n^2}
+    \]
+    allora serie converge totalmente, e quindi converge uniformemente, allora \(f\) è continua.
+    Stabiliamo ora se
+    \[
+        \sum \frac{1}{n^2 + x^2}
+    \]
+    è differenziabile.
+    Calcoliamo la serie delle derivata, ossia
+    \[
+        - \sum_{n=1}^\infty \frac{2x}{(n^2 + x^2)^2}
+    \]
+    Verifichiamo che converga localmente uniformemente: sia \(x\in(a,b)\), allora
+    \[
+        \left|
+            \frac{2x}{(n^2 + x^2)^2}
+        \right| \leq \frac{
+            2\max\{|a|, |b|\}
+        }{n^4}, \quad \forall x, \forall n
+    \]
+    Per il teorema di derivazione per serie poniamo derivate termine a termine
+    \[
+        \left(
+            \sum_{n=1}^\infty \frac{1}{n^2 + x^2}
+        \right)' = - \sum_{n=1}^\infty \frac{2x}{(n^2 + x^2)^2}, \quad \forall x \in \realnumbers
+    \]
+    Sicuramente \(f\) è derivabile per \(x\neq k\pi\) con \(k\in\integernumbers\).
+    Se \(f = gh\) con \(g(x) \neq 0\) e tale che non esiste \(h'(\overline x)\) con
+    \(h'(\overline x) = 0\), allora non esiste \((gh)'(\overline x)\).
+    Infatti, se esistesse allora siccome \(f = gh\) avremmo che \(h = f/g\),
+    ma allora sarebbe derivabile in \(\overline x\) perché quoziente di funzioni derivabili è derivabile.
+    Siccome la serie di \(\frac{1}{n^2 + x^2}\) non si annulla mai, \(f\) non è derivabile
+    per \(x = k\pi\) con \(k\) intero.
+    Siccome \(f\) è dispari, se è integrabile sulla retta reale, allora l'integrale vale zero.
+    Basta studiare \(f\) su \((0, \infty)\).
+    La nostra funzione è il prodotto di una funzione periodica e media nulla per una funzione per una funzione che tende
+    a zero momentaneamente, quindi \(f\) è integrabile.
+\end{snippetsolution}
+
+
+\pagebreak
+
+\section{Serie di potenze}
+
+È una serie di funzioni della forma \(f_n(x) = a_n(x-x_n)^n\).
+Di sicuro la serie converge almeno nel centro della serie di potenze.
+A meno di traslazioni possiamo sempre considerare la forma
+\[
+    \sum_{n=0}^\infty a_n x^n
+\]
+In generale è più comodo considerare la serie di potenze complessa.
+Se \(S\) è l'insieme di convergenza della serie di potenza,
+si dimostra che \(S^\circ\) è un cerchio, anche degenere cioè vuoto o tutto il piano complesso.
+L'insieme di convergenza può avere dei pezzi di frontiera.
+Il fatto che \(S^\circ\)
+sia un cerchio dipende dalla seguente proprietà:
+
+\begin{snippetproposition}{}
+    Se la serie di potenze \(\sum a_nx^n\) converge in qualche punto \(\tilde x\)
+    e se \(x\) è un punto tale che \(|x| < |\tilde x|\),
+    allora la serie converge assolutamente in \(x\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Per ipotesi la serie è convergente nel punto dato, quindi
+    \(\{a_n \tilde x^n\}\) è limitata.
+    Supponiamo che \(\tilde x \neq 0\), in cui caso il teorema è banale.
+    Prendiamo un punto \(x\) complesso tale che \(|x| < |\tilde x|\).
+    Abbiamo quindi
+    \begin{align*}
+        a_n x^n &= a_n x^n \cdot \frac{
+            x^n
+        }{
+            \tilde x^n
+        } \\
+        |a_n x^n| &= \underbrace{|a_n \tilde x^n|}_{\text{bounded}} \cdot \left|\frac{
+            x
+        }{
+            \tilde x
+        }\right|^n
+    \end{align*}
+    Il primo termine è limitato, mentre il secondo è il termine generale di una serie geometrica di ragione
+    \(<1\), quindi la serie converge assolutamente.
+    Siccome la serie converge assolutamente in un qualche punto \(\overline x\),
+    allora la serie converge totalmente in tutto il cerchio chiuso che ha \(\overline x\)
+    sul bordo, per maggiorazione, e quindi convergenza uniforme in tutto il cerchio chiuso.
+\end{snippetproof}
+
+Quindi nell'interno del cerchio ogni serie di potenza converge \emph{localmente} uniformemente.
+
+\begin{snippettheorem}{Criterio di Cauchy-Hadamard}
+    Sia \(\sum a_n x^n\) una serie di potenza.
+    Il raggio di convergenza è dato da
+    \[
+        R = \left(
+            \limsup_n \sqrt[n]{|a_n|}
+        \right)^{-1}
+    \]
+    con la convenzione che \(1/0 = \infty\) (la serie converge su \(\complexnumbers\))
+    e \(1/\infty = 0\) (la serie converge nel centro).
+\end{snippettheorem}
+
+\begin{snippetproof}{Criterio di Cauchy-Hadamard}
+    Sia \(l = \limsup_n \sqrt[n]{|a_n|}\).
+    Abbimo 3 casi: \(l = 0\), \(l = +\infty\) e \(0 < l < +\infty\).
+    Vogliamo mostrare che se \(|x| < 1/l\),
+    la serie converge e che se \(|x| > 1/l\) la serie diverge.
+    Sia \(|x| < 1/l\).
+    Dalla definizione di \(l\) abbiamo che \(\forall \varepsilon > 0\),
+    \[
+        |a_n|^{\frac1n} < l+\varepsilon
+    \]
+    definitivamente cioè \(|a_n| < (k+\varepsilon)^n\).
+    Ma \(|x| < 1/l\) implica che \(|x|l < 1\).
+    Moltiplicando \(l\) con qualcosa di leggermente più grande, il prodotto resta
+    \(< 1\). Cioè esiste \(\tilde \varepsilon > 0\)
+    tale che \(|x|(l + \tilde \varepsilon) < 1\).
+    Quindi \[
+        |a_nx^n| < (|x|(l + \tilde \varepsilon))^n
+    \]
+    definitivamente. Abbiamo maggiorato il termine generale della serie di potenza
+    con il termine generale di una serie geometrica convergente, e quindi la serie converge in \(x\).
+    Mostrimao ora ch se \(|x| > 1/l\), la serie diverge.
+    Dalla definizione di \(l\) sappiamo che \(\forall \varepsilon > 0\)
+    esistono infiniti termini della successione tale che
+    \[
+        \sqrt[n]{|a_n|} > l-\varepsilon
+    \]
+    Cioè, esiste una sottosuccessione che tende ad \(l\).
+    Abbiamo quindi
+    \[
+        |a_nx^n| \geq (|x|(l - \varepsilon))^n
+    \]
+    per infiniti valori di \(n\).
+    Siccome \(|x|>1/l\), allora \(|x|l>1\), cioè \(\exists \tilde \varepsilon > 0\)
+    tale che \(|x|(l-\tilde \varepsilon) > 1\).
+    La serie ha quindi infiniti termini che sono maggiori di \(1\), quindi diverge.
+\end{snippetproof}
+
+\begin{snippetexample}{}
+    Calcola il raddio di convergenza della serie di potenza
+    \[
+        \sum_{i=0}^infty n^3 x^n
+    \]
+    Il raggio è \(R = 1\).
+    Studiamo se vi è convergenza sul bordo di raggio \(R = 1\).
+    In tal caso, il termine generale \(|n^3 x^n| = |n^3|\) che non tende a zero,
+    quindi diverge.
+    Quindi la serie converge solo sul cerchio aperto di raggio \(1\).
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Calcola il raggio di convergenza della serie di potenza
+    \[
+        \sum_{i=0}^infty \frac{x^n}{n^3}
+    \]
+    Il raggio è \(R = 1\).
+    Sul bordo, per \(x=1\) la serie converge assolutamente,
+    allora ce l'ho anche in tutto il cerchio chiuso.
+    Quindi la serie converge su tutto il cerchio chiuso di raggio \(R=1\).
+\end{snippetexample}
+
+\begin{snippettheorem}{Criterio del rapporto}
+    Sia \(\sum a_nx^n\)
+    una serie di potenza tale che \(a_n \neq 0\) definitamente.
+    Se \[
+        \lim\left|
+            \frac{a_{n+1}}{a_n}
+        \right|
+    \]
+    esiste e converge a \(l\), allora il raggio di convergnza è \(R = 1/l\).
+\end{snippettheorem}
+
+\begin{snippetproof}{Per esercizio}
+    Dimostrazione simile al criterio di Cauchy-Hadamard e
+    il criterio del rapporto per le serie numeriche.
+\end{snippetproof}
+
+\begin{snippetexample}{}
+    Se \(\sum a_n x^n\) dove \(a_n = 1\) se \(n = 2k+1\)
+    e \(a_n = e^{-n}\) se \(n = 2k\).
+    La classe limite è \(\{1, 0\}\).
+    Per il criterio di Cauchy-Hadamard,
+    la radice \(n\)-esima dei possibili valori sono \(1\) e \(e^{-1}\),
+    quindi il limite superiore è \(1\).
+    Allora, il raggio di convergenza è \(R=1\).
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Consideriamo la serie \(\sum x^{2n}\).
+    Non possiamo utilizzare il criterio del rapporto
+    in quanto ci sono definitivamente termini nulli.
+    Tuttavia,
+    ponendo \(y = x^2\) vediamo che questa è la serie geometria e quindi il raggio di
+    convergenza è \(R=1\).
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Calcola il raggio di convergenza della serie di potenza
+    \[
+        \sum_{i=0}^\infty \frac{x^n}{n!}
+    \]
+    Il raggio è \(R=\infty\) per il criterio del rapporto.
+    Questa convergenza non è uniforme.
+\end{snippetexample}
+
+\begin{snippetproposition}{}
+    Da scrivere leggendo la dimostrazione
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Se il raggio di convergenza è \(\infty\),
+    l'unico caso in cui la convergenza è uniforme su \(\complexnumbers\)
+    è quello in cui i coefficienti sono definitivamente nullo, cioè
+    la serie è di un polinomio.
+    Se la serie convergesse uniformemente sul piano complesso,
+    allora il termine dovrebbe convergere uniformemente a zero
+    \[
+        \sup_{x \in \complexnumbers} |a_nx^n| < \varepsilon
+    \]
+    definitivamente.
+    Il termine \(a_n\) è indipendente e quindi può uscire fuori dal supremum,
+    ma il supremum di \(|x^n|\) è infinito, quindi serve \(a_n = 0\) definitivamente.
+\end{snippetproof}
+
+\begin{snippetdefinition}{Funziona intera}
+    Se \(\sum a_nx^n\) converge su tutto il piano complesso, essa si dice
+    \emph{funzione intera}.
+\end{snippetdefinition}
+
+\begin{snippetexample}{}
+    I polinomi, \(e^x\), \(\sin(x)\) sono funzioni intere.
+\end{snippetexample}
+
+Se \(\sum a_nx^n\) è intera, allora converge localmente totalmente e quindi
+converge localmente uniformemente, cioè converge uniformemente su ogni compatto.
+
+\begin{snippetexample}{}
+    Calcola il raggio di convergenza della serie di potenza
+    \[
+        \sum_{i=0}^\infty n!x^n
+    \]
+    La serie ha raggio di convergenza \(R=0\).
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Calcola il raggio di convergenza della serie di potenza
+    \[
+        \sum_{i=0}^\infty \left(
+            \frac{x}{27}
+        \right)^n
+    \]
+    La serie ha raggio di convergenza \(R=27\).
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Consideriamo la serie
+    \[
+        \sum \frac{x^n}{x^2}
+    \]
+    ha raggio di convergenza \(R=1\),
+    converge sul disco chiuso perché converge assolutamente, come per esempio in \(x=1\).
+\end{snippetexample}
+
+\begin{snippettheorem}{Teorema di Abel}
+    Se la serie di potenza \(\sum a_nx^n\) converge puntualmente
+    in qualche punto \(\tilde x\) sul bordo del raggio di convergenza,
+    ma non converge assolutamente in \(\tilde x\),
+    allora \(\sum a_nx^n\) converge uniformemente
+    sul raggio che collega \(\tilde x\) al centro.
+    Inoltre, la convergenza uniforme la si può estendere ad ogni punto
+    del diametro escluso il punto opposto a \(\tilde x\).
+\end{snippettheorem}
+
+Mi estende la convergenza uniforme fino al punto nel bordo dato.
+
+\begin{snippetexample}{}
+    Consideriamo la serie
+    \[
+        \sum \frac{x^n}{n}
+    \]
+    che ha raggio di convergenza \(R=1\).
+    Sul bordo, in \(x=1\) la serie non converge mentre \(x=-1\) converge.
+    Siccome è una serie di Dirichlet, converge in tuti i punti del borso tranne \(x=1\).
+    La convergenza è uniforme in quanto totale in tutti i punti del cerchio discosti dal bordo.
+    Vorrei sapere se la convergenza è uniforme
+    anche sui punti del bordo. Possiamo usare il teorema di Abel.
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Consideriamo la serie reale
+    \[
+        \sum {(-1)}^{n+1} \frac{x^n}{n}
+    \]
+    Il raggio di convergena è \(R=1\).
+    Si dimostra che la serie converge a \(\log(1 + x)\)
+    per \(x \in (-1, 1)\).
+    La serie non converge assolutamente in nessun punto del bordo,
+    cioè nè per \(x=1\) e \(x=-1\).
+    Il teorema di Abel ci consente di dire che la somma della serie è \(\log 2\),
+    cioè anche sul bordo.
+    Questo è dato dal teorema del doppio limite,
+    \[
+        \lim_{x\to 1} \left(
+            \underbrace{\sum_{n=1}^\infty {(-1)}^{n+1} \frac{x^n}{n}}_{\log(1+x)}
+        \right) = \sum_{n=1}^\infty \frac{{(-1)}^{n+1}}{n}
+    \]
+    che possiamo fare siccome c'è convergenza uniforme, fino ad \(1\)
+    grazie al teorema di Abel.
+    Quindi la serie converge uniformemente in \(\realnumbers\)
+    su tutti i sottoinsiemi del tipo \((\alpha, 1]\)
+    con \(\alpha > -1\).
+\end{snippetexample}
+
+\begin{snippetexample}{A volte il lim sup è più facile da calcolare dal limite}
+    Consideriamo la serie di potenze
+    \[
+        \sum_{n=0}^\infty (\sin n)^n x^n
+    \]
+    Usiamo il criterio di Cauchy-Hadamard. Abbiamo
+    il limite
+    \[
+        \lim_n \sqrt[n]{
+            |\sin n|^n
+        } = \lim_n |\sin n|
+    \]
+    non esiste, mentre il lim sup
+    \[
+        \limsup_n \sqrt[n]{
+            |\sin n|^n
+        } = \limsup_n |\sin n| = 1
+    \]
+    in quanto la successione \(\{\sin n\}\) è densa in \([-1, 1]\).
+\end{snippetexample}
+
+\begin{snippetexample}{A volte il lim sup è più facile da calcolare dal limite}
+    Consideriamo la serie di potenze
+    \[
+        \sum_{n=0}^\infty \sin n x^n
+    \]
+    Usiamo il criterio di Cauchy-Hadamard. Abbiamo
+    \[
+        \limsup \sqrt[n]{
+            |\sin n|
+        } = 1
+    \]
+    Mentre calcolare il limite non è banale.
+\end{snippetexample}
+
+% TODO da scrivere un pochino meglio
+\begin{snippetproposition}{}
+    Consideriamo una serie di potenze reale
+    \(\sum a_n x^n\) con raggio di convergenza \(0 < R \leq \infty\)
+    e consideriamo \(x \in (-R, R)\).
+    Sappiamo che converge in almeno un punto, e la serie delle derivate è
+    \[
+        \sum_{n=1}^\infty na_nx^{n-1}
+    \]
+    che è ancora una serie di potenze, con un suo insieme di convergenza.
+    Il raggio di convergenza viene mantenuto.
+    La convergenza può perdere dei punti del bordo, ma il raggio di convergenza è il medesimo.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Consideriamo la serie delle derivate
+    \[
+        g(x) = \sum_{n=1}^\infty na_nx^{n-1}
+    \]
+    Consideriamo la funzione \(xg(x)\) per avere il termine \(na_nx^n\),
+    tanto la convergenza rimane la medesima. Applicando il teorema di Cauchy-Hadamard
+    vediamo che
+    \begin{align*}
+        \limsup_n \sqrt[n]{
+            n|a_n|
+        } = \limsup_n \sqrt[n]{|a_n|}
+    \end{align*}
+    e quindi il raggio di convergenza rimane il medesimo.
+\end{snippetproof}
+
+Ogni serie di potenze con raggio di convergenza positivo è una funzione derivabile,
+che continua a convergere almeno sul cerchio aperto.
+Il medesimo processo può essere iterato per derivate superiori.
+
+\begin{snippetcorollary}{}
+    Sia \[
+        f(x) = \sum_{n=0}^\infty a_nx^n
+    \]
+    con raggio di convergenza \(R > 0\), allora \(f\in \mathcal C^\infty((-R, R))\) e \[
+        f^{(k)}(x) = \sum_{n=k}^\infty n(n-1)\cdots(n-k+1)a_nx^{n-k}
+    \]
+\end{snippetcorollary}
+
+\begin{snippetexample}{}
+    Consideriamo la serie di potenze
+    \[
+        \sum_{n=1}^\infty \frac{x^n}{n}
+    \]
+    che ha raggio di convergenza \(R=1\).
+    Essa converge in \([-1, 1]\). La serie delle derivate è la serie geometrica
+    \[
+        \sum_{n=1}^\infty x^n
+    \]
+    che ha sempre raggio di convergenza \(R=1\)
+    ma converge solo su \((-1, 1)\).
+\end{snippetexample}
+
+\begin{snippetcorollary}{}
+    Consideriamo la serie di potenze
+    \[
+        \sum_{n=1}^\infty \frac{x^n}{n^2}
+    \]
+    ha raggio di convergenza \(R=1\).
+    Nel punto \(x=1\) converge assolutamente, e quindi converge totalmente in tutto il cerchio
+    chiuso \([-1, 1]\). La serie delle derivate è
+    \[
+        \sum_{n=1}^\infty x^{n-1}{n}
+    \]
+    che converge in \([-1, 1)\). La derivata seconda
+    \[
+        \sum_{n=2}^\infty \frac{n-1}{n}x^{n-2}
+    \]
+    che converge solamente in \((-1, 1)\), e così via.
+\end{snippetcorollary}
+
+Abbiamo la formula \[
+    f^{(k)}(x) = \sum_{n=k}^\infty n(n-1)\cdots(n-k+1)a_nx^{n-k}
+\]
+In \(x=0\) otteniamo \(f^{(k)}(0) = k! a_k\), cioè \(a_k = \frac{1}{k!}f^{(k)}(0)\).
+Quindi conoscendo le derivate della serie di potenze in un intorno arbitrariamente piccolo,
+conosciamo interamente la serie di funzioni su tutto il suo cerchio di convergenza.
+È quindi impossibili avere fenomeni di biforcazione.
+Non tutte le funzioni \(\mathcal C^\infty\) sono quindi serie di potenze.
+
+\begin{snippetexample}{}
+    La funzione
+    \[
+        f(x) = \begin{cases}
+            e^{-\frac{1}{x^2}} & x \neq 0 \\
+            0 & x = 0
+        \end{cases}
+    \]
+    non è analitica, in quanto tutte le derivate nell'origine sono nulle
+    ma non posso ricostruire interamente la funzione.
+    La sua serie di Maclaurin converge alla funzione identicamente nulla.
+\end{snippetexample}
+
+In generale posso sempre associare ad una funzione \(f(x)\) una serie di potenze,
+cioè la serie di Taylor.
+
+\begin{snippetproposition}{}
+    Una successionoe reale \(\{b_n\}\)
+    si dimostra che \(\exists f \in \mathcal C^\infty((a,b))\)
+    tale che se \(x_0 \in (a,b)\), allora \(f^{(k)} = b_n\).
+\end{snippetproposition}
+
+Quindi per esempio scegliendo \(b_n = \{(n!)^2\}\), la funzione \(f\)
+che ha \(\{b_n\}\) come coefficienti ha serie di Taylor che converge solo in \(x_0\),
+quindi \(R=0\).
+
+\begin{snippetdefinition}{Funzioni analitiche}
+    Le funzioni \(f\in\mathcal C^\infty((a,b))\)
+    che almeno localmente \(\forall x_0 \in (a,b)\)
+    coincide sono somma della loro serie di Taylor costituiscono una sotoclasse di
+    \(\mathcal C^\infty((a,b))\) detta \emph{classe delle funzioni analitiche}
+    in \((a,b)\). Tale classe viene indicata come \(\mathcal C^\omega((a,b))\).
+\end{snippetdefinition}
+
+In una funzione analitica la convergenza locale implica quella globale.
+Sono la generalizzazione più immediata dei polinomi, in quanto
+pure loro sono una classe di tali funzioni.
+
+Nota: per ogni punto bisogna trovare almeno un intorno dove converge, non è detto
+che la serie di Taylor in \(x_0\) in quel punto converge su tutto l'intervallo.
+
+\begin{snippetexample}{}
+    Consideriamo la funzione \(f(x) = \sum_{n=0}^\infty x^n\)
+    che possiamo scrivere come serie geometrica, che converge nell'intervallo \((-1, 1)\).
+    Tuttavia, la funzione \(f\) è analitica in tutto l'intervallo
+    \(f\in \mathcal C^\omega((-\infty, 1))\).
+    Il raggio \(R=1\) è il massimo raggio possibile per la serie centrata nell'origine,
+    in quanto se oltrepassassi l'asintoto.
+    Se fosse centrata in \(x=\frac13\), il raggio può essere al massimo \(R=\frac23\)
+    e infatti si dimostra che lo è.
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Consideriamo la funzione \(f(x) = \frac{1}{1 + x^2} = \sum_{n=0}^\infty {(-1)} x^{2n}\)
+    che possiamo scrivere come serie di potenza con raggio di convergenza \(R=1\).
+    Tuttavia, la funzione originale è definita su tutto \(\realnumbers\).
+    Se consideriamo la funzione sul piano complesso, abbiamo due pali a \(\pm i\),
+    e quindi il raggio di convergenza non può superare quei punti.
+    Se invece la centrassimo in \(x=2\), il raggio di convergenza sarebbe \(\sqrt{5}\)
+    cioè la distanza fra \(2\) ed \(i\).
+\end{snippetexample}
+
+\begin{snippettheorem}{}
+    Sia \(f \in \mathcal C^\infty((a,b))\).
+    Se \(\exists M, L \in \realnumbers\)
+    tale che \(\forall x \in (a,b)\) e \(\forall n\) vale
+    \(|f^{(k)}(x)| < M \cdot L^n\), allora
+    \[
+        f(x) = \sum_{n=0}^\infty \frac{f^{(n)}(x)}{n!}(x-x_0)^n
+    \]
+    per tutte le \(x_0, x \in (a,b)\).
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Sia \(x_0 \in (a,b)\) fissato come centro della serie e scriviamo
+    il polinomio di Taylor di ordine \(k\) con il resto di Lagrange.
+    Esiste quindi \(c(x, x_0, k)\) tra \(x\) e \(x_0\) tale che
+    \[
+        f(x) = \sum_{n=0}^k \frac{f^{(k)}(x_0)}{n!}(x-x_0)^n
+        + \frac{f^{(k+1)}(c)}{(k+1)!}(x-x_0)^{k+1}
+    \]
+    vogliamo mostrare che il resto in forma di Lagrange tende a zero. Stimiamone quindi il modulo
+    \begin{align*}
+        \left|
+            \frac{f^{(k+1)}(c)}{(k+1)!}(x-x_0)^{k+1}
+        \right| \leq \frac{M \cdot (L |x-x_0|)^{k+1}}{(k+1)!} \to 0
+    \end{align*}
+    per \(n \to \infty\).
+\end{snippetproof}
+
+Questa condizione è solo sufficiente e implica la convergenza in tutto l'intervallo \((a,b)\),
+e può essere usata localmente.
+
+\begin{snippetexample}{}
+    Consideriamo la funzione \(f(x) = 1 / (1-x)\)
+    che è analitica su \((-\infty, 1)\).
+    Non esistono \(M\) ed \(L\) tale che
+    la condizione del teorema % TODO CITE
+    sia soddisatta su tutto \((-\infty, 1)\).
+\end{snippetexample}
+
+\begin{snippetproposition}{}
+    Sia \(f \in \mathcal C^\infty\) tale che la sa successione delle derivate sia equilimitate,
+    allora è analitica.
+\end{snippetproposition}
+
+\begin{snippetproposition}{}
+    Se le derivate sono equilimitate con costante \(K\), basta scegliere \(L=\) e \(M=K\)
+    nel teorema. % TODO CITE Theorem
+\end{snippetproposition}
+
+Quindi \(\sin(x)\) e \(\cos(x)\) sono analitiche in quanto le derivate sono equilimitate.
+La funzione \(e^x\) non è limitata ma possiamo applicare il criterio negli intervalli
+\((-\infty, a)\), e quindi è una funzione intera.
+
+La serie di Taylor ci permette di estendere la funzione esponenziale ai complessi.
+
+Le serie di potenza possono essere integrate termine a termine.
+\[
+    \integral[0][x][
+        \sum_{n=0}^\infty a_nt^n
+    ][t]
+    = \sum_{n=0}^\infty \frac{a_nx^{n+1}}{n+1}
+\]
+
+\begin{snippetexample}{}
+    Integrando la serie geometrica, che ha raggio di convergenza \(R=1\), otteniamo
+    \[
+        \ln(1-x) = - \sum_{n=0}^\infty \frac{x^{n+1}}{n+1}=
+        - \sum_{n=1}^\infty \frac{x^n}{n}
+    \]
+    Ne segue che \[
+        \ln(1 + x) = \sum_{n=1}^\infty {(-1)}^{n} \frac{x^n}{n}
+    \]
+    che è quindi analitica
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Consideriamo \(f(x) = 1/(1 + x^2)\)
+    che possiamo scrivere come \(\sum_{n=0}^\infty {(-1)}^n x^{2n}\), allora integrando otteniamo
+    \[
+        \arctan(x) = \sum_{n=0}^\infty {(-1)}^{2n + 1} \frac{x^{2n+1}}{2n+1}
+    \]
+    che è quindi analitica.
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Mostriamo che \(f(x) = (1 + x)^\alpha\) con \(\alpha \in \realnumbers\).
+    La sua serie di Taylor è data da
+    \[
+        g(x) = \sum_{n=0}^\infty \binom{\alpha}{n}x^n, \quad x\in(-1,1)
+    \]
+    Ci aspettiamo che il raggio di convergenza sia
+    \(R=1\). Usiamo il criterio del rapporto
+    \[
+        \left|
+            \frac{\alpha(\alpha-1)\cdots(\alpha - n + 1)}{n!}
+        \right| \cdot \frac{(n+1!)}{|\alpha(\alpha-1)\cdots(\alpha-n)|}
+        = \frac{n+1}{|\alpha- n|} \to 1
+    \]
+    Quindi il raggio è \(R=1\).
+    Notiamo la relazione \((1 + x)g'(x) = \alpha g(x)\).
+    Inoltre, sappiamo che \(g(0) = 1\).
+    Otteniamo quindi il problema di Cauchy
+    \[
+        \begin{cases}
+            g'(x) = \frac{\alpha}{1 + x}g(x) \\
+            g(0) = 1
+        \end{cases}
+    \]
+    La soluzione nulla non rispetta il punto fissato, altrimenti l'equazione è separabile e integrando
+    \[
+        \frac{g'(x)}{g(x)} = \frac{\alpha}{1 + x}
+    \]
+    otteniamo
+    \[
+        \ln|g(x)| = \alpha \ln |1 + x| =  \alpha \ln (1 + x)
+    \]
+    siccome \(x > -1\). Possiamo pure togliere il modulo di \(g(x)\)
+    siccome la nostra soluzione non può mai diventare negativa, in quanto non può
+    intersecare la soluzione costante dell'equazione differenziabile. Abbiamo quindi dimostrato che
+    \[
+        g(x) = {(1 + x)}^\alpha
+    \]
+    ed è una funzione analitica.
+\end{snippetexample}
+
+Sappiamo già dal teorema di Stone-Weierstrass che tutte le funzioni continue
+possono essere approssimate da polinomi.
+La differenza è che per migliore una approssimazione basta aggiungere termini
+al polinomi di Taylor, mentre per il teorema di Stone-Weierstrass
+dobbiamo rifare tutto da zero.
+
+\begin{snippetexercise}{}
+    Studiare la convergenza della serie
+    \[
+        S(x) = \sum_{n=0}^\infty 2^n \sin\left(\frac{x}{3^n}\right)
+    \]
+    e calcolare
+    \[
+        \lim_{x \to 0} \frac{S(x)}{x}
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    Possiamo cominciare stimando
+    \[
+        |f_n(x)| \leq 2^n\frac{|x|}{3^n} = \left(\frac23\right)^n |x| \to 0
+    \]
+    quindi la serie converge puntualmente.
+    Notiamo che su un insieme limitato, \(|x| < R\),
+    \(|f_n(x)| \leq R \left(\frac23\right)^n\)
+    e converge totalmente, e la convergenza è localmente uniforme.
+    La convergenza è uniforme dappertutto?
+    Per il limite notiamo che
+    \[
+        \lim_{x \to x_0} \frac{S(x) - S(0)}{x-0} = S'(0)
+    \]
+    quindi dobbiamo studiare la derivabilità.
+    La convergenza è uniforme sui reali se 
+    \[
+        \sup_{x\in \realnumbers} \left|
+            \sum_{k=n}^\infty f_n(x)
+        \right| \to 0
+    \]
+    per \(n \to \infty\).
+    Proviamo a prendere un punto di massimo delle \(f_n\),
+    ossia \(\hat x_n = 3^n\frac{n}{2}\) che è il primo massimo di \(f_n\),
+    e quindi \(f(\hat x_n) = 2^n\).
+    Per \(k > n\) possiamo dire che
+    \(f_k\) è dilatata, quindi il primo massimo si trova più a destra del primo massimo con
+    \(f_n\). Quindi, in \([0, \hat x_n]\) la \(f_k\) è crescente,
+    e siccome parte da 0 è quindi positiva.
+    Abbiamo quindi che la coda della serie calcolata nel punto \(\hat x_n\)
+    \[
+        \sup_{x\in \realnumbers} \left|
+            \sum_{k=n}^\infty f_n(x)
+        \right| \leq \sum_{k=n}^\infty f_k(\hat x_n) \geq f(\hat x_n) = 2^n \to \infty
+    \]
+    Quindi il sup non tende a zero e non abbiamo convergenza uniforme.
+    Per il limite notiamo che
+    \[
+        \lim_{x \to x_0} \frac{S(x) - S(0)}{x-0} = S'(0)
+    \]
+    quindi dobbiamo studiare la derivabilità.
+    Nell'origine tutti gli addendi sono \(0\),
+    quindi abbiamo la convergenza uniforme.
+    Ci serve la convergenza uniforme locale, in quanto la derivata è una operazione locale.
+    Abbiamo
+    \[
+        f_n'(x) = \frac{2^n}{3^n} \cos \frac{x}{3^n}
+    \]
+    Dobbiamo qunidi verificare se
+    \(\sum_{n=0}^\infty f_n'\) converge. Ma chiaramente converge totalmente e quindi uniformemente in quanto
+    \[
+        \sum_{n=0}^\infty |f_n'| \leq \sum_{n=0}^\infty \left(\frac{2}{3}\right)^n
+    \]
+    Abbiamo quindi
+    \[
+        S'(0) = \sum_{n=0}^\infty f_n'(0) = \sum_{n=0}^\infty \left(\frac{2}{3}\right)^n = 3
+    \]
+\end{snippetsolution}
+
+\pagebreak
+
+\section{Equazioni differenziali}
+
+\begin{snippetdefinition}{Curva integrale}
+    Una curva integrale è una curva nel piano che in ogni punto è
+    dotata di retta tangente e che sia localmente
+    il grafico di qualche soluzione
+    di una equazione differenziale.
+\end{snippetdefinition}
+
+Siamo ammettendo anche il caso in cui la tangente sia verticale in qualche punto.
+
+\begin{snippetexample}{}
+    La funzione \(y = \sqrt[3]{x}\)
+    è soluzione dell'equazione \(y' = 3x^{-2/3}\).
+    Abbiamo una pendenza verticale in \(x=0\), e l'equazione amette
+    due soluzioni separate per le due parti separate.
+    Tuttavia, l'intera funzione è una curva integrale in quanto ammette una tangente,
+    anche verticale, ed è localmente il grafico di una funzione.
+\end{snippetexample}
+
+In generale, se una famiglia di soluzioni
+di un'equazione differenziale scalare del primo ordine ammette
+un inviluppo, allora anch'esso è soluzione.
+
+\begin{snippetexample}{}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+            \begin{tikzpicture}[scale=0.75]
+                \begin{axis}[
+                    axis lines = middle,
+                    xlabel = \(x\),
+                    ylabel = \(y\),
+                    xmin=-2, xmax=5,
+                    ymin=-5, ymax=10,
+                    domain=-2:6,
+                    samples=100,
+                    restrict y to domain=-10:15,
+                ]
+                \addplot[blue, thick] {(x-0)^3};
+                \addplot[red, thick] {(x-1)^3};
+                \addplot[green!70!black, thick] {(x-2)^3};
+                \addplot[orange, thick] {(x-3)^3};
+                \addplot[black, ultra thick, dashed, domain=-2:6] {0};
+                \end{axis}
+            \end{tikzpicture}
+        \end{center}
+    \end{wrapfigure}
+    Consideriamo \(y_k = (x-k)^3\) che sono delle cubiche traslate orizzontalmente,
+    con inviluppo la retta \(y=0\).
+    Questa famiglia è soluzione, per esempio, dell'equazione
+    \[
+        y' = 3y^{\frac23}
+    \]
+    di cui sembrerebbe l'integrale generale, mentre \(y=0\) l'integrale singolare.
+    Ma ciò è sbagliato sbagliato in quanto ci sono altre soluzioni,
+    cioè le funzioni che sono costanti a sinistra e poi si coniugano in una delle cubiche,
+    o nell'altra direzione, o che percorrono un pezzo di cubica, poi diventano costanti e poi seguono una cubica successiva.
+    Cioè tutte le possibili saldature.
+    L'unicità dove due soluzioni si intersecano
+    con la medesima tangente. Se invece considero una soluzione sull'asse delle \(x\),
+    non ho unicità nemmeno localmente, mentre ce l'abbiamo sulle soluzioni cubiche.
+    \wrapfill
+\end{snippetexample}
+
+\begin{snippetdefinition}{Forma differenziali esatte}
+    È un'equazione differenziale della forma
+    \[
+        y' = \frac{a(x,y)}{b(x,y)}
+    \]
+    tali che \(a(x,y)\,\text{d}x - b(x,y)\,\text{d}y\) è una forma differenziale esatta.
+\end{snippetdefinition}
+
+Sia \(V(x,y)\) un potenziale della forma differenziale. Ogni funzione definita implicitamente da
+\(V(x,y) = 0\) è soluzione dell'equazione differenziale.
+Le equazioni separabili sono un caso particolare delle equazioni esatte.
+
+\pagebreak
+
+\begin{snippetexample}{}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+            \begin{tikzpicture}
+            \begin{axis}[
+                width=5cm,
+                height=5cm,
+                xmin=-2, xmax=2,
+                ymin=0, ymax=3.5,
+                axis lines=middle,
+                xtick=\empty,
+                ytick=\empty,
+                clip=false,
+                domain=-2:2,
+                samples=60
+            ]
+            \addplot[black, thick, dashed] {1.7724};
+            \addplot[black, thick, dashed] {2.5066};
+            \addplot[black, thick, dashed] {3.0699};
+
+            \node[anchor=east] at (axis cs:-2, 1.7724) {\(\sqrt{\pi}\)};
+            \node[anchor=east] at (axis cs:-2, 3.0699) {\(\sqrt{3\pi}\)};
+
+            \node[anchor=west] at (axis cs:2, 2.5066) {\(\sqrt{2\pi}\)};
+
+            \addplot[blue, thick] {1.7724 / (1 + exp(-3*(x+1)))};
+            \addplot[blue, thick] {1.7724 / (1 + exp(-3*x))};
+            \addplot[blue, thick] {1.7724 / (1 + exp(-3*(x-1)))};
+
+            \addplot[blue, thick] {1.7724 + 0.7342 / (1 + exp(3*(x+1)))};
+            \addplot[blue, thick] {1.7724 + 0.7342 / (1 + exp(3*x))};
+            \addplot[blue, thick] {1.7724 + 0.7342 / (1 + exp(3*(x-1)))};
+
+            \addplot[blue, thick] {2.5066 + 0.5633 / (1 + exp(-3*(x+1)))};
+            \addplot[blue, thick] {2.5066 + 0.5633 / (1 + exp(-3*x))};
+            \addplot[blue, thick] {2.5066 + 0.5633 / (1 + exp(-3*(x-1)))};
+            \end{axis}
+            \end{tikzpicture}
+        \end{center}
+    \end{wrapfigure}
+    Consideriamo l'equazione differenziale \[
+        y' = \sin(y^2)
+    \]
+    Le soluzioni costante sono \(y = \pm \sqrt{k\pi}\) per \(k \in \integernumbers\).
+    Separando l'equazione otteniamo \(y' / \sin(y^2) = 1\), e quindi
+    \[
+        x = \integral[1][y][\frac{1}{\sin(t^2)}][t]
+    \]
+    Non riusciamo a ricavare \(y\) in funzione di \(x\),
+    ma abbiamo la funzione inversa, e quindi possiamo ribaldare il grafico di quest'ultima.
+    Consideriamo il punto iniziale \(y(0) = 1\).
+    La funzione passante per questo punto non può intersecare le due soluzioni costanti
+    per il teorema di unicità locale (in quanto \(f(x,y) = \sin(y^2)\) che è in \(\mathcal C^\infty(\realnumbers^2)\)).
+    La sua derivata è positiva, e quindi crescente e allora
+    ha un asintoto un asintoto orizzontale.
+    Questo asintoto può essere \(y = \sqrt{\pi}\)
+    oppure uno più piccolo.
+    Sia \(y=L\) tale asintoto, quindi \(1 < L \leq \sqrt{\pi}\).
+    Per trovare tale quota facciamo quindi il limite. Per \(x \to \infty\) abbiamo
+    \begin{align*}
+        \integral[1][y(x)][\frac{1}{\sin(t^2)}][t] \to L
+    \end{align*}
+    L'unico modo purché questo integrale sia improprio
+    è quando \(t\) tende a \(\sqrt{\pi}\).
+    In tal caso per \(t \to \sqrt{\pi}\), \(\sin(t^2) = - \sin(t^2 - \pi)\),
+    quindi è asintotico a \(-(t^2 - \pi) = -(t-\sqrt{\pi})(t+\sqrt{\pi})\),
+    che a sua volta è asintotico a \(-2\sqrt{\pi}(t-\sqrt{\pi})\).
+    Quindi non è integrabile in quanto
+    \[
+        \frac{1}{\sin(t^2)}
+        \sim
+        \frac{1}{
+            2\sqrt{\pi}(t-\sqrt\pi)
+        }
+    \]
+    Per cui l'asintoto è \(\sqrt{\pi}\).
+    Se così non fosse stato, la curva avrebbe raggiunto l'asintoto in tempo finito,
+    e quindi avremmo avuto una saldatura, ma non siamo in regime di biforcazioni.
+    Invece, per \(x \to - \infty\), abbiamo sempre un asintoto orizzontale
+    di quota \(0 \leq l < 1\). Non può essere un numero maggiore di zero,
+    in quanto l'integrale non sarebbe improprio e sarebbe finito.
+    Quindi, per forza vale \(l=0\).
+    Infatti,
+    \[
+        \integral[0][1][\frac{1}{\sin(t^2)}][t]
+    \]
+    diverge.
+    Quindi, nella prima striscia sono crescenti, mentre nella seconda
+    sono decrescenti alternandosi.
+    Visto che abbiamo due asintoti abbiamo
+    un fleso. Per trovarlo basta derivare
+    \[
+        \frac{d}{dx} \frac{1}{\sin(y^2)} = - \frac{2y \cos(y^2)}{\sin^2(y^2)}
+    \]
+    che si annulla quando \(y^2 = \frac{\pi}{2}\),
+    e quindi il flesso si ha per \(y = \frac{\sqrt{\pi}}{2}\).
+    \wrapfill
+\end{snippetexample}
+
+Consideriamo \(y^{(k)} = f(x,y,y', \cdots, y^{(k-1)})\)
+con \(f \in \mathcal C^(\Omega, \realnumbers^n)\)
+e \[
+    \Omega \subseteq \realnumbers \cartesianprod
+    \underbrace{\realnumbers^n \cartesianprod \cdots \cartesianprod \realnumbers^n}_{n \text{ times}}
+\]
+Per fissare un'unica soluzione è necessario imporre molteplici condizioni.
+Possiamo fissare \(k\) punti di \(\Omega\), cioè
+\[
+    \begin{cases}
+        y^{(k)} = f(x,y,y', \cdots, y^{(k-1)}) \\
+        y(x_1) = y_1 \\
+        y(x_2) = y_2 \\
+        \cdots \\
+        y(x_n) = y_n \\
+    \end{cases}
+\]
+che viene detto problema ai limiti.
+Alternativamente possiamo imporre il probelma di Cauchy di ordine \(k\)
+\[
+    \begin{cases}
+        y^{(k)} = f(x,y,y', \cdots, y^{(k-1)}) \\
+        y(x_0) = y_1 \\
+        y'(x_0) = y_2 \\
+        \cdots \\
+        y^{(n-1)}(x_0) = y_{n-1} \\
+    \end{cases}
+\]
+Oppure ancora un problema misto fra i due.
+Se vogliamo studiare il comportamento locale di una soluzione,
+l'unico sensato è quello di Cauchy.
+Gli altri due possono essere studiati solo dal punto di vista globale.
+
+Dato un problema
+\[
+    \begin{cases}
+        y' = f(x,y) \\
+        y(x_0) = y_0
+    \end{cases}
+\]
+con \(f \in \mathcal C(\Omega)\) con \(\Omega \subseteq \realnumbers^{n+1}\) aperto e
+\((x_0, y_0) \in \Omega\).
+L'intervallo più grande su cui la soluzione può essere definita è la proiezione di
+\(\Omega\) sull'asse delle \(x\). Una soluzione può terminare prima se sbatte
+prima sul bordo di \(\Omega\).
+
+Un problema è ben posto se:
+\begin{enumerate}
+    \item la soluzione esiste;
+    \item la soluzione è unica;
+    \item dipendenza continua del dato iniziale, cioè cambiando di poco
+    il dato iniziale la soluzione cambia di poco.
+    Serve una dipendenza continua della soluzione anche da \(f\).
+    Se salta anche solo una delle tre richieste, diremo che il problema è mal posto.
+\end{enumerate}
+
+\begin{snippetdefinition}{Problema di Cauchy di ordine \(k\) scalare}
+    Problema di Cauchy di ordine \(k\) scalare
+    \[
+        \begin{cases}
+            y^{(k)} = f(t,y,y',\cdots, y^{(k-1)}) \\
+            y(t_0) = y_0 \\
+            y'(t_0) = y_1 \\
+            \vdots \\
+            y^{(k-1)}(t_0) = y_{(k-1)}
+        \end{cases}
+    \]
+\end{snippetdefinition}
+
+Un problema di Cauchy di ordine \(k\) è equivalente ad un problema di Cauchy del primo ordine vettoriale.
+Possiamo infatti porre un problema di Cauchy vettoriale analogo ponendo
+\[
+    x = \begin{pmatrix}
+        x_1 = y \\
+        x_2 = y' \\
+        \vdots \\
+        x_k = y^{(k-1)}
+    \end{pmatrix}
+\]
+Derivando otteniamo
+\[
+    \begin{pmatrix}
+        x_1' = x_2 \\
+        x_2' = x_3 \\
+        \vdots \\
+        x_{k-1'} = x_k
+        x_k' = f(t,x_1, x_2, \cdots, x_k)
+    \end{pmatrix}
+\]
+quindi abbiamo il sistema del primo ordine in forma vettoriale
+\[
+    x' = F(t,x)
+\]
+Quindi i due problemi sono equivalenti.
+Se \(\varphi \in \mathcal C^k(I)\) soddisfa le equazioni di ordine \(k\),
+tramite \(\varphi\) (e le sue derivate) riesco a
+costruire un vettore \(\Phi = (\varphi_1, \cdots, \varphi_k)\) con \(\varphi_k = \varphi_{k-1}'\) tale che
+\(\varphi \in \mathcal C'(I, \realnumbers^k)\) e soddisfa l'equazione data.
+Viceversa, se il vettore \(\Phi\) soddisfa le equazioni,
+la sua prima componente \(\varphi_1\), è automaticamente una funzione di classe \(\mathcal C^k(I)\) che soddisfa l'equazione
+di ordine \(k\).
+
+Il medesimo procedimento vale anche per equazioni vettoriali di ordine \(k\),
+basta aumentare la dimensione.
+Per questo motivo si sviluppa la teoria delle equazioni differenziali considerando solo
+problemi di Cauchy vettoriali al primo ordine.
+
+Consideriamo \(y' = f(x,y)\) con \(|f(x,y)| \leq M\),
+cioè \(|y'| \leq M\).
+Per il teorema dell'incremento finito, il grafico di \(y\) deve essere contenuto in un cono
+centrato nel punto iniziale \((x_0, y_0)\) e di semiampiezza \(\arctan M\).
+La condizione di limitatezza implica che se la soluzione esiste allora soddisfa \[
+    |y(x) - y(x_0)| \leq M|x-x_0|
+\]
+Allora il grafico di \(y(x)\) sta dentro il cono \(|y-y_0| \leq M|x-x_0|\).
+Supponiamo che l'ipotesi di limitatezza sia soddisfatta su tutti i \((a,b) \cartesianprod \realnumbers\).
+In questo caso la soluzione è globale: esiste su tutto \(I=(a,b)\).
+Non può terminare prima perché dovrebbe avere un asintoto verticale,
+ma questo violerebbe la proprietà del cono.
+
+Supponiamo invece che l'ipotesi sia soddisfatta su \(I \cartesianprod J\) con \(I, J\) intervalli.
+Se l'ampiezza del cono \(;\) è troppo grande, il cono interseca il rettangolo sui lati orizzontali.
+In questo caso non possiamo più garantire che la soluzione sia definita su tutto l'intervallo \(I\).
+
+\begin{snippettheorem}{di esistenza e unicità locale di Cauchy-Lipschitz}
+    Sia \(f\colon \Omega \fromto \realnumbers^n\) con \(\Omega \subseteq \realnumbers^{n+1}\) aperto
+    tale che \(f \in \mathcal C(\Omega, \realnumbers^n)\)
+    e consideriamo il problema di Cauchy
+    \[
+        \begin{cases}
+            y' = f(x,y) \\
+            y(x_0) = y_0
+        \end{cases}
+    \]
+    Supponiamo che \(\exists I \subseteq \realnumbers\) intervallo chiuso e limitato con \(x_0 \in I^\circ\) e
+    \(\exists J \subseteq \realnumbers^n\) con \(J = \overline{B_r(y_0)}\) per qualche \(r>0\) tale che
+    \(I \cartesianprod J \subseteq \Omega\). Supponiamo che \(f\) sia lipschitziano
+    in \(J\) uniformemente rispetto ad \(x \in I\), cioè supponiamo che \(\exists L > 0\) tale che
+    \[
+        ||f(x,y_1) - f(x, y_2)|| \leq L||y_1-y_2||, \quad \forall y_1, y_2 \in J, \forall x \in I
+    \]
+    Allora \(\exists \tilde I \subseteq I\) intervallo con \(x_0 \in \tilde I^\circ\) su cui il problema di Cauchy
+    ha una e una sola soluzione. In particolare, se \(I=[a,b]\), con \(a < x_0 < b\), \(\tilde I = [\alpha, \beta]\),
+    con \(\alpha < x_0 < \beta\) dove
+    \[
+        \beta-x_0 = \min\left\{b-x_0, \frac{r}{M}\right\}, \quad
+        x_0-\alpha = \min\left\{x_0-a, \frac{r}{M}\right\}, \quad
+        M = \max_{(x,y) \in I \cartesianprod J} ||f(x,y)||
+    \]
+\end{snippettheorem}
+
+L'ipotesi di lipschitzianità non è sufficiente a garantire la continuità
+di \(f\), perché si tratta di una lipschitzianità solo nella \(y\).
+
+Per esempio \(f(x,y) = \chi_{\rationalnumbers}(x)\) è discontinua in ogni punto, ma è lipschitziana rispetto ad \(y\) con \(L=0\).
+Infatti, \(f\) è costante sulle rette verticali.
+
+Il teorema di Peano assume solo la continuità, non la lipschitzianità, e garantisce solo l'esistenza di una soluzione, ma non l'unicità.
+
+\begin{snippettheorem}{di esistenza e unicità globale}
+    Sia \(f\colon \Omega \fromto \realnumbers^n\) con \(\Omega \subseteq \realnumbers^{n+1}\) aperto
+    tale che \(f \in \mathcal C(\Omega, \realnumbers^n)\)
+    e consideriamo il problema di Cauchy
+    \[
+        \begin{cases}
+            y' = f(x,y) \\
+            y(x_0) = y_0
+        \end{cases}
+    \]
+    Supponiamo che \(\exists I \subseteq \realnumbers\) intervallo
+    chiuso e limitato con \(x_0 \in I^\circ\) tale che \(I \cartesianprod \realnumbers^n \subseteq \Omega\) e che \(f\)
+    sia lipschitziana rispetto a \(y\) uniformemente a \(x\in I\). Allora esiste una unica soluzione al problema in \(I\).
+\end{snippettheorem}
+
+La dimostrazione sfrutta il fatto che \(I\) sia compatto, ma la tesi è vera anche per intervalli non copatti.
+Infatit, ogni intervallo è unione di intervalli compatti.
+Su ognuno di questi la soluzione esiste ed è unica.
+Se \([a_1, b_1] \subseteq [a_2, b_2]\), la soluzione su \([a_2, b_2]\) deve essere un prolungamento
+di quella definita su \([a_1, b_1]\), altrimenti avremmo due soluzioni.
+In questo modo si può definire la soluzione in tutti i punti
+dell'intervallo anche se questo non è compatto.
+
+\begin{snippettheorem}{di esistenza e unicità globale}
+    Sia \(f \in \mathcal C(\Omega; \realnumbers^n)\) con \(\Omega \subseteq \realnumbers^{n+1}\) aperto.
+    Se \(\exists I \subseteq \realnumbers\) intervallo tale che
+    \(I \cartesianprod \realnumbers^n \subseteq \Omega\), se \(f\) è lipschitziana rispetto a \(y \in \realnumbers^n\) uniformemente
+    rispetto a \(x\in I\), allora \(\forall (x_0, y_0) \in I \cartesianprod \realnumbers \realnumbers^n\),
+    esiste un'unica soluzione al problema di Cauchy
+    \[
+                \begin{cases}
+            y' = f(x,y) \\
+            y(x_0) = y_0
+        \end{cases}
+    \]
+    su \(I\).
+\end{snippettheorem}
+
+Notiamo che \(f \in \mathcal C(\Omega; \realnumbers^n)\) non è sufficiente a garantire le ipotesi del teorema in grande.
+
+\begin{snippetexample}{}
+    Consideriamo \(y' = xy^3 = f(x,y)\), quindi \(f \in \mathcal C^1(\realnumbers^2)\),
+    ma \(f\) non è lipschitziana rispetto alla \(y\).
+    Abbiamo \(y=0\) che è la soluzione costante. Se \(y \neq 0\),
+    possiamo separare le variabili
+    \begin{align*}
+        \integral[y_0][y][
+            \frac{1}{t^3}
+        ][t]
+        &= \frac12(x^2 - x_0^2) \\
+        - \frac{1}{y^2} + \frac{1}{y_0^2} &= x^2 - x_0^2 \\
+        y &= \operatorname{sign}(y_0) \frac{1}{\sqrt{
+            \frac{1}{\sqrt{y_0^2}} + x_0^2 - x^2
+        }}
+    \end{align*}
+    Qui \(I = \realnumbers\) però le soluzioni hanno degli asintoti verticali e sono definite solo nell'intervallo
+    \((-\infty, \alpha)\) dove 
+    \[
+        \alpha = \sqrt{
+            \frac{1}{y_0^2} + x_0^2
+        }
+    \]
+    Queste succede perché \(y^3\) cresce troppo velocemente.
+\end{snippetexample}
+
+\begin{snippetexercise}{}
+    Consideriamo il problema \(P_{a,b}\)
+    \[
+        \begin{cases}
+            y' = x\arctan^{\frac13}(y^2 - y) \\
+            y(a) = b
+        \end{cases}
+    \]
+    \begin{enumerate}
+        \item Mostrare che \(P_{a,b}\) ha almeno una soluzione su \(\realnumbers\);
+        \item mostrare che \(P_{0,1}\) ha almeno 9 soluzioni;
+        \item discutere l'unicità per \(P_{a,1}\);
+        \item discutere l'unicità per \(P_{0,b}\);
+        \item discutere l'unicità per \(P_{1,b}\)
+    \end{enumerate}
+\end{snippetexercise}
+
+\pagebreak
+
+\begin{snippetsolution}{}
+    Sia \(f(x,y) = x\arctan^{\frac13}(y^2 - y)\).
+    \begin{enumerate}
+        \item Cominciamo notando che \(f \in \mathcal C(\realnumbers^2)\),
+        quindi la soluzione esiste localmente.
+        Abbiamo inoltre \(\arctan(y^2 - y) = 0\) se e solo se \(y=0,1\).
+        Per \(y \to 0\) e per \(y \to 1\), allora \(\arctan(y^2 - y)\) è lineare,
+        quindi \(f\) non soddisfa le ipotesi del teorema di esistenza e unicità locale.
+        Vedremo che \(f\) è sublineare, cioè \(\exists a,b \in I \fromto \realnumbers\) tale che
+        \[
+            |f(x,y)| \leq a(x)|y| + b(x), \quad \forall x \in I, \forall y \in \realnumbers
+        \]
+        allora la soluzione esiste su tutto \(I\). \\
+        \begin{minipage}[t]{0.4\textwidth}
+            \vspace{0pt}
+            In questo caso basta scegliere \(a(x) = 0\) e \(b(x) (\pi/2)^{1/3}|x|\).
+            Tutte le soluzioni non costante hanno punti stazionari sull'asse delle \(y\).
+            Il grafico indica la monotocità delle soluzioni.
+            Se il dato iniziale non sta sulle due rette, la \(f\) è lipschitziana,
+            quindi abbiamo esistenza e unicità locale.
+        \end{minipage}
+        \begin{minipage}[t]{0.6\textwidth}
+            \vspace{0pt}
+            \begin{center}
+                \begin{tikzpicture}[scale=0.75]
+                    \draw [thick, ->] (0,-2.5) -- (0,5.5);
+                    \draw [red, thick] (-4.5,0) -- (4.5,0);
+                    \draw [red, thick] (-4.5,1) -- (4.5,1);
+                    \draw [thick, domain=-2.1:2.1, samples=100] plot (\x, {(\x)^2 + 1});
+                    \draw [thick, domain=-2.5:2.5, samples=100] plot (\x, {1/(0.6*(\x)^2 + 1)});
+
+                    \node[above] at (3,1) {\large $y=1$};
+                    \node[below] at (3,0) {\large $y=0$};
+
+                    \node at (-3, 3.5) {\color{red} \Large $-$};
+                    \node at (3, 3.5) {\color{green!50!black} \Large $+$};
+
+                    \node at (-3, 0.5) {\color{green!50!black} \Large $+$};
+                    \node at (3, 0.5) {\color{red} \Large $-$};
+
+                    \node at (-3, -1.5) {\color{red} \Large $-$};
+                    \node at (3, -1.5) {\color{green!50!black} \Large $+$};
+                \end{tikzpicture}
+            \end{center}
+        \end{minipage}
+        \item Separando le variabili (dopo avere escluso le soluzioni costanti) otteniamo
+        \begin{align*}
+            \frac{x^2}2 &= \integral[1][y][\frac{1}{\sqrt[3]{\arctan(t^2 - t)}}][t] \\
+            x &= \pm \sqrt2 \sqrt{
+                \integral[1][y][\frac{1}{\sqrt[3]{\arctan(t^2 - t)}}][t]
+            }
+        \end{align*}
+        Abbiamo 9 possibilità:
+        \begin{center}
+            \begin{tikzpicture}[scale=0.8]
+                \foreach \i/\lfunc in {
+                    0/{pow(\x+0.5, 2) + 1},
+                    1/{1},
+                    2/{-pow(\x+0.5, 2) + 1}%
+                } {
+                    \foreach \j/\rfunc in {
+                        0/{pow(\x-0.5, 2) + 1},
+                        1/{1},
+                        2/{-pow(\x-0.5, 2) + 1}%
+                    } {
+                        \begin{scope}[shift={({\j*4.2}, {-\i*3.5})}]
+                            \draw[->, gray!80] (-1.8, 0) -- (1.8, 0) node[right, text=black] {$x$};
+                            \draw[->, gray!80] (0, -0.6) -- (0, 2.6) node[above, text=black] {$y$};
+                            \draw[red, thick, dashed] (-1.8, 1) -- (1.8, 1) node[right, text=black] {\footnotesize $1$};
+
+                            \draw[ultra thick, blue] (-0.5, 1) -- (0.5, 1);
+                            \draw[ultra thick, blue, domain=-1.7:-0.5, samples=30] plot (\x, {\lfunc});
+                            \draw[ultra thick, blue, domain=0.5:1.7, samples=30] plot (\x, {\rfunc});
+                        \end{scope}
+                    }
+                }
+            \end{tikzpicture}
+        \end{center}
+        L'integrale con \(y=0\), converge in quanto \(\arctan(t^2 - t) \sim -t\) per \(t \to 0\) e
+        \(\arctan(t^2 - t) \sim (t-1)\) e \(t \to 1\).
+        Questo implica che le soluzioni che passa da \((0,1)\) e va verso il basso tocca l'asse delle \(x\)
+        in un punto al finito, quindi c'è una saldatura con la soluzione costante.
+        Consideriamo la soluzione che parte da \((0,1)\) e va verso l'alto. Questa soluzione non può
+        avere un'asintoto orizzontale. Supponiamo per assurdo che \(l>1\) sia un tale asintotot.
+        Allora, per \(x \to +\infty\), abbiamo \(y \to l\).
+        Quindi \(y \to +\infty\) per \(x \to \infty\) e la soluzione all'infinito come una parabola.
+        \item Sicuramente, oltre alle soluzioni costante, abbiamo anche
+        \[
+            x = \pm \sqrt{2} \sqrt{
+                \integral[1][y][\frac{1}{\sqrt[3]{\arctan(t^2 - t)}}][t] + \frac{a^2}{2}
+            }
+        \]
+        \item Per \(b>1\), abbiamo unicità globale.
+        \item Infatti, le saldature possono avvenire solo nelle rette \(y=0\) e \(y=1\), ma le soluzioni con \(b>1\) non possono arrivarci.
+        Se \(b<1\), la soluzione è comunque unica su \(\realnumbers\).
+        Infatti, ad esempio per \(0 < b < 1\), una volta arrivato sull'asse \(x\),
+        deve per forza continuare con la soluzione costante.
+        Per \(b = 0\), l'unica soluzione è quella costante.
+        Il seguente ragionamento è scorretto: ``Per \(0<b<1\) il problema ha \(f\) lipschitziana in un intorno di \((0,b)\),
+        quindi per il teorema di esistenza e unicità locale la soluzione è unica''.
+        \item Sicuramente non c'è unicità
+        nel punto \(y=0\) e in un intorno verticale di \(y=1\), mentre altrove sì.
+        Gli estremi dell'intervallo verticale sono i punti di soluzione dell'equazione
+        \[
+            \integral[1][y][\frac{1}{\sqrt[3]{\arctan(t^2 - t)}}][t] = \frac12
+        \]
+        Per \(y=1\), l'integrale vale \(0\), per \(y \to \infty\)
+        l'integrale diverge a \(\infty\), la funzione intengranda è positiva per \(t>1\),
+        quindi l'iperbole è crescente.
+        Per il teorema di Darboux, esiste un'unica \(y\in (1, \infty)\) tale che l'integrale faccia \(\frac12\).
+    \end{enumerate}
+    %Abbiamo in conclusione il grafico qualitativo % 19 marzo
+    %\begin{center}
+    %    XX
+    %\end{center}
+\end{snippetsolution}
+
+In generale, se \(y'=f(x,y)\), \(f\) è definita in un insieme simmetrico rispetto all'asse \(y\) e se
+\(f(x,y) = -f(-x,y)\), allora se \(\varphi\) risolve l'equazione per \(x>0\), \(\varphi(|x|)\) risolve l'equazione per tutte le \(x\).
+
+\begin{snippetexample}{}
+    Consideriamo \(y'=f(x,y)\) con \(f \in \mathcal C^1(\realnumbers^2)\).
+    Supponiamo che esista una successione di soluzioni \(\varphi_n\) su \([0,1]\) tale che
+    \(\{\varphi_n\} \to \varphi\) per \(\liminf\) su \([0,1]\).
+    Dimostriamo che \(\varphi\) risolve l'equazione in \([0,1]\).
+    Dobbiamo mostrare che \(\varphi\) è derivabile e che \(\varphi'(x) = f(x,\varphi(x))\) per tutte le \(x\in[0,1]\).
+    Per il teorema di derivazione delle successioni, bisogna garantire la convergenza uniforme di \(\varphi_n'\)
+    \[
+        \varphi_n'(x) = f(x,\varphi_n(x)), \quad \forall x\in [0,1]
+    \]
+    La condizione \[
+        |\varphi_n'(x) - \varphi_m'(x)| = |f(x,\varphi_n(x)) - f(x,\varphi_m(x))| < \varepsilon
+    \]
+    per \(n,m\) sufficientemente grandi e per tutte le \(x\).
+    Questo è vero per l'uniforme continuità di \(f\).
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Consideriamo \(f_n(x) = e^{x^3 / n} + \operatorname{artanh}(nx) - \cos(nx) / n^2\).
+    Discutiamo la convergenza in \(\mathcal C^0([a,b]), \mathcal C^1([a,b]), \mathcal C^2([a,b])\),
+    al variare di \(a,b\) e in \(B((-\infty, -1))\).
+    Discutere anche la convergenza di \(\{f_n'\}\) in \(B((-\infty, -1))\).
+    Se \(I\) è compatto, \(\mathcal C^0(I)\) è uno spazio di Banach con la norma infinito.
+    \(B(I)\) con \(I\) intervallo qualunque è uno spazio di Banach con la stessa norma.
+    Sia \(I\) compatto, \(\mathcal C^1(I)\) è uno spazio di Banach con la norma \(||f|| = ||f'||_{\infty} + |f(x_0)|\).
+    In ognuno di questi spazi la convergenza è uniforme e quest'ultima implica la convergenza puntuale,
+    quindi il limite puntuale
+    \[
+        f(x) = \begin{cases}
+            2 & x > 0 \\
+            1 & x = 0 \\
+            0 & x < 0
+        \end{cases}
+    \]
+    Sicuramente se \(a<0<b\) la convergenza non è uniforme.
+    Consideriamo \([a,b]\) con \(0 \notin [a,b]\)
+    \[
+        \left|
+            \frac{\cos(nx)}{n^2}
+        \right| \leq \frac{1}{n^2}
+    \]
+    % TODO boh mai finito
+\end{snippetexample}
+
+\end{document}
