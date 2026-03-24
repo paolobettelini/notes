@@ -2621,7 +2621,7 @@ In generale, se \(y'=f(x,y)\), \(f\) è definita in un insieme simmetrico rispet
 \begin{snippetexample}{}
     Consideriamo \(y'=f(x,y)\) con \(f \in \mathcal C^1(\realnumbers^2)\).
     Supponiamo che esista una successione di soluzioni \(\varphi_n\) su \([0,1]\) tale che
-    \(\{\varphi_n\} \to \varphi\) per \(\liminf\) su \([0,1]\).
+    \(\{\varphi_n\} \to \varphi\) su \([0,1]\).
     Dimostriamo che \(\varphi\) risolve l'equazione in \([0,1]\).
     Dobbiamo mostrare che \(\varphi\) è derivabile e che \(\varphi'(x) = f(x,\varphi(x))\) per tutte le \(x\in[0,1]\).
     Per il teorema di derivazione delle successioni, bisogna garantire la convergenza uniforme di \(\varphi_n'\)
@@ -2661,5 +2661,311 @@ In generale, se \(y'=f(x,y)\), \(f\) è definita in un insieme simmetrico rispet
     \]
     % TODO boh mai finito
 \end{snippetexample}
+
+% TODO 23 marzo lezione
+
+\pagebreak
+
+\begin{snippetproof}{Teorema di esistenza e unicità locale}
+    L'ipotesi di lipschitzianità di \(f\) è soddisfatta
+    necessariamente solo sul cilindro \(I \cartesianprod J\)
+    dove \(J = \overline B_r(y_0)\)
+    e \(I = [x_0, x_0 + a]\).
+    Nel caso del teorema in grande, l'operatore di Volterra operava su \(\mathcal C^0(I, \realnumbers^n)\).
+    Invece, adesso, dobbiamo considerare \(\mathcal C^0(I, \overline B_r(y_0))\).
+    Questo nuovo spazio non è tuttavia uno spazio vettoriale,
+    quindi non è di Banach.
+    Inoltre, per poter applicare il teorema delle contrazioni ci serve un endo operatore:
+    se usiamo l'operatore di Volterra su una funzione continua nella bolla, il risultato potrebbe fuoriuscire
+    dalla bolla.
+    Per fortuna ci basta che lo spazio sia uno spazio metrico completo, non per forza di Banach.
+    Studiamo quindi il nostro spazio \(\mathcal C^0(I, \overline B_r(y_0))\).
+    Fra i suoi elementi abbiamo la funzione
+    \(\phi \equiv y_0\) costante.
+    Dalla definizione di \(\mathcal C^0(I, \overline B_r(y_0))\),
+    notiamo che relativamente alla norma uniforme, i suoi elementi distano
+    al più \(r\) dalla funzione \(\phi\).
+    Quindi, il nostro spazio è precisamente una bolla centrata su \(\phi\)
+    \[
+        \mathcal C^0(I, \overline B_r(y_0))
+        = \overline B_r^{\mathcal C^0(I, \realnumbers^n)}(\phi)
+    \]
+    Questa bolla è chiusa in \(\mathcal C^0(I, \realnumbers^n)\),
+    e un chiuso in uno spazio compatto, quindi è uno spazio metrico completo.
+    Abbiamo quindi risolto il primo problema.
+    Per quanto concerne l'operatore di Volterra,
+    dobbiamo verificare se porta questo spazio metrico completto in sè stesso.
+    Se \(||f(x_0, y|| \leq M)\), possiamo garantire solo che il grafico della soluzione
+    sta dentro il cono di 
+    ampiezza \(\arctan M\).
+    Se il cono esce dal cilindro lungo i bordi orizzontali, dobbiamo restringere l'intervallo \(I\).
+    Applicheremo il teorema
+    a un intervallo \(\tilde I \subseteq I\) da determinare, tale che l'operatore di volterra porti
+    \(\mathcal C^0(\tilde I, \overline B_r(y_0))\) in sè stesso.
+    Sia \(\varphi \in \mathcal C^0(\tilde I, \overline B_r(y_0))\), e applichiamo l'operatore di Volterra
+    \[
+        T(\varphi)(t) = y_0 + \integral[x_0][t][f(u, \varphi(u))][u]
+    \]
+    Imponiamo che questa funzione assuma valori in \(\overline B_r(y_0)\).
+    Calcoliamone quindi la norma e imponiamo che stia nella bolla
+    \begin{align*}
+        ||(T(\varphi))(t) - y_0|| &= \left|\left|\,
+            \integral[x_0][t][f(u, \varphi(u))][u]
+        \right|\right| \leq \integral[x_0][t][||f(u, \varphi(u))||][u]
+    \end{align*}
+    Sia allora \[
+        M = \max_{I \cartesianprod J} ||f(u, \varphi(u))||
+    \]
+    Allora abbiamo che
+    \begin{align*}
+        ||(T(\varphi))(t) - y_0|| &= M\integral[x_0][t][][u]
+        \leq M(t-x_0) \leq r \\
+        t-x_0 &\leq \frac rM
+    \end{align*}
+    Quindi basta scegliere
+    \[
+        \tilde I = \left[x_0, x_0 + \frac rM\right]
+    \]
+    La soluzione potrebbe esistere oltre questo intervallo, ma noi ci restringiamo a qui.
+    Con questa scelta, l'operatore di \(\tilde I\)
+    \[
+        T \colon \mathcal C^0(\tilde I, \overline B_r(y_0)) \fromto \mathcal C^0(\tilde I, \overline B_r(y_0))
+    \]
+    è un endo operatore e quindi per il teorema delle contrazioni ammette un unico punto fisso.
+\end{snippetproof}
+
+Il teorema in grande si basa sul teorema delle contrazioni.
+Per quest'ultimo, in particolare, dice che se \(x_0 \in X\)
+è un punto arbitrario, allora l'orbita di \(x_0\), \(T^n(x_0)\),
+converge all'unico punto fisso.
+In particolare, se prendiamo una qualunque \(\varphi \colon I \fromto \realnumbers^n\) continua,
+la sua orbita \(T^n(\varphi)\) converge all'unica soluzione del problma di Cauchy,
+e la convergenza è uniforme.
+
+\begin{snippetexample}{Operatore di Volterra}
+    Consideriamo per esempio
+    \[
+        \begin{cases}
+            y' = y \\
+            y(0) = 1
+        \end{cases}
+    \]
+    la cui unica soluzione è \(\varphi(x) = e^x\).
+    Abbiamo \(f(x,y) = y\), e
+    prendendo \(\varphi_1 \equiv 1\) possiamo iterare l'operatore di Volterra
+        \begin{align*}
+            \varphi_2 &= T\varphi_1 = 1 + \integral[0][x][][t] = 1 + x \\
+            \varphi_3 &= T\varphi_2 = 1 + \integral[0][x][1 + t][t] = 1 + x + \frac{x^2}{2}
+        \end{align*}
+    E in generale questa successione tende allo sviluppo di \(e^x\).
+    Se avessimo scelto una \(\varphi_0\) sarebbe comunque uscita una successione convergente ad \(e^x\),
+    ma non la serie di Maclaurin.
+\end{snippetexample}
+
+Spesso applichiamo il teorema in grande su intervalli non compatti, tipicamente aperti.
+Il caso classico è \(y' = a(x) + b(x) = f(x,y)\) con \(a,b \in \mathcal C(I)\)
+e di solito \(I\) aperto.
+Per applicare il teorema in grande su \(I \cartesianprod \realnumbers^n\),
+dobbiamo applicare agli intervalli compatti contenuti in \(I\).
+
+Per esempio per \(y' = \frac yx + \frac 1{x-3}\)
+abbiamo tre intervalli. Se il dato iniziale è \(y(\pi) = 27\), devo considerare l'intervallo
+\(I = (3, +\infty)\), che possiamo scomporre in intervalli compatti della forma \(I_{n \geq n_0} = \left[3 + \frac 1n, \pi + n\right]\),
+che sono annidati. Su tutti questi
+la soluzione esiste su tutti questi e coincidono e quindi la estendiamo a quello più grande.
+
+Se consideriamo una funzione \(\varphi \colon I \fromto \realnumbers\) e la successione delle iterate
+di \(\varphi\), questa converge uniformemente alla soluzione solo localmente (non su tutto \(I\)).
+
+In generale la condizione di lipschitzianità su tutta la striscia nel teorema in grande,
+è molto forte. In molti casi in cui questa non è soddisfatta, le cose vanno bene comunque.
+
+\begin{snippetexample}{}
+    Consideriamo
+    \(y' = f(x,y)\) con \(f\) continua e limitata, \(\Omega = \realnumbers^2\) ed
+    \(f \in \mathcal C^1(\realnumbers^2)\).
+    Vige esistenza e unicità locale perché \(f\)
+    è \(\mathcal C^1\) e quindi è localmente lipschitziana.
+    Sicuramente non abbiamo fenomeni di biforcazione.
+    Tuttavia, in un caso del genere la soluzione non può che non essere definita su tutto \(\realnumbers\),
+    cioè se avesse un asintoto verticale dovrebbe uscire dal cono, ma non è possibile (e inoltre una soluzione non può sparire nel nulla).
+    Tuttavia, ci manca l'ipotesi di lipschitzianità su tutto \(\realnumbers^2\),
+    e quindi non possiamo applicare il teorema di unicità ed esistenza globale.
+\end{snippetexample}
+
+\begin{snippettheorem}{}
+    Sia \(f \colon \Omega \fromto \realnumbers\) continua,
+    \((x_0, y_0) \in \Omega \supseteq I \cartesianprod \realnumbers\) e consideriamo il probelma di Cauchy
+    \[
+        \begin{cases}
+            y' = f(x,y) \\
+            y(x_0) = y_0
+        \end{cases}
+    \]
+    tale che \(\exists a,b \in \mathcal C(I, \realnumbers)\)
+    per cui \(|f(x,y)| \leq a(x)|y| + b(x)\)
+    per \((x,y) \in I \cartesianprod \realnumbers\) (cioè è sublineare).
+    Allora, esiste almeno una soluzione del problema di Cauchy in \(I\).
+\end{snippettheorem}
+
+In \(\realnumbers^n\) l'ipotesi diventa
+\(\exists a,b \in \mathcal(I, \realnumbers^n)\)
+tale che
+\[
+    ||f(x,y)|| \leq a(x)||y|| + b(x)
+\]
+
+Questa ipotesi è una sorta di lipschitzianità in grande, anche se non implica quest'ultima.
+Ci dice che quando \(y\) è grande, la \(f\) non può crescere troppo.
+
+Questa versione del teorema non parla di unicità.
+Se vogliamo anche l'unicità, possiamo aggiungere la condizione
+\(f \in \mathcal C^1(\Omega)\).
+Quindi questa condizione più la sublinearità implica esistenza e unicità in grande.
+
+\begin{snippetexample}{}
+    Consideriamo \(y' = \sin(y^2) = f(x,y)\).
+    Chiaramente \(f\) non è di Lipschitz rispetto a \(y\).
+    Infatti, \((\sin(y^2))' = 2y\cos(y^2)\).
+    Tuttavia, \(|f| \leq 1\), e quindi possiamo applicare la sublinearità
+    con \(a(x) = 0\) e \(b(x) = 1\).
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Consideriamo l'equazione del pennello di Peano
+    \(y' = \sqrt{|y|}\).
+    Chiaramente \(\sqrt{|y|}\) è uniformemente continua, ma non è lipschitziana
+    in un intorno di \(y=0\).
+    Togloiendo un intorno di \(y=0\), abbiamo esistenza e unicità locale.
+    Tuttavia, \(\sqrt{|y|} \leq |y| + 1\), quindi è sublineare e abbiamo esistenza in grande.
+\end{snippetexample}
+
+\begin{snippetexercise}{Studio qualitativo equazione differenziale}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+            \begin{tikzpicture}[scale=0.8]
+                \draw[->, thick] (-3.5, 0) -- (3.5, 0) node[right] {$x$};
+                \draw[->, thick] (0, -0.2) -- (0, 3.5) node[above] {$y$};
+                \node[below left] at (0,0) {$O$};
+                
+                \draw[red, very thick] (-3.5, 1) -- (3.5, 1) node[right, text=black] {$y=1$};
+                \node[below left] at (0,1) {$1$};
+                
+                \node[font=\Large] at (2, 2.2) {$+$};
+                \node[font=\Large] at (2, 0.4) {$+$};
+                \node[font=\Large] at (-2, 2.2) {$-$};
+                \node[font=\Large] at (-2, 0.4) {$-$};
+
+                \draw[blue, thick] (-2.5, 3) to[out=-60, in=180] (0, 1.6) to[out=0, in=240] (2.5, 3);
+                
+                \draw[blue, thick] (-2.8, 2.5) to[out=-60, in=180] (-1.2, 1);
+                \draw[blue, thick] (1.2, 1) to[out=0, in=240] (2.8, 2.5);
+                \draw[blue, thick] (-2.5, 1) to[out=0, in=180] (0, 0.2) to[out=0, in=180] (2.5, 1);
+                \draw[blue, thick] (-1.5, 1) to[out=0, in=180] (0, 0.6) to[out=0, in=180] (1.5, 1);
+            \end{tikzpicture}
+        \end{center}
+    \end{wrapfigure}
+    Consideriamo \(y' = x\sqrt{|\log y|}\) e studiamo qualitativamente l'andamento delle curve
+    integrali, con particolare attenzione all'origine.
+    Chiaramente consideriamo solo il primo e secondo quadrante.
+    L'unica soluzione costante è \(y=1\).
+    L'asse delle \(y\) è il luogo dei punti stazionari delle soluzioni non costanti.
+    Notiamo che \(f(-x, y) = -f(x,y)\), quindi le linee integrali
+    sono simmetriche rispetto all'asse delle \(y\).
+    Chiaramente la funzione non è \(\mathcal C^1\), quindi non possiamo applicare il teorema
+    di unicità globale. Potrebbe succedere che abbiamo delel saldature lungo la soluzione costante.
+    Consideriamo il dato iniziale  \((x_0, 1)\), oltre alla soluzione costante abbiamo la soluzione
+    \begin{align*}
+        \integral[1][y][\frac{1}{\sqrt{|\log t|}}][t] = \frac{x^2}{2} - \frac{x_0^2}{2}
+    \end{align*}
+    Possiamo anche trovare la soluzione esplicita (versione positiva ma c'è anche quella negativa)
+    \[
+        x = \sqrt{
+            x_0^2 + 2\integral[1][y][\frac{1}{\sqrt{|\log t|}}][t]
+        }
+    \]
+    La soluzione tocca la retta \(y=1\) siccome l'integrale
+    è improprio e converge grazie alla radice, abbiamo quindi delle saldature.
+    Se non avessimo avuto la radice, l'integrale sarebb divergente e non toccheremmo quindi la retta.
+    Consideriamo ora il dato iniziale \((0,1)\). Oltre alla soluzione costante
+    abbiamo anche
+    \[
+        x = \sqrt{
+            2\integral[1][y][\frac{1}{\sqrt{|\log t|}}][t]
+        }
+    \]
+    Se invece prendiamo il dato iniziale sopra la soluzione costante, \(x_0 > 1\) allora
+    abbiamo unicità globale.
+    Dobbiamo tuttavia verificare che la soluzione che sta sopra, non abbia un asintoto verticale.
+    Ma ciò è facile da mostrare per la sublinearità.
+    Verifichiamo la concavità delle soluzioni che stanno sopra \(y>1\). Abbiamo
+    \begin{align*}
+        y'' &= \sqrt{|\log y|} + x \frac{
+            1
+        }{
+            2\sqrt{\log y}
+        } \frac{y'}{y} \\
+        &= \sqrt{\log x} + \frac{x^2}{2y} > 0
+    \end{align*}
+    Quindi le soluzioni per \(y>1\) sono convesse.
+    Studiamo ora il caso \(0 < y < 1\).
+    Consideriamo la soluzione che si attesta nell'origine
+    per \(x \to 0\).
+    Essa esiste ed è
+    \[
+        \integral[0][y][\frac{1}{\sqrt{|\log t|}}][t] = \frac{x^2}{2}
+    \]
+    che è integrabile nell'origine.
+    Vogliamo capire come si comporta questa soluzione, che farà da discriminante.
+    Studiamo la soluzione calcolandone la derivata dell'inversa
+    \begin{align*}
+        x'(y) &= \frac{
+            \cancel2 \cdot \frac{1}{\sqrt{|\log y|}}
+        }{
+            \cancel2 \sqrt{
+                2\integral[0][y][\frac{1}{\sqrt{|\log t|}}][t]
+            }
+        } = \frac{
+            \frac{1}{\sqrt{|\log y|}}
+        }{
+            \sqrt{
+                2\integral[0][y][\frac{1}{\sqrt{|\log t|}}][t]
+            }
+        } = \sqrt{
+            \frac{
+                \frac{1}{|\log y|}
+            }{
+                2 \integral[0][y][\frac{1}{\sqrt{|\log t|}}][t]
+            }
+        }
+    \end{align*}
+    Calcoliamo il limite
+    \begin{align*}
+        \lim_{y\to 0}
+        \frac{
+            \frac{1}{-\log y}
+        }{
+            2 \integral[0][y][\frac{1}{\sqrt{|\log t|}}][t]
+        }
+        \overset{H}{=} \lim_{y\to 0}
+        \frac{
+            \frac{1}{\log^2(y)} \cdot \frac{1}{y}
+        }{
+            2 \frac{1}{\sqrt{- \log y}}
+        } = +\infty
+    \end{align*}
+    Quindi la derivata ha soluzione infinita, e l'inversa ha quindi derivata nulla.
+    Facendo la stessa per gli altri casi (l'inversa ha derivata zero) troviamo che le soluzioni rimanenti
+    si intersecano all'asse \(x\) in maniera perpendicolare, tagliandosi.
+    Il valore del limite della derivata per \(y\to 0\)
+    si potrebbe calcolare direttamente dall'equazione differenziale originale, ma non per la soluzione
+    che si attesta sull'origine (in questo caso ha una forma di indecisione \(\infty \cdot 0\)).
+    \wrapfill
+\end{snippetexercise}
+
+Se in un'equazione differenziale non compare la \(x\),
+che si dice autonoma, le soluzioni sono tutte una traslata dell'altra.
+
+% Parziale finisce qua 
 
 \end{document}
