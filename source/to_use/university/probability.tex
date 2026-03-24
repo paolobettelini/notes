@@ -2264,4 +2264,365 @@ in generale l'uguaglianza in distrubzione non implica quella quasi certa.
     e non è trascurabile.
 \end{snippetexample}
 
+Tuttavia vale il viceversa.
+Usiamo la notazione \(X =_\alpha Y\)
+per indicare che \(X\) è uguale a \(Y\) in legge.
+
+\begin{snippetproposition}{}
+    Consideriamo \((\Omega, \powerset(\Omega), \mathbb P)\)
+    spazio di probabilità discreto e \(X, Y \colon \Omega \fromto E \subseteq \realnumbers\)
+    variabili aleatorie discrete.
+    Allora, se \(X = Y\) quasi ovunque, \(X =_\alpha Y\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Abbiamo che \(\mathbb P(\Omega_0)=1\)
+    con \[
+        \Omega_0 = \{
+            \omega \in \Omega
+            \suchthat
+            X(\omega) = Y(\omega)    
+        \}
+    \]
+    che non è necessariamente il più piccolo.
+    Notiamo che \(\forall A \in \powerset(\Omega)\) vale
+    \begin{align*}
+        \mathbb P(A) &= \mathbb P(A \intersection \Omega_0)
+        + \mathbb P(A \intersection (\Omega \difference \Omega_0))
+        - \mathbb P(A \intersection \Omega_0)
+    \end{align*} % TODO CHECK
+    sfruttando questa osservazione dimostriamo che le leggi \(\mu_X\)
+    e \(\mu_Y\) sono uguali, cioè
+    \[
+        \mu_X(A) = \mu_Y(A), \quad \forall A \in \powerset(\Omega)
+    \]
+    Sia \(A \in \powerset(\Omega)\), allora sfruttando l'osservazione
+    \begin{align*}
+        \mu_X(A) &= \mathbb P(X \in A)
+        = \mathbb P\left(
+            \left\{
+                \omega \in \Omega \suchthat X(\omega) \in A
+            \right\} \intersection \Omega_0
+        \right) \\
+        &= \mathbb P\left(
+            \left\{
+                \omega \in \Omega \suchthat X(\omega) \in A
+            \right\}
+            \intersection \{
+                \omega \in \Omega \suchthat X(\omega) = Y(\omega)
+            \}
+        \right) \\
+        &= \mathbb P(Y \in A) = \mu_Y(A)
+    \end{align*}
+\end{snippetproof}
+
+\begin{snippetproposition}{}
+    Siano \((\Omega_1, \powerset(\Omega_1), \mathbb P_1), (\Omega_2, \powerset(\Omega_2), \mathbb P_2)\)
+    spazi di probabilità discreti e \(X \colon \Omega_1 \fromto E\),
+    \(Y \colon \Omega_2 \fromto E\) variabili aleatorie discrete con \(E \subseteq \realnumbers^n\)
+    discreto.
+    Sia \(f \colon E \fromto F\)
+    con \(F \subseteq \realnumbers^n\) discreto.
+    Allora,
+    \[
+        X =_\alpha Y \implies
+        f \circ X =_\alpha f \circ Y
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Innanzitutto notiamo che preso \(A \in \powerset(F)\),
+    vale che
+    \begin{align*}
+        \{
+            f(x) \in A
+        \}
+        &= \{
+            \omega \in \Omega_1 \suchthat f(X(\omega)) \in A    
+        \} \\
+        &= \{
+            \omega \in \Omega_1 \suchthat X(\omega) \in f^{-1}(A)
+        \} = \{X \in f^{-1}(A)\}
+    \end{align*}
+    Notiamo che \(f(X) \colon \Omega_1 \fromto F\) è una variabile aleatoria discreta,
+    e di conseguenza l'uguaglianza appena vista significa che l'evento
+    \(f(X)\) assume valore in \(A\) è uguale all'evento \(X\)
+    assume valore in \(f^{-1}(A)\).
+    Analogamente,
+    \[
+        \{f(Y) \in A \} = \{Y \in f^{-1}(A)\}
+    \]
+    Dobbiamo mostrare che \(\mu_Y = \mu_Y\)
+    implica che \(\mu_{f(X)} = \mu_{f(Y)}\)
+    dove \[
+        X \sim \mu_X, \quad
+        Y \sim \mu_Y, \quad
+        f(X) \sim \mu_{f(X)}, \quad
+        f(Y) \sim \mu_{f(Y)}
+    \]
+    Fissato \(A \in \powerset(F)\), vale che
+    \begin{align*}
+        \mu_{f(X)}(A) &=
+        \mathbb P(f(X) \in A) = \mathbb P(X \in f^{-1}(A)) \\
+        &= \mu_X(f^{-1}(A)) = \mu_Y(f^{-1}(A)) \\
+        &= \mathbb P(Y \in f^{-1}) = \mathbb P(f(Y) \in A)
+        = \mu_{f(Y)}
+    \end{align*}
+\end{snippetproof}
+
+\subsection{Vettori aleatori discreti}
+
+Sia \((\Omega, \powerset(\Omega), \mathbb P)\)
+uno spazio di probabilità discreto
+
+\begin{snippetdefinition}{Vettore aleatorio discreto}
+    Sia \(n \in \naturalnumbers\).
+    Un \emph{vettore aleatorio discreto}
+    una \(n\)-upla \((X_1, \cdots, X_n)\)
+    tale che
+    \(X_i \colon \Omega \fromto E_i\) variabile aleatoria discreta
+    con \(E_i \in \realnumbers^n\) discreto.
+\end{snippetdefinition}
+
+Notiamo subito che per un vettore aleatorio discreto
+può essere visto come una variabile aleatoria discreta \[
+    X \colon \Omega \fromto \prod_{i=1}^n E_i, \quad
+    X(\omega) = (X_1(\omega), \cdots, X_n(\omega))
+\]
+a cui possiamo associare una legge \(\mu_X\)
+su \(\powerset\left(\prod E_i\right)\)
+e una densità discreta
+\[
+    p_X \colon \prod_{i=1}^n E_i \fromto [0,1],
+    \quad
+    p_X(x_1, \cdots, x_n) = \mathbb P(X_1 = x_1, X_2 = x_2, \cdots, X_n = x_n)
+\]
+con \((x_1, \cdots, x_n) \in \prod E_i\).
+Ogni elementi di \(\powerset\left(\prod E_i\right)\)
+può essere scritto come unioni o intersezioni di elementi del tipo di
+\(\prod A_i\) con \(A_i \in \powerset(E_i)\), quindi vale
+\begin{align*}
+    \mu_X\left(
+        \prod_{i=1}^n A_i
+    \right)
+    &= \mathbb P\left(
+        X_1 \in A_1, X_2 \in A_2,
+        \cdots, X_n \in A_n
+    \right) = \mathbb P\left(
+        \bigcup_{i=1}^n \left\{X_i \in A_i\right\}
+    \right)
+\end{align*}
+Inoltre, preso \(k \in \{1, \cdots, n\}\)
+e \(i_1 < \cdots < i_k \in \{1, \cdots, n\}\),
+possiamo considerare i sotto-vettori aleatori
+\((X_{i_1}, X_{i_2}, \cdots, X_{i_k})\) e possiamo identificarlo
+con la variabile aleatoria discreta
+\[
+    X_I \colon \Omega \fromto \prod_{j=1}^k E_{i_j}
+\]
+dato da
+\[
+    X_i(\omega) = \left(
+        X_{i_1}(\omega),
+        X_{i_2}(\omega),
+        \cdots,
+        X_{i_k}(\omega)
+    \right), \quad \omega \in \Omega
+\]
+dove \(I=(i_1, \cdots, i_k)\).
+Ovviamente anche a questa variabile aleatoria discreta si associata una legge
+\[
+    \mu_X \colon \powerset\left(
+        \prod_{j=1}^k E_{i_j}
+    \right) \fromto [0,1]
+\]
+e anche qua notamo che
+\begin{align*}
+    p_I(x_{i_1}, \cdots, x_{i_k})
+    &= \mathbb P\left(
+        X_{i_1} = x_{i_1},
+        X_{i_2} = x_{i_2},
+        \cdots,
+        X_{i_k} = x_{i_k}
+    \right) \\
+    &= (x_{i_1}, \cdots, x_{i_k}) \in \prod_{j=1}^k E_{i_j}
+\end{align*}
+
+\begin{snippetdefinition}{Congiunta e marginali}
+    Siano \((X_1, \cdots, X_n)\)
+    vettore aleatorio discreto con \(X_i \colon \Omega \fromto E_i\)
+    variabile aleatoria discreta.
+    Chiamiamo \emph{legge congiunta} di \((X_1, \cdots, X_n)\)
+    la legge della variabile aleatoria discreta
+    \[
+        X = (X_1, \cdots, X_n) \colon \Omega \fromto
+        \prod_{i=1}^n E_i
+    \]
+    e la indichiamo con \(\mu_{X_1, \cdots, X_n}\).
+    Analogamente, chiamiamo \emph{densità congiunta}
+    del vettore \((X_1, \cdots, X_n)\)
+    la densità di \(X\) e la indichiamo con
+    \[
+        p_{X-1, \cdots, X_n}
+        \colon \prod_{i=1}^n E_i \fromto [0,1]
+    \]
+    Dato \(k \in \{1, \cdots, n\}\)
+    e \(i_1 < \cdots < i_k \in \{1, \cdots, n\}\)
+    e \(I = (i_1, \cdots, i_k)\) chiamiamo \emph{legge marginale}
+    di \((X_1, \cdots, X_n)\) rispetto \(I\) la legge della variabile aleatoria
+    discreta
+    \[
+        X_I = (X_{i_1}, X_{i_2}, \cdots, X_{i_k})
+        \colon \Omega \fromto \prod_{j=1}^k E_{i_j}
+    \]
+    e la indichiamo \(\mu_I\).
+    Allo stesso modo chiamiamo \emph{densità marginale}
+    di \((X_1, \cdots, X_n)\)
+    rispetto ad \(I\) la densità della variabile aleatoria discreta
+    \(X_i\) e la indichiamo con
+    \[
+        p_I \colon \prod_{j=1}^k E_{i_j} \fromto [0,1]
+    \]
+    In particolare chiamiamo \emph{marginali unidimensionali}
+    le leggi o densità del vettore
+    delle \(X_i\) con \(i \in \{1, \cdots, n\}\), cioè
+    \begin{align*}
+        p_i(X_i) &= \mathbb(X_i = x_i),
+        \quad x_i \in E_i, \forall i \in \{1, \cdots, n\} \\
+        \mu_i(A_i) &= \mathbb P(X_i \in A_i),
+        \quad A_i \in \powerset(E_i), \forall i \in \{1, \cdots, n\}
+    \end{align*}
+    che sono la densità massimale e la legge marginale.
+\end{snippetdefinition}
+
+\begin{snippetproposition}{}
+    Sia \((X_1, \cdots, X_n)\)
+    vettore aleatorio discreto con \(X_i \colon \Omega \fromto E_i \subseteq \realnumbers\).
+    discreto \(\forall i \in \{1, \cdots, n\}\).
+    Allora, la legge o densità congiunta determina univocamente
+    le leggi o densità marginali.
+    In particolare, \(\forall k \in \{1, \cdots, n\}, i_1 < \cdots < i_k \in \{1, \cdots, n\}\),
+    e \(I = (i_1, \cdots, i_k)\),
+    vale che
+    \begin{align*}
+        p_I(x_{i_1}, \cdots, x_{i_k})
+        &= \mathbb P(X_{i_1} = x_{i_1}, \cdots, X_{i_k} = x_{i_k}) \\
+        &= \sum_{\substack{x_j \in E_j \\ j \in \{1, \cdots, n\} \difference I}}
+        p_{x_1, \cdots, x_n} (x_1, x_{i_1}, \cdots, x_{i_k}, x_n)
+    \end{align*}
+    Nello sgtesso modo
+    \begin{align*}
+        \mu_I\left(\prod_{j=1}^k A_{i_j}\right)
+        &= \mathbb P(X_{i_1} \in A_{i_1}, \cdots, X_{i_k} \in A_{i_k}) \\
+        &= \mu_{X_1, \cdots, X_n}(
+            X_1 \in E_1, \cdots, X_{i_1} \in A_{i_1},
+            \cdots, X_{i_k} \in A_{i_k}, \cdots,
+            X_n \in E_n
+        ) \\
+        &= \mathbb P(X_1 \in E_1, \cdots, X_{i_1} \in A_{i_1}, \cdots, X_{i_k} \in A_{i_k}, \cdots, X_n \in E_n)
+    \end{align*}
+\end{snippetproposition}
+
+Cioè stiamo sommando su tutti gli elementi \(E_j\) con \(j \in I\).
+Per \(j \notin I\) consideriamo l'evneto \(\{x_j \in E_j\} = \Omega\).
+
+\begin{snippetproof}{}
+    La densità determina univocamente la legge, quindi basta provare il risultato solo per quest'ultima.
+    Fissiamo per comodità \(k \in \{1, \cdots, n\}\)
+    e \(i_1 = 1, \cdots, i_k = k\).
+    Quindi,
+    \begin{DispWithArrows*}
+        P_{1, \cdots, k}(x_1, \cdots, x_k)
+        &= \mathbb P(X_1 = x_1, \cdots, X_k = x_k) \\
+        &= \mathbb P(X_1 = x_1, \cdots, X_k = x_k, \Omega) \Arrow{\(\Omega = \{X_i \in E_i\}\)} \\
+        &= \mathbb P(X_1 = x_1, \cdots, X_k = x_k, X_{k+1} \in E_{k+1}, \cdots, X_{n} \in E_n) \\
+        &= \mathbb P\left(X_1 = x_1, \cdots, X_k = x_k,
+            X_{k+1} \in \bigcup_{x \in E_{k+1}} \{x\},
+            \cdots,
+            X_n \in \bigcup_{x \in E_n} \{x\}
+        \right) \Arrow{\((\ast)\)} \\
+        &= \sum_{x_{k+1} \in E_{k+1}} \cdots
+        \sum_{x_n \in E_n}
+        \mathbb P\left(
+            X_1 = x_1, \cdots, X_n = x_n
+        \right) \\
+        &= \sum_{x_{k+1} \in E_{k+1}} \cdots \sum_{x_n \in E_n}
+        p_{X_1, \cdots, X_n} (x_1, \cdots, x_n)
+    \end{DispWithArrows*}
+    Dove \((\ast)\) è il fato che
+    \[
+        \{(x_1, \cdots, x_n)\}
+        \intersection
+        \{(y_1, \cdots, x_n)\} = \emptyset
+    \]
+    se \(\exists j \in \{1, \cdots, n\}\)
+    tale che \(x_j \neq y_j\).
+\end{snippetproof}
+
+L'idea è quella di ignorare le componenti che ci interessano rimpiazzandole con
+\(E_i\), che è l'evento certo, in quanto la probabilità che un elemento stia nel suo insieme
+di definizione è \(1\).
+
+\begin{snippetexample}{}
+    Consideriamo il vettore aleatorio
+    \((X,Y)\)
+    con \(X \colon \Omega \fromto E_1 \subseteq \realnumbers\)
+    e \(Y \colon \Omega \fromto E_2 \subseteq \realnumbers\)
+    variabili aleatorie discrete.
+    Indichiamo con \(\mu_{X,Y}\) la legge congiunta e con \(p_{X,Y}\)
+    la densità congiunta. Allora
+    \begin{align*}
+        p_X(x) &= \sum_{y\in E_1} p_{X,Y}(x,y) \\
+        p_Y(y) &= \sum_{x\in E_2} p_{X,Y}(x,y)
+    \end{align*}
+    cioè la densità marginale di \(X\) e quella di \(Y\).
+    Inoltre, presi \(A_1 \in \powerset(E_1), A_2 \in \powerset(E_2)\),
+    vale
+    \begin{align*}
+        \mu_{X,Y}(A_1 \cartesianprod A_2)
+        &= \mathbb P(X \in A_1, Y \in A_2)
+        = \sum_{x \in A_1}
+        \sum_{y \in A_2} p_{X,Y}(x,y)
+    \end{align*}
+    Da questo deduciamo che
+    \begin{align*}
+        \mu_X(A_1) &= \mu_{X,Y}(A_1 \cartesianprod E_2)
+        = \sum_{x \in A_1}
+        \sum_{y \in E_2}
+        p_{X,Y}(x,a) \\
+        &= \sum_{x \in A_1} p_{X}(x)
+    \end{align*}
+    Allo stesso modo
+    \[
+        \mu_Y(A_2) = \sum_{y \in A_2} \sum_{x \in E_2} p_{X,Y}(x,y)
+        = \sum_{y \in A_2} p_Y(y)
+    \]
+    che è coerente.
+    Notiamo anche che se per \(x \in E_1\) vale \(p_X(x) = 0\),
+    allora \(p_{X,Y}(x,y) = 0\) per tutte le \(y \in E_2\).
+    Analogamente se per \(y \in E_2\) vale \(p_Y(y) = 0\),
+    allora \(p_{X,Y}(x,y) = 0\) per tutte le \(x \in E_1\).
+    Infatti,
+    \begin{align*}
+        0 &= p_X(x) = \sum_{y\in E_2} p_{X,Y}(x,y)
+        \implies p_{X,Y}(x,y) = 0
+    \end{align*}
+    per tutte le \(y \in E_2\).
+    Questo vuol dire che se la variabile aleatoria \(X\)
+    assume il valore \(x\) con probabilità \(0\),
+    allora il vettore \((X,Y)\) assume
+    valore \((x,y)\) al variare di \(y \in E_2\) con
+    probabilità \(0\), cioè
+    \[
+        \mathbb P((x,y) \in \{x\} \cartesianprod E_2) = 0
+    \]
+    In pratica stiamo togliendo un asse, sul quale non prenderà valore.
+    Una sorta di viceversa non vale, cioè se per \((x,y) \in E_1 \cartesianprod E_2\)
+    vale \(p_{X,Y}(x,y) = 0\), allora non è vero che
+    \(p_X(x) = 0 \land p_Y(y) = 0\).
+\end{snippetexample}
+
+In generale, le leggi/densità marginali non determinano univocamente
+la congiunta.
+
 \end{document}

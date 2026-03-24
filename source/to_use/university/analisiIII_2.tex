@@ -20,7 +20,7 @@
 % Cancel color
 \renewcommand{\CancelColor}{\color{red}}
 
-\title{Probability}
+\title{Analisi III}
 \author{Paolo Bettelini}
 \date{}
 
@@ -2530,7 +2530,7 @@ Notiamo che \(f \in \mathcal C(\Omega; \realnumbers^n)\) non è sufficiente a ga
                     \draw [thick, domain=-2.5:2.5, samples=100] plot (\x, {1/(0.6*(\x)^2 + 1)});
 
                     \node[above] at (3,1) {\large $y=1$};
-                    \node[below] at (3,0) {\large $y=0$};
+                    \node[above] at (3,0) {\large $y=0$};
 
                     \node at (-3, 3.5) {\color{red} \Large $-$};
                     \node at (3, 3.5) {\color{green!50!black} \Large $+$};
@@ -2967,5 +2967,247 @@ Se in un'equazione differenziale non compare la \(x\),
 che si dice autonoma, le soluzioni sono tutte una traslata dell'altra.
 
 % Parziale finisce qua 
+
+\pagebreak
+
+\section{Tempo - Foglio 3}
+
+\begin{snippetsolution}{Esercizio 1}
+    Prendiamo \(x \neq 0\) e \(y \neq -\frac{x}{2}\).
+    L'equazione è esatta ed è equivalente a
+    \begin{align*}
+        (x^2 + 2xy)\,\text{d}y + (2xy + y^2 + 1)\,\text{d}x = 0
+    \end{align*}
+    Il potenziale è \(F(x,y) = x^2y + xy^2 + x + C\).
+    Allora, esplicitando per \(y\) in \(F(x,y) = 0\) troviamo
+    \[
+        y = \frac{
+            -x^2 \pm \sqrt{x^4 - 4x^2 - 4xC}
+        }{2x}
+    \]
+\end{snippetsolution}
+
+\begin{snippetsolution}{Esercizio 2}
+    Prendiamo \(y \neq \sqrt[3]{x}\).
+    L'equazione è esatta ed è equivalente a
+    \[
+        (y^3 - x)\,\text{d}y - y\,\text{d}x = 0
+    \]
+    Il potenziale è \(F(x,y) = \frac{y^4}{4} - xy + C = 0\).
+    Quindi la soluzione è data da
+    \[
+        \frac{y^4}{4} - xy + C = 0 
+    \]
+\end{snippetsolution}
+
+\begin{snippetsolution}{Esercizio 3}
+    La soluzione costante è \(y=0\). Sia \(y \neq 0\).
+    L'equazione è separabile
+    \begin{DispWithArrows*}
+        2x^4 + C &= \integral[0][x][8t^3][t] \Arrow{\(u = \sqrt{t}\)} \\
+        2x^4 + C &= 2\log(\sqrt{y} + 1) + \tilde C \\
+        2\log(\sqrt{y} + 1) = 2x^4 + C
+    \end{DispWithArrows*}
+    Usando la condizione iniziale possiamo trovare la costante
+    \begin{align*}
+        \sqrt{y} &= e^{x^4 + D} - 1 = Ke^{x^4} - 1 \\
+        y &= (Ke^{x^4} -1)^2 \geq 0 \\
+        y(\sqrt[4]{3}) &= (Ke^3 - 1)^2 = 4 \\
+        Ke^3 - 1 &= {\color{red}+}2 \\
+        K &= \frac{3}{e^3}
+    \end{align*}
+    Quindi la soluzione finale è
+    \[
+        \varphi(x) = \left(
+            3e^{x^4-3}-1
+        \right)^2
+    \]
+    La soluzione interseca l'asse \(y\) e abbiamo infinite soluzioni
+    con saldature.
+    TODO
+\end{snippetsolution}
+
+\pagebreak
+
+\begin{snippetsolution}{Esercizio 4}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+            \begin{tikzpicture}[
+                >=stealth,
+                scale=0.5,
+                x=1.2cm,
+                y=0.9cm,
+                declare function={
+                    curve_top(\x) = rad(270 - atan(-0.5*\x*\x));
+                    curve_mid(\x) = rad(90 - atan(-0.5*\x*\x));
+                    blue_curve(\x) = rad(-90 - atan(-0.64209 - 0.5*\x*\x));
+                    curve_deep(\x) = rad(-90 - atan(0.45766 - 0.5*\x*\x));
+                    curve_bot(\x) = rad(-270 - atan(-0.5*\x*\x));
+                }
+            ]
+
+            \draw[->, thick] (-4.2, 0) -- (4.2, 0) node[right] {$x$};
+            \draw[->, thick] (0, -4.8) -- (0, 4.8) node[above] {$y$};
+
+            \draw[very thick, red] (-4, -pi) -- (4, -pi) node[right] {$y=-\pi$};
+            \draw[very thick, red] (-4, 0) -- (4, 0) node[below left] {$y=0$};
+            \draw[very thick, red] (-4, pi) -- (4, pi) node[right] {$y=\pi$};
+
+            \draw[very thick, gray!80, samples=100, domain=-4:4] plot (\x, {curve_top(\x)});
+            \draw[very thick, gray!80, samples=100, domain=-4:4] plot (\x, {curve_mid(\x)});
+            \draw[very thick, gray!80, samples=100, domain=-4:4] plot (\x, {curve_deep(\x)});
+            \draw[very thick, gray!80, samples=100, domain=-4:4] plot (\x, {curve_bot(\x)});
+
+            \draw[very thick, blue, samples=100, domain=-4:4] plot (\x, {blue_curve(\x)});
+
+            \end{tikzpicture}
+        \end{center}
+    \end{wrapfigure}
+    Sia \(f(x,y) = x\sin^2(y)\).
+    Abbiamo esistenza e unicità locale in quanto \(f(x,y)\) è lipschitz rispetto a \(y\).
+    Siccome
+    \[
+        |f(x,y)| = |x\sin^2(y)| \leq |x|\cdot |y| = \beta(x) + \alpha(x)|y|
+    \]
+    quindi la soluzione è prolungabile su tutto \(\realnumbers\).
+    Le soluzioni sono funzioni pari perché \(f(-x, y) = -f(x,y)\).
+    Le soluzioni costanti sono \(y=k\pi\) con \(k\) intero.
+    Se \(x \geq 0\), allora \(y'\geq 0\) e quindi a destra le soluzioni sono crescenti,
+    mentre a sinistra decrescenti per \(x < 0\).
+    La derivata seconda è data da
+    \[
+        y'' = \sin^2(y) + 2x\sin(y)\cos(y)\cdot y'
+    \]
+    e nel punto iniziale \(0\) ha valore strettamente positivo.
+    La funzione deve crescere ma non può intersecare la soluzione costante.
+    Quindi dobbiamo studiare il valore di questo asintoto orizzontale (solo a destra perché tanto è pari).
+    Studiamola in forma integrale per \(x \to \infty\)
+    \begin{align*}
+        \integral[-1][y(x)][\frac{1}{\sin^2(t)}][t] = \integral[0][x][t][t] = \frac{x^2}{x} \to \infty
+    \end{align*}
+    Sia \(L\geq -1\) l'altezza del nostro asintoto.
+    Dobbiamo quindi risolvere
+    \[
+        \integral[-1][L][\frac{1}{\sin^2(t)}][t] = \infty
+    \]
+    quindi questo diverge per \(L=0\).
+    In generale, controlliamo se la soluzione è integrabile su tutto \(\realnumbers\). Abbiamo
+    \begin{align*}
+        \integral[-1][y(x)][\frac{1}{\sin^2(t)}][t] = \frac{x^2}{2}
+    \end{align*}
+    Con \(x \geq 0\) studiamo l'asintotico
+    \begin{align*}
+        x &= \sqrt{
+            2 \integral[-1][y(x)][\frac{1}{\sin^2(t)}][t]
+        } \sim % asymptotic todo
+        \underbrace{
+            \sqrt{
+                2\left(
+                    -\frac{1}{y(x)} - 1
+                \right)
+            }
+        }_{\geq 0}
+    \end{align*}
+    Ma quindi
+    \[
+        2\left(-\frac{1}{y(x)} - 1\right)\sim x^2
+    \]
+    da cui deduciamo che la nostra funzione si comporta come
+    \[
+        \varphi(x) \sim - \frac{2}{x^2 + 2}
+    \]
+    \wrapfill
+\end{snippetsolution}
+
+\pagebreak
+
+\begin{snippetsolution}{Esercizio 6}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    width=10cm,
+                    scale=0.65,
+                    height=8cm,
+                    xmin=-3, xmax=3,
+                    ymin=-3, ymax=3,
+                    axis lines=middle,
+                    xlabel=$x$,
+                    %ylabel=$y$,
+                    samples=100,
+                    clip=true
+                ]
+
+                \addplot[red, thick, domain=-3:3] {1};
+                \addplot[red, thick, domain=-3:3] {-1};
+
+                \addplot[blue, thick, domain=-3:1] {1 + exp(2*x)};
+
+                \addplot[green!70!black, thick, domain=-3:3] {-tanh(2*x)};
+
+                \addplot[orange, thick, domain=-1:3] {-1 - exp(-2*x)};
+
+                \fill[black] (axis cs:0, 2) circle (2pt) node[right] {$\alpha=2$};
+                \fill[black] (axis cs:0, 0) circle (2pt) node[above right] {$\alpha=0$};
+                \fill[black] (axis cs:0, -2) circle (2pt) node[right] {$\alpha=-2$};
+
+                \node[red, above] at (axis cs:-2, 1) {$y=1$};
+                \node[red, below] at (axis cs:-2, -1) {$y=-1$};
+
+                \end{axis}
+            \end{tikzpicture}
+            \vspace{-1cm}
+        \end{center}
+    \end{wrapfigure}
+    Le soluzioni costanti sono \(y = \pm 1\).
+    La derivata è non-negativa se e solo se \(|y|\geq 1|\),
+    quindi le soluzioni crescenti nella banda inferiore e superiore.
+    Nella banda centrale la soluzione è decrescente per \(y>0\) e decrescente per \(y \leq 0\).
+    La derivata seconda è data da \(y'' = 8y^7y'\).
+    Sappiamo che \(\varphi_0\) è limitata perché non si può intersecare con le soluzioni costanti.
+    Esistono quindi asintoti orizontali, che possiamo calcolare con il limite.
+    A destra abbiamo
+    \[
+        \integral[0][L_r][\frac{1}{t^2 - 1}][t] = \integral[0][x][][t] = x \to +\infty
+    \]
+    e l'integrale diverge per \(L_r = -1\) quindi \(y = -1\) è l'asintoto a destra.
+    Analogamente per \(y \to -\infty\) troviamo l'asintoto \(y = +1\).
+    Se invece \(\alpha > 1\), abbiamo
+    \[
+        \integral[\alpha][y(x)][\frac{1}{t^8 - 1}][t] = x
+    \]
+    A destra per \(x \to \infty\), la funzione \(y(x) \to L>1\),
+    mentre l'integrale diverge a \(+\infty\).
+    Abbiamo quindi un asintoto verticale, per cui \(y(x) \to +\infty\)
+    per \(x \to x_0\) che è l'asintoto verticale \(x = x_0\).
+    Il valore è precisamente
+    \[
+        x_0 = \integral[\alpha][\infty][\frac{1}{t^8 - 1}][t]
+    \]
+    Invece, verso sinistra, abbiamo un asintoto orizzontale \(y=1\).
+    Il caso della banda inferiore è completamente speculare.\\
+    Sia ora \((a,b)\) l'intervallo di definizione di \(\varphi_2\),
+    ci interessa studiare l'integrabilità in un intorno
+    sinistro di \(b\), cioè vicino all'asintoto
+    \[
+        x = b = \integral[2][\infty][\frac{1}{t^8 - 1}][t]
+    \]
+    Facciamo lo studio asintotico
+    \[
+        x = \integral[2][y(x)][\frac{1}{t^8 - 1}][t]
+        \sim \integral[2][y(x)][\frac{1}{t^8}][t]
+        = - \frac{1}{7y^7} + \frac 1N
+    \]
+    Da cui ricaviamo
+    \[
+        y \sim \sqrt[7]{
+            -\frac{N}{Nx-1}
+        } \sim \frac{D}{
+            (x-x_0)^{\frac17}
+        }
+    \]
+    che è integrabile in un intorno sinistro di \(x_0\).
+    \wrapfill
+\end{snippetsolution}
 
 \end{document}
