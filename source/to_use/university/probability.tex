@@ -479,11 +479,11 @@ Quindi se \(\mathbb P(B) = 0\) allora l'equazione ha infinite soluzioni.
 
 Se \(B\) condiziona negativamente \(A\) allora condiziona positivamente \(\Omega \difference A\).
 
-\begin{snippetproposition}{name}
+\begin{snippetproposition}{}
     La funzione \(\mathbb P(-|B)\) definisce una misura di probabilità su \((\Omega, \powerset(\Omega))\).
 \end{snippetproposition}
 
-\begin{snippetproof}{name}
+\begin{snippetproof}{}
     \begin{enumerate}
         \item \[
             \mathbb P(\Omega | B) = \frac{
@@ -2624,5 +2624,323 @@ di definizione è \(1\).
 
 In generale, le leggi/densità marginali non determinano univocamente
 la congiunta.
+
+\begin{snippetexample}{Controesempio}
+    Consideriamo un urna con \(n\) palline numerate da \(1\) a \(n\).
+    Facciamo due estrazioni.
+    Indhiciamo con una variabile aleatoria \(X_1 \colon \Omega \fromto \{1, \cdots, n\}\)
+    il risultato della prima estrazione e \(X_2 \colon \Omega \fromto \{1, \cdots, n\}\)
+    quello della seconda, dove \((\Omega, \powerset(\Omega), \mathbb P)\)
+    è uno spazio di probabilità generico.
+    In particolare, il vettore \((X_1, X_2) \colon \Omega \fromto \{1, \cdots, n\}^2\)
+    rappresenta il risultato dell'esperimento.
+    Dividiamo in due casi:
+    \begin{enumerate}
+        \item \emph{estrazioni senza reimmissione:}
+        calcoliamo la densità congiunta di \((X_1, X_2)\)
+        \begin{align*}
+            p_{X_1, X_2}(i, j) = \mathbb P(X_1 = i, X_2 = j) = \begin{cases}
+                0 & i = j \\
+                \frac{1}{n(n-1)} & i \neq j
+            \end{cases}
+        \end{align*}
+        calcoliamo le marginali
+        \begin{align*}
+            p_1(i) &= \sum_{j=1}^n p_{X_1, X_2}(i,j)
+            = \sum_{\substack{j=1 \\ j \neq i}}^n \frac{1}{n(n-1)} =
+            \frac{1}{n\cancel{(n-1)}}\cancel{(n-1)} = \frac 1n \\
+            p_2(j) &= \sum_{i=1}^n p_{X_1, X_2}(i,j) = \frac 1n
+        \end{align*}
+        Se \(i = j\), allora la congiunta è nulla ma nel marginali sono \(\frac 1n\).
+        Inoltre \(p_1(i), p_2(i) > 0, \forall i \in \{1, \cdots, n\}\).
+        Quindi \(\{1, \cdots, n\}\) è il supporto delle leggi di \(X_1\) e \(X_2\)
+        ma \(\{1, \cdots, n\}^2\) non è il supporto del vettore
+        \((X_1, X_2)\), infatti il suo supporto è \[
+            S = \{(i, s) \in \{1, \cdots, n\}^2 \suchthat i \neq s\}
+        \]
+        Quindi non è detto che il supporto del vettore
+        sia il prodoto cartesiano dei singoli supporti.
+        \item \emph{estrazioni con reimmissione:}
+        calcoliamo la densità congiunta di \((X_1, X_2)\)
+        \begin{align*}
+            p_{X_1, X_2}(i, j) = \mathbb P(X_1 = i, X_2 = j) = \frac{1}{n^2}
+        \end{align*}
+        calcoliamo le marginali
+        \begin{align*}
+            p_1(i) &= \sum_{j=1}^n p_{X_1, X_2}(i,j)
+            = \frac{1}{n} \\
+            p_2(j) &= \sum_{j=1}^n p_{X_1, X_2}(i,j)
+            = \frac{1}{n}
+        \end{align*}
+        Abbiamo trovato il controesempio: abbiamo le stesse marginali ma congiunta diverse.
+        Notiamo che in questo caso la congiunta è il prodotto delle marginali (anche il supporto
+        è il prodotto cartesiano dei supporti). In particolare,
+        \begin{align*}
+            p_{X_1, X_2}(i,j) = \mathbb P(\{X_1 = 1\} \intersection \{X_2 = 2\})
+            = p_1(i)p_2(j) = \mathbb P(X_1 = i) \mathbb P(X_2 = j)
+        \end{align*}
+        Questo ci suggerisce il concetto di indipendenza fra variabili aleatorie discrete.
+    \end{enumerate}
+\end{snippetexample}
+
+\subsection{Indipendenza di variabili aleatorie discrete}
+
+Fissiamo \((\Omega, \powerset(\Omega), \mathbb P)\)
+spazio di probabilità discreto.
+
+\begin{snippetdefinition}{Indipendenza di variabili aleatorie discrete}
+    Siano \(X_1, \cdots, X_n\) con \(n \in \naturalnumbers\)
+    variabili aleatorie discrete \(X_i \colon \Omega \fromto E_i \subseteq \realnumbers\)
+    discreto per \(i \in \{1, \cdots, n\}\). Diciamo che queste sono indipendenti se
+    \[
+        \mathbb P(X_1 \in A_1, \cdots, X_n \in A_n)
+        = \prod_{i=1}^n \mathbb P(A_i \in A_i), \quad
+        \forall A_i \in \powerset(E_i), i \in \{1, \cdots, n\}
+    \]
+\end{snippetdefinition}
+
+Negli eventi indipendenti abbiamo considerato tutte le possibili catene, mentre qui no.
+Quell'idea è nasconsta nel fatto che stiamo dando la definizione per ogni \(A_i\).
+Posso prendere \(A_i = E_i\) per annullare un evento e quindi averlo sulle singole famiglie.
+
+Preso \(k \in \{1, \cdots, n\}\) e \(i_1 < \cdots < i_k \in \{1, \cdots, n\}\)
+allora anche \(X_{i_1}, \cdots, X_{i_k}\) sono variabili discrete indipendenti.
+Infatti basta prendere la definizione appena data con \(A_j = E_j\)
+per ogni \(j \notin \{i_1, \cdots, i_k\}\).
+
+Infatti,
+\begin{align*}
+    \mathbb P\left(
+        \bigcap_{v = 1}^k \left\{X_{i_v} \in A_{i_v}\right\}
+    \right)
+    &= \mathbb P \left(
+        \bigcap_{v = 1}^k \left\{X_{i_v} \in A_{i_v}\right\} \intersection \Omega
+    \right) \\
+    &= \mathbb P \left(
+        \left(
+            \bigcap_{v=1}^k \{X_{i_v} \in A_{i_v}\}
+        \right)
+        \intersection
+        \left(
+            \bigcap_{j \notin \{i_1, \cdots, i_k\}} \{X_j \in E_j\}
+        \right)
+    \right) \\
+    &= \prod_{v=1}^k \mathbb P(X_{i_v} \in A_{i_v})
+\end{align*}
+Questo fato ci dice che gli eventi
+\(\{X_1 \in A_1\}, \cdots, \{X_n \in A_n\}\)
+soddisfano la definizione di eventi indipendenti per ogni scelta
+degli \(A_i \in \powerset(E_i)\).
+Intuitiamente questa definizione di indipendenza ci dice che
+avere informazioni su una o più variabili alatorie discrete non condiziona la probabilità
+di assumere un certo valore delle altre variabili.
+
+Vediamolo nel caso \(n=2\), \(i \in E_1\) e \(j \in E_2\)
+\begin{align*}
+    \mathbb P(X_2 = j | X_1 = i) &= \frac{
+        \mathbb P(\{X_2 = j\} \intersection \{X_1 = i\})
+    }{
+        \mathbb P(X_i = i)
+    } \\
+    &= \frac{
+        \mathbb P(X_2 = j) \cancel{\mathbb P(X_1 = i)}
+    }{
+        \cancel{\mathbb P(X_1 = i)}
+    }
+\end{align*}
+
+\begin{snippetproposition}{}
+    Siano \((X_1, \cdots, X_n)\) variabili aleatorie discrete
+    \(X_1 \colon \Omega \fromto E_i \subseteq \realnumbers^n\) discreto con
+    \(i \in \{1, \cdots, n\}\) e \(n \in \naturalnumbers\).
+    Siano \[
+        p_{X_1, \cdots, X_n} \colon \prod_{i=1}^n E_i \fromto [0,1]
+    \]
+    la densità congiunta del vettore \((X_1, \cdots, X_n)\)
+    e \(p_i\) densità marginale di \(X_i\) con \(i \in \{1, \cdots, n\}\).
+    Allora, \(X_1, \cdots, X_n\) indipendenti se e solo se
+    \[
+        p_{X_1, \cdots, X_n}(x_1, \cdots, X_n)
+        = \prod_{i=1}^n p_i(x_i), \quad \forall (x_1, \cdots, x_n) \in \prod_{i=1}^n E_i
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    \begin{iffproof}
+        \item Supponiamo che \(X_1, \cdots, X_n\) siano indipendenti.
+        Sia \((x_1, \cdots, x_n) \in \prod E_i\). Allora,
+        \begin{align*}
+            p_{X_1, \cdots, X_n}(x_1, \cdots, x_n)
+            &= \mathbb P(X_1 = x_1, \cdots, X_n = x_n) \\
+            &= \prod_{i=1}^n \mathbb P(X_i = x_i)
+            = \prod_{i=1}^n p_i(x_i)
+        \end{align*}
+        \item Siano \(A_i \in \powerset(E_1), \cdots, A_n \in \powerset(E_n)\).
+        Abbiamo che \begin{align*}
+            \mathbb P(X_1 \in A_1, \cdots, X_n \in A_n)
+            &= \sum_{x_1 \in A_1}
+            \cdots
+            \sum_{x_n \in A_n}
+            p_{X_1, \cdots, X_n}(x_1, \cdots, x_n) \\
+            &= \sum_{x_1 \in A_1} p_1(x_1) \cdots \sum_{x_n \in A_n} p_n(x_n) \\
+            &= \mathbb P(X_1 \in A_1) \cdots \mathbb P(X_n \in A_n)
+            = \prod_{i=1}^n \mathbb P(X_i \in A_i)
+        \end{align*}
+    \end{iffproof}
+\end{snippetproof}
+
+\begin{snippetproposition}{}
+    Siano \(Y,X \colon \Omega \fromto E \subseteq \realnumbers\)
+    discrete con densità congiunta
+    \(p_{X,Y} \colon E \cartesianprod E \fromto [0,1]\).
+    Supponiamo che \(\exists \alpha, \beta \colon E \fromto \realnumbers^+\)
+    tale che
+    \[
+        p_{X,Y}(x,y) = \alpha(x)\beta(y), \quad \forall x,y \in E
+    \]
+    Allora \(X\) e \(Y\) sono indipendenti.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Abbiamo \begin{align*}
+        p_X(x) &= \sum_{y \in E} p_{X,Y}(x,y) = \sum{y \in E} \alpha(x)\beta(x)
+        = \alpha(x) \sum_{y\in E} \beta(y)
+    \end{align*}
+    Quindi \(p_X(x) = C \alpha(x)\) per ogni \(x \in E\),
+    dove \[
+        C = \sum_{y \in E} \beta(y)
+    \]
+    Analogamente \(p_Y(y) = D\beta(y)\) per ogni \(y \in E\),
+    dove \[
+        D = \sum_{x \in E} \alpha(y)
+    \]
+    Inoltre sappiamo che \begin{align*}
+        1 &= \sum_{x \in E} \sum_{y \in E} p_{X,Y}(x,y)
+        = \sum_{x \in E} \sum_{y \in E} \alpha(x) \beta(x) = CD
+    \end{align*}
+    e quindi \(D = C^{-1}\).
+    Concludiamo quindi che \(\forall x,y \in E\)
+    \[
+        p_{X,Y}(x,y) = \alpha(x)\beta(x) \cdot 1
+        = \alpha(x)\beta(x) \cdot CD = C\alpha(x)D\beta(y)
+        = p_X(x)p_Y(y)
+    \]
+\end{snippetproof}
+
+Questa proposizione è generalizzabile.
+
+\begin{snippetproposition}{}
+    Siano \(X_1, \cdots, X_n\) variabili aleatorie discrete
+    \(X_i \colon \Omega \fromto E_i\) con \(i \in \{1, \cdots, n\}\).
+    Siano \(X_1', \cdots, X_n'\) variabili aleatorie discrete
+    \(X_i' \colon \Omega \fromto E_i\) con \(i \in \{1, \cdots, n\}\).
+    Supponiamo che
+    \[
+        (X_1, \cdots, X_n) =_\alpha (X_1', \cdots, X_n')
+    \]
+    Allora \(X_1, \cdots, X_n\) sono indipendenti se e solo se
+    \(X_1', \cdots, X_n'\) sono indipendenti.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    La condizione di ipotesi significa che
+    \[
+        p_{X_1, \cdots, X_n}(x_1, \cdots, x_n)
+        p_{X_1', \cdots, X_n'}(x_1, \cdots, x_n)
+    \]
+    dove
+    \[
+        p_{X_1, \cdots, X_n},p_{X_1', \cdots, X_n'}
+        \colon
+        \prod_{i=1}^n E_i \fromto [0,1]
+    \]
+    sono le densità congiunte di \((X_1, \cdots, X_n)\)
+    e \((X_1', \cdots, X_n')\) rispettivamente.
+    Usando il risultato precedente % TODO LINK
+    sulla caratterizzazione di indipendenza con le densità,
+    la densità di \((X_1, \cdots, X_n)\) fattorizza
+    nelle marginali se e solo se fattorizza
+    quella di \((X_1', \cdots, X_n')\).
+\end{snippetproof}
+
+\begin{snippetproposition}{}
+    Siano \(X \colon \Omega \fromto E\)
+    e \(X \colon \Omega \fromto F\) variabili aleatorie discrete e indipendenti.
+    Siano \(f \colon E \fromto K\) e \(g \colon F \fromto H\)
+    con \(K\) e \(H\) insiemi discreti.
+    Allora, anche le variabili aleatorie discrete
+    \(f(X) \colon \Omega \fromto K\) e \(g(Y) \colon \Omega \fromto H\)
+    sono indipendenti.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Siano \(A \in \powerset(K)\)
+    e \(B \in \powerset(H)\), allora
+    \begin{align*}
+        \mathbb P(f(X) \in A, g(Y) \in B)
+        &= \mathbb P(X \in f^{-1}(A), Y \in g^{-1}(B)) \\
+        &= \mathbb P(X \in f^{-1}(A)) \mathbb P(Y \in f^{-1}(B)) \\
+        &= \mathbb P(f(X) \in A) \mathbb P(g(Y) \in B) 
+    \end{align*}
+\end{snippetproof}
+
+\begin{snippetproposition}{}
+    Siano \(X_1, \cdots, X_n\) variabili aleatorie discrete
+    \(X_i \colon \Omega \fromto E_i\)
+    indipendenti. Allora per ogni sottoinsieme di incidi
+    \(I = \{i_1, \cdots, i_k\} \subseteq \{1, \cdots, n\}\)
+    e \(J = \{j_1, \cdots, j_h\} \subseteq \{1, \cdots, n\}\)
+    tali che \(I \intersection J = \emptyset\), allora le variabili aleatorie discrete
+    \[
+        X_I = (X_{i_1}, \cdots, X_{i_k}),
+        \quad
+        X_J = (X_{j_1}, \cdots, X_{j_h})
+    \]
+    sono indipendenti.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Visto che \(X_1, \cdots, X_n\)
+    abbiamo visto \(\forall (x_1, \cdots, x_n) \in \prod E_i\) vale
+    \begin{align*}
+        p_I(x_{i_1}, \cdots, x_{i_k}) &= \prod_{l = 1}^k p_{i_l}(x_{i_j}) \\
+        p_J(x_{j_1}, \cdots, x_{j_h}) &= \prod_{l = 1}^h p_{j_l}(x_{j_j})
+    \end{align*}
+    dove \(p_I\) è la marginale di \(X_I\) e \(p_J\) è la marginale di \(X_j\).
+    Indichiamo con \(p_{I,J}\) la congiunta di \((X_I, X_J)\). Allora
+    \begin{align*}
+        p_{I, J}(x_{i_1}, \cdots, x_{i_k}, x_{j_1}, \cdots, x_{j_h})
+        &= \left(\prod_{l = 1}^k p_{i_l}(x_{i_j})\right)
+        \left(\prod_{l = 1}^h p_{j_l}(x_{j_j})\right)
+    \end{align*}
+\end{snippetproof}
+
+\begin{snippetproposition}{}
+    Siano \(X_1, \cdots, X_{n+m}\) variabili aleatorie discrete
+    \(X_i \colon \Omega \fromto E_i \subseteq \Omega\) indipendenti.
+    Allora, anche le variabili aleatorie discrete
+    \[
+        \sum_{i=1}^n X_i, \quad \sum_{i=n+1}^{n+m} X_i
+    \]
+    sono indipendenti.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    La proporizione precedente % TODO CITE
+    ci dicde che le variabili aleatorie discrete
+    \begin{align*}
+        (X_1, \cdots, X_n) &\colon \Omega \fromto \prod_{i=1}^n \\
+        (X_{n+1}, \cdots, X_{n+m}) &\colon \Omega \fromto \prod_{i=n+1}^{n+1}
+    \end{align*}
+    sono indipendenti, concludiamo applicando
+    l'altra proposizione prima % TODO CITE
+    con
+    \begin{align*}
+        f(X_1, \cdots, X_n) &= \sum_{i=1}^n x_i \\
+        f(X_1, \cdots, X_n) &= \sum_{j=1}^m x_{n+j}
+    \end{align*}
+    quindi \(f(X_1, \cdots, X_n)\) e \(g(X_{n+1}, \cdots, X_{n+m})\)
+    sono indipendenti.
+\end{snippetproof}
 
 \end{document}

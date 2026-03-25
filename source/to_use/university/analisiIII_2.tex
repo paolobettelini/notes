@@ -2897,7 +2897,14 @@ Quindi questa condizione più la sublinearità implica esistenza e unicità in g
     Se invece prendiamo il dato iniziale sopra la soluzione costante, \(x_0 > 1\) allora
     abbiamo unicità globale.
     Dobbiamo tuttavia verificare che la soluzione che sta sopra, non abbia un asintoto verticale.
-    Ma ciò è facile da mostrare per la sublinearità.
+    Questo lo si può fare studiando l'integrale improprio manualmente
+    \[
+        \integral[1][y][\frac{1}{\sqrt{|\log t|}}][t] = \frac{x^2}{2} - \frac{x_0^2}{2}
+    \]
+    e mostrando che diverge.
+    Per verificarlo, non si può usare il criterio della sublinearità, nonostante la funzione lo sia,
+    in quanto \(\Omega\) non contiene un intervallo cartesiano della forma \(I\cartesianprod \realnumbers = \realnumbers^2\).
+    Infatti non tutte le soluzioni sono globali, quelle sotto terminano prima.
     Verifichiamo la concavità delle soluzioni che stanno sopra \(y>1\). Abbiamo
     \begin{align*}
         y'' &= \sqrt{|\log y|} + x \frac{
@@ -2968,6 +2975,230 @@ che si dice autonoma, le soluzioni sono tutte una traslata dell'altra.
 
 % Parziale finisce qua 
 
+Andiamo ora a mostrare che una soluzione di una equazione differenziale non può terminare nel nulla.
+Sia \(y' = f(x,y)\) con \(f \colon \Omega \fromto \realnumbers^n\)
+con \(\Omega \subseteq \realnumbers^{n+1}\) aperto e \(f\in \mathcal C(\Omega, \realnumbers^n)\).
+Data una soluzione massimale, allora il grafico di questa deve andare a sbattere contro
+la frontiera di \(\Omega\).
+Non è necessariamente vero che se \(\varphi \colon (a,b) \fromto \realnumbers^n\)
+è una soluzione massimale, allora \(\varphi\) tende ad un punto del bordo per \(x \to b\).
+Per esempio \(y' = \frac{d}{dx} \sin(1/x)\) va a sbattere contro il bordo \(x=0\),
+ma non con il limite. Quindi l'idea non va bene.
+L'idea giusta è quella di uscire dai compatti.
+Il bordo di \(\Omega\) ha distanza positiva da tutti i compatti \(K\).
+Altrimenti, riuscirei  atrovare una successione di punti di \(K\) che converge a \(0\).
+Avrei che un punto di \(K\) appartiene al bordo, ma ciò non è possibile in quanto \(\Omega\)
+è aperto e non contiene il bordo.
+
+\begin{snippettheorem}{Teorema di buon fine delle soluzioni}
+    Sia \(\Omega \subseteq \realnumbers^{n+1}\) aperto,
+    \(f \in \mathcal C(\Omega, \realnumbers^n)\).
+    Sia \(\varphi \colon (a,b) \fromto \realnumbers^n\)
+    una soluzione massimale del problema \(y'=f(x,y)\),
+    \(a,b\in \realnumbers\).
+    Allora, \(\forall K \subseteq \Omega\) compatto, \(\exists \delta\)
+    di forma \[  0 < \delta < \frac{b-a}{2} \]
+    tale che se \(x\in (a,b) \difference (a + \delta, b - \delta)\),
+    allora \((x, \varphi(x)) \notin K\).
+\end{snippettheorem}
+
+Nota: \(\varphi\) deve essere definita su un aperto. Se il punto \(b\)
+facesse parte dell'intervallo, potremmo usare il probelma di Cauchy centrato in \(b\)
+per prolungarla, contro l'ipotesi che è massimale.
+
+Supponiamo per esempio di avere \(\Omega = I \cartesianprod \realnumbers^n\)
+con \(I = (a,b)\) intervallo aperto.
+Supponiamo di avere una soluzione \(\varphi \colon (a,c) \fromto \realnumbers^n\)
+con \(c < b\), \(\varphi\) limitata. Allora, non può essere una soluzione massimale,
+in quanto non uscirebbe da tutti i compatti: per esempio un compatto centrato in \(c\).
+
+Caso particolare: nelle ipotesi del teorema di buon fine, se
+\(\varphi \colon (a,b) \fromto \realnumbers^n\)
+è una soluzione massimale ed
+\[
+    \exists \lim_{x \to b^-} \varphi(x) = \alpha \in \realnumbers^n
+\]
+allora \((b, \alpha) \notin \Omega\) (cioè un iperrettangolo).
+Quindi una soluzione non può terminare nel vuoto.
+Se avessi \((b, \alpha) \in \Omega\), cioè avrei un pozzo che inghiotte la soluzione, potrei costruirci un compatto attorno, ma da questo
+la soluzione non uscirebbe, il che è impossibile.
+
+\begin{snippettheorem}{Teorema di non esistenza di pozzi}
+    Sia \(\Omega \subseteq \realnumbers^{n+1}\) aperto,
+    \(f \in \mathcal C(\Omega, \realnumbers^n)\).
+    Sia \(\varphi \colon (a,b) \fromto \realnumbers^n\)
+    una soluzione massimale del problema \(y'=f(x,y)\),
+    \(a,b\in \realnumbers\), tale che \(\varphi(x) \to \alpha\) per \(x \to b\)
+    e \((b, \alpha) \in \Omega\).
+    Allora \(\varphi\) è prolungabile oltre \(b\).
+\end{snippettheorem}
+
+\begin{snippetproof}{Teorema di non esistenza di pozzi}
+    Consideriamo il problema di Cauchy
+    \[
+        \begin{cases}
+            y' = f(x,y) \\
+            y(b) = \alpha
+        \end{cases}
+    \]
+    Il punto \(\alpha\) appartiene all'insieme e quindi il problema ha senso.
+    Inoltre, il problema ammette soluzione per il teorema di Peano.
+    Sia \(\Psi\) una soluzione dello stesso problema definita su \((b-\varepsilon, b+\varepsilon)\)
+    per qualche \(\varepsilon > 0\). Costruiamo allora la soluzione incollata
+    \[
+        g(x) = \begin{cases}
+            \varphi(x) & x < b \\
+            \Psi(x) & b \leq x \leq b + \varepsilon
+        \end{cases}
+    \]
+    Vogliamo mostrare che \(g \colon (a,b+\varepsilon) \fromto \realnumbers^n\)
+    risolve \(y' = f(x,y)\) nell'intervallo \((a,b+\varepsilon)\).
+    Il problema è il raccordo.
+    Sicuramente \(g\) è continua in \(b\), infatti per definizione
+    \(g(b) = \Psi(b) = \alpha\) e \[
+        \lim_{x \to b^-} g(x) = \lim_{x \to b^-} \varphi(x) = \alpha
+    \]
+    per ipotesi (la continuità da destra è banale).
+    Mostriamo che \(\exists g'(b)\).
+    Ciò segue dalla continuità della \(f\).
+    Per il teorema del liimte della derivata, mi basta
+    calcolare il limite solo in quel punto
+    \[
+        \lim_{x\to b^-} g'(x) = \lim_{x\to b^-} \Phi'(x)
+        = \lim_{x\to b^-} f(x,\varphi(x)) = f(b,\alpha)
+    \]
+    per continuità di \(f\).
+    Questo coincide con il limite da destra, che è \(f(b,\alpha) = \Psi'(b)\)
+    (visto che \(\Psi\) risolve l'equazione).
+\end{snippetproof}
+
+\begin{snippetproof}{Teorema di buon fine}
+    Sia \(K \subseteq \Omega\) compatto, \(\varphi \colon I \fromto \realnumbers^n\)
+    tale che \((x, \varphi(x)) \in K\), \(\forall x \in I\).
+    Vogliamo dimostrare che \(\varphi\) è prolungabile oltre \(I\).
+    Sia \(I = (a,b)\). Se \(I\) fosse chiuso basta prolungarlo con il problema di Cauchy centrato in \(b\),
+    come fatto nella dimostrazione della non esistenza di pozzi.
+    Consideriamo una qualunque successione \(\{x_n\} \to b^-\)
+    e consideriamo \(\{\varphi(x_n)\}\), quindi \((x_n, \varphi(x_n)) \in K\).
+    La successione \(\{(x_n, \varphi(x_n))\}\) è contenuta in un compatto, e quindi
+    a meno di sottosuccessioni converge ad un punto di \(K\).
+    Senza perdita di generalità supponiamo che \(\{(x_n, \varphi(x_n))\} \to (b, \alpha) \in K\)
+    per qualche \(\alpha\). L'idea è quella di applicare il teorema di non esistenza di pozzi.
+    Tuttavia, ci serve che \(\varphi(x)\) abbia limite ad \(\alpha\) per \(x \to b^-\).
+    Tuttavia, sappiamo solo che esiste una sottosuccessione per la quale abbiamo il limite,
+    non sappiamo se pure per \(\varphi\).
+    La funzione \(\varphi\) è lipschitz continua in un intorno di \(b\),
+    in quanto la sua derivata \(f\) è limitata in quanto è continua in un compatto \(K\).
+    Allora, è anche uniformemente continua, quindi ammette limite.
+\end{snippetproof}
+
+\begin{snippetproposition}{}
+    Ogni funzione uniformemente continua ammette limite.
+\end{snippetproposition}
+
+\subsection{Esistenza di soluzioni massimali}
+
+Supponiamo che relatiamente ad ogni punto di \(\Omega\)
+siano soddisfatte le ipotesi del teorema di esistenza e unicità locali.
+Allora ogni soluzione di \(y' = f(x,y)\),
+cioè ogni coppia \((\varphi, I)\) ammette un unico prolungamento massimale.
+L'idea quella dimostrazione è quella di considerare la famiglia dei prolungamenti
+di \((\varphi, I)\), \(\{(\varphi_\gamma, I_\gamma)\}\)
+tale che se \(\restr{\varphi_\gamma}{I} = \varphi\) allora \(I_\gamma \supseteq I\).
+Sia \(I_\gamma = (a_\gamma, b_\gamma)\).
+Si spera di poter definire un prolungamento sull'intervallo massimale \((a,b)\)
+dove \(a = \inf_\gamma a_\gamma\) e \(b = \sup_\gamma b_\gamma\).
+Dobbiamo capire come definire questo \(\tilde \varphi\), il prolungamento massimale nell'intervallo \((a,b)\).
+L'idea è \(\tilde \varphi(x) = \varphi_\gamma(x)\)
+se \(x \in I_\gamma\). Infatti,
+\[
+    (a,b) = \bigcup_\gamma I_\gamma
+\]
+Tuttavia, afifnché questa costruzione abbia senso, dobbiamo assicurarci che non vi siano biforcazioni.
+Se due prolungamenti sono definite usllo stesso intervallo \(I_\gamma\), allora devono coincidere
+in tutti i punti di \(I_\gamma \difference I\).
+
+\begin{snippetlemma}{}
+    Se due soluzioni definite sullo stesso intervallo coincidono in un qualche punto,
+    allora coincidono in tutti i punti dell'intervallo di definizione.
+\end{snippetlemma}
+
+\begin{snippetproof}{}
+    Siano \(\varphi_1\) e \(\varphi_2\) due soluzioni definite sullo stesso intervallo che coincidono in qualche
+    punto \(x_0\).
+    Abbiamo due casi: o esiste un ultimo punto in cui coincidono, oppure esiste un primo punto in cui non coincidono.
+    Il caso in cui ha un ultimo punto in cui coincidono è il caso in cui c'è un punto di biforcazione.
+    Non può succedere che ci sia un primo punto in cui non coincidono.
+    L'insieme in cui \(\varphi_1 = \varphi_2\)
+    è la fibra \((\varphi_1 - \varphi_2)^{-1}(\{0\})\), ma \(\varphi_1 - \varphi_2\)
+    è continua, e siccome \(\{0\}\) è chiuso allora anche tale insieme è chiuso.
+    Quindi, l'insieme dove le due funzioni non coincidono è un aperto.
+    Siccome è un aperto, non può esserci un primo punto in cui non coincidono.
+    Infatti, ogni punto in cui non coincidono ha un intorno sinistro di punti dove non coincidono.
+    Siccome siamo in condizione di esistenza e unicità locale, non può esistere nemmeno l'ultimo punto, che sarebbe
+    di biforcazione. Dobbiamo quindi avere soluzione unica.
+\end{snippetproof}
+
+Se siamo in regime di esistenza locale ma non unicità, allora le soluzioni massimali esistono ancora
+ma non sono necessariamente uniche.
+
+\begin{snippetexercise}{}
+    Sia \(y' = \sqrt[3]{\sin y^2}\).
+    \begin{enumerate}
+        \item Mostrare che ogni soluzione locale è prolungabile su \(\realnumbers\) e che ogni soluzione
+        su \(\realnumbers\) è limitata.
+        \item Mostrare che esiste una e una sola
+        funzione continua \(x = x(y)\) fatta di linee integrabili
+        dell'equazione differenziale, tendente a zero per \(y \to +\infty\).
+        Calcolare \[
+            \lim_{y \to -\infty} x(y)
+        \]
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{tikzpicture}[x=1.25cm, y=1.25cm]
+            \draw[->] (-2.2, 0) -- (2.2, 0);
+            \draw[->] (0, -0.2) -- (0, 3.5);
+
+            \draw[black, thick, dashed] (-2, 1.7724) -- (2, 1.7724);
+            \draw[black, thick, dashed] (-2, 2.5066) -- (2, 2.5066);
+            \draw[black, thick, dashed] (-2, 3.0699) -- (2, 3.0699);
+
+            \node[anchor=east] at (-2, 1.7724) {\(\sqrt{\pi}\)};
+            \node[anchor=east] at (-2, 3.0699) {\(\sqrt{3\pi}\)};
+            \node[anchor=north] at (2, 2.5066) {\(\sqrt{2\pi}\)};
+
+            \draw[blue, thick] (-2, 0) -- (-1.2, 0) to[out=0, in=180] (-0.2, 1.7724) -- (2, 1.7724);
+            \draw[blue, thick] (-2, 0) -- (-0.2, 0) to[out=0, in=180] (0.8, 1.7724) -- (2, 1.7724);
+            \draw[blue, thick] (-2, 0) -- (0.8, 0) to[out=0, in=180] (1.8, 1.7724) -- (2, 1.7724);
+
+            \draw[blue, thick] (-2, 2.5066) -- (-1.5, 2.5066) to[out=0, in=180] (-0.5, 1.7724) -- (2, 1.7724);
+            \draw[blue, thick] (-2, 2.5066) -- (-0.5, 2.5066) to[out=0, in=180] (0.5, 1.7724) -- (2, 1.7724);
+            \draw[blue, thick] (-2, 2.5066) -- (0.5, 2.5066) to[out=0, in=180] (1.5, 1.7724) -- (2, 1.7724);
+
+            \draw[blue, thick] (-2, 2.5066) -- (-1.0, 2.5066) to[out=0, in=180] (0, 3.0699) -- (2, 3.0699);
+            \draw[blue, thick] (-2, 2.5066) -- (0, 2.5066) to[out=0, in=180] (1, 3.0699) -- (2, 3.0699);
+            \draw[blue, thick] (-2, 2.5066) -- (1.0, 2.5066) to[out=0, in=180] (2, 3.0699);
+        \end{tikzpicture}
+    \end{wrapfigure}
+    La funzione \(f\) è limitata, quindi per la sublinearità le soluzioni sono prolungabili su
+    tutto \(\realnumbers\).
+    La funzione non è \(\mathcal C^1\) in un intorno di \(y = \pm\sqrt{k\pi}\).
+    La funzione è separabile e l'integrale è dato da
+    \begin{align*}
+        \integral[0][y][\frac{1}{\sqrt[3]{\sin(t^2)}}][t] = x
+    \end{align*}
+    questo integrale converge per \(t\to 0\). In realtà converge anche in tutti
+    i \(t \to \sqrt{k\pi}\).
+    Siccome le bande hanno monotonia alternata, non posso salire gli scalini all'infinito:
+    quando una funzione tocca una soluzione costante, deve continuare con essa, ma non può proseguire
+    con l'altra soluzione che si salda in quel punto, in quanto la monotonia è invertita.
+    La stessa cosa vale per l'altra direzione, quindi tutte le soluzioni sono per forza limitate.
+    \wrapfill
+\end{snippetsolution}
+
 \pagebreak
 
 \section{Tempo - Foglio 3}
@@ -3000,6 +3231,7 @@ che si dice autonoma, le soluzioni sono tutte una traslata dell'altra.
     \]
 \end{snippetsolution}
 
+% c'è un errore nell'intervallo della soluzione
 \begin{snippetsolution}{Esercizio 3}
     La soluzione costante è \(y=0\). Sia \(y \neq 0\).
     L'equazione è separabile
