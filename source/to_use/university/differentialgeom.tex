@@ -1843,7 +1843,7 @@ Il caso con i punti angolosi è ottenuto come caso limite di curve \(\mathcal C^
 Se avessimo una cuspide non sapremmo se definire l'angolo come quello
 di incidenza interno o esterno.
 
-\begin{snippetproof}{Teorema delle tangenti di Hopf}
+\begin{snippetproof}{Teorema delle tangenti di Hopf (Pseudo)}
     L'idea è quella di approssimare \(\sigma\), che è \(\mathcal C^1\)
     a tratti, con una curva \(\overline \sigma\)
     di classe \(\mathcal C^1\) con le seguenti proprietà:
@@ -1866,31 +1866,31 @@ di incidenza interno o esterno.
     Stiamo quindi andando a ``smussare'' i punti angolosi.
     \begin{center}
         \begin{tikzpicture}[>=stealth]
-\coordinate (A) at (0,0);
-\coordinate (B) at (6,0);
-\coordinate (C) at (3,4);
+            \coordinate (A) at (0,0);
+            \coordinate (B) at (6,0);
+            \coordinate (C) at (3,4);
 
-\draw[thick, black] (A) -- (B) -- (C) -- cycle;
-\node at (3, -0.4) {$\sigma$};
+            \draw[thick, black] (A) -- (B) -- (C) -- cycle;
+            \node at (3, -0.4) {$\sigma$};
 
-\coordinate (A1) at (0.6, 0.8);
-\coordinate (A2) at (1, 0);
-\draw[thick, blue] (A1) to[out=233.1, in=180] (A2);
+            \coordinate (A1) at (0.6, 0.8);
+            \coordinate (A2) at (1, 0);
+            \draw[thick, blue] (A1) to[out=233.1, in=180] (A2);
 
-\coordinate (B1) at (5, 0);
-\coordinate (B2) at (5.4, 0.8);
-\draw[thick, blue] (B1) to[out=0, in=306.9] (B2);
+            \coordinate (B1) at (5, 0);
+            \coordinate (B2) at (5.4, 0.8);
+            \draw[thick, blue] (B1) to[out=0, in=306.9] (B2);
 
-\coordinate (C1) at (3.6, 3.2);
-\coordinate (C2) at (2.4, 3.2);
-\draw[thick, blue] (C1) to[out=126.9, in=53.1] (C2);
+            \coordinate (C1) at (3.6, 3.2);
+            \coordinate (C2) at (2.4, 3.2);
+            \draw[thick, blue] (C1) to[out=126.9, in=53.1] (C2);
 
-\node[blue] at (5.8, 1.2) {$\overline{\sigma}$};
+            \node[blue] at (5.8, 1.2) {$\overline{\sigma}$};
 
-\fill (A) circle (1.5pt);
-\fill (B) circle (1.5pt);
-\fill (C) circle (1.5pt);
-\end{tikzpicture}
+            \fill (A) circle (1.5pt);
+            \fill (B) circle (1.5pt);
+            \fill (C) circle (1.5pt);
+        \end{tikzpicture}
     \end{center}
     Formalmente dovremmo integrare questa curva localmente e verificare che l'angolo
     coincida con la definizione dell'angolo nel punto angoloso.
@@ -1909,7 +1909,139 @@ di incidenza interno o esterno.
     Quest'ultimo addendo sarà pari a \(\overline\theta(t_n - s) - \overline\theta(a)\)
     per induzione. Il caso \(n=1\) è ovvio perché \(\sigma = \overline\sigma\) su \([a, t_1 - s]\).
     Ci siamo quindi ricondotti al caso \(\mathcal C^1\).
-    \todo % TOOD dimostrazione con il caso C^1
+    Dalla definizione di derivata,
+    \[
+        \sigma' = \lim_{h\to 0} \frac{\sigma(t+h) - \sigma(t)}{h}
+    \]
+    l'idea è quello di estendere la curva derivata \(\sigma'\)
+    con continuità ad una mappa come segue:
+    \[
+        H(x_1, x_2) = \begin{cases}
+            \frac{
+                \sigma(x_2) - \sigma(x_1)
+            }{
+                |\sigma(x_2) - \sigma(x_1)|
+            } & x_1 < x_2, (x_1, x_2) \neq (a,b) \\
+            \frac{\sigma'(x_1)}{|\sigma'(x_1)|} & x_1 = x_2 \\
+            -\sigma'(a) & (x_1, x_2) = (a,b)
+        \end{cases}
+    \]
+    notiamo che se \(x_1 < x_2\) allora i valori della curva non possono coincidere, in quanto è semplice.
+    Abbiamo quindi una mappa \(H \colon \Delta \fromto S^1\) dove
+    \[
+        \Delta = \{
+            (x_1, x_2) \in \realnumbers^2 \suchthat x \leq x_1 \leq x_2 \leq b    
+        \}
+    \]
+    è il triangolo
+    \begin{center}
+        \begin{tikzpicture}
+        \fill[blue!20] (2,2) -- (2,5) -- (5,5) -- cycle;
+        \draw[->] (-0.5,0) -- (6.5,0) node[right] {$x_1$};
+        \draw[->] (0,-0.5) -- (0,6.5) node[above] {$x_2$};
+        \draw[dashed] (2,0) -- (2,2);
+        \draw[dashed] (5,0) -- (5,2);
+        \draw[dashed] (0,2) -- (2,2);
+        \draw[dashed] (0,5) -- (2,5);
+        \draw (2,2) rectangle (5,5);
+        \draw (0,0) -- (6,6);
+        \node[below right] at (3.5,3.5) {$x_1=x_2$};
+        \node at (3,4) {$\Delta$};
+        \node[below] at (2,0) {$a$};
+        \node[below] at (5,0) {$b$};
+        \node[left] at (0,2) {$a$};
+        \node[left] at (0,5) {$b$};
+        \fill (2,5) circle (2pt) node[above left] {$(a,b)$};
+        \fill (5,5) circle (2pt) node[right] {$(b,b)$};
+        \fill (5,2) circle (2pt) node[below right] {$(b,a)$};
+        \end{tikzpicture}
+    \end{center}
+    Tale mappa è continua in quanto
+    \[
+        \frac{\sigma'(x_1)}{|\sigma'(x_1)|}
+        = \lim_{x_2 \to x_1} \frac{\sigma(x_2) - \sigma(x_1)}{|\sigma(x_2) - \sigma(x_1)|}
+    \]
+    Abbiamo quindi continuità tranne forse nel punto \((a,b)\).
+    Possiamo estendere \(\sigma \colon [a,b] \fromto \realnumbers^2\)
+    a funzione periodica \(\sigma \colon \realnumbers \fromto \realnumbers^2\)
+    di periodo \(T=b-a\) ponendo \(\sigma(s+nT) \triangleq \sigma(s)\)
+    per ogni \(n\) intero.
+    Tale estensione è ancora continua in quanto \(\sigma(b) = \sigma(a+b-a) = \sigma(a+T) = \sigma(a)\).
+    Possiamo scrivere
+    \[
+        \frac{\sigma(x_2) - \sigma(x_1)}{|\sigma(x_2) - \sigma(x_1)|}
+        = \frac{\sigma(x_2) - \sigma(x_1 + T)}{|\sigma(x_2) - \sigma(x_1 + T)|}
+    \]
+    in maniera tale che, siccome \(x_1 > a\),
+    si abbia \(x_1 + T\).
+    Allora, passando limite per \((x_1, x_2) \to (a,b)\), otteniamo la stessa cosa di
+    \begin{align*}
+        \lim_{\substack{x_2 \to b^{-} \\ x_1 \to b^{+}}}
+        \frac{\sigma(x_2) - \sigma(x_1 + T)}{|\sigma(x_2) - \sigma(x_1 + T)|}
+        &= \lim_{h \to 0^+}
+        \left(
+            - \frac{\sigma(b+h) - \sigma(b)}{|\sigma(b+h) - \sigma(b)|}
+        \right)
+    \end{align*}
+    Avendo posto \(x_1+ T = b+h\) con \(h > 0\), abbiamo
+    \begin{align*}
+        \lim_{(x_1, x_2) \to (a,b)} H(x_1, x_2)
+        &=  - \lim_{h \to 0^+}
+            \frac{\sigma(b+h) - \sigma(b)}{|\sigma(b+h) - \sigma(b)|}
+        = -\frac{\sigma'(b)}{|\sigma'(b)|} = -\frac{\sigma'(a)}{|\sigma'(a)|}
+    \end{align*}
+    Abbiamo quindi la continuità pure nel punto \((a,b)\). \\
+    \textbf{Semplificazione 1:} supponiamo che
+    \[
+        \sigma'(a) = \sigma'(b) = e_1 = (1,0)
+    \]
+    senza perdita di generalità, stabilendo in modo opportuno il sistema di riferimento cartesiano
+    sul piano, in quanto ciò non cambia la rotazione totale della tangente
+    (perché stiamo usando isometria di \(\realnumbers^2\)). \\
+    \textbf{Semplificazione 2:} assumiamo tutta la \(\operatorname{im}\sigma\)
+    al di sopra (e tangente) l'ascissa, senza perdita di generalità,
+    in quanto pure questo non cambia l'angolo totale.
+    Abbiamo quindi il punto \(\sigma(a) = \sigma(b)\)
+    che tocca l'asse delle \(x\), e il resto della curva sta sopra.
+    Dato un punto \(P\) del supporto della curva (che è compatto),
+    con ordinata \(y(P)\) minina e stabiliamo \(P = \sigma(a) = \sigma(a+T) = \sigma(b)\). \\
+    Esiste una determinazione dell'angolo di \(H\)
+    per il teorema di sollevamento delle omotopie, in quanto
+    \(\Delta\) è omeomorfo ad un quadrato, come per esempio \([0,1]^2\).
+    Chiamiamo \(\theta(x_1, x_2)\) tale determinazione dell'angolo iniziale
+    \(\theta(a,a) = 0\), ossia l'angolo fra \(\sigma'(a) = e_1\) e l'asse \(x\).
+    L'idea è che \(\theta(x,x)\) è la determinazione dell'angolo di
+    \(\sigma'(x)/|\sigma'(x)|\). Vogliamo quindi calcolare la rotazione totale, ossia
+    \begin{align*}
+        \theta(b,b) - \theta(a,a) &= \theta(b,b) - \theta(a,b) + \theta(a,b) - \cancelto{0}{\theta(a,a)} \\
+    \end{align*}
+    Il termine \(\theta(a,b)\) è pari all'angolo di \(H(a,b) = -\sigma'(a) = -e_1\),
+    e quindi è pari a \(\pi + 2k\pi\), ma non sappiamo \(k\).
+    Ma \[
+        \theta(a,b) = \lim_{x_2 \to b^-} \theta(a,x_2)
+    \]
+    dove \(\theta(a,x_2)\) è l'angolo del vettore secante \(\sigma(x_2) - \sigma(a)\)
+    misurato a partire da \(\theta(a,a) = 0\).
+    Quindi, \(\theta(a,x_2) \in [0, 2\pi]\)
+    e allora \(\theta(a,b) = \pi\), cioè \(k=0\).
+    Calcoliamo ora \(\theta(b,b)\) sapendo ciò.
+    Abbiamo che
+    \[
+        \theta(b,b) = \lim_{x_1 \to b^-} \theta(x_2,b)
+    \]
+    dove \(\theta(x_1, b)\) è la determinazione dell'angolo
+    del vettore secante
+    \[
+        H(x_1, b) = \frac{\sigma(b) - \sigma(x_1)}{|\sigma(b) - \sigma(x_1)|}
+    \]
+    fra \(\sigma(x_1)\) e \(\sigma(b)\) (che sta al punto iniziale).
+    Questi sono tutti vettori appartenenti al semipiano \(y<0\),
+    di cui \(\theta(x_1, b)\) è una determinazione dell'angolo a partire da
+    \(\theta(a,b) = \pi\), dunque \(\theta(x_1, b) \in [\pi, 2\pi]\)
+    e allora \(\theta(b,b)\), che è l'angolo di \(\sigma'(b) = e_1\)
+    è pari al limite cioè \(2\pi\).
+    Abbiamo quindi trovato che
+    \(\theta(b,b) - \theta(a,a) = 2\pi - \pi + \pi - 0 = 2\pi\).
 \end{snippetproof}
 
 \begin{snippettheorem}{}
@@ -1971,6 +2103,76 @@ di incidenza interno o esterno.
     \[
         \sum_{i=1}^n \alpha_i = \sum_{i=1}^n(\pi - \varepsilon_i) = n\pi - 2\pi = (n-2)\pi
     \]
+\end{snippetproof}
+
+\begin{snippetexercise}{}
+    Date due curve \(\sigma_1,\sigma_2\)
+    che rappresentano il percorso della ruota anteriore e posteriore di una bicicletta,
+    come possiamo dedurre quale delle due curve rappresenta quale ruota e in qualche direzione
+    la bici si stava muovendo?
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    Le tangenti della curva della ruota posteriore intersecano l'altra curva sempre a distanza
+    \(d\), cioè la distanza fra i punti più bassi di ambo le ruote, che rimane costante.
+    % L'area totale racchiusa fra le due curve (traiettoria chiusa) 
+    % è sempre \(\pi d^2\). (usamdo il teorema di Hopf)
+\end{snippetsolution}
+
+\begin{snippetexercise}{}
+    Consideriamo una traiettoria chiusa e con supporto convesso di una biciletta
+    di lunghezza \(d\), cioè la distanza fra i punti di contatto delle due ruote con il terreno, che è sempre costante.
+    Dimostrare che l'area racchiusa è \(\pi d^2\).
+    \begin{center}
+        \begin{tikzpicture}[scale=0.75]
+            \fill[purple!15, even odd rule]
+            plot[domain=0:360, samples=100, smooth, variable=\t]
+                ({4*cos(\t) - 2*(4*sin(\t))/sqrt(16*sin(\t)*sin(\t) + 9*cos(\t)*cos(\t))},
+                {3*sin(\t) + 2*(3*cos(\t))/sqrt(16*sin(\t)*sin(\t) + 9*cos(\t)*cos(\t))}) -- cycle
+            plot[domain=0:360, samples=100, smooth, variable=\t]
+                ({4*cos(\t)}, {3*sin(\t)}) -- cycle;
+
+            \draw[thick, blue] plot[domain=0:360, samples=100, smooth, variable=\t] ({4*cos(\t)}, {3*sin(\t)}) -- cycle;
+
+            \draw[thick, red] plot[domain=0:360, samples=100, smooth, variable=\t]
+                ({4*cos(\t) - 2*(4*sin(\t))/sqrt(16*sin(\t)*sin(\t) + 9*cos(\t)*cos(\t))},
+                {3*sin(\t) + 2*(3*cos(\t))/sqrt(16*sin(\t)*sin(\t) + 9*cos(\t)*cos(\t))}) -- cycle;
+
+            \foreach \t in {0, 24, 48, 72, 96, 120, 144, 168, 192, 216, 240, 264, 288, 312, 336} {
+                \draw[->, thick, black!80]
+                    ({4*cos(\t)}, {3*sin(\t)}) --
+                    ({4*cos(\t) - 2*(4*sin(\t))/sqrt(16*sin(\t)*sin(\t) + 9*cos(\t)*cos(\t))},
+                    {3*sin(\t) + 2*(3*cos(\t))/sqrt(16*sin(\t)*sin(\t) + 9*cos(\t)*cos(\t))});
+                \fill[black] ({4*cos(\t)}, {3*sin(\t)}) circle (1.5pt);
+                \fill[black] ({4*cos(\t) - 2*(4*sin(\t))/sqrt(16*sin(\t)*sin(\t) + 9*cos(\t)*cos(\t))},
+                    {3*sin(\t) + 2*(3*cos(\t))/sqrt(16*sin(\t)*sin(\t) + 9*cos(\t)*cos(\t))}) circle (1.5pt);
+            }
+            \end{tikzpicture}
+    \end{center}
+\end{snippetexercise}
+
+\begin{snippetproof}{Suggerimento di dimostrazione}
+    Sia \(\sigma \colon [a,b] \fromto \realnumbers^2\)
+    la parametrizzazione per lunghezza d'arco della traiettoria della ruota posteriore, allora
+    \[
+        \sigma_a(s) = \sigma(s) + l\sigma'(s)
+    \]
+    è una parametrizzazione della traiettoria della ruota anteriore.
+    L'area \(A\) è racchiusa fra di essere è calcolabile con la formula di Green
+    \begin{align*}
+        A &= \int_D \,\text{d}x\,\text{d}y = \frac12 \int_{\partial D} (x\,\text{d}x - y\,\text{d}y) \\
+        &= \frac12 \int_{\sigma_a} (x\,\text{d}y - y\,\text{d}x)
+        - \frac12 \int_\sigma (x\,\text{d}y - y\,\text{d}x)
+    \end{align*}
+    Osserviamo che se \(\tau \colon [a,b] \fromto \realnumbers^2\)
+    è curva chiusa, allora
+    \[
+        \int_\tau (x\,\text{d}y - y\,\text{d}x)
+        = \integral[a][b][\tau_1\tau_2' - \tau_2\tau_1'][t]
+    \]
+    ponendo \(\tau(t) = (\tau_1(t), \tau_2(t))\).
+    Infine usare il teorema delle tangenti di Hopf e la formula per il calcolo.
+    Usare anche la formula per il calcolo dei winding number in forma integrale complesso.
 \end{snippetproof}
 
 \end{document}

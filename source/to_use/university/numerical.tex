@@ -1077,6 +1077,355 @@ Il raggio spettrale è un invariante che ha a che fare con le norme.
 
 Utilizziamo quindi questo per il teorema della contrazioni di Banach.
 
+\begin{snippetdefinition}{Metodo iterativo stabile}
+    Metodo iterativo matriciale si dice \emph{stabile}
+    se \(\rho(P) < 1\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Metodo iterativo consistente}
+    Metodo iterativo matriciale si dice \emph{consistente}
+    se è un punto fisso della mappa
+    \(\complexnumbers^n \fromto \complexnumbers^n\)
+    data da \(y \fromto Py+q\).
+\end{snippetdefinition}
+
+Questo ci dà in parte l'arbitrarietà del punto iniziale.
+
+\begin{snippettheorem}{}
+    Un metodo iterativo è convergente se e solo se è stabile e consistente.
+\end{snippettheorem}
+
+Dato un sistema \(Ax = b\), possiamo scrivere
+\(A = M-N\) dove \(M\) è non singolare.
+Allora, \begin{align*}
+    (M-N)x &= b \\
+    Mx - Nx &= b \\
+    Mx &= Nx + b \\
+    x &= \underbrace{M^{-1}N}_{p}x + \underbrace{M^{-1}b}_{q}
+\end{align*}
+
+L'altra decomposizione classica è \(A=D-B-C\)
+dove \(D = \operatorname{diag}(A)\),
+\(B\) è triangolare inferiore con diagonale nulla e \(C\) è triangolare superiore con diagonale nulla.
+
+\begin{snippetdefinition}{Metodo di Jacobi}
+    Sia \(M = D\) e \(N = B+C\) nella composizione a tre fattori.
+    La matrice di iterazione è definita come
+    \[
+        J = D^{-1}(B+C)
+    \]
+    quindi
+    \[
+        x^{(k+1)}
+        = Jx^{(k)} + \underbrace{D^{-1}b}_q
+    \]
+\end{snippetdefinition}
+
+Nel metodo di Jacobi \(\det M \neq 0\)
+se e solo se tutti gli elementi principali di \(A\) sono
+non-nulli.
+
+Il metodo di Jacobi è sia consistente che stabile.
+È costruire usando la definizione di consistenza, quindi quello è ovvio.
+Inoltre, il metodo è stabile in quanto la matrice ha raggione spettrale minore di \(1\).
+In forma 
+\begin{align*}
+    x_i^{(k+1)}
+    &= \frac{1}{a_{i,i}}
+    \left[
+        b_i - \sum_{\substack{j = i \\ i \neq j}}^n a_{i,j} x_j^{(k)}
+    \right]
+\end{align*}
+
+\pagebreak
+
+\begin{snippettheorem}{}
+    Sia \(A = D-B-C\) la decomposizione a tre fattori di \(A\).
+    Se almeno una delle seguenti ipotesi:
+    \begin{enumerate}
+        \item \(A\) è a predominanza diagonale forte (sia righe che colonne);
+        \item \(A\) è a predominanza diagonale debole e \(A\) è irriducibile;
+        \item \(A\) è a predominanza diagonale forte per colonne;
+        \item \(A\) è a predominanza diagonale debole per colonne e \(A\) è irriducibile;
+    \end{enumerate}
+    Allora, \(\rho(P) < 1\) e quindi il metodo di Jacobi è convergente.
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Dimostriamo la \((3)\).
+    \(A\) è invertibile per i teoremi di Gershgorin e gli elementi diagonali
+    sono non-nulli, altrimenti non sarebbe nè invertibile nè a predominanza diagonale.
+    La consistenza è data dalla definizione. Dobbiamo solamente mostrare che \(\rho(J) < 1\).
+    Mostriamo infatti che per ogni autovalore \(\lambda \in \sigma(J)\)
+    abbiamo \(|\lambda| < 1\).
+    Supponiamo per assurdo che esista \(\exists \nu\)
+    tale che \(|\nu| \geq 1\).
+    Allora deve soddisfare il polinomio caratteristico
+    \begin{DispWithArrows*}
+        0 &= \det(J - \nu I_n) \\
+        &= \det(D^{-1}(B + C) - \nu I_n) \\
+        &= \det(D^{-1}(B+C) - \nu D^{-1}D) \Arrow{\text{Teorema di Binet}} \\
+        &= \underbrace{\det(D^{-1})}_{\neq 0} \cdot \det(B + C - \nu D) \\
+        &\implies 0 = \det(\underbrace{B + C - \nu D}_H)
+    \end{DispWithArrows*}
+    Di questa matrice \(H\) possiamo dire che 
+    \[
+        |h_{i,j}| = \begin{cases}
+            |\mu a_{i,i}| & i=j \\
+            |a_{i,j}| & i \neq j
+        \end{cases}
+    \]
+    Poiché \(|\mu| \geq 1\) e \(H\) è a predominanza diagonale per colonne e irriducibile,
+    quindi è anchde invertibile. Ma questo è assurdo \lightning.
+\end{snippetproof}
+
+\begin{snippetproof}{Alternativa}
+    Partiamo da \[
+        J = D^{-1}(B+C)
+        = -
+        \begin{bmatrix}
+            \frac{1}{a_{11}} & 0 & \cdots & 0 \\
+            0 & \frac{1}{a_{22}} & \cdots & 0 \\
+            \vdots & \vdots & \ddots & \vdots \\
+            0 & 0 & \cdots & \frac{1}{a_{nn}}
+        \end{bmatrix}
+        \cdot
+        \begin{bmatrix}
+            0 & \ast & \cdots & \ast \\
+            \ast & 0 & \cdots & \ast \\
+            \vdots & \vdots & \ddots & \vdots \\
+            \ast & \ast & \cdots & 0
+        \end{bmatrix}
+        =
+        -
+        \begin{bmatrix}
+            0 & \frac{\ast}{a_{11}} & \cdots & \frac{\ast}{a_{11}} \\
+            \frac{\ast}{a_{22}} & 0 & \cdots & \frac{\ast}{a_{22}} \\
+            \vdots & \vdots & \ddots & \vdots \\
+            \frac{\ast}{a_{nn}} & \frac{\ast}{a_{nn}} & \cdots & 0
+        \end{bmatrix}
+    \]
+    I cerchi di Gershgorin sono centrati nell'origine e sono concentrici con raggi
+    \[
+        r_i = \frac{
+            \sum_{\substack{j=1 \\ j \neq i}}^n |a_{i,j}|
+        }{
+            |a_{i,i}|
+        } < 1
+    \]
+    per il terzo teorema di Gershgorin,
+    siccome \(A\) è a predominanza diagonale stretta oppure \(A\)
+    è a predominanza diagonale debole ed è irriducibile. 
+\end{snippetproof}
+
+È un altamente paralelizzabile.
+
+\begin{snippetdefinition}{Metodo di Gauss-Seidel}
+    Sia \(M = D-B\) e \(C\) nella composizione a tre fattori.
+    La matrice di iterazione è definita come
+    \[
+        G = (D-B)^{-1}C
+    \]
+    quindi
+    \[
+        x^{(k+1)}
+        = Gx^{(k)} + (D-B)^{-1}b
+    \]
+\end{snippetdefinition}
+
+L'iterazione ha forma 
+\begin{align*}
+    x^{(k+1)}
+    &= Gx^{(k)} + (D-B)^{-1}b \\
+    Dx^{(n+1)} - Bx^{(k+1)} &= Cx^{(k)} + b \\
+    x^{(k+1)} &= D^{-1}Bx^{(k+1)} + D^{-1}Cx^{(k)} + D^{-1}b \\
+    x_i^{(k+1)} &= \frac{1}{a_{i,i}} \left[
+        b_i - \sum_{j=1}^{i-1}
+        a_{i,j} x_j^{(k+1)} - \sum_{j=i+1}^n a_{i,j}x_j^{(k)}
+    \right]
+\end{align*}
+
+Jacobi è chiamato il metodo degli elementi simultanei, mentre Gauss-Seidel
+il metodo degli elementi successivi.
+
+\begin{snippettheorem}{}
+    Sia \(A = D-B-C\) la decomposizione di \(A\) per tre fattori.
+    Se vale una delle seguenti ipotesi:
+    \begin{enumerate}
+        \item \(A\) è a predominanza diagonale forte (sia righe che colonne);
+        \item \(A\) è a predominanza diagonale debole e \(A\) è irriducibile;
+        \item \(A\) è a predominanza diagonale forte per colonne;
+        \item \(A\) è a predominanza diagonale debole per colonne e \(A\) è irriducibile;
+    \end{enumerate}
+    Allora, \(\rho(P) < 1\) e quindi il metodo di Gauss-Seidel è convergente.
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    \(A\) è invertibile per i teoremi di Gershgorin e gli elementi diagonali
+    sono non-nulli, altrimenti non sarebbe nè invertibile nè a predominanza diagonale.
+    La consistenza è data dalla definizione. Dobbiamo solamente mostrare che \(\rho(J) < 1\).
+    Supponiamo per assurdo che esista \(\exists \nu\)
+    tale che \(|\nu| \geq 1\).
+    Allora deve soddisfare il polinomio caratteristico
+    \begin{DispWithArrows*}
+        0 &= \det(G - \nu I_n) \\
+        &= \det((D-B)^{-1}C - \nu I_n) \\
+        &= \det((D-B)^{-1} C - \nu (D-B)^{-1}(D-B)) \Arrow{\text{Teorema di Binet}} \\
+        &= \underbrace{\det((D-B)^{-1})}_{\neq 0} \cdot \det(C - \nu (D-B)) \\
+        &\implies 0 = \det(\underbrace{C - \nu (D-B)}_H)
+    \end{DispWithArrows*}
+    \[
+        |h_{i,j}| = \begin{cases}
+            |\mu a_{i,i}| & i\geq j \\
+            |a_{i,j}| & i < j
+        \end{cases}
+    \]
+    Poiché \(|\mu| \geq 1\) e \(H\) è a predominanza diagonale per colonne e irriducibile (come \(A\)),
+    allora \begin{align*}
+        |h_{i,j}| &= |\nu| \sum_{\substack{j=1 \\ j \neq i}}^n |a_{i,j}|
+        = |\nu| \sum_{j > 1}^n |a_{i,j}| + \nu| \sum_{j < i} |a_{i,j}| \\
+        &= \sum_{j < 1}^n |h_{i,j}| + |\nu| \sum_{j>1}^n |a_{i,j}| %\Arrow{(\ast)} \\
+        \overset{(\ast)}{\geq} \sum_{j < i} |h_{i,j}| + \sum_{j > i}|a_{i,j}|
+        = \sum_{j\neq i}^n |h_{i,j}|
+    \end{align*}
+    Sempre per il fatto che \(A\) è a predominanza diagonale per colonne,
+    \(\exists i_0 \in \{1, \cdots, n\}\)
+    tale che
+    \[
+        |a_{i_0, i_0}| > \sum_{\substack{j=1 \\ j\neq i}}^n |a_{j, i_0}|
+    \]
+    e per questo indice la maggiorazione in \((\ast)\) vale in senso stretto.
+    Ma quindi la matrice \(H\) è invertibile, che è assurdo \lightning.
+\end{snippetproof}
+
+% Puoi generarmi il codice latex per un disegnigno in tikz che rappresenta un grafico
+
+\begin{snippetexample}{}
+    Consideriamo il sistema lineare
+    \[
+        A = \begin{pmatrix}
+            3 & 0 & 4 \\
+            7 & 4 & 2 \\
+            -1 & -1 & -2
+        \end{pmatrix}, \quad \begin{pmatrix}
+            7 & 13 & -4
+        \end{pmatrix}
+    \]
+    Abbiamo quindi la matrice di iterazione di Jacobi e Gauss-Seidel
+    \[
+        J = \begin{pmatrix}
+            0 & 0 & -\frac43 \\
+            -\frac74 & 0 & -\frac12 \\
+            -\frac12 & -\frac12 & 0
+        \end{pmatrix}, \quad
+        G = \begin{pmatrix}
+            0 & 0 & -\frac43 \\
+            0 & 0 & \frac{11}{6} \\
+            0 & 0 & -\frac14
+        \end{pmatrix}
+    \]
+    Il raggio spettrale di \(J\) è circa \(1,337 > 1\)
+    quindi il metodo non converge, mentre
+    \(\rho(G) = \frac14 < 1\) quindi è convergente.
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Consideriamo il sistema lineare
+    \[
+        A = \begin{pmatrix}
+            -3 & 3 & -6 \\
+            -4 & 7 & -8 \\
+            5 & 7 & -9
+        \end{pmatrix}, \quad \begin{pmatrix}
+            -6 & -5 & 3
+        \end{pmatrix}
+    \]
+    Abbiamo quindi la matrice di iterazione di Jacobi e Gauss-Seidel
+    \[
+        J = \begin{pmatrix}
+            0 & 1 & -2 \\
+            \frac47 & 0 & \frac87 \\
+            \frac59 & \frac79 & 0
+        \end{pmatrix}, \quad
+        G = \begin{pmatrix}
+            0 & 1 & -2 \\
+            0 & \frac47 & 0 \\
+            0 & 1 & -\frac{10}{9}
+        \end{pmatrix}
+    \]
+    Abbiamo i raggi spettrali \(\rho(J) = 0.81 < 1\)
+    e \(\rho(G) = 1.11 > 1\), quindi quello di Jacobi converge mentre quello di Gauss-Seidel no.
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Consideriamo il sistema lineare
+    \[
+        A = \begin{pmatrix}
+            4 & 1 & 1 \\
+            2 & -9 & 0 \\
+            0 & -8 & -6
+        \end{pmatrix}, \quad \begin{pmatrix}
+            6 & -7 & -14
+        \end{pmatrix}
+    \]
+    Abbiamo quindi la matrice di iterazione di Jacobi e Gauss-Seidel
+    \[
+        J = \begin{pmatrix}
+            0 & -\frac14 & -\frac14 \\
+            \frac29 & 0 & 0 \\
+            0 & -\frac43 & 0
+        \end{pmatrix}, \quad
+        G = \begin{pmatrix}
+            0 & -\frac14 & -\frac14 \\
+            0 & -\frac{1}{18} & -\frac{1}{18} \\
+            0 & \frac{2}{27} & \frac{2}{27}
+        \end{pmatrix}
+    \]
+    Abbiamo i raggi spettrali \(\rho(J) = 0.44 < 1\)
+    e \(\rho(G) = 0.018 < 1\), quindi entrambi convergono ma quello di Gauss-Seidel
+    è più veloce.
+\end{snippetexample}
+
+Per le matrici a predominanza diagonale stretta, vale in generale che
+sulla matrice di Gauss-Seidel e Jacobi
+\[
+    ||G||_{\infty} \leq ||J||_{\infty} < 1
+\]
+Tuttavia, anche se \(\rho(G) \leq ||G||_{\infty}\)
+e \(\rho(J) \leq ||J||_{\infty}\), non sempre ne consegue che
+\(\rho(G) \leq \rho(J)\), cioè non sempre
+il metodo di Gauss-Seidel è asintoticamente
+più veloce rispetto a quello di Jacobi.
+
+\begin{snippetexample}{Controesempio}
+    Consideriamo il sistema lineare
+    \[
+        A = \begin{pmatrix}
+            11 & -5 & -5 \\
+            5 & -12 & 6 \\
+            6 & -4 & 11
+        \end{pmatrix}, \quad \begin{pmatrix}
+            1 & 23 & 13
+        \end{pmatrix}
+    \]
+    Abbiamo quindi la matrice di iterazione di Jacobi e Gauss-Seidel
+    \[
+        J = \begin{pmatrix}
+            0 & \frac5{11} & \frac{5}{11} \\
+            -\frac{5}{12} & 0 & -\frac12 \\
+            -\frac{6}{11} & \frac{4}{11} & 0
+        \end{pmatrix}, \quad
+        G = \begin{pmatrix}
+            0 & \frac5{11} & \frac5{11} \\
+            0 & -\frac{25}{132} & -\frac{91}{132} \\
+            0 & -\frac{115}{363} & -\frac{181}{363}
+        \end{pmatrix}
+    \]
+    Abbiamo i raggi spettrali \(\rho(J) = 0.79\)
+    e \(\rho(G) = 0.83\), e norme
+    \(||J||_{\infty} = 0.916\) e \(||G||_{\infty} = 0.909\).
+\end{snippetexample}
+
 \pagebreak
 
 \section{Strumenti di localizzazione spettrale}
@@ -1484,6 +1833,9 @@ ha un percorso verso sè stesso, cioè il percorso nullo.
 Tuttavia, l'algoritmo più ottimale è quello
 di fare un traversamento DFS sul grafo, controllare, e poi un traversamente DFS
 sul grafo invertito (che è associato alla matrice trasposta).
+
+
+
 
 
 
