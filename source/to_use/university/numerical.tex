@@ -7,8 +7,13 @@
 \usepackage{fullpage}
 \usepackage{wrapfig}
 \usepackage{witharrows}
+\usepackage{cancel}
+\usepackage{xfrac}
 
 \WithArrowsOptions{displaystyle}
+
+% Cancel color
+\renewcommand{\CancelColor}{\color{red}}
 
 \title{Numerical}
 \author{Paolo Bettelini}
@@ -1835,6 +1840,293 @@ di fare un traversamento DFS sul grafo, controllare, e poi un traversamente DFS
 sul grafo invertito (che è associato alla matrice trasposta).
 
 
+% 26
+% TODO
+
+\begin{snippettheorem}{}
+    Sia \(A\) Hermitiana con elementi principali reali positivi, 
+    cioè \(a_{i,i} > 0\).
+    Allora, l'iterazione di Gauss-Seidel è convergente se e solo se \(A\) è definita positiva.
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Decomponiamo la matrice come \(A = D - B - C = D - B - B^H\)
+    siccome è Hermitiana.
+    Allora la matrice di iterazione è
+    \begin{align*}
+        G &= (D-B)^{-1}C
+        = (D- B)^{-1} B^H \\
+        &= (D-B)^{-1}(B^H + D - B - D + D) = I - (D - B)^{-1}A
+    \end{align*}
+    Prima di dimostrare l'uguaglianza, mostriamo
+    che la matrice \(Z \triangleq A-G^H A G\) è definita positiva.
+    Poniamo \(F \triangleq (D-B)^{-1}A\).
+    Data l'uguaglianza precedente \(G = I-F\).
+    In particolare, \begin{align*}
+        Z &= A- G^HAG = A - (I-F)^H A (I - F) \\
+        &= \cancel A - \cancel A + F^H A + AF - FAF 
+        = F^H\left(A + F^{-H}AF - AF\right) \\
+        &= F^H \left(AF^{-1} + F^{-H}A - A\right)F \\
+        &= F^H \left(
+            \cancel{AA^{-1}}(D-B) + (D-B)^H \cancel{A^{-H}A} - A
+        \right)F \\
+        &= F^H \left(
+            D-B+D - B^H - A
+        \right)F = F^H(D + A - A)F
+        = F^H D F
+    \end{align*}
+    \(F\) è non singolare perché \((D-B)^{-1}\) e \(A\) non lo sono nemmeno.
+    Inoltre, siccome \(A\) ha elementi principali positivi, \(D\) a sua volta ha elementi
+    reali positivi, quindi \(\forall x \in \complexnumbers^n \difference \{0\}\)
+    \begin{DispWithArrows*}
+        x^H Z x &= x^H(A - G^HAG)x= x^HF^HDFx  \Arrow{\(y=Fx\)} \\
+        &= y^H D y = \sum_{i=1}^n A_{i,i} \underbrace{|y_i|^2}_{\geq 0} > 0
+    \end{DispWithArrows*}
+    Concludiamo ora il teorema:
+    \begin{ffiproof}
+        \item Supponiamo che \(A\) sia definita positiva.
+        Consideriamo un autovalore \(\lambda \in \sigma(G)\) e \(x\)
+        autovettore corrispondente, quindi \(Gx = \lambda x\).
+        Siccome \(A\) è definita positiva, \begin{align*}
+            x^H Z x &= x^H(A- G^H A G)x = x^H Ax - x^H G^H A G x \\
+            &= x^H A x - \overline{\lambda} x^H A \lambda x = x^H A x - |\lambda|^2 x^H Ax \\
+            &= \left(1 - |\lambda|^2\right)x^H A x 
+        \end{align*}
+        Siccome \(Z\) è definito positivo,
+        questo termine è positivo se e solo se \(1-|\lambda|^2\),
+        cioè \(1 > |\lambda|\).
+        In altre parole se e solo se \(\rho(G) < 1\).
+        \item Supponiamo che il metodo sia convergente e mostriamo che \(A\)
+        è definita positiva. Consideriamo l'errore \[
+            e^{(k)} = x^\ast - x^{(k)}
+        \]
+        dove \(x^\ast\) è la soluzione del sistema.
+        Questa succesione tende a zero per ipotesi.
+        Poiché \(e^{(k)} = Pe^{(k-1)}, \forall k \geq 1\), abbiamo
+        \(e^{(k)} = Ge^{(k-1)}\). Allora, considerando la matrice \(Z\) dello scorso punto,
+        \begin{align*}
+            x^H Z x &= (e^{(0)})^H A e^{(0)}
+            - \frac{
+                (e^{(0)})^H G^H A \overbrace{Ge^{(0)}}^{(e^{(1)})}
+            }{  
+                (e^{(1)})^H
+            } = (e^{(0)})^H A e^{(0)} - (e^{(1)})^H A (e^{(1)})
+        \end{align*}
+        O più in generale
+        \[
+            0 < (e^{(k)})^H Z e^{(k)}
+            = \underbrace{(e^{(k)})^H A e^{(k)}}_{\alpha_n}
+            - \underbrace{(e^{(k+1)})^H A e^{(k+1)}}_{\alpha_{n+1}}
+            \iff \alpha_n > \alpha_{n+1}
+        \]
+        cioè se la successione tende a zero dal basso.
+        Supponiamo per assurdo che \(A\) non sia definita positiva, allora esisterebbe
+        un certo vettore \(e_0 \neq 0\) (cioè un errore iniziale particolare)
+        per cui
+        \begin{align*}
+            (e^{(0)})^H A e^{(0)} \leq 0
+        \end{align*}
+        e quindi la successione non tende a zero dall'alto, il che è assurdo perché per ipotesi il metodo converge.
+    \end{ffiproof}
+\end{snippetproof}
+
+Metodo di rilassamento:
+se lo spettro della matrice è troppo vicno ad uno, esiste una modifica che sposta
+lo spettro più in basso per acellerare la convergenza. Al posto di risolvere \(Ax = b\)
+risolviamo \(\omega Ax = \omega b\).
+Una volta effettuata la decomposizione \(\omega A = M - N\)
+vale
+\(M = D-\omega B\) e \(N = (1-\omega) D + \omega C\).
+Se il determinante di \(N\) è non nullo, \[
+    x^{(k)} = \underbrace{(D-\omega B)^{-1} \left[
+        (1-\omega) D + \omega C
+    \right]}_{P_\omega}
+    x^{(k-1)} + \omega(D - \omega B)^{-1}b
+\]
+A questo punto abbiamo due classi di rilassamento, quelli \(\omega > 1\) (sovrarilassamenti)
+e \(\omega < 1\) (sottorilassamenti).
+Abbiamo \(\rho(P_\omega) > |\omega-1|\),
+quindi se \(|\omega-1| \geq 1\) non convergerà.
+
+\subsection{Esempi matrici Gauss-Seidel e Jacobi}
+
+\begin{snippetexample}{}
+    Consideriamo la matrice
+    \[
+        A = \begin{pmatrix}
+            -4 & -1 & 1 & 1 \\
+            0 & -4 & -1 & 1 \\
+            -1 & -1 & 4 & 1 \\
+            1 & -1 & 0 & 4
+        \end{pmatrix}
+    \]
+    ha predominanza diagonale forte.
+    Abbiamo le matrici di Jacobi e Gauss-Seidel \[
+        J = \frac14\begin{pmatrix}
+            0 & -1 & 1 & 1 \\
+            0 & 0 & -1 & 1 \\
+            1 & 1 & 0 & -1 \\
+            -1 & 1 & 0 & 0
+        \end{pmatrix},
+        \quad
+        G = \frac{1}{16}\begin{pmatrix}
+            0 & -4 & 4 & 4 \\
+            0 & 0 & -4 & 4 \\
+            0 & -1 & 0 & -2 \\
+            0 & 1 & -2 & 0
+        \end{pmatrix}
+    \]
+    Il polinomio caratteristiche della matrice di Gauss-Seidel è
+    \begin{align*}
+        \rho_G(\lambda)
+        &= -\lambda^4 - \frac{3}{64}\lambda^2
+        - \frac{\lambda}{256} = \lambda\left(\lambda - \frac14\right)
+        \left(\lambda + \frac18\right)^2
+    \end{align*}
+    Abbiamo quindi autovalore \(\lambda = 0, \frac14, -\frac18, -\frac18\)
+    e il raggio spettrale è minore di \(1\), quindi converge.
+    Lo spettro della matrice di Jacobi è
+    \begin{align*}
+        \lambda_1 = \lambda_2 = \frac14, \quad
+        \lambda_3 = \frac{-1 + i\sqrt{2}}{4},
+        \lambda_4 = \frac{-1 - i\sqrt{2}}{4}
+    \end{align*}
+    il raggio spettrale è \(\sfrac{\sqrt{3}}{4} < 1\), quindi il metodo è convergente.
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Consideriamo la matrice
+    \[
+        A = \begin{pmatrix}
+            -4 & -1 & 1 & 1 \\
+            0 & -4 & -1 & -3 \\
+            -1 & -1 & 4 & 1 \\
+            1 & 3 & 0 & 4
+        \end{pmatrix}
+    \]
+    ha predominanza diagonale debole ed è irridubicile.
+    Abbiamo le matrici di Jacobi e Gauss-Seidel \[
+        J = \frac14 \begin{pmatrix}
+            0 & -1 & 1 & 1 \\
+            0 & 0 & -1 & -3 \\
+            1 & 1 & 0 & -1 \\
+            -1 & -3 & 0 & 0
+        \end{pmatrix},
+        \quad
+        G = \frac{1}{16}\begin{pmatrix}
+            0 & -4 & 4 & 4 \\
+            0 & 0 & -4 & -12 \\
+            0 & -1 & 0 & -6 \\
+            0 & 1 & 2 & 8
+        \end{pmatrix}
+    \]
+    Gli spettri sono
+    \[
+        \sigma_J = \left\{
+            \frac14, -\frac34, \frac{1 + \sqrt{2}}{4}, \frac{1-\sqrt{2}}{4}
+        \right\},
+        \quad
+        \sigma_G = \left\{
+            0, \frac14, \frac18
+        \right\}
+    \]
+    Abbiamo ancora quindi la convergenza in ambo i metodi.
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Consideriamo la matrice
+    \[
+        A = \begin{pmatrix}
+            -4 & -1 & 1 & 1 \\
+            0 & -4 & 0 & -4 \\
+            1 & 1 & 4 & 1 \\
+            0 & -4 & 0 & 4
+        \end{pmatrix}
+    \]
+    ha predominanza diagonale debole ma non è irridubicile.
+    Abbiamo le matrici di Jacobi e Gauss-Seidel \[
+        J = \frac14 \begin{pmatrix}
+            0 & -1 & 1 & 1 \\
+            0 & 0 & 0 & -4 \\
+            -1 & -1 & 0 & -1 \\
+            0 & 4 & 0 & 0
+        \end{pmatrix},
+        \quad
+        G = \frac{1}{16}\begin{pmatrix}
+            0 & -4 & 4 & 4 \\
+            0 & 0 & 0 & -16 \\
+            0 & -1 & -1 & -1 \\
+            0 & 0 & 0 & 16
+        \end{pmatrix}
+    \]
+    Il polinomio caratteristico della matrice \(J\) è
+    \[
+        \rho_J(\lambda) =
+        \lambda^4 + \frac{17}{16}\lambda^2 + \frac{1}{16}
+        = \left(\lambda^2 + 1\right)\left(\lambda^2 + 16\right)
+    \]
+    quindi abbiamo autovalori \(\lambda_1 = i, \lambda_2 = -i, \lambda_3 = \frac{i}{4}, \lambda_4 = -\frac{i}{4}\).
+    Abbiamo quindi un raggio spettrale di esattamente \(1\), e quindi nessuna convergenza.
+    Il polinomio caratteristiche per Gauss-Seidel abbimo
+    \[
+        \rho_J(\lambda) = \lambda^4 + \frac{17}{16}\lambda^3 + \frac{\lambda^2}{16}
+        = \lambda^2\left(\lambda + 1\right)\left(\lambda + \frac{1}{16}\right)
+    \]
+    abbiamo quindi autovalori
+    \(\lambda_1 = \lambda_2 = 0, \lambda_3 = -1, \lambda_4 = -\frac{1}{16}\),
+    quindi ancora una volta abbiamo il raggio spettrale pari a \(1\).
+\end{snippetexample}
+
+\section{Errore inerenti nei processi di soluzione di sistemi lineari}
+
+Dato un sistema \(Ax=b\),
+consideriamo spesso dei sistemi perturbati
+\((A + \delta A)(x + \delta x) = (b + \delta b)\).
+I termini \(\delta A, \delta b\) sono detti perturbazioni autogenerate (dai dati iniziali),
+mentre \(\delta x\) è la perturbazione indotta.
+Vorremo che gli errori
+\[
+    \varepsilon_A = \frac{||\delta A||}{||A||}, \quad
+    \varepsilon_b = \frac{||\delta b||}{||b||}, \quad
+    \varepsilon_x = \frac{||\delta x||}{||x||}
+\]
+tendano a zero. Possiamo eseguire il prodotto e usando il fatto che \(Ax = b\)
+\begin{align*}
+    \delta b &= A\delta x + \delta A(x + \delta x) \\
+    \delta x &= \left(A + \delta A\right)^{-1}(\delta b - \delta Ax) \\
+    &= \left[A(I + A^{-1}\delta A)\right]^{-1}\left[\delta b - \delta Ax\right] \\
+    &= (I + A^{-1} \delta A)^{-1} A^{-1}(\delta b - \delta Ax)
+\end{align*}
+Passando alle norme troviamo
+\begin{align*}
+    ||\delta x|| &\leq ||(I + A^{-1} \delta A)^{-1} A^{-1}|| \cdot
+    ||\delta b - \delta A x|| \\
+    &\leq ||(I + A^{-1} \delta A)^{-1} || \cdot ||A^{-1}|| \cdot ||\delta b - \delta Ax|| \\
+    &\leq ||(I + A^{-1} \delta A)^{-1} || \cdot ||A^{-1}||
+    \left(
+        ||\delta b|| + ||A|| \cdot \frac{||\delta A||}{||A||} \cdot ||x||
+    \right) \\
+    &= ||(I + A^{-1}\delta A)^{-1}|| \left(
+        ||A^{-1}|| \cdot ||\delta b|| + \underbrace{||A^{-1}|| \cdot ||A||}_{\mu(A)} \varepsilon_A \cdot ||x||
+    \right) \\
+    &\leq ||(I + A^{-1} \delta A)^{-1} \left|\left|
+        \left[
+            \underbrace{\frac{||A^{-1}|| \cdot ||\delta b||}{||x||}}_{\varepsilon_b} + \mu(A)\varepsilon_A
+        \right]
+    \right|\right|
+\end{align*}
+siccome la norma dell'inverso di una matrice è il reciproco della norma della matrice,
+se \(A\) è invertibile.
+Abbiamo usato anche il fatto che \(||A|| \cdot ||x|| \leq ||b||\).
+Il termine \(\mu(A)\) è detto numero di condizionamento.
+Inoltr notiamo che il numero di condizionamento è sempre maggiore di \(1\)
+in quanto
+\[
+    1 = ||I|| = ||A^{-1} A|| \leq ||A|| \cdot ||A^{-1}|| = \mu(A)
+\]
+
+Per le matrici normali, il numero di condizionamento è il rapporto fra l'autovalore massimo
+e quello minimo (eserczio).
 
 
 

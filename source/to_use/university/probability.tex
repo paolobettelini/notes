@@ -12,6 +12,7 @@
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usepackage{witharrows}
+\usepackage{xfrac}
 
 \pgfplotsset{compat=1.18}
 \WithArrowsOptions{displaystyle}
@@ -2942,5 +2943,250 @@ Questa proposizione è generalizzabile.
     quindi \(f(X_1, \cdots, X_n)\) e \(g(X_{n+1}, \cdots, X_{n+m})\)
     sono indipendenti.
 \end{snippetproof}
+
+Torniamo all'esempio degli \(n\) lanci di probabilità
+di una moneta con probabilità \(p \in [0,1]\)
+che esca testa e \(1-p\) che esca croce.
+Interpretiamolo con le variabili aleatorie.
+Sia \((\Omega, \powerset(\Omega), \mathbb P)\)
+uno spazio di probabilità discreto di appoggio.
+Definiamo le variabili aleatorie \(X_1, \cdots, x_n \colon \Omega \fromto \{0,1\}\)
+indipendenti e identicamente distribuite con
+\(X_i \sim \operatorname{Ber}(p)\) per tutte le \(i\), che rappresentano i lanci \(i\)-esimi.
+Si dice identicamente distribuite perché lancio sempre la stessa moneta,
+e indipendenti perché abbiamo l'assunzione delle prove ripetute indipendenti.
+Abbiamo studiato la probabilità di avere \(k\) successi in \(n\) lanci.
+La variabile aleatoria corrispondente è
+\[
+    S_n = \sum_{k=1}^n X_k
+\]
+Allora \(\{S_n = k\}\) se e solo se abbiamo \(k\) successioni in \(n\) lanci.
+Preso \(k \in \{0,\cdots, n\}\)
+ci interessa
+\begin{DispWithArrows*}
+    \mathbb P(S_n = k)
+    &= \sum_{
+        \substack{
+            v \in \{0,1\}^n \\ v = (v_1, \dots, v_n) \\ \sum_{i=1}^n v_i = k
+        }
+    } \mathbb P(X_1 = v_1, \cdots, X_n = v_n) \Arrow{Indipendenza} \\
+    &= \sum_{
+        \substack{
+            v \in \{0,1\}^n \\ v = (v_1, \dots, v_n) \\ \sum_{i=1}^n v_i = k
+        }
+    } \left(\prod_{i=1}^n \mathbb P(X_1 = v_1) \right) \Arrow{Identicamente \\ distribuite} \\
+    &= \sum_{
+        \substack{
+            v \in \{0,1\}^n \\ v = (v_1, \dots, v_n) \\ \sum_{i=1}^n v_i = k
+        }
+    } p^k (1-p)^{n-k} = \binom{n}{k}p^k (1-p)^{n-k}
+\end{DispWithArrows*}
+
+Quindi abiamo trovato che \(S_n \sim \operatorname{Bin}(n, p)\).
+Possiamo modellizzare con le variabili aleatorie anche l'estrazione senza reimissione dall'urna con rosse e blu,
+ma in questo le \(X_1, \cdots, X_n\)
+non sono indipendenti e identicamente distribuite.
+Poiché \(X_i \sim \operatorname{Ber}(p_i)\)
+ma \(p_i\) dipende da cosa ho estratto prima.
+
+Le variabili aleatorie sono in generale più versatili rispetto che una semplice modellizzazione con spazi di probabilità.
+Se voglio modificare un esperimento, posso aggiungere
+variabili aleatorie etc. (lo spazio di probabilità è di appoggio e rimane invariato),
+mentre con lo spazio di probabilità
+dovrei creare un nuovo spazio.
+Se per esempio studio i lanci di un dado equilibrato, e voglio aggiungere un secondo lancio all'esperimento,
+allora basta aggiungere una variabile aleatoria piuttosto che creare un nuovo spazio di probabilità del tutto.
+Se voglio studiare la somma di due lanci ci basta considerare la somma della variabile aleatoria.
+Abbiamo una struttura matematica sulle variabili aleatorie.
+
+Consideriamo uno spazio di probabilità discreto \((\Omega, \powerset(\Omega), \mathbb P)\)
+e prendiamo \(X \colon \Omega \fromto \realnumbers^n\) l'immagine di
+\(X (\Omega) \subseteq \realnumbers^n\), è un sottoinsieme discreto di \(\realnumbers^n\).
+\[
+    \mathbb P(X \in X(\Omega)) = \mathbb P(\Omega) = 1
+\]
+Quindi è inutile specificare ogni volta \(X \colon \Omega \fromto E \subseteq \realnumbers^n\)
+con \(E\) discreto, quindi scriveremo solo \(X \colon \Omega \fromto \realnumbers^n\).
+Sia \(p_X\colon \realnumbers^n \fromto [0,1]\) densità discreta di \(X\) e notiamo subito che
+\[
+    x \in \realnumbers^n \difference X(\Omega)
+\]
+implica che \(p_X(x) = 0\).
+Quindi \(p_X > 0\) al più in una quantità numerabile di \(x \in \realnumbers^n\).
+Sia ora \(g \colon X(\Omega) \fromto \realnumbers\).
+Allora, \(g(X) = g \circ X \colon \Omega \fromto \realnumbers\)
+variabile aleatorie discreta, ha densità
+\begin{align*}
+    p_{g(X)}(y) &= \mathbb P(g(X) = y)
+    = \mathbb P\left(
+        \{\omega \in \Omega \suchthat g(X(\omega)) = y\}
+    \right) \\
+    &= \mathbb P\left(
+        \{
+            \omega \in \Omega \suchthat \exists x \in \realnumbers^n
+            \suchthat X(\omega)=x \land g(x) = y    
+        \}
+    \right) \\
+    &= \sum_{\substack{x \in X(\Omega) \\ g(x) = y}} p_X(x)
+    = \sum_{\substack{x \in \realnumbers^n \\ g(x) = y}} p_X(x)
+\end{align*}
+possiamo estendere il dominio a \(\realnumbers^n\)
+perché tanto \(p_X>0\) al più in una quantità numerabile di \(x \in \realnumbers^n\).
+
+\pagebreak
+
+\section{Valore atteso o media di variabili aleatorie discrete}
+
+La media aritmetica è il baricentro di punti di massa equivalente.
+Se le masse non sono equivalenti consideriamo la media pesata
+\[
+    \sum_{i=1}^n x_i cdot \frac{m_i}{m}, \quad m = \sum_{i=1}^n m_i
+\]
+notiamo che \(p_i = \sfrac{m_i}{m} \in [0,1]\)
+e \[
+    \sum_{i=1}^n p_i = 1
+\]
+Quindi i \(p_1, \cdots, p_n\) sono una densità discreta.
+Da qusto ci aspettiamo che la media di una variabile aleatorie \(X \colon \Omega \fromto \realnumbers^n\)
+sia data da
+\[
+    \sum_{n\in X(\Omega)} xp_X(x)
+\]
+
+\begin{snippetdefinition}{Valore atteso di variabili aleatorie discrete}
+    Sia \((\Omega, \powerset(\Omega), \mathbb P)\)
+    uno spazio di probabilità discreto
+    e \(X \colon \Omega \fromto \realnumbers\) una variabile aleatoria discreta.
+    Diciamo che \(X\) ammette \emph{valore atteso / media}
+    se la serie
+    \[
+        \sum_{\omega \in \Omega} X(\omega) \mathbb P(\{\omega\})
+    \]
+    esiste (finita o infinita).
+    In questo caso chiamiamo valore atteso
+    \[
+        \mathbb E[X]
+        \triangleq \sum_{\omega \in \Omega} X(\omega) \mathbb P(\{\omega\})
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexample}{}
+    Sia \(\Omega = \naturalnumbers\) e \((\Omega, \powerset(\Omega), \mathbb P)\)
+    uno spazio di probabilità discreto dove
+    \[
+        \mathbb P(\{n\}) = \frac{c}{n^2}, \quad c = \left(
+            \sum_{n=1}^\infty \frac{1}{n^2}
+        \right)^{-1}
+    \]
+    prendiamo \(X \colon \naturalnumbers \fromto \naturalnumbers\)
+    tale che \(X(n) = n\).
+    Allora,
+    \begin{align*}
+        \mathbb E[x] &= \sum_{n \in \naturalnumbers}
+        X(n) \cdot \mathbb P(\{n\}) = c \sum_{n \in \naturalnumbers} n \cdot \frac{1}{n^2} \\
+        &= c \sum_{n=1}^\infty \frac{1}{n} = +\infty
+    \end{align*}
+\end{snippetexample}
+
+Dai risultati noti sulle serie numeriche sappiamo che se
+\begin{align*}
+    \sum_{\omega \in \Omega} |X(\omega)| \mathbb P(\{\omega\}) < +\infty
+\end{align*}
+Allora \(X\) ammette valore atteso finito.
+
+Sia \(A \in \powerset(\Omega)\) consideriamo \(\chi_A \colon \Omega \fromto \{0,1\}\).
+In questo caso,
+\begin{align*}
+    \mathbb E[\chi_A] = \sum_{\omega \in \Omega} \chi_A(\omega) \mathbb P(\{\omega\})
+    = \sum_{\omega \in \Omega} \mathbb P(\{\omega\}) = \mathbb P(A)
+\end{align*}
+Quindi nell'interpretazione soggettivista di de Finetti, il valore atteso non è altro che il valore
+equo da pagare per ottenere la quantità aleatoria \(X\).
+
+In generale il valore atteso o la media non sono necessariamente un valore assunto da \(X\).
+
+\begin{snippetproposition}{}
+    Sia \(p_X \colon \realnumbers \fromto [0,1]\) e tutto il resto TODO.
+    Allora il valore atteso esiste se e solo se
+    \[
+        \sum_{x\in\realnumbers} xp_X(x)
+    \]
+    esiste. In questo caso,
+    \[
+        \mathbb E[x] = \sum_{x \in \realnumbers} xp_X(x)
+    \]
+\end{snippetproposition}
+
+Notiamo che la serie è ben definita poiché \(p_X>0\) al più in una quantità numerabile di \(x\in \realnumbers\).
+
+\begin{snippetproposition}{}
+    \(\forall x \in X(\Omega)\) definiamo
+    \[
+        \Omega_x = \{
+            \omega \in \Omega \suchthat X(\omega) = x    
+        \}
+    \]
+    Abbiamo già visto che \(\{\Omega_x\}_{x\in X(\Omega)}\)
+    è una partizione numerabile disgiuta di \(\Omega\). Abbiamo
+    \begin{align*}
+        \sum_{\omega \in \Omega} X(\omega) \mathbb P(\{\omega\})
+        &= \sum_{x\in X(\Omega)} \sum_{\omega \in \Omega_x} X(\omega) \mathbb P(\{\omega\}) \\
+        &= \sum_{x\in X(\omega)} x \sum_{x\in \Omega_x} \mathbb P(\{\omega\}) \\
+        &= \sum_{x\in X(\omega)} x\cdot \mathbb P(\Omega_x) \\
+        &= \sum_{x\in X(\omega)} x \mathbb P(\{
+            \omega \in \Omega \suchthat X(\omega) = x
+        \}) \\
+        &= \sum_{x\in X(\Omega)} x \cdot p_X(x)
+    \end{align*}
+    Allora il primo membro esiste se e solo se l'ultimo membro esiste.
+\end{snippetproposition}
+
+\begin{snippetproposition}{}
+    Sia \(X \colon \Omega \fromto \realnumbers^n\) variabile aleatoria discreta
+    e \(g \colon X(\Omega) \fromto \realnumbers\).
+    Allora, la variabile aleatoria discreta \(g(X) \colon \Omega \fromto \realnumbers\)
+    ammette valore atteso se e solo se la serie
+    \[
+        \sum_{x\in\realnumbers} g(x) p_X(x)
+    \]
+    esiste.
+    In questo caso, \[
+        \mathbb E[g(x)] = \sum_{x \in \realnumbers}
+        g(x) p_X(x)
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    \(\forall x \in X(\Omega)\) definiamo
+    \[
+        \Omega_x = \{
+            \omega \in \Omega \suchthat X(\omega) = x    
+        \}
+    \]
+    Abbiamo già visto che \(\{\Omega_x\}_{x\in X(\Omega)}\)
+    è una partizione numerabile disgiuta di \(\Omega\). Abbiamo
+    \begin{align*}
+        \sum_{\omega \in \Omega} g(X(\omega)) \mathbb P(\{\omega\})
+        &= \sum_{y \in \realnumbers} y p_{g(x)}(y) \\
+        &= \sum_{\omega \in \Omega} g(X(\omega)) \mathbb P(\{\omega\}) \\
+        &= \sum_{x\in X(\Omega)} \sum_{\omega \in \Omega_x} g(X(\omega)) \mathbb P(\{\omega\}) \\
+        &= \sum_{x\in X(\Omega)} g(x) \sum_{\omega \in \Omega_x} \mathbb P(\{\omega\}) \\
+        &= \sum_{x\in X(\Omega)} g(x) \mathbb P(\Omega_x) \\
+        &= \sum_{x\in X(\Omega)} y(x) p_X(x)
+    \end{align*}
+    dove al primo passaggio abbiamo usato la propsizione precedente % TODO CITE
+    per variabile aleatoria \(y = g(x)\).
+\end{snippetproof}
+
+Possiamo usare questa proposizione in modi modi. Per esempio \((X_1, X_2) \colon \Omega \fromto \realnumbers^2\)
+discreto e \(g \colon \realnumbers^2 \fromto \realnumbers^2\) tale che \(g(x_1, x_2) = x_1x_2\)
+quindi 
+\begin{align*}
+    \mathbb E[X_1, X_2] = \mathbb E[g(X_1, X_2)]
+    = \sum_{(x_1, x_2) \in \realnumbers^2} x_1x_2 p_{X_1, X_2}(x_1, x_2)
+\end{align*}
+notiamo che anche nel caso \(X \colon \Omega \fromto \realnumbers\)
+discreto \(X\) può avere valore atteso infinito ma \(g(x)\)
+può avere valore atteso finto e viceversa.
 
 \end{document}
