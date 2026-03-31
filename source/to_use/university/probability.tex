@@ -3189,4 +3189,263 @@ notiamo che anche nel caso \(X \colon \Omega \fromto \realnumbers\)
 discreto \(X\) può avere valore atteso infinito ma \(g(x)\)
 può avere valore atteso finto e viceversa.
 
+\begin{snippetproposition}{}
+    Siano \(X,Y \colon \Omega \fromto \realnumbers\)
+    variabili aleatorie discrete tali che
+    \(\mathbb E[X], \mathbb E[Y] < +\infty\).
+    Allora, \begin{enumerate}
+        \item se \(X \leq Y\) quasi certamente, allora
+        \[
+            \mathbb E[X] \leq \mathbb E[Y]
+        \]
+        \item \[
+            |\mathbb E[X]| \leq E[|X|]
+        \]
+        \item se \(a,b \in \realnumbers\), allora
+        \[
+            \mathbb E[aX + bY] = a\mathbb E[X] + b\mathbb E[Y]
+        \]
+        \item se \(X \geq 0\) quasi certamente, allora
+        \(X = 0\) quasi certamente se e solo se \(\mathbb E[X] = 0\).
+        \item se \(X = c \in \realnumbers\) quasi certamente, allora
+        \(\mathbb E[X] = c\).
+        \item \[
+            \mathbb E[\mathbb E[X]] = \mathbb E[X]
+        \]
+    \end{enumerate}
+    I punti \((1),(2),(3)\) funzionano anche senza la condizione \(\mathbb E[X], \mathbb E[Y] < +\infty\).
+\end{snippetproposition}
+
+\begin{snippetproposition}{}
+    \[
+        \mathbb E[X] < \infty \iff \mathbb E[|X|] < \infty
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Lezione del 30 fra le cose aggiunte a posteriori al PDF.
+\end{snippetproof}
+
+Grazie ad una proposizione di ieri dato \((X_1, \cdots, X_n)\)
+vettore aleatorio discreto con \(X_i \colon \Omega \fromto \realnumbers\)
+discreta e \(g \colon \realnumbers^n \fromto \realnumbers\)
+allora la variabile discreta \(g(X)\) ammette valore atteso finito se e solo se
+\[
+    \sum_{\substack{\overline x = (x_1, \cdots, x_n) \\ \in \realnumbers^n}}
+    |g(\overline x)| p_{X_1, \cdots, X_n}(\overline x) < +\infty
+\]
+dove \(p_{X_1, \cdots, X_n}\) è la densità congiunta di \((X_1, \cdots, X_n)\).
+In questo caso,
+\[
+    \mathbb E[g(X)] = \sum_{\overline \in \realnumbers^n} g(\overline x) p_{X_1, \cdots, X_n}(\overline x)
+\]
+
+% TODO fare replace di tutte le densità con rho maiuscola
+
+\subsection{Varianza e covarianza}
+
+Fissiamo \((\Omega, \powerset(\Omega), \mathbb P)\)
+spazio di probabilità discreto e \(X,Y \colon \Omega \fromto \realnumbers\)
+variabili aleatorie discrete.
+
+\begin{snippetdefinition}{Momenti}
+    \begin{itemize}
+        \item Diciamo che \(X\) ammette momento \(k\)-esimo finito
+        se \[
+            \mathbb E[|X|^k] < +\infty
+        \]
+        \item Diciamo che \(X,Y\) ammettono momento
+        misto finito se
+        \[
+            \mathbb E[|XY|] < +\infty
+        \]
+    \end{itemize}
+    In questi casi chiamiamo \(\mathbb E[X^k]\)
+    \emph{momento \(k\)-esimo di \(X\)}
+    e \(\mathbb E[XY]\) \emph{momento misto di \(X\) e \(Y\)}.
+\end{snippetdefinition}
+
+\begin{snippetproposition}{}
+    Sia \(p_{X,Y}\colon \realnumbers^2 \fromto \realnumbers\) la congiunta
+    del vettore \((X,Y)\) e \(p_X \colon \realnumbers \fromto \realnumbers\)
+    la densità discreta di \(X\).
+    \begin{enumerate}
+        \item \(X\) ammette momento \(k\)-esimo finito se e solo se
+        \[
+            \sum_{x\in\realnumbers} |x|^k p_X(x) < \infty
+        \]
+        e in tal caso
+        \[
+            \mathbb E[X^k] = \sum_{x\in\realnumbers} x^k p_X(x)
+        \]
+        \item \(X,Y\) ammettono momento misto finito se e solo se
+        \[
+            \sum_{(x,y) \in \realnumbers^2} |xy| p_{X,Y}(x,y) < +\infty
+        \]
+        e in tal caso
+        \[
+            \mathbb E[XY] = \sum_{(x,y) \in \realnumbers^2} xy p_{X,Y}(x,y)
+        \]
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Basta applicare la proposizione sulla composizione % TODO REF
+    con \(g_1 \colon \realnumbers \fromto \realnumbers\)
+    e \(g_2 \colon \realnumbers^2 \fromto \realnumbers\) date da
+    \(g_1(x) = x^k\) e \(g_x(x,y) = xy\)
+    e ricordare che \(\forall Z \colon \Omega \fromto \realnumbers\)
+    variabile aleatorie discreta
+    \[
+        \mathbb E[Z] < +\infty \iff \mathbb E[|Z|] < +\infty
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{disuguaglianza di Jensen}
+    Sia \(f \colon \realnumbers \fromto \realnumbers\) una funzione convessa e tale che
+     \(f(\mathbb E[X]) < \infty\). Allora,
+     \[
+        f(\mathbb E[X]) \leq \mathbb E[f(X)]
+     \]
+\end{snippetproposition}
+
+Questa vale più in generale.
+Questa è una generalizzazione del modulo.
+
+\begin{snippetproof}{}
+    Per ipotesi \(\forall x_0 \in \realnumbers, \exists \lambda_0 \in \realnumbers\)
+    tale che \[
+        f(x) \geq g(x_0) + \lambda_0(x-x_0), \quad \forall x \in \realnumbers
+    \]
+    Prendiamo \(x_0 = \mathbb E[X]\) e \(x\) diventa \(X\) allora
+    \begin{align*}
+        f(X) \geq f(\mathbb E[X]) - \lambda_0(X- \mathbb E[X])
+    \end{align*}
+    quasi certamente. Facciamo ora il valore atteso di ambo i membri
+    \begin{align*}
+        \mathbb E[f(X)] &\geq \mathbb E\left[f(\mathbb E[X]) - \lambda_0(X- \mathbb E[X])\right] \\
+        \mathbb E[f(X)] &\geq \mathbb E[f(\mathbb E[X])] -  \lambda_0 \mathbb E[(X- \mathbb E[X])] \\
+        \mathbb E[f(X)] &\geq \mathbb E[f(X)]
+    \end{align*}
+\end{snippetproof}
+
+Al contrario se la funzione è concava vale il \(\leq\).
+
+\begin{snippetproposition}{Cauchy-Schwarz}
+    Supponiamo che \(\mathbb E[X^2], \mathbb E[Y^2] < +\infty\).
+    Allora il vettore aleatorio \((X,Y)\) ammette momento misto finito.
+    In particolare,
+    \[
+        |\mathbb E[XY]| \leq \sqrt{\mathbb E[X^2] \mathbb E[Y^2]}
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Se uno dei due è nullo, per esempio \(\mathbb E[X^2]\),
+    allora la proposizione è banale in quanto
+    \(\mathbb E[X^2] = 0\) se e solo se \(X^2 = 0\)
+    quasi certamente se e solo se \(X = 0\) quasi certamente.
+    Supponiamo quindi che ambo non siano nulli.
+    Partiamo dal caso \(\mathbb E\left[XY\right] > 0\).
+    Definiamo
+    \[
+        X^\ast = \frac{X}{\sqrt{\mathbb E[X^2]}},\quad
+        Y^\ast = \frac{Y}{\sqrt{\mathbb E[Y^2]}}
+    \]
+    Notiamo immediatamente che \begin{align*}
+        0 \leq \mathbb E[(X^\ast - Y^\ast)^2]
+        &= \mathbb E\left[(X^\ast)^2\right]
+        + \mathbb E\left[(Y^\ast)^2\right] - 2\mathbb E\left[X^\ast Y^\ast\right] \\
+        &= \frac{\mathbb E\left[X^2\right]}{\mathbb E\left[X^2\right]}
+        + \frac{\mathbb E\left[Y^2\right]}{\mathbb E\left[Y^2\right]}
+        - 2 \frac{
+            \mathbb E\left[XY\right]
+        }{
+            \sqrt{\mathbb E\left[X^2\right]\mathbb E\left[Y^2\right]}
+        } \\
+        &= 2-2\frac{\mathbb E\left[XY\right]}{\sqrt{\mathbb E\left[X\right]\mathbb E\left[Y\right]}}
+    \end{align*}
+    e quindi segue la tesi.
+    L'altro caso è analogo facendo attenzione al segno.
+    Per la disuguaglianza di Jensen anche \(\mathbb E\left[X\right],\mathbb E\left[Y\right] < +\infty\),
+    e dunque \(\mathbb E\left[X^\ast\right], \mathbb E\left[Y^\ast\right] < +\infty\).
+\end{snippetproof}
+
+Grazie alla disuguaglianza di Jensen notiamo che se
+\(\mathbb E\left[|X|^k\right] < +\infty\)
+allora \(\mathbb E\left[|X|^h\right] < +\infty\)
+per \(h \in \{1, \cdots, k\}\), usando la funzione \(X^{\sfrac{k}{h}}\). \\
+La disuguaglianza di Cauchy-Schwarz che abbiamo visto
+non è altro che
+una disuguaglianza per il prodotto scalare
+di uno spazio \(L^p\)
+\[
+    L^p(E, \gamma) = \left\{
+        f\colon E \fromto \realnumbers
+        \suchthat \int_E f^p(x) \,\text{d}\gamma(x) < \infty
+    \right\}
+\]
+che è uno spazio di Banach rispetto alla norma
+(quozientato rispetto alla relazione di equivalenza dell'uguaglianza quasi ovunque)
+\[
+    ||f||_p = {\left(
+        \integral[a][b][|f(x)|^p][\gamma(x)]
+    \right)}^{\frac{1}{p}}, \quad 1 \leq p < \infty
+\]
+nel caso \(p = 2\) ha anche un prodotto scalare che induce la norma
+\[
+    \langle f,g\rangle_2 = \int_E f(x)g(x) \gamma \,\text{d}\gamma(x)
+\]
+(rispetto a qualsiasi misura sigma finita)
+
+\begin{snippetdefinition}{Covarianza e varianza}
+    Siano \(\mathbb E[X^2], \mathbb E[Y^2] < +\infty\). Abbiamo
+    \begin{enumerate}
+        \item \emph{varoanza:} \[
+            \operatorname{Var}(X) \triangleq
+            \mathbb E[(X-\mathbb E[X])^2] = \mathbb E[X^2] - \mathbb E[X]^2
+        \]
+        \item \emph{covarianza} \[
+            \operatorname{Cov}(X,Y) \triangleq
+            \mathbb E[(X-\mathbb E[X])(Y-\mathbb E[Y])]
+            = \mathbb E[XY] - \mathbb E[X]\mathbb E[Y]
+        \]
+    \end{enumerate}
+\end{snippetdefinition}
+
+\begin{snippetproposition}{}
+    Siano \(\mathbb E[X^2], \mathbb E[Y^2] < +\infty\). Abbiamo
+    \begin{align*}
+        \operatorname{Var}(X) = \sum_{x\in\realnumbers}
+        (x- \mathbb E[X])^2p_X(x)
+    \end{align*}
+    e
+    \begin{align*}
+        \operatorname{Cov}(X,Y) &= \sum_{(x,y)\in\realnumbers^2}
+        (x- \mathbb E[X])(y- \mathbb E[Y])p_{X,Y}(x,y) \\
+        &= \sum_{(x,y)\in\realnumbers^2}
+        xy p_{X,Y}(x,y) - \mathbb E[X]\mathbb E[Y]
+    \end{align*}
+\end{snippetproposition}
+
+Entrambe sono ben definite poiché per la disuguaglianza di Jensen
+\(\mathbb E[X^2], \mathbb E[Y^2] < +\infty\).
+
+Nella varianza stiamo facendo la media pesata degli scarti quadratici,
+cioè stiamo misurando la dispersione dalla media.
+Il motivo per cui mettiamo il quadrato è
+\begin{enumerate}
+    \item evitiamo che spostamenti positive e negativi si compensino,
+    \item amplifichiamo l'effetto di scostamenti molto grossi \(>1\),
+    e minimizziamo quelli più vicini,
+    \item motivo legato alla regolarità della funzione
+    \[
+        f(c) = \sum_{x \in \realnumbers}
+        (x-c)^2 p_X(x)
+    \]
+    In generale una distanza \(f(y) = |c_0 - y|\) non è differenziabile vicino a \(c_0\),
+    invece \(f(y) = |c_0 -y|^2\) lo è.
+\end{enumerate}
+
+
 \end{document}
