@@ -15,7 +15,6 @@
 \usetikzlibrary{calc}
 \usetikzlibrary{decorations.markings}
 \usetikzlibrary{cd}
-%\pgfplotsset{compat=1.18}
 
 % Cancel color
 \renewcommand{\CancelColor}{\color{red}}
@@ -2174,5 +2173,209 @@ di incidenza interno o esterno.
     Infine usare il teorema delle tangenti di Hopf e la formula per il calcolo.
     Usare anche la formula per il calcolo dei winding number in forma integrale complesso.
 \end{snippetproof}
+
+
+\pagebreak
+
+\section{Varietà differenziali}
+
+\begin{snippetdefinition}{Secondo numerabile}
+    Uno spazio topologico è secondo numerabile se ha base numerabile.
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Varietà topologica}
+    Una \emph{varietà topologica} di dimensione \(n\)
+    è uno spazio topologico \(M\)
+    di Hausdorff secondo numerabile tale che per ogni punto
+    \(p \in M\) esiste un intorno aperto \(U \subseteq M\)
+    e un omeomorfismo
+    \[
+        \varphi \colon U \fromto V \subseteq \realnumbers^n
+    \]
+    dove \(V\) è un aperto di \(\realnumbers^n\).
+    Le coppie \((U, \varphi)\) sono dette \emph{carte locali},
+    mentre la collezione di carte che ricopre \(M\) è detta atlante.
+\end{snippetdefinition}
+
+Una varietà topologica è uno spazio localmente omeomorfo ad uno spazio euclideo
+\(\realnumbers^n\). Le mappe si possono definire in una direzione o nell'altra.
+% TODO magari nella definizione invertirle direttamnt
+
+\begin{snippetdefinition}{Varietà differenziale}
+    Una \emph{varietà differenziale} è una varietà
+    con un atlante tale che date due carte qualsiasi \((U_i, \varphi_i), (U_j, \varphi_j)\),
+    la composizione
+    \[
+        \varphi_j \circ \varphi_i^{-1} \colon \varphi_i(U_i \intersection U_j) \fromto \varphi_j(U_i \intersection U_j)
+    \]
+    è liscia laddove è definita.
+\end{snippetdefinition}
+
+Cioè ci interessa considerare le intersezioni dei domini delle mappe di transazione.
+
+\begin{center}
+    \begin{tikzpicture}
+        \draw[thick] (150:5) arc (150:30:5) node[right] {$M$};
+        \draw[line width=5pt, red!60] (130:5) arc (130:70:5);
+        \draw[line width=5pt, blue!60] (110:5) arc (110:50:5);
+        \draw[line width=5pt, purple] (110:5) arc (110:70:5);
+        \node[red] at (120:5.6) {$U_i$};
+        \node[blue] at (60:5.6) {$U_j$};
+        \node[purple] at (90:5.6) {$U_i \cap U_j$};
+        \filldraw[fill=gray!10, draw=black, thick] (-6,-4) rectangle (-2,0);
+        \node at (-6, 0.3) {$\mathbb{R}^2$};
+        \filldraw[fill=gray!10, draw=black, thick] (2,-4) rectangle (6,0);
+        \node at (6, 0.3) {$\mathbb{R}^2$};
+        \fill[red!30] (-4,-2) ellipse (1.5 and 1.2);
+        \fill[purple!50] (-3.2,-2) ellipse (0.7 and 1);
+        \node[red] at (-4.8,-2) {$\varphi_i(U_i)$};
+        \node[purple, font=\footnotesize] at (-3.2,-3.5) {$\varphi_i(U_i \cap U_j)$};
+        \fill[blue!30] (4,-2) ellipse (1.5 and 1.2);
+        \fill[purple!50] (3.2,-2) ellipse (0.7 and 1);
+        \node[blue] at (4.8,-2) {$\varphi_j(U_j)$};
+        \node[purple, font=\footnotesize] at (3.2,-3.5) {$\varphi_j(U_i \cap U_j)$};
+        \draw[-latex, red, thick] (125:4.8) to[out=240, in=90] node[left] {$\varphi_i$} (-4.5, -0.6);
+        \draw[-latex, blue, thick] (55:4.8) to[out=300, in=90] node[right] {$\varphi_j$} (4.5, -0.6);
+        \draw[-latex, purple, thick, dashed] (-2.5, -2) to[out=30, in=150] node[above] {$\varphi_j \circ \varphi_i^{-1}$} (2.5, -2);
+    \end{tikzpicture}
+\end{center}
+
+\pagebreak
+
+\begin{snippetdefinition}{}
+    Sia \(X\) una varietà differenziabile di dimensione \(n\)
+    e sia \(f \colon X \fromto \realnumbers^m\) funzione.
+    Diciamo che \(f\) è di classe \(\mathcal C^\infty\) se, dato
+    un atlante \(\{(U_i, \varphi_i)\}\) di \(X\) vale
+    \[
+        f \circ \varphi_i \colon \Omega_i \fromto \realnumbers^m
+    \]
+    è di classe \(\mathcal C^\infty\) per ogni \(i\).
+\end{snippetdefinition}
+
+\begin{snippetexample}{}
+    \begin{wrapfigure}{r}{6.5cm}
+        \begin{center}
+        \begin{tikzpicture}[scale=1.75]
+            \draw[->, gray, very thin] (-1.8,0) -- (1.8,0) node[right, text=black] {$x$};
+            \draw[->, gray, very thin] (0,-1.8) -- (0,1.8) node[above, text=black] {$y$};
+
+            \draw[thick, black!60] (1,0) -- (0,1) -- (-1,0) -- (0,-1) -- cycle;
+
+            \draw[red, thick] (0.1, 0.9) -- (1.1, 0) -- (0.1, -0.9);
+            \filldraw[fill=white, draw=red, thick] (0.1, 0.9) circle (1.2pt);
+            \filldraw[fill=white, draw=red, thick] (0.1, -0.9) circle (1.2pt);
+            \node[red, above right] at (1.1, 0) {$U_+$};
+
+            \draw[blue, thick] (-0.1, 0.9) -- (-1.1, 0) -- (-0.1, -0.9);
+            \filldraw[fill=white, draw=blue, thick] (-0.1, 0.9) circle (1.2pt);
+            \filldraw[fill=white, draw=blue, thick] (-0.1, -0.9) circle (1.2pt);
+            \node[blue, above left] at (-1.1, 0) {$U_-$};
+
+            \draw[green!60!black, thick] (-0.9, 0.1) -- (0, 1.1) -- (0.9, 0.1);
+            \filldraw[fill=white, draw=green!60!black, thick] (-0.9, 0.1) circle (1.2pt);
+            \filldraw[fill=white, draw=green!60!black, thick] (0.9, 0.1) circle (1.2pt);
+            \node[green!60!black, above right] at (0, 1.15) {$V_+$};
+
+            \draw[orange, thick] (-0.9, -0.1) -- (0, -1.1) -- (0.9, -0.1);
+            \filldraw[fill=white, draw=orange, thick] (-0.9, -0.1) circle (1.2pt);
+            \filldraw[fill=white, draw=orange, thick] (0.9, -0.1) circle (1.2pt);
+            \node[orange, below right] at (0, -1.15) {$V_-$};
+        \end{tikzpicture}
+        \end{center}
+    \end{wrapfigure}
+    Consideriamo l'insieme dei punti
+    \[
+        X = \{(x,y) \in \realnumbers^2 \suchthat 1 = |x| + |y|\}
+    \]
+    Possiamo considerare gli aperti
+    \begin{align*}
+        U_+ &= \{(x,y) \in X \suchthat x>0\} \quad U_- &= \{(x,y) \in X \suchthat x<0\} \\
+        V_+ &= \{(x,y) \in X \suchthat y>0\} \quad V_- &= \{(x,y) \in X \suchthat y<0\}
+    \end{align*}
+    Chiaramente \(U_{\pm}\) e \(V_{\pm}\) sono omeomorfi a intervalli tramite le opportune proiezioni sugli assi.
+    In questo esempio le funzioni di transizione sono liscie (uguali a mappe del tipo \(t \fromto \pm t\)).
+    Allora perché vediamo gli angoli? Il motivo è che \(X\) è liscia, ma la data mappa di immersione
+    \(i \colon X \fromto \realnumbers^2\) non è liscia.
+    Consideriamo la carta \(\varphi = \varphi^V_+ \colon (-1,1) \fromto V_1\)
+    e componiamo \(i \circ \varphi\). Abbiamo
+    \[
+        \varphi(t) = \begin{cases}
+            (t,1-t) & t \geq 0 \\
+            (t,t+1) & t < 0
+        \end{cases}
+    \]
+    Quindi, \((i \circ \varphi)(t) = (t, -|t| + 1)\) non è liscia
+    in quanto non è derivabile in \(t=0\).
+    \wrapfill
+\end{snippetexample}
+
+\begin{snippetdefinition}{}
+    Siano \(X,Y\) varietà differenziali di dimensioni \(n,m\)
+    rispettivamente e sia \(f \colon X \fromto Y\) una funzione continua.
+    Diciamo che \(f\) è di classe \(\mathcal C^\infty\) se
+    dati gli atlanti \(\{(U_i, \varphi)\}, \{(V_j, \Psi_j)\}\)
+    rispettivamente di \(X\) e \(Y\), si ha per ogni \(i,j\)
+    \[
+        \Psi_j^{-1} \circ f \circ \varphi_i
+    \]
+    è \(\mathcal C^\infty\) sul suo aperto di definizione.
+\end{snippetdefinition}
+
+Tale aperto è \(\varphi_i^{-1} f^{-1}(V_j)\).
+
+\begin{center}
+    \begin{tikzcd}[row sep=large, column sep=huge]
+        U_i \cap f^{-1}(V_j) \arrow[r, "f"] & V_j \arrow[d, "\Psi_j^{-1}"] \\
+        \varphi_i^{-1}(f^{-1}(V_j)) \arrow[u, "\varphi_i"] \arrow[r, "\Psi_j^{-1} \circ f \circ \varphi_i"'] & \Psi_j^{-1}(V_j)
+    \end{tikzcd}
+\end{center}
+
+La funzione \(f\) è continua se e solo se
+tutte le \(f \circ \varphi_i \colon \Omega_i \fromto Y\)
+è continua per ogni carta \(\varphi_i\) di \(X\).
+
+\begin{snippetdefinition}{Diffeomorfismo}
+    Sia \(f \colon X \fromto Y\) una funziona.
+    Allora \(f\) è detta \emph{diffeomorfismo}
+    se \(f\) è un omeomorfismo e \(f,f^{-1}\) sono entrambe liscie.
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{} 
+    Sia \(X\) una varietà topologica e siano
+    \(\mathcal{A} = \{(U_i, \varphi_i)\}\) e
+    \(\mathcal{A}' = \{(U_j', \varphi_j')\}\) due suoi atlanti.
+    Diciamo che i due atlanti sono \emph{compatibili} e definiscono la medesima struttura
+    \(\mathcal{C}^\infty\) se l'applicazione
+    identità \(\text{id}_X: X \to X\) risulta essere di
+    classe \(\mathcal{C}^\infty\) considerando \(\mathcal{A}\) come atlante del
+    dominio e \(\mathcal{A}'\) come atlante del codominio. 
+\end{snippetdefinition} 
+
+Ciò equivale a richiedere che le mappe di transizione \(\varphi_j' \circ \varphi_i^{-1}\) siano
+funzioni \(\mathcal{C}^\infty\) per ogni \(i,j\) su aperti di \(\realnumbers^n\), ovunque siano ben definite.
+
+Notiamo che l'unione di atlanti compatibili è un atlante.
+Esiste quindi un atlante massimale (lemma di Zorn).
+Tale atlante massimale è unico e definisce una unica struttura \(\mathcal C^\infty\)
+su \(X\).
+
+\begin{snippetexample}{}
+    Esistono spazi topologici con strutture \(\mathcal C^\infty\)
+    distinte. Per esempio le sfere esotiche, come \(S^7\)
+    ha \(28\) strutture diverse. \(S^4, \realnumbers^4\) ne hanno infinite.
+    Per varieté di dimensione \(\leq 3\) la struttura è unica.
+\end{snippetexample}
+
+\subsection{Strutture \(\mathcal C^\infty\) su spazi noti}
+
+Se \(U \subseteq X\) aperto, allora \(U\)
+ha struttura \(\mathcal C^\infty\) ereditata da \(X\)
+usando le carte ristrette a \(U\).
+
+\(\realnumbers^n\) è una varietà differenziale come atlante
+\(\{(\realnumbers^n, \text{id})\}\)
+ciò è ereditato da ogni aperto \(\Omega\)
+con atlante \(\{(\Omega, \text{id})\}\).
 
 \end{document}

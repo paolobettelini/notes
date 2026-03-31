@@ -3445,6 +3445,290 @@ ma non sono necessariamente uniche.
 
 \pagebreak
 
+\subsection{Equazioni differenziali lineari}
+
+TODO 30 marzo
+
+Abbiamo mostrare che l'integrale generale di \(y' = A(x)y + b(x)\)
+l'integrale generale è un sottospazio affine di \(\mathcal C'(I, \realnumbers^n)\)
+di dimensione \(n\) (il numero di componenti di \(y\)).
+Per \(n=1\) quindi \(y' = a(x)y + b(x)\)
+abbiamo la formula
+\[
+    y(x) = e^{\integral[x_0][x][a(t)][t]} \left[\,
+        \integral[x_0][x][b(t)e^{-\integral[x_0][t][a(s)][s]}][t] + K
+    \right]
+\]
+Quindi il problema è ridotto alle quadrature. Per dimensioni superiore invece ciò non succede,
+in generale è un problema di numerica.
+Possiamo definire l'esponenziale di matrici
+\[
+    e^A = \sum \frac{A^n}{n!}
+\]
+che converge sempre in quanto abbiamo una norma
+\[
+    \left|\left| \sum \frac{A^n}{n!} \right|\right|
+    \leq \sum \frac{||A||^n}{n!}
+\]
+
+Considerando l'equazione geneale, ci basta trovare \(n\)
+soluzioni linearmente indipendenti \(w_1, \cdots, w_n\)
+dell'equazione omogenea associata cioè
+\[
+    y' = A(x)y
+\]
+Con queste componenti costruiamo la matrice quadrata \(\Phi = [w_1, \cdots, w_n]\)
+detta la matrice fondamentale.
+Tale matrice non è unica, ma fissata una matrice fondamentale le soluzioni dell'equazione
+generale si scrivono come \[
+    y(x) = \Phi(x) \cdot c + \tilde \varphi(x)
+\]
+dove \(\varphi(x)\) è una soluzione particolare e \(c\) è una vettore di costanti.
+Al variare di \(c\) ottendo tutte le soluzioni mediante combinazione lineare delle soluzioni.
+Il determinante di una matrice fondamentale è detto determinante Wronskiano
+\[
+    W(x) \triangleq \det \Phi(x)
+\]
+
+\begin{snippetexample}{Esercizio del foglio}
+    Soddisfa l'equazione differenziale del primo ordine (derivando il determinante con Laplace)
+    \[
+        W'(x) = (\operatorname{trace}A(x))W(x)
+    \]
+    per \(x \in I\).
+\end{snippetexample}
+
+Chiaramente \(W \equiv 0\) è soluzione dell'equazione costante,
+e le soluzioni non possono intersecarsi, allora o è sempre nulla o non è mai nulla.
+Se si annulla in un punto allora si annulla ovunque,
+se non si annulla in un punto non si annulla mai.
+
+Supponiamo di avere \(\varphi_1, \cdots, \varphi_n \colon I \fromto \realnumbers^n\)
+e costruiamo la matrice \([\varphi_1, \cdots, \varphi_n]\)
+
+\begin{snippetproposition}{}
+    Se le soluzioni sono linearmente dipendenti,
+    allora il determinante è nullo.
+\end{snippetproposition}
+
+\begin{snippetproposition}{}
+    Per ipotesi esiste \(c \in \realnumbers^n\) tale che \(c \neq 0\) e
+    \[
+        \sum_{i=1}^n c_i \varphi_i = 0
+    \]
+    Vediamolo come un sistema dove le \(c_i\) sono incognite e le \(\varphi_i\)
+    costanti. allora ha una soluzione banale, quindi il determinante è nullo.
+\end{snippetproposition}
+
+Il problema è che \(c\) potrebbe dipende da \(x\). Per avere l'inverso,
+mi serve una \(c\) indipendente da \(x\). Quindi non vale il viceversa.
+
+\begin{snippetexample}{Non vale il viceversa per funzioni generiche}
+    Consideriamo \(\varphi_1(x) = (x^2, 2x)\) e \(\varphi_2(x) = (x|x|, 2|x|)\)
+    dov \(\varphi_1, \varphi_2 \colon \realnumbers \fromto \realnumbers^2\).
+    Su \([0,\infty)\) abbiamo \(\varphi_1 = \varphi_2\).
+    Su \((-\infty,0]\) abbiamo \(\varphi_1 = - \varphi_2\).
+    Le due funzioni sono linearmente indipendenti, tuttavia su ogni intervallo
+    possiamo trovare \(c\) tale che uno è un multiplo dell'altra, e quindi il determinante
+    Wronskiano si annulla sempre.
+\end{snippetexample}
+
+Se due funzioni sono linearmente dipendenti su un intervallo,
+allora lo sono pure su ogni sottointervallo.
+Se due funzioni sono linearmente indipendente su un interallo,
+allora lo sono pure su ogni sopraintervallo.
+Questo vale per funzioni generiche.
+Se invece le funzioni sono soluzioni della medesima equazione differenziale lineare
+a coefficienti continui,
+allora vale anche il viceversa della proposizione precedente.
+
+Siano infatti \(\varphi_1, \cdots, \varphi_n\)
+soluzioni e supponiamo che
+per qualche \(\tilde x\)
+valga \(\det[\varphi_1, \cdots, \varphi_n] = 0\).
+Sappiamo che esiste \(c \in \realnumbers^n\) non nullo tale che
+\[
+    \sum_{i=1}^n c_i(\tilde x)\varphi_i(\tilde x) = 0
+\]
+Consideriamo ora la funzione
+\[
+    \varphi(x) = \sum_{i=1}^n c_i(\tilde x)\varphi_i(x)
+\]
+risolve l'equazione differenziale in quanto combinazione lineare dell'equazione.
+Nel punto \(\tilde x\) abbiamo \(\varphi(x) = 0\), allora deve essere identicamente nulla
+\(\varphi \equiv 0\)
+in quanto l'unica soluzione dell'equazione omogenea associata che può annullarsi è precisamente questa.
+Quindi le funzioni sono linearmente dipendenti.
+
+Quindi, il determinante Wronskiano si annulla anche solo in un punto se e solo se
+le soluzioni sono linearmente dipendenti.
+
+Il medesimo ragionamento si applica
+anche alle equazioni lineari di ordine \(n\),
+una volta trasformata in una equazione del primo ordine vettoriale.
+Questo si fa
+\[
+    y^{(n)} = a_1(x)y^{(n-1)} + \cdots + a_{n-1}(x)y + b(x)
+\]
+con \(a,b \in \mathcal C(I)\), e ponendo
+\(y_1 = y, y_2 = y', \cdots, y_n = y^{(n-1)}\)
+e quindi troviamo il sistema
+\[
+    \begin{cases}
+        y_1' = y_2 \\
+        y_2' = y_3 \\
+        \vdots \\
+        y_n' = a_1(x)y^{(n-1)} + \cdots + a_{n-1}(x)y + b(x)
+    \end{cases}
+\]
+Il sistema ha matrici associate
+\[
+    A(x) = \begin{pmatrix}
+        0 & 1 & 0 & \cdots & 0 \\
+        0 & 0 & 1 & \cdots & 0 \\
+        \vdots & \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \cdots & 0 & 1 \\
+        a_1 & a_2 & a_3 & \cdots & a_n 
+    \end{pmatrix},
+    \quad b(x) = \begin{pmatrix}
+        0 \\ \vdots \\ 0 \\ b(x)
+    \end{pmatrix}
+\]
+Supponiamo di avere \(n\) soluzioni dell'omogenea associata \(\varphi_1, \cdots, \varphi_n \colon I \fromto \realnumbers\),
+che sono \(n-1\) valori con cui costruiamo la matrice quadrata \(n \times n\)
+\emph{Wronskiana}
+\[
+    \begin{pmatrix}
+        \varphi_1 & \cdots & \varphi_n \\
+        \varphi_1' & \cdots & \varphi_n' \\
+        \vdots & \ddots & \vdots \\
+        \varphi_n^{(n-1)} & \cdots & \varphi_n^{(n-1)}
+    \end{pmatrix}
+\]
+che è l'equivalente della matrice fondamentale.
+Il suo determinante si chiama \emph{determinante Wronskiano}.
+Vale lo stesso discorso di prima per quanto riguarda la dipendenza o indipendenza lineare.
+Nel caso \(a_1, \cdots, a_n \in \realnumbers\),
+cioè con coefficienti costanti, abbiamo una regola che ci consente di trovare l'integrale generale,
+quella del polinomio caratteristico (da cui prende il nome in quanto polinomio caratteristico di \(A\)).
+
+Supponiamo di avere \(\varphi_1(x) = e^{\alpha x}, \varphi_2(x) = e^{\beta x}\)
+con \(\alpha,\beta\) reali.
+Per mostrare che queste sono soluzioni linearmenti indipendenti (come detto senza giustificazione in analisi II)
+basta calcolare il determinante Wronskiano.
+In generale, dati \(\varphi_1(x) = e^{\alpha_1 x}, \cdots, \varphi_n(x) = e^{\alpha_n x}\)
+con \(\alpha_i \in \realnumbers\) a due a due distinti, allora abbiamo
+\begin{align*}
+    \det 
+    \begin{pmatrix}
+        1 & \cdots & 1 \\
+        \alpha_1 & \cdots & \alpha_n \\
+        \alpha_1^2 & \cdots & \alpha_n^2 \\
+        \vdots & \ddots & \vdots \\
+        \alpha_1^n & \cdots & \alpha_n^{n-1}
+    \end{pmatrix} = \prod_{1 \leq i < j \leq n}(\alpha_j - \alpha_i) \neq 0
+\end{align*}
+in quanto tutti i termini sono distinti.
+Se \(\alpha\) è radice doppia dovrei considerare
+\(\alpha_1(x) = e^{\alpha(x)}\) e \(\alpha_2(x) = xe^{\alpha x}\).
+In questo caso l'indipendenza lineare si dimostra più facilmente usando l'ordine di infinito.
+Sappiamo quindi che le soluzioni non sono indipendenti su \(\realnumbers^n\).
+Come faccimao a dire che sono indipendenti anche su un sottointervallo?
+Queste funzioni sono analitiche. Se si annullano in un intorno con un punto di accumulazione,
+allora si devono annullare ovunque.
+Se \(\alpha_i \in \complexnumbers\) escono fuori seni e coseni \(e^{\alpha x}\sin(\beta x)\),
+e non possiamo più usare l'ordine di infinito.
+
+\subsection{Soluzioni particolari di non omogenee}
+
+Dato l'equazione lineare vettoriale\[
+    y' = A(x)y + b(x)
+\]
+vogliamo trovare un modo per determinare una soluzione particolare \(\tilde \varphi\).
+Supponiamo di avere una matrice fondamentale \(\Phi(x) = [w_1(x), \cdots, w_n(x)]\).
+Tutte le soluzioni dell'omogenea associata si scrivono nella forma \(\Phi(x) \cdot c\)
+al variare di \(c \in \realnumbers^n\).
+L'idea di Lagrange è stata quella di fare variare \(c\) come funzione,
+possiamo trovare un \(c\) opportuno per una soluzione particolare?
+Ogni funzione arbitraria di classe \(\mathcal C^1\) può essere scritta come
+\(\Phi(x) c(x)\) per qualche \(c \in \mathcal C'(I, \realnumbers^n)\).
+Data \(\varphi \in \mathcal C'(I, \realnumbers^n)\)
+esiste \(c \in \mathcal C'(\realnumbers^n)\) tale che \(\varphi = \Phi(x) c\)?
+Certo, basta scegliere \(c(x) = \Phi(x)^{-1}\varphi(x)\)
+che è invertibile in quanto il determinante è non nullo.
+Questo si chiama metodo di variazione delle costanti arbitrarie di Lagrange.
+Vediamo quali condizioni deve soddisfare \(c(x)\)
+in maniera tale che \(\Phi(x) c(x)\) risolva l'equazione non omogenea
+\[
+    y' = A(x)y + b(x)
+\]
+Chiaramente la soluzione costante è dell'omogenea associata, quindi non va bene.
+Sostituiamo quindi \(y=\Phi(x) c(x)\)
+\begin{DispWithArrows*}
+    \Phi' c + \Phi c' &= (\Phi c)' = A\Phi c + b \Arrow{\(\Phi\) contiene \\ le soluzioni} \\
+    \cancel{A\Phi c} + \Phi c' &= \cancel{A\Phi c} + b \\
+    \Phi c' &= b \\
+    c' &= \Phi^{-1} b
+\end{DispWithArrows*}
+Quindi \(c\) deve soddisfare \(\Phi c' = b\) cioè \(c' = \Phi^{-1} b\)
+e poi come soluzione particolare
+\[
+    c = \integral[x_0][x][\Phi(t)^{-1}b(t)][t]
+\]
+e la soluzione della non è omogenea è
+\[
+    \tilde \varphi(x) = \Phi(x) \integral[x_0][x][\Phi(t)^{-1}b(t)][t]
+\]
+Nel caso \(n=1\) ritroviamo la formula per risolvere l'equazione del primo ordine lineare
+\[
+    y(x) = \underbrace{e^{\integral[x_0][x][a(t)][t]}}_{\Phi} \left[\,
+        \integral[x_0][x][\underbrace{b(t)e^{-\integral[x_0][t][a(s)][s]}}_{\Phi^{-1}b}][t] + K
+    \right]
+\]
+
+\subsection{Dipendenza continua dal punto iniziale}
+
+\begin{snippettheorem}{di dipendenza continua dai dati}
+    Sia \(\Omega \subseteq \realnumbers^{n+1}\) aperto e siano
+    \(f_n, f \colon \Omega \fromto \realnumbers^n\)
+    funzioni continue tali che
+    \begin{enumerate}
+        \item \(\{f_n\}\) converge uniformemente ad \(f\) sui compatti di \(\Omega\);
+        \item \(\forall K \subseteq \Omega\) compatto esiste una costante \(L_K\)
+        tale che \[
+            ||f_n(x, y_1) - f_n(x, y_2)||
+            \leq ||y_1-y_2||, \quad \forall (x,y_1), (x,y_2) \in \Omega, n \in \naturalnumbers
+        \]
+        (e quindi la stessa disuguaglianza vale anche per \(f\)).
+    \end{enumerate}
+    Sia \((x_0, y_0) \in \Omega\) e sia \(\varphi \colon (\alpha, \beta) \fromto \realnumbers^n\)
+    la soluzione (massimale) del problema di Cauchy
+    \[
+        \begin{cases}
+            y' = f(x,y) \\
+            y(x_0) = y_0
+        \end{cases}
+    \]
+    Sia \([a, b] \subseteq (\alpha, \beta)\) e sia \(\{y_n\}\)
+    convergente a \(y_0\) in \(\realnumbers^n\).
+    Allora \(\forall n\) sufficientemente grandi il problema di Cauchy
+        \[
+        \begin{cases}
+            y' = f_n(x,y) \\
+            y(x_0) = y_n
+        \end{cases}
+    \]
+    ammette soluzione unica \(\varphi_n\) definita su \([a,b]\)
+    e la successione \(\{\varphi_n\}\) convere uniformemente a \(\varphi\)
+    sull'intervallo \([a,b]\).
+\end{snippettheorem}
+
+Per esercizio si può considerare il caso dove viene variato solamente il punto iniziale.
+
+
+
+\pagebreak
+
 \section{Temporaneo - Foglio 3}
 
 \begin{snippetsolution}{Esercizio 1}
@@ -3503,5 +3787,29 @@ ma non sono necessariamente uniche.
     TODO
 \end{snippetsolution}
 
+\begin{snippetexercise}{Esercizio 14}
+    Deriviamo \(y\) \begin{align*}
+        y' &= \varphi' u + \varphi u' \\
+        y'' &= \varphi'' u + 2\varphi' u' + \varphi u'' 
+    \end{align*}
+    sostituendo nell'equazione
+    \begin{align*}
+        0 &= \varphi'' u + 2\varphi' u' + \varphi u'' a(\varphi'u + \varphi u') + b \varphi u \\
+        0 &= \varphi u'' (2\varphi' + a \varphi)u'
+    \end{align*}
+    Sostituendo \(u = u'\) l'equazione è del primo ordine. TODO trovare la soluzione. 
+\end{snippetexercise}
+
+\begin{snippetexercise}{Esercizio 10/11}
+    Si dimostra che se i coefficienti di un'equazione lineare in forma normale
+    sono analitici, allora la soluzione è analitica (TODO mettere il teorema).
+    Esprimiamo quindi
+    \[
+        y = \sum_{n=0}^\infty a_n x^n
+    \]
+    e sostituendola dentro troviamo un'equazione di ricorrenza dei coefficienti.
+    Basta mostrare che da un certo \(n\) in poi i coefficienti sono tutti nulli,
+    senza trovarli esplicitamnete. Una volta trovata una soluzione usiamo la sostituzione dell'esercizio 14.
+\end{snippetexercise}
 
 \end{document}
