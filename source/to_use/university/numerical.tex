@@ -2079,17 +2079,20 @@ quindi se \(|\omega-1| \geq 1\) non convergerà.
 
 \section{Errore inerenti nei processi di soluzione di sistemi lineari}
 
-Dato un sistema \(Ax=b\),
-consideriamo spesso dei sistemi perturbati
-\((A + \delta A)(x + \delta x) = (b + \delta b)\).
-I termini \(\delta A, \delta b\) sono detti perturbazioni autogenerate (dai dati iniziali),
-mentre \(\delta x\) è la perturbazione indotta.
-Vorremo che gli errori
-\[
-    \varepsilon_A = \frac{||\delta A||}{||A||}, \quad
-    \varepsilon_b = \frac{||\delta b||}{||b||}, \quad
-    \varepsilon_x = \frac{||\delta x||}{||x||}
-\]
+\begin{snippetdefinition}{Errori perturbazione}
+    Dato un sistema \(Ax=b\),
+    consideriamo spesso dei sistemi perturbati
+    \((A + \delta A)(x + \delta x) = (b + \delta b)\).
+    I termini \(\delta A, \delta b\) sono detti perturbazioni autogenerate (dai dati iniziali),
+    mentre \(\delta x\) è la perturbazione indotta.
+    Gli errori sono definiti come
+    \[
+        \varepsilon_A = \frac{||\delta A||}{||A||}, \quad
+        \varepsilon_b = \frac{||\delta b||}{||b||}, \quad
+        \varepsilon_x = \frac{||\delta x||}{||x||}
+    \]
+\end{snippetdefinition}
+Vogliamo che gli errori
 tendano a zero. Possiamo eseguire il prodotto e usando il fatto che \(Ax = b\)
 \begin{align*}
     \delta b &= A\delta x + \delta A(x + \delta x) \\
@@ -2128,9 +2131,193 @@ in quanto
 Per le matrici normali, il numero di condizionamento è il rapporto fra l'autovalore massimo
 e quello minimo (eserczio).
 
+\subsection{Contesto più generale}
 
+Mettiamo il tutto in un contesto un pochettino più ampio.
 
+Abbiamo una norma \(||\cdot||_c\) su \(\matrices_{n \times n}(\complexnumbers)\)
+e \(||\cdot||_b\) su \(\complexnumbers^n\).
 
+\begin{snippetdefinition}{Norma submoltiplicativa}
+    Si dice norma submoltiplicativa se \(\forall A,B \in \matrices_{n\times n}(\complexnumbers)\) vale
+    \[
+        ||AB|| \leq ||A|| \cdot ||B||
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Norme compatibili}
+    Due norme sono compatibili se \(\forall A \in \matrices_{n \times n}(\complexnumbers), \forall y \in \complexnumbers^n\)
+    vale
+    \[
+        ||Ay||_b \leq ||A||_a \cdot ||y||_b
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{}
+    Sia data \[
+        ||A||_a = \sup_{x \neq 0} \frac{||Ax||_b}{||x||}
+    \]
+    allora le due norme sono compatibili e la norma \(||\cdot||_a\) è submoltiplicativa.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Cominciamo con la compatibilità.
+    Sia \(y = 0\).
+    Si ha \begin{align*}
+        ||Ay||_b = 0 = ||A||_e \cdot ||y||_b = 0
+    \end{align*}
+    Se invece \(y\neq 0\) abbiamo
+    \begin{align*}
+        ||Ay||_b &= \frac{||Ay||_b}{||y||_b} \cdot ||y||_b \\
+        &\leq \left(
+            \sup_{x\neq 0} \frac{||Ay||_b}{||y||}
+        \right) \cdot ||y||_b
+        = ||A||_a \cdot ||y||_b
+    \end{align*}
+    Successivamente studiamo la submoltiplicatività
+    \begin{align*}
+        ||AB||_a &= \sup_{y\neq 0} \frac{||AB_y||_b}{||y||_b}
+        \leq \sup_{y\neq 0} \frac{||A||_a} \cdot \frac{||B_y||_b}{||y||_y} \\
+        &= ||A||_a \cdot ||B||_a = ||A||_a \cdot ||y||_b
+    \end{align*}
+\end{snippetproof}
+
+Supponiamo di avere \(A \in \matrices_{n \times n}(\complexnumbers)\)
+invertibile e consideriamo il sistema \(Ax = b\).
+Consideriamo il sistema perturbato \((A + \delta A)(x + \delta x) = b + \delta\).
+Quantomeno la matrice \(A + \delta A\) deve rimanere invertibile.
+Scegliamo una \(||\cdot||\) norma vettoriale data con
+\(||\cdot||\) su \(\matrices_{n\times n}(\complexnumbers)\)
+matriciale indotta, quindi compatibilità e submoltiplicatività
+valgono.
+
+\begin{snippettheorem}{}
+    Con le notazioni e le ipotesi precedenti e supponendo inoltre che
+    \(\varepsilon_A \cdot \mu(A) < 1\) e che \(b \neq 0\), vale che
+    \[
+        \varepsilon_x = \frac{||\delta x||}{||x||}
+        \leq \frac{\mu(A)(\varepsilon_A + \varepsilon_b)}{1 - \varepsilon_A \cdot \mu(A)}
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Abbiamo
+    \begin{DispWithArrows*}
+        Ax &= b \\
+        (A + \delta A)(x + \delta x) &= b + \delta b \\
+        Ax + A\delta x + \delta A(x + \delta x) &= b + \delta b \Arrow{} \Arrow{Sottrazione \\ della (1) dalla (2)} \\
+        (A + \delta A)\delta x + \delta A x &= \delta B \\
+        (A + \delta A)\delta x &= \delta b - \delta A x \\
+        A(I + A^{-1} \delta A) \delta X &= \delta B - \delta A x \\
+        (I + A^{-1} \delta A)^{-1} A^{-1}(\delta b + \delta Ax) &= \delta x
+    \end{DispWithArrows*}
+    Passando alle norme e usando la compatibilità e la submoltiplicatività,
+    \begin{align*}
+        ||\delta x|| &\leq ||(I + A^{-1}\delta A)^{-1}|| \cdot ||A^{-1}||(||\delta b|| + ||\delta A|| \cdot ||x||)
+    \end{align*}
+    Estraiamo il numero di condizionamento
+    \[
+        ||A^{-1}\delta A||
+        = ||A^{-1}|| \cdot ||\delta A||
+        = \underbrace{||A^{-1}||\cdot ||A||}_{\mu(A)} \cdot \underbrace{\frac{||\delta A||}{||A||}}_{< 1}
+    \]
+    Chiamando \(V = A^{-1}\delta A\) abbiamo \(V^j \to 0\)
+    per \(j \to \infty\). Quindi l'inversa di una tale perturbazione è
+    \[
+        (I + V)^{-1} = \sum_{j=0}^\infty (-1)^j V^j
+    \]
+    Quindi, usando la disuguaglianza triangolare e le submoltiplicatività iterata
+    \begin{align*}
+        ||(I+V)^{-1}|| &\leq \sum_{j=0}^\infty ||V^j|| \leq \sum_{j=0}^\infty ||V||^j
+    \end{align*}
+    in quanto \(||V^j|| \leq ||V^{j-1}|| \cdot ||V|| \leq ||V||^j\).
+    Abbiamo quindi una serie geometria e
+    \[
+        ||(I+V)^{-1}|| \leq \frac{1}{1 - ||V||}
+    \]
+    Mettendo tutti assieme
+    \begin{align*}
+        ||\delta x|| &\leq \frac{||A|| \cdot ||A^{-1}||}{1 - \varepsilon_A \mu(A)}
+        \left(
+            \frac{||\delta b||}{||A||} + \frac{||\delta A||}{||A||} \cdot ||x||
+        \right) \\
+        &= \frac{\mu(A)}{1 - \varepsilon_A \mu(A)} \left(
+            \frac{||\delta b||}{||b||} + \varepsilon_A
+        \right) \\
+        \frac{||\delta x||}{||x||} = \varepsilon_x
+        &\leq \frac{\mu(A)}{1 - \varepsilon_A \mu(A)} \left(
+            \varepsilon_b + \varepsilon_A
+        \right)
+    \end{align*}
+\end{snippetproof}
+
+Vale sempre \(\rho(A) \leq ||A||\)
+per tutte le norme matriciali indotte
+e inoltre il raggio spettrale è il l'inf di tutte le norme matriciali indotte.
+
+\begin{snippetproposition}{Il raggio spettrale non è una norma}
+    \begin{enumerate}
+        \item \emph{assoluta omogeneità:}
+        \[
+            \rho(\alpha A) = |\alpha| \rho(A)
+        \]
+        vale.
+        \item \emph{Disuguaglianza triangolare:} Consideriamo \(A\) triangolare superiore con zeri sulla diagonale
+        e \(B=A^t\), allora
+        \[
+            \rho(A+B) > \rho(A) = \rho(B) = \rho(A) + \rho(B) = 0
+        \]
+        quindi non è valida.
+    \end{enumerate}
+    Allora il raggio spettrale non è una norma.
+\end{snippetproposition}
+
+\section{Normae matriciali}
+
+Abbiamo la norma infinito
+\[
+    ||x||_\infty = \max_j |x_j|
+\]
+per \(x \in \complexnumbers^n\).
+Allora abbiamo
+\begin{DispWithArrows*}
+    ||A||_\infty &= \sup_{x\neq 0} \frac{||Ax||_\infty}{||x||_\infty} \\
+    &= \sup_{x \neq 0} \left|\left|A \frac{x}{||x||_\infty}\right|\right| \\
+    &= \sup_{||x||_\infty = 1} ||Ax||_\infty \Arrow{Compattezza} \\
+    &= \max_{||x||_\infty = 1} ||Ax||_\infty \\
+    &= \max_{||x||_\infty = 1} \max_j \left|
+        \sum_{k=1}^n A_{j,k} x_k
+    \right| \\
+    &\leq \max_j \sum_{n=1}^n |A_{j,k}| \\
+    &= \left|\left|
+        \begin{pmatrix}
+            ||\text{row}_1||_\infty \\
+            ||\text{row}_2||_\infty \\
+            \vdots \\
+
+            ||\text{row}_n||_\infty \\
+        \end{pmatrix}
+    \right|\right| \Arrow{per qualche \(p\)} \\
+    &= ||\text{row}_p||_1 = \sum_{i=1}^n \left|A_{p_i}x_i\right| \Arrow{\(A_{p_k} = |A_{p_k}|e^{i\varphi x}\)} \\
+    &\begin{cases}
+        x_1 = e^{-i\varphi_1} \\
+        x_2 = e^{-i\varphi_2} \\
+        \cdots \\
+        x_n e^{-i\varphi_n}
+    \end{cases}
+\end{DispWithArrows*}
+
+\begin{snippetexercise}{}
+    Con la stessa dimostrazione, considerare
+    \[
+        A(f)(x) = \int_X K(x,t)f(t)\,\text{d}t,
+        \quad A \colon \mathcal C[D] \fromto \mathcal C[D]
+    \]
+    calcolare
+    \[
+        \sup_{||f||_\infty \leq 1} ||A(f)(x)||_\infty = \int_D |K|
+    \]
+\end{snippetexercise}
 
 \pagebreak
 

@@ -3725,7 +3725,135 @@ Nel caso \(n=1\) ritroviamo la formula per risolvere l'equazione del primo ordin
 
 Per esercizio si può considerare il caso dove viene variato solamente il punto iniziale.
 
+\pagebreak
 
+\section{Teoria della misura}
+
+Lo spazio \((\mathcal C^0(0,1), ||\cdot||_1)\)
+dove \[ ||f||_1 = \int\limits_0^1 |f| \]
+non è uno spazio completo. 
+Passando all'integrale di Lebesgue lo spazio diventa completo.
+
+Sia \(X\) un insieme generico e consideriamo \(\Phi \subseteq \powerset(X)\)
+e vogliamo definire una misura per \(\Phi\), cioè \(\mu \colon \Phi \fromto Y\).
+Nel caso più generale ci basta richiedere che \(Y\) sia uno spazio vettoriale.
+Nel contesto classico dell'analisi reale e complessa ci si limita a considerare
+\(Y = \complexnumbers, \realnumbers\).
+La versione più genuina è quella sui complessi, noi ci limiteremo ai reali non-negativi,
+quindi \(\mu \colon \Phi \fromto [0,+\infty]\).
+Tuttavia, questo non è più uno spazio vettoriale.
+In particolare ci sarebbero problemi con forme \(0 \cdot \infty\).
+Per come definiremo la misura un caso del genere viene sempre valutato con \(0\).
+Se vogliamo una misura che assuma pure valori negativi, allora per forza
+devo escludere gli infiniti, in quanto non riuscirei a gestire casi del tipo \(+\infty - \infty\),
+e quindi tutti gli spazi avrebbero misure finite.
+Non faremo nessuna restrizione su \(X\), mentre dovremo restringere \(\Phi\).
+In generare non è possibile definire la misura su tutti i sottoinsieme delle parti.
+\(\Phi\) deve essere una \(\sigma\)-algebra.
+
+La parola \(\sigma\) rappresenta l'unione numerabile.
+
+\begin{snippetdefinition}{\(\sigma\)-algebra}
+    Sia \(\Phi \subseteq \powerset(X)\). Diciamo che \(\Phi\) è una \emph{\(\sigma\)-algebra}
+    se \begin{enumerate}
+        \item \emph{chiusura rispetto ai complementi:} se \(A \in \Phi\), allora \(X \difference A \in \Phi\);
+        \item \emph{chiusura rispetto alle unioni numerabili:} se \(\{A_n\}_{n \in \naturalnumbers} \subseteq \Phi\), allora
+        \[
+            \bigcup_{n=1}^\infty A_n \in \Phi
+        \]
+        \item \(\emptyset \in \Phi\).
+    \end{enumerate}
+\end{snippetdefinition}
+
+Le prime due proprietà ci danno la chiusura anche rispetto alle intersezioni numerabili.
+La terza è analoga a \(X \in \Phi\).
+Abbiamo anche la chiusura rispetto alla differenza insiemistica,
+ciop se \(A,B \in \Phi\), allora \(B \difference A \in \Phi\),
+e pure rispetto alla differenza simmetrica, cioè se \(A, B \in \Phi\),
+allora \(A \Delta B \in \Phi\).
+
+\begin{snippetexample}{}
+    L'insieme delle parti \(\powerset(X)\) è una \(\sigma\)-algebra,
+    e pure \(\{\emptyset, X\}\) è una \(\sigma\)-algebra.
+\end{snippetexample}
+
+\begin{snippetdefinition}{\(\sigma\)-algebra generate}
+    Sia \(S \subseteq \powerset(X)\).
+    La \emph{\(\sigma\)-algebra generata da \(S\)}
+    è la più piccola \(\sigma\)-algebra che contiene \(S\).
+\end{snippetdefinition}
+
+Di sicuro \(\powerset(X)\) è una \(\sigma\)-algebra
+che contiene \(S\). Si dimostra che l'intersezione di tutte le \(\sigma\)-algebre
+che contengono \(S\) è una \(\sigma\)-algebra, quindi questa è la più piccola.
+
+\begin{snippetexample}{}
+    Consideriamo \(X=\realnumbers\). È una \(\sigma\)-algebra
+    la famiglia di tutti i sottoinsiemi di \(X\)
+    al più numerabili o con complementare al più numerabile.
+    Questa è generata da tutti gli insiemi finiti.
+    Non è una \(\sigma\)-algebra la famiglia
+    degli insiemi che contengono un dato punto di \(\realnumbers\)
+    (non è chiusa rispetto al complementare).
+\end{snippetexample}
+
+\begin{snippetdefinition}{\(\sigma\)-algebra di Borel}
+    Se \(X\) è uno spazio topologico, allora
+    la \emph{\(\sigma\)-algebra di Borel} è la \(\sigma\)-algebra generata dalla topologia. 
+\end{snippetdefinition}
+
+Questa contiene sicuramente tutti gli aperti, tutti i chiusi, e possibilmente
+molti aperti che non sono nè aperti nè chiusi.
+
+\begin{snippetdefinition}{}
+    \(G_\delta\) è la famiglia degli insiemi che possono essere rappresentati
+    come intersezione numerabile di aperti di una topologia.
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{}
+    \(F_\sigma\) è la famiglia degli insiemi che possono essere rappresentati
+    come unione arbitraria di chiusi di una topologia.
+\end{snippetdefinition}
+
+\(G_\delta\) ed \(F_\sigma\) stanno nella \(\sigma\)-algebra di Borel.
+
+\begin{snippetexample}{Alcuni sottoinsieme di \(\realnumbers\) rispetto alla topologia euclidea e \(\sigma\)-algebra di Borel}
+    Gli insiemi \([a,b), [a,b], (a,b], (a,b)\)
+    sono tutti contemporaneamente insiemi \(G_\delta\) e \(F_\sigma\)
+    rispetto a \((\realnumbers, \tau_e)\).
+    Abbiamo per esempio
+    \[
+        [a,b) = \bigcap_n \left(
+            a-\frac1n, b
+        \right)
+        = \bigcup_n \left[a,b-\frac1n\right]
+    \]
+\end{snippetexample}
+
+In \(\realnumbers\), ogni insieme numerabile è un \(F_\sigma\) (basta che sia \(T_1\)).
+Per esempio, \(Q\) è un \(F_\sigma\), in quanto unione numerabile di punti.
+
+\begin{snippetexercise}{}
+    Dimostrare che \(Q\) non è \(G_\delta\). \\
+    \emph{Hint:} usare il teorema di Baire.
+\end{snippetexercise}
+
+\begin{snippettheorem}{Teorema di Baire}
+    Se uno spazio metrico completo \((X, d)\)
+    è un'unione numerabile di chiusi,
+    \[
+        X = \bigcup_{i=1}^\infty X_i
+    \]
+    Allora, almeno uno di questi chiusi ha interno non vuoto.
+\end{snippettheorem}
+
+Possiamo considerare anche le intersezioni numerabili di \(F_\sigma\),
+cioè \({F_{\sigma}}_\delta\),
+e le unioni numerabili di \(G_\delta\), cioè \({G_{\delta}}_{\sigma}\),
+e ottene nuovi insiemi di elementi Borealiani.
+Possiamo continuare con \(G_{\delta\sigma\delta}\) etc.
+Si dimostrare che esistono elementi boreliani che non sono contenuti in
+una di queste concatenazioni.
 
 \pagebreak
 
@@ -3813,21 +3941,11 @@ Per esercizio si può considerare il caso dove viene variato solamente il punto 
 \end{snippetexercise}
 
 \begin{snippetexample}{Esercizio 5}
-    Al variare di \(\alpha, \beta \in \realnumbers\) discutiamo l'esistenza e l'unicità.
-    Cominciamo notando che se \(|\beta| \geq 5\) allora \(\varphi \equiv \beta\)
-    è soluzione su tutto \(\realnumbers\). Consideriamo \(|\beta|<5\).
-    Se \(\alpha > 0\), allora la funzione è continua su tutto \(\realnumbers^2\),
-    in tal caso per \(y \in (-5, 5)\)
-    \[
-        |f_\alpha(y)| \leq 25^\alpha
-    \]
-    per il lemma di Gronwall esiste soluzione unica prolungabile
-    su tutto \(\realnumbers\) (?).
-    Se \(|\beta| = 5\) abbiamo sicuramente esistenza, \(\varphi = \beta\) è soluzione.
-    Se \(\alpha < 0\) allora la funzione non è limitata,se \(|\beta| \neq 5\)
-    abbiamo esistenza e unicità locale su
-    \(\realnumbers \cartesianprod [a,b]\) con \([a,b] \subseteq (-5,5)\).
+    % 1 aprile 2026 magliaro
 \end{snippetexample}
+
+Esercizio: proviamo a pensare a \(y' = f(y)\)
+dove \(f\) non è lipschitziana ma la soluzione è unica. Trovare \(f\).
 
 % Esercizio 7 del foglio tutoraggio di furchì che esercizio è?
 
