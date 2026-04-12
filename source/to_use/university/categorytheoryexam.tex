@@ -197,7 +197,17 @@ and measures how much of the domain is not covered.
 \end{snippetdefinition}
 
 \begin{snippetdefinition}{Exact sequence}
-    \todo
+    Let \(\mathcal A\) be an abelian category. A sequence of objects and morphisms
+    \begin{center}
+        \begin{tikzcd}
+            \cdots \arrow[r] & C^{n-1} \arrow[r, "d^{n-1}"] & C^n \arrow[r, "d^n"] & C^{n+1} \arrow[r] & \cdots
+        \end{tikzcd}
+    \end{center}
+    is said to be \emph{exact at \(C^n\)} if the image of the incoming morphism is equal to the kernel of the outgoing morphism:
+    \[
+        \operatorname{im} d^{n-1} = \ker d^n
+    \]
+    The entire sequence is called an \emph{exact sequence} if it is exact at every object \(C^n\).
 \end{snippetdefinition}
 
 Exactness means the elements that ``die'' in the second map are exactly those that came from the first map.
@@ -260,7 +270,14 @@ The problem is that they are not necessarily actual isomorphisms.
 
 Since \(\mathcal A\) is abelian, \(\operatorname{Ch}(\mathcal A)\) is also an abelian category, where kernels and cokernels are computed component-wise.
 
-AAAAAAAAAAA
+In algebraic topology and homological algebra, two chain maps might not
+be strictly identical, yet they might induce the exact same maps on the cohomology
+objects. We thus need a way to formally relate them.
+A \emph{chain homotopy} provides a continuous ``deformation'' between two chain maps,
+similar to a topological homotopy between continuous functions.
+It provides algebraic evidence that the difference between the two maps
+is fundamentally constituted by boundaries of higher-dimensional elements,
+and thus it vanishes when passing to the cohomology quotients.
 
 \begin{snippetdefinition}{Chain Homotopy}
     Let \(f^\bullet, g^\bullet \colon C^\bullet \fromto D^\bullet\) be two chain maps between cochain complexes in an abelian category \(\mathcal A\).
@@ -291,6 +308,138 @@ Notice that the subtraction \(f^n - g^n\) and the addition of compositions are w
         \]
     \end{itemize}
 \end{snippetdefinition}
+
+\begin{snippetdefinition}{Localization of a Category}
+    Let \(\mathcal C\) be a category and \(W\) be a class of morphisms in \(\mathcal C\). The \emph{localization} of \(\mathcal C\) with respect to \(W\), denoted \(\mathcal C[W^{-1}]\), is a category together with a functor \(Q \colon \mathcal C \fromto \mathcal C[W^{-1}]\) satisfying the following universal property:
+    \begin{enumerate}
+        \item For every morphism \(w \in W\), the image \(Q(w)\) is an isomorphism in \(\mathcal C[W^{-1}]\).
+        \item For any other category \(\mathcal D\) and a functor \(F \colon \mathcal C \fromto \mathcal D\) such that \(F(w)\) is an isomorphism for all \(w \in W\), there exists a unique functor \(G \colon \mathcal C[W^{-1}] \fromto \mathcal D\) (up to natural isomorphism) such that the following diagram commutes:
+        \begin{center}
+            \begin{tikzcd}
+                \mathcal C \arrow[rr, "F"] \arrow[rd, "Q"'] & & \mathcal D \\
+                & \mathcal C[W^{-1}] \arrow[ru, "G"', dashed] &
+            \end{tikzcd}
+        \end{center}
+    \end{enumerate}
+\end{snippetdefinition}
+
+Intuitively, the localization \(\mathcal C[W^{-1}]\) is obtained by formally adjoining inverses for all morphisms in \(W\), turning them into isomorphisms without introducing unnecessary equivalences.
+
+\begin{snippetdefinition}{Derived Category}
+    Let \(\mathcal A\) be an abelian category, and let \(\mathbf{K}(\mathcal A)\) be its homotopy category of cochain complexes. Let \(W\) be the class of all quasi-isomorphisms in \(\mathbf{K}(\mathcal A)\).
+    The \emph{derived category} of \(\mathcal A\), denoted \(\mathbf{D}(\mathcal A)\), is defined as the localization of the homotopy category \(\mathbf{K}(\mathcal A)\) with respect to the class of quasi-isomorphisms \(W\):
+    \[
+        \mathbf{D}(\mathcal A) \triangleq \mathbf{K}(\mathcal A)[W^{-1}]
+    \]
+\end{snippetdefinition}
+
+In the derived category, any quasi-isomorphism is formally inverted to become an actual equivalence. Thus, two complexes are isomorphic in \(\mathbf{D}(\mathcal A)\) if and only if they share the same homological information (i.e. they are connected by quasi-isomorphisms).
+
+\section{Coherent sheaves}
+
+\begin{snippetdefinition}{Presheaf on a Topological Space}
+    Let \(X\) be a topological space, and let \(\mathcal{C}\) be a category. A \emph{presheaf} \(\mathcal{F}\) on \(X\) with values in \(\mathcal{C}\) consists of:
+    \begin{enumerate}
+        \item For every open set \(U \subseteq X\), an object \(\mathcal{F}(U)\) in \(\mathcal{C}\) (the elements are called \emph{sections} over \(U\)).
+        \item For every inclusion of open sets \(V \subseteq U\), a morphism \(\operatorname{res}_{U,V} \colon \mathcal{F}(U) \fromto \mathcal{F}(V)\) in \(\mathcal{C}\) (called the \emph{restriction map}).
+    \end{enumerate}
+    This data must satisfy the following compatibility conditions:
+    \begin{itemize}
+        \item \(\mathcal{F}(\emptyset)\) is the terminal object of \(\mathcal{C}\).
+        \item \(\operatorname{res}_{U,U} = \operatorname{id}_{\mathcal{F}(U)}\) for every open set \(U\).
+        \item \(\operatorname{res}_{V,W} \circ \operatorname{res}_{U,V} = \operatorname{res}_{U,W}\) whenever \(W \subseteq V \subseteq U\).
+    \end{itemize}
+\end{snippetdefinition}
+
+Intuitively, a presheaf assigns local algebraic or set-theoretic data to every open subset of a space, equipped with a consistent way to ``restrict'' that data to smaller interacting open subsets.
+
+\begin{snippetdefinition}{Sheaf on a Topological Space}
+    A presheaf \(\mathcal{F}\) with values in \(\mathbf{Set}\) on a topological space \(X\) is a \emph{sheaf} if it satisfies the following two additional conditions for any open set \(U \subseteq X\) and any open cover \(\{U_i\}_{i \in I}\) of \(U\):
+    \begin{enumerate}
+        \item \textbf{Locality}: If \(s, t \in \mathcal{F}(U)\) are sections such that \(\operatorname{res}_{U, U_i}(s) = \operatorname{res}_{U, U_i}(t)\) for all \(i \in I\), then \(s = t\).
+        \item \textbf{Gluing}: Given a family of sections \(s_i \in \mathcal{F}(U_i)\) that agree on all overlaps, meaning \(\operatorname{res}_{U_i, U_i \intersection U_j}(s_i) = \operatorname{res}_{U_j, U_i \intersection U_j}(s_j)\) for all \(i, j \in I\), there exists a section \(s \in \mathcal{F}(U)\) such that \(\operatorname{res}_{U, U_i}(s) = s_i\) for all \(i \in I\).
+    \end{enumerate}
+\end{snippetdefinition}
+
+The sheaf condition ensures that local data that matches on overlaps can always be uniquely glued together to form global structural data.
+
+\begin{snippetdefinition}{Presheaf on a Category}
+    Let \(\mathcal{C}\) be a small category. A \emph{presheaf} on \(\mathcal{C}\) with values in a category \(\mathcal{D}\) (typically \(\mathbf{Set}\)) is defined as a contravariant functor:
+    \[
+        P \colon \mathcal{C}^{\text{op}} \fromto \mathcal{D}
+    \]
+    The category of all presheaves on \(\mathcal{C}\) has these functors as objects and natural transformations between them as morphisms, taking the notation \([\mathcal{C}^{\text{op}}, \mathcal{D}]\) or \(\widehat{\mathcal{C}}\).
+\end{snippetdefinition}
+
+This categorical definition beautifully generalizes the topological one: if we regard the open sets of \(X\) as a poset category \(\mathcal{OP}(X)\) (where morphisms are inclusions), a topological presheaf is precisely a presheaf on the category \(\mathcal{OP}(X)\).
+
+\begin{snippetdefinition}{Sheaf on a Category (with a Grothendieck Topology)}
+    Let \(\mathcal{C}\) be a small category equipped with a Grothendieck topology \(J\) (making it a \emph{site}). A presheaf \(F \colon \mathcal{C}^{\text{op}} \fromto \mathbf{Set}\) is a \emph{sheaf} with respect to \(J\) if, for every object \(C \in \operatorname{Ob}(\mathcal{C})\) and every covering sieve \(S \in J(C)\), the natural map from the Yoneda embedding:
+    \[
+        \operatorname{Hom}_{\widehat{\mathcal{C}}}(\operatorname{Hom}_{\mathcal{C}}(-, C), F) \fromto \operatorname{Hom}_{\widehat{\mathcal{C}}}(S, F)
+    \]
+    is a bijection.
+\end{snippetdefinition}
+
+By substituting standard open covers with abstract covering sieves, Grothendieck topologies allow us to define sheaves entirely abstractly, unconditionally from an underlying point-set topology. Thus providing the foundation for topos theory.
+
+\begin{snippetdefinition}{Ringed Space and Structure Sheaf}
+    A \emph{ringed space} is a pair \((X, \mathcal{O}_X)\), where \(X\) is a topological space and \(\mathcal{O}_X\) is a sheaf of commutative rings on \(X\). The sheaf \(\mathcal{O}_X\) is called the \emph{structure sheaf} (or \emph{ringed sheaf}) of \(X\).
+    
+    A morphism of ringed spaces \((X, \mathcal{O}_X) \fromto (Y, \mathcal{O}_Y)\) is a uniquely mapped pair \((f, f^\sharp)\), where \(f \colon X \fromto Y\) is a continuous map and \(f^\sharp \colon \mathcal{O}_Y \fromto f_* \mathcal{O}_X\) is a morphism of sheaves of rings on \(Y\).
+\end{snippetdefinition}
+
+Ringed spaces associate a concrete ring of functions to every open set, essentially allowing us to study geometry purely through overarching algebraic structures.
+
+\section{Fourier Transform}
+
+\begin{snippetdefinition}{Topological Group}
+    A \emph{topological group} is a group \(G\) endowed with a topology such that the group operations:
+    \begin{itemize}
+        \item Multiplication: \(\mu \colon G \cartesianprod G \fromto G\), \((x, y) \mapsto xy\)
+        \item Inversion: \(\iota \colon G \fromto G\), \(x \mapsto x^{-1}\)
+    \end{itemize}
+    are continuous functions, where \(G \cartesianprod G\) is equipped with the product topology.
+\end{snippetdefinition}
+
+The continuity of these operations ensures that the algebraic structure of the group is compatible with its topological structure, allowing us to perform meaningful mathematical analysis on the group.
+
+\begin{snippetdefinition}{Locally Compact Group}
+    A topological group \(G\) is called a \emph{locally compact group} if its underlying topology is both locally compact and Hausdorff.
+\end{snippetdefinition}
+
+Locally compact Hausdorff groups provide the natural and primary setting for generalizing classical harmonic analysis, as local compactness guarantees the existence of a regular, non-trivial, translation-invariant measure.
+
+\begin{snippetdefinition}{Haar Measure}
+    Let \(G\) be a locally compact group. A \emph{left Haar measure} on \(G\) is a non-zero Radon measure \(\mu\) on the Borel \(\sigma\)-algebra of \(G\) that is left translation-invariant. That is, for every Borel set \(E \subseteq G\) and every \(g \in G\):
+    \[
+        \mu(gE) = \mu(E)
+    \]
+    where \(gE = \{gx \suchthat x \in E\}\). A right Haar measure is defined analogously.
+\end{snippetdefinition}
+
+The Haar measure provides a consistent way to integrate functions over a locally compact group, generalizing the translation-invariant Lebesgue measure on \(\realnumbers^n\). It is unique up to multiplication by a positive constant. For abelian groups, left and right Haar measures always coincide.
+
+\begin{snippetdefinition}{Pontryagin Dual}
+    Let \(G\) be a locally compact abelian (LCA) group. A \emph{character} of \(G\) is a continuous group homomorphism from \(G\) to the circle group \(\mathbb{T} = \{z \in \complexnumbers \suchthat |z| = 1\}\).
+    The \emph{Pontryagin dual} of \(G\), denoted \(\widehat{G}\), is the set of all characters of \(G\):
+    \[
+        \widehat{G} = \operatorname{Hom}(G, \mathbb{T})
+    \]
+    equipped with point-wise multiplication and the compact-open topology.
+\end{snippetdefinition}
+
+Because \(G\) is a locally compact abelian group, its Pontryagin dual \(\widehat{G}\) is guaranteed to also be a locally compact abelian group. This dual group serves as the domain for the formal frequency spectrum in abstract harmonic analysis, much like how \(\realnumbers\) is its own dual.
+
+\begin{snippetdefinition}{Abstract Fourier Transform}
+    Let \(G\) be a locally compact abelian group with a chosen Haar measure \(\mu\). The \emph{Fourier transform} of a function \(f \in L^1(G, \mu)\) is the function \(\widehat{f} \colon \widehat{G} \fromto \complexnumbers\) defined by:
+    \[
+        \widehat{f}(\chi) = \int_G f(x) \overline{\chi(x)} \, d\mu(x)
+    \]
+    for every character \(\chi \in \widehat{G}\).
+\end{snippetdefinition}
+
+This generalized formulation of the abstract Fourier transform fundamentally encompasses the classical Fourier transform on \(\realnumbers\), Fourier series on \(\mathbb{T}\), and the Discrete Fourier Transform on finite cyclic groups, successfully unifying them under a single framework via Pontryagin duality.
 
 \pagebreak
 

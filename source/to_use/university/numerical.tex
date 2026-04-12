@@ -9,6 +9,7 @@
 \usepackage{witharrows}
 \usepackage{cancel}
 \usepackage{xfrac}
+\usepackage{multirow}
 
 \WithArrowsOptions{displaystyle}
 
@@ -2077,7 +2078,57 @@ quindi se \(|\omega-1| \geq 1\) non convergerà.
     quindi ancora una volta abbiamo il raggio spettrale pari a \(1\).
 \end{snippetexample}
 
-\section{Errore inerenti nei processi di soluzione di sistemi lineari}
+
+\section{Norme matriciali}
+
+Abbiamo la norma infinito
+\[
+    ||x||_\infty = \max_j |x_j|
+\]
+per \(x \in \complexnumbers^n\).
+Allora abbiamo
+\begin{DispWithArrows*}
+    ||A||_\infty &= \sup_{x\neq 0} \frac{||Ax||_\infty}{||x||_\infty} \\
+    &= \sup_{x \neq 0} \left|\left|A \frac{x}{||x||_\infty}\right|\right| \\
+    &= \sup_{||x||_\infty = 1} ||Ax||_\infty \Arrow{Compattezza} \\
+    &= \max_{||x||_\infty = 1} ||Ax||_\infty \\
+    &= \max_{||x||_\infty = 1} \max_j \left|
+        \sum_{k=1}^n A_{j,k} x_k
+    \right| \\
+    &\leq \max_j \sum_{n=1}^n |A_{j,k}| \\
+    &= \left|\left|
+        \begin{pmatrix}
+            ||\text{row}_1||_\infty \\
+            ||\text{row}_2||_\infty \\
+            \vdots \\
+
+            ||\text{row}_n||_\infty \\
+        \end{pmatrix}
+    \right|\right| \Arrow{per qualche \(p\)} \\
+    &= ||\text{row}_p||_1 = \sum_{i=1}^n \left|A_{p_i}x_i\right| \Arrow{\(A_{p_k} = |A_{p_k}|e^{i\varphi x}\)} \\
+    &\begin{cases}
+        x_1 = e^{-i\varphi_1} \\
+        x_2 = e^{-i\varphi_2} \\
+        \cdots \\
+        x_n e^{-i\varphi_n}
+    \end{cases}
+\end{DispWithArrows*}
+
+\begin{snippetexercise}{}
+    Con la stessa dimostrazione, considerare
+    \[
+        A(f)(x) = \int_X K(x,t)f(t)\,\text{d}t,
+        \quad A \colon \mathcal C[D] \fromto \mathcal C[D]
+    \]
+    calcolare
+    \[
+        \sup_{||f||_\infty \leq 1} ||A(f)(x)||_\infty = \sup_{x\in D} \int_D |K(x,t)|\,\text{d}t
+    \]
+\end{snippetexercise}
+
+\section{Sistemi lineari}
+
+\subsection{Errore inerenti nei processi di soluzione di sistemi lineari}
 
 \begin{snippetdefinition}{Errori perturbazione}
     Dato un sistema \(Ax=b\),
@@ -2131,7 +2182,7 @@ in quanto
 Per le matrici normali, il numero di condizionamento è il rapporto fra l'autovalore massimo
 e quello minimo (eserczio).
 
-\subsection{Contesto più generale}
+\subsubsection{Contesto più generale}
 
 Mettiamo il tutto in un contesto un pochettino più ampio.
 
@@ -2272,52 +2323,278 @@ e inoltre il raggio spettrale è il l'inf di tutte le norme matriciali indotte.
     Allora il raggio spettrale non è una norma.
 \end{snippetproposition}
 
-\section{Norme matriciali}
+\subsection{Metodi diretti: fattorizzazione}
 
-Abbiamo la norma infinito
-\[
-    ||x||_\infty = \max_j |x_j|
-\]
-per \(x \in \complexnumbers^n\).
-Allora abbiamo
-\begin{DispWithArrows*}
-    ||A||_\infty &= \sup_{x\neq 0} \frac{||Ax||_\infty}{||x||_\infty} \\
-    &= \sup_{x \neq 0} \left|\left|A \frac{x}{||x||_\infty}\right|\right| \\
-    &= \sup_{||x||_\infty = 1} ||Ax||_\infty \Arrow{Compattezza} \\
-    &= \max_{||x||_\infty = 1} ||Ax||_\infty \\
-    &= \max_{||x||_\infty = 1} \max_j \left|
-        \sum_{k=1}^n A_{j,k} x_k
-    \right| \\
-    &\leq \max_j \sum_{n=1}^n |A_{j,k}| \\
-    &= \left|\left|
-        \begin{pmatrix}
-            ||\text{row}_1||_\infty \\
-            ||\text{row}_2||_\infty \\
-            \vdots \\
+Esistono principalmente tre tipi di fattorizzazione:
+la fattorizzazione \(LU\), la fattorizzazione \(QR\) e la fattorizzazione \(LL^H\) dove
+\(L\) è triangolare inferiore con elementi principali \(>0\).
 
-            ||\text{row}_n||_\infty \\
+Per la fattorizzazione \(LL^H\) abbiamo il metodo di Cholesky,
+mentre per la \(QR\) il metodo di Hausholder.
+
+\begin{snippettheorem}{Esistenza e unicità della fattorizzazione \(LU\)}
+    Sia \(A \in \matrices_n(\complexnumbers)\) fortemente non singolare.
+    Allora, esistono e sono uniche \(L \in \matrices_n(\complexnumbers)\) triangolare
+    inferiore con \(L_{i,i} =1\) per \(i \in \{1, \cdots, n\}\) e \(U \in \matrices_n(\complexnumbers)\) triangolare superiore
+    tale che \(A = LU\).
+\end{snippettheorem}
+
+\begin{snippetproof}{Esistenza e unicità della fattorizzazione \(LU\)}
+    Procediamo per induzione.
+    Il caso di base è \(n=1\) dove \(A = (a_{1,1})\) e quindi abbiamo
+    \(L = (1)\) e \(U=(a_{1,1})\).
+    Sia \(n=k>1\) e supponiamo che la tesi sia vera per \(k = n-1\).
+    Scriviamo
+    \[
+        A = \left[
+        \begin{array}{c|c}
+            A_{n-1} & b \\
+            \hline
+            c^H & \alpha
+            \end{array}
+        \right]
+    \]
+    con \(b,c \in \complexnumbers^{n-1}\) e \(\alpha \in \complexnumbers\) dove \(A_{n-1}\) è
+    il minore principale di testa di \(A\) di ordine \(n-1\), quindi \(A_{n-1} = L_{n-1}U_{n-1}\).
+    Abbiamo quindi il prodotto
+    \[
+        A = \left[
+        \begin{array}{c|c}
+            L_{n-1}U_{n-1} & b \\
+            \hline
+            c^H & \alpha
+            \end{array}
+        \right] = \left[
+        \begin{array}{c|c}
+            L_{n-1} & 0 \\
+            \hline
+            M^H & 1
+            \end{array}
+        \right] \left[
+        \begin{array}{c|c}
+            U_{n-1} & V \\
+            \hline
+            0^H & B
+            \end{array}
+        \right]
+    \]
+    Analizziamo i blocchi:
+    \begin{enumerate}
+        \item \(L_{n-1}U_{n-1} + 0\cdot0^H = A_{n-1}\);
+        \item \(L_{n-1}U_{n-1} + 1 \cdot 0^H = b\) poiché \(L_{n-1}\) è invertibile esiste un'unica \(V\) t ale che \(L_{n-1}V =b\);
+        \item \(M^H U_{n-1} + 1 \cdot 0^H = c^H\) e quindi \(U_{n-1}^H M = c\), quindi esiste un'unica \(M\) tale che \(U_{n-1}^H M = c\);
+        \item \(M^H V + 1 \cdot B = \alpha\) e quindi \(B = \alpha - M^H V\).
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippettheorem}{}
+    Sia \(A \in \matrices_n(\complexnumbers)\) invertibile.
+    Allora, esistono \(L\) triangolare inferiore con \(L_{i,i} = 1\) per \(i \in \{1, \cdots, n\}\),
+    \(U\) triangolare superiore e \(\Pi\) matrice di permutazione \(\Pi A = LU\).
+\end{snippettheorem}
+
+\begin{snippettheorem}{}
+    Sia \(A \in \matrices_n(\complexnumbers)\).
+    Allora, esiste \(L\) triangolare inferiore e \(U\) triangolare superiore
+    e due matrici di permutazione \(\Pi_1, \Pi_2\) tali che \(Pi_1 A \Pi_2 = LU\).
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Procediamo per induzione.
+    Il caso di base è \(n=1\) dove \(A = (a_{1,1})\) e quindi abbiamo
+    \(L=(1), U=(a_{1,1})\) e \(\Pi = (1) = I_1\).
+    Sia \(n=k>1\) e supponiamo che la tesi sia vera per \(k = n-1\).
+    Scriviamo \[
+        A = \left[
+        \begin{array}{c|c}
+            c_1^H & S_1 \\
+            \hline
+            \vdots & \vdots \\
+            \hline
+            c_n^H & S_n
+            \end{array}
+        \right]
+    \]
+    Vogliamo che tra i vettori \(C_i \in \complexnumbers^{n-1}\) ci siamo i generatori di \(\complexnumbers^{n-1}\).
+    Siccome \(A\) è invertibile, il determinante è non nullo e applicando l'espansione di Laplace
+    dall'ultimo termine
+    \[
+        0 \neq \det A = \sum_{i=1}^n (-1)^{n-i} S_i \det(A \difference \{C_i^H, \vec S\})
+    \]
+    Troviamo che \(\exists \vec j\) tale che \(A \difference \{C_{\vec j}^H, \vec S\}\) è una matrice invertibile in \(\matrices_{n-1}(\complexnumbers)\).
+    Definiamo \(\Pi\) come la matrice di permutazione che scambia \(n\) con \(\vec j\),
+    \[
+        \Pi A = \left[
+        \begin{array}{c|c}
+            \hat A_{n-1} & b \\
+            \hline
+            c^H & \alpha
+            \end{array}
+        \right], \quad \det(\hat A_{n-1}) \neq 0
+    \]
+    Per ipotesi induttiva esistono \(\Pi_{n-1}, L_{n-1}\)
+    tali che \(\Pi_{n-1} \hat A_{n-1} = L_{n-1}U_{n-1}\)
+    \[
+        \left[
+        \begin{array}{c|c}
+            \Pi_{n-1} & 0 \\
+            \hline
+            0 & 1
+            \end{array}
+        \right] \Pi A = \left[
+        \begin{array}{c|c}
+            L_{n-1}U_{n-1} & \hat b \\
+            \hline
+            c^H & \alpha
+            \end{array}
+        \right]
+    \]
+    dove \(\hat b = \Pi_{n-1}b\).
+\end{snippetproof}
+
+\begin{snippetexample}{}
+    \[
+        A = \begin{pmatrix}
+            1 & 2 & 1 \\ -1 & -1 & 2 \\ 1 & 1 & 2
         \end{pmatrix}
-    \right|\right| \Arrow{per qualche \(p\)} \\
-    &= ||\text{row}_p||_1 = \sum_{i=1}^n \left|A_{p_i}x_i\right| \Arrow{\(A_{p_k} = |A_{p_k}|e^{i\varphi x}\)} \\
-    &\begin{cases}
-        x_1 = e^{-i\varphi_1} \\
-        x_2 = e^{-i\varphi_2} \\
-        \cdots \\
-        x_n e^{-i\varphi_n}
-    \end{cases}
-\end{DispWithArrows*}
+        = \begin{pmatrix}
+            1 & 0 & 0 \\ -1 & 1 & 0 \\ 1 & -1 & 1
+        \end{pmatrix}
+        \begin{pmatrix}
+            1 & 2 & -1 \\ 0 & 1 & 1 \\ 0 & 0 & 4
+        \end{pmatrix}
+    \]
+\end{snippetexample}
 
-\begin{snippetexercise}{}
-    Con la stessa dimostrazione, considerare
-    \[
-        A(f)(x) = \int_X K(x,t)f(t)\,\text{d}t,
-        \quad A \colon \mathcal C[D] \fromto \mathcal C[D]
-    \]
-    calcolare
-    \[
-        \sup_{||f||_\infty \leq 1} ||A(f)(x)||_\infty = \sup_{x\in D} \int_D |K(x,t)|\,\text{d}t
-    \]
-\end{snippetexercise}
+Studiamo ora l'algoritmo \(LU\).
+Osserviamo che la forte non singolarità di \(A\) c iimplica l'eliminazione di Gauss per ottenere \(LU\) senza usare
+permutazioni. \\
+\textbf{Passo 1:} siccome \(A\) è fortemente non singolare, \(a_{1,1} \neq 0\) quindi la prima matrice elementare di Gauss è ben defnita
+\[
+    E_j = \begin{bmatrix}
+    1 & & 0 \\
+    & \ddots & \\
+    \ast & & 1
+    \end{bmatrix}
+\]
+dove \(\ast\) sno elementi della forma \(-\sfrac{a_{i,j}}{a_{j,j}}\) e quindi
+\[
+    E_1 = \begin{bmatrix}
+    1 & & \makebox[0pt][c]{\raisebox{-15pt}{\text{\LARGE 0}}} & \\[2ex]
+    -\frac{a_{2,1}}{a_{1,1}} & \hspace{5pt} 1 & & \\[2ex]
+    \vdots & & \hspace{15pt} \ddots & \\[2ex]
+    -\frac{a_{n,1}}{a_{1,1}} & \makebox[0pt][c]{\raisebox{15pt}{\text{\LARGE 0}}} & & \hspace{25pt} 1
+    \end{bmatrix}
+    ,\quad \vec a = \left(
+        -\frac{a_{2,1}}{a_{1,1}},
+        -\frac{a_{3,1}}{a_{1,1}},
+        \cdots,
+        -\frac{a_{n,1}}{a_{1,1}}
+    \right)^T
+\]
+Possiamo quindi eseguire il prodotto
+\[
+    E_1A = \left(
+    \begin{array}{c|ccc}
+        a_{1,1} & \ast & \cdots & \ast \\
+        \hline
+        0 & a_{2,2}^{(2)} & & \ast \\
+        \vdots & & \ddots & \\
+        0 & \ast & & \ast
+        \end{array}
+    \right)
+\]
+dove \(a_{2,2}^{(2)}\) è il nuovo elemento diagonale. \\
+\textbf{Passo 2:} supponiamo la tesi sia vera per \(k-1\), mostriamo che possiamo applicare il passo \(k\).
+La tesi è che \(a_{k,k}^{(k)} \neq 0\).
+Abbiamo applicato l'eliminazione gaussiana \(k-1\) volte
+\[
+    E_{k-1} E_{k-2} \cdots E_2E_1 A = A^{(k)} =
+        \left(
+    \begin{array}{ccc|c}
+    a_{11} & & & \\
+    & \ddots & & \text{\LARGE $\ast$} \\
+    & & a_{k-1,k-1}^{(k-1)} & \\ \hline
+    & & & a_{kk}^{(k)} \\
+    & \raisebox{-10pt}{\text{\LARGE $0$}} & & \hspace{25pt} \text{\LARGE $\ast$}
+    \end{array}
+    \right)
+\]
+Mostriamo \(a_{k,k}^{(k)} \neq 0\).
+Ribaltando abbiamo
+\[
+    A = \underbrace{E_1^{-1}E_2^{-1} \cdots E_{k-1}^{-1}}_{\text{triangolare inferiore}}A^{(k)}
+\]
+Osserviamo che il prodotto di matrici triangolare inferiore è a sua volta triangolare inferiore.
+Inoltre, siccome tutte le \(E_i\) hanno \(1\) come diagonale, allora pure il prodotto \(E_{k-1} \cdots E_1\) ha \(1\) come diagonale.
+Ora se \(E_j = I + m_j e_j^T\) dove \(m_j \in \linearspan\{e_{j+1}, \cdots, e_n\}\),
+calcoliamo \(E_j^{-1} = I - m_je_j^T\) e pertanto
+\(E_1^{-1}E_2^{-1} \cdots E_{k-1}^{-1}\) è triangolare inferiore con \(1\) sulla diagonale.
+Abbiamo quindi \[
+    A = \underbrace{E_1^{-1} \cdots E_{k-1}^{-1} A^{(k)}}_{\xi^{(k)}}
+    = \begin{bmatrix}
+    1 &        &        & 0 \\
+      & \ddots &        &   \\
+    \ast &      & 1      &   \\
+    \ast & \cdots & \ast & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+    a_{1,1} & \ast & \cdots & \ast & \cdots & \ast \\
+    0 & a_{2,2}^{(2)} & \ddots & \vdots &        & \vdots \\
+    \vdots & \ddots & \ddots & \ast &        & \vdots \\
+    0 & \cdots & 0 & a_{k,k}^{(k)} & \cdots & \ast \\
+    \hline
+    0 & \cdots & 0 & 0 &        &   \\
+    \vdots &        & \vdots & \vdots & \Theta &   \\
+    0 & \cdots & 0 & 0 &        &
+    \end{bmatrix}
+\]
+Quindi \(\Theta\) va moltiplicato con la parte nulla della sopradiagonale di \(E_1^{-1}\cdots E_{k-1}^{-1}\).
+Prendiamo una generica matrice \(B \in \matrices_n(\complexnumbers)\), \(B_{k-1}\) è il suo minore principale di testa di ordine \(k-1\).
+Dunque,
+\[
+    A_{k-1} = \left(\xi^{(k)}A^{(k)}\right)_{k-1} = \xi^{(k)}_{k-1} A_{k-1}^{(k)}
+\]
+Poiché \(A\) è fortemente non singolare, \(\det(A_{k-1})\neq 0\) allora
+\[
+    0\neq
+    \det(A_{k_1}) = \det(A_{k-1}^{(k)}) = a_{1,1} \cdot a_{2,2}^{(2)} \cdots a_{k,k}^{(k)}
+\]
+e per il teorema di Binet \(a_{k,k}^{(k)} \neq 0\).
+Quindi possiamo trovare esattamente chi sono l'unica \(L\) e l'unica \(U\) di \(LU\).
+Abbiamo \(L = E_1^{-1} \cdots E_{n-1}^{-1}\) e \(U = A^{(n)}\).
+Per quanto detto prima,
+\(E_j^{-1} =I - m_j e_j^T\) e quindi
+\begin{align*}
+    L &= E_1^{-1} \cdots E_{n-1}^{-1} = (I-m_1e_1^T) \cdots (I-m_ne_{n-1}^T) = I - \sum_{j=1}^{n-1}m_je_j^T \\
+\end{align*}
+e quindi
+\[
+    L = \left(
+    \begin{tikzpicture}[
+        baseline=(current bounding box.center), 
+        scale=0.5,             % Riduce le distanze tra gli elementi
+        transform shape,       % Ridimensiona anche il testo e i simboli
+        every node/.style={inner sep=1pt} % Riduce lo spazio attorno al testo
+    ]
+        \node at (0, 0) {\Large $1$};
+        \node at (8, -8) {\Large $1$};
+
+        \draw (0.4, -0.4) -- (7.6, -7.6);
+        \node at (5, -2) {\Huge $0$};
+
+        \foreach \x in {1.5, 3.0, 5.0, 6.5} {
+            \draw (\x, -\x) -- (\x, -8.5);
+        }
+
+        \node[rotate=90, anchor=east] at (0.75, -0.9) {\LARGE $m_1$};
+        \node[rotate=90, anchor=east] at (2.25, -2.4) {\LARGE $m_2$};
+        \node[rotate=90, anchor=east] at (4.0, -4.2) {\LARGE $\dots$};
+        \node[rotate=90, anchor=east] at (5.75, -5.9) {\LARGE $m_{n-2}$};
+        \node[rotate=90, anchor=east] at (7.25, -7.4) {\LARGE $m_{n-1}$};
+    \end{tikzpicture}
+    \right)
+\]
 
 \pagebreak
 
