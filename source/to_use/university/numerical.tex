@@ -2078,54 +2078,6 @@ quindi se \(|\omega-1| \geq 1\) non convergerà.
     quindi ancora una volta abbiamo il raggio spettrale pari a \(1\).
 \end{snippetexample}
 
-
-\section{Norme matriciali}
-
-Abbiamo la norma infinito
-\[
-    ||x||_\infty = \max_j |x_j|
-\]
-per \(x \in \complexnumbers^n\).
-Allora abbiamo
-\begin{DispWithArrows*}
-    ||A||_\infty &= \sup_{x\neq 0} \frac{||Ax||_\infty}{||x||_\infty} \\
-    &= \sup_{x \neq 0} \left|\left|A \frac{x}{||x||_\infty}\right|\right| \\
-    &= \sup_{||x||_\infty = 1} ||Ax||_\infty \Arrow{Compattezza} \\
-    &= \max_{||x||_\infty = 1} ||Ax||_\infty \\
-    &= \max_{||x||_\infty = 1} \max_j \left|
-        \sum_{k=1}^n A_{j,k} x_k
-    \right| \\
-    &\leq \max_j \sum_{n=1}^n |A_{j,k}| \\
-    &= \left|\left|
-        \begin{pmatrix}
-            ||\text{row}_1||_\infty \\
-            ||\text{row}_2||_\infty \\
-            \vdots \\
-
-            ||\text{row}_n||_\infty \\
-        \end{pmatrix}
-    \right|\right| \Arrow{per qualche \(p\)} \\
-    &= ||\text{row}_p||_1 = \sum_{i=1}^n \left|A_{p_i}x_i\right| \Arrow{\(A_{p_k} = |A_{p_k}|e^{i\varphi x}\)} \\
-    &\begin{cases}
-        x_1 = e^{-i\varphi_1} \\
-        x_2 = e^{-i\varphi_2} \\
-        \cdots \\
-        x_n e^{-i\varphi_n}
-    \end{cases}
-\end{DispWithArrows*}
-
-\begin{snippetexercise}{}
-    Con la stessa dimostrazione, considerare
-    \[
-        A(f)(x) = \int_X K(x,t)f(t)\,\text{d}t,
-        \quad A \colon \mathcal C[D] \fromto \mathcal C[D]
-    \]
-    calcolare
-    \[
-        \sup_{||f||_\infty \leq 1} ||A(f)(x)||_\infty = \sup_{x\in D} \int_D |K(x,t)|\,\text{d}t
-    \]
-\end{snippetexercise}
-
 \section{Sistemi lineari}
 
 \subsection{Errore inerenti nei processi di soluzione di sistemi lineari}
@@ -2599,6 +2551,218 @@ e quindi
     \right)
 \]
 
+\subsection{Verso la fattorizzazione di Cholesky}
+
+\begin{snippettheorem}{Fattorizzazione di Cholesky}
+    \(A = A^\ast\) definita positiva se e solo se
+    esiste unica \(V\) triangolare inferiore con \(V_{j,j} > 0\) tale che \(A = VV^\ast\).
+\end{snippettheorem}
+
+\begin{snippetproof}{Fattorizzazione di Cholesky}
+    \begin{iffproof}
+        \item \(A=A^\ast\) definita positiva se e solo se ogni minore principale è definita positiva.
+        In particolare, lo sono i minori principali di testa, che quindi sono invertibili ovvero \(A\)
+        è fortemente non singolare.
+        Esiste un'unica \(L\) triangolare inferiore con \(L_{j,j} = 1\) ed un'unica
+        \(U\) triangolare superiore tale che \(A = LU\).
+        Scriviamo
+        \begin{align*}
+            A &= LU = L \operatorname{diag}_j (U_{j,j}) \tilde U
+        \end{align*}
+        dove \(\tilde U\) è \(U\) ma con tutti gli elementi sopra la diagonale divisi per \(U_{j,j}\),
+        così possiede \(1\) sulla diagonale.
+        Allora \(A = A^\ast = \tilde U^\ast \operatorname{diag}_j (U_{j,j}) L^\ast\).
+        Ma quindi \(\tilde U^\ast\) è una triangolare inferiore con \(1\) sulla diagonale.
+        L'altro termine prodotto è una triangolare superiore.
+        La forte singolarità implica pure l'unicità della fattorizzazione, quindi deve essere
+        \[
+            L = \tilde U^\ast, \quad U = \operatorname{diag}_j (\tilde U_{j,j}) L^\ast
+        \]
+        Abbiamo quindi trovato che
+        \begin{align*}
+            A &= L \cdot \operatorname{diag}_j (U_{j,j}) L^\ast
+        \end{align*}
+        Gli \(U_{j,j}\) sono reali perché coniugano, ma sono anche in \(\realnumbers^{>0}\)
+        in quanto \(A\) è definita positiva.
+        Siccome \(L\) ha uno sulla diagonale ed è triangolare inferiore è invertibile.
+        Scegliamo quindi \(v^{(j)} = (L^\ast)^{-1}e_j\). Con questa scelta,
+        \[
+            0 < v_{(j)}^\ast A v_{(j)} = e_j^T \operatorname{diag}_j(U_{j,j})e_j
+        \]
+        Abbiamo quindi che \[
+            A = L \operatorname{diag}_j(U_{j,j}) L^\ast
+            = \underbrace{L \operatorname{diag}_j(\sqrt{U_{j,j}})}_{V}
+            \underbrace{L \operatorname{diag}_j(\sqrt{U_{j,j}})L^\ast}_{V^\ast}
+        \]
+        \item Saoouani che \(A = VV^\ast\) con \(V_{j,j} > 0\) e \(V\) triangolare inferiore,
+        quindi è sicuramente invertibile.
+        Abbiamo che \(A^\ast = (VV^\ast)^\ast = V^{\ast\ast}V^\ast = VV^\ast = A\),
+        quindi è Hermitiana.
+        Inoltre, \(\forall x \neq 0\) abbiamo
+        \begin{DispWithArrows*}
+            x^\ast A x &= x^\ast V V^\ast x \Arrow{\(y = V^\ast x\)} \\
+            &= y^\ast y = ||y||_2^2 > 0
+        \end{DispWithArrows*}
+        siccome \(V\) è invertibile \(y \neq 0\).
+    \end{iffproof}
+\end{snippetproof}
+
+\section{Norme matriciali}
+
+Abbiamo la norma infinito
+\[
+    ||x||_\infty = \max_j |x_j|
+\]
+per \(x \in \complexnumbers^n\).
+Allora abbiamo
+\begin{DispWithArrows*}
+    ||A||_\infty &= \sup_{x\neq 0} \frac{||Ax||_\infty}{||x||_\infty} \\
+    &= \sup_{x \neq 0} \left|\left|A \frac{x}{||x||_\infty}\right|\right| \\
+    &= \sup_{||x||_\infty = 1} ||Ax||_\infty \Arrow{Compattezza} \\
+    &= \max_{||x||_\infty = 1} ||Ax||_\infty \\
+    &= \max_{||x||_\infty = 1} \max_j \left|
+        \sum_{k=1}^n A_{j,k} x_k
+    \right| \\
+    &\leq \max_j \sum_{n=1}^n |A_{j,k}| \\
+    &= \left|\left|
+        \begin{pmatrix}
+            ||\text{row}_1||_\infty \\
+            ||\text{row}_2||_\infty \\
+            \vdots \\
+
+            ||\text{row}_n||_\infty \\
+        \end{pmatrix}
+    \right|\right| \Arrow{per qualche \(p\)} \\
+    &= ||\text{row}_p||_1 = \sum_{i=1}^n \left|A_{p_i}x_i\right| \Arrow{\(A_{p_k} = |A_{p_k}|e^{i\varphi x}\)} \\
+    &\begin{cases}
+        x_1 = e^{-i\varphi_1} \\
+        x_2 = e^{-i\varphi_2} \\
+        \cdots \\
+        x_n e^{-i\varphi_n}
+    \end{cases}
+\end{DispWithArrows*}
+
+\begin{snippetexercise}{}
+    Con la stessa dimostrazione, considerare
+    \[
+        A(f)(x) = \int_X K(x,t)f(t)\,\text{d}t,
+        \quad A \colon \mathcal C[D] \fromto \mathcal C[D]
+    \]
+    calcolare
+    \[
+        \sup_{||f||_\infty \leq 1} ||A(f)(x)||_\infty = \sup_{x\in D} \int_D |K(x,t)|\,\text{d}t
+    \]
+\end{snippetexercise}
+
+Come costruire norme nuove in generale?
+Sia \(||\cdot||_\ast\) su \(\complexnumbers^n\) e \(S \in \matrices_n(\complexnumbers)\) invertibile.
+Allora possiamo definire
+\(||\cdot||_{\ast, S} \triangleq ||S \cdot ||_\ast\), e quindi per ogni vettore
+\(y \in \complexnumbers^n\) definire
+\[
+    ||y||_{\ast, S} = ||Sy||_\ast \geq 0
+\]
+Abbiamo
+\begin{enumerate}
+    \item \(||y||_{\ast, S} = 0\) se e solo se, per definizione \(||Sy||_{\ast} = 0\)
+    se e solo se \(Sy = 0\), in quanto pure \(||\cdot||_{\ast}\) è una norma, se e solo se \(y=0\).
+    \item Sia \(\alpha \in \complexnumbers, y \in \complexnumbers^n\).
+    Abbiamo che \[
+        ||\alpha y||_{\ast, S} = ||S(\alpha y)||_{\ast} = |\alpha| \cdot ||Sy||_{\ast} = |\alpha| \cdot ||y||_{\ast, S} 
+    \]
+    \item Siano \(x,y \in \complexnumbers^n\). Abbiamo che
+    \[
+        ||x+y||_{\ast, S} = ||S(x+y)||_\ast = ||Sx + Sy||_\ast \leq ||Sx||_\ast + ||Sy||_\ast = ||x||_{\ast, S} + ||y||_{\ast, S}
+    \]
+\end{enumerate}
+L'invertibilità di \(S\) serve solo per la prima.
+
+Un altro modo di costruire una norma è quello di fare una combinazione lineare non negativa di altre norme.
+\[
+    \sum a_j ||\cdot||_{\ast, x_j},
+    \quad ||\cdot||_{x_1}, \cdots, ||\cdot||_{x_k} \text{ norme su } \complexnumbers^n
+\]
+In particolare le combinazioni convesse sono ancora norme.
+Questo potrebbe essere usato nella creazione di un esame.
+
+Dato \(V \in \matrices_n(\complexnumbers)\) studiamo \(||V||_{\ast, S}\). Abbiamo
+\begin{DispWithArrows*}
+    ||V||_{\ast, S} &= \sup_{x \neq 0} \frac{||Vx||_{\ast, S}}{||x||_{\ast, S}} = \sup_{x \neq 0} \frac{||SVx||_{\ast}}{||Sx||_{\ast}} \Arrow{\(y= Sx\)} \\
+    &= \sup_{y \neq 0} \frac{||SV^{-1}Sy||_\ast}{
+        ||y||_\ast
+    } = ||SVS^{-1}||_\ast
+\end{DispWithArrows*}
+La sostituzione è valida in quanto \(S\) è non invertibile e quindi mappa \(\complexnumbers^n\)
+in \(\complexnumbers^n\) e ovviamente \(0\) in \(0\).
+
+\begin{snippettheorem}{}
+    Sia \(A \in \matrices_n(\complexnumbers)\).
+    Allora,
+    \[
+        \rho(A) = \inf_{\substack{||\cdot||\, \text{norma} \\ \text{matriciale indotta}}} ||A||
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Sappiamo che per ogni norma matriciale indotta \(||\cdot||\) \[
+        \rho(A) \leq ||A||
+    \]
+    Sia \(\varepsilon > 0\) arbitrariamente piccolo.
+    Cerchiamo una norma matriciale indotta particolare
+    \(||\cdot||_{\ast, \varepsilon}\) tale che
+    \[
+        ||A||_{\ast, \varepsilon} \leq \rho(A) + \varepsilon
+    \]
+    Se troviamo tale norma allora vale la tesi.
+    La norma dipende sia da \(A\) che da \(\varepsilon\).
+    Scriviamo \(A = TJT^{-1}\) con la scomposizione di Jordan.
+    Consideriamo una norma \(||\cdot||_{\ast, S}\) con \(S\) invertibile. Sappiamo che
+    \[
+        ||V||_{\ast, S} = ||SVS^{-1}||_\ast
+    \]
+    Dobbiamo scegliere \(S\) appropriatamente.
+    Scegliamo \(S = F T^{-1}\) per qualche \(F\) (e \(T\) dipende dalla \(A\)).
+    Visto che \(T\) dipende solo da \(A\), \(F\) (che deve essere invertibile per il teorema di Binet)
+    dovrà presumibilmente dipendere da \(\varepsilon\).
+    Da questa scomposizione otteniamo la semplificazione
+    \begin{align*}
+        ||A||_{\ast, S} &= ||FT^{-1}(TJT^{-1})TF^{-1}||_{\ast}
+        = ||FJF^{-1}||_\ast
+    \end{align*} 
+    Ricordiamo che \(J\) è bidiagonale superiore (autovalori sulla diagonale, valori \(\pm 1\) sulla sopradiagonale).
+    Scegliamo \(||\cdot||_\ast = ||\cdot||_\infty\).
+    Dobbiamo scegliere \(F\) in maniera tale che il prodotto faccia uscire precisamente gli \(\varepsilon\).
+    Cerchiamo una \(F\) diagonale in maniera tale che la moltiplicazione scali le righe e le colonne.
+    Vogliamo che gli elementi \((j,j+1)\)
+    \[
+        (FJF)^{-1}_{j,j+1} =
+        \frac{F_{j,j}\ast}{F_{j+1, j+1}} = \varepsilon \cdot \ast
+    \]
+    Allora scegliamo
+    \[
+        F^{-1} = \operatorname{diag}(1, \varepsilon, \varepsilon^2, \cdots, \varepsilon^{n-1})
+    \]
+    cioè
+    \[
+        F = \operatorname{diag}(1, \varepsilon^{-1}, \varepsilon^{-2}, \cdots, \varepsilon^{1-n})
+    \]
+    Se i valori sulla diagonale superiore sono \(0\), allora tutto funziona, il problema era quando sono \(1\).
+    Abbiamo quindi in conclusione
+    \begin{align*}
+        ||A||_{\infty, FT^{-1}} &=
+        \left|\left|
+            \begin{pmatrix}
+                \lambda_1 & \ast & & & \\
+                & \lambda_2 & \ast & & \\
+                & & \ddots & \ddots &  \\
+                & & & \lambda_n & \ast
+            \end{pmatrix}
+        \right|\right|_\infty \leq \max_j |\lambda_j + \ast \varepsilon| \leq \rho(A) + \varepsilon
+    \end{align*}
+\end{snippetproof}
+
+Abbiamo quindi un invariante algebrico nel teorema sui spazi di Banach per questo motivo.
+
 \pagebreak
 
 \section{Esercizi}
@@ -2724,6 +2888,99 @@ e quindi
 
 \begin{snippetsolution}{Matrice di Vandermonde generalizzata}
     \todo
+\end{snippetsolution}
+
+\begin{snippetexercise}{}
+    Sia \(n\) grande.
+    Siano dati \(2n\) numeri positivi \(x_j, y_j\)
+    per \(j \in \{1, \cdots, n\}\) tali che
+    \[
+        x_jy_j > \frac12, \quad \forall j \in \{1, \cdots, n\}
+    \]
+    Siano \(v_1, \cdots, v_n \in \realnumbers^2\)
+    con \(v_j = \begin{pmatrix}x_j \\ y_j\end{pmatrix}\)
+    e \(j \in \{1, \cdots, n\}\) e si consideri \(A \in \matrices_n(\realnumbers)\) tale che
+    \[
+        A_{j,k} = 1, \quad j\neq k, k,j \in \{1, \cdots, n\}, \quad A_{j,j} = ||v_j||_2
+    \]
+    Sia \(B \in \matrices_n(\realnumbers)\)
+    la matrice tridiagonale simmetrica con \(B_{j,j} = 2\)
+    per \(j \in \{1, \cdots, n\}\) e \(B_{j,j\pm 1} = 1\)
+    per \(j \in \{1, \cdots, n-1\}\).
+    Si consideri \(C \in \matrices_{2n}(\realnumbers)\)
+    data da \[
+        C = \begin{pmatrix}
+            A & A^2 - x_1A \\
+            0 & B 
+        \end{pmatrix}
+    \]
+    \begin{enumerate}
+        \item Si dimostri che \(A,B,C\) sono invertibili.
+        \item Si localizzi lo spettro di \(C\) nel modo migliore possibile.
+        \item Si dimostri che la fattorizzazione \(LU\) di \(C\) esiste unica ovvero \(C\)
+        fortemente non singolare.
+        \item Si dimostri la convergenza del metodo di Gauss-Seidel applicato ad un sistema \(Cx=b\) con \(b \in \realnumbers^{2n}\).
+        \item Si dimostri che \(f(A), f(B), f(C)\) sono invertibili con \(f(x) = 1 - x + x^{31}\).
+        È vero che tutti gli autovalori \(f(C)\) sono positivi?
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    \begin{enumerate}
+        \item TODO
+        \item TODO
+        \item TODO
+        \item La matrice non è Hermitiana ed è difficile definire se è a predominanza diagonale, probabilmente no.
+        Nessuno dei teoremi di condizioni sufficienti ci aiuta.
+        Abbiamo il metodo di Gauss-Seidel \(Z u = w\).
+        Scegliamo lo splitting \(M\) la parte inferiore di \(Z\) e \(-N\) la parte superiore stretta.
+        Consideriamo \(C\). Allora la sua parte triangolare inferiore, è composta da due blocchi di \(0\) (alto a destra e basso a sinistra)
+        e due blocchi con rispettivamente le parti triangolari inferiori di \(A\) e \(B\).
+        Invece, la triangolare superiore stretta di \(C\) ha diagonale tutta nulla, il blocco in basso a sinistra nullo,
+        il primo e quarto blocco contenenti la parte triangolare superiore stretta di \(A\) e \(B\) rispettivamente,
+        e il secondo blocco pieno di elementi.
+        \[
+M=
+\begin{pmatrix}
+\operatorname{tril}(A) & 0\\
+0 & \operatorname{tril}(B)
+\end{pmatrix},
+\qquad
+N=
+\begin{pmatrix}
+-\operatorname{triu}(A,1) & -(A^2-x_1A)\\
+0 & -\operatorname{triu}(B,1)
+\end{pmatrix}.
+\]
+        Quindi il prodotto è composto come
+        \[
+            \begin{pmatrix}
+                P_{\text{GS}}(A) & \ast \\
+                0 & P_{\text{GS}}(B)
+            \end{pmatrix}
+        \]
+        Abbiamo che
+        \[
+            \sigma(P_{\text{GS}}(C)) = \sigma(P_{\text{GS}}(A)) \union \sigma(P_{\text{GS}}(B))
+        \]
+        Questo è dato dal fatto che il determinante della matrice a blocchi è il determinante di \(A\)
+        per quello di \(B\), quindi il polinomio caratteristico è il prodotto dei due polinomi carateristici.
+        Sapendo che sono entrambe definite positive
+        \[
+            \rho(P_{\text{GS}}(C)) = \max\{\rho(P_{\text{GS}}(A)), \rho(P_{\text{GS}}(B))\} < 1
+        \]
+        Quindi vale la tesi.
+        \item Abbiamo la scomposizione di Jordan \(X = TJT^{-1}\)
+        \[
+            f(X) = I - X + X^3 = T(i- J + J^{31})T^{-1}
+        \]
+        Il polinomio sulla matrice diventa il polinomio sui blocchi di Jordan.
+        Quando facciamo le potenze, sulle diagonali rimangono le potenze degli autovalori mentre
+        fuori comincia a salire la triangolare superiore.
+        Quindi gli autovalori di \(\sigma(f(X)) = f(\sigma(X))\).
+        Studiamo la funzione notando che su \([0,+\infty)\)
+        è strettamente positiva, e quindi le matrici sono ancora invertibili.
+    \end{enumerate}
 \end{snippetsolution}
 
 \end{document}
