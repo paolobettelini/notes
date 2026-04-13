@@ -11,6 +11,8 @@
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usepackage{witharrows}
+\usepackage{pgfplots}
+\usepackage{xfrac}
 
 \pgfplotsset{compat=1.18}
 \WithArrowsOptions{displaystyle}
@@ -2163,10 +2165,10 @@ e può essere usata localmente.
     allora è analitica.
 \end{snippetproposition}
 
-\begin{sproof}{}
+\begin{snippetproof}{}
     Se le derivate sono equilimitate con costante \(K\), basta scegliere \(L=\) e \(M=K\)
     nel teorema. % TODO CITE Theorem
-\end{sproof}
+\end{snippetproof}
 
 Quindi \(\sin(x)\) e \(\cos(x)\) sono analitiche in quanto le derivate sono equilimitate.
 La funzione \(e^x\) non è limitata ma possiamo applicare il criterio negli intervalli
@@ -3772,6 +3774,8 @@ ciop se \(A,B \in \Phi\), allora \(B \difference A \in \Phi\),
 e pure rispetto alla differenza simmetrica, cioè se \(A, B \in \Phi\),
 allora \(A \Delta B \in \Phi\).
 
+Se avessimo l'unione arbitraria allora tutti i sottoinsiemi sarebbero misurabili.
+
 \begin{snippetexample}{}
     L'insieme delle parti \(\powerset(X)\) è una \(\sigma\)-algebra,
     e pure \(\{\emptyset, X\}\) è una \(\sigma\)-algebra.
@@ -3831,10 +3835,10 @@ molti aperti che non sono nè aperti nè chiusi.
 \end{snippetexample}
 
 In \(\realnumbers\), ogni insieme numerabile è un \(F_\sigma\) (basta che sia \(T_1\)).
-Per esempio, \(Q\) è un \(F_\sigma\), in quanto unione numerabile di punti.
+Per esempio, \(\mathbb{Q}\) è un \(F_\sigma\), in quanto unione numerabile di punti.
 
 \begin{snippetexercise}{}
-    Dimostrare che \(Q\) non è \(G_\delta\). \\
+    Dimostrare che \(\mathbb{Q}\) non è \(G_\delta\). \\
     \emph{Hint:} usare il teorema di Baire.
 \end{snippetexercise}
 
@@ -3854,6 +3858,320 @@ e ottene nuovi insiemi di elementi Borealiani.
 Possiamo continuare con \(G_{\delta\sigma\delta}\) etc.
 Si dimostrare che esistono elementi boreliani che non sono contenuti in
 una di queste concatenazioni.
+
+\begin{snippetproposition}{}
+    Se \(S\) ha la cardinalità del continuo, allora anche \(\sigma(S)\)
+    ha la cardinalità del continuo.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Si dimostra usando i numeri ordinali e il prinicpio di induzione transfinita.
+\end{snippetproof}
+
+Se \(S = \{(a,b) \suchthat a<b\}\), allora \(\sigma(S)\)
+è la \(\sigma\)-algebra di Borel.
+Quindi, sia \(S\) che \(\sigma(S)\) hanno la cardinalità del continuo.
+Quindi, non riusciamo a coprire tutto l'insieme delle parti, ed esistono quindi
+sottoinsiemi che non sono Borel-misurabili.
+
+\begin{snippetexercise}{}
+    Dimostrafre che non esistono \(\sigma\)-algebre esattamente numerabili.
+    Una \(\sigma\)-algebra può essere finita oppure almeno continua.
+\end{snippetexercise}
+
+La \(\sigma\)-algebra di Borel non ci basta per quello che vogliamo fare,
+la \(\sigma\)-algebra di Lebesgue \(\mathcal L(\realnumbers)\) sarà più grande.
+
+\begin{snippetdefinition}{Spazio misurabile}
+    Sia \(X\) un insieme e \(M\) una \(\sigma\)-algebra su \(X\).
+    La coppia \((X, M)\) è uno \emph{spazio misurabile}.
+\end{snippetdefinition}
+
+Non potremo integrare tutte le funzioni, solo quelle misurabili.
+
+\begin{snippetdefinition}{Funzione misurabile}
+    Sia \((X, M)\) uno spazio misurabile e \((Y, \tau)\)
+    uno spazio topologico e sia \(f \colon X \fromto Y\).
+    Diciamo che \(f\) è misurabile se \(f^{-1}(V) \in M, \forall V \in \tau\).
+\end{snippetdefinition}
+
+Nella nostra teoria dell'integrazione vogliamo includere la teoria dell'integrazione classica.
+Vogliamo quindi che, in particolare, tutte le funzioni continue siano integrabili.
+
+\begin{snippetexercise}{}
+    Dimostrare che \(f\) è misurabile se \(f^{-1}(V) \in M\) per ogni \(V \in \sigma(\tau)\).  \\
+    \emph{Hint:} usare la proposizione sottostante.
+\end{snippetexercise}
+
+\begin{snippetproposition}{}
+    Sia \(X\) uno spazio misurabile e \(Y\) un insieme e sia \(f \colon X \fromto Y\).
+    Allora, la famiglia dei sottoinsiemi di \(Y\) la cui controimmagine tramite \(f\) è misurabile,
+    forma una \(\sigma\)-algebra. 
+\end{snippetproposition}
+
+Consideriamo il caso particolare di funzioni \(Y=\overline \realnumbers\).
+C'è un criterio per stabilire la misurabilità di \(f\).
+
+\begin{snippettheorem}{}
+    Sia \(Y = \overline \realnumbers\) con la topologia euclidea. Allora,
+    \(f \colon X \fromto Y\) è misurabile se e solo se
+    \[
+        f^{-1}((a,+\infty]) \in M, \quad \forall a \in \realnumbers
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    \begin{iffproof}
+        \item banale;
+        \item Se \(f^{-1}((a,+\infty])\) è misurabile, allora anche
+        \(f^{-1}([b,+\infty))\) è misurabile in quanto una \(\sigma\)-algebra è chiusa per i complementi
+        e la preimmagine di un complemento è il complemento della preimmagine.
+        Quindi, facendo intersezioni, \(f^{-1}((a,b))\) è misurabile.
+    \end{iffproof}
+\end{snippetproof}
+
+La condizione del teorema vale anche con l'estremo finito incluso o con il complementare
+dell'insieme, quindi 4 totali condizioni equivalenti.
+
+\begin{snippetcorollary}{}
+    Se \(f\) è misurabile, allora \(f^{-1}(\{a\}) \in M, \forall a \in \realnumbers\).
+\end{snippetcorollary}
+
+\begin{snippetproposition}{}
+    Abbiamo che
+    \[
+        \{a\} = [-\infty, a] \intersection [a, +\infty]
+    \]
+\end{snippetproposition}
+
+\begin{snippetexample}{Non vale il viceversa}
+    Consideriamo \(f \colon \realnumbers \fromto \realnumbers\)
+    e sia \(M\) una \(\sigma\)-algebra
+    su \(\realnumbers\) per cui \(\exists A \in \realnumbers\)
+    tale che \(A \notin M\) (altrimenti è impossibile).
+    Sia \(M\) la \(\sigma\)-algebra di Borel.
+    Consideriamo una funzione iniettiva e positiva, come per esempio \(e^x\), e definiamo
+    \[
+        f(x) = \begin{cases}
+            e^x & x \in A \\
+            -e^x & x \in A^c
+        \end{cases}
+    \]
+    Abbiamo che \(f^{-1}((0, +\infty)) = A \notin M\).
+    Tuttavia, \(f^{-1}(\{a\})\) è un singoletto (misurabile) in quanto \(f\) è iniettiva.
+\end{snippetexample}
+
+\begin{snippetproposition}{}
+    Sia \(A \subseteq X\). Allora \(A\) è misurabile se e solo se
+    \(\chi_A\) è misurabile.
+\end{snippetproposition}
+
+\begin{snippetproposition}{}
+    Siano \(X\) uno spazio misurabile,
+    \(Y,Z\) spazi topologici,
+    \(g \colon X \fromto Y\) e \(h \colon Y \fromto Z\).
+    Sia \(f = h \circ g\). Se \(h\) è continua e \(g\) è misurabile, allora \(f\) è misurabile.
+\end{snippetproposition}
+
+In generale la composizione di due funzioni misurabili non è misurabile.
+
+\begin{snippetproposition}{}
+    Somma e prodotto di funzioni misurabili sono misurabili.
+\end{snippetproposition}
+
+\begin{snippetproposition}{}
+    Sia \(f_n \colon X \fromto \overline \realnumbers\) misurabile.
+    Allora, \(\limsup f_n\) e \(\liminf f_n\) (punto per punto) sono misurabili.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Osserviamo che \(\sup_n f_n\) (cioè la funzione \(x \to \sup_n f_n(x)\))
+    è misurabile (e analogamente con l'infimum).
+    Per verificarlo usiamo il criterio e mostriamo che
+    \begin{align*}
+        (\sup_n f_n)^{-1}((a, +\infty])
+        = \bigcup_n f^{-1}_n ((a, +\infty])
+    \end{align*}
+    e quindi è misurabile in quanto unione di insiemi misurabili.
+    Vale l'analogo con l'intersezione per l'infimum.
+    Mostriamo la doppia inclusione:
+    \begin{doubleinclusion}
+        \item Sia \(x \in (\sup_n f_n)^{-1}((a, +\infty])\) e denotiamo \(g = \sup_n f_n\).
+        Abbiamo allora che \(g(x) \in (a,+\infty]\), ossia \(g(x) > a\).
+        Quindi, \(\sup f_n(x) > a\).
+        Siccome il supremum è maggiore di \(a\), allora esiste almeno un elemento
+        \(\overline n\) tale che \(f_{\overline n}(x) > a\).
+        Quindi \(x \in f_{\overline n}^{-1}((a, +\infty])\) cioè \[
+            x \in \bigcup_n f^{-1}_n ((a, +\infty])
+        \]
+        \item Sia \[
+            x \in \bigcup_n f^{-1}_n ((a, +\infty])
+        \]
+        Allora \(\exists \overline n\) tale che \(x \in f^{-1}_{\overline n}((a, +\infty])\),
+        cioè \(f_{\overline n}(x) > a\).
+        Ma \(\sup_n f_n(x)\) è un maggiorante, cioè \(\sup_n f_n(x)>a\) e quindi
+        \(x \in (\sup_n f_n)^{-1}((a, +\infty])\).
+    \end{doubleinclusion}
+    Dalla definizione di limsup,
+    \[
+        \limsup f_n = \lim_n \sup_{k \geq n}
+        f_k = \inf_n \sup_{k \geq n} f_k
+    \]
+    Siccome il supremum e l'infimum di funzioni misurabili sono misurabili, allora
+    vale anche che il limsup (e liminf) rimangono funzioni misurabili.
+\end{snippetproof}
+
+In particolare, il massimo e il minimo fra due funzioni misurabili rimane misurabile.
+
+\begin{snippetproposition}{}
+    Sia \(f \colon X \fromto \overline \realnumbers\)
+    misurabili. Allora \(|f|\) è misurabile.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Siano \(f^+ = \max\{f,0\}\) e \(f^- = -\min\{f,0\}\)
+    che sono funzioni misurabili e rispettivamente positive e negative.
+    Chiaramente \(|f| = f^+ + f^-\) e quindi è misurabile.
+\end{snippetproof}
+
+\begin{snippetexample}{Non vale il converso}
+    Sia \(A \notin M\) non misurabile. Scegliamo
+    \(f = \chi_A - \chi_{A^c}\). Chiaramente \(|f| = 1\) è misurabile
+    mentre \(f\) non lo è.
+\end{snippetexample}
+
+\begin{snippetproposition}{}
+    Sia \(f \colon X \fromto \complexnumbers\).
+    Allora, \(f\) è misurabile se e solo se \(\Re f\) e \(\Im f\) sono misurabili.
+\end{snippetproposition}
+
+\begin{snippetdefinition}{Funzione semplice}
+    Sia \(X\) un'insieme ed \(f \colon X \fromto [0,+\infty)\).
+    Diciamo che \(f\) è \emph{semplice} se \(f\) ha immagine finita, cioè
+    \(f(X)\) è un'insieme finito.
+\end{snippetdefinition}
+
+Ci interessa il caso di \(X\) spazio misurabile e considereremo funzioni semplici misurabili.
+
+\begin{snippetproposition}{}
+    Una funzione semplice è misurabile se e solo se
+    tutte le sue fibre sono misurabili.
+\end{snippetproposition}
+
+In generale vale solo che le fibre sono misurabili, non il converso.
+Invece con le funzioni semplici vale l'equivalenza.
+
+\begin{snippetproof}{}
+    \begin{iffproof}
+        \item banale;
+        \item Sappiamo che \(f(X)\) è finito.
+        La controimmagine di un intervallo è unione di un numero finito di fibre.
+    \end{iffproof}
+\end{snippetproof}
+
+Se \(f\) è una funzione semplice, allora \(\exists \{\alpha_i\}_{i=1}^n \subseteq \realnumbers^+\)
+tale che
+\[
+    f = \sum_{i=1}^n \alpha_i \chi_{A_i}
+\]
+dove \(A_i = f^{-1}(\{\alpha_i\})\).
+
+\begin{snippettheorem}{}
+    Sia \(X\) uno spazio misurabile, \(f \colon X \fromto \realnumbers \union \{+\infty\}\).
+    Se \(f\) è misurabile, allora \(\exists \{s_n\}\)
+    successione di funzioni semplici misurabili tali che
+    \(s_n(x) \uparrow f(x), \forall x \in X\).
+\end{snippettheorem}
+
+Vale un risultato analogo per quelle negative, ma non ci serve.
+
+\begin{snippetproof}{}
+        \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+            \begin{tikzpicture}[xscale=1.5, yscale=2.5, >=stealth]
+                \foreach \y in {0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0} {
+                    \draw[gray!40, dashed, thin] (0,\y) -- (6.2,\y);
+                }
+
+                \draw[->, thick] (0,-0.1) -- (0,2.6) node[above] {$y$};
+                \draw[->, thick] (-0.1,0) -- (6.3,0) node[right] {$x$};
+                
+                \node[below left] at (0,0) {$0$};
+                \node[left] at (0, 0.25) {$\frac{1}{4}$};
+                \node[left] at (0, 0.5) {$\frac{1}{2}$};
+                \node[left] at (0, 0.75) {$\frac{3}{4}$};
+                \node[left] at (0, 1.0) {$1$};
+                \node[left] at (0, 1.25) {$\frac{5}{4}$};
+                \node[left] at (0, 1.5) {$\frac{3}{2}$};
+                \node[left] at (0, 1.75) {$\frac{7}{4}$};
+                \node[left] at (0, 2.0) {$2$};
+
+                \draw[thick, domain=0.4:2.6, samples=50] plot (\x, {(\x-1.5)^2 + 0.1});
+                \draw[thick, domain=2.7:4.0, samples=50] plot (\x, {1.2 + 0.5*(\x-2.7)^2});
+                \draw[thick, domain=4.5:6.0, samples=50] plot (\x, {2.4 - (\x-4.5)^2});
+                
+                \node[above] at (4.5, 2.4) {$f(x)$};
+
+                \begin{scope}[red, line width=2.5pt]
+                    \draw (0.4, 1.0) -- (0.551, 1.0);
+                    \draw (0.551, 0.5) -- (0.868, 0.5);
+                    \draw (0.868, 0) -- (2.132, 0);
+                    \draw (2.132, 0.5) -- (2.449, 0.5);
+                    \draw (2.449, 1.0) -- (2.6, 1.0);
+
+                    \draw (2.7, 1.0) -- (4.0, 1.0);
+
+                    \draw (4.5, 1.0) -- (5.683, 1.0);
+                    \draw (5.683, 0.5) -- (5.878, 0.5);
+                    \draw (5.878, 0) -- (6.0, 0);
+                \end{scope}
+
+                \begin{scope}[blue, line width=1pt]
+                    \draw (0.4, 1.25) -- (0.428, 1.25);
+                    \draw (0.428, 1.0) -- (0.551, 1.0);
+                    \draw (0.551, 0.75) -- (0.694, 0.75);
+                    \draw (0.694, 0.5) -- (0.868, 0.5);
+                    \draw (0.868, 0.25) -- (1.113, 0.25);
+                    \draw (1.113, 0) -- (1.887, 0);
+                    \draw (1.887, 0.25) -- (2.132, 0.25);
+                    \draw (2.132, 0.5) -- (2.306, 0.5);
+                    \draw (2.306, 0.75) -- (2.449, 0.75);
+                    \draw (2.449, 1.0) -- (2.572, 1.0);
+                    \draw (2.572, 1.25) -- (2.6, 1.25);
+
+                    \draw (2.7, 1.0) -- (3.016, 1.0);
+                    \draw (3.016, 1.25) -- (3.475, 1.25);
+                    \draw (3.475, 1.5) -- (3.749, 1.5);
+                    \draw (3.749, 1.75) -- (3.965, 1.75);
+                    \draw (3.965, 2.0) -- (4.0, 2.0);
+
+                    \draw (4.5, 2.0) -- (5.132, 2.0);
+                    \draw (5.132, 1.75) -- (5.306, 1.75);
+                    \draw (5.306, 1.5) -- (5.449, 1.5);
+                    \draw (5.449, 1.25) -- (5.572, 1.25);
+                    \draw (5.572, 1.0) -- (5.683, 1.0);
+                    \draw (5.683, 0.75) -- (5.785, 0.75);
+                    \draw (5.785, 0.5) -- (5.878, 0.5);
+                    \draw (5.878, 0.25) -- (5.966, 0.25);
+                    \draw (5.966, 0) -- (6.0, 0);
+                \end{scope}
+            \end{tikzpicture}
+        \end{center}
+    \end{wrapfigure}
+    Costruiamo tale successione.
+    Definiamo \(s_1 = 1\) dove \(f\) assume valori \(\geq 1\).
+    Dove \(\sfrac12 \leq f < 1\) definiamo \(s_1 = \frac12\).
+    Dove \(f < \frac12\) definiamo \(s_1 = 0\).
+    Chiamiamo rispettivamente questi insiemi
+    \begin{align*}
+        E_0 &= f^{-1}([1, +\infty]) \\
+        E_1 &= f^{-1}([\sfrac12, 1)) \\
+        E_\infty &= f^{-1}([0,\sfrac12])
+    \end{align*}
+    Per costruire la \(s_2\) suddividiamo l'intervallo \([0,2]\)
+    in intervalli di ampiezza \(\sfrac14\).
+    \wrapfill
+\end{snippetproof}
 
 \pagebreak
 
