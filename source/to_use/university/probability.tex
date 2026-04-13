@@ -3394,7 +3394,7 @@ che è uno spazio di Banach rispetto alla norma
 \]
 nel caso \(p = 2\) ha anche un prodotto scalare che induce la norma
 \[
-    \langle f,g\rangle_2 = \int_E f(x)g(x) \gamma \,\text{d}\gamma(x)
+    \langle f,g\rangle_2 = \int_E f(x)g(x) \,\text{d}\gamma(x)
 \]
 (rispetto a qualsiasi misura sigma finita)
 
@@ -3447,5 +3447,344 @@ Il motivo per cui mettiamo il quadrato è
     invece \(f(y) = |c_0 -y|^2\) lo è.
 \end{enumerate}
 
+\pagebreak
+
+\begin{snippetproposition}{Varianza nulla}
+    Sia \(X \colon \Omega \fromto \realnumbers\)
+    variabile aleatoria discreta tale che
+    \(\mathbb E[X^2] < \infty\).
+    Se il momento secondo è finito, pure il momento primo lo è.
+    Allora,
+    \[
+        \operatorname{Var}(X)
+        = \mathbb E[X^2] - \mathbb E[X]^2 = 0
+        \iff \exists c \in \realnumbers \suchthat X = c \text{ almost everywhere }
+    \]
+    In particolare \(\mathbb E[X] = c\).
+\end{snippetproposition}
+
+Cioè se abbiamo varianza nulla, la variabile coincide con la media quasi ovunque.
+
+\begin{snippetproof}{Varianza nulla}
+    \begin{ffiproof}
+        \item Sia \(p_X \colon \realnumbers \fromto \realnumbers\)
+        densità discreta di \(X\), quindi visto che \(X = c\) quasi ovunque, allora
+        \[
+            p_X(c) = 1, \quad p_X(x \neq c) = 0
+        \]
+        Di conseguenza,
+        \begin{align*}
+            \operatorname{Var}(X) = \sum_{x\in\realnumbers}
+            (x- \mathbb E[X])^2p_X(x)
+            &= (c - \mathbb E[x])^2 = 0
+        \end{align*}
+        in quanto \(X=c\) quasi certamente.
+        \item Abbiamo
+        \begin{align*}
+            0 &= \operatorname{Var}(X) = \sum_{x\in\realnumbers}
+            (\underbrace{x- \mathbb E[X]}_{Z = (X-\mathbb E[x])^2})^2p_X(x)
+        \end{align*}
+        dove \(Z\) è una variabile aleatoria non negativa quasi certamente.
+        Di conseguenza, \(Z\) è nulla quasi certamente.
+    \end{ffiproof}
+\end{snippetproof}
+
+Potremmo scegliere la varianza come lo scarto quadratrico della distanza
+da qualsiasi valore.
+Tuttavia, scegliamo il punto medio in quanto il valore atteso minima lo scarto quadratico medio (pesato rispetto alla densità).
+Questo ce lo mostra la seguente proposizione.
+
+\begin{snippetproposition}{}
+    Sia \(X \colon \Omega \fromto \realnumbers\) variabile aleatoria discreta tale che
+    \(\mathbb E[X^2] < \infty\).
+    Allora,
+    \[
+        \operatorname{Var}(X) \leq \mathbb E[(X-c)^2], \quad \forall x \in \realnumbers
+    \]
+    vale l'uguaglianza se e solo se \(c = \mathbb E[x]\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Abbiamo \begin{align*}
+        \mathbb E[(X-c)^2]
+        &= \mathbb E[(X- \mathbb E[X] + \mathbb E[X] c)^2] \\
+        &= \mathbb E[(X - \mathbb E[X])^2] + 2\mathbb E[(X - \mathbb E[X])(\mathbb E[X]-c)]
+        + \mathbb E[(\mathbb E[X] - c)^2] \\
+        &= \operatorname{Var}(X)
+         + 2(\mathbb E[X] - c)\left(
+            \mathbb E[X] - \mathbb E[X]
+         \right) + (\mathbb E[X] - c)^2 \\
+         &= \operatorname{Var}(X)
+    \end{align*}
+    Otteniamo quindi \[
+        \mathbb E[(X-c)^2] =
+        \operatorname{Var}(X)
+        + (\mathbb E[X] - c)^2 \geq \operatorname{Var}(X)
+    \]
+    Vale l'uguaglianza se e solo se \(c = \mathbb E[x]\).
+\end{snippetproof}
+
+Vediamo le proprietà della varianza e della covarianza che discendono dalle proprietà di \(\mathbb E\).
+
+\begin{snippetproposition}{Proprietà varianza e covarianza}
+    Siano \(n \in \naturalnumbers\) e \(X_1, \cdots, X_n \colon \Omega \fromto \realnumbers\)
+    variabili aleatorie discrete
+    tale che \(\mathbb E[X_1^2], \cdots, \mathbb E[X_n^2] < + \infty\).
+    Abbiamo che
+    \begin{enumerate}
+        \item \(\operatorname{Var}(\alpha X + \beta) = \alpha^2 \operatorname{Var}(X)\);
+        \item \(\operatorname{Var}(X) = \operatorname{Cov}(X,X)\);
+        \item \(\operatorname{Cov}(X_1, X_2) = \operatorname{Cov}(X_2, X_1)\);
+        \item \(\forall a,b \in \realnumbers\) vale
+        \[
+            \operatorname{Cov}(\alpha X_1 + \beta X_2, X_3)
+            = \alpha \operatorname{Cov}(X_1, X_3)
+             + \beta \operatorname{Cov}(X_2, X_3)
+        \]
+        \item \[
+            \operatorname{Var}\left(
+                \sum_{k=1}^n X_k
+            \right)
+            = \sum_{k=1}^n \operatorname{Var}(X_k)
+            + \sum_{i\neq k} \operatorname{Cov}(X_i, X_j)
+        \]
+        Al posto di \(i\neq j\) possiamo mettere \(i < j\) e moltiplicare per \(2\)
+        il termine in quanto la covarianza è simmetrica.
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproposition}{}
+    Siano \(X,Y \colon \Omega \fromto \realnumbers\) variabili aleatorie discrete
+    tale che \(\mathbb E[X^2], \mathbb E[Y^2] < +\infty\).
+    Se \(X\) o \(Y\) quasi certamente costanti, allora
+    \[
+        \operatorname{Cov}(X,Y) = 0
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Supponiamo senza perdita di generalità che \(X=c\) quasi certamente.
+    Allora \(\mathbb E[X] = c\) e quindi \(\mathbb E[X] - X = 0\) quasi certamente.
+    Abbiamo \begin{align*}
+        \operatorname{Cov}(X,Y) =
+        \mathbb E[(X-\mathbb E[X])(Y-\mathbb E[Y])]
+        = 0
+    \end{align*}
+\end{snippetproof}
+
+Il viceversa non vale necessariamente, basta ricordare che
+la covarianza è legata
+a un prodotto scalare che può essere nullo
+anche se uno dei vettori non è nullo (usando l'ortogonalità).
+
+\begin{snippetproposition}{Indipendenza e covarianza}
+    Siano \(X,Y \colon \Omega \fromto \realnumbers\)
+    variabili aleatorie discrete tali che
+    \(\mathbb E[|X|], \mathbb E[|Y|]<+\infty\).
+    Se \(X,Y\) sono indipendenti, allora \(\mathbb E[XY] = \mathbb E[X]\mathbb E[Y]\).
+    In particolare, \(\operatorname{Cov}(X,Y) = 0\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Sappiamo che \(X,Y\) sono indipendenti se e solo se
+    la congiunta fattorizza mediante il prodotto delle marginali
+    \[
+        p_{X,Y}(x,y) = p_X(x)p_Y(y)
+    \]
+    Quindi
+    \begin{align*}
+        \mathbb E[|XY|]
+        &= \sum_{(x,y) \in \realnumbers^2}
+        p_{X,Y}(x,y)|xy|
+         = \sum_{(x,y) \in \realnumbers^2}
+         p_X(x)p_Y(y)|xy| \\
+         &= \sum_{x\in\realnumbers}|x|p_X(x) \sum_{y\in \realnumbers}|y| p_Y(y) \\
+         &= \mathbb E[|X|] \mathbb E[|Y|] < +\infty
+    \end{align*}
+\end{snippetproof}
+
+Notiamo che usando la disuguaglianza di Cauchy-Schwarz
+sappiamo che \(\mathbb E[X^2], \mathbb E[Y^2] < +\infty\)
+implica \(\mathbb E[|XY|] < +\infty\).
+Nel caso indipendente, questa proposizione ci dice che basta
+meno cioè \(\mathbb E[|X|], \mathbb E[|Y|] < +\infty\).
+
+Non è vero che se la covarianza è nulla allora le variabili aleatorie siano indipendenti.
+La covarianza misura bene la relazione lineare fra variabili
+aleatorie. Per esempio una relazione quadratica non è letta bene.
+
+\begin{snippetexample}{Covarianza nulla ma variabili dipendenti}
+    Sia \(X \colon \Omega \fromto \{-1, 0, 1\}\)
+    tale che
+    \[
+        p_X(-1) = p_X(0) = p_X(1) = \frac13
+    \]
+    cioè \(X \sim \operatorname{Unif}(\{-1, 0, 1\})\).
+    Chiaramente \(\mathbb E[X] = 0\). \\
+    Sia ora \(Y \colon \Omega \fromto \{0,1\}\) tale che \(Y = X^2\).
+    Chiaramente \(X\) e \(Y\) sono dipendenti. Abbiamo
+    \begin{align*}
+        \mathbb E[Y] = \mathbb E[X^2] &= \sum_{x\in\realnumbers}x^2 p_X(x) \\
+        &= \sum_{x\in \{-1, 0, 1\}} x^2 p_X(x) = \frac23
+    \end{align*}
+    Tuttavia
+    \begin{align*}
+        \mathbb E[XY] = \sum_{x\in \{-1, 0, 1\}} x^3 p_X(x)
+        = -\frac13 + 0 + \frac13
+    \end{align*}
+    Quindi \[
+        \mathbb E[XY] = 0 = \frac23 \cdot 0 = \mathbb E[Y]\mathbb E[X]
+    \]
+    Equivalentemente \(\operatorname{Cov}(X,Y) = 0\)
+    ma \(X,Y\) non sono indipendenti.
+\end{snippetexample}
+
+\begin{snippetcorollary}{}
+    Siano \(X_1, \cdots, X_n \colon \Omega \fromto \realnumbers\)
+    variabili aleatorie discrete
+    tali che \(\mathbb E[X_1^2], \cdots, \mathbb E[X_n^2] < +\infty\)
+    e \(X_1, \cdots, X_n\) indipendenti. Allora,
+    \[
+        \operatorname{Var}\left(
+            \sum_{k=1}^n X_k
+        \right)
+        = \sum_{k=1}^n \operatorname{Var}(X_k)
+    \]
+\end{snippetcorollary}
+
+\subsection{Correlazione}
+
+Come abbiamo visto, la covarianza misura
+dipendenze lineari fra variabili aleatorie, ma
+non ci dà necessariamente informazioni circa dipendenze di altro tipo che potrebbero intercorrere
+fra variabili aleatorie.
+
+\begin{snippetproposition}{}
+    Siano \(X,Y \colon \Omega \fromto \realnumbers\) variabili aleatorie discrete
+    tali che \(\mathbb E[X^2], \mathbb E[Y^2] < +\infty\).
+    Allora,
+    \[
+        |\operatorname{Cov}(X,Y)|
+        \leq \sqrt{\operatorname{Var}(X) \operatorname{Var}(Y)}
+    \]
+    Inoltre, se \(\operatorname{Var}(X),\operatorname{Var}(Y)\)
+    positive (escludendo quindi il caso di varianza nulla),
+    vale l'uguaglianza se e solo se \(\exists a,b \in \realnumbers\)
+    tale che \(Y = aX + b\) quasi certamente.
+\end{snippetproposition}
+
+Cioè se e solo se esiste una relazione perfettamente lineare fra le due variabili.
+
+\begin{snippetproof}{}
+    Basta applicare la disuguaglianza di Cauchy-Schwarz
+    alle variabili aleatorie
+    \[
+        \overline X = X-\mathbb E[X],
+        \qquad
+        \overline Y = Y-\mathbb E[Y]
+    \]
+    Perla seconda parte dell'enunciato
+    \begin{ffiproof}
+        \item Supponiamo che esistano \(a,b\) tali che \(Y = aX + b\)
+        quasi certamente.
+        Abbiamo
+        \begin{align*}
+            \operatorname{Cov}(X,Y) &=
+            \operatorname{Cov}(X, aX + b) = a \operatorname{Cov}(X,X) \\
+            &= a \operatorname{Var}(X) = \sqrt{a^2 \operatorname{Var}(X)^2} \\
+            &= \sqrt{\operatorname{Var}(X)a^2\operatorname{Var}(X)}
+            = \sqrt{\operatorname{Var}(X)\operatorname{Var}(Y)} 
+        \end{align*}
+        \item Abbiamo \begin{DispWithArrows*}
+            \mathbb E\left[
+                \left(
+                    \frac{\overline X}{\sqrt{\mathbb E[X^2]}}
+                    -
+                    \frac{\overline Y}{\sqrt{\mathbb E[Y^2]}}
+                \right)^2
+            \right]
+            &= 2 - \frac{2 \mathbb E[\overline X \overline Y]}{\sqrt{\mathbb E[{\overline X}^2]\mathbb E[{\overline Y}^2]}} \Arrow{\(\mathbb E[{\overline X}^2] = \operatorname{Var}(X)\)} \\
+            &= 2 - \frac{2\mathbb E[(X-\mathbb E[X])(Y-\mathbb E[Y])]}{
+                \sqrt{\operatorname{Var}(X)\operatorname{Var}(Y)}
+            } \\
+            & = 0
+        \end{DispWithArrows*}
+        Quindi
+        \begin{align*}
+             \left(
+                    \frac{\overline X}{\sqrt{\mathbb E[X^2]}}
+                    -
+                    \frac{\overline Y}{\sqrt{\mathbb E[Y^2]}}
+                \right)^2
+                = 0
+            \text{ quasi certamente }
+        \end{align*}
+        e quindi \[
+            \frac{\overline X}{\sqrt{\mathbb E[X^2]}}
+            =
+            \frac{\overline Y}{\sqrt{\mathbb E[Y^2]}}
+        \]
+        e sostituendo otteniamo
+        \begin{align*}
+            Y =& \frac{\operatorname{Var}(Y)}{\operatorname{Var}(Y)}
+            (X - \mathbb E[X]) + \mathbb E[Y]
+        \end{align*}
+        Quindi vale la tesi con
+        \[
+            a = \frac{\operatorname{Var}(Y)}{\operatorname{Var}(Y)},
+            \quad b =  \mathbb E[Y] -\frac{\operatorname{Var}(Y)}{\operatorname{Var}(Y)}\mathbb E[X]
+        \]
+    \end{ffiproof}
+\end{snippetproof}
+
+Quindi, covarianza nulla non implica che le variabili non siano indipendenti.
+Tuttavia, se la covarianza non è nulla, allora sicuramente sono dipendenti.
+
+\begin{snippetdefinition}{Coefficiente di correlazione}
+    Siano \(X,Y \colon \Omega \fromto \realnumbers\)
+    variabili aleatorie discrete tali che \(\mathbb E[X^2],\mathbb E[Y^2] < +\infty\).
+    Definiamo coefficiente di correlazione tra \(X\) e \(Y\) la quantità
+    \[
+        \Gamma(X,Y) \triangleq \frac{\operatorname{Cov}(X,Y)}{\sqrt{\operatorname{Var}(X)\operatorname{Var}(Y)}}
+    \]
+    se \(\operatorname{Var}(X), \operatorname{Var}(Y) \neq 0\).
+\end{snippetdefinition}
+
+Notiamo che \(\Gamma \in [-1, 1]\)
+e \(\Gamma(X,Y) = \pm 1\)
+se e solo se \(Y = aX + b\) con \(\operatorname{sign}(a) = \pm 1\) e \(|a|>0\).
+
+\subsection{Medie e varianza di distribuzioni note}
+
+\begin{snippetproposition}{Media della distribuzione geometrica}
+    Sia \(X \colon \Omega \fromto \naturalnumbers \subseteq \realnumbers\)
+    tale che \[
+        p_X(n) = p(1-p)^{n-1}
+    \]
+    \[
+        \mathbb E[X] = \frac1p
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{Media della distribuzione geometrica}
+    Calcoliamo la media
+    \begin{align*}
+        \mathbb E[X] &= \sum_{x\in\realnumbers}xp_X(x)
+        = \sum_{n=1}^\infty np(1-p)^{n-1} \\
+        &= p \sum_{n=1}^\infty n(1-p)^{n-1} = p \sum_{n=1}^\infty \frac{d}{dp} \left(
+            -(1-p)^n
+        \right) \\
+        &= p \frac{d}{dp} \left(
+            - \sum_{n=1}^\infty (1-p)^n
+        \right)
+        = -p \frac{d}{dp} \left(
+            \sum_{n=0}^\infty (1-p)^n - 1
+        \right) \\
+        &= -p \frac{d}{dp} \left[
+            \frac{1}{p} - 1
+        \right] = -p \left(\frac{1}{p^2}\right)
+        = \frac1p
+    \end{align*}
+\end{snippetproof}
 
 \end{document}
