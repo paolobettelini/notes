@@ -4182,7 +4182,7 @@ Vale un risultato analogo per quelle negative, ma non ci serve.
     \end{align*}
     Per costruire la \(s_2\) suddividiamo l'intervallo \([0,2]\)
     in intervalli di ampiezza \(\sfrac14\).
-
+    Definiamo \(s_2(x) = 2\) se \(f(x) \geq 2\), e così via.
     In generale, per ogni \(n \in \mathbb{N}\), suddividiamo l'intervallo \([0,n]\)
     in sottointervalli di ampiezza \(\sfrac{1}{2^n}\).
     Poniamo quindi
@@ -4198,50 +4198,244 @@ Vale un risultato analogo per quelle negative, ma non ci serve.
         = \sum_{k=0}^{n2^n-1} \frac{k}{2^n}\,\chi_{E_{k,n}}
         + n\,\chi_{E_{\infty,n}}.
     \]
-    La funzione \(s_n\) assume un numero finito di valori, dunque è semplice;
-    inoltre, essendo combinazione lineare finita di funzioni caratteristiche
-    di insiemi misurabili, è anch'essa misurabile.
-    Mostriamo ora che \(s_n(x) \uparrow f(x)\) per ogni \(x \in X\).
-    Fissato \(x \in X\), poniamo \(a = f(x)\).
-    Se \(a = +\infty\), allora \(x \in E_{\infty,n}\) per ogni \(n\), e quindi
-    \[
-        s_n(x) = n \uparrow +\infty = f(x).
-    \]
-    Supponiamo ora \(a < +\infty\).
-    Per ogni \(n > a\), esiste un unico intero \(k\) tale che
-    \[
-        \frac{k}{2^n} \leq a < \frac{k+1}{2^n}.
-    \]
-    Per definizione di \(s_n\), si ha allora
-    \[
-        s_n(x) = \frac{k}{2^n},
-    \]
-    da cui
-    \[
-        0 \leq a - s_n(x) < \frac{1}{2^n}.
-    \]
-    Quindi \(s_n(x) \to a = f(x)\).
-    Resta da verificare che la successione è crescente.
-    Se \(a \geq n\), allora \(s_n(x) = n\), mentre \(s_{n+1}(x) \geq n\),
-    dunque \(s_n(x) \leq s_{n+1}(x)\).
-
-    Se invece \(a < n\) e
-    \[
-        \frac{k}{2^n} \leq a < \frac{k+1}{2^n},
-    \]
-    allora
-    \[
-        \frac{2k}{2^{n+1}} \leq a.
-    \]
-    Perciò il valore assunto da \(s_{n+1}(x)\) è almeno
-    \[
-        \frac{2k}{2^{n+1}} = \frac{k}{2^n} = s_n(x),
-    \]
-    e quindi anche in questo caso \(s_n(x) \leq s_{n+1}(x)\).
-    Abbiamo così costruito una successione di funzioni semplici misurabili
-    tale che \(s_n(x)\) è crescente e converge a \(f(x)\) per ogni \(x \in X\).
+    Possiamo dire che se \(f\) è limitata, allora \(f(x) - s_n(x) \leq 2^{-n}\)
+    definitivamente. Se invece \(f(x) = +\infty\),
+    allora \(s_n(x) = n\) e quindi \(s_n(x)\) diverge (quindi converge a \(+\infty\)).
+    Quindi abbiamo convergenza puntuale \(s_n(x) \to f(x)\)
+    per ogni \(x \in X\). Inoltre, se \(f\) è limitata la convergenza è uniforme.
+    Infatti se ad esempio \(f(x) < 10\), a partire da \(n=10\)
+    le \(s_n\) distanza da \(f\) meno di \(2^{-n}\).
+    In realtà, la convergenza delle \(s_n\) è uniforme se e solo se \(f\) è limitata.
     \wrapfill
 \end{snippetproof}
+
+In generale la matematica classica si concentra sul dominio,
+mentre quella moderna sul codominio (es. definizione di continuità).
+Anche in questo caso, Riemann partizionava il dominio della funzione,
+mentre Lebesgue partiziona il codominio.
+
+Una misura è una funzione numerabilmente additiva di insiemi.
+
+\begin{snippetdefinition}{Misura}
+    Sia \((X, M)\) uno spazio misurabile. Una \emph{misura}
+    è una funzione \(\mu \colon M \fromto [0,+\infty]\)
+    che sia numerabilmente additiva, cioè se \(\{A_i\}_{i=1}^\infty \subseteq M\)
+    e \(A_i \intersection A_j = \emptyset\) per \(i \neq j\), allora
+    \[
+        \mu\left(
+            \bigcup_{i=1}^\infty A_i
+        \right)
+        = \sum_{i=1}^\infty \mu(A_i)
+    \]
+\end{snippetdefinition}
+
+Notiamo che fra questi addendi ci potrebbe essere infinito.
+Non può mai capire un caso \(\infty - \infty\) perché stiamo considerando misure positive.
+In questi casi abbiamo \[
+    a + \infty = \infty, \quad
+    a \cdot \infty = \begin{cases}
+        \infty & a>0 \\
+        0 & a = 0
+    \end{cases}
+\]
+Inoltre, l'unione insiemistica nella definizione non dipende
+dall'ordine degli insiemi, mentre una serie in generale sì.
+Tuttavia, la serie è incondizionata in quanto i termini sono positivi,
+quindi il valore è indipendente dall'ordine della somma.
+Se la misura fosse complessa, non potremmo fare la stessa cosa:
+dobbiamo supporre che l'intero spazio abbia misura finita per
+far sì che la serie sia incondizionata.
+
+I casi banali sono quello in cui tutti gli insiemi hanno misura nulla o infinita.
+Consideriamo quindi i casi dove esiste almeno un insieme di misura non nulla
+o un insieme di misura non infinita.
+
+\begin{snippettheorem}{}
+    \begin{enumerate}
+        \item \(\mu(\emptyset) = 0\);
+        \item \emph{finita-addività:} \[
+            \mu\left(
+                \bigcup_{i=1}^n A_i
+            \right)
+            = \sum_{i=1}^n \mu(A_i)
+        \]
+        \item \emph{monotonia:} Se \(A \subseteq B\), con \(A,B \in M\) allora
+        \[
+            \mu(A) \leq \mu(B)
+        \]
+        \item se \(A_1 \subseteq A_2 \subseteq \cdots\) è una successione di insiemi misurabili annidati, allora
+        \[
+            \mu\left(
+                \bigcup_{i=1}^\infty A_i
+            \right)
+            = \lim_{n} \mu(A_n) = \sup_n \mu(A_n)
+        \]
+        \item se \(A_1 \supseteq A_2 \supseteq \cdots\) è una successione di insiemi misurabili annidati,
+        e \(\exists \overline n\) tale che \(\mu(A_n) < +\infty\),
+        allora
+        \[
+            \mu\left(
+                \bigcap_{i=1}^\infty A_i
+            \right)
+            = \lim_{n} \mu(A_n) = \inf_n \mu(A_n)
+        \]
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetexample}{Controesempio della \((5)\) senza la condizione extra}
+    In \(\realnumbers\),
+    consideriamo \(A_n = (n ,+\infty)\) la cui intersezione è vuota, la misura 
+    dell'intersezione è quindi nulla, ma l'infimum delle misure è infinito.
+\end{snippetexample}
+
+\begin{snippetproof}{TODO}
+    \begin{enumerate}
+        \item XXX
+        \item Metto tutti gli insieme vuoti
+        \item XXX
+        \item XXX
+        \item XXX
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetdefinition}{Spazio di misura}
+    Sia \((X, M)\) uno spazio misurabile e sia \(\mu\)
+    una misura di \(M\).
+    Allora, \((X, M, \mu)\) è deto \emph{spazio di misura}. \\
+    \emph{Syntax:} scriviamo \((X, \mu)\) se non vogliamo specificare la \(\sigma\)-algebra.
+\end{snippetdefinition}
+
+Nel caso in cui \(\mu(X) < +\infty\), si può normalizzare la misura
+\(\sfrac{\mu}{\mu(X)}\) in maniera tale che \(\mu(X) = 1\).
+In questo caso si parla di spazi di probabilità e gli elementi si chiamano eventi.
+
+\begin{snippetdefinition}{Misura del conteggio}
+    Sia \(X\) un insieme con la \(\sigma\)-algebra \(\powerset(X)\).
+    La \emph{misura del conteggio} su questo spazio è definita come
+    \[
+        \mu(E) = \begin{cases}
+            |E| & |E| < +\infty \\
+            +\infty \text{ otherwise}
+        \end{cases}
+    \]
+\end{snippetdefinition}
+
+Con questa misura tutti gli insiemi e tutte le funzioni sono misurabili.
+
+\begin{snippetdefinition}{Misura di condensazione o di concentrazione di massa o di Dirac}
+    Sia \(X\) un insieme e \(x_0 \in X\). La \emph{misura di Dirac} è definita come
+    \[
+        \delta_{x_0}(E) = \begin{cases}
+            1 & x_0 \in E \\
+            0 & x_0 \notin E
+        \end{cases}
+    \]
+\end{snippetdefinition}
+
+\subsection{Completezza delle misure}
+
+Esistono insiemi non vuoti la cui misura è nulla.
+
+Consideriamo per esempio \(E \in M\)
+tale che \(E \neq 0\) e \(\mu(E) = 0\).
+Può capire che esista \(B \subseteq E\) tale che \(B \notin M\).
+Ciò non è desiderabile in quanto
+noi vogliamo costruire degli integrali usando la misura. Dal punto di vista integrale,
+se due funzioni differiscono su un insieme di misura nulla, devono coincidere.
+Consideriamo le funzioni
+\(\chi_X, \chi_{E^c}\).
+Queste due funzioni differiscono 
+solamente in un insieme di misura nulla (\(E\)).
+Ma allora le funzioni \(\chi_X\) e \(\chi_B\)
+differiscono ancora meno in quanto \(B \subseteq E\).
+Tuttavia, \(B\) non è misurabile.
+Definiamo quindi la misura completa.
+
+\begin{snippetdefinition}{Misura completa}
+    Sia \((X, M, \mu)\) uno spazio di misura.
+    Diciamo che \(\mu\) è completa
+    se \(\forall E \in M\) tale che \(\mu(E) = 0\), se \(B \subseteq E\) allora \(B \in M\)
+\end{snippetdefinition}
+
+E quindi pure \(\mu(B) = 0\) per la monotonia.
+Purtroppo esistono misure non complete, ma possiamo completarle ad uno spazio completo.
+Basta aggiungere ad \(M\) tutti i sottoinsiemi di insiemi misurabili con misura nulla e associargli una misura nulla.
+Se facciamo questo otteniamo una \(\sigma\)-algebra più grande.
+Annunciamo la costruzione formale.
+
+\begin{snippetdefinition}{Completamento di una misura}
+    Sia \((X, M, \mu)\) uno spazio di misura.
+    Consideriamo tutti gli insiemi \(E\)
+    tale che \(A \subseteq E \subseteq B\)
+    con \(A,B \in M\) e \(\mu(B \difference A) = 0\).
+    La nuova \(\sigma\)-algebra ottenuta aggiungendo tali insiemi \(E\)
+    ad \(M\) viene denotata \(M^*\).
+    Definiamo la misura associata per il nuovo spazio \(\mu^*\)
+    come segue: \(\mu^*(A) = \mu(A)\) se \(A\in M\),
+    mentre \(\mu^*(E) = \mu(A) = \mu(B)\) se \(E\) è come sopra. 
+\end{snippetdefinition}
+
+Dire che \(\mu(B \difference A = 0)\) implica che \(\mu(A) = \mu(B)\)
+in quanto \(\mu(B) = \mu(A) + \mu(B \difference A)\).
+Il procedimento descritto corrisponde ad aggiungere ad \(M\)
+
+Dobbiamo verificare che se lo stesso insieme è
+contenuto fra molteplici coppie, la misura coincide.
+
+\begin{snippetproposition}{TODO: lettere sbagliate}
+    La definizione di completamento di una misura \(\mu\) è ben posta, cioè
+    se \(A_1 \subseteq E_1 \subseteq B_1\) e \(A_2 \subseteq E_2 \subseteq B_2\) con \(A_1, B_1, A_2, B_2 \in M\),
+    allora se \(E_1 = E_2\) vale che \(\mu^*(E_1) = \mu^*(E_2)\).
+    Inoltre, \(M^*\) è una \(\sigma\)-algebra
+    ed è la più piccola \(\sigma\)-algebra che contiene \(M\)
+    tale che la misura sia completa.
+\end{snippetproposition}
+
+\begin{snippetproof}{TODO: lettere sbagliate}
+    Abbiamo che \(A_1 \difference A_2 \subseteq B_2 \difference A_2\)
+    in quanto \(A_1 \subseteq E_1 \subseteq B_2\).
+    Analogamente \(A_2 \difference A_1 \subseteq B_1 \difference A_1\).
+    Di conseguenza \(\mu(A_1 \difference A_2) = 0\) e \(\mu(A_2 \difference A_1) = 0\),
+    e quindi \(\mu(A_1) = \mu(A_2)\).
+\end{snippetproof}
+
+Non è possibil definire una misura completa
+sulla \(\sigma\)-algebra di Borel
+(a posteriori, la misura di Lebesgue ristretta a \(\mathcal B(\realnumbers)\)).
+Si dimostra che il suo completamento è proprio la misura di Lebesgue.
+Per questo motivo \(\mathcal B(\realnumbers) \subseteq \mathcal L(\realnumbers)\).
+È più facile definire la misura di Lebesgue da zero e poi
+provare a posteriori che è il completamento.
+
+\subsection{Misura di Lebesgue}
+
+Vogliamo costruire
+una misura che rispecchi il nostro senso comune circa la misura degli insiemi.
+Vogliamo che
+\begin{enumerate}
+    \item \(\mu([a,b]) = b-a\);
+    \item \emph{invarianza per traslazione:} \(\mu(E + t) = \mu(E)\)
+\end{enumerate}
+Vorremmo anche che tutti i sottoinsiemi siano misurabili, ma come vedremo non possiamo
+soddisfare pure questa condizione.
+
+La misura di Peano-Jordan è solo finitamente additiva, non numerabilmente.
+Quindi non è una misura nel senso moderno.
+Peano-Jordan può essere definita considerando i ricoprimento dell'insieme \(E\)
+con un numero finito di iper-rettangolo limitati e prendendo l'infimum delle loro misure.
+
+Nel contesto della misura di Lebesgue, ricoriamo \(E\)
+con una collezione numerabile di intervalli limitati.
+Consideriamo quindi \(I_i = (a_i, b_i)\) e la serie
+\[
+    \sum_{i=1}^\infty l(I_i)
+\]
+Definiamo quindi la misura esterna di \(E\)
+come \[
+    \mu^*(E) = \inf_{\substack{E \subseteq U_{i=1}^\infty I_i \\ I_i = (a_i, b_i)}} 
+    \sum_{i=1}^\infty l(I_i)
+\]
+
 
 \pagebreak
 
