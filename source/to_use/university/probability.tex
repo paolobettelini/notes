@@ -30,6 +30,12 @@
 \maketitle
 \tableofcontents
 
+%%%%%%%%%% black hole
+%\begin{radioactive}
+
+%%%%%%%%%% black hole
+%\end{radioactive}
+
 \pagebreak
 
 \section{Probabilità}
@@ -3754,6 +3760,22 @@ Notiamo che \(\Gamma \in [-1, 1]\)
 e \(\Gamma(X,Y) = \pm 1\)
 se e solo se \(Y = aX + b\) con \(\operatorname{sign}(a) = \pm 1\) e \(|a|>0\).
 
+\begin{snippetproposition}{}
+    Siano \(X,Y \colon \Omega \fromto \realnumbers\) variabili aleatorie discrete tale che
+    \(p_X = p_Y\) cioè \(p_X(z) = p_Y(z)\) per ogni \(z \in \realnumbers\).
+    Allora \(X\) ammette valore atteso finito se e solo se \(Y\) ammette valore atteso finito e
+    \[
+        \mathbb E[X] = \mathbb E[Y]
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Abbiamo \begin{align*}
+        \mathbb E[X] = \sum_{z \in \realnumbers} zp_X(z)
+        = \sum_{z \in \realnumbers} zp_Y(z) = \mathbb E[Y]
+    \end{align*}
+\end{snippetproof}
+
 \subsection{Medie e varianza di distribuzioni note}
 
 \begin{snippetproposition}{Media della distribuzione geometrica}
@@ -3761,6 +3783,7 @@ se e solo se \(Y = aX + b\) con \(\operatorname{sign}(a) = \pm 1\) e \(|a|>0\).
     tale che \[
         p_X(n) = p(1-p)^{n-1}
     \]
+    Allora il valor medio è
     \[
         \mathbb E[X] = \frac1p
     \]
@@ -3785,6 +3808,297 @@ se e solo se \(Y = aX + b\) con \(\operatorname{sign}(a) = \pm 1\) e \(|a|>0\).
         \right] = -p \left(\frac{1}{p^2}\right)
         = \frac1p
     \end{align*}
+\end{snippetproof}
+
+\begin{snippetproposition}{Varianza della distribuzione geometrica}
+    Sia \(X \colon \Omega \fromto \naturalnumbers \subseteq \realnumbers\)
+    tale che \[
+        p_X(n) = p(1-p)^{n-1}
+    \]
+    Allora la varianza è
+    \[
+        \operatorname{Var}(X) = \frac{1-p}{p^2}
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{Varianza della distribuzione geometrica}
+    Abbiamo \[
+        \operatorname{Var}(X) = \mathbb E[X]^2 - \mathbb E[X^2] = \mathbb E[X]^2 - \frac{1}{p^2}
+    \]
+    Dobbiamo quindi calcolare
+    \begin{DispWithArrows*}
+        \mathbb E[X]^2 &= \sum_{x\in\realnumbers} x^2 p_X(x) = \sum_{n=1}^\infty n^2 p(1-p)^{n-1} \\
+        &= p \sum_{n=1}^\infty n^2(1-p)^{n-1} = p \sum_{n=1}^\infty n(n-1+1)(1-p)^{n-1} \\
+        &= p \sum_{n=1}^\infty n(1-p)^{n-1} + p \sum_{n=2}^\infty n(n-1)(1-p)^{n-1} \\
+        &= \frac{1}{p} + p(1-p) \sum_{n=2}^\infty n(n-1)(1-p)^{n-2} \\
+        &= \frac1p + p(1-p) \sum_{n=2}^\infty \frac{d^2}{dp^2} \left[(1-p)^n\right] \\
+        &= \frac1p + p(1-p) \left[
+            \frac{d^2}{dp^2} \sum_{n=2}^\infty (1-p)^n
+        \right] \\
+        &= \frac1p + p(1-p) \left\{
+            \frac{d^2}{dp^2} \left[\left( \sum_{n=0}^\infty (1-p)^n \right) - 1 - (1-p)\right]
+        \right\} \\
+        &= \frac1p + p (1-p) \frac{d^2}{dp^2} \left(
+            \frac{1}{p} - 1 - (1-p)
+        \right) \\
+        &= \frac1p + p(1-p)\frac{2}{p^3} = \frac{2-p}{p^2}
+    \end{DispWithArrows*}
+    In conclusione la varianza è
+    \[
+        \frac{2-p}{p^2} - \frac{1}{p^2} = \frac{1-p}{p^2}
+    \]
+\end{snippetproof}
+
+Ricordiamo che \(p \in (0,1]\). Se fosse \(p=0\)
+non avrebbe senso (non ha senso calcolare la probabilità del primo successo se questo è impossibile).
+Se \(p \to 1\), allora la varianza tende a zero. Anche questo è coerente in quanto
+più la probabilità è alta, più il primo successo si concentra sui primi tentativi, e quindi la varianza è vicina a \(0\).
+In partocolare, se \(p=1\) abbiamo il successo sempre e solo al primo lancio, quindi la varianza è esattamente nulla.
+
+Vediamo ora una prorpietà caratterizzante della distribuzione geometrica.
+
+\begin{snippetproposition}{Assenza di memoria della distribuzione geometrica}
+    Sia \(X \sim \operatorname{Geo}(p)\) con \(p \in (0,1]\).
+    Allora \(\forall n,m \in \naturalnumbers\)
+    \[
+        \mathbb P(X > n+m | X > n)
+        =
+        \mathbb P(X > m)
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{Assenza di memoria della distribuzione geometrica}
+    Vediamo una considerazione generale per \(h \in \naturalnumbers\)
+    \begin{align*}
+        \mathbb P(X > h) &= 1 - \mathbb P(X \leq h) = 1 - \sum_{k=1}^h p(1-p)^{k-1} \\
+        &= 1 - p \sum_{k=1}^h (1-p)^{k-1} = 1 - p \sum_{k=0}^{h-1} (1-p)^k \\
+        &= 1 - \cancel p \frac{1 - (1-p)^h}{\cancel p} = (1-p)^h
+    \end{align*}
+    Cioè la probabilità di ottenere il primo successo dopo \(h\) lanci è uguale alla probabilità
+    di ottenere \(h\) fallimenti nei primi \(h\) tentativi. Ma quindi, \(\forall n,m \in \naturalnumbers\)
+    vale che
+    \begin{DispWithArrows*}
+        \mathbb P(X > m+n | X > n) &= \frac{
+            \mathbb P(\{X < m+n\} \intersection \{X > n\})
+        }{
+            \mathbb P(X > n)
+        } \Arrow{\(\{X > n\} \subseteq \{X > n+m\}\)} \\
+        &= \frac{
+            \mathbb P(X > n+m)
+        }{
+            \mathbb P(X>n)
+        } \\
+        &= \frac{(1-p)^{n+m}}{(1-p)^{n}} = (1-p)^m = \mathbb P(X>m)
+    \end{DispWithArrows*}
+\end{snippetproof}
+
+Vale anche il viceversa
+
+\begin{snippetproposition}{}
+    Sia \(X \colon \Omega \fromto \realnumbers\) variabili aleatorie discrete tale che
+    \begin{enumerate}
+        \item \(\mathbb P(X \in \naturalnumbers) = 1\)
+        \item \(\forall m,n \in \naturalnumbers, \mathbb P(X > n+m | X > n) = \mathbb P(X > m)\)
+        \item \(\mathbb P(X=1) = p \in (0,1]\)
+    \end{enumerate}
+    Allora \(X \sim \operatorname{Geo}(p)\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Consideriamo per esempio
+    \begin{DispWithArrows*}
+        \mathbb P(X > 2)
+        &= \mathbb P (\{X > 2\} \intersection \{X > 1\})
+        = \mathbb P(X > 2 | X > 1) \mathbb P(X>1) \Arrow{Ipotesi \((2)\)} \\
+        &= \mathbb P(X > 1) \mathbb P(X>1)^2
+    \end{DispWithArrows*}
+    Per induzione troviamo che
+    \[
+        \mathbb P(X > n+1) = \mathbb P(X>1)^{n+1}
+    \]
+    Supponiamo infatti che valga per \(n\) e dimostriamolo per \(n+1\).
+    Abbiamo
+    \begin{DispWithArrows*}
+        \mathbb P(X > n+1) &= \mathbb P(X > n+1, X > 1) \\
+        &=\mathbb P(X > n+1 | X > 1)\mathbb P(X > 1) \Arrow{Ipotesi \((2)\)} \\
+        &= \mathbb P(X > n)\mathbb P(X > 1) \Arrow{Ipotesi induttiva} \\
+        &= \mathbb P(X > 1)^{n+1}
+    \end{DispWithArrows*}
+    Ricordando che per \((1)\) e \((3)\) \(\mathbb P(X \in \naturalnumbers) = 1\)
+    e \(\mathbb P(X = 1) = p\). Allora,
+    \[
+        \mathbb P(X > 1) = 1- \mathbb P(X = 1) = 1 - p
+    \]
+    Abbiamo quindi che
+    \[
+        \mathbb P(X > n) = (1-p)^n
+    \]
+    e allora notando che \(\{X = n\} = \{X > n-1\} \difference \{X > n\}\) abbiamo
+    \begin{align*}
+        \mathbb P(X = n) &= \mathbb P(X > n - 1) - \mathbb P(X > n) \\
+        &= (1-p)^{n-1} - (1-p)^n = (1-p)^{n-1}(1-1-p) = p(1-p)^n
+    \end{align*}
+    Quindi, \(X\) ha densità discreta
+    \[
+        p_X(n) = p(1-p)^{n-1}
+    \]
+    per tutte le \(n\). Questa determina univocamente la variabile aleatoria e quindi la distribuzione.
+\end{snippetproof}
+
+\begin{snippetproposition}{Media della distribuzione geometrica}
+    Sia \(X \sim \operatorname{Poiss}(\lambda)\) con \(\lambda > 0\)
+    Allora la media è
+    \[
+        \mathbb E[X] = \lambda
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{Media della distribuzione geometrica}
+    Abbiamo la media \begin{DispWithArrows*}
+        \mathbb E[X] &= \sum_{x \in \realnumbers} xp_X(x)
+        = \sum_{k=0}^\infty k\frac{\lambda^ke^{-\lambda}}{k!} \\
+        &= e^{-\lambda} \sum_{k=1}^\infty \frac{\lambda^k}{(k-1)!} \Arrow{\(h=k-1\)} \\
+        &= e^{-\lambda} \lambda \sum_{k=0}^\infty \frac{\lambda^k}{k!} \\
+        &= e^{-\lambda} e^{\lambda} \lambda = \lambda
+    \end{DispWithArrows*}
+\end{snippetproof}
+
+\begin{snippetproposition}{Varianza della distribuzione geometrica}
+    Sia \(X \sim \operatorname{Poiss}(\lambda)\) con \(\lambda > 0\)
+    Allora la media è
+    \[
+        \operatorname{Var}(X) = \lambda
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{Varianza della distribuzione geometrica}
+    \begin{DispWithArrows*}
+        \operatorname{Var}(X) = \mathbb E[X^2] - \mathbb E[X]^2 = \mathbb E[X^2] - \lambda^2
+    \end{DispWithArrows*}
+    Quindi ci resta da calcolare
+    \begin{DispWithArrows*}
+        \mathbb E[X^2] &= \sum_{k=0}^\infty k^2 e^{-\lambda} \frac{\lambda^k}{k!} = e^{-\lambda}
+        \sum_{k=1}^\infty (k+1-1) \frac{\lambda^k}{(k-1)!} \\
+        &= e^{-\lambda} \sum_{k=1}^\infty \frac{\lambda^k}{(k-1)!}
+        + e^{-\lambda} \sum_{k=2}^\infty (k-1) \frac{\lambda^k}{(k-1)!} \Arrow{\(h=k-2\)} \\
+        &= \lambda + e^{-\lambda}\lambda^2 \sum_{h=0}^\infty \frac{\lambda^h}{h!} = \lambda + \lambda^2
+    \end{DispWithArrows*}
+    E quindi finalmente \[
+        \operatorname{Var}(X)  = \lambda^2 - \lambda - \lambda^2 = \lambda
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{Media della distribuzione binomiale}
+    Sia \(X \sim \operatorname{Bin}(n,p)\) con \(n \in \naturalnumbers, p \in [0,1]\)
+    Allora la media è
+    \[
+        \mathbb E[X] = np
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{Media della distribuzione binomiale}
+    Noi sappiamo che \[
+        X \sim \sum_{k=1}^n X_k
+    \]
+    dove \(X_1, \cdots, X_n\) I. I. D dove \[
+        X_i \sim \operatorname{Ber}(p), \quad p \in [0,1]
+    \]
+    cioè \[
+        p_{X_i}(0) = 1-p, \quad
+        p_{X_i}(1) = p
+    \]
+    Inoltre sappiamo che
+    \[
+        \mathbb E[X_i] = 0 \cdot (1-p) + 1 \cdot p = p
+    \]
+    Abbiamo quindi che
+    \begin{DispWithArrows*}
+        \mathbb E[X] &= \mathbb E\left[
+            \sum_{k=1}^n X_k
+        \right]
+         = \sum_{k=1}^n \mathbb E[X_k] \Arrow{\(X_k \sim \operatorname{Bar}(p)\)} \\
+         &= \sum_{k=1}^n p = np
+    \end{DispWithArrows*}
+\end{snippetproof}
+
+\begin{snippetproposition}{Varianza della distribuzione binomiale}
+    Sia \(X \sim \operatorname{Bin}(n,p)\) con \(n \in \naturalnumbers, p \in [0,1]\)
+    Allora la varianza è
+    \[
+        \operatorname{Var}(X) = np(1-p)
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{Varianza della distribuzione binomiale}
+    Noi sappiamo che \[
+        X \sim \sum_{k=1}^n X_k
+    \]
+    dove \(X_1, \cdots, X_n\) I. I. D dove \[
+        X_i \sim \operatorname{Ber}(p), \quad p \in [0,1]
+    \]
+    cioè \[
+        p_{X_i}(0) = 1-p, \quad
+        p_{X_i}(1) = p
+    \]
+    Inoltre sappiamo che
+    \[
+        \operatorname{Var}(X_i) = \mathbb E[X^2] - \mathbb E[X]^2 = p(1-p)
+    \]
+    Abbiamo quindi che
+    \begin{align*}
+        \operatorname{Var}(X) = \operatorname{Var}\left(
+            \sum_{n=1}^n X_k
+        \right)
+    \end{align*}
+    La varianza delle somme, dalla definizione con il quadrato, contiene i prodotti misti,
+    ossia le covarianze.
+    Ma le \(X_1, \cdots, X_n\) sono indipendenti, quindi le covarianze sono nulle, e rimangono solamente la somma delle varianza
+    \[
+        \operatorname{Var}(X)
+        = \sum_{k=1}^n \operatorname{Var}(X_k)
+        = \sum_{k=1}^n p(1-p) = np(1-p)
+    \]
+\end{snippetproof}
+
+Facciamo una osservazione circa la somma di binomiali.
+
+\begin{snippetproposition}{}
+    Siano \(X,Y \colon \Omega \fromto \realnumbers\) tale che
+    \(X \sim \operatorname{Bin}(n,p)\) e \(Y \sim \operatorname{n,m}\)
+    con \(n,m \in \naturalnumbers\).
+    Inoltre siano \(X,Y\) indipendenti.
+    Allora, \[
+        X + Y \sim \operatorname{Bin}(n+m, p)
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Consideriamo \(Z_1, \cdots, Z_n, \cdots, Z_{n+1}, \cdots, Z_{n+m}\) I.I.D tale che
+    \(Z_i \sim \operatorname{Ber}(p)\) per \(i \in \{1, \cdots, m+n\}\).
+    Siano \[
+        X' = \sum_{k=1}^n Z_k, \quad Y' = \sum_{k=1}^m Z_{n+k}
+    \]
+    da questo deduciamo che
+    \[
+        X' + Y' = \sum_{k=1}^{n+m} Z_k \sim \operatorname{Bin}(n+m,p)
+    \]
+    Ovviamente per definizione \(X', Y'\)
+    sono indipendenti e \(X' \sim \operatorname{Bin}(n,p) \sim X\)
+    mentre \(Y' \sim \operatorname{Bin}(m,p) \sim Y\).
+    Visto che anche \(X\) e \(Y\) sono indipendenti per ipotesi allora i vettori
+    \((X', Y') \sim (X,Y)\). Infatti,
+    \[
+        p_{X',Y'}(x,y) = p_{X'}(x)p_{Y'}(y) = p_X(x)p_Y(y)
+        = p_{X,Y}(x,y)
+    \]
+    Per un teorema fatto in precedenza
+    \(\forall f \colon \realnumbers^2 \fromto \realnumbers\) vale che
+    \[
+        f(X,Y) \sim f(X',Y')
+    \]
+    Se prendiamo \(f(x,y) = x + y\) otteniamo \[
+        X+Y \sim Y' \sim Y' \sim \operatorname{Bin}(n+m,p)
+    \]
 \end{snippetproof}
 
 \end{document}

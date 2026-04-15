@@ -3002,7 +3002,7 @@ e la convergenza è uniforme.
     la cui unica soluzione è \(\varphi(x) = e^x\).
     Abbiamo \(f(x,y) = y\), e
     prendendo \(\varphi_1 \equiv 1\) possiamo iterare l'operatore di Volterra
-        \begin{align*}
+ *       \begin{align*}
             \varphi_2 &= T\varphi_1 = 1 + \integral[0][x][][t] = 1 + x \\
             \varphi_3 &= T\varphi_2 = 1 + \integral[0][x][1 + t][t] = 1 + x + \frac{x^2}{2}
         \end{align*}
@@ -3839,7 +3839,7 @@ molti aperti che non sono nè aperti nè chiusi.
 
 In \(\realnumbers\), ogni insieme numerabile è un \(F_\sigma\) (basta che sia \(T_1\)).
 Per esempio, \(\mathbb{Q}\) è un \(F_\sigma\), in quanto unione numerabile di punti.
-
+*
 \begin{snippetexercise}{}
     Dimostrare che \(\mathbb{Q}\) non è \(G_\delta\). \\
     \emph{Hint:} usare il teorema di Baire.
@@ -4410,6 +4410,9 @@ Per questo motivo \(\mathcal B(\realnumbers) \subseteq \mathcal L(\realnumbers)\
 È più facile definire la misura di Lebesgue da zero e poi
 provare a posteriori che è il completamento.
 
+%%%%%%%%%% black hole
+%\end{radioactive}
+
 \subsection{Misura di Lebesgue}
 
 Vogliamo costruire
@@ -4690,6 +4693,388 @@ insiemi di misura \(\varepsilon\), ogni insieme di misura finita
     quello che resta è un limitato.
 \end{snippetexample}
 
+Abbiamo visto che \(\forall \varepsilon > 0\)
+esiste \(F \subseteq E\) chiuso tale che \(\mu(E \difference F) < \varepsilon\).
+Questa affermazione non è così intuitiva.
+Consideriamo \(E = [0,1] \intersection \rationalnumbers\).
+Per la proprietà, esiste un compatto contenuto in \(E\)
+con misura magiore \(1-\varepsilon\).
+Possiamo costruire tale compatto in maniera esplicita
+nella maniera seguente:
+sia \(\{q_n\}\) una successione che enumera i razionali
+e consideriamo gli intervalli
+\[
+    \left(
+        q_n - \frac{\varepsilon}{2^{n+1}},
+        q_n + \frac{\varepsilon}{2^{n+1}}
+    \right)
+\]
+La loro unione è un aperto che contiene tutti i razionali e con misura minore di \(\varepsilon\).
+Quindi, il suo complementare intersecato con \([0,1]\) è un compatto
+contenuto in \(E\) con misura maggiore di \(1-\varepsilon\).
+
+\subsection{Costruzione dell'integrale}
+
+Cominciamo da una funzione semplice, che si può scrivere con un numero finito di valori
+\[
+    s = \sum_{i=1}^n \alpha_i \chi_{s^{-1}(\alpha_i)}
+\]
+Se \(\alpha_i \geq 0\), allora \(s\) è non-negativa.
+Se \(s^{-1}(\alpha_i)\) sono misurabili, allora \(s\) è misurabile.
+
+\begin{snippetdefinition}{Integrale di funzione semplice non-negativa}
+    Sia \((X, \mathcal M, \mu)\) uno spazio di misura e sia
+    \(s\) una funzione semplice misurabile non-negativa. Sia \(\Omega \subseteq X\).
+    Definiamo l'\emph{integrale di \(s\)} nello spazio come
+    \[
+        \int_\Omega s\,d\mu \triangleq
+        \sum_{i=1}^n \alpha_i \mu(s^{-1}(\alpha_i) \intersection \Omega)
+    \]
+\end{snippetdefinition}
+
+Nell'integrale di Riemann sommiamo su intervalli del dominio,
+mentre qua sommiamo sulle fibre del codominio.
+In questo contesto se un coefficiente è nullo ma la misura
+è infinita, il prodotto fa zero. Non può succedere \(\infty-\infty\).
+
+Nei reali con la misura di Lebesgue, i plurirettangolo di Riemann
+sono funzioni semplici misurabili e il loro integrare coincide con quello di Riemann,
+quindi stiamo facendo una generalizzazione che include la teoria classica.
+
+\begin{snippetdefinition}{Integrale di funzione non-negativa}
+    Sia \(f \colon X \fromto [0, +\infty]\)
+    una funzione numerabile
+    su uno spazio di misura \((X, \mathcal M, \mu)\). Sia \(\Omega \subseteq X\).
+    Allora definiamo
+    \[
+        \int_\Omega s\,d\mu \triangleq
+        \sup_{s \leq f} \int_\Omega s\,d\mu
+    \]
+\end{snippetdefinition}
+
+In realtà possiamo definire gli integrali solo sull'insieme totale,
+senza intersecare. Se facessimo ciò, ogni qualvolta avessimo un sottoinsieme,
+la restrizione della misura e dell'algebra a questo sottoinsieme rimane
+uno spazio di misura \((E, \restr{\mathcal M}{E}, \restr{\mu}{E})\),
+dove \(\restr{\mathcal M}{E}\) è la \(\sigma\)-algebra ottenuta dalle intersezioni di \(E\)
+con gli insiemi di \(\mathcal M\).
+
+Vogliamo assicurarci che se \(f\) è semplice allora il nuovo integrale coincide
+con quello vecchio. Ma ciò è banale in quanto la funzione semplice stessa è la funzione
+semplice più grande che approssima sè stessa.
+
+\begin{snippetproposition}{}
+    \begin{enumerate}
+        \item se \(f \leq g\) allora
+        \[
+            \int_E f\,d\mu \leq \int_E g\,d\mu
+        \]
+        \item se \(E \supseteq F\)
+        \[
+            \int_E f\,d\mu \geq \int_f f\,d\mu
+        \]
+        perché \(f\) è positiva.
+        \item sia \(\alpha \in \realnumbers^+\)
+        \[
+            \int_E \alpha f\,d\mu
+            = \alpha \int_E f\,d\mu
+        \]
+        \item se \(f=0\) su \(E\), allora
+        \[
+            \int_E f\,d\mu = 0
+        \]
+        anche se \(\mu(E) = \infty\).
+        \item se \(\mu(E)\)
+        \[
+            \int_E f\,d\mu = 0
+        \]
+        anche se \(f = \infty\).
+        \item \[
+            \int_E f\,d\mu
+            = \int_X f \chi_E \,d\mu
+        \]
+    \end{enumerate}
+\end{snippetproposition}
+
+Anche la somma di integrali è l'integrale della somma, ma la dimostrazione non è banale.
+Ci serono altri teoremi e dobbiamo definire una nuova misura.
+
+\begin{snippetproposition}{}
+    Sia \((X, \mathcal M, \mu)\)
+    uno spazio di imsura,
+    \(s\) una funzione semplice misurabile non-negativa.
+    Sia, per \(E \in \mathcal M\)
+    \[
+        \varphi(E) = \int_E s\,d\mu
+    \]
+    \(\varphi\) è una nuova misura sulla \(\sigma\)-algebra \(\mathcal M\).
+    Stiamo quindi dando una densità \(s\) alla misura \(\mu\).
+    Abbamo quindi un nuovo spazio di misura \((X, \mathcal M, \varphi)\).
+    Usando la finita addività di questa misura si dimostra che
+    \[
+        \int_E (s+t)\,d\mu = \int_E s\,d\mu
+        + \int_E t\,d\mu
+    \]
+    dove \(t\) è un'altra funzione semplice misurabile non-negativa.
+\end{snippetproposition}
+
+Non dimostriamo che questa è una nuova misura. Bisognerebbe dimostrare che è numerabilmente additiva.
+
+Usando la finita addività di questa misura si dimostra che
+\[
+    \int_E (s+t)\,d\mu = \int_E s\,d\mu
+    + \int_E t\,d\mu
+\]
+dove \(t\) è un'altra funzione semplice misurabile non-negativa.
+Una volta fatto ciò possiamo approssimare le funzioni cno funzioni semplici
+e portare il risultato a funzioni non-semplici.
+Dimostriamo questa additività.
+
+\begin{snippetproof}{Da completare i dettagli}
+    Scriviamo
+    \[
+        s=\sum_{i=1}^n \alpha_i \chi_{A_i}, \quad
+        s=\sum_{i=1}^m \beta_i \chi_{B_i}
+    \]
+    Poniamo \(E_{i,j} = A_i \intersection B_j\).
+    Si ha che
+    \[
+        X = \bigsqcup_{i,j} E_{i,j}
+    \]
+    Quindi sicocme sono disgiunti \begin{align*}
+        \int_{E_{i,j}} (s+t)\,d\mu
+        &= (\alpha_i + \beta_j)\mu(E_{i,j})
+        =\alpha_i \mu(E_{i,j}) + \beta_j\mu(E_{i,j}) \\
+        &= \int_{E_{i,j}} s\,d\mu + \int_{E_{i,j}} t\,d\mu
+    \end{align*}
+    Per la finita additività della misura \(\varphi\) si ha che
+    \[
+        \int_X (s+t)\,d\mu
+        =\int_X s\,d\mu + \int_X t\,d\mu
+    \]
+\end{snippetproof}
+
+Per dimostrare l'additività dell'integrale
+ci serve il passaggio al limite.
+
+\begin{snippettheorem}{Convergenza monotona}
+    Sia \((X, \mathcal M, \mu)\)
+    uno spazio di misura e siano \(f_n \colon X \fromto [0, +\infty]\)
+    misurabili e supponiamo che \(f_n \uparrow f\), coè \(f_n(t) \leq f_{n+1}(t)\)
+    per ogni \(t \in X\). Allora, \[
+        \int_X f_n\,d\mu \uparrow \int_X f\,d\mu
+    \]
+\end{snippettheorem}
+
+Il fatto che la successione converga è gratis dal fatto
+che la successione sia monotona, alla peggio converge in alcuni punti ad infinito.
+
+\begin{snippetproof}{}
+    Dimostriamo che esiste il limite degli integrali.
+    Per la monotonia delle funzioni e per la monotonia dell'integrale, abbiamo una successione
+    monotona crescente in \([0,+\infty]\)
+    \[
+        \int_X f_n\,d\mu \leq \int_X f_{n+1}\,d\mu
+    \]
+    che quindi converge ed
+    \[
+        \exists \lim \int_X f_n \,d\mu = \alpha \in [0,+\infty]
+    \]
+    Dobbiamo mostrare che \[
+        \alpha \geq \int_X f\,d\mu
+    \]
+    Per farlo mostriamo che \[
+        \alpha \geq \int_X s\,d\mu
+    \]
+    dove \(s\) è una funzione semplice tale che \(0 \leq s \leq f\).
+    Se dimostriamo ciò, passando al sup troviamo la tesi.
+    Per dimostrarlo, dimostriamo qualcosa di apparentemente più forte ma più semplice da dimostrare.
+    Consideriamo \(0 \leq c \leq 1\), allora se \(s \leq f\), \(cs < f\)
+    con disuguaglianza stretta. Mostriamo allora che
+    \[
+        \alpha \geq c \int_X s\,d\mu
+    \]
+    per ogni \(0 < c < 1\) come prima. Se dimostriamo questa proposizione
+    allora vale \[
+        \alpha \geq \int_X s\,\mu
+    \]
+    Fissati \(c,s\) consideriamo l'insieme \[
+        E_n = \{
+            x \in X \suchthat f_n(x) \geq cs(x)    
+        \}
+    \]
+    Siccome \(\{f_n\}\) è una successione monotona crescente, questi insiemi sono tutti annidati
+    \(E \subseteq E_{n+1}\). Inoltre,
+    siccome \(f_n(x) \to f(x)\) per ogni \(x \in X\), ogni \(X\)
+    cade definitivamente in un \(E_n\), quindi
+    \[
+        \bigcup_{n=1}^\infty E_n = X
+    \]
+    Infatti, se \(f(x)=0\) allora \(x \in E_n\) per ogni invece.
+    Invece, se \(f(x) \neq 0\), \(cs(x) < f(x)\) e quindi \(\exists N\)
+    tale che \(cs(x) \leq f_N(x) < f\).
+    Per la monotonia sul domiino,
+    \begin{align*}
+        \int_X f_n \,d\mu &\geq \int_{E_n}f_n\,d\mu \geq \int_{E_n} cs(x)\,d\mu = c \int_{E_n} s\,d\mu
+    \end{align*}
+    La funzione \(s\) è fissata e
+    \[
+        \int_{E_n} s\,d\mu = \varphi(E_n) \to \varphi(X) = \int_X s \,d\mu
+    \]
+    per la proprietà delle misure di insiemi scatolate che sono il limite.
+    Ma \[
+        \int_X f_n\,d\mu \to \alpha
+    \]
+    quindi
+    \[
+        \alpha \geq c \int_X s\,d\mu
+    \]
+    che è quello che volevamo.
+\end{snippetproof}
+
+\begin{snippetexample}{L'ipotesi di monotonia è strettamente necessaria}
+    Consideriamo \((\realnumbers, \mathcal L, \mu)\)
+    e consideriamo la funzione 
+    \[
+        f_n = n \chi_{\left[0, \frac1n\right]}
+    \]
+    che converge puntualmente a zero. Tuttavia,
+    \[
+        \int_X f_n \,d\mu = 1 \neq \int_X f \,d\mu = 0
+    \]
+    Infatti, la successione non è monotona.
+\end{snippetexample}
+
+\begin{snippettheorem}{Teorema di integrazione per serie}
+    Sia \(f_n \colon X \fromto [0,+\infty]\)
+    misurabili. Allora
+    \[
+        \int_X \sum_{n=1}^\infty f_n \,d\mu
+        = \sum_{n=1} \int_X f_n \,d\mu
+    \]
+\end{snippettheorem}
+
+Qua dimostriamo anche l'additività dell'integrale (magari mettilo in una proposizione separata).
+
+\begin{snippetproof}{}
+    Dimostriamo che l'integrale è additivo per due funzioni.
+    Una volta dimostrato, per induzione si arriva ad un numero finito di addendo, cioè alla successione delle somme parziali.
+    A questo punto la successione delle somme parziali è una successione monotona crescente,
+    e applicando il teorema di convergenza monotona vale la tesi.
+    Mostriamo quindi che
+    \[
+        \int_X (f_1 + f_2)\,d\mu
+        = \int_X f_1\,d\mu + \int_X f_2\,d\mu
+    \]
+    Per farlo sfruttiamo le funzioni semplici convergenti ad \(f_1\) ed \(f_2\)
+    monotonamente, che si pososno costruire. Abbiamo quindi \(s_n^1 \uparrow f_1\)
+    e \(s_n^2 \uparrow f_2\). Sappiamo che l'integrale è additivo per le funzioni semplici.
+    Inoltre, \(s_n^1 + s_n^2 \uparrow f_1 + f_2\).
+    Ora basta usare il teorema della convergenza monotona.
+\end{snippetproof}
+
+Il seguente è il teorema più generale.
+
+\begin{snippetlemma}{Lemma di Fatou}
+    Siano \(f_n \colon X \fromto [0,+\infty]\) funzioni misurabili. Allora,
+    \[
+        \liminf \int_X f_n \,d\mu
+        \leq \int_X \liminf f_n \,d\mu
+    \]
+\end{snippetlemma}
+
+Se avessi funzioni non-positive varrebbe lo stesso con il minore uguale e con il \(\limsup\).
+
+\begin{snippetproof}{}
+    Per definizione di limite inferiore
+    \begin{align*}
+        \liminf f_n = \lim_k \inf_{n \geq k} f_n
+    \end{align*}
+    Poniamo \[
+        g_k \triangleq \inf_{n \geq k} f_n
+    \]
+    Abbimao che \(g_k\) è una successione monotona crescente che converge a \(\liminf f_n\).
+    Le \(g_k\) sono misurabili in quanto l'infimum di funzioni misurabili è misurabile.
+    Siccome \(\{g_k\}\) p monotona, \(\exists \lim g_k\) e quindi \[
+        \exists \lim \int_X g_k \,d\mu
+    \]
+    Inoltre \(g_k \uparrow \liminf f_n\), quindi
+    \[
+        \int g_k\,d\mu \uparrow \int \liminf f_n\,d\mu
+    \]
+    per il teorema della convergenza monotona.
+    Ma \(g_n \leq f_n\) in quanto \(g_n = \inf\{f_n, f_{n+1}, \cdots\}\).
+    Di conseguenza per monotonia dell'integrale
+    \[
+        \int_X g_n\,d\mu \leq \int_X f_n\,\mu
+    \] 
+    Prendendo il limite inferiore di ambo i membri,
+    \[
+        \lim \int_X g_n \,d\mu \leq \liminf \int_X f_n\,d\mu
+    \]
+    in quando il membro a sinistra converge, quindi il limite inferiore coincide con il limite.
+    Ma allora abbiamo la tesi.
+\end{snippetproof}
+
+Sia \((X, \mathcal M, \nu)\)
+e \(f \colon X \fromto [0,+\infty]\) misurabile. Possiamo definire un nuovo spazio di misura
+\((X, \mathcal M, \varphi_f)\) dove \[
+    \varphi_f(E) \triangleq \int_E f\,d\mu
+\]
+Questa è una conseguenza del teorema della convergenza monotona.
+È una misura in quanto è numerabilmente addivita:
+siano \(E_i \in \mathcal M\) a due a due disgiunti. Allora,
+\[
+    \chi_{\bigcup_{i=1}^\infty E_i} = \sum_{i=1}^\infty \chi_{E_i}
+\]
+E di conseguenza
+\[
+    \varphi_f\left(
+        \bigcup_{i=1}^\infty E_i
+    \right)
+    = \int_{\bigcup_{i=1}^\infty E_i} f\,d\mu
+    = \int_X f \chi_{\bigcup_{i=1}^\infty E_i}\,d\mu =
+    \int_X f \sum_{i=1}^\infty \chi_{E_i} \,d\mu
+    = \sum_{i=1}^\infty \varphi_f(E_i)
+\]
+Se \(g\) è una funzione misurabile, come integriamo rispetto a questa misura?
+Abbiamo
+\[
+    \int_X g\,d\varphi_f = \int_X fg\,d\mu
+\]
+Lo si dimostra prima per le caratteristiche, poi per le combinazioni linearei di caratteristiche,
+cioè le funzioni semplici, e infine per le funzioni qualsiasi con la convergenza monotona.
+Possiamo anche scrivere \(d\varphi = f\,d\mu\). Possiamo anche scrivere
+\[
+    f = \frac{d\varphi}{d\mu}
+\]
+questa \(f\) si chiama derivata di Radon-Nikodym.
+Data una funzione \(f\) posso quindi definire la nuova misura
+che è legata alle \(\mu\) da \(d\varphi = fd\mu\).
+
+Vale pure il converso? Date due misure \(\varphi, \mu\) sulal stessa \(\sigma\)-algebra,
+esiste \(f\) tale che \(d\varphi = f\,d\mu\)?
+Sicuramente se \(\exists f\) tale ch \[
+    \varphi(E) = \int_E f\,d\mu
+\]
+allora \(\mu(E) = 0 \implies \varphi(E) = 0\).
+
+\begin{snippetdefinition}{}
+    \(\varphi\) è ASS rispetto a \(\mu\) (\(\varphi \ll \mu\))
+    se vale \(\mu(E) = 0 \implies \varphi(E) = 0\)
+\end{snippetdefinition}
+
+
+
+
+
+
+
+
+
+
+
+
 \pagebreak
 
 \section{Temporaneo - Foglio 3}
@@ -4781,9 +5166,6 @@ dove \(f\) non è lipschitziana ma la soluzione è unica. Trovare \(f\).
 % Esercizio 7 del foglio tutoraggio di furchì che esercizio è?
 
 \pagebreak
-
-%%%%%%%%%% black hole
-%\end{radioactive}
 
 \section{Temporaneo - Parziale}
 
@@ -5152,12 +5534,5 @@ dove \(f\) non è lipschitziana ma la soluzione è unica. Trovare \(f\).
     \]
     \wrapfill
 \end{snippetsolution}
-
-\begin{center}
-    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAAIBBEAX1PUy58hFAEZyVWoxZsAQr34gM2PASIAmCdXrNWiEAGFekmFADm8IqABmAJwgBbJOJA4ISTSABGMMFCQAzMR8NvZOiGSu7oiePn5IALQALACc2tJ6INzUDHQ+DAAKgqoiILZYZgAWOMY8QA
-    \begin{tikzcd}
-    A \arrow[rr, "A"', bend right=49] & B \arrow[r, bend left] & C
-    \end{tikzcd}
-\end{center}
 
 \end{document}
