@@ -2607,6 +2607,200 @@ e quindi
     \end{iffproof}
 \end{snippetproof}
 
+\pagebreak
+
+L'algoritmo è anche un criterio per testare la definita positività di una matrice.
+Data una Hermitiana, proviamo l'algoritmo: se funzione è definita positiva, altrimenti non lo è.
+L'algoritmo è un algoritmo compatto.
+Prendiamo \(A \in \matrices_{n}(\complexnumbers)\)
+come input ed inponiamo che \(VV^* = A\), e si risolve l'equazione
+rispetto alle incognite, cioè alle entrate di \(V\).
+Abbiamo quindi una matrice
+
+\[
+\left(
+\begin{array}{c|c|c|c}
+    \mathbf{V_{1,1}} &        &        & 0 \\
+            & \mathbf{V_{2,2}} &       &   \\
+    V_1     &      & \ddots &   \\
+            &  V_2       &        & \mathbf{V_{n,n}}
+\end{array}
+\right)
+\left(
+\begin{array}{cccc}
+    \mathbf{V_{1,1}} &   &    V_1^*     &   \\
+    \hline
+            & \mathbf{V_{2,2}} &  &  V_2^*  \\
+    \hline
+            &         & \ddots &   \\
+    \hline
+    0       &         &        & \mathbf{V_{n,n}}
+\end{array}
+\right)
+=
+\left(
+\begin{array}{c|c|c|c}
+    \mathbf{A_{1,1}} &        &        & \ast \\
+            & \mathbf{A_{2,2}} &       &      \\
+    A_1     &      & \ddots &     \\
+            &   A_2      &        & \mathbf{A_{n,n}}
+\end{array}
+\right)
+\]
+dove \(A_i,V_i\) sono le sotto-colonne relativamente all'elemento della diagonale
+delle rispettive matrici. L'itera è quella di iterativamente isolare ogni \(A_{i,i}\)
+e risolvere per \(V_{i,i}\), e le sottocolonne rispettive. \\
+\textbf{Passo 1:} per la prima colonna, imponiamo \(V_{1,1}^2 = A_{1,1}\)
+e quindi \(V_{1,1} = \sqrt{A_{1,1}}\).
+Otteniamo quindi \(V_{1,1} \cdot V_1\)
+da cui \(V_1 = \frac{A_1}{V_{1,1}}\)
+Abbiamo eseguire \(n-1\) operazioni (1 operazione per ogni elemento). \\
+\textbf{Passo 2:} per la colonna due, abbiamo
+\[
+    |V_{2,1}|^2 + V_{2,2}^2 \rightarrow V_{2,2} = \sqrt{A_{2,2} - |V_{2,1|^2}}
+\]
+Abbiamo eseguire \(3\) operazioni.
+Denotiamo con \(\tilde V_i\) la coda di \(V_i\).
+Abbiamo ora la colonna di dimensione \(n-2\) data da
+\(\overline V_{2,1} \tilde V_{1} + V_{2,2} V_2 = A_2\).
+Precedentemente non abbiamo usato il cogniugato su \(V_{1,1}\)
+in quanto sapevamo che fosse positivo. Otteniamo quindi che
+\[
+    V_2 = \frac{A_2 - \overline V_{2,1} \tilde V_{1}}{V_{2,2}}
+\]
+Abbiamo ora eseguito \(3(n-2)\) operazioni (3 operazioni per ogni elemento). \\
+\textbf{Passo 3:} continuando otteniamo
+\[
+    |V_{3,1}|^2 + |V_{3,2}|^2 + V_{3,3}^2 = A_{3,3}
+\]
+e qua abbiamo \(5(n-3)\) operazioni (5 operazioni per ogni elemento).
+In generale la dimensione dei vettori scende mentre il numero di operazione sale. \\
+In totale abbiamo (senza contare quello diagonale che è di ordine inferiore) \[
+    \sum_{k=1}^{n-1} (2k-1)(n-k)
+    = 2n \sum_{k=1}^{n-1}  -
+    2 \sum_{k=1}^{n} k^2
+    = \frac{1}{3}n^3 + \mathcal O(n^2)
+\]
+che è esattamente la metà della complessità dell'algoritmo di Gauss.
+Tuttavia, l'algoritmo di Gauss applicato ad una matrice Hermitiana ha la stessa complessità.
+
+\pagebreak
+
+\begin{snippettheorem}{}
+    Sia \(A \in \matrices_n(\complexnumbers)\) una matrice definita positiva ed Hermitiana.
+    Allora, \(A\) è fortemente non singolare.
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Consideriamo \(\mathcal I, \mathcal J \subseteq \{1, \cdots, n\}\),
+    ossia \(\mathcal I = \{i_1, \cdots, i_p\}\)
+    e \(\mathcal J = \{j_1, \cdots, j_q\}\)
+    con \begin{align*}
+        1 &\leq i_1 < i_2 \cdots < i_p < n \\
+        1 &\leq j_1 < j_2 \cdots < j_q < n
+    \end{align*}
+    Denotiamo con \(A_{\mathcal I, \mathcal J} \in \complexnumbers^{p \times q}\)
+    un generico minore di dimensione \(p \times q\) che contiene gli elementi di indici \(\mathcal I\) incrociati con \(\mathcal J\).
+    Abbiamo allora l'elemento
+    \[
+        \left(A_{\mathcal I, \mathcal J}\right)_{s,t}
+        = A_{i_s, j_t}
+    \]
+    Un tale minore è quadrato se e solose \(p=q\).
+    Un tale minore è un minore principale se e solo se \(\mathcal I = \mathcal J\).
+    Un tale minore è un minore principale di testa se \(\mathcal I = \mathcal J = \{1, \cdots, p\}\). \\
+    Osserviamo che, da Schur, il fatto che \(A\) sia definita positiva ed è Hermitiana
+    implica che tutti gli autovalori siano reali positivi.
+    Dunque, \(\det A > 0\).
+    L'idea della dimostrazione è quella di utilizzare questa affermazione su ogni minore prinicpale di testa.
+    Abbiamo che ogni minore principale di \(A\) (in particolare pure quelli di testa)
+    sono a loro volta definiti positivi. Sia \(A_{\mathcal I} \triangleq A_{\mathcal I, A_{\mathcal I}}\).
+    Osserviamo che \[
+        \left(A_{\mathcal I}^*\right)_{s,t}
+        = \overline{A}_{i_t, i_s}
+        = A_{i_s, i_t}
+        =\left(A_{\mathcal I}\right)_{s,t}
+    \]
+    Per studiare la definita positività, studiamo se \(x^* A_{\mathcal I} x > 0\)
+    per \(x \in \complexnumbers^p\) con \(x \neq 0\).
+    Definiamo \(y_x \in \complexnumbers^n\) come vettore estero, cioè
+    \begin{align*}
+        (y_x)_l = \begin{cases}
+            0 & l \notin \{1, \cdots, p\} \\
+            x_s & l = i_s \\
+        \end{cases}
+    \end{align*}
+    Con questa notazione troviamo
+    \begin{align*}
+        x^* A_{\mathcal I} x
+        = y_x^* A_{\mathcal I} y_x
+    \end{align*}
+    Abbiamo che \(x \neq 0 \implies y_x \neq 0\).
+    Abbiamo quindi la definita positività sui minori principali, e riutilizzando l'argomento precedente
+    su ognuno, ognuno dei minori principali di testa sono invertibili. Quindi, la matrice è fortemente non singolare.
+\end{snippetproof}
+
+Dal procedimento risultato si evince che sulle definite positive e Hermitiane
+si può applicare sia l'eliminazione gaussiana senza pivot, sia
+l'algoritmo per la fattorizzazione di Cholesky.
+
+Durante l'algoritmo di Gauss su una matrice Hermitiana,
+partendo normalizzando i pivot dal primo all'ultimo,
+il blocco non ancora normalizzato è una sottomatrice che rimane Hermitiana (induzione).
+Se \(A\) è la nuova matrice ad un passo e \(B\) è quella vecchia, allora \(\overline A_{k,j} = B_{j,k}\),
+quindi il costo dell'algoritmo di dimostra ed è quindi equivalente a Cholesky.
+L'algoritmo di Gauss è ottimale fra gli algoritmi con scambi di righe e colonne, ma può essere battuto usando
+algoritmi ricorsivi.
+
+\pagebreak
+
+\begin{snippettheorem}{Lo spettro commuta con la moltiplicazione di matrici}
+    Siano \(A,B \in \matrices_n(\complexnumbers)\).
+    Allora, \(\sigma(AB) = \sigma(BA)\).
+\end{snippettheorem}
+
+\begin{snippetproof}{Lo spettro commuta con la moltiplicazione di matrici}
+    Se \(A\) è invertibile, \(BA = A^{-1}ABA\) ovvero sono simili e hanno
+    il medesimo polinomio caratteristico
+    \[
+        p_{AB}(\lambda) = p_{BA}(\lambda)
+    \]
+    In particolare, gli autovalori coincidono.
+    Analogamente con \(B\). Ci manca il caso dove sia \(A\) che \(B\)
+    sono singolari. In tal caso,
+    sia \(A = QTQ^*\) con \(Q\) unitaria e \(T\) triangolare superiore.
+    Sia \(\varepsilon > 0\) e sia
+    \[
+        A_\varepsilon \triangleq QT_\varepsilon Q^*
+    \]
+    che è invertibile, dove
+    \((T_{\varepsilon})_{j,j} = \varepsilon\) se \((T_{\varepsilon})_{j,j} = 0\)
+    e il resto uguale a \(T\).
+    Cioè sulla diagonale ci sono gli autovalori, e sostituiamo gli zeri con degli \(\varepsilon\),
+    visto che è triangolare inferiore rimane invertibile perché il prodotto è non nullo.
+    Riconducendoci al caso invertibile, vale
+    \[
+        p_{A_\varepsilon B}(\lambda) = p_{BA_\varepsilon}(\lambda)
+    \]
+    Se \(A_\varepsilon \to 0\) per \(\varepsilon \to 0\), allora per un argomento di continuità
+    pure i polinomi caratteristici tendono a quelli di \(AB\) e \(BA\)
+    \[
+        p_{AB}(\lambda) = p_{BA}(\lambda)
+    \]
+\end{snippetproof}
+
+\begin{snippettheorem}{}
+    Siano \(A \in \complexnumbers^{n \times m}\) e \(B \in \complexnumbers^{m \times n}\).
+    Allora, \(\sigma(AB) = \sigma(BA)\) a meno di \(n-m\) (se \(n-m > 0\))
+    o \(m-n\) (se \(m-n > 0\)) zeri laddove servono.
+\end{snippettheorem}
+
+Questo teorema vale nel caso particolare (già visto)
+\(m=1\). Infatti, \(\sigma(xy^*) = \{y^*x, 0, 0, \cdots, 0\}\)
+con \(x,y \in \complexnumbers^n\), cioè il caso della diade, che ha rango uno.
+
+\pagebreak
+
 \section{Norme matriciali}
 
 Abbiamo la norma infinito
