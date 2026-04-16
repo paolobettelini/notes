@@ -30,9 +30,6 @@
 \maketitle
 \tableofcontents
 
-%\begin{blackhole}
-%\end{blackhole}
-
 \pagebreak
 
 \section{Probabilità}
@@ -4097,5 +4094,351 @@ Facciamo una osservazione circa la somma di binomiali.
         X+Y \sim Y' \sim Y' \sim \operatorname{Bin}(n+m,p)
     \]
 \end{snippetproof}
+
+\pagebreak
+
+\subsection{Somme di variabili aleatorie}
+
+\begin{snippetproposition}{}
+    Siano \(X,Y \colon \Omega \fromto \realnumbers\)
+    variabili aleatorie discrete e sia \(p_{X,Y}\) la densità discreta del vettore
+    \((X,Y)\). Allora definita \(Z = X+Y\) anche \(Z\)
+    è una variabile aleatorie discreta con densità con densità
+    \[
+        p_Z(z) = \sum_{x\in\realnumbers}
+        p_{X,Y}(x, z-x) = \sum_{y \in \realnumbers}
+        p_{X,Y}(z-y,y)
+    \]
+    In particolare, se \(X\) e \(Y\) sono indipendenti
+    \[
+        p_Z(z) = \sum_{x \in \realnumbers}
+        p_X(x)p_Y(z-x)
+    \]
+    con \(z \in \realnumbers\).
+\end{snippetproposition}
+
+Centra con le convoluzioni.
+
+\begin{snippetproof}{}
+    Notiamo che \(X(\Omega), Z(\Omega)\)
+    e \(Y(\Omega)\) sono sottoinsiemi discreti di \(\realnumbers\).
+    Quindi, \(\forall z \in Z(\Omega)\) vale che
+    \begin{DispWithArrows*}
+        \mathbb P(Z=z) &= \mathbb P(X + Y = z)
+        = \mathbb P\left(
+            \bigcup_{x \in X(\Omega)} \{X + Y = z, X = x\}
+        \right) \Arrow{Disgiunti al \\ variare di \(x\)} \\
+        &= \sum_{x \in X(\Omega)} \mathbb P(Y + x = z | X = x) \mathbb P(X = x) \\
+        &= \sum_{x \in X(\Omega)} p_{X,Y}(x, z-x)
+    \end{DispWithArrows*}
+    L'altra uguaglianza si trova in modo analogo,
+    scomponento \(Y(\Omega)\) anziché \(X(\Omega)\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{}
+    Siano \(X,Y \colon \Omega \fromto \realnumbers\) indipendenti tale che
+    \(X \sim \operatorname{Poiss}(\lambda)\)
+    e \(Y \sim \operatorname{Poiss}(\mu)\) conn \(\lambda, \mu > 0\).
+    Allora,
+    \[
+        Z = X + Y \sim \operatorname{Poiss}(\lambda + \mu)
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{}
+    Notiamo che il supporto fi \(X,Y\) e \(Z\)
+    è \(\naturalnumbers \union \{0\}\).
+    Quindi anche \(Z\) è una variabile aleatoria discreta e per il teorema precedente
+    \(\forall z \in \naturalnumbers \union \{0\}\)
+    \begin{DispWithArrows*}
+        p_Z(z) &=
+        \sum_{x=0}^\infty p_X(x)p_Y(z-x)
+        = \sum_{n=0}^z
+        \frac{\lambda^n e^{-\lambda}}{n!}
+        \cdot \frac{\mu^{z-n} e^{-\mu}}{(z-n)!} \\
+        &= e^{-(\lambda + \mu)} \sum_{n=0}^z \frac{\lambda^n \mu^{z - n}}{n!(z-n)!} \cdot \frac{z!}{z!} \Arrow{Binomio Newton} \\
+        &= \frac{e^{-(\lambda + \mu)}}{z!}
+        \sum_{n=0}^z \binom{z}{n} \lambda^n \mu^{z-n} \\
+        &= \frac{e^{-(\lambda + \mu)}}{z!} (\lambda + \mu)^z
+    \end{DispWithArrows*}
+    Notando che \(p_Y(z-x) = 0\) se \(x>z\) facciamo andare la serie fino a \(z\)
+    al posto che \(\infty\).
+    Quindi \(p_Z\) è la demsità di una Poisson di parametro \(\mu + \lambda\).
+    Visto che la densità determina univocamente la legge otteniamo la tesi.
+\end{snippetproof}
+
+\pagebreak
+
+\section{Esercizi}
+
+\begin{snippetexercise}{}
+    Due variabili aleatorie \(X,Y\) sono indipendenti ed hanno distribuzione uniforme
+    rispettivamente sugli insiemi \(\{0,1,2\}\) e \(\{0,1,2,3\}\).
+    \begin{enumerate}
+        \item Calcolare la distribuzione congiunta di \((X,Y)\);
+        \item Calcolare la distribuzione di \(U \triangleq XY\);
+        \item Calcolare la distribuzione di \(V \triangleq X + Y\);
+        \item Calcolare \(\mathbb E[UV]\);
+        \item Calcolare \(\operatorname{Var}(UV)\).
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    \begin{enumerate}
+        \item Visto che \(X\) e \(Y\) sono indipendenti allora la congiunta del vettore è il prodotto delle densità
+        \[
+            p_{X,Y}(x,y) = p_X(x)p_Y(y), \quad x\in\{0,1,2\}, y \in \{0,1,2,3,4\}
+        \]
+        Visto che \(X\) e \(Y\) hanno legge uniforme
+        \[
+            p_X(x) = \frac13, \quad p_Y(y) = \frac14, \quad x\in\{0,1,2\}, y \in \{0,1,2,3,4\}
+        \]
+        Quindi
+        \[
+            p_{X,Y}(x,y) = \frac{1}{12},
+            \quad \forall (x,y) \in \{0,1,2\} \cartesianprod \{0,1,2,4\}
+        \]
+        \item Notiamo subito che il supporto di \(U\)
+        è \(\{0,1,2,4,8\}\). Per esempio
+        \[
+            \mathbb P(U = 8) = \mathbb P(X=2, Y=4) = p_{X,Y}(2,4) = \frac{1}{12}
+        \]
+        Visto che la distribuzione è uniforme, possiamo contare i casi
+        \[
+            \begin{array}{c|cccc}
+                X \backslash Y & 0 & 1 & 2 & 4 \\
+                \hline
+                0 & \textcolor{red}{0} & \textcolor{red}{0} & \textcolor{red}{0} & \textcolor{red}{0} \\
+                1 & \textcolor{red}{0} & \textcolor{red}{1} & \textcolor{red}{2} & \textcolor{red}{4} \\
+                2 & \textcolor{red}{0} & \textcolor{red}{2} & \textcolor{red}{4} & \textcolor{red}{8}
+            \end{array}
+        \]
+        Abbiamo quindi i seguenti:
+        \begin{align*}
+            \mathbb P(U=0) &= \frac{6}{12} = \frac12 \\
+            \mathbb P(U=1) &= \frac{1}{12} = \mathbb P(U=8) \\
+            \mathbb P(U=2) &= \frac{1}{4} = \mathbb P(U=4)
+        \end{align*}
+        Infati la somma totale è
+        \[
+            \frac12 + 2 \cdot \frac1{12} + \frac16 + \frac16 = 1
+        \]
+        \item Notiamo subito che il supporto di \(U\)
+        è \(\{0,1,2,3,4,5,6\}\). 
+        Visto che la distribuzione è uniforme, possiamo contare i casi
+        \[
+            \begin{array}{c|cccc}
+                X \backslash Y & 0 & 1 & 2 & 4 \\
+                \hline
+                0 & \textcolor{red}{0} & \textcolor{red}{1} & \textcolor{red}{2} & \textcolor{red}{4} \\
+                1 & \textcolor{red}{1} & \textcolor{red}{2} & \textcolor{red}{3} & \textcolor{red}{5} \\
+                2 & \textcolor{red}{2} & \textcolor{red}{3} & \textcolor{red}{4} & \textcolor{red}{6}
+            \end{array}
+        \]
+        \begin{align*}
+            \mathbb P(U=0) &= \mathbb P(U=6) = \mathbb P(U=5) = \frac{6}{12} = \frac1{12} \\
+            \mathbb P(U=1) &= \mathbb P(U=3) = \mathbb P(U=4) = \frac16 \\
+            \mathbb P(U=2) &= \frac14
+        \end{align*}
+        Infatti la somma è \(1\).
+        \item Purtroppo \(U\) e \(V\) sono possibilmente dipendenti. Quindi scriviamo
+        \begin{DispWithArrows*}
+            \mathbb E[UV] &= \mathbb E[XY(X + Y)] = \mathbb E[X^2Y + XY^2] \\
+            &= \mathbb E[X^2Y] + \mathbb E[Y^2X] \Arrow{Indipendenza} \\
+            &= \mathbb E[Y]\mathbb E[X^2] + \mathbb E[Y^2]\mathbb E[X]
+        \end{DispWithArrows*}
+        Allora abbiamo \begin{align*}
+            \mathbb E[X] &= \frac13\left(1 + 2\right) = 1 \\
+            \mathbb E[Y] &= \frac14\left(1 + 2 + 4\right) = \frac74 \\
+            \mathbb E[X^2] &= \frac13(1 + 4) = \frac53 \\
+            \mathbb E[Y^2] &= \frac14(1 + 4 + 14) = \frac{21}4 \\
+        \end{align*}
+        Quindi complessivamente
+        \[
+            \mathbb E[UV] = \frac74 \cdot \frac53 + 1 \cdot \frac{21}{4}
+            = \frac{49}{6}
+        \]
+        Si poteva calcolare la congiunta di \((U, V)\)
+        partendo dalla congiunta di \((X,Y)\) e poi usando il risultato che dice che
+        \[
+            \mathbb E[UV] = \sum_{u,v \in \realnumbers} uv p_{U,V}(u,v)
+        \]
+        \item TODO
+    \end{enumerate}
+\end{snippetsolution}
+
+\begin{snippetexercise}{}
+    Sia \((X,Y)\) un vettore aleatorio discreto le cui densità marginali sono fissate ocme segue
+    \begin{align*}
+        \mathbb P(X = 1) &= p_X(1) = 0.3 = 1- p_X(2) = 1-\mathbb P(X=2) \\
+        \mathbb P(Y = 1) &= p_Y(1) = 0.6 = 1- p_Y(2) = 1-\mathbb P(Y=2)
+    \end{align*}
+    e la densità congiunta è
+    \[
+        \mathbb P(X=k, Y =n) \triangleq p_{X,Y}(k,n) = p_{k,n}
+    \]
+    \begin{enumerate}
+        \item Si calcoliamo \(\mathbb E[X], \mathbb E[Y], \operatorname{Var}(X)\) e \(\operatorname{Var}(Y)\);
+        \item Determinare le distribuzioni congiunte che, rispettivamente rendono minima e massima la covarianza ra le due variabili aleatorie.
+        \item Determinare la distribuzione congiunta che rende incorrelate (scorrelate) \(X\) e \(Y\),
+        verificare se tale distribuzione le rende anche indipendenti.
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    \begin{enumerate}
+        \item Possiamo fare una tabella di contingenza, cioè
+        \[
+            \begin{array}{c|ccc}
+                Y \backslash X & 1 & 2 & \\
+                \hline
+                1 & \textcolor{red}{p_{1,1}} & \textcolor{red}{p_{2,1}} & p_Y(1)=0.6 \\
+                2 & \textcolor{red}{p_{1,2}} & \textcolor{red}{p_{2,2}} & p_Y(2)=0.4 \\
+                & p_X(1) = 0.3 & p_X(2) = 0.7
+            \end{array}
+        \]
+        A destra abbiamo i valori marginali di \(Y\) e sotto i valori marginali di \(X\).
+        Abbiamo quindi
+        \begin{align*}
+            \mathbb E[X] &= 0.3 + 0.7 \cdot 2 = 1.7 \\
+            \mathbb E[X^2] &= 3.1 - (1.7)^2 = 0.21 \\
+            \mathbb E[Y] &= 0.6 + 0.4 \cdot 2 = 1.4 \\
+            \mathbb E[Y^2] &= 0.6 + 0.4 \cdot 4 = 2.2 \\
+            \operatorname{Var}(Y) &= 2.2 - (1.4)^2 = 0.24
+        \end{align*}
+        \item Abbiamo che la covarianza  \begin{align*}
+            \operatorname{Cov}(X,Y) &= \mathbb E[XY] - \mathbb E[X] \mathbb E[Y]
+            = \mathbb E[XY] - 1.7 \cdot 1.4
+        \end{align*}
+        Quindi dobbiamo massimizzare o minimizzare
+        \(\mathbb E[XY]\) con
+        \begin{align*}
+            \mathbb E[XY]
+            &= \sum_{x,y \in \realnumbers} xyp_{X,Y}(x,y)
+            = p_{1,1} + 2\left(p_{2,1} + p_{1,2}\right) 
+            + 4 \cdot p_{2,2}
+        \end{align*}
+        L'idea è quella di scrivere i vari \(p_{i,j}\)
+        in funzione di una sola incognita \(x\).
+        Scriviamo \begin{align*}
+            x \triangleq p_{1,1} \\
+            p_{1,1} + p_{1,2} &= 0.3 \rightarrow p_{1,2} = 0.3 - x \\
+            p_{1,1} + p_{2,1} &= 0.6 \rightarrow p_{2,1} = 0.6 - x \\
+            p_{1,1} + p_{2,1} + p_{1,2} + p_{2,2} &= 1 \rightarrow p_{2,2} = 0.1 + x
+        \end{align*}
+        Quindi abbiamo pure il vincolo che \(0 \leq x \leq 0.3\).
+        Allora sostituendo otteniamo
+        \begin{align*}
+            \mathbb E[XY] &= x + 2(0.3 - x + 0.6 - x)
+            + 4(0.1 + x) \\
+            &= x + 2.2
+        \end{align*}
+        Quindi i valori di massimo
+        e minimo avvengono per \(x=0.3\)
+        e \(x=0\) rispettivamente, cioè per il massimo vale
+        \[
+            p_{1,1} = 0.3, \quad p_{1,2} = 0, \quad p_{2,1} = 0.3, p_{2,2} = 0.4
+        \]
+        e per il minimo
+        \[
+            p_{1,1} = 0, \quad p_{1,2} = 0.3, \quad p_{2,1} = 0.6, p_{2,2} = 0.1
+        \]
+        \item Incorrelate significa che la covarianza fra \(X\) e \(Y\) è nulla. Da prima sappiamo che
+        \(\mathbb E[XY] = x + 2.2\). Quindi \begin{align*}
+            \operatorname{Cov}(X,Y) = x + 2.2 - 1.7 \cdot 1.4
+            = x - 0.18
+        \end{align*}
+        Quindi la covarianza è nulla se e solo se \(x=0.18\).
+        Per tale valore abbiamo
+        \[
+            p_{1,1} = 0.18, \quad p_{1,2} = 0.12, \quad p_{2,1} = 0.42, p_{2,2} = 0.28
+        \]
+        Verifichiamo l'indipendenza studiando se la congiunta fattorizza in tutti i punti.
+        Vediamole tutte
+        \begin{align*}
+            p_X(1)p_Y(1) &= 0.3 \cdot 0.6 = 0.18 = p_{1,1} \\
+            p_X(1)p_Y(2) &= 0.3 \cdot 0.4 = 0.12 = p_{1,2} \\
+            p_X(2)p_Y(1) &= 0.7 \cdot 0.6 = 0.42 = p_{2,1} \\
+            p_X(2)p_Y(2) &= 0.7 \cdot 0.4 = 0.28 = p_{2,2}
+        \end{align*}
+        Quindi sono indipendenti.
+    \end{enumerate}
+\end{snippetsolution}
+
+\begin{snippetexercise}{}
+    Ci sono due urne \(\mathcal U_1, \mathcal U_2\) così composte:
+    \begin{enumerate}
+        \item \(\mathcal U_1\) contiene \(10\) palline con il numero \(1\)
+        e \(5\) palline con il numero 2;
+        \item \(\mathcal U_2\) contiene \(8\) palline con il numero \(8\) 
+        e \(12\) con il numero 2.
+   \end{enumerate}
+   Si estrae una pallina dalla prima urna e si trasferisce nella seconda, dopo che si estrae una pallina dalla seconda urna.
+   \begin{enumerate}
+        \item Calcolare la probabilità di estrarre \(1\)
+        dalla prima urna, sapendo che è stato estratto \(2\) dalla seconda urna.
+        \item Siano \(X_1, X_2\) i risultati delle estrazioni dalla prima e dalla seconda urna,
+        verificare se le due variabili aleatorie sono indipendenti.
+        \item Calcolare la distribuzione di \(S \triangleq X_1 + X_2\);
+        \item Calcolare la probabilità che alla prima estrazione sia stato ottenuto \(1\)
+        sapendo che \(S= 2\).
+   \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    \begin{enumerate}
+        \item Consideriamo \(E_1^{(1)}\) l'evento ``estratto \(1\) dall'urna \(1\)''
+        e \(E_2^{(2)}\) l'evento ``estratto \(2\) dall'urna \(2\)''.
+        Abbiamo quindi
+        \begin{DispWithArrows*}
+            \mathbb P(E_1^{(1)} | E_2^{(2)}) &= \frac{\mathbb P(E_1^{(1)} \intersection E_2^{(2)})}{\mathbb (E_2^{(2)})} \\
+            &= \frac{\mathbb P(E_2^{(2)}|E_1^{(1)}) \mathbb P(E_2^{(1)})}{
+                \mathbb P(E_2^{(1)})
+            } = \frac{
+                \frac{12}{21} \cdot \frac{2}{2}
+            }{
+                \mathbb P(E_2^{(2)})
+            } \Arrow{Teorema probabilità \\ totali} \\
+            \mathbb P(E_2^{(2)}) &= \mathbb P(E_2^{(2)} | E_1^{(1)}) \mathbb P(E_1^{(1)})
+            + \mathbb P(E_2^{(1)}) \mathbb P(E_2^{(2)}) \\
+            &= \frac{12}{21} \cdot \frac{2}{3} + \frac{13}{21} \cdot \frac{1}{3} = \frac{37}{21 \cdot 3} \\
+            \mathbb P(E_1^{(1)} | E_2^{(2)})
+            &= \frac{24}{37}
+        \end{DispWithArrows*}
+        \item Si capisce subito non sono indipendenti però calcoliamo la congiunta perché ci servirà dopo.
+        Abbiamo
+        \begin{align*}
+            p_{X_1,X_2}(1,1) &= \mathbb P(X_1 = 1, X_2 = 1) = \mathbb P(X_2 = 1 | X_1 = 1) \mathbb P(X_1 = 1) = \frac{9}{21} \cdot \frac{2}{3} \\
+            p_{X_1,X_2}(1,2) &= \mathbb P(X_1 = 1, X_2 = 2) = \mathbb P(X_2 = 2 | X_1 = 1) \mathbb P(X_1 = 1) = \frac{12}{21} \cdot \frac{2}{3} \\
+            p_{X_1,X_2}(2,1) &= \mathbb P(X_1 = 2, X_2 = 1) = \frac{8}{21} \cdot \frac13 \\
+            p_{X_1,X_2}(2,2) &= \mathbb P(X_2 = 2, X_2 = 2) = \frac{12}{21} \cdot \frac13
+        \end{align*}
+        Controlliamo \[
+            p_{X_1,X_2}(1,1)
+            + p_{X_1,X_2}(1,2)
+            + p_{X_1,X_2}(2,1)
+            + p_{X_1,X_2}(2,2) = \frac{18 + 24 + 8 + 13}{63} = 1
+        \]
+        Da prima sappiamo che
+        \begin{align*}
+            p_{X_1}(1) &= \mathbb P(X_1 = 1) = \mathbb P(E_1^{(1)}) = \frac23 \\
+            p_{X_2}(2) &= \mathbb P(X_2 = 2) = \mathbb P(E_2^{(2)}) = \frac{XXX}{XXX}
+        \end{align*}
+        Tuttavia,
+        \[
+            p_{X_1, X_2}(1,2) = XXXXX \neq XXXXXX
+        \]
+        che differiscono.
+        \item \(X_1 + X_2\) ha supporto \(\{2,3,4\}\). Qua \(X_1\) e \(X_2\)
+        non sono indipendenti quindi non possiamo contare
+        i casi ma dobbiamo usare la congiunta
+        \begin{align*}
+            \mathbb P(X_1 + X_2 = 2) &= \mathbb P(X_1, X_2 = 1) = p_{X_1, X_2}(1,1) = \frac{6}{21} \\
+            \mathbb P(X_1 + X_2 = 3) &= p_{X_1, X_2}(1,2) + p_{X_1, X_2}(2,1) = \cdots \\
+            \mathbb P(X_1 + X_2 = 4) &= p_{X_1, X_2}(2,2) = \cdots
+        \end{align*}
+        \item TODO XXX
+    \end{enumerate}
+\end{snippetsolution}
 
 \end{document}
