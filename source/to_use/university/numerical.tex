@@ -2795,9 +2795,281 @@ algoritmi ricorsivi.
     o \(m-n\) (se \(m-n > 0\)) zeri laddove servono.
 \end{snippettheorem}
 
+\begin{snippetproof}{}
+    Supponiamo senza perdita di generalità che \(m \geq n\).
+    Vogliamo ricondurci al caso quadrato, e quindi consideriamo
+    \[
+        A_{\text{ext}}=
+        \left(
+        \begin{array}{c|c}
+        & 0 \\
+        A & \vdots \\
+        & 0
+        \end{array}
+        \right)
+        \in \matrices_{n}(\complexnumbers),
+        \qquad
+        B_{\text{ext}}=
+        \left(
+        \begin{array}{ccc}
+        & B & \\ \hline
+        \multicolumn{3}{c}{0 \cdots 0}
+        \end{array}
+        \right)
+        \in \matrices_{n}(\complexnumbers)
+    \]
+    con un numero appropriato di zeri per completarla.
+    Visto che le matrici sono quadrate,
+    \[
+        \sigma(A_{\text{ext}}B_{\text{ext}})
+        = \sigma(B_{\text{ext}}A_{\text{ext}})
+    \]
+    Ma notiamo che nel prodotto \(A_{\text{ext}}B_{\text{ext}}\) riga per colonna, ritroviamo \(AB\),
+    e quindi lo spettro è precisamente quello di \(AB\).
+    Invece, il prodotto inverso \(B_{\text{ext}}A_{\text{ext}}\)
+    notiamo che otteniamo un blocco quadrato \[
+        B_{\text{ext}}A_{\text{ext}} =
+        \left(
+        \begin{array}{c|c}
+        BA & 0 \\
+        \hline
+        0 & 0
+        \end{array}
+        \right) 
+        = \operatorname{diag}(BA, 0_{n-m})
+    \]
+    quindi lo spettro coincide.
+\end{snippetproof}
+
 Questo teorema vale nel caso particolare (già visto)
 \(m=1\). Infatti, \(\sigma(xy^*) = \{y^*x, 0, 0, \cdots, 0\}\)
 con \(x,y \in \complexnumbers^n\), cioè il caso della diade, che ha rango uno.
+
+\begin{snippetexercise}{}
+    Sia \(A \in \matrices_n(\realnumbers)\)
+    con \(n\) pari, \(a,b, c>0\) e \(a>b\). Definiamo
+    \[
+        \left(A\right)_{j,k} = \begin{cases}
+            a + c & j=k \\
+            a & (j+k) \equiv 0 \pmod{2} \land j \neq k \\
+            b & (j+k) \equiv 1 \pmod{2}
+        \end{cases}
+    \]
+    \begin{enumerate}
+        \item Caratterizzare lo spettro nel modo migliroe possibile;
+        \item Dimostrare che il metodo di Gauss-Seidel è convergente
+        se applicato ad un sistema lineare \(Ax = b\).
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    Abbiamo la forma della matrice
+    \begin{align*}
+        A &=
+        \begin{pmatrix}
+        a+c & b   & a   & b   & a   & \cdots & b \\
+        b   & a+c & b   & a   & b   & \cdots & a \\
+        a   & b   & a+c & b   & a   & \cdots & b \\
+        b   & a   & b   & a+c & b   & \cdots & a \\
+        a   & b   & a   & b   & a+c & \cdots & b \\
+        \vdots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+        b   & a   & b   & a   & b   & \cdots & a+c
+        \end{pmatrix} \\
+        &= cI_n + b \underbrace{\begin{pmatrix}
+        0 & 1   & 0   & 1   & 0   & \cdots & 1 \\
+        1   & 0 & 1   & 0   & 1   & \cdots & 0 \\
+        0   & 1   & 0 & 1   & 0   & \cdots & 1 \\
+        1   & 0   & 1   & 0 & 1   & \cdots & 0 \\
+        0   & 1   & 0   & 1   & 0 & \cdots & 1 \\
+        \vdots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+        1   & 0   & 1   & 0   & 1   & \cdots & 0
+        \end{pmatrix}}_{E}
+        + a \underbrace{\begin{pmatrix}
+            1   & 0   & 1   & 0   & \cdots & 1 & 0 \\
+            0 & 1   & 0   & 1   & \cdots & 0 & 1 \\
+            1   & 0 & 1   & 0   & \cdots & 1 & 0 \\
+            0   & 1   & 0 & 1   & \cdots & 0 & 1 \\
+            1   & 0   & 1   & 0 & \cdots & 1 & 0 \\
+            \vdots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+            0   & 1   & 0   & 1   & \cdots & 0 & 1
+        \end{pmatrix}}_{F}
+    \end{align*}
+    Sicuramente un generico autovalore
+    \[
+        \lambda(A) = c + \lambda(bF + aE)
+    \]
+    (Perché e quando si può fare?).
+    Notiamo che \(F\) ed \(E\) hanno solamente due righe uguali, quindi il logo
+    rango è \(\leq 2\), ma le due righe sono chiaramente indipendenti
+    quindi il rango è precisamente \(2\). Abbiamo quindi che \(\operatorname{rank} (bF) = \operatorname{rank} (aE) = 2\).
+    Quindi la matrice completa ha al massimo rango \(4\). Quindi,
+    \(A\) ha autovalore \(c\) con molteplicità almeno \(n-4\), mentre gli altri \(4\)
+    autovalori dobbiamo ancora trovarli.
+    La matrice è reale e simmetrica e Hermitiana quindi diagonalizzabile,
+    quindi le molteplicità algebrichde e geometriche coincidono.
+    Siano
+    \[
+        f = \begin{pmatrix}
+            0 \\ 1 \\ 0 \\ \vdots \\ 1
+        \end{pmatrix} \in \{0,1\}^n,
+        g = \begin{pmatrix}
+            0 \\ 1 \\ 0 \\ \vdots \\ 1
+        \end{pmatrix}\in \{0,1\}^n
+    \]
+    da cui trovimo \(E = gg^T + ff^T\) e \(F = gf^T + fg^T\).
+    Allora, la matrice \begin{align*}
+        bF + aE &= b\left(gf^T + fg^T\right)
+        + a\left(gg^T + ff^T\right) \\
+        &= g\left(
+            bf^T + ag^T
+        \right) + f\left(
+            bg^T + af^T
+        \right)
+    \end{align*}
+    Ma da questa decomposizione deduciamo che il rango di
+    \(bF + aE\) è precisamente \(\leq 2\), in quanto possiamo generare tutto come combinazione di due vettori.
+    In realtà è precisamente \(2\) perché possiamo trovare
+    un minore di testa principale il cui rango è al massimo due
+    (cioè il primo minore di testa principale \(2\times 2\))
+    quindi \(\operatorname{rank}(bF + aE)=2\).
+    Quindi, \(A\) ha autovalore \(c\) con molteplicità almeno \(n-2\), e altri \(2\)
+    autovalori.
+    Adesso scriviamo
+    \begin{align*}
+        bF+aE &=
+        \left[
+        \begin{array}{c|c}
+            &  \\
+            f & g \\
+            & 
+        \end{array}
+        \right]
+        \left[
+        \begin{array}{c}
+            bg^T+af^T \\ \hline
+            bf^T+ag^T
+        \end{array}
+        \right]
+    \end{align*}
+    Questa scomposizione funziona più in generale.
+    Applicando il teorema di commutazione dello spettro per moltiplicazione di matrici,
+    invertiamo l'ordine e calcoliamo gli autovalori
+    della matrice risultante, che i sono i due autovalori non banali rimanenti. Abbiamo quindi
+    \begin{DispWithArrows*}
+        \left[
+        \begin{array}{c}
+            bg^T+af^T \\ \hline
+            bf^T+ag^T
+        \end{array}
+        \right]
+        \left[
+        \begin{array}{c|c}
+            &  \\
+            f & g \\
+            & 
+        \end{array}
+        \right]
+        &= \begin{pmatrix}
+            a||f||_2^2 & b||g||_2^2 \\
+            b||f||_2^2 & a||g||_2^2
+        \end{pmatrix} \Arrow{\(n\) è pari} \\
+        &= \frac n2 \begin{pmatrix}
+            a & b \\ b & a
+        \end{pmatrix}
+    \end{DispWithArrows*}
+    Quindi gli autovalori di \(A\) sono \(c\)
+    con molteplicità \(n-2\), e \(c + \frac n2(a\pm b)\) con molteplicità \(1\).
+    È diagonalizzabile in quanto \(a > b\), quindi il metodo di Gauss-Seidel converge.
+\end{snippetsolution}
+
+\subsection{Matrici semi-elementari (generalizzazione)}
+
+Abbiamo visto che dato \(I + xy^*\)
+con \(x,y \in \complexnumbers^n\)
+possiamo caratterizzarne lo spettro e la condizione di invertibilità:
+\(g^*x \neq -1\) e in tal caso
+\[
+    \left(I + xy^*\right)^{-1} = I - \frac{xy^*}{1 + y^*x}
+\]
+Quindi in generale sappiamo tutto delle diadi \(xy^*\).
+Tuttavia, nell'esercizio avevamo una matrice di rango 2.
+In generale, al posto di sommare una matrice di rango \(1\),
+sommiamo una matrice di rango \(k\), vale lo stesso ragionamento.
+
+Consideriamo quindi \(I + R\)
+con \(\operatorname{rank} R = r\) (generalmente molto più piccolo di \(n\)).
+Scrivendo \(R\) come righe, sappiamo che esistono \(r\)
+vettori \(v_1, \cdots, v_r\) linearmente indipendenti tali che
+\begin{align*}
+    R &= 
+    \left[
+        \begin{array}{c}
+            \text{riga}_1 \\ \hline
+            \text{riga}_2 \\ \hline
+            \vdots \\ \hline
+            \text{riga}_n
+        \end{array}
+    \right]
+    &= \left[
+        \begin{array}{c}
+            \sum_{s=1}^r \alpha_{1,s} v_s \\ \hline
+            \sum_{s=1}^r \alpha_{2,s} v_s \\ \hline
+            \vdots \\ \hline
+            \sum_{s=1}^r \alpha_{n,s} v_s
+        \end{array}
+    \right]
+    = \underbrace{
+        \begin{pmatrix}
+            \alpha_{1,1} & \alpha_{1,2} & \cdots & \alpha_{1,r} \\
+            \alpha_{2,1} & \alpha_{2,2} & \cdots & \alpha_{2,r} \\
+            \vdots & \vdots & \ddots & \vdots \\
+            \alpha_{n,1} & \alpha_{n,2} & \cdots & \alpha_{n,r}
+        \end{pmatrix}
+    }_{r}
+    \left[
+        \begin{array}{ccc}
+           & v_1 & \\ \hline
+           & v_2 & \\ \hline
+           \vdots \\ \hline
+           & v_n &
+       \end{array}
+    \right]
+\end{align*}
+Quindi la nuova condizione non è più che \(g^*x \neq -1\),
+ma che \(XY^*\) non abbia l'autovalore \(-1\), in quanto se avesse un tale autovalore,
+la matrice originale arrebbe autovalore \(1 - 1 = 0\).
+
+Abbiamo quindi che lo spettro è dato da \(1\)
+con molteplicità \(n - r\)
+e gli altri autovalori sono
+\[
+    1 + \sigma(YX^*)
+\]
+con molteplicità \(1\).
+Quindi se \(YX^*\) non ha l'autovalore \(-1\), \(I + R\)
+è invertibile. In tal caso,
+\[
+    (I + XY^*)^{-1}
+    = I - X \left(I_r + Y^*X\right)^{-1} Y^*
+\]
+che è una generalizzazione della forma scalare.
+
+\pagebreak
+
+Verifichiamo che sia l'inversa:
+\begin{align*}
+    \left(I - X \left(I_r + Y^*X\right)^{-1} Y^*\right)
+    (I + XY^*)
+    &= I + XY^* - X \left(I_r + Y^*X\right)^{-1}Y^*
+    - X \left(I_r + Y^*X\right)^{-1} Y^*XY^* \\
+    &= I + X\left(
+        I - (I_r + Y^*X)^{-1} - (I_r + Y^*X)^{-1}Y^*X 
+    \right)Y^* \\
+    &= I + X \left(I_r + Y^*X\right)^{-1} \left(
+        I_r + Y^*X - I_r - Y^*X
+    \right)Y^*
+    = I
+\end{align*}
 
 \pagebreak
 
