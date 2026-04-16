@@ -30,6 +30,9 @@
 
 \section{Differential geometry}
 
+% black hole
+%\begin{radioactive}
+
 % Aggiornare quella in analisi multivariabile con un intervallo generico non degenere1
 \begin{snippetdefinition}{Curva parametrizzata di classe \(\mathcal C^k\)}
     Una \emph{curva parametrizzata} su \(\realnumbers^n\)
@@ -3395,5 +3398,552 @@ e possiamo definire
     che è precisamente la matrice Jacobiana nel punto \(p\).
     Identificando le basi canoniche con le restrizioni, otteniamo la tesi.
 \end{snippetproof}
+
+\subsection{Lezione del 15/04/2026}
+
+Work in progress.
+
+Più in generale, con dimostrazione analoga, si prova il seguente:
+
+\begin{snippetproposition}{}
+    Sia \(F \colon X \fromto Y\) mappa \(\mathcal C^\infty\)
+    e \(\varphi \colon \Omega \fromto X\) carta con \(p \in \operatorname{im}\varphi\),
+    \(\Phi \colon \Omega' \fromto Y\) carta con \(F(p) \in \operatorname{Im}\phi\).
+    Allora la matrice associata ad \(\left(\text{d}F\right)_p \colon T_{X,p} \fromto T_{Y, F(p)}\)
+    rispetto alle basi canoniche \(\partial_1^\varphi, \cdots, \partial_n^\varphi\)
+    e \(\partial_1^\Phi, \cdots, \partial_n^\Phi\) rispettivamente, è data da
+    \[
+        J(\Phi^{-1} \circ F \circ \varphi)
+    \]
+\end{snippetproposition}
+
+\subsection{Lezione del 16/04/2026}
+
+Guardiamo ora metodi per costruire sottovarietà.
+
+\begin{snippettheorem}{}
+    Sia \(F \colon X \fromto Y\) tale che
+    per un dato \(Q \in Y\) si abbia che \(\forall P \in F^{-1}(\{Q\})\)
+    \[
+        \left(\text{d}F\right)_p \colon T_{X,p} \fromto T_{Y, F(p)}
+    \]
+    è suriettivo. Allora, \(Z = F^{-1}(\{Q\})\) è una sottovarietà di \(X\)
+    di dimensione \(\dim Z = \dim X - \dim Y\).
+\end{snippettheorem}
+
+\begin{center}
+\begin{tikzpicture}
+  \draw[thick] (-3,0) -- (3,0) node[right] {$Y$};
+  \filldraw (0,0) circle (2pt) node[below=2pt] {$Q$};
+
+  \draw[thick] (-2.5, 2.1) 
+    .. controls (-1, 1.9) and (1, 2.2) .. (2.5, 2.0) 
+    .. controls (2.6, 3.5) and (2.2, 4.0) .. (2.4, 5.1) 
+    .. controls (1, 5.3) and (-1, 4.8) .. (-2.4, 4.9) 
+    .. controls (-2.7, 4.0) and (-2.2, 3.0) .. cycle;
+  \node at (-1.8, 4.5) {$X$};
+
+  \draw[red, very thick] (0,2.05) -- (0,5.0);
+  \node[red, above] at (0,5.1) {$Z = F^{-1}(\{Q\})$};
+
+  \foreach \y in {2.4, 2.8, 3.2, 3.6, 4.0, 4.4, 4.8} {
+    \draw[green!70!black, thick] (-0.25, \y) -- (0.25, \y);
+  }
+
+  \draw[->, >=stealth, thick] (0, 1.8) -- (0, 0.4) node[midway, right] {$F$};
+\end{tikzpicture}
+\end{center}
+
+\begin{snippetproof}{Cenno di dimostrazione}
+    La condizione di sottovrietà per \(F^{-1}(\{Q\}) \subseteq X\)
+    è una condizione ``locale'', cioè dipende da un intorno di \(P \in F^{-1}(\{Q\})\)
+    in \(X\). Allora, usando una carta su \(X\) che induce un diffeomorfismo fra un intorno di
+    \(P\) e \(\realnumbers^{n+m}\) con (\(n+m = \dim X, m = \dim Y\)) allora
+    ci possiamo ricondurre al caso di \(X = \realnumbers^{n+m}\).
+    Similmente, usando una carta di \(Y\) intorno a \(Q\)
+    intorno a \(Q\) possiamo assumere \(Y = \realnumbers^m\). Allora,
+    la tesi segue dal teorema delle funzioni implicite.
+    \(\dim F^{-1}(\{Q\}) = n\), per la parametrizzazione prodotta da tale teorema come varietà grafico.
+\end{snippetproof}
+
+Vediamo ora un criterio per produrre una carta di sottovarietà
+
+\begin{snippettheorem}{}
+    Sia \(X \subseteq Y\) sottovarietà, \(\Omega\) aperto di \(\realnumbers^n\)
+    con \(n = \dim X\)
+    e sia \(\varphi \colon \Omega \fromto Y\)
+    una mappa taleche valgano le seguenti condizioni:
+    \begin{enumerate}
+        \item \(\operatorname{Im}(\varphi) \subseteq X\);
+        \item \[
+            \left(\text{d}\varphi\right)_z \colon \realnumbers^n = T_{\Omega, z} \fromto T_{Y, \varphi(z)}
+        \]
+        è iniettivo per \(\forall z \in \Omega\);
+        \item \(\varphi\) è iniettiva.
+    \end{enumerate}
+    Allora, \(\varphi\) è omeomorfismo fra \(\Omega\) e \(\operatorname{Im}(\varphi)\)
+    aperto di \(X\) e \(\varphi\) è una carta per \(X\).
+\end{snippettheorem}
+
+\begin{center}
+    \begin{tikzpicture}
+    \def\yWobblyPath{
+        (2.5, 3.1) 
+        .. controls (3, 2.9) and (5, 3.2) .. (6.5, 3.0) 
+        .. controls (6.6, 4.5) and (6.2, 5.0) .. (6.4, 6.1) 
+        .. controls (5, 6.3) and (3, 5.8) .. (1.6, 5.9) 
+        .. controls (1.3, 5.0) and (1.8, 4.0) .. cycle
+    }
+
+    \draw[thick] \yWobblyPath;
+    \node at (1.8, 5.6) {$Y$};
+
+    \draw[red, very thick] (2.0, 4.5) .. controls (3.5, 4.8) and (5.5, 4.2) .. (6.0, 4.5) node[above right] {$X$};
+
+    \filldraw (4.0, 4.5) circle (1.5pt) node[below=6pt] {$\varphi(z)$};
+
+    \draw[blue, very thick, cap=butt] (3.6, 4.55) .. controls (3.8, 4.7) and (4.2, 4.3) .. (4.4, 4.5);
+    \node[blue, above] at (4.0, 4.8) {\small $\operatorname{Im}(\varphi)$};
+
+    \begin{scope}[shift={(0,-3)}]
+        \draw[thick] (-2,1) -- (2,1) node[below right] {$\Omega \subseteq \mathbb{R}^n$};
+        \node[above] at (0, 1.2) {$\Omega$};
+
+        \filldraw (0,1) circle (1.5pt) node[below=2pt] {$z$};
+
+        \draw[blue, line width=3pt, cap=butt] (-0.3,1) -- (0.3,1);
+    \end{scope}
+
+    \draw[->, >=stealth, thick] (0, -1.3) -- (0, 2.3) node[midway, left] {$\varphi$};
+
+    \coordinate (startLeft) at (-0.3, -2); % Omega striscia sx
+    \coordinate (startRight) at (0.3, -2); % Omega striscia dx
+
+    \coordinate (endLeft) at (3.6, 4.5); % Im(phi) striscia sx
+    \coordinate (endRight) at (4.4, 4.5); % Im(phi) striscia dx
+
+    \draw[->, blue, opacity=0.3, dashed] (startLeft) .. controls (0.5, 1) and (2.5, 3) .. (endLeft);
+    \draw[->, blue, opacity=0.3, dashed] (startRight) .. controls (1.5, 1) and (3.5, 3) .. (endRight);
+    \end{tikzpicture}
+\end{center}
+
+Guardiamo ora l'applicazione con le coordinate sferiche
+\[
+    \sigma(\theta, \varphi) = \left(
+        \cos \varphi \cos\theta, \cos \varphi \sin \theta, \sin \varphi
+    \right)
+\]
+definita come mappa \(\sigma \colon (0,2\pi) \cartesianprod (0,\pi) \fromto \realnumbers^3\).
+Soddisfa tutte le condizioni del teorema e quindi
+\[
+    \sigma \colon (0,2\pi) \cartesianprod (0,\pi) \fromto S^2
+\]
+è una carta di \(S^2\).
+
+\begin{snippetexample}{Controesempio se non vale \(X \subseteq Y\)}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+           \begin{tikzpicture}[scale=0.75]
+            \clip (-3.5,-3.5) rectangle (3.5,3.5);
+
+            \draw[->, >=stealth, gray] (-3.5,0) -- (3.5,0);
+            \draw[->, >=stealth, gray] (0,-3.5) -- (0,3.5);
+
+            \draw[blue, thick, dashed, samples=30, domain=-4:-2.5] plot ({3*\x/(1+\x*\x*\x)}, {3*\x*\x/(1+\x*\x*\x)});
+            \draw[blue, thick, samples=40, domain=-2.5:-1.2] plot ({3*\x/(1+\x*\x*\x)}, {3*\x*\x/(1+\x*\x*\x)});
+
+            \draw[blue, thick, samples=40, domain=-0.8:-0.2] plot ({3*\x/(1+\x*\x*\x)}, {3*\x*\x/(1+\x*\x*\x)});
+            \draw[blue, thick, dashed, samples=20, domain=-0.2:0] plot ({3*\x/(1+\x*\x*\x)}, {3*\x*\x/(1+\x*\x*\x)});
+
+            \draw[blue, thick, dashed, samples=20, domain=0:0.2] plot ({3*\x/(1+\x*\x*\x)}, {3*\x*\x/(1+\x*\x*\x)});
+            \draw[blue, thick, samples=60, domain=0.2:2.5] plot ({3*\x/(1+\x*\x*\x)}, {3*\x*\x/(1+\x*\x*\x)});
+            \draw[blue, thick, dashed, samples=30, domain=2.5:4] plot ({3*\x/(1+\x*\x*\x)}, {3*\x*\x/(1+\x*\x*\x)});
+            \end{tikzpicture}
+            \vspace{-1cm}
+        \end{center}
+    \end{wrapfigure}
+    Abbiamo \(\sigma \colon (-1, +\infty) \fromto \realnumbers^2\).
+    Chiaramente tale mappa è initiettiva,
+    \(\left(\text{d}F\right)_t = \sigma'(t)\) iniettiva
+    e \(\operatorname{Im}\sigma\) non è sottovarietà.
+    Abbiamo che \(\sigma\) non è omeomorfismo.
+    Quindi non può essere una carta (di una sottovarietà che tra l'altro non esiste,
+    in qunato l'immagine ha ogni intorno non connesso).
+    \wrapfill
+\end{snippetexample}
+
+\begin{snippetdefinition}{Immersione}
+    Una mappa \(f \colon X \fromto Y\) è detta
+    \emph{immersione} se \[
+        \left(\text{d}F\right)_x \colon
+        T_{X,x} \fromto T_{Y,f(x)}
+    \]
+    è iniettivo \(\forall x \in X\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Embedding}
+    Una mappa \(f \colon X \fromto Y\) è detta
+    \emph{embedding} se \(f\) induce omeomorfismo fra \(X\)
+    e \(\operatorname{im} f \subseteq Y\) e \(f\) è un'immesione.
+\end{snippetdefinition}
+
+\begin{snippetproposition}{}
+    Se \(f \colon X \fromto Y\) è embedding, allora
+    \(\operatorname{Im}f  \subseteq Y\) è sottovarietà
+    di \(Y\) diffeomorfa a \(X\) tramite \(f\).
+\end{snippetproposition}
+
+\begin{snippetproof}{Cenno di dimostrazione}
+    Fissiamo \(x_0 \in X\) e consideriamo
+    \[
+        \left(\text{d}F\right)_{x_0} \colon
+        T_{X,{x_0}} \fromto T_{Y,f({x_0})}
+    \]
+    come una immersione lineare \(\realnumbers^n \hookrightarrow \realnumbers^N\), % todourgent incliusion
+    supponiamo che \(\realnumbers^n \subseteq \realnumbers^N\) sia generata dai primi vettori della base canonica.
+    Consideriamo una carta di \(Y\) tale che in \(f(x_0)\) \[
+        \operatorname{im}\left(\text{d}F\right)_{x_0} = \realnumbers^n
+        = \mathcal L(\partial_1, \cdots, \partial_n)
+    \]
+    e siano \(\partial_{n+1}, \cdots, \partial_N\) gli ultimi \(N-n\)
+    vettori della base canonica associata alla carta. Consideriamo su
+    \(\overline X = f^{-1}(\operatorname{im}\varphi) \subseteq X\)
+    aperto la mappa \[
+        \phi \colon \overline X \cartesianprod \realnumbers^{N-n} \fromto \Omega \subseteq \realnumbers^N
+    \]
+    definita come seguente
+    \[
+        \phi(x, v) \triangleq \varphi^{-1} \circ f(x) + v
+    \]
+    Si dimostra che il differenziale di \(\phi\) in \((x_0, 0)\)
+    è iniettivo, in quanto ha matrice della forma
+    \[
+        \left[
+        \begin{array}{c|c}
+        \mathrm{d}\!\left(\varphi^{-1}\circ f\right) & 0 \\
+        \hline
+        0 &
+        \begin{array}{ccc}
+        1 &        & 0 \\
+        & \ddots &   \\
+        0 &        & 1
+        \end{array}
+        \end{array}
+        \right]
+    \]
+    Ricordando che
+    \[
+        \operatorname{Im}\text{d}\left(\varphi^{-1} \circ f\right)
+        = \text{d} \varphi^{-1} \left(
+            \mathcal L(\partial_1, \cdots, \partial_n)
+        \right)
+        = \text{d}\left(
+            \frac{\partial}{\partial x_1}, \cdots, \frac{\partial}{\partial x_n}
+        \right)
+    \]
+    ne segue che, per il teorema di invertibilità locale,
+    \(\phi\) introduce il diffeomorfismo
+    \[
+        \overline {\overline X} \cartesianprod W \fromto \overline \Omega
+    \]
+    \(x_0 \subseteq \overline{\overline{X}} \subseteq \overline{X}\) aperto,
+    \(W \subseteq \realnumbers^{N-n}\) aperto,
+    \(\overline \Omega \subseteq \Omega\) aperto contenente
+    \(\varphi^{-1}(f(x_0))\).
+    Osserviamo che \[
+        \phi \colon \overline{\overline X} \cong \overline{\overline {X}} \times 0
+        \fromto \overline \Omega \intersection \left(
+            \realnumbers^n \times 0
+        \right)
+    \]
+    diffeomorfismo quindi \(\overline{\overline X}\) diffeomorfismo a sottovarietà
+    di \(\overline \Omega\) tramite \(\phi = \varphi^{-1} \circ f\)
+    e quindi \(\overline{\overline X}\) diffeomorfismo
+    a sottovarietà di \(Y\) tramite \(f\).
+\end{snippetproof}
+
+Abbiamo quindi due criteri per sottovarietà:
+\begin{enumerate}
+    \item controimmagini di ``valori regolari'' di mappe \(F \colon X \fromto Y\)
+    cioè \(Z = F^{-1}(\{Q\})\) tale che \(\forall P \in F^{1}(\{Q\})\)
+    vale che il differenziale in \(p\) è suriettivo;
+    \item immagine di embedding \(f \colon X \fromto Y\)
+    omeomorfismo con \(\operatorname{Im}f\) e differenziale iniettivo
+    in ogni \(x \in X\). Allora \[
+        X \cong \operatorname{Im} f \subseteq Y
+    \] 
+    sottovarietà.
+\end{enumerate}
+
+\begin{snippetexample}{Applicazione}
+    Consideriamo \(F \colon \Omega \fromto \realnumbers\),
+    \(\Omega \subseteq \realnumbers^{n+1}\) aperto tale che
+    \(\forall x \in F^{-1}(\{0\})\) si abbia \(\gradient F(x) \neq 0\).
+    Allora \(Z = F^{-1}(\{0\})\) è sottovarietà di \(\realnumbers^{n+1}\)
+    di \(\dim Z = n\), detta \emph{ipersuperficie di \(\realnumbers^{n+1}\)}.
+\end{snippetexample}
+
+Altre notazioni: \(Z = (F=0) = V(F) = Z(F)\).
+
+\begin{snippetproof}{}
+    \[
+        \gradient F(x) = \left(
+            \frac{\partial f}{\partial x_1}(x),
+            \cdots,
+            \frac{\partial f}{\partial x_n}(x)
+        \right)
+    \]
+    è la matrice \(J(F)\), dunque matrice associata al differenzuale
+    \[
+        \left(\text{d}F\right)_x \colon \realnumbers^{n+1} = T_{\Omega, x} \fromto \realnumbers = T_{Y, F(x)}
+    \]
+    Dunque \(\left(\text{d}F\right)_x\) suriettiva se e solo se \(\gradient F(x) \neq 0\)
+    e si applica il primo criterio per le sottovarieté con le controimmagini di valori regolari.
+\end{snippetproof}
+
+\begin{snippetexample}{Sottoesempio}
+    Sia \(F(x) = x_1^2 + \cdots, x_{N+1}^2 - 1\)
+    allora
+    \[
+        F^{-1}(\{0\}) = S^n \subseteq \realnumbers^{n+1}
+    \]
+    sottovarietà con la struttura standard.
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Sia \(\sigma \colon (a,b) \fromto \realnumbers^n\)
+    curva regolare se e solo se \(\sigma\) è una immersione.
+    Se inoltre \(\sigma \colon (a,b) \fromto \operatorname{Im}\sigma \subseteq \realnumbers^n\)
+    è omeomorfa, allora \(\operatorname{Im}\sigma \subseteq \realnumbers^n\)
+    è sottovarietà di dimensione \(1\), con carta \(\sigma\).
+\end{snippetexample}
+
+\begin{snippetdefinition}{Campo vettoriale}
+    Un \emph{campo vettoriale} su \(X\) è una scelta, per ogni \(x \in X\),
+    di un vettore \(\xi(x) \in T_{X,x}\), tale che se \(\varphi \colon \Omega \fromto X\)
+    è una carta, allora per ogni \(z \in \Omega\) si abbia
+    \[
+        \xi(\varphi(z)) = \sum_{i=1}^n A_i(z)\partial_1
+    \]
+    dove \(\partial_1, \cdots, \partial_n\) è la base canonica associata a \(\varphi\).
+\end{snippetdefinition}
+
+La condizione sulle carte appena data, esprime la proprietà di \(\xi\)
+di essere un campo di classe \(\mathcal C^\infty\).
+
+\begin{center}
+\begin{tikzpicture}[thick]
+  \draw (2,0) arc (0:90:2);
+  \draw[->, blue] (0.5,0.5) -- +(0.3,0.2);
+  \draw[->, blue] (1.2,0.8) -- +(-0.2,0.4);
+  \draw[->, blue] (0.8,1.5) -- +(0.1,-0.3);
+  \draw[->, blue] (1.5,1.0) -- +(-0.2,0.2);
+  \draw[->, blue] (0.2,1.2) -- +(0.4,0.1);
+  \draw[->, blue] (0.6,1.7) -- +(0.2,-0.2);
+  \draw[->, blue] (1.0,0.3) -- +(0.3,0.3);
+\end{tikzpicture}
+\end{center}
+
+I vettori del campo non sono confrontabili in quanto vivono su spazi diversi,
+ma si possono comfrontare su \(\Omega\) e quindi variano con continuità se i loro coefficienti
+sono funzioni continue. Da questo motivo abbiamo la condizione con le carte.
+
+\begin{snippetdefinition}{Azione di un campo su una funzione}
+    Sia \(\xi\) un campo su \(X\) e sia \(f \colon X \fromto \realnumbers\)
+    una funzione \(\mathcal C^\infty\). Si definisce la funzione
+    \[
+        \xi(f) \colon X \fromto \realnumbers
+    \]
+    ponendo
+    \[
+        \xi(f)(x) = \xi_x([f]_x).
+    \]
+    Qui \(\xi_x\) è il valore del campo \(\xi\) in \(x\) e
+    \([f]_x \in C^\infty_{X,x}\) è il germe di \(f\) in \(x\).
+    In presenza di una carta \(\varphi \colon \Omega \fromto X\), se
+    \[
+        \xi_{\varphi(u)} = \sum_{i=1}^n A_i(\varphi(u))\,\partial_i\big|_u,
+    \]
+    allora si ha
+    \begin{align*}
+        \xi(f)(\varphi(u))
+        &= \sum_{i=1}^n A_i(\varphi(u))\,\partial_i(f \circ \varphi)(u) \\
+        &= \sum_{i=1}^n A_i(\varphi(u))
+        \frac{\partial (f \circ \varphi)}{\partial x_i}(u).
+    \end{align*}
+\end{snippetdefinition}
+
+Cioè, se \(\xi = \sum_i A_i \partial_i\), allora \(\xi\) agisce sulle
+funzioni come un operatore differenziale del primo ordine.
+
+\begin{snippetdefinition}{}
+    Ogni \(f \colon X \fromto \realnumbers\)
+    definisce una forma lineare
+    \[
+        \left(\text{d}f\right)_x \colon T_{X,x} \fromto \realnumbers
+    \]
+    per ogni \(x \in X\) come segue:
+    \[
+        \left(\text{d}f\right)_x(v) \triangleq v([f]_x)
+    \]
+    Se \(f = f(x_1, \cdots, x_n)\)
+    in sistemi di coordinate \((x_1, \cdots, x_n) = \varphi^{-1}\)
+    su \(X\), allora detta \(\partial_1, \cdots, \partial_n\)
+    la base associata ad \(\varphi\) si ha
+    \[
+        \text{d}f(a_1\partial_1, \cdots, a_n\partial_n)
+        \triangleq \sum_{i=1}^n a_i \frac{\partial f}{\partial x_i}
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{}
+    Lo \emph{spazio cotangente}
+    \[
+        T_{X,x}^* \triangleq \operatorname{Hom}(T_{X,x}, \realnumbers)
+    \]
+    è una \(1\)-forma differenziale \(\omega\), che è un
+    ``campo di vettori cotangenti''
+    cioè una scelta \(\omega_x \in T_{X,x}^*\)
+    per ogni \(x \in X\) tale che in coordinatre locali
+    \[
+        \omega(x) = \sum \lambda_i(x) \text{d}x_i
+    \]
+    dove \[
+        \text{d}x_i \in T_{X,x}^*
+    \]
+    è la base duale di \(\partial_i \in T_{X,x}\)
+    con \(\lambda_1(x), \cdots, \lambda_n(x)\)
+    sono funzioni \(\mathcal C^\infty\).
+\end{snippetdefinition}
+
+Possiamo estendere questa definizione se si conosce l'operazione \(\wedge^k\)
+sugli spazi vettoriali,
+che costruisce gli spazi gnerati dai simboli
+\[
+    v_1 \wedge \cdots \wedge v_n, \quad v_i \in V
+\]
+con le relazioni di anticommutatività
+\[
+    (\cdots \wedge v_i \wedge \cdots \wedge v_j \wedge \cdots)
+    =
+    -(\cdots \wedge v_j \wedge \cdots \wedge v_i \wedge \cdots)
+\]
+e di multilinearità
+\[
+    v_1 \wedge \cdots \wedge (a u + b w) \wedge \cdots \wedge v_k
+    =
+    a\, v_1 \wedge \cdots \wedge u \wedge \cdots \wedge v_k
+    +
+    b\, v_1 \wedge \cdots \wedge w \wedge \cdots \wedge v_k.
+\]
+Allora \[
+    \bigwedge^k T_{X,x}^*
+\]
+è lo spazio delel \(k\)-forme puntuali in \(x \in X\)
+e una \(k\)-forma differenziale è un campo di \(k\)-forme
+puntuali, aventi epsressioni locali
+\[
+    \omega = \sum_{I} \lambda_{i_1, \cdots, i_r}(x)
+    \text{d}x_{i_i} \wedge \cdots \wedge \text{d}x_{i_r}
+\]
+con \(I = \{i_1, \cdots, i_r\}\)
+con \(i_1 < \cdots < i_r\), \(\lambda_I\) funzioni \(\mathcal C^\infty\).
+
+\begin{snippetnote}{}
+    La definizione di \(\text{d}f\) a partire da
+    \(f \colon X \fromto \realnumbers\) data dalla definizione produce la \(1\)-forma differenziale
+    di \(f\).
+\end{snippetnote}
+
+\begin{snippetdefinition}{Differenziale esterno}
+    Data la \(k\)-forma \[
+        \omega = \sum \lambda_I \text{d}x^I
+        = \sum_{I} \lambda_{i_1, \cdots, i_r}(x)
+        \text{d}x_{i_i} \wedge \cdots \wedge \text{d}x_{i_r}
+    \]
+    si definisce il suo \emph{differenziale esterno}
+    \(\text{d} \omega\) come
+    \[
+        \text{d}\omega \triangleq \sum_I \left(
+            \text{d} \lambda_I
+        \right) \wedge \text{d}x^I
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexample}{}
+    Sia \(\omega = A\text{d}x + B\text{d}y + C\text{d}z\), allora abbiamo la \(2\)-forme
+    \[
+        \text{d}\omega = \text{d}A \wedge \text{d}x
+        + \text{d}B \wedge \text{d}y
+        + \text{d}C \wedge \text{d}z
+    \]
+    dove
+    \[
+        \text{d}A = \sum \frac{\partial A}{\partial x_i}\text{d}x_i
+    \]
+    e gli altri analoghi.
+    Tenendo conto che \(\text{d}x \wedge \text{d}x = 0\), rimangono i termini
+    \[
+        \text{d}\omega = \left(
+            \frac{\partial B}{\partial x}
+            - \frac{\partial A}{\partial y}
+        \right)\text{d}x \wedge \text{d}y
+        + \left(
+            \frac{\partial C}{\partial y}
+            - \frac{\partial B}{\partial z}
+        \right)\text{d}y \wedge \text{d}z
+        + \left(
+            \frac{\partial C}{\partial x}
+            - \frac{\partial A}{\partial z}
+        \right)\text{d}x \wedge \text{d}z
+    \]
+    Notare chde i coefficienti sono i rispettivi rotori di \(A,B,C\).
+\end{snippetexample}
+
+\begin{snippetdefinition}{Prodotto di Lie di campi vettoriali}
+    Dati \(\xi, \eta\) due campi vettoriali su \(X\), definiamo
+    il \emph{prodotto di Lie} \[
+        \left[
+            \xi, \eta
+        \right]
+        \triangleq \xi \cdot \eta - \eta \cdot \xi
+    \]
+    dove al secondo membro, \(\xi, \eta\) sono considerati
+    come operatori differenziali sulle funzioni \(\mathcal C^\infty(X, \realnumbers)\).
+\end{snippetdefinition}
+
+Bisogna verificare che \(\left[\xi, \eta\right]\)
+è ancora un operatore differenziale del primo ordine.
+
+La dimostrazione usa la linearità per ricondursi al caso \[
+    \xi = a \frac{\partial}{\partial x}, \quad \eta = b \frac{\partial}{\partial y}
+\]
+dove \(x,y\) sono due fra le variabili \(x_1, \cdots, x_n\).
+Troviamo quindi che
+\begin{DispWithArrows*}
+    \left[\xi, \eta\right](f)
+    &= \xi(\eta(f)) - \eta(\xi(f)) \\
+    &= a \frac{\partial}{\partial x} \left(
+        b \frac{\partial f}{\partial y}
+    \right) - b \frac{\partial}{\partial y} \left(
+        a \frac{\partial f}{\partial x}
+    \right) \Arrow{Leibniz rule} \\
+    &= a \left(
+        \frac{\partial b}{\partial x}
+    \right) \frac{\partial f}{\partial y}
+    + \cancel{
+        ab \frac{\partial^2}{\partial x\partial y}
+    }
+    - b \left(
+        \frac{\partial a}{\partial y}
+    \right) \frac{\partial f}{\partial x}
+    - \cancel{
+        ab \frac{\partial^2}{\partial y\partial x}
+    } \\
+    &= \left(
+        c \frac{\partial}{\partial x} + d \frac{\partial}{\partial y}
+    \right)(f)
+\end{DispWithArrows*}
+con \(c = -b \frac{\partial a}{\partial y}\) e \(d = a \frac{\partial b}{\partial x}\).
 
 \end{document}
