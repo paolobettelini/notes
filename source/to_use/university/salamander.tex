@@ -1,0 +1,288 @@
+\documentclass[a4paper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{parskip}
+\usepackage{fullpage}
+\usepackage{wrapfig}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{cd}
+
+\title{Salamander Lemma on polycomplexes}
+\author{}
+\date{}
+
+\DeclareMathOperator{\im}{im}
+
+\tikzset{
+    3dview/.style={
+        x={(0.9cm, -0.2cm)},
+        y={(0cm, -1cm)},
+        z={(-0.6cm, 0.5cm)}
+    }
+}
+
+\newcommand{\bicomplex}{
+    \draw[thick] (0,1) rectangle (1,2);
+    \draw[thick] (1,0) rectangle (2,1);
+}
+\newcommand{\bicomplexdot}[1]{\fill #1 circle (3pt);}
+\newcommand{\drawUnitCube}[3]{
+    \draw (#1,#2,#3) -- (#1+1,#2,#3) -- (#1+1,#2+1,#3) -- (#1,#2+1,#3) -- cycle;
+    \draw (#1,#2,#3+1) -- (#1+1,#2,#3+1) -- (#1+1,#2+1,#3+1) -- (#1,#2+1,#3+1) -- cycle;
+
+    \draw (#1,#2,#3) -- (#1,#2,#3+1);
+    \draw (#1+1,#2,#3) -- (#1+1,#2,#3+1);
+    \draw (#1+1,#2+1,#3) -- (#1+1,#2+1,#3+1);
+    \draw (#1,#2+1,#3) -- (#1,#2+1,#3+1);
+}
+\newcommand{\tricomplex}[3]{
+    \drawUnitCube{#1+0}{#2+1}{#3}
+    \drawUnitCube{#1+1}{#2+0}{#3}
+}
+\newcommand{\tricomplexdot}[3]{
+    \fill[black] (#1,#2,#3) circle (3pt);
+}
+% isometric view for 3d diagrams
+\tdplotsetmaincoords{60}{-60}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\pagebreak
+
+\section{Introduction}
+
+Adottiamo un sistema di indici interi per descrivere un \(n\)-cocomplesso.
+Data una categoria abeliana \(\mathcal A\)
+consideriamo una famiglia di oggetti indicizzata su \(\mathbb{Z}^n\)
+\[
+    A = \{A_x\}_{x \in \mathbb{Z}^n}, \quad A_x \in \operatorname{Ob}(\mathcal A)
+\]
+Siano \(e_i \in \mathbb{Z}^n\) l'\(i\)-esimo vettore della base canonica
+di \(\mathbb{Z}^n\).
+Consideriamo \(n\) famiglie di differenziali fra gli oggetti
+\[
+    \partial^{(i)} = \{\partial^{(i)}_x\}_{x \in \mathbb{Z}^n},
+\]
+per ogni direzione \(i \in \{1, \cdots, n\}\) dove
+\[
+    \partial_x^{(i)} \in \operatorname{Hom}_{\mathcal A}(A_x, A_{x+e_i})
+\]
+tali che: \begin{enumerate}
+    \item ogni riga è un complesso di cocatene:
+    \[
+        \partial^{(i)}_{x + e_i} \circ \partial_x^{(i)} = 0,
+        \quad \forall x \in \mathbb{Z}^n, \ \forall i \in \{1, \cdots, n\}
+    \]
+    \item commutatività del diagramma:
+    \[
+        \partial^{(j)}_{x + e_i} \circ \partial_x^{(i)} = \partial^{(i)}_{x + e_j} \circ \partial_x^{(j)},
+        \quad \forall x \in \mathbb{Z}^n, i \neq j
+    \]
+\end{enumerate}
+
+Scriveremo \(\pm\) per denotare il numero \(\pm1\).
+Una coordinata \((\alpha_1, \cdots, \alpha_n)\) può essere scritta
+come \(\alpha_1, \cdots, \alpha_n\). Una coordinata \((\alpha, \cdots, \alpha)\) verrà denotata
+semplicemente con \(\alpha\).
+Denotiamo pure sempre \(A = A_0\).
+
+Se \(x\leq y\) coordinata per coordinata, definiamo \(\partial[x,y] \colon A_x \to A_y\) come la composizione lungo
+un qualsiasi cammino monotono da \(x\) a \(y\).
+Per commutatività dei quadrati elementari, tale composizione è indipendente dal cammino scelto.
+
+Per ogni \(x \in \mathbb{Z}^n\), e per ogni due famiglie finite \(L \subseteq {\mathbb{Z}}_{\leq 0}^n \difference \{0\}^n\), \(U \subseteq \mathbb{N}^n \difference \{0\}^n\)
+tali che abbia senso, poniamo
+\[
+    I_L(x) \triangleq \sum_{\lambda \in L} \im \partial[x + \lambda, x], \quad
+    K_U(x) \triangleq \bigcap_{\mu \in U} \ker \partial[x, x+\mu]
+\]
+Quando vale \[
+    I_L(x) \subseteq K_u(x)
+\]
+definiamo
+\[
+    H_L^U(x) \triangleq \frac{K_U(x)}{I_L(x)}
+\]
+Concretamente, per gli oggetti comologici centrati su un oggetto centrale \(A_0\)
+con struttura \(L = \{l_i\}_{i=1}^h \subseteq \{-1,0\}^n\)
+e \(U = \{u_i\}_{i=1}^k \subseteq \{0,+1\}^n\) abbiamo
+\[
+    H_L^U = \frac{
+        \bigcap_{i=1}^k \ker \partial[0,u_i]
+    }{
+        \sum_{i=1}^h \im \partial[l_i,0]
+    }
+\]
+quando esiste.
+Ci stiamo quindi restringendo ad un intorno locale dell'oggetto centrale.
+
+Nel paper di Bergman viene notato che il reticolo di oggetti comologici viene generato
+dai down-set. In generale questo numero combinatorico è il numero di Dedekind \(M(n)\).
+Tuttavia, vengono scartati i casi banali del down-set vuoto e del down-set totale. Quindi in generale abbiamo
+\begin{itemize}
+    \item \(n=1\): \(M(1)-2 = 1\)
+    \item \(n=2\): \(M(2)-2 = 4\)
+    \item \(n=3\): \(M(3)-2 = 18\)
+    \item \(n=4\): \(M(4)-2 = 166\)
+    \item \(n=5\): \(M(5)-2 = 7579\)
+\end{itemize}
+In questo paper vedremo che una generalizzazione del salamander lemma
+si estende naturalmente su \(M(n)\) oggetti, e quindi considereremo pure i due casi banali.
+
+\subsection{Caso monodimensionale}
+
+Per i complessi di cocatene consideriamo
+\begin{center}
+    \begin{tikzcd}
+    A(-) \arrow[r, "{\partial[-,0]}"] & A \arrow[r, "{\partial[0,+]}"] & A(+)
+    \end{tikzcd}
+\end{center}
+
+Possiamo solo definire l'oggetto coomologico classico
+\begin{align*}
+    H_{-}^+ \triangleq \frac{
+        \ker \partial[0,+]
+    }{
+        \im \partial[-,0]
+    }
+\end{align*}
+
+\subsection{Caso bidimensionale}
+
+For the cochain bicomplexes we consider the following local commutative diagram
+\def\myopacity{0.5}
+\tikzset{transp/.style={opacity=\myopacity, text opacity=\myopacity}}
+\begin{center}
+\begin{tikzcd}[row sep=2cm, column sep=2.5cm]
+    {A(-)} \arrow[r, "{\partial[(-),(0,-)]}"] \arrow[d, "{\partial[(-),(-,0)]}" description] & 
+    {A(0,-)} \arrow[r, transp, "{\partial[(0,-),+]}"{transp}] \arrow[d, "{\partial[(0,-),0]}" description] & 
+    |[transp]| {A(+)} \arrow[d, transp, "{\partial[+,(+,0)]}"{transp, description}] \\
+    {A(-,0)} \arrow[r, "{\partial[(-,0),0]}"] \arrow[d, transp, "{\partial[(-,0),-]}"{transp, description}] & 
+    A \arrow[r, "{\partial[0,(+,0)]}"] \arrow[d, "{\partial[0,(0,+)]}" description] & 
+    {A(+,0)} \arrow[d, "{\partial[(+,0),+]}" description] \\
+    |[transp]| {A(-)} \arrow[r, transp, "{\partial[-,(0,+)]}"'{transp}] & 
+    {A(0,+)} \arrow[r, "{\partial[(0,+),+]}"'] & 
+    {A(+)}                                                 
+\end{tikzcd}
+\end{center}
+We define the directional homological objects as follows
+
+\begin{center}
+\setlength{\tabcolsep}{8pt} 
+\begin{tabular}{cccc}
+    \begin{tikzpicture}[baseline=(current bounding box.center), scale=0.8]
+        \bicomplex
+        \bicomplexdot{(0,1)}
+        \bicomplexdot{(2,1)}
+    \end{tikzpicture}
+    & 
+    $\displaystyle H_{-,0}^{+,0} \triangleq \frac{\ker \partial[0,(+,0)]}{\im \partial[(-,0),0]}$
+    & 
+    \begin{tikzpicture}[baseline=(current bounding box.center), scale=0.8]
+        \bicomplex
+        \bicomplexdot{(0,2)}
+        \bicomplexdot{(2,1)}
+        \bicomplexdot{(1,0)}
+    \end{tikzpicture}
+    & 
+    $\displaystyle H_{-}^{(0,+), (+,0)} \triangleq \frac{\ker \partial[0,(+,0)] \cap \ker \partial[0,(0,+)]}{\im \partial[-,0]}$ \\[8ex]
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{tikzpicture}[baseline=(current bounding box.center), scale=0.8]
+        \bicomplex
+        \bicomplexdot{(1,2)}
+        \bicomplexdot{(1,0)}
+    \end{tikzpicture}
+    & 
+    $\displaystyle H_{-,0}^{+,0} \triangleq \frac{\ker \partial[0,(0,+)]}{\im \partial[(0,-),0]}$
+    & 
+    \begin{tikzpicture}[baseline=(current bounding box.center), scale=0.8]
+        \bicomplex
+        \bicomplexdot{(0,1)}
+        \bicomplexdot{(1,2)}
+        \bicomplexdot{(2,0)}
+    \end{tikzpicture}
+    & 
+    $\displaystyle H_{(-,0), (0,-)}^{+,-} \triangleq \frac{\ker \partial[0,+]}{\im \partial[(-,0),0] + \im \partial[(0,-),0]}$ \\
+\end{tabular}
+\end{center}
+
+\pagebreak
+
+\subsection{Caso tridimensionale}
+
+Abbiamo il diagramma parziale
+\begin{center}
+    \begin{tikzcd}[row sep=1.5cm, column sep=0.5cm]
+                                                & {A(-,-,0)} \arrow[rr] \arrow[dd] &                                  & {A(0,-,0)} \arrow[dd]              &                                  &                                  &                       \\
+    {A(-)} \arrow[ru] \arrow[rr] \arrow[dd] &                                  & {A(0,-,-)} \arrow[ru] \arrow[dd] &                                    & {A(0,0,+)} \arrow[rr] \arrow[dd] &                                  & {A(+,0,+)} \arrow[dd] \\
+                                                & {A(-,0,0)} \arrow[rr]            &                                  & A \arrow[ru] \arrow[dd] \arrow[rr] &                                  & {A(+,0,0)} \arrow[ru] \arrow[dd] &                       \\
+    {A(-,0,-)} \arrow[rr] \arrow[ru]            &                                  & {A(0,0,-)} \arrow[ru]            &                                    & {A(0,+,+)} \arrow[rr]            &                                  & {A(+)}            \\
+                                                &                                  &                                  & {A(0,+,0)} \arrow[rr] \arrow[ru]   &                                  & {A(+,+,0)} \arrow[ru]            &                      
+    \end{tikzcd}
+\end{center}
+
+Abbiamo i classici oggetti omologici
+\begin{align*}
+    H_{-,0,0}^{+,0,0} &\triangleq \frac{
+        \ker \partial[0,(+,0,0)]
+    }{
+        \im \partial[(-,0,0),0]
+    } \\
+    H_{0,-,0}^{0,+,0} &\triangleq \frac{
+        \ker \partial[0,(0,+,0)]
+    }{
+        \im \partial[(0,-,0),0]
+    } \\
+    H_{0,0,-}^{0,0,+} &\triangleq \frac{
+        \ker \partial[0,(0,0,+)]
+    }{
+        \im \partial[(0,0,-),0]
+    }
+\end{align*}
+e \(15\) ulteriori oggetti
+\begin{align*}
+    H_{(-,0,0)}^{(+,0,0), (0,0,+)} &\triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,0,+)]}{\im \partial[(-,0,0),0]} \\
+    H_{(-,-,0)}^{(+,0,0), (0,+,0)} &\triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,0)]}{\im \partial[(-,-,0),0]} \\
+    H_{(0,-,-)}^{(0,+,+), (0,0,+)} &\triangleq \frac{\ker \partial[0,(0,+,+)] \cap \ker \partial[0,(0,0,+)]}{\im \partial[(0,-,-),0]} \\
+    H_{(-,-,0), (-,0,-)}^{(+,0,0), (0,+,+)} &\triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(-,-,0),0] + \im \partial[(-,0,-),0]} \\
+    H_{(-,-,0), (0,-,-)}^{(+,0,0), (0,+,+)} &\triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(-,-,0),0] + \im \partial[(0,-,-),0]} \\
+    H_{(-,0,-), (0,-,-)}^{(+,0,0), (0,+,+)} &\triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(-,0,-),0] + \im \partial[(0,-,-),0]} \\
+    H_{(0,-,-), (-,0,0)}^{(+,+,0), (+,0,+)} &\triangleq \frac{\ker \partial[0,(+,+,0)] \cap \ker \partial[0,(+,0,+)]}{\im \partial[(0,-,-),0] + \im \partial[(-,0,0),0]} \\
+    H_{(0,-,-), (-,0,0)}^{(+,+,0), (0,+,+)} &\triangleq \frac{\ker \partial[0,(+,+,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(0,-,-),0] + \im \partial[(-,0,0),0]} \\
+    H_{(0,-,-), (-,0,0)}^{(0,+,+), (+,0,+)} &\triangleq \frac{\ker \partial[0,(0,+,+)] \cap \ker \partial[0,(+,0,+)]}{\im \partial[(0,-,-),0] + \im \partial[(-,0,0),0]} \\
+    H_{(0,0,-), (-,0,0)}^{(+,0,+)} &\triangleq \frac{\ker \partial[0,(+,0,+)]}{\im \partial[(0,0,-),0] + \im \partial[(-,0,0),0]} \\
+    H_{(0,0,-), (0,-,0)}^{(0,+,+)} &\triangleq \frac{\ker \partial[0,(0,+,+)]}{\im \partial[(0,0,-),0] + \im \partial[(0,-,0),0]} \\
+    H_{(-,0,0), (0,-,0)}^{(+,+,0)} &\triangleq \frac{\ker \partial[0,(+,+,0)]}{\im \partial[(-,0,0),0] + \im \partial[(0,-,0),0]} \\
+    H_{(0,0,-), (-,0,0), (0,-,0)}^{+} &\triangleq \frac{\ker \partial[0,+]}{\im \partial[(0,0,-),0] + \im \partial[(-,0,0),0] + \im \partial[(0,-,0),0]} \\
+    H_{(-,0,-), (0,-,-), (-,-,0)}^{(+,+,0), (0,+,+), (+,0,+)} &\triangleq \frac{\ker\partial[0,(+,+,0)] \cap \ker\partial[0,(0,+,+)] \cap \ker\partial[0,(+,0,+)]}{\im \partial[(-,0,-),0] + \im \partial[(0,-,-),0] + \im \partial[(-,-,0),0]} \\
+    H_{-}^{(0,+,0), (+,0,0), (0,0,+)} &\triangleq \frac{\ker \partial[0,(0,+,0)] \cap \ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,0,+)]}{\im \partial[-,0]}
+\end{align*}
+
+Tre classici
+\begin{tikzpicture}[tdplot_main_coords]
+    \tricomplex{0}{0}{0}
+    \tricomplexdot{0}{1}{0}
+    \tricomplexdot{2}{1}{0}
+\end{tikzpicture}
+\begin{tikzpicture}[tdplot_main_coords]
+    \tricomplex{0}{0}{0}
+    \tricomplexdot{1}{0}{0}
+    \tricomplexdot{1}{2}{0}
+\end{tikzpicture}
+\begin{tikzpicture}[tdplot_main_coords]
+    \tricomplex{0}{0}{0}
+    \tricomplexdot{1}{1}{1}
+    \tricomplexdot{1}{1}{-1}
+\end{tikzpicture}
+AAA 
+
+\end{document}
