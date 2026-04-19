@@ -21,9 +21,9 @@
 
 \tikzset{
     3dview/.style={
-        x={(0.9cm, -0.2cm)},
+        x={(1cm, -0.2cm)},
         y={(0cm, -1cm)},
-        z={(-0.6cm, 0.5cm)}
+        z={(0.5cm, 0.4cm)}
     }
 }
 
@@ -32,24 +32,42 @@
     \draw[thick] (1,0) rectangle (2,1);
 }
 \newcommand{\bicomplexdot}[1]{\fill #1 circle (3pt);}
-\newcommand{\drawUnitCube}[3]{
-    \draw (#1,#2,#3) -- (#1+1,#2,#3) -- (#1+1,#2+1,#3) -- (#1,#2+1,#3) -- cycle;
-    \draw (#1,#2,#3+1) -- (#1+1,#2,#3+1) -- (#1+1,#2+1,#3+1) -- (#1,#2+1,#3+1) -- cycle;
 
-    \draw (#1,#2,#3) -- (#1,#2,#3+1);
-    \draw (#1+1,#2,#3) -- (#1+1,#2,#3+1);
-    \draw (#1+1,#2+1,#3) -- (#1+1,#2+1,#3+1);
-    \draw (#1,#2+1,#3) -- (#1,#2+1,#3+1);
+\newcommand{\drawTricomplex}{
+    \begin{scope}[thick, draw=black!80, join=round]
+        \draw (-1,-1,-1) -- (0,-1,-1) -- (0,0,-1) -- (-1,0,-1) -- cycle;
+        \draw (-1,-1,0) -- (0,-1,0) -- (0,0,0) -- (-1,0,0) -- cycle;
+        \draw (-1,-1,-1) -- (-1,-1,0);
+        \draw (0,-1,-1) -- (0,-1,0);
+        \draw (0,0,-1) -- (0,0,0);
+        \draw (-1,0,-1) -- (-1,0,0);
+
+        \draw (0,0,0) -- (1,0,0) -- (1,1,0) -- (0,1,0) -- cycle;
+        \draw (0,0,1) -- (1,0,1) -- (1,1,1) -- (0,1,1) -- cycle;
+        \draw (0,0,0) -- (0,0,1);
+        \draw (1,0,0) -- (1,0,1);
+        \draw (1,1,0) -- (1,1,1);
+        \draw (0,1,0) -- (0,1,1);
+    \end{scope}
 }
-\newcommand{\tricomplex}[3]{
-    \drawUnitCube{#1+0}{#2+1}{#3}
-    \drawUnitCube{#1+1}{#2+0}{#3}
+
+\newcommand{\ldot}[3]{\fill[black] (#1,#2,#3) circle (3pt);}
+
+\newcommand{\homologyDiag}[3]{%
+    \begin{tabular}{c}
+        \begin{tikzpicture}[3dview, scale=0.7]
+            \drawTricomplex
+            #2 % top (-)
+            #3 % bottom (+)
+        \end{tikzpicture} \\
+        (#1)
+    \end{tabular}
 }
-\newcommand{\tricomplexdot}[3]{
-    \fill[black] (#1,#2,#3) circle (3pt);
-}
-% isometric view for 3d diagrams
-\tdplotsetmaincoords{60}{-60}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}{Definition}[section]
 
 \begin{document}
 
@@ -95,23 +113,28 @@ come \(\alpha_1, \cdots, \alpha_n\). Una coordinata \((\alpha, \cdots, \alpha)\)
 semplicemente con \(\alpha\).
 Denotiamo pure sempre \(A = A_0\).
 
-Se \(x\leq y\) coordinata per coordinata, definiamo \(\partial[x,y] \colon A_x \to A_y\) come la composizione lungo
-un qualsiasi cammino monotono da \(x\) a \(y\).
-Per commutatività dei quadrati elementari, tale composizione è indipendente dal cammino scelto.
+\begin{definition}
+    Se \(x\leq y\) coordinata per coordinata, definiamo \(\partial[x,y] \colon A_x \to A_y\) come la composizione lungo
+    un qualsiasi cammino monotono da \(x\) a \(y\).
+    Per commutatività dei quadrati elementari, tale composizione è indipendente dal cammino scelto.
+\end{definition}
 
-Per ogni \(x \in \mathbb{Z}^n\), e per ogni due famiglie finite \(L \subseteq {\mathbb{Z}}_{\leq 0}^n \difference \{0\}^n\), \(U \subseteq \mathbb{N}^n \difference \{0\}^n\)
-tali che abbia senso, poniamo
-\[
-    I_L(x) \triangleq \sum_{\lambda \in L} \im \partial[x + \lambda, x], \quad
-    K_U(x) \triangleq \bigcap_{\mu \in U} \ker \partial[x, x+\mu]
-\]
-Quando vale \[
-    I_L(x) \subseteq K_u(x)
-\]
-definiamo
-\[
-    H_L^U(x) \triangleq \frac{K_U(x)}{I_L(x)}
-\]
+\begin{definition}
+    Per ogni \(x \in \mathbb{Z}^n\), e per ogni due famiglie finite \(L \subseteq {\mathbb{Z}}_{\leq 0}^n \difference \{0\}^n\), \(U \subseteq \mathbb{N}^n \difference \{0\}^n\)
+    tali che abbia senso, poniamo
+    \[
+        I_L(x) \triangleq \sum_{\lambda \in L} \im \partial[x + \lambda, x], \quad
+        K_U(x) \triangleq \bigcap_{\mu \in U} \ker \partial[x, x+\mu]
+    \]
+    Quando vale \[
+        I_L(x) \subseteq K_u(x)
+    \]
+    definiamo
+    \[
+        H_L^U(x) \triangleq \frac{K_U(x)}{I_L(x)}
+    \]
+\end{definition}
+
 Concretamente, per gli oggetti comologici centrati su un oggetto centrale \(A_0\)
 con struttura \(L = \{l_i\}_{i=1}^h \subseteq \{-1,0\}^n\)
 e \(U = \{u_i\}_{i=1}^k \subseteq \{0,+1\}^n\) abbiamo
@@ -137,6 +160,37 @@ Tuttavia, vengono scartati i casi banali del down-set vuoto e del down-set total
 \end{itemize}
 In questo paper vedremo che una generalizzazione del salamander lemma
 si estende naturalmente su \(M(n)\) oggetti, e quindi considereremo pure i due casi banali.
+
+Cominciamo generalizzando il concetto di \emph{donor} e \emph{receptor}
+come i gruppi comologici perfettamente diagonali che traversano l'oggetto centrale.
+
+\begin{definition}
+    The \emph{\(n\)-receptor} centered at \(x\) is defined as
+    \[
+        R(x) \triangleq \frac{
+            \bigcap_{i=1}^n \ker \partial[x, x + e_i]
+        }{
+            \im \partial[x-1, x]
+        }
+        = H_{-1}^{e_1, \cdots, e_n}(x)
+    \]
+\end{definition}
+
+\begin{definition}
+    The \emph{\(n\)-donor} centered at \(x\) is defined as
+    \[
+        D(x) \triangleq \frac{
+            \ker \partial[x,x+1]
+        }{
+            \sum_{i=1}^n \partial[x-e_i, x]
+        }
+        = H_{-e_1, \cdots, -e_n}^1
+    \]
+\end{definition}
+
+\begin{lemma}
+    XXX
+\end{lemma}
 
 \subsection{Caso monodimensionale}
 
@@ -230,59 +284,68 @@ Abbiamo il diagramma parziale
     \end{tikzcd}
 \end{center}
 
-Abbiamo i classici oggetti omologici
+Abbiamo i seguenti \(18\) oggetti comologici
+
+\begin{center}
+    \setlength{\tabcolsep}{7pt} 
+    
+    \begin{tabular}{ccccc}
+        \homologyDiag{1}{ \ldot{-1}{0}{0} }{ \ldot{1}{0}{0} \ldot{0}{0}{1} } &
+        \homologyDiag{2}{ \ldot{-1}{-1}{0} }{ \ldot{1}{0}{0} \ldot{0}{1}{0} } &
+        \homologyDiag{3}{ \ldot{0}{-1}{-1} }{ \ldot{0}{1}{0} \ldot{0}{0}{1} } &
+        \homologyDiag{4}{ \ldot{-1}{-1}{0} \ldot{-1}{0}{-1} }{ \ldot{1}{0}{0} \ldot{0}{1}{1} } &
+        \homologyDiag{5}{ \ldot{-1}{-1}{0} \ldot{0}{-1}{-1} }{ \ldot{1}{0}{0} \ldot{0}{1}{1} } \\[1.5cm] % Spazio verticale tra le righe
+
+        \homologyDiag{6}{ \ldot{-1}{0}{-1} \ldot{0}{-1}{-1} }{ \ldot{1}{0}{0} \ldot{0}{1}{1} } &
+        \homologyDiag{7}{ \ldot{0}{-1}{-1} \ldot{-1}{0}{0} }{ \ldot{1}{1}{0} \ldot{1}{0}{1} } &
+        \homologyDiag{8}{ \ldot{0}{-1}{-1} \ldot{-1}{0}{0} }{ \ldot{1}{1}{0} \ldot{0}{1}{1} } &
+        \homologyDiag{9}{ \ldot{0}{-1}{-1} \ldot{-1}{0}{0} }{ \ldot{0}{1}{1} \ldot{1}{0}{1} } &
+        \homologyDiag{10}{ \ldot{0}{0}{-1} \ldot{-1}{0}{0} }{ \ldot{1}{0}{1} } \\[1.5cm]
+
+        \homologyDiag{11}{ \ldot{0}{0}{-1} \ldot{0}{-1}{0} }{ \ldot{0}{1}{1} } &
+        \homologyDiag{12}{ \ldot{-1}{0}{0} \ldot{0}{-1}{0} }{ \ldot{1}{1}{0} } &
+        \homologyDiag{13}{ \ldot{0}{0}{-1} \ldot{-1}{0}{0} \ldot{0}{-1}{0} }{ \ldot{1}{1}{1} } &
+        \homologyDiag{14}{ \ldot{-1}{0}{-1} \ldot{0}{-1}{-1} \ldot{-1}{-1}{0} }{ \ldot{1}{1}{0} \ldot{0}{1}{1} \ldot{1}{0}{1} } &
+        \homologyDiag{15}{ \ldot{-1}{-1}{-1} }{ \ldot{0}{1}{0} \ldot{1}{0}{0} \ldot{0}{0}{1} } \\
+
+        &
+        \homologyDiag{16}{ \ldot{1}{0}{0} }{ \ldot{-1}{0}{0} } &
+        \homologyDiag{17}{ \ldot{0}{1}{0} }{ \ldot{0}{-1}{0} } &
+        \homologyDiag{18}{ \ldot{0}{0}{1} }{ \ldot{0}{0}{-1} } &
+    \end{tabular}
+\end{center}
+
 \begin{align*}
-    H_{-,0,0}^{+,0,0} &\triangleq \frac{
+    (1) \quad &H_{(-,0,0)}^{(+,0,0), (0,0,+)} \triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,0,+)]}{\im \partial[(-,0,0),0]} \\
+    (2) \quad &H_{(-,-,0)}^{(+,0,0), (0,+,0)} \triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,0)]}{\im \partial[(-,-,0),0]} \\
+    (3) \quad &H_{(0,-,-)}^{(0,+,+), (0,0,+)} \triangleq \frac{\ker \partial[0,(0,+,0)] \cap \ker \partial[0,(0,0,+)]}{\im \partial[(0,-,-),0]} \\
+    (4) \quad &H_{(-,-,0), (-,0,-)}^{(+,0,0), (0,+,+)} \triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(-,-,0),0] + \im \partial[(-,0,-),0]} \\
+    (5) \quad &H_{(-,-,0), (0,-,-)}^{(+,0,0), (0,+,+)} \triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(-,-,0),0] + \im \partial[(0,-,-),0]} \\
+    (6) \quad &H_{(-,0,-), (0,-,-)}^{(+,0,0), (0,+,+)} \triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(-,0,-),0] + \im \partial[(0,-,-),0]} \\
+    (7) \quad &H_{(0,-,-), (-,0,0)}^{(+,+,0), (+,0,+)} \triangleq \frac{\ker \partial[0,(+,+,0)] \cap \ker \partial[0,(+,0,+)]}{\im \partial[(0,-,-),0] + \im \partial[(-,0,0),0]} \\
+    (8) \quad &H_{(0,-,-), (-,0,0)}^{(+,+,0), (0,+,+)} \triangleq \frac{\ker \partial[0,(+,+,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(0,-,-),0] + \im \partial[(-,0,0),0]} \\
+    (9) \quad &H_{(0,-,-), (-,0,0)}^{(0,+,+), (+,0,+)} \triangleq \frac{\ker \partial[0,(0,+,+)] \cap \ker \partial[0,(+,0,+)]}{\im \partial[(0,-,-),0] + \im \partial[(-,0,0),0]} \\
+    (10) \quad &H_{(0,0,-), (-,0,0)}^{(+,0,+)} \triangleq \frac{\ker \partial[0,(+,0,+)]}{\im \partial[(0,0,-),0] + \im \partial[(-,0,0),0]} \\
+    (11) \quad &H_{(0,0,-), (0,-,0)}^{(0,+,+)} \triangleq \frac{\ker \partial[0,(0,+,+)]}{\im \partial[(0,0,-),0] + \im \partial[(0,-,0),0]} \\
+    (12) \quad &H_{(-,0,0), (0,-,0)}^{(+,+,0)} \triangleq \frac{\ker \partial[0,(+,+,0)]}{\im \partial[(-,0,0),0] + \im \partial[(0,-,0),0]} \\
+    (13) \quad &H_{(0,0,-), (-,0,0), (0,-,0)}^{+} \triangleq \frac{\ker \partial[0,+]}{\im \partial[(0,0,-),0] + \im \partial[(-,0,0),0] + \im \partial[(0,-,0),0]} \\
+    (14) \quad &H_{(-,0,-), (0,-,-), (-,-,0)}^{(+,+,0), (0,+,+), (+,0,+)} \triangleq \frac{\ker\partial[0,(+,+,0)] \cap \ker\partial[0,(0,+,+)] \cap \ker\partial[0,(+,0,+)]}{\im \partial[(-,0,-),0] + \im \partial[(0,-,-),0] + \im \partial[(-,-,0),0]} \\
+    (15) \quad &H_{-}^{(0,+,0), (+,0,0), (0,0,+)} \triangleq \frac{\ker \partial[0,(0,+,0)] \cap \ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,0,+)]}{\im \partial[-,0]} \\
+    (16) \quad & H_{-,0,0}^{+,0,0} \triangleq \frac{
         \ker \partial[0,(+,0,0)]
     }{
         \im \partial[(-,0,0),0]
     } \\
-    H_{0,-,0}^{0,+,0} &\triangleq \frac{
+    (17) \quad &H_{0,-,0}^{0,+,0} \triangleq \frac{
         \ker \partial[0,(0,+,0)]
     }{
         \im \partial[(0,-,0),0]
     } \\
-    H_{0,0,-}^{0,0,+} &\triangleq \frac{
+    (18) \quad &H_{0,0,-}^{0,0,+} \triangleq \frac{
         \ker \partial[0,(0,0,+)]
     }{
         \im \partial[(0,0,-),0]
     }
 \end{align*}
-e \(15\) ulteriori oggetti
-\begin{align*}
-    H_{(-,0,0)}^{(+,0,0), (0,0,+)} &\triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,0,+)]}{\im \partial[(-,0,0),0]} \\
-    H_{(-,-,0)}^{(+,0,0), (0,+,0)} &\triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,0)]}{\im \partial[(-,-,0),0]} \\
-    H_{(0,-,-)}^{(0,+,+), (0,0,+)} &\triangleq \frac{\ker \partial[0,(0,+,+)] \cap \ker \partial[0,(0,0,+)]}{\im \partial[(0,-,-),0]} \\
-    H_{(-,-,0), (-,0,-)}^{(+,0,0), (0,+,+)} &\triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(-,-,0),0] + \im \partial[(-,0,-),0]} \\
-    H_{(-,-,0), (0,-,-)}^{(+,0,0), (0,+,+)} &\triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(-,-,0),0] + \im \partial[(0,-,-),0]} \\
-    H_{(-,0,-), (0,-,-)}^{(+,0,0), (0,+,+)} &\triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(-,0,-),0] + \im \partial[(0,-,-),0]} \\
-    H_{(0,-,-), (-,0,0)}^{(+,+,0), (+,0,+)} &\triangleq \frac{\ker \partial[0,(+,+,0)] \cap \ker \partial[0,(+,0,+)]}{\im \partial[(0,-,-),0] + \im \partial[(-,0,0),0]} \\
-    H_{(0,-,-), (-,0,0)}^{(+,+,0), (0,+,+)} &\triangleq \frac{\ker \partial[0,(+,+,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(0,-,-),0] + \im \partial[(-,0,0),0]} \\
-    H_{(0,-,-), (-,0,0)}^{(0,+,+), (+,0,+)} &\triangleq \frac{\ker \partial[0,(0,+,+)] \cap \ker \partial[0,(+,0,+)]}{\im \partial[(0,-,-),0] + \im \partial[(-,0,0),0]} \\
-    H_{(0,0,-), (-,0,0)}^{(+,0,+)} &\triangleq \frac{\ker \partial[0,(+,0,+)]}{\im \partial[(0,0,-),0] + \im \partial[(-,0,0),0]} \\
-    H_{(0,0,-), (0,-,0)}^{(0,+,+)} &\triangleq \frac{\ker \partial[0,(0,+,+)]}{\im \partial[(0,0,-),0] + \im \partial[(0,-,0),0]} \\
-    H_{(-,0,0), (0,-,0)}^{(+,+,0)} &\triangleq \frac{\ker \partial[0,(+,+,0)]}{\im \partial[(-,0,0),0] + \im \partial[(0,-,0),0]} \\
-    H_{(0,0,-), (-,0,0), (0,-,0)}^{+} &\triangleq \frac{\ker \partial[0,+]}{\im \partial[(0,0,-),0] + \im \partial[(-,0,0),0] + \im \partial[(0,-,0),0]} \\
-    H_{(-,0,-), (0,-,-), (-,-,0)}^{(+,+,0), (0,+,+), (+,0,+)} &\triangleq \frac{\ker\partial[0,(+,+,0)] \cap \ker\partial[0,(0,+,+)] \cap \ker\partial[0,(+,0,+)]}{\im \partial[(-,0,-),0] + \im \partial[(0,-,-),0] + \im \partial[(-,-,0),0]} \\
-    H_{-}^{(0,+,0), (+,0,0), (0,0,+)} &\triangleq \frac{\ker \partial[0,(0,+,0)] \cap \ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,0,+)]}{\im \partial[-,0]}
-\end{align*}
-
-Tre classici
-\begin{tikzpicture}[tdplot_main_coords]
-    \tricomplex{0}{0}{0}
-    \tricomplexdot{0}{1}{0}
-    \tricomplexdot{2}{1}{0}
-\end{tikzpicture}
-\begin{tikzpicture}[tdplot_main_coords]
-    \tricomplex{0}{0}{0}
-    \tricomplexdot{1}{0}{0}
-    \tricomplexdot{1}{2}{0}
-\end{tikzpicture}
-\begin{tikzpicture}[tdplot_main_coords]
-    \tricomplex{0}{0}{0}
-    \tricomplexdot{1}{1}{1}
-    \tricomplexdot{1}{1}{-1}
-\end{tikzpicture}
-AAA 
 
 \end{document}
