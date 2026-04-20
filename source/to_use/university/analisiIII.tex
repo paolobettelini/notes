@@ -31,7 +31,6 @@
 \tableofcontents
 
 %\begin{blackhole}
-%\end{blackhole}
 
 \pagebreak
 
@@ -5059,19 +5058,307 @@ Sicuramente se \(\exists f\) tale ch \[
 \]
 allora \(\mu(E) = 0 \implies \varphi(E) = 0\).
 
-\begin{snippetdefinition}{}
-    \(\varphi\) è ASS rispetto a \(\mu\) (\(\varphi \ll \mu\))
+\begin{snippetdefinition}{Assolutamente continua}
+    \(\varphi\) è \emph{assolutamente continua} rispetto a \(\mu\) (\(\varphi \ll \mu\))
     se vale \(\mu(E) = 0 \implies \varphi(E) = 0\)
 \end{snippetdefinition}
 
+\subsection{Integrale per funzioni di segni qualunque}
+
+Sia \(f \colon X \fromto \realnumbers\)
+dove \(X\) è uno spazio di misura. Vogliamo definire
+\[
+    \int f \,d\mu
+    = \int f^+ \,d\mu
+    - \int f^- \,d\mu
+\]
+Abbiamo il problema del caso \(\infty - \infty\).
+Questa volta non possiamo prendere valori nei reali estesi.
+Stiamo imponendo che ambo gli integrali devono essere finite,
+quindi \(f^+, f^- \leq |f|\). Se \(f\) è misurabile
+allora anche \(|f|\) è misurabile.
+
+\begin{snippetdefinition}{Funzione integrabile}
+    Sia \(f \colon X \fromto \realnumbers\)
+    o \(f \colon X \fromto \complexnumbers\)
+    dove \(X\) è uno spazio di misura.
+    Diciamo che \(f\) è \emph{integrabile}
+    se \[
+        \int_X |f|\,d\mu < +\infty
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Integrlae per funzioni di segni qualunque}
+    Sia \(f \colon X \fromto \realnumbers\)
+    o \(f \colon X \fromto \complexnumbers\)
+    una funzione integrabile. Definiamo allora
+    \[
+        \int f \,d\mu
+        \triangleq \int f^+ \,d\mu
+        - \int f^- \,d\mu
+    \]
+\end{snippetdefinition}
+
+Nel caso di una funzione complessa, \(f = \Re f + i \Im f\).
+In tal caso spezziamo la funzione
+in \(\Re f^+, \Re f^-, \Im f^+, \Im f^-\).
+
+\begin{snippetdefinition}{Insieme delle funzioni integrabili}
+    \[
+        \mathcal L^1((X, \mathcal M, \mu))
+        \triangleq \{
+            f \colon X \fromto \complexnumbers
+            \suchthat f \text { misurabile e integrabile }    
+        \}
+    \]
+\end{snippetdefinition}
+
+\begin{snippettheorem}{}
+    \(\mathcal L^1(\mu)\) è uno spazio vettoriale e l'integrale è un operatore
+    funzionale lineare di questo spazio vettoriale.
+\end{snippettheorem}
+
+L'integrale è un elemento del duale algebrico di \(\mathcal L^1(\mu)\).
+
+\begin{snippettheorem}{}
+    Sia \(f \in \mathcal L^1(\mu)\). Allora,
+    \[
+        \left|\int_E f\,d\mu \right|
+        \leq \int_E |f|\,d\mu
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Ovvio per i reali, si può scrivere
+    con un clever trick per quelle complesse.
+\end{snippetproof}
+
+Se \(f\) è misurabile e \(|f| \leq g \in \mathcal L^1(\mu)\),
+allora \(f \in \mathcal L^1(\mu)\)
+(per la monotonia).
+
+\begin{snippettheorem}{Teorema della convergenza dominata di Lebesgue}
+    Sia \((X, \mathcal M, \mu)\) uno spazio di misura, \(\{f_n\}\) successione
+    di funzioni misurabili con \(f_n \colon X \fromto \complexnumbers\)
+    e supponiamo che \(f_(x) \to f(x), \forall x \in X\).
+    Inoltre, \(\exists g \in \mathcal L^1(\mu)\) tale che
+    \(|f_n| \leq g\) definitivamente.
+    Allora,
+    \(f_{n \geq N}, f \in \mathcal L^1(\mu)\)
+    e \[
+        \int_X |f_m - f|\,d\mu \to 0
+    \]
+    e quindi \[
+        \int_X f_n \,d\mu \to \int_X f \,d\mu
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    L'ultima convergenza viene implicata dalla pnultima in quanto
+    \[
+        \int_X |f_n - f|\,d\mu \to 0
+        \implies \int_X f_n\,d\mu
+    \]
+    in quanto \[
+        \left|
+            \int_X f_n\,d\mu
+        \right| \leq \int_X |f_n - f|\,d\mu
+    \]
+    Torniamo ora all'inizio.
+    Le funzioni \(f_n\) sono integrabili in quanto \(|f_n| \leq g\) che è integrabile, quindi sarà finito anche
+    l'integrale del modulo.
+    La funzione \(f\) è misurabile in quanto limite di funzioni misurabile, quindi misurabile,
+    ed \(f\) è integrabile perché ciò vale anche per il limite.
+    Abbiamo quindi \(f_n, f \in \mathcal L^1(\mu)\). Consideriamo ora
+    \[
+        |f_n - f| \leq |f_n| + |f| \leq 2g
+    \]
+    che a sua volta \(2g \in \mathcal L^1(\mu)\)
+    in quanto è uno spazio vettoriale.
+    Chiaramente \(2g - |f_n-f| \geq 0\), e quindi possiamo applicare il lemma di Fatou,
+    notando che \(2g - |f_n - f| \to 2g\) puntualmente. Abbiamo quindi
+    \begin{align*}
+        \int_X \liminf (2g - |f-f_n|)\,d\mu &\leq \liminf
+        \int_X (2g - |f-f_n|)\,d\mu
+    \end{align*}
+    Possiamo portare fuori il \(2g\) spezzando l'integrale negli integrali della somma
+    e portarlo fuori dal limite inferiore
+    \begin{align*}
+        \int_X 2g\,d\mu
+        + \liminf \left(
+            -\int_X |f_n-f|\,d\mu
+        \right)
+        &= \int_X 2g\,d\mu - \limsup \int_X |f_n-f|\,d\mu \\
+        \cancel{\int_X 2g\,d\mu} \leq \cancel{\int_X 2g\,d\mu} - \limsup \int_X |f_n-f|\,d\mu
+    \end{align*}
+    Se non fossero integrabili avremmo \(\infty-\infty\),
+    quindi possiamo fare la semplificazione data in quanto sono finiti.
+    Ci resta quindi che
+    \begin{align*}
+        - \limsup \int_X |f_n - f|\,d\mu &\geq 0 \\
+        \limsup \int_X |f_n - f|\,d\mu &\leq 0
+    \end{align*}
+    Siccome stiamo integrando una successione positiva,
+    e il suo limite superiore è minore o uguale a zero, deve necessariamente
+    coincidere con zero.
+    Quindi, ammette limite
+    \[
+        \lim \int_X |f_n - f|\,d\mu = 0
+    \]
+\end{snippetproof}
+
+Negli esercizi dove le successioni non si comportavano bene rispetto all'integrale,
+mancava la dominazione.
+
+\begin{snippetexample}{Può succedere che l'integrale del limite convderge all'integrale senza che
+    l'integrale del modulo della differenza tenda a zero.}
+    Consideriamo \(f(x) = \sin(x) \chi_{(n\pi, (n+2)\pi)}(x)\).
+    Abbiamo quindi un periodo di seno che si sposta verso destra sempre di più.
+    Tale funzione converge puntualmente a \(f(x) = 0\).
+    Abbiamo che
+    \[
+        \int_\realnumbers f_n\,d\mu = 0
+    \]
+    per ogni \(n\), e pure \[
+        \int_\realnumbers fd\mu = 0
+    \]
+    Tuttavia,
+    \[
+        \int_\realnumbers |f_n-f|\,d\mu = 4
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{Può succedere che l'integrale della differenza in modulo tenda a zero senza avere la dominante \(\mathcal L^1(\mu)\)}
+    Consideriamo \(f_n = \sfrac{1}{n} \chi_{(n,n+1)}\).
+    Abbiamo quindi un un segmento, di altezza sempre minore, che si sposta verso a destra (disgiunti).
+    Tale funzione tende puntualmente (e pure uniformemente) a \(f(x) = 0\) e \[
+        \int_X |f_n - 0|\,d\mu = \frac1n \to 0
+    \]
+    L'unico modo per dominare tutte le \(f_n\) è quello di dominare tutta la scaletta.
+    La funzione più piccola che fa ciò è \[
+        g = \sum_{n=1}^\infty \frac1n \chi_{(n,n+1)}
+    \]
+    che tuttavia non è integrabile in quanto la serie armonica non converge.
+\end{snippetexample}
+
+Se voglio maggiorare delle funzioni con supporti disgiunti, la più piccola tale funzione
+è la somma delle funzioni.
+
+\begin{snippetexample}{}
+    Sia \(X = \{1, \cdots, n\}\)
+    con la misura del conteggio. La \(\sigma\)-algebra è quella delle parti,
+    e quindi tutti gli insiemi e tutte le funzioni sono misurabili.
+    Inoltre, tutte le funzioni sono integrabili,
+    quindi
+    \[
+        \mathcal L^1(\mu) = \realnumbers^n
+    \]
+    oppure \(\complexnumbers^n\).
+    Le funzioni sono i vettori di \(\realnumbers^n\),
+    e i loro integrali sono la somma delle componenti, cioè la norma \(1\).
+    Scriviamo infatti \(v = \sum \alpha_i e_i\)
+    dove \(e_i = \chi_{\{i\}}\) che ha misura \(1\)
+    \[
+        \int_X v\,d\mu = \sum_{i=1}^n \int_X \alpha_i \chi_{\{i\}}\,d\mu
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Consideriamo \(X = \naturalnumbers\)
+    con la misura del conteggio. La \(\sigma\)-algebra quella delle parti.
+    Non abbiamo problemi di misurabiltà.
+    Le funzioni sono le successioni a valori reali (o complessi).
+    Il modulo della successione è la successione dei moduli.
+    Quindi, una tale funzione è integrabile se la serie associata
+    alla successione converge assolutamente. In tal caso
+    \[
+        \int_\realnumbers f\,d\mu = \sum_{n=1}^\infty a_n
+    \]
+    con \(f = \{a_n\}_{n \in \naturalnumbers}\),
+    che esiste in quanto la convergenza assoluta implica la convergenza.
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Consideriamo \(X = \realnumbers\) con la misura di Lebesgue.
+    In questo caso abbiamo il problema della misurabilità
+    e non possiamos cegliere l'insieme delle parti come \(\sigma\)-algebra.
+\end{snippetexample}
+
+Un criterio di misurabilità di \(f\) è che
+se l'insieme dei suoi punti di discontinuità ha misura nulla,
+in quanto ogni funzione continua è integrabile.
+
+\subsection{Confronto con integrale di Riemann}
+
+Sia \(X = (a,b) \subseteq \realnumbers\) con la misura di Lebesgue.
+Studiamo la relazione fra le funzioni integrabili rispetto a Riemann
+\(R(a,b)\) e \(\mathcal L^1((a,b))\).
+
+\begin{snippettheorem}{Immersione dell'integrale di Riemann in quello di Lebesgue}
+    Se \(f\) è integrabile secondo Lebesgue,
+    allora lo è pure secondo Riemann e gli integrali coincidono.
+\end{snippettheorem}
+
+Sia \(f\) integrabile secondo Riemann e mostriamo che è misurabile.
+\text{Ragionamento sbagliato:} \(f\) si può approssimare
+con il plurirettangolo
+della somme inferiori, che è una funzione semplice misurabile minore o uguale di \(f\)
+(scegliamo per semplicità \(f\) positiva). Verrebbe da dire che
+queste funzioni costituiscono, raffinando la partizione, una successione
+di funzioni semplici misurabili che converge puntualmente ad \(f\).
+Questo è falso. Scegliamo per esempio \(\tilde x \in (a,b)\)
+e sia \(f = \chi_{\{\tilde x\}}\).
+In questo caso tutte le funzioni semplici sono nulle (del plurirettangolo inferiore).
+Quindi, in nessun caso convergono a \(1\) in quel punto.
+Potremmo avere esempi patologici con tanti punti del genere, anche con la cardinalità del continuo
+ma misura nulla, facendo rimanere la funzione Riemann integrabile.
+
+\begin{snippetproof}{}
+    Una funzione \(f\) è Riemann integrabile su \((a,b)\)
+    se e solo se è limitata e l'insieme dei punti di discontinuità ha misura nulla.
+\end{snippetproof}
+
+Questo teorema è stato dimostrato molto prima dell'invenzione della misura di Lebesgue,
+questo è un argomento a favore che Lebesgue sia il modo naturale di integrare.
+Questo criterio è un criterio di Riemann-integrabilità:
+se una funzione è meno discontinua di una funzione Riemann-integrabile, allora lo è pure lei.
+Il criterio sta in realtà usando la completezza della misura di Lebesgue.
+Infatti, usa il fatto che se \(D_f \subseteq D_g\)
+e \(\mu(D_g) = 0\) allora \(\mu(D_f) = 0\),
+dove \(D\) sono gli insiemi di discontinuità.
 
 
+Esistono funzioni Riemann-integrabili che sono discontinue su un insieme con la cardinalità
+del continuo 
+In generale dato un insieme, non esiste una funzione
+il cui insieme dei punti di discontinuità è tale insieme.
+Per esempio non esistono funzioni discontinue esattamente su \(\realnumbers \difference \rationalnumbers\).
+\begin{snippetexercise}{}
+    Costruire una funzione che è discontinua solo su tutti i razionali.
+    Devono essere degli \(F_\sigma\) come \(\rationalnumbers\),
+    invece \(\realnumbers\) è un \(G_\delta\)
+    come abbiamo già visto con il teorema di Baire.
+\end{snippetexercise}
+La funzione di Dirichlet è discontinua ovunque e non va bene.
+\begin{snippetexercise}{}
+    Dimostra che se \(f \colon \realnumbers \to \realnumbers\),
+    \(D_f \in F_\sigma\) (ovvero \(C_f \in G_\delta\))
+    vale che \(\forall D \in F_\sigma, \exists f\) tale che \(D = D_f\).
+\end{snippetexercise}
+Cioè possiamo sempre trovare una funzione il cui insieme di discontinuità
+dato se questo è un \(F_\sigma\).
 
+\begin{snippetdefinition}{Misura di Borel}
+    Diciamo che una misura è di Borel se contiene la topologia
+    \(\mathcal M \supseteq \tau\).
+\end{snippetdefinition}
+Questa non deve essere necessariamente la \(\sigma\)-algebra di Borel.
 
-
-
-
-
+Consideriamo ora \((X, \tau)\) spazio topologico
+che è anche uno spazio di misura \((X, \mathcal M, \mu)\)
+e supponiamo che la misura sia di Borel (come per esempio la misura di Lebesgue in quanto misura i borealiani).
+Sia \(f \colon X \fromto \mathbb F\).
+Vogliamo vedere se \(\mu(D_f) = 0\) implica che \(f\) sia misurabile.
 
 
 
