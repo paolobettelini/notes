@@ -1,6 +1,7 @@
 \documentclass[a4paper]{article}
 
 \usepackage{amsmath}
+\usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{parskip}
@@ -26,6 +27,9 @@
         z={(0.5cm, 0.4cm)}
     }
 }
+
+\newcommand{\bx}{{\kern.15em\line(1,0){3}\line(0,1){3}%
+\raisebox{.3em}{\line(-1,0){3}\line(0,-1){3}\kern.3em}}}
 
 \newcommand{\bicomplex}{
     \draw[thick] (0,1) rectangle (1,2);
@@ -158,8 +162,8 @@ Tuttavia, vengono scartati i casi banali del down-set vuoto e del down-set total
     \item \(n=4\): \(M(4)-2 = 166\)
     \item \(n=5\): \(M(5)-2 = 7579\)
 \end{itemize}
-In questo paper vedremo che una generalizzazione del salamander lemma
-si estende naturalmente su \(M(n)\) oggetti, e quindi considereremo pure i due casi banali.
+%In questo paper vedremo che una generalizzazione del salamander lemma
+%si estende naturalmente su \(M(n)\) oggetti, e quindi considereremo pure i due casi banali.
 
 Cominciamo generalizzando il concetto di \emph{donor} e \emph{receptor}
 come i gruppi comologici perfettamente diagonali che traversano l'oggetto centrale.
@@ -188,9 +192,52 @@ come i gruppi comologici perfettamente diagonali che traversano l'oggetto centra
     \]
 \end{definition}
 
+Cominciamo dimostrando esplicitamente il lemma 1.4 del paper originale
+per poi generalizzarlo.
+
 \begin{lemma}
-    XXX
+    Each arrow \(f \colon A \to B\) in a double complex induces an arrow \(A_\bx \to {}^\bx B\):
 \end{lemma}
+
+\begin{proof}
+    Without loss of generality, let us consider the horizontal case:
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZARgBpiBdUkANwEMAbAVxiRAEEQBfU9TXfIRQAmclVqMWbAELdeIDNjwEiABjHV6zVohAAdPQCMmDBjBxy+SwUQDMGidrYHjp85YX9lQkqVXitKV0XEzMLHisBFRE-AMkdfSNQ9wjPa2jfYTinYKS3cPlFKJ9RLM145zyw7nEYKABzeCJQADMAJwgAWyRREBwIJHUQBjpDGAYABS8bXTMWi3KckDoPdq7B6n6kMkcgkBbVju7EHa3Ee12EqBBqEbHJ6ejhmHnD9cQAFk2BxCHAhMMN2Go3GU3SQhAbSw9QAFgVWkckABWb7bVJrY5fPo-JHoxG-VGIABsePeRMJAHZScdTj8KYs9gBjN6Ywk7BhYMBXOhwGF1IF3UGPCFzBaXNhoFkbbFIenDTnc3n8hkJACONS4QA
+        \begin{tikzcd}
+                            & \bullet \arrow[d, "b"'] \arrow[r] \arrow[rd, "p", dashed] & \bullet \arrow[d]               &         \\
+        \bullet \arrow[r, "a"] & A \arrow[r, "f"] \arrow[d] \arrow[rd, "q", dashed]        & B \arrow[r, "d"] \arrow[d, "c"] & \bullet \\
+                            & \bullet \arrow[r]                                         & \bullet                         &        
+        \end{tikzcd}
+    \end{center}
+    \[
+        A_\bx = \frac{
+            \ker q
+        }{
+            \im a + \im b
+        },
+        \quad
+        {}^\bx A = \frac{
+            \ker c \cap \ker d
+        }{
+            \im p
+        }
+    \]
+    Let \([x] \in A_\bx\). Then,
+    the induced map \(\tilde f \colon A_\bx \to {}^\bx B\) is given by
+    \([x] \mapsto [f(x)]\).
+    It suffices to show that this map maps elements from \(\ker q\) into \(\ker c \cap \ker d\)
+    and elements from \(\im a + \im b\) into \(\im p\).
+    \begin{itemize}
+        \item Let \(x \in \ker q\).
+        Then, \(q(x) = 0 = c(f(x))\) and thus \(f(x) \in \ker c\).
+        By the definition of cochain, \(d(f(x)) = (d\circ f)(x) = 0\)
+        and thus \(f(x) \in \ker d\). We conclude that \(f(x) \in \ker c \cap \ker d\).
+        \item Let \(x \in \im a + \im b\), meaning \(x = a(y) + b(z)\) for some \(y\) and \(z\).
+        We have that \(f(b(z)) = p(z) \in \im p\) by commutativity, and by the
+        definition of cochain \(f(a(y)) = (f \circ a)(y) = 0\).
+        Thus, \(f(x) = f(a(y) + b(z)) = f(a(y)) + f(b(z)) = 0 + p(x) = p(x) \in \im p\).
+    \end{itemize}
+\end{proof}
 
 \subsection{Caso monodimensionale}
 
@@ -355,31 +402,7 @@ Abbiamo i seguenti \(18\) oggetti comologici
 \newcommand{\Don}{\operatorname{Don}}
 \newcommand{\Rec}{\operatorname{Rec}}
 
-%========================================
-% Caso orizzontale
-%========================================
-
-\[
-\begin{tikzcd}[column sep=3.2em,row sep=3.0em]
-{} & U \arrow[r,"\alpha"] \arrow[d,"c"'] & V \arrow[d,"k"] & {} \\
-L \arrow[r,"d"'] & A \arrow[r,"u"] \arrow[d,"f"'] & B \arrow[r,"e"] \arrow[d,"g"'] & R \\
-{} & D \arrow[r,"h"'] & E & {}
-\end{tikzcd}
-\]
-
-\[
-\Don(A)=\frac{\ker(g\circ u)}{\operatorname{im}c+\operatorname{im}d}
-      =\frac{\ker(h\circ f)}{\operatorname{im}c+\operatorname{im}d},
-\qquad
-\Rec(B)=\frac{\ker e\cap\ker g}{\operatorname{im}(u\circ c)}
-      =\frac{\ker e\cap\ker g}{\operatorname{im}(k\circ\alpha)}.
-\]
-
-\vspace{2em}
-
-%========================================
-% Caso verticale
-%========================================
+Caso verticale del diagramma del bicomplesso.
 
 \[
 \begin{tikzcd}[column sep=3.2em,row sep=3.0em]
@@ -397,5 +420,17 @@ M \arrow[r,"k"'] & B \arrow[r,"h"'] \arrow[d,"m"'] & D \\
 \Rec(B)=\frac{\ker h\cap\ker m}{\operatorname{im}(v\circ d)}
       =\frac{\ker h\cap\ker m}{\operatorname{im}(k\circ b)}.
 \]
+
+\subsection{Casi tridimensionali}
+
+% https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZAJgBoBWAXVJADcBDAGwFcYkQAdDgI2ccZg4QAX1LpMufIRRkAzNTpNW7AIIixIDNjwEiAFlLyaDFm0ScefAUNHjtU-RQUnl5rr36D1dybpSzSYmclMxAAIW9NCR1pZHJA4NN2dysvWyj7PzjSPUTXCw9rSK1fWICABjzQlM8bDRKYojIARirky1ri6IcUctJW4xD2wrT67qzm0krBpLcOovSGnuQ+o0VZgtS6n0aUSaCZ-JqFsczYydzD0K6zxwH1-JvSogDLh+r5tIUYKABzeCIoAAZgAnCAAWyQkxAOAgSD06VBEPhNFhSHIiLBkMQ0LRiGImORONRcMQ5UJ2L6MNJsgpSAC1KQADY6fiSejWWRGYhaRokdj4tyWXysUgAOzsxAIkVEgAckuarIl3NlrIAnAryTLsc0qXixerJartVDcaTFSbEBruc0LcDRTiuXjpfaibqFQTLc0GXi7SB+SibS7-Q7bR7WWbmTRGFgwKEoPQ4AALH4gK7sNBpkCMejcGCMAAK42kIBBWF+Se2IaJ1ud0dj8cTKagWZcoQAjlmc3nC8X2GWK1WA2SFRivYK8cLXTqJ6SEZRhEA
+\begin{tikzcd}
+                                                                    & \bullet \arrow[rr] \arrow[dd] &                                                               & \bullet \arrow[dd] \arrow[ld] &                               &                    \\
+\bullet \arrow[ru] \arrow[rr] \arrow[dd] \arrow[rrrd, "q"', dashed] &                               & \bullet \arrow[dd]                                            &                               & {}                            &                    \\
+                                                                    & \bullet \arrow[rr]            &                                                               & B \arrow[rr] \arrow[ru]       &                               & \bullet \arrow[dd] \\
+\bullet \arrow[rr] \arrow[ru]                                       &                               & A \arrow[ru] \arrow[rr] \arrow[dd] \arrow[rrrd, "p"', dashed] &                               & \bullet \arrow[ru] \arrow[dd] &                    \\
+                                                                    & {} \arrow[ru]                 &                                                               & \bullet \arrow[rr] \arrow[uu] &                               & \bullet            \\
+                                                                    &                               & \bullet \arrow[rr] \arrow[ru]                                 &                               & \bullet \arrow[ru]            &                   
+\end{tikzcd}
 
 \end{document}
