@@ -32,6 +32,8 @@
 
 \pagebreak
 
+%\begin{blackhole}
+
 \section{Probabilità}
 
 \subsection{Costruzione intuitiva}
@@ -4166,6 +4168,307 @@ Centra con le convoluzioni.
     Quindi \(p_Z\) è la demsità di una Poisson di parametro \(\mu + \lambda\).
     Visto che la densità determina univocamente la legge otteniamo la tesi.
 \end{snippetproof}
+
+\section{Spazi di probabilità generali}
+
+Vogliamo generalizzare la nostra nozione di spazio di probabilità al caso
+\(\Omega\) non discreto, e in seguito la nozione di variabili aleatorie.
+Consideriamo la misura di Lebesgue sull'intervallo \([0,1]\),
+cioè \(\mu((a,b)) = b-a\) con \(0 < a < b < 1\).
+Visto che abbiamo il problema degli insiemi non misurabili, piuttosto che
+cambiare la misura andiamo a cambiare la \(\sigma\)-algebra,
+e non consideriamo più quella delle parti.
+
+\begin{snippetdefinition}{\(\sigma\)-algebra}
+    Sia \(\Phi \subseteq \powerset(X)\). Diciamo che \(\Phi\) è una \emph{\(\sigma\)-algebra}
+    se \begin{enumerate}
+        \item \emph{chiusura rispetto ai complementi:} se \(A \in \Phi\), allora \(X \difference A \in \Phi\);
+        \item \emph{chiusura rispetto alle unioni numerabili:} se \(\{A_n\}_{n \in \naturalnumbers} \subseteq \Phi\), allora
+        \[
+            \bigcup_{n=1}^\infty A_n \in \Phi
+        \]
+        \item \(\emptyset \in \Phi\).
+    \end{enumerate}
+\end{snippetdefinition}
+
+Se \(\Phi'\) è un'altra \(\sigma\)-algebra allora
+\(\Phi' \subseteq \powerset(\Omega)\).
+Se \(\Phi\) è una \(\sigma\)-algebra, allora è un'algebra (cioè solo unione finita).
+Le due nozioni coincidono per forza di cose se \(|\Omega| < +\infty\).
+Abbiamo anche la chiusura rispetto alle intersezioni numerabili.
+
+\begin{snippetproposition}{}
+    Sia \(\Omega \neq \emptyset\) se \(I\)
+    insieme di indici non necessariamente numrabile.
+    Sia
+    \[
+        \{\Phi_t\}_{t \in I}
+    \]
+    una famiglia di \(\sigma\)-algebra di \(\Omega\).
+    Allora, la famiglia
+    \[
+        \bigcap_{t \in I} \Phi_t
+    \]
+    è una \(\sigma\)-algebra su \(\Omega\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Per esercizio.
+\end{snippetproof}
+
+\begin{snippetproposition}{}
+    Non vale lo stesso per l'unione.
+\end{snippetproposition}
+
+\begin{snippetexercise}{}
+    Per esercizio trovare un controesempio, anche in uno spazio finito.
+\end{snippetexercise}
+
+\begin{snippetproposition}{}
+    Sia \(\Omega \neq \emptyset\) e sia \(\Phi \subseteq \powerset(\Omega)\)
+    una famiglia di sottoinsiemi. Allora esiste sempre la più piccola \(\sigma\)-algebra
+    \(\Phi'\) di \(\Omega\) che contiene \(\Phi\).
+    Cioè se \(E\) è un'altra tale \(\sigma\)-algebra, \(\Phi' \subseteq E\).
+\end{snippetproposition}
+
+Indichiamo la \(\sigma\)-algebra generata da \(I\)
+come \(\mathcal F = \sigma(I)\).
+
+\begin{snippetproof}{}
+    Consideriamo l'insieme di tutte le tali \(\sigma\)-algebre
+    \[
+        \tilde \bigwedge \triangleq \{
+            \mathcal F \text{ \(\sigma\)-algebra su } \Omega
+            \suchthat I \subseteq \mathcal F    
+        \}
+    \]
+    Chiaramente \(\powerset(\Omega) \in \tilde \bigwedge\),
+    non è vuota. Di conseguenza possiamo definire
+    \[
+        \sigma(I) = \bigcap_{\mathcal F \in \tilde \bigwedge} \mathcal F
+    \]
+\end{snippetproof}
+
+Se \(\Omega\)
+è discreto, allora preso
+\[
+    I = \{
+        \{\omega\}
+        \suchthat \omega \in \Omega    
+    \}
+\]
+abbiamo che \(\sigma(I) = \powerset(\Omega)\).
+
+La \(\sigma\)-algebra di Borel è generata dalla topologia.
+In generale questa è più grande della topologia perché non contiene soltanto gli aperti,
+bensì pure i chiusi e altri ancora.
+
+\begin{snippetproposition}{\(\sigma\)-algebra di Borel di \(\realnumbers^n\)}
+    Sia \(n \in \naturalnumbers\) e consideriamo le famiglie
+    \begin{align*}
+        J_1 &= \{
+            I = (a_1, b_1) \cartesianprod \cdots \cartesianprod (a_n, b_n)
+            \suchthat a_1 \leq b_1, \cdots, a_n \leq b_n    
+        \} \\
+        J_2 &= \{
+            (-\infty, \overline x]
+            = (-\infty, x_1]
+            \cartesianprod \cdots (-\infty, x_n]
+            \suchthat \overline x = (x_1, \cdots, x_n)
+        \} \\
+        J_3 &= \{
+            I = (a_1, b_1] \cartesianprod \cdots \cartesianprod (a_n, b_n]
+            \suchthat a_1 \leq b_1, \cdots, a_n \leq b_n  
+        \} \\
+        J_4 &= \{
+            I = [a_1, b_1) \cartesianprod \cdots \cartesianprod [a_n, b_n)
+            \suchthat a_1 \leq b_1, \cdots, a_n \leq b_n  
+        \}
+    \end{align*}
+    Allora, \[
+        \sigma(J_1) = \sigma(J_2) = \sigma(J_3) = \sigma(J_4)
+    \]
+\end{snippetproposition}
+
+\begin{center}
+    \begin{table}[h!]
+    \centering
+    \renewcommand{\arraystretch}{1.35}
+    \begin{tabular}{|c|p{4.7cm}|p{3.6cm}|p{5.2cm}|}
+        \hline
+        \textbf{Famiglia} & \centering \textbf{Topologia generata} & \centering \textbf{\(\sigma\)-algebra generata} & \centering \textbf{Interpretazione} \tabularnewline
+        \hline
+
+        \(J_1\)
+        &
+        topologia euclidea classica di \(\realnumbers^n\)
+        &
+        \(\sigma(J_1)=\mathbb B(\realnumbers^n)\)
+        &
+        rettangoli aperti; nozione standard di continuità
+        \tabularnewline
+        \hline
+
+        \(J_2\)
+        &
+        topologia generata dagli ortanti inferiori
+        \[
+            (-\infty,\overline x]
+        \]
+        &
+        \(\sigma(J_2)=\mathbb B(\realnumbers^n)\)
+        &
+        semirette/ortanti inferiori; naturale per la semicontinuità superiore (coordinata per coordinata)
+        \tabularnewline
+        \hline
+
+        \(J_3\)
+        &
+        topologia dei rettangoli semiaperti
+        \[
+            (a_1,b_1]\cartesianprod\cdots\cartesianprod(a_n,b_n]
+        \]
+        &
+        \(\sigma(J_3)=\mathbb B(\realnumbers^n)\)
+        &
+        versione ``destra-chiusa'' dei rettangoli elementari; analoga alla topologia limite superiore
+        \tabularnewline
+        \hline
+
+        \(J_4\)
+        &
+        topologia dei rettangoli semiaperti
+        \[
+            [a_1,b_1)\cartesianprod\cdots\cartesianprod[a_n,b_n)
+        \]
+        &
+        \(\sigma(J_4)=\mathbb B(\realnumbers^n)\)
+        &
+        versione ``sinistra-chiusa'' dei rettangoli elementari; analoga alla topologia di Sorgenfrey
+        \tabularnewline
+        \hline
+    \end{tabular}
+    \vspace{0.3cm}
+    \[
+        \sigma(J_1)=\sigma(J_2)=\sigma(J_3)=\sigma(J_4)=\mathbb B(\realnumbers^n)
+    \]
+\end{table}
+\end{center}
+
+\begin{snippetdefinition}{Spazio di probabilità generale}
+    Sia \(\Omega \neq \emptyset\)
+    e \(\mathcal F\) una \(\sigma\)-algebra su \(\Omega\).
+    Sia \(\mathbb P \colon \mathcal F \to [0,1]\)
+    una misura.
+    Chiamiamo \emph{spazio di probabilità}
+    la terna \((\Omega, \mathcal J, \mathbb P)\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Misura di probabilità discreta}
+    Dato uno spazio di probabilità
+    \((\Omega, \mathcal J, \mathbb P)\) diciamo che \(\mathbb P\) è una
+    \emph{misura di probabilità discreta}
+    se \(\exists \Omega_0 \subseteq \Omega\)
+    tale che \(\mathbb P(\Omega_0) = 1\).
+\end{snippetdefinition}
+
+Vediamo che questa sia effettivamente una generalizzazione,
+e che questa definizione è coerente nel caso \(\Omega = \realnumbers^n\)
+e \(\mathcal F = \mathcal B(\realnumbers^n)\).
+
+Se \(\mathbb P\) è misura di probabilità discreta su \((\realnumbers^n, \mathcal B(\realnumbers^n))\)
+allora esiste \(S \subseteq \realnumbers^n\) discreto tale che
+\(\mathbb P(S) = 1\).
+Prima di tutto notiamo che \(\powerset(S) \supseteq \mathcal B(\realnumbers^n)\).
+Infatti, preso \(\overline s \in S\) vale che
+\[
+    \{\overline s\} = (-\infty,\overline s]
+    \cap [\overline s, +\infty] \in \mathcal B(\realnumbers^n)
+\]
+Quindi \(\forall \overline s \in S\), \(\{s\} \subseteq \mathcal B(\realnumbers^n)\).
+Quindi \(\powerset(S)\) è generata dalle unioni nimerabili di \(\{\overline s\}\).
+Allora, per la definizione di \(\sigma\)-algebra, \(\powerset(S) \supseteq \mathcal B(\realnumbers^n)\).
+Da questo deduciamo che possiamo immergere lo spazio di probabilità discreto
+\((S, \powerset(S), \mathbb P_S)\) nello spazio generale
+\((\realnumbers^n, \mathcal B(\realnumbers^n), \mathbb P)\)
+dove \[
+    \mathbb P_S \colon \powerset(S) \fromto [0,1]
+\]
+data dalla restrizione \(\mathbb P_S = \restr{\mathbb P}{\powerset(S)}\).
+Ovviamente da questo deduciamo anche che possiamo definire una densità discreta
+\(p \colon \realnumbers^n \fromto [0,1]\) tale che
+\[
+    p(\overline S) = \mathbb P(\{\overline s\}),
+    \quad \forall \overline s \in S
+\]
+e \[
+    p(\overline x) = 0,
+    \quad \forall \overline x \in \realnumbers^n \difference S
+\]
+Vale ancora la corrispondenza
+biunivoca fra quest'ultime.
+Quindi ina misura di probabilità discreta rimane univocamente determinata dal valore
+che assume sui singoletti.
+Nel caso generale, vale una proprietà analoga?
+
+\begin{snippetlemma}{}
+    Sia \((\Omega, \mathcal F)\) uno spazio misurabile.
+    Sia \(J\) famiglia di sottoinsiemi di \(\Omega\)
+    tale che \(J \subseteq \mathcal F\)
+    è chiusa per intersezioni finite e \(\sigma(J) = \mathcal J\).
+    Se \(\mathbb P_1\) e \(\mathbb P_2\) sono misure di probabilità
+    su \((\Omega, \mathcal F)\) tale che
+    \[
+        \mathbb P_1(A) = \mathbb P_2(A), \quad \forall A \in J
+    \]
+    Allora, \(\mathbb P_1 = \mathbb P_2\).
+\end{snippetlemma}
+
+Quindi se due misure coincidono su un insieme che genera la \(\sigma\)-algebra
+e sono chiuse per intersezione, allora coincidono.
+
+Notiamo che nel caso \(\Omega\) discreto l'abbiamo dimostrato direttamente con
+\(J = \{\{\omega\} \suchthat \omega \in \Omega\}\), questo lemma è una versione più generale.
+
+\begin{snippettheorem}{Teorema di Caratheodory}
+    Sia \(\Omega \neq \emptyset\)
+    e \(\mathcal F\) una \(\sigma\)-algebra su di \(\Omega\),
+    \(J \subseteq \mathcal F\) algera di \(\Omega\)
+    tale che \(\sigma(J) = \mathcal F\).
+    Sia \(\mathbb P \colon J \fromto [0,1]\) una funzione tale che
+    \begin{enumerate}
+        \item \(\mathbb P(\Omega) = 1\);
+        \item \(\forall \{A_n\}_{n \in \naturalnumbers} \subseteq J\) tale che
+        \(A_i \intersection A_j = \emptyset\) per \(i \neq j\) e \[
+            \bigcap_{n=1}^\infty A_n \in J
+        \]
+        vale \[
+            \mathbb P\left(
+                \bigcap_{n=1}^\infty A_n
+            \right)
+            = \sum_{n=1}^\infty \mathbb P(A_n)
+        \]
+    \end{enumerate}
+    Allora, \(\exists ! \overline {\mathbb P} \colon \mathcal F \fromto [0,1]\)
+    misura di probabilità su \((\Omega, \mathcal F)\)
+    che estende \(\mathbb P\).
+\end{snippettheorem}
+
+Questo è esattamente come quando abbiamo detto che
+la densità discreta sui singoletti definisce la probabilità.
+
+Notiamo che le semirette \((-\infty, \overline x]\)
+con \(\overline x \in \realnumbers^n\) sono chiuse per intersezionie,
+quindi se \(\mathbb P_1 = \mathbb P_2\)
+sono misure di probabilità su
+\((\realnumbers^n, \mathcal(\realnumbers^n))\)
+che coincidono su ogni \((-\infty, \overline x)\) allora
+\(\mathbb P_1 = \mathbb P_2\). Tuttavia, le semirette non sono una algebra
+(in quanto il complemento non è della stessa forma),
+quindi se ho una funzione definita solo sulle semirette, non è detto che possa venire estesa
+ad una misura di probabilità su
+\((\realnumbers^n, \mathcal B(\realnumbers^n))\).
+
 
 \pagebreak
 

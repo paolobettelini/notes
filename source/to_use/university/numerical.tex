@@ -2845,143 +2845,6 @@ Questo teorema vale nel caso particolare (già visto)
 \(m=1\). Infatti, \(\sigma(xy^*) = \{y^*x, 0, 0, \cdots, 0\}\)
 con \(x,y \in \complexnumbers^n\), cioè il caso della diade, che ha rango uno.
 
-\begin{snippetexercise}{}
-    Sia \(A \in \matrices_n(\realnumbers)\)
-    con \(n\) pari, \(a,b, c>0\) e \(a>b\). Definiamo
-    \[
-        \left(A\right)_{j,k} = \begin{cases}
-            a + c & j=k \\
-            a & (j+k) \equiv 0 \pmod{2} \land j \neq k \\
-            b & (j+k) \equiv 1 \pmod{2}
-        \end{cases}
-    \]
-    \begin{enumerate}
-        \item Caratterizzare lo spettro nel modo migliroe possibile;
-        \item Dimostrare che il metodo di Gauss-Seidel è convergente
-        se applicato ad un sistema lineare \(Ax = b\).
-    \end{enumerate}
-\end{snippetexercise}
-
-\begin{snippetsolution}{}
-    Abbiamo la forma della matrice
-    \begin{align*}
-        A &=
-        \begin{pmatrix}
-        a+c & b   & a   & b   & a   & \cdots & b \\
-        b   & a+c & b   & a   & b   & \cdots & a \\
-        a   & b   & a+c & b   & a   & \cdots & b \\
-        b   & a   & b   & a+c & b   & \cdots & a \\
-        a   & b   & a   & b   & a+c & \cdots & b \\
-        \vdots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
-        b   & a   & b   & a   & b   & \cdots & a+c
-        \end{pmatrix} \\
-        &= cI_n + b \underbrace{\begin{pmatrix}
-        0 & 1   & 0   & 1   & 0   & \cdots & 1 \\
-        1   & 0 & 1   & 0   & 1   & \cdots & 0 \\
-        0   & 1   & 0 & 1   & 0   & \cdots & 1 \\
-        1   & 0   & 1   & 0 & 1   & \cdots & 0 \\
-        0   & 1   & 0   & 1   & 0 & \cdots & 1 \\
-        \vdots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
-        1   & 0   & 1   & 0   & 1   & \cdots & 0
-        \end{pmatrix}}_{E}
-        + a \underbrace{\begin{pmatrix}
-            1   & 0   & 1   & 0   & \cdots & 1 & 0 \\
-            0 & 1   & 0   & 1   & \cdots & 0 & 1 \\
-            1   & 0 & 1   & 0   & \cdots & 1 & 0 \\
-            0   & 1   & 0 & 1   & \cdots & 0 & 1 \\
-            1   & 0   & 1   & 0 & \cdots & 1 & 0 \\
-            \vdots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
-            0   & 1   & 0   & 1   & \cdots & 0 & 1
-        \end{pmatrix}}_{F}
-    \end{align*}
-    Sicuramente un generico autovalore
-    \[
-        \lambda(A) = c + \lambda(bF + aE)
-    \]
-    (Perché e quando si può fare?).
-    Notiamo che \(F\) ed \(E\) hanno solamente due righe uguali, quindi il logo
-    rango è \(\leq 2\), ma le due righe sono chiaramente indipendenti
-    quindi il rango è precisamente \(2\). Abbiamo quindi che \(\operatorname{rank} (bF) = \operatorname{rank} (aE) = 2\).
-    Quindi la matrice completa ha al massimo rango \(4\). Quindi,
-    \(A\) ha autovalore \(c\) con molteplicità almeno \(n-4\), mentre gli altri \(4\)
-    autovalori dobbiamo ancora trovarli.
-    La matrice è reale e simmetrica e Hermitiana quindi diagonalizzabile,
-    quindi le molteplicità algebrichde e geometriche coincidono.
-    Siano
-    \[
-        f = \begin{pmatrix}
-            0 \\ 1 \\ 0 \\ \vdots \\ 1
-        \end{pmatrix} \in \{0,1\}^n,
-        g = \begin{pmatrix}
-            0 \\ 1 \\ 0 \\ \vdots \\ 1
-        \end{pmatrix}\in \{0,1\}^n
-    \]
-    da cui trovimo \(E = gg^T + ff^T\) e \(F = gf^T + fg^T\).
-    Allora, la matrice \begin{align*}
-        bF + aE &= b\left(gf^T + fg^T\right)
-        + a\left(gg^T + ff^T\right) \\
-        &= g\left(
-            bf^T + ag^T
-        \right) + f\left(
-            bg^T + af^T
-        \right)
-    \end{align*}
-    Ma da questa decomposizione deduciamo che il rango di
-    \(bF + aE\) è precisamente \(\leq 2\), in quanto possiamo generare tutto come combinazione di due vettori.
-    In realtà è precisamente \(2\) perché possiamo trovare
-    un minore di testa principale il cui rango è al massimo due
-    (cioè il primo minore di testa principale \(2\times 2\))
-    quindi \(\operatorname{rank}(bF + aE)=2\).
-    Quindi, \(A\) ha autovalore \(c\) con molteplicità almeno \(n-2\), e altri \(2\)
-    autovalori.
-    Adesso scriviamo
-    \begin{align*}
-        bF+aE &=
-        \left[
-        \begin{array}{c|c}
-            &  \\
-            f & g \\
-            & 
-        \end{array}
-        \right]
-        \left[
-        \begin{array}{c}
-            bg^T+af^T \\ \hline
-            bf^T+ag^T
-        \end{array}
-        \right]
-    \end{align*}
-    Questa scomposizione funziona più in generale.
-    Applicando il teorema di commutazione dello spettro per moltiplicazione di matrici,
-    invertiamo l'ordine e calcoliamo gli autovalori
-    della matrice risultante, che i sono i due autovalori non banali rimanenti. Abbiamo quindi
-    \begin{DispWithArrows*}
-        \left[
-        \begin{array}{c}
-            bg^T+af^T \\ \hline
-            bf^T+ag^T
-        \end{array}
-        \right]
-        \left[
-        \begin{array}{c|c}
-            &  \\
-            f & g \\
-            & 
-        \end{array}
-        \right]
-        &= \begin{pmatrix}
-            a||f||_2^2 & b||g||_2^2 \\
-            b||f||_2^2 & a||g||_2^2
-        \end{pmatrix} \Arrow{\(n\) è pari} \\
-        &= \frac n2 \begin{pmatrix}
-            a & b \\ b & a
-        \end{pmatrix}
-    \end{DispWithArrows*}
-    Quindi gli autovalori di \(A\) sono \(c\)
-    con molteplicità \(n-2\), e \(c + \frac n2(a\pm b)\) con molteplicità \(1\).
-    È diagonalizzabile in quanto \(a > b\), quindi il metodo di Gauss-Seidel converge.
-\end{snippetsolution}
-
 \subsection{Matrici semi-elementari (generalizzazione)}
 
 Abbiamo visto che dato \(I + xy^*\)
@@ -3070,6 +2933,100 @@ Verifichiamo che sia l'inversa:
     \right)Y^*
     = I
 \end{align*}
+
+\begin{snippetproposition}{}
+    Sia \(E = I_n + UV^*\) con
+    \(U,V \in \complexnumbers^{n \times k}\).
+    Allora
+    \begin{enumerate}
+        \item Gli autovalori di \(E\)
+        sono \(1\) con molteplicità algebrica (almeno) \(n-k\)
+        e \(1 + \sigma_i(V^*U)\)
+        con \(i \in \{1, \cdots, k\}\).
+        Nel caso in cui \(\operatorname{rank} U = \operatorname{rank} V = k\)
+        allora \(\sigma_i(^*U) \neq 0\).
+        \item Dagli autovalori dati ricaviamo che \(E\) è invertibile se e solo
+        se \(-1\) non è un autovalore di \(V^*U\).
+        \item Se \(E\) è invertibile allora la sua inversa è
+        \[
+            E^{-1}
+            = I_n - U(I_k +  + V^*U)V^*
+        \]
+    \end{enumerate}
+\end{snippetproposition}
+
+Il costo della raprpesentazione dell'inversa
+è \[
+    k^2(2n-1) + \mathcal O(k^3)
+\]
+
+\subsection{Sherman-Morrison-Woodbury}
+
+La formula di \emph{Sherman-Morrison-Woodbury}
+non è altro che la formula dell'inversa appena data ma reinterpretata nel caso di correzione di rango
+(al più \(k\)) di una matrice invertibile \(A\).
+
+Sia \(B = A + UV^*\)
+con \(\det A \neq 0\)
+e ci riconduciamo al caso di matrici semi-elementari scrivendo
+\(B = A(I + A^{-1} U V^*)\).
+Allora a questo punto, dalla condizione classica sugli autovalori,
+ricaviamo che \(B\) è invertibile se e solo se
+\(UV^*\) è invertibile, cioè se e solo se \(V^*A^{-1}U\).
+Stiamo quindi usando \(A^{-1}U\) come termine.
+Quindi la matrice è invertibile se e solo se \(V^* A^{-1} U\)
+non possiede l'autovalore \(-1\).
+In tal caso, rappresentiamo la matrice come
+\[
+    B^{-1} = \left(
+        I_n - A^{-1} U(I_k + V^* A^{-1} U)^{-1}V^*
+    \right)^{-1}A^{-1}
+\]
+
+Quindi se siamo bravi a risolvere sistemi con \(A\)
+possiamo correggere il sistema per la matrice \(B\).
+Se \(\det A = 0\)
+ha senso comunque procedere ma rispetto al problema ai quadrati minimi,
+che è un senso più debole di risoluzione del sistema associato.
+Dato un sistema \(By=c\), come preprocessimo dobbiamo per forza calcolare
+\[
+    W = A^{-1}U
+\]
+cioè \(A^{-1}v_1, \cdots, A^{-1} v_{k}\),
+che sono \(k\) sistemi lineari in \(A\).
+Chiaramente \(A^{-1}\) la calcoliamo solo una volta.
+Sostituendo
+\[
+    B^{-1} c = (I_n - W(I_k + V^* A^{-1} U)^{-1}V^*)A^{-1} c
+\]
+In termini computazionali abbiamo \(k+1\) risoluzioni con matrice \(A\).
+Nel caso volessimo risolvere molteplici sistemi lineari con \(B\)
+allora mettiamo pure \(V^* A^{-1}\) nel preprocessing.
+
+Esiste un criterio di vicinanza fra matrici dove due matrici sono vicine se
+il rango della differenza diviso la dimensione è piccolo,
+oltre che la distanza in norma. Esiste una topologia che tiene conto sia della distanza in
+norma che secondo questo criterio.
+
+
+\begin{snippettheorem}{Teorema di Lusin (Extra)}
+    Data \(f \in L^\infty([0,1])\) e \(\varepsilon >0\),
+    cioè limitata quasi ovunque. Allora
+    \(\exists f_\varepsilon\) continua in \([0,1]\) ed un dominio che
+    copre quasi tutto \(\Omega_\varepsilon \subseteq [0,1]\)
+    tale che \(\mu(\Omega_\varepsilon) \geq 1-\varepsilon\) tale che
+    \[
+        \restr{f}{\Omega_\varepsilon} = f_\varepsilon
+    \]
+\end{snippettheorem}
+
+Questo è un corrispettivo di considerare
+\[
+    \operatorname{rank}(B_n - B) = d_n = o(n)
+\]
+dove \(n\) è la dimensione.
+Quindi relativamente a tutto lo spazio il rango è piccolo.
+
 
 \pagebreak
 
@@ -3228,6 +3185,79 @@ in \(\complexnumbers^n\) e ovviamente \(0\) in \(0\).
 \end{snippetproof}
 
 Abbiamo quindi un invariante algebrico nel teorema sui spazi di Banach per questo motivo.
+
+\subsection{Norme matriciali indotte dalla norma \(1\) e \(2\)}
+
+Abbiamo visto la norma matriciale indotta dalla nora infinito. Studiamo ora i casi
+con norma \(1\) e \(2\).
+Partiamo dal caso di \(||\cdot||_1\).
+Ci chiediamo qual'è la corrispondente norma matriciale indotta
+Abbiamo
+\begin{DispWithArrows*}
+    ||A||_1 &= \max_{||x||_1 = 1} ||Ax||_1
+    = \max_{||x||_1 = 0} \left|\left|
+        \sum_{j=1}^n x_j \text{col}_j(A)
+    \right|\right|_1 \Arrow{Disuguaglianza \\ triangolare} \\
+    &= \max_{||x||_1 = 1}
+    \sum_{j=1}^n |x_j| \cdot || \text{col}_j(A)||_1 \\
+    &= \left(\underbrace{\max_{||x||_1 = 1} \sum_{j=1}^n |x_j|}_1\right)
+    \max_j ||\text{col}_j A||_1 \\
+    &= \max_j ||\text{col}_j(A)||_1
+\end{DispWithArrows*}
+Pr completare e dimostrare l'uguaglianza
+bisogna esibire un particolare vettore per il quale abbiamo l'uguaglianza.
+Un tale \(\hat x\) ha \(||\hat x||_1\)
+e \[
+    ||A\hat x||_1 = \max_j ||\text{col}_j(A)||_1 = ||\text{col}_p(A)||_1
+\]
+e scegliamo \(\hat x = e_p\),
+così selezioniamo precisamente la colonna \(p\).
+Per le norme infinite guardavamo la righe mentre qua le colonne.
+
+Passiamo ora alla norma \(2\).
+Sia \(V\) Hermitiana e definita positiva, quindi ordiamo
+\[
+    \lambda_1(V) \leq \cdots \leq \lambda_n(V)
+\]
+e vale
+\[
+    \lambda_1(V) = \min_{x \neq 0} \frac{x^* V x}{x^* x},
+    \quad
+    \lambda_n(V) = \max_{x \neq 0} \frac{x^* V x}{x^* x}    
+\]
+Possiamo scrivere minimo e massimo al posto di infinimum e supremum in quanto
+possiamo restringerci ad un compatto. Quello che importa è l'angolazione, non andare verso infinito.
+Per la norma indotta abbiamo \begin{align*}
+    ||A||_2 &= \max_{x \neq 0} \frac{||Ax||_2}{||x||_2}
+    = \max_{x \neq 0} \frac{\sqrt{x^* A^* A x}}{\sqrt{x^* x}} \\
+    &= \sqrt{
+        \max_{x \neq 0} \frac{x^* V x}{x^* x}
+    } \\
+    &= \sqrt{
+        \rho(A^* A)
+    }
+\end{align*}
+Essendo definita positiva, raggio spettrale e autovalore massimo sono la stessa cosa
+(per il modulo).
+
+\begin{snippetproposition}{}
+    Se \(A\) è normale,
+    allora \(A = QDQ^*\) con \(D\) diagonale complessa.
+    Ma allora
+    \[
+        A^* A = Q \operatorname{diag}(|\lambda_i|^2)Q^* 
+    \]
+    in quanto
+    \[
+        \lambda_{\text{max}}(A^*A) = \max_j |\lambda_j(A)|^2 = \rho(A)
+    \]
+    e la norma indotta è
+    \[
+        ||A||_2 = \rho(A)
+    \]
+\end{snippetproposition}
+
+Quindi questo vale non solo per le Hermitiane.
 
 \pagebreak
 
@@ -3447,6 +3477,143 @@ N=
         Studiamo la funzione notando che su \([0,+\infty)\)
         è strettamente positiva, e quindi le matrici sono ancora invertibili.
     \end{enumerate}
+\end{snippetsolution}
+
+\begin{snippetexercise}{}
+    Sia \(A \in \matrices_n(\realnumbers)\)
+    con \(n\) pari, \(a,b, c>0\) e \(a>b\). Definiamo
+    \[
+        \left(A\right)_{j,k} = \begin{cases}
+            a + c & j=k \\
+            a & (j+k) \equiv 0 \pmod{2} \land j \neq k \\
+            b & (j+k) \equiv 1 \pmod{2}
+        \end{cases}
+    \]
+    \begin{enumerate}
+        \item Caratterizzare lo spettro nel modo migliroe possibile;
+        \item Dimostrare che il metodo di Gauss-Seidel è convergente
+        se applicato ad un sistema lineare \(Ax = b\).
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    Abbiamo la forma della matrice
+    \begin{align*}
+        A &=
+        \begin{pmatrix}
+        a+c & b   & a   & b   & a   & \cdots & b \\
+        b   & a+c & b   & a   & b   & \cdots & a \\
+        a   & b   & a+c & b   & a   & \cdots & b \\
+        b   & a   & b   & a+c & b   & \cdots & a \\
+        a   & b   & a   & b   & a+c & \cdots & b \\
+        \vdots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+        b   & a   & b   & a   & b   & \cdots & a+c
+        \end{pmatrix} \\
+        &= cI_n + b \underbrace{\begin{pmatrix}
+        0 & 1   & 0   & 1   & 0   & \cdots & 1 \\
+        1   & 0 & 1   & 0   & 1   & \cdots & 0 \\
+        0   & 1   & 0 & 1   & 0   & \cdots & 1 \\
+        1   & 0   & 1   & 0 & 1   & \cdots & 0 \\
+        0   & 1   & 0   & 1   & 0 & \cdots & 1 \\
+        \vdots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+        1   & 0   & 1   & 0   & 1   & \cdots & 0
+        \end{pmatrix}}_{E}
+        + a \underbrace{\begin{pmatrix}
+            1   & 0   & 1   & 0   & \cdots & 1 & 0 \\
+            0 & 1   & 0   & 1   & \cdots & 0 & 1 \\
+            1   & 0 & 1   & 0   & \cdots & 1 & 0 \\
+            0   & 1   & 0 & 1   & \cdots & 0 & 1 \\
+            1   & 0   & 1   & 0 & \cdots & 1 & 0 \\
+            \vdots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+            0   & 1   & 0   & 1   & \cdots & 0 & 1
+        \end{pmatrix}}_{F}
+    \end{align*}
+    Sicuramente un generico autovalore
+    \[
+        \lambda(A) = c + \lambda(bF + aE)
+    \]
+    (Perché e quando si può fare?).
+    Notiamo che \(F\) ed \(E\) hanno solamente due righe uguali, quindi il logo
+    rango è \(\leq 2\), ma le due righe sono chiaramente indipendenti
+    quindi il rango è precisamente \(2\). Abbiamo quindi che \(\operatorname{rank} (bF) = \operatorname{rank} (aE) = 2\).
+    Quindi la matrice completa ha al massimo rango \(4\). Quindi,
+    \(A\) ha autovalore \(c\) con molteplicità almeno \(n-4\), mentre gli altri \(4\)
+    autovalori dobbiamo ancora trovarli.
+    La matrice è reale e simmetrica e Hermitiana quindi diagonalizzabile,
+    quindi le molteplicità algebrichde e geometriche coincidono.
+    Siano
+    \[
+        f = \begin{pmatrix}
+            0 \\ 1 \\ 0 \\ \vdots \\ 1
+        \end{pmatrix} \in \{0,1\}^n,
+        g = \begin{pmatrix}
+            0 \\ 1 \\ 0 \\ \vdots \\ 1
+        \end{pmatrix}\in \{0,1\}^n
+    \]
+    da cui trovimo \(E = gg^T + ff^T\) e \(F = gf^T + fg^T\).
+    Allora, la matrice \begin{align*}
+        bF + aE &= b\left(gf^T + fg^T\right)
+        + a\left(gg^T + ff^T\right) \\
+        &= g\left(
+            bf^T + ag^T
+        \right) + f\left(
+            bg^T + af^T
+        \right)
+    \end{align*}
+    Ma da questa decomposizione deduciamo che il rango di
+    \(bF + aE\) è precisamente \(\leq 2\), in quanto possiamo generare tutto come combinazione di due vettori.
+    In realtà è precisamente \(2\) perché possiamo trovare
+    un minore di testa principale il cui rango è al massimo due
+    (cioè il primo minore di testa principale \(2\times 2\))
+    quindi \(\operatorname{rank}(bF + aE)=2\).
+    Quindi, \(A\) ha autovalore \(c\) con molteplicità almeno \(n-2\), e altri \(2\)
+    autovalori.
+    Adesso scriviamo
+    \begin{align*}
+        bF+aE &=
+        \left[
+        \begin{array}{c|c}
+            &  \\
+            f & g \\
+            & 
+        \end{array}
+        \right]
+        \left[
+        \begin{array}{c}
+            bg^T+af^T \\ \hline
+            bf^T+ag^T
+        \end{array}
+        \right]
+    \end{align*}
+    Questa scomposizione funziona più in generale.
+    Applicando il teorema di commutazione dello spettro per moltiplicazione di matrici,
+    invertiamo l'ordine e calcoliamo gli autovalori
+    della matrice risultante, che i sono i due autovalori non banali rimanenti. Abbiamo quindi
+    \begin{DispWithArrows*}
+        \left[
+        \begin{array}{c}
+            bg^T+af^T \\ \hline
+            bf^T+ag^T
+        \end{array}
+        \right]
+        \left[
+        \begin{array}{c|c}
+            &  \\
+            f & g \\
+            & 
+        \end{array}
+        \right]
+        &= \begin{pmatrix}
+            a||f||_2^2 & b||g||_2^2 \\
+            b||f||_2^2 & a||g||_2^2
+        \end{pmatrix} \Arrow{\(n\) è pari} \\
+        &= \frac n2 \begin{pmatrix}
+            a & b \\ b & a
+        \end{pmatrix}
+    \end{DispWithArrows*}
+    Quindi gli autovalori di \(A\) sono \(c\)
+    con molteplicità \(n-2\), e \(c + \frac n2(a\pm b)\) con molteplicità \(1\).
+    È diagonalizzabile in quanto \(a > b\), quindi il metodo di Gauss-Seidel converge.
 \end{snippetsolution}
 
 \end{document}
