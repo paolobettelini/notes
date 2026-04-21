@@ -4469,6 +4469,311 @@ quindi se ho una funzione definita solo sulle semirette, non è detto che possa 
 ad una misura di probabilità su
 \((\realnumbers^n, \mathcal B(\realnumbers^n))\).
 
+Rivediamo alcuni nostri esempi in questo contesto
+più generale.
+
+Consideriamo la misura di Lebesgue su \([0,1]\).
+Prendiamo quindi \(\Omega = [0,1]\)
+e \(\mathcal F = \mathcal B([0,1])\)
+e consideriamo la funzione \(\mathbb P\)
+dfinita da
+\[
+    \mathbb P((a, b]) = b-a, \forall 0 \leq a < b \leq 1
+\]
+Vogliamo usare il teorema di Caratheodory
+per definire una misura di probabilità su
+\(\mathcal B([0,1])\) estendendo \(\mathbb P\).
+Per fsre ciô ci serve un'altra \(J\), quale prendiamo?
+Prendiamo \(J\) come la famiglia degli insiemi dati dall'unione finita
+di intervalli disgiunti \((a,b]\)
+\[
+    J = \left\{
+        A \subseteq [0,1] \suchthat A = \bigcup_{i=1}^n (a_i, b_i],
+        a_1 \leq b_1 \leq a_2 \leq \cdots \leq b_n
+    \right\}
+\]
+Chiaramente anche gli intervalli aperti generano \(\mathcal B([0,1])\)
+quindi pure questi lo generano.
+Per dimostrare che questa è una algebra basta ricordare che
+un'unione finita di intervalli
+si può sempre riscrivere come unione finita
+di intervalli disgiunti.
+Consideriamo \(\mathbb P \colon J \fromto [0,1]\)
+tale che \[
+    \mathbb P(A) = \sum_{i=1}^n b_i - a_i, \quad A = \bigcup_{i=1}^n (a_i, b_i],
+        a_1 \leq b_1 \leq a_2 \leq \cdots \leq b_n
+\]
+Possiamo applicare il teorema di Caratheodory e quindi esiste una unica misura di probabilità
+su \(\mathcal B([0,1])\)
+che estende.
+Nota: per ottenere proprio la misura di Lebesgue su \([0,1]\)
+bisogna considerare la misura sulla \(\sigma\)-algebra
+di Borel completata con gli insiemi di misura nulla.
+
+Per l'esempio dei lanci di moneta con peso \(p\) avevamo considerato \(\Omega = \{0,1\}^N\),
+gli eventi \(E = \powerset(E)\) e \[
+    \mathbb P(\{\omega\})
+    = p^{\sum \omega_i \omega_i}
+    (1-p)^{N - \sum \omega_i}
+\]
+con \(\omega = (\omega_1, \cdots, \omega_n) \in \{0,1\}^N\).
+Vogliamo ora modellizzare il caso degli infiniti lanci di monete.
+Vorremmo che troncando la probabilità ad un certo \(N\), ritroviamo la probabilità classica.
+Consideriamo quindi \(\Omega = \{0,1\}^{\naturalnumbers}\)
+che non è numerabile. Dopo vediamo che \(\sigma\)-algebra
+mettere. Vogliamo una misura di probabilità che ristretta ad \(N\)
+lanci si comporti come il caso discreto.
+Fissato \(n \in \naturalnumbers\) e \(\overline x (x_1, \cdots, x_n) \in \{0,1\}^n\)
+(risultati dei lanci) \[
+    C_{n, \overline x} \triangleq \{
+        \omega = \{\omega_n\}_{n \in \naturalnumbers} \in \{0,1\}^\naturalnumbers
+        \suchthat \omega_1 = x_1, \cdots, \omega_n = x_n    
+    \}
+\]
+Vogliamo quindi che \[
+    \mathbb P\left(
+        C_{n, \overline x}
+    \right)
+    = p^{\sum \omega_i \omega_i}
+    (1-p)^{N - \sum \omega_i}
+\]
+Stiamo quindi prendendo la famiglia di tutte le successioni vincolando i primi \(n\) elementi,
+che non è numerabile. In generale quando abbiamo una ipersuperficie
+e vincoliamo delle variabili lanciando variare le altre, otteniamo un cilindro.
+I \(C_{n, \overline x}\) definiscono una famiglia \(\overline J\)
+chiusa per intersezioni, quindi per il lemma che abbiamo visto se esiste una misura di probabilità
+\(\mathbb P\) su \(\sigma(\overline J)\) che verifica la condizione, allora è unica.
+In verità, usando Caratheodory e lavorando sull'algebra generata da
+\(\overline J\) si dimostrache esiste questa misura di probabilità.
+
+La famiglia \(\sigma(\overline J)\)
+è chiamata la \(\sigma\)-algebra dei cilindri. Su spazi buoni (separabili)
+è equivalente alla \(\sigma\)-algebra di Borel.
+
+\subsection{Funzione di ripartizione o distribuzione}
+
+\begin{snippetdefinition}{Funzione di ripartizione}
+    Sia \(\mu\) misura di probabilità su \((\realnumbers, \mathcal B(\realnumbers))\).
+    Chiamiamo \emph{funzione di ripartizione di \(\mu\) o associata a \(\mu\)}
+    la funzione \[
+        F_\mu \colon \realnumbers \fromto [0,1]
+    \]
+    definita da
+    \[
+        F_\mu(x) \triangleq \mu((-\infty, x]), \quad \forall x \in \realnumbers
+    \]
+\end{snippetdefinition}
+
+Per un lemma precedente, % TODO CITE
+la funzione di ripartizione determina univocamente la misura.
+Quindi, se \(\gamma\) è un'altra misura sullo stesso spazio con la stessa funzione di ripartizione,
+allora \(\gamma = \mu\).
+Questo è dato dal fatto che le semirette generano \(\mathcal B(\realnumbers)\)
+e sono chiusi per intersezione finita.
+
+\begin{snippetproposition}{Proprietà della funzioni di ripartizione}
+    Sia \(\mu\) misura di probabilità su \((\realnumbers, \mathcal B(\realnumbers))\)
+    e \(F_\mu\) la sua funzione di ripartizione. Allora:
+    \begin{enumerate}
+        \item \(F_\mu\) è monotona non decrescente;
+        \item \(F_\mu\) è continua da destra;
+        \item \[
+            \lim_{x\to \infty}F_\mu(x) = 1,\quad
+            \lim_{x\to -\infty}F_\mu(x) = 0
+        \]
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{Proprietà della funzioni di ripartizione}
+    \begin{enumerate}
+        \item Siano \(x,y \in \realnumbers \suchthat x \leq y\).
+        Allora, \[
+            F_\mu(x) = \mu((-\infty, x])
+            \leq \mu((-\infty, y]) = F_\mu(y)
+        \]
+        per la monotonia della misura (inclusione).
+        \item Fissato \(x_0 \in \realnumbers\), per ogni \(\varepsilon > 0\)
+        troviamo \(\delta(x_0, \varepsilon)\)
+        tale che
+        \[
+            x-x_0 < \delta \implies F(x) - F(x_0) \leq \varepsilon
+        \]
+        Abbiamo quindi
+        \begin{align*}
+            F_\mu(x) - F_\mu(x_0)
+            &= \mu((-\infty, x]) - \mu((-\infty, x_0]) \\
+            &= \mu((x_0, x]) \leq \mu((x_0, x_0 + \delta])
+        \end{align*}
+        in quanto \(x < x_0 + \delta\).
+        Consideriamo la successione di insiemi
+        \[
+            \left(x_0, x_0 + \frac1n\right] \downarrow \emptyset
+        \]
+        Quindi per la continuità dall'alto di \(\mu\),
+        vale che
+        \[
+            \lim_n \mu\left(
+                \left(x_0, x + \frac1n\right]
+            \right) = 0
+        \]
+        Quindi, fissato \(\varepsilon > 0\)
+        esiste \(n_0 \in \naturalnumbers\) tale che
+        \[
+            \mu\left(\left(x_0, x_0 + \frac1n\right]\right) < \varepsilon,
+            \quad \forall n > n_0
+        \]
+        Prendendo quindi \(\delta = \sfrac1{n_0}\) da destra otteniamo che
+        \[
+            F(x) - F(x_0) \leq \mu((x_0, x_0 + \delta])
+            \leq \varepsilon, \quad \forall x \in \realnumbers \suchthat x-x_0 < \delta
+        \]
+        \item Mostriamo che il limite tende a \(1\).
+        Consideriamo la famiglia di eventi
+        \[
+            \{
+                (-\infty, n]
+            \}_{n \in \naturalnumbers} \uparrow \realnumbers
+        \]
+        Quindi, per la continuità
+        dal basso della misura, \[
+            \lim_n \mu((-\infty, n]) = 1
+        \]
+        Da questo, fissato \(\varepsilon > 0, \exists n_0 \in \naturalnumbers\)
+        tale che
+        \[
+            1 - \mu((-\infty, n]) \leq \varepsilon, \quad \forall n > n_0
+        \]
+        Allora preso \(\delta = n_0 + 1\) vale che
+        \begin{align*}
+            1 - F(x) &= 1 - \mu((-\infty, x]) \leq 1 - \mu((-\infty, \delta]) \leq \varepsilon,
+            \quad \forall x > \delta
+        \end{align*}
+        L'altro limite è analogo (compito).
+    \end{enumerate}
+\end{snippetproof}
+
+Se \(\mu\) è misura discreta su \((\realnumbers, \mathcal B(\realnumbers))\),
+allora esiste \(D \subseteq \realnumbers\) discreto, prendendo quello minimale
+per comodità, tale che \(\mu(D) = 1\).
+Visto che abbiamo preso quello minimale \[
+    \mu(\{x\}) =: p(x) > 0 \iff x \in D
+\]
+Quindi
+\[
+    F_\mu(x) = \sum_{\substack{y \in D \\ y \leq x}} p(Y)
+    = \sum_{\substack{y \in D \\ y \leq x}}
+    \mu(\{y\})
+\]
+Nel caso discreto la funzione di ripartizione sarà della forma a scala.
+Tale funzione può tendere asintoticamente a \(1\) oppure direttamente assumere il valore 
+\(1\) dopo un certo punto, come per esempio la bernoulli o la poisson.
+Abbiamo un risultato generale.
+
+\begin{snippetproposition}{}
+    Sia \(\mu\) misura di probabilità su \((\realnumbers, \mathcal B(\realnumbers))\)
+    e \(F_\mu\) la sua funzione di ripartizione. Allora,
+    \(\forall x, y \in \realnumbers\) con \(x \leq y\) vale:
+    \begin{enumerate}
+        \item \(\mu((x,y]) = F(y) - F(x)\);
+        \item \(\mu(x,y) = F(y^-) - F(x)\) dove \[
+            F(y^-) = \lim_{z \to y^-} F(z)
+        \]
+        \item \(\mu[x,y) = F(y^-) - F(x^-)\) dove \[
+            F(y^-) = \lim_{z \to y^-} F(z), \quad
+            F(x^-) = \lim_{z \to x^-} F(z)
+        \]
+        \item \(\mu[x,y] = F(x) - F(x^-)\) dove \[
+            F(x^-) = \lim_{z \to x^-} F(z)
+        \]
+        \item \(\mu(\{x\}) = F(x) - F(x^-)\) dove \[
+            F(x^-) = \lim_{z \to x^-} F(z)
+        \]
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Dimostriamo solo la \((2)\) e il \((5)\).
+    \begin{enumerate}
+        \item Abbiamo \begin{align*}
+            \mu((x,y)) &= \mu((-\infty, y))
+            - \mu((-\infty, x]) \\
+            &= \lim_n \mu((-\infty, y - \sfrac1n])
+            - \mu((-\infty, x]) \\
+            &= \lim_n F\left(y - \frac1n\right)
+            - F(x) = F(y^-) - F(x)
+        \end{align*}
+        \item Abbiamo \begin{align*}
+            \mu(\{x\}) &= \mu((-\infty, x]) - \mu((-\infty, x)) \\
+            &= F(x) - \lim_n \mu((-\infty, x - \sfrac1n]) \\
+            &= F(x) - F(x^-)
+        \end{align*}
+    \end{enumerate}
+\end{snippetproof}
+
+Si dice funzione di Càdlàg
+se il limite da sinistra esiste
+e la funzione è continua a destra.
+
+\begin{snippetcorollary}{}
+    Dalla \((5)\) notiamo che \(\mu(\{x\}) > 0\)
+    se e solo se \(F_\mu\) è discontinua in \(x\) e
+    ed è uguale a zero se e solo se \(F_\mu\) è continua.
+\end{snippetcorollary}
+
+In quanto, quando \(\mu\) è discreta allora \(F_\mu\) è una funzione a scala,
+e quindi discontinua. Se \(F_\mu\) è continua allora \(\mu\)
+non è discreta, cioè non esiste \(D\) discreto tale che \(\mu(D) = 1\).
+
+\begin{snippetnote}{}
+    \(F_\mu\) discontinua non implica \(\mu\) discreta.
+    Controesempio: 
+    sia \(\mu\) su \((\realnumbers, \mathcal B(\realnumbers))\)
+    e prendiamo \(\mu((a,b)) = b-a\)
+    per \(0 \leq a < b < \sfrac12\)
+    e \(\mu(\{\sfrac12\}) = \sfrac12\) e \[
+        \mu(I) = \mu(I \intersection [0, \sfrac12])
+    \]
+    Quindi
+    \[
+        \mu([0,\sfrac12]) = \mu([0,\sfrac12]) + \mu(\{\sfrac12\})
+        = \frac12 - 0 + \frac12 = 1
+    \]
+    che va bene. La funzione di ripartizione è definita da
+    \[
+        F_\mu(x) = \mu((-\infty, x]) = \begin{cases}
+            \mu((-\infty, x] \intersection [0, \sfrac12]) = \mu(\emptyset) = 0 & x \leq 0 \\
+            \mu((-\infty, x] \intersection [0, \sfrac12]) = \mu([0,x]) = x & 0 \leq x < \frac12 \\
+            \mu((-\infty, x] \intersection [0, \sfrac12]) = \mu([0,\sfrac12]) = 1 & x \geq \frac12
+        \end{cases}
+    \]
+    \begin{wrapfigure}{l}{3cm}
+        \begin{tikzpicture}[scale=5]
+            \draw[->] (-0.2,0) -- (0.8,0) node[right] {$x$};
+            \draw[->] (0,-0.1) -- (0,1.15) node[above] {$F_\mu(x)$};
+    
+            \draw[dashed] (0.5,0) -- (0.5,1);
+            \draw[dashed] (0,0.5) -- (0.5,0.5);
+            \draw[dashed] (0,1) -- (0.5,1);
+    
+            \draw[thick] (-0.2,0) -- (0,0);
+            \draw[thick] (0,0) -- (0.5,0.5);
+            \draw[thick] (0.5,1) -- (0.8,1);
+    
+            \fill (0,0) circle (0.4pt);
+            \fill (0.5,1) circle (0.4pt);
+            \draw[fill=white] (0.5,0.5) circle (0.4pt);
+    
+            \node[below] at (0,0) {$0$};
+            \node[below] at (0.5,0) {$\frac12$};
+            \node[left] at (0,0.5) {$\frac12$};
+            \node[left] at (0,1) {$1$};
+        \end{tikzpicture}
+    \end{wrapfigure}
+    \(F_\mu\) è discontinua ma \(\forall a,b \in (0, \sfrac12)\)
+    tale che \(a<b\) vale \(\mu((a,b)) > 0\) quindi il supporto di \(\mu\)
+    è tutto \([0,\sfrac12]\) che non è discreto.
+    \wrapfill
+\end{snippetnote}
 
 \pagebreak
 
