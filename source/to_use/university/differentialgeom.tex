@@ -30,8 +30,7 @@
 
 \section{Differential geometry}
 
-% black hole
-%\begin{radioactive}
+%\begin{blackhole}
 
 % Aggiornare quella in analisi multivariabile con un intervallo generico non degenere1
 \begin{snippetdefinition}{Curva parametrizzata di classe \(\mathcal C^k\)}
@@ -3675,6 +3674,12 @@ Abbiamo quindi due criteri per sottovarietà:
     sottovarietà.
 \end{enumerate}
 
+Questi sono analoghi a quando in algebra lineare
+abbiamo sottospazi vettoraili dati da:
+immagini di applicazioni (che possiamo sempre assumere iniettivi sostituendo quozientando il dominio con il kernel)
+e nuclei (dibra di zero) di applicazioni (che possiamo assumere suriettivi restringendo il codominio).
+Il primo caso fornisce equazioni per lo spazio, mentre il secondo fornisce un'equazione parametrica.
+
 \begin{snippetexample}{Applicazione}
     Consideriamo \(F \colon \Omega \fromto \realnumbers\),
     \(\Omega \subseteq \realnumbers^{n+1}\) aperto tale che
@@ -3792,9 +3797,14 @@ funzioni come un operatore differenziale del primo ordine.
     la base associata ad \(\varphi\) si ha
     \[
         \text{d}f(a_1\partial_1, \cdots, a_n\partial_n)
-        \triangleq \sum_{i=1}^n a_i \frac{\partial f}{\partial x_i}
+        \triangleq \sum_{i=1}^n a_i \frac{\partial f(x)}{\partial x_i}
     \]
 \end{snippetdefinition}
+
+Scriveremo \[
+    \text{d}f = \sum \frac{\partial f}{\partial x_i} \text{d}x_i
+\]
+con \(\text{d}x_i\) base duale di \(\frac{\partial}{\partial x_i}\).
 
 \begin{snippetdefinition}{}
     Lo \emph{spazio cotangente}
@@ -3945,5 +3955,393 @@ Troviamo quindi che
     \right)(f)
 \end{DispWithArrows*}
 con \(c = -b \frac{\partial a}{\partial y}\) e \(d = a \frac{\partial b}{\partial x}\).
+
+\subsection{Calcolo di spazi tangenti di sottovarietà}
+
+\begin{snippetproposition}{}
+    Distinguiamo vari casi:
+    \begin{enumerate}
+        \item se \(Z\) è sottovarietà definita
+        come \(Z = f^{-1}(\{q\})\)
+        per \(f \colon X \fromto Y\)
+        con \(q \in Y\) valore regolare.
+        Allora, \(\forall x \in Z\) si ha 
+        \[
+            T_{Z,x} = \ker \left(
+                \left(\text df\right)_x \colon T_{X,x} \fromto T_{Y,q}
+            \right)
+        \]
+        \item se \(Z \subseteq X\) è definita come \(Z = \operatorname{Im}(h)\)
+        con \(h \colon S \fromto X\) embedding. Allora
+        \(\forall x \in Z\) si ha \[
+            T_{Z,x} = \operatorname{Im}\left(
+                \left(\text df\right)
+            \right)_s
+        \]
+        per \(s = h^{-1}(x) \in S\).
+    \end{enumerate}
+\end{snippetproposition}
+
+Questi sono sempre analoghi al caso dei sotospazi vettoriali.
+
+\begin{snippetproof}{Cenno di dimostrazione}
+    \begin{enumerate}
+        \item Ricordiamo che per \(Z = f^{-1}(\{q\})\),
+        \(\dim Z = \dim X - \dim Y\), e il differenziale \[
+            \left(
+                \text df
+            \right)_v \colon T_{X,v} \fromto T_{Y,q}
+        \]
+        è suriettivo \(\forall x \in Z\) per definizione di valore \(q\)
+        regolare per \(f\). Dunque, la dimensione
+        \[
+            \dim \ker\left(\text df\right)_x = \dim T_{X,x} - \dim T_{X,q}
+            = \dim X - \dim Y = \dim Z
+        \]
+        Quindi per completare la dimostrazione è sufficientemente mostrare che
+        \[
+            T_{Z,x} \subseteq \ker \left(\text df\right)_x
+        \]
+        Scegliamo quindi \(v \in T_{Z,x}\) non nullo e consideriamo
+        una qualsiasi curva in \(Z\) cioè
+        \(\sigma \colon I \fromto Z\), tale che
+        \(\sigma(t_0) = x\) e \(\sigma'(t_0) = v\), cioè
+        \[
+            \restr{\text d\sigma}{t_0}(1) = v
+        \]
+        Allora, \(\sigma\) è regolare in \(t_0\)
+        e poiché
+        \[
+            f(\sigma(t)) = q, \quad \forall t \in I
+        \]
+        (Essendo l'immagine della curva contenuta in \(Z\)), si ha che la composizione
+        \[
+            f \circ \sigma \colon I \fromto Y
+        \]
+        è una curva costante, e quindi \[
+             0 = \left(\text d(f \circ \sigma)\right)_{t_0}
+             = \left(\text df\right)_x \cdot
+             \left(\text d\sigma \right)_{t_0}(1)
+             = \left(\text df\right)_x (v)
+        \]
+        \item Abbiamo che \(h\) induce un diffeomorfismo fra \(S\) e \(Z\),
+        e quindi gli spazi tangenti si corrispondono con il differenziale.
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetcorollary}{}
+    Sia \(f \colon X \fromto \realnumbers^r\)
+    con \(f = (f_1, \cdots, f_r)\)
+    tale che \(0 \in \realnumbers^n\) sia valore regolare per \(f\).
+    Allora posto \(Z = f^{-1}(\{0\})\), per ogni \(x \in Z\)
+    si ha \(T_{Z,x}\) è il sottospazio di \(T_{X,x}\)
+    di equazioni
+    \[
+        \left(\text df_1\right)_x
+        = \cdots =
+        \left(\text df_r\right)_x = 0
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{}
+    Abbiamo che
+    \[
+        \text df_i \in \operatorname{Hom}(T_{X,x}, \realnumbers)
+    \]
+    per ogni \(i \in \{1, \cdots, r\}\).
+    Poiché \[
+        \text df = (\text df_1, \cdots, \text df_r)
+    \]
+    idendo identificato \(T_{\realnumbers^n, 0} = \realnumbers^n\), vediamo che
+    \[
+        T_{Z,v} = \ker \left(\text df\right)_v
+        = \bigcap_{i=1}^r \ker \text df_i
+    \]
+\end{snippetproof}
+
+\begin{snippetexample}{}
+    Sia \[
+        Z = \left\{
+            x \in \realnumbers^{n+1} \suchthat f(x) = 0
+        \right\}
+    \]
+    ipersuperficie con \(\nabla f(x) \neq, \forall x \in Z\).
+    Allora, 
+    \[
+        T_{Z,x} = \ker \left(\text df\right)
+        = \left\{
+            v \in \realnumbers^{n+1}
+            \suchthat \langle \nabla f(x), v \rangle = 0
+        \right\}
+    \]
+    con il prodotto interno standard.
+    Per mostrarlo, l'unica cosa da considerare è l'identità
+    \[
+        \left(\text df\right)_x(v)
+        = \langle \nabla f(x), v \rangle
+    \]
+    che è ovvia data la scrittura
+    \[
+        \text df_x = \sum \frac{\partial f(x)}{\partial x_i} \text dx_i
+    \]
+    Abbiamo inoltrare
+    \[
+        v = (v_1, \cdots, v_n) = \sum e_i v_i = \sum v_i \frac{\partial}{\partial x_i}
+    \]
+    basi duali, dunque \begin{align*}
+        \left(\text df\right)_v(v) &=
+        \sum \frac{\partial f}{\partial x_i}(x) \langle \text dx_i, v \rangle \\
+        &= \sum_{i,j} \frac{\partial f}{\partial x_i}(x) v_j
+        \langle \text dx_i, \frac{\partial}{\partial x_i} \rangle \\
+        &= \sum_{i,j} \frac{\partial f}{\partial x_i} v_j \delta_{i,j} \\
+        &= \sum_i \frac{\partial f}{\partial x_i} v_i = \langle \nabla f(x), v \rangle
+    \end{align*}
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Sia \(Z = (f_1, \cdots, f_n = 0) \subseteq \realnumbers^{n+1}\)
+    con \(\nabla f_1(x), \cdots, \nabla f_n(x)\) linearmente indipendenti
+    \(\forall x \in Z\), si ha che lo spazio tangente \(T_{Z,x}\)
+    è lo spazio delle soluzioni del sistema
+    \[
+        \begin{cases}
+            \langle \nabla f_1(x), v \rangle = 0 \\
+            \vdots \\
+            \langle \nabla f_n(x), v \rangle = 0
+        \end{cases}
+    \]
+    La dimostrazione è la medesima dell'esempio precedente ma con più equazioni.
+\end{snippetexample}
+
+Vediamo ora un calcolo di spazio tangente per una varietà quoziente.
+
+\begin{snippetproposition}{}
+    Sia \(\mathbb F = \realnumbers, \complexnumbers\). Abbiamo
+    \[
+        T_{\mathbb P^n(\mathbb K), [x]} = \frac{{\mathbb K}^{n+1}}{
+            \mathcal L(x)
+        }
+    \]
+    per ogni \([x] \in \mathbb P^n(K)\), rappresentato da \(x \neq 0\)
+    in \(K^{n+1}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Consideriamo la proiezione canonica
+    \[
+        \pi \colon \mathbb K^{n+1} \difference \{0\}
+        \fromto \mathbb P^n(\mathbb K)
+    \]
+    definita da \(x \mapsto [x]\). Ovviamente l'immagine
+    \(\pi(x')=[x]\) è costante \(\forall x \in \mathcal L(x)\).
+    Segue che
+    \[
+        \text d\pi_x \colon T_{\mathbb K^{n+1} \difference \{0\}, x}
+        = \mathbb K^{n+1} \fromto T_{\mathbb P^n(\mathbb K), [x]}
+    \]
+    contiene \(T_{\mathcal L(x), x} = \mathcal L(x)\).
+    (Vedi dimostrazione di una proposizione precedente).
+    Quindi \(\text d\pi\) si fattorizza attraverso
+    \[
+        \left(\overline{\text d\pi}\right) \colon
+        \frac{K^{n+1}}{\mathcal L(x)} \fromto T_{\mathbb P^n(\mathbb K), [x]}
+    \]
+    Inoltre è ovvio che \[
+        \left(
+            \text d\pi
+        \right)_v \colon K^{n+1} \fromto T_{\mathbb P^n(\mathbb K), [x]}
+    \]
+    è suriettiva, vedi restrizione ai sottospazi affini
+    \[
+        L_i = (x_1, \cdots, \underbrace 1_i, \cdots, x_{n+1})
+    \]
+    dove \(\restr{\pi}{L_i}\) induce un diffeomorfismo sull'immagine
+    (aperto standard) \[
+        U_i = \{
+            (x_1, \cdots, x_{n+1}) \in \mathbb P^n(\mathbb K)
+            \suchthat x_i \neq 0    
+        \}
+    \]
+    Si ha infatti \(T_{L_i, x} \subseteq T_{\mathbb K^{n+1}, x}\) e \[
+        \text d\pi \colon T_{L_i, x} \fromto T_{U_i,[x]} = T_{\mathbb P^n(\mathbb K), x}
+    \]
+    Mettendo assieme questi due fatti, abbiamo
+    \[
+        \left(\overline{\text d\pi}\right) \colon
+        \frac{K^{n+1}}{\mathcal L(x)} \fromto T_{\mathbb P^n(\mathbb K), [x]}
+    \]
+    suriettivo
+    e \[
+        \dim \frac{\mathbb K^{n+1}}{\mathcal L(x)}
+        = n+ 1 - 1 = n = \dim T_{\mathbb P^n(\mathbb K), [x]}
+    \]
+    Quindi deduciamo che \(\left(\overline{\text d\pi}\right)\)
+    è un isomorfismo canonico.
+\end{snippetproof}
+
+\begin{snippetcorollary}{}
+    Sia \(\mathbb K = \realnumbers\).
+    Allora, la restrizione \(\pi \colon S^n \fromto \mathbb P^n(\realnumbers)\)
+    induce un isomorfismo fra gli spazi tangenti, cioè
+    \(\forall x \in S^n\) \[
+        \left(d \pi\right)_x \colon T_{S^n, x} \fromto T_{\mathbb P^n(\realnumbers), [x]}
+    \]
+    isomorfismo.
+\end{snippetcorollary}
+
+\begin{snippetproof}{}
+    Abbiamo che \(T_{S^n, x} \subseteq \realnumbers^{n+1}\) interseca
+    \(\mathcal L(x)\) solo in \(0\).
+    Infatti, \[
+        T_{S^n, x} = \left\{
+            v \in \realnumbers^{n+1}
+            \suchthat \langle v,x\rangle = 0
+        \right\}
+    \]
+    Infatti, l'equazione della sfera \(\sum_{i=1}^{n+1} x_i^2 = 0\)
+    implica che
+    \[
+        \nabla \left(\sum_{i=1}^{n+1} x_i^2\right)
+        = 2\sum x_i = 2x
+    \]
+    e quindi
+    \[
+        T_{S^n, x} \intersection \mathcal L(v) = \left\{
+            \lambda x \suchthat \langle \lambda x, x \rangle = 0
+        \right\}
+        = \{0\}
+    \]
+    Segue che
+    \[
+        \restr{\text d\pi}{T_{S^n, x}}
+        \colon T_{S^n, x} \fromto T^{\mathbb P^n(\realnumbers), [x]}
+    \]
+    isomorfismo, avendo \[
+        \ker \left(
+            \restr{\text d\pi}{T_{S^n}}
+            = T_{S^n} \intersection \mathcal L(v) = 0
+        \right)
+    \]
+    e \[
+        \dim T_{S^n} = \dim T_{\mathbb P^n(\realnumbers)} = n
+    \]
+\end{snippetproof}
+
+\begin{snippetexample}{}
+    Abbiamo calcolato
+    \[
+        T_{S^n, x} = \left\{
+            v \in \realnumbers^{n+1} \suchthat \langle v, x \rangle = 0
+        \right\} = \mathcal L(x)^\perp
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{Nastro di Möbius come varietà}
+    Consideriamo un nastro di Möbius \(M\), ossia il quoziente su \([a,b] \cartesianprod (0,1)\),
+    che è uno spazio topologico.
+    Per considerarlo come varietà differenziale, possiamo realizzare
+    \(M\) come aperto di \(\mathbb P^2(\realnumbers)\) come segue:
+    si considera
+    \[
+        \pi \colon S^2 \fromto \mathbb P^2(\realnumbers)
+    \]
+    che induce isomorfismo fra spazi tangenti, e dunque
+    per il teorema delle funzioni inverse,
+    è una mappa aperta. Consideriamo un aperto \(W \subseteq S^2\)
+    della forma seguente: XXXX
+    Ricordiamo che per ogin \([x] \in \mathbb P^2(\realnumbers)\)
+    si ha \(\pi^{-1}([x]) = \{\pm x\} \subseteq S^2\).
+    Cioè
+    \[
+        \mathbb P^2(\realnumbers) = \frac{S^2}{\pm 1}
+    \]
+    tramite \(\pi\). Dunque,
+    \(\pi(W)\) è un aperto omeomorfo a nastro di Möbius.
+\end{snippetexample}
+
+\(\mathbb P^2(\realnumbers)\)
+non è diffeomorfo ad alcuna sottovarietà di \(\realnumbers^3\),
+cioè non esiste embedding di questo spazio proiettivo in \(\realnumbers^3\).
+Il motivo è che se esistesse, per compattezza di \(\mathbb P^2(\realnumbers)\)
+si avrebbe \(\mathbb P^2(\realnumbers) = F^{-1}(\{0\})\), con
+\(F \colon \realnumbers^3 \fromto \realnumbers\)
+equazione \(\gradient F \neq 0\) per tutte le \([x] \in \mathbb P^2(\realnumbers)\),
+ma tali varietà vedremo essere sempre
+orientabili, mentre \(\mathbb P^2(\realnumbers)\)
+non lo è
+(si vedrà più avanti, in quanto contiene nastri di Möbius come aperti).
+
+\begin{snippetexercise}{}
+    Mostrare che la mappa
+    \[
+        \Phi \colon S^2 \fromto \realnumbers^4
+    \]
+    definita da
+    \[
+        \Phi(x,y,z) = (xy, yz, xz, x^2 - y^2)
+    \]
+    induce un embedding \(\mathbb P^2(\realnumbers) \fromto \realnumbers^4\),
+    cioè esiste diagramma commutativo
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAGUA9AJhAF9S6TLnyEU3clVqMWbAAQAdBQCcYjMEwC2AIxjK4nACz9BIDNjwEiARlLWp9Zq0QglmujgAW27XIAKPAAUSqrqWrr6AJT8UjBQAObwRKAAZsoQmkhkIDgQSLbSTmxKfp5YJqnpmYjZuUgShbIuSmjl1Ax0ugx+wpZiIMpY8Z44FSBpGfXUdYgFjk2uChA0egxYYDCKCqVtIB1dPRaibIPDo3wUfEA
+        \begin{tikzcd}
+        S^2 \arrow[rr, "\Phi"] \arrow[rd, "\pi"'] &                                                         &  \realnumbers^4 \\
+                                                & \mathbb P^2(\realnumbers) \arrow[ru, "\overline \Phi"'] &                
+        \end{tikzcd}
+    \end{center}
+    con \(\overline \Phi\) embedding.
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    TODO
+\end{snippetsolution}
+
+\begin{snippettheorem}{Teoremi di embedding di Whitney}
+    Sia \(X\) una varietà differenziale di dimensione \(\dim X = n\).
+    Allora, esiste un embedding \(\Phi \colon X \fromto \realnumbers^{2n+1}\)
+    tale che \(\Phi(X) \subseteq \realnumbers^{2n+1}\) sia una varietà chiusa.
+    Se \(X\) è compatta, allora esiste embedding
+    \[
+        \Phi \colon X \fromto \realnumbers^{2n}
+    \]
+\end{snippettheorem}
+
+Il caso \(\mathbb P^2(\realnumbers)\)
+mostra che il teorema è sharp.
+
+\begin{snippettheorem}{}
+    Lo spazio topologico \(\text{GL}_{n}(\realnumbers)\)
+    ha due componenti connesse per archi:
+    gli elementi con determinante positivo e quelle con determinante negativo.
+\end{snippettheorem}
+
+Le componenti sono aperti di
+\(\matrices_{n}(\realnumbers)\) fra loro diffeomorfi
+mediante la mappa che moltiplica una riga per \(-1\).
+
+\begin{snippetcorollary}{}
+    Sia \(V\) un \(\realnumbers\)-spazio vettoriale e siano
+    \(\mathcal B = \{v_1, \vdots, v_n\}, \mathcal B' = \{v_1', \vdots, v_n'\}\).
+    Diciamo che \(\mathcal B\) e \(\mathcal B'\)
+    sono orientate ugualmente se la matrice di cambio di base fra queste due basi
+    ha determinante positivo.
+\end{snippetcorollary}
+
+Equivalentemente possiamo dire se esiste un cammino
+\(\gamma \colon [0,1] \fromto \text{GL}_+\)
+di matrici tale che
+\(\gamma(0) = I_n\)
+e \(\gamma(1)\) è la matrice del cambio di base da
+\(\mathcal B\) a \(\mathcal B'\), quindi
+\(B(t) = B \cdot \gamma(t)\) è cammino di basi da \(\mathcal B\)
+e \(\mathcal B'\), che deforma l'una nell'altra senza mai farle diventare dipendenti.
+
+\begin{snippetdefinition}{}
+    Una \emph{orientazione} di \(V\) spazio vettoriale
+    è la scelta di unica delle due classi di equivalenza
+    della relazione di orientazione.
+\end{snippetdefinition}
+
+Di cui ci sono due classi, in quanto o due basi sono orientate analogamente o non lo sono.
 
 \end{document}

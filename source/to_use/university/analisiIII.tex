@@ -5359,6 +5359,318 @@ che è anche uno spazio di misura \((X, \mathcal M, \mu)\)
 e supponiamo che la misura sia di Borel (come per esempio la misura di Lebesgue in quanto misura i borealiani).
 Sia \(f \colon X \fromto \mathbb F\).
 Vogliamo vedere se \(\mu(D_f) = 0\) implica che \(f\) sia misurabile.
+Allora in questo setting possiamo parlare di funzioni continue.
+Se \(f\) è continua quasi ovunque, allora è misurabile?
+La risposta in generale è no.
+
+\begin{snippetexample}{}
+    Consideriamo in \(\realnumbers\)
+    la topologia euclidea e la \(\sigma\)-algebra di Borel
+    e la misura di lebesgue rispettra a \(\mathcal B\).
+    Esiste un insieme misurabile (non l'abbiamo dimsotrato ma esiste)
+    di cui ne scegliamo uno di misura nulla, e prendiamo un suo sottoinsieme.
+    Sia \(E\) un insieme di misura nulla e sia \(F \subseteq E\)
+    non misurabile. Sia \(G = E \difference F\). Ovviamente anche \(G\)
+    non è misurabile. Costruiamo una funzione che vale
+    \[
+        \begin{cases}
+            0 & \text{ in } E^c \\
+            0 & \text{ nei razionali di } F \text{ e } G \\
+            1 & \text{ sugli irrazionali di } F \\
+            2 & \text{ sugli irrazionali di } G
+        \end{cases}
+    \]
+    Questa funzione è continua quasi ovunque e \(D_f = E\).
+    Tuttavia, questa funzione non è misurabile in quanto
+    \(f^{-1}((\sfrac32, +\infty))\) troviamo gli irrazionali di \(G\),
+    che non è misurabile in quanto se lo fosse, anche \(G\)
+    sarebbe misurabile, perché \(G\) è unione dei suoi irrazionali e dei suoi razionali,
+    che essendo un insieme numerabile è sempre misurabile. Qualcunque sottoinsieme
+    dei razionali è un borealiani.
+    Quello che è andato storto è che la misura, che è
+    ristretta, non è completa.
+\end{snippetexample}
+
+Quindi aggiungendo la completezza della misura il teorema funziona.
+
+\begin{snippettheorem}{}
+    Sia \((X, \tau)\) uno spazio topologico che sia anche spazio di misura
+    \((X, \mathcal M, \mu)\) con misura di Borel.
+    Sia \(f \colon X \fromto \mathbb F\) tale che
+    \(\mu(D_f) = 0\). Se \(\mu\) è completa, allora \(f\)
+    è misurabile.
+\end{snippettheorem}
+
+In generale non possiamo alterare la funzione sul suo insieme di discontinuità
+(che ha misura nulla) per renderla continua.
+La proprietà di essere continua quasi ovunque e la proprietà di essere quasi uguale
+ad una funzione continua sono sghembe.
+Per esempio, una funzione con una discontinuità di salto ha solo un punto
+di discontinuità, ma cambiando solo questo valore la funzione non diventa continua,
+servirebbe modificarla in un intero aperto per Darboux.
+Oppure per esempio la funzione di Dirichlet è quasi ovunque continua ad una funzione
+continue, ma non è quasi ovunque continua.
+
+\begin{snippetproof}{}
+    Consideriamo \((X \difference D_f, \restr{\tau}{X \difference D_f})\)
+    cioè la restrizione con la topologia indotta. Alllora, \(\restr{f}{X \difference D_f}\)
+    è continua. Possiamo anche considerare con la \(\sigma\)-algebra indotta
+    \[
+        \left(
+            X \difference D_f, \restr{\mathcal M}{X \difference D_f},
+            \restr{\mu}{\restr{\mathcal M}{X \difference D_f}}
+        \right)
+    \]
+    Questa nuova algebra continua ad essere di Borel.
+    Siccome \(f\) è continua, allora è misurabile.
+    La controimmagine di un aperto tramite \(f\) è un unione di
+    insieme di \(\restr{\mathcal M}{X \difference D_f}\) e di
+    un opportuno sottoinsieme di \(D_f\) che, visto che \(\mu\) è completa,
+    è misurabile. Quindi abbiamo l'unione di due sottoinsiemi misurabili.  
+\end{snippetproof}
+
+Sia \(f\) Riemann integrabile su \((a,b)\).
+Allora, abbiamo visto che è \(f\).
+Ma \(f\) è limitata, e quindi dominata da una costante.
+Siccome \((a,b)\) è limitato, le costanti sono integrabili e quindi
+\(f \in \mathcal L^1((a,b))\) in quanto dominata da una funzione \(\mathcal L^1\).
+
+\begin{snippetproof}{Andiamo ora a mostrare che gli integrali coincidono}
+    Supponiamo che \(f\) sia positiva per semplicità.
+    Distinguiamo i due tipi di integrali dalla notazione dell'insieme di integrazione.
+    Sia \(f\) Riemann integrabile. Per definizione
+    \[
+        \integral[a][b][f(x)][x]
+    \]
+    è il supremum delle sue somme inferiori, che sono particolari
+    funzioni semplici e misurabili minori o uguali ad \(f\).
+    Inoltre, \(\forall \varepsilon > 0\), esistono somme inferiori e somme superiori
+    la cui differenza è minore di \(\varepsilon\).
+    Per definizione di integrale di Lebesgue abbiamo il supremum
+    degli integrali di funzioni semplici inferiori, e quindi
+    \[
+        (\text{somma inferiore})_\varepsilon \leq \int_{(a,b)} f\,d\mu
+    \]
+    D'altro canto, per la monotonia vale pure che
+    \[
+        \int_{(a,b)} f\,d\mu \leq (\text{somma superiore})_\varepsilon
+    \]
+    Quindi vale la tesi per arbitrarietà di \(\varepsilon\).
+\end{snippetproof}
+
+Per questo motivo d'ora in poi useremo la notazione di Riemann 
+anche per un integrale di Lebesgue su un intervallo.
+
+\subsection{Relazioni fra integrali di Riemann impropri e di Lebesgue}
+
+Esistono funzioni che sono Riemann integrabili ma non assolutamnete integrabili nel senso
+improprio.
+Se il modulo di \(f\) è integrale secondo Riemann in senso improprio, allora lo è pure secondo Lebesgue.
+
+\begin{snippetproposition}{}
+    Consideriamo \((a,b)\) con \(-\infty \leq a < b \leq +\infty\).
+    Se \(|f|\) è Riemann integrabile in senso improprio, allora
+    \(f \in \mathcal L^1((a,b))\) e gli integrali coincidono.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+            \begin{tikzpicture}[scale=0.8]
+            \draw[->] (0,0) -- (7,0);
+            \draw[->] (0,0) -- (0,5);
+
+            \draw[dashed] (1,0) -- (1,5);
+            \draw[dashed] (0,1) -- (7,1);
+
+            \draw[thick,domain=1.3:6.4,samples=200,smooth]
+                plot (\x,{1 + 1.8/((\x-1)^0.9)});
+
+            \fill (1,0) circle (0pt) node[below] {$a$};
+            \fill (6.2,0) circle (0pt) node[below] {$b$};
+            \end{tikzpicture}
+        \end{center}
+    \end{wrapfigure}
+    Consideriamo la funzione di forma in figura.
+    Oer definizione \[
+        \integral[a][b][f(x)][x]
+        = \lim_{x \to a^+} \integral[x][b][f(x)][x]
+    \]
+    Il limite può essere scritto come limite successionale (perché siamo in uno spazio metrico)
+    \(\{x_n\} \to a^+\)
+    quindi \[
+        \integral[x_n][b][f(x)][x] \to \alpha \in \realnumbers
+    \]
+    Ma \[
+        \integral[x_n][b][f(x)][x] = \integral[a][b][f(x) \chi_{(x_n, b)}(x)][x]
+    \]
+    che sono tutti integrali di riemann propri.
+    La successione dell'integranda converge monotonamente ad \(f\)
+    purché \(\{x_n\}\) sia una successione monotona.
+    Per il teorema della convergwnza monotona, \(f\)
+    è integrabile secondo Lebesgue purché \(\alpha \in \realnumbers\),
+    e in tal cso \(\alpha\) è l'integrale di Lebesgue.
+    Lebesgue trasforma da impropri ea propri tutti gli integrali di Riemann
+    di funzioni assolutamente Riemann-integrabili
+    \wrapfill
+\end{snippetproof}
+
+\begin{snippetexercise}{}
+    Consideriamo \[
+        F(y) = \integral[0][+\infty][\frac{\ln x}{x^2 + y}][x]
+    \]
+    Vogliamo discutere il dominio di questa funzione e la continuità.
+    Cominciamo con il dominio: per \(y > 0\) il denominatore non si annulla mai.
+    In un intorno sinistro di \(+\infty\), l'integrale converge
+    in quanto \(p=2 < 1\). Per \(x = 0\) la funzione integranda è asintotica
+    a \(\sfrac{\ln x}{y}\) dove \(y\) è costante. Quindi per il criterio \(pq\)
+    la funzione \(\ln(x)\) che è integrabile.
+    Quindi sicuramente \((0,+\infty) \subseteq D(F)\).
+    Per \(y=0\), la funzione non è integrabile per il criterio \(pq\).
+    Se \(y<0\), l'integrale converge in intorni di \(0\) e \(+\infty\).
+    Tuttavia, compare un punto intorno a \((0,+\infty)\)
+    in cui il denominatore di annulla.
+    In tal caso,
+    l'integrabilità dipende da \(y\) in quanto il denominatore si annulla in
+    \(\sqrt{-y}\). Se \(y=-1\), pure il numeratore si annulla e magari è integrabile.
+    Separiamo quindi i casi.
+    Se \(y < 0\) e \(y \neq 1\).
+    In questo caso sicuramente il numeratore non aiuta,
+    e quindi il denominatore si annulla del primo ordine (non del secondo
+    in quanto una parabola si annulla del secondo ordine solo nel vertice).
+    Quindi, \(x^2 + y \sim C(x- \sqrt{-y})\) per \(x \to \sqrt{-y}\),
+    e quindi non è integrabile. Se \(y = -1\),
+    il denominatore si anulla in \(x=1\), e \[
+        x^2 - 1 \sim C(x - 1)
+    \]
+    per \(x \to 1\).
+    Invece, il numeratore \(\ln(x + 1 - 1) = \ln(1 + (x-1)) \sim x - 1\),
+    e quindi il ruoziente è limitato, e quindi è integrabile.
+    Abbiamo quindi \[
+        D(F) =(0,+\infty) \union \{-1\}
+    \]
+    Passiamo ora alla continuità.
+    Banalmente la funzione è continua in \(y = -1\).
+    Consideriamo quindi \(y_0 > 0\).
+    Dobbiamo verificare se
+    \[
+        \lim_{y \to y_0} F(y) = F(y_0)
+    \]
+    Siamo in uno spazio metrico e quindi i limiti possono essere rappresentati successionalmente.
+    Sia \(\{y_n\} \to y_0\) e calcoliamo
+    \[
+        \lim_n F(y_n)
+    \]
+    usiamo il teorema della convergenza dominata.
+    Cominciamo verificando che la successione converge puntualmente
+    (quasi ovunque), ed effettivamente \[
+        f_n(y_n) = \frac{\ln x}{x^2 + y_n}
+    \]
+    converge puntualmente ad \[
+        \frac{\ln x}{x^2 + y^2}
+    \]
+    Scegliamo una costante \(C < y_0\) come
+    per esempio \(\overline y = \sfrac{y_0}{2}\)
+    \[
+        f_n(y_n) = \frac{\ln x}{x^2 + y_n}
+        \leq \frac{\ln x}{x^2 + \overline y} = g(x) \in \mathcal L^1((0,+\infty))
+    \]
+    definitivamente grazie alla monotonia.
+    E quindi per il teorema della convergenza dominata, \(f\) è continua.
+\end{snippetexercise}
+
+C'è un caso che non si inquadra in questa teoria:
+quello delle funzioni Riemann integrabili in senso improprio
+ma non assolutamente integrabili, come per esempio
+\[
+    f(x) = \frac{\sin(x)}{x} \notin \mathcal L^1((0,+\infty))
+\]
+In questo caso si dice che è una funzione integrabile
+secondo Lebesgue in senso improprio.
+
+\subsection{Funzioni integrali}
+
+Consideriamo \(f\) Riemann integrabile su un intervallo \((a,b)\)
+limitato.
+Costruiamo la funzione integrale
+\[
+    F(x) = \integral[a][x][f(t)][t]
+\]
+Sappiamo che \(F\) è definita su \((a,b)\)
+quindi \(F \colon [a,b] \fromto \realnumbers\)
+ed è lipschitz continua
+\[
+    |F(x) -F(y)|
+    = \left|
+        \integral[a][x][f(t)][t]
+        - \integral[a][y][f(t)][t]
+    \right| = \left|
+        \integral[x][y][f(t)][t]
+    \right| \leq \sup |f| \cdot |x-y|
+\]
+e quindi uniformemente continua.
+
+Sia ora \(f\) Riemann integrabile in senso improprio su \((a,b)\)
+non necessariamente limitato.
+Perdiamo quindi la lipschitzianità,
+ma rimane la continuità per definizione di integrale improprio, cioè
+(per esempio con \((a,b)\) limitato e supponendo che \(f\) sia limitata tranne che in \(a\)),
+\(f\) è Riemann integrabile in senso proprio su \((a,b)\)
+se \(f\) è Riemann integrabile in senso improprio su \((x,b)\)
+con \(x > a\) e \[
+    \lim_{x \to a^+} \integral[x][b][f(t)][t]
+\]
+esiste finito. In questo caso
+\[
+    \integral[a][b][f(t)][t] = \lim_{x\to x_0} \integral[x][b][f(t)][t]
+\]
+quindi stiamo imponendo che \(F\) sia continua (per definizione).
+
+\begin{snippetproposition}{}
+    Sia \(f \in \mathcal L^1(I)\)
+    con \(I\) intervallo e \(a \in \overline I \subseteq [-\infty, +\infty]\).
+    Allora, \[
+        F(x) = \integral[a][x][f][\mu]
+    \]
+    è continua in \(\overline I\).
+\end{snippetproposition}
+
+Quindi anche la continuità viene mantenuta nel caso Lebesgue.
+Per la lipschitzianità non ci poniamo nemmeno il problema in quanto
+già per gli integrali di Riemann impropri essa veniva persa.
+Inoltre, siccome \(\overline I\) è compatto, \(F\) è uniformemente continuo.
+
+\begin{snippetproof}{}
+    Dobbiamo mostrare che se \(c \in \overline I\),
+    \(\{x_n\} \to c\) allora \(F(x_n) \to F(c)\).
+    Sicuramente \(F(c)\) esiste, in quanto \(f \in \mathcal L^1(I)\)
+    e quindi è integrabile su ogni sottointervallo.
+    Nota: \(c\) è nella chiusuta di \(I\), non per forza in \(I\).
+    Tuttavia, visto che \(I\) è un intervallo
+    la sua chiusura è alla peggio due punti, che hanno misura nulla. Questo non vale in generale
+    (per esempio l'integrabilità sui razionali).
+    Mostriamo che \(F(x_n) \to F(c)\).
+    Consideriamo \(f \chi_{(a,x_n)}\).
+    Queste funzioni sono tutte maggiorate da \(f\):
+    \begin{align*}
+        |f \chi_{(a,x_n)}| \leq |f|
+    \end{align*}
+    e puntualmente \(f \chi_{(a,x_n)} \to f \chi_{(a,c)}\)
+    in quanto \(x_n \to c\),
+    quidi per il teorema della convergenza dominata, visto che \(f \in \mathcal L^1((a,c))\)
+    e quindi \(F(x_n) \to F(c)\).
+\end{snippetproof}
+
+\begin{snippetexercise}{}
+    È vero che se \(f \in \mathcal L^1(A)\) allora \(f \in \mathcal L^1(\overline A)\)
+    se \(A\) è un aperto reale?
+\end{snippetexercise}
+
+
+
+
+
+
 
 
 
