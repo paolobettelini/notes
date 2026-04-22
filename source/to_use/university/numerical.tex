@@ -25,6 +25,8 @@
 \maketitle
 \tableofcontents
 
+\begin{blackhole}
+
 \section{Numerical}
 
 \begin{snippettheorem}{Determinante matrice di Vandermonde}
@@ -3258,6 +3260,278 @@ Essendo definita positiva, raggio spettrale e autovalore massimo sono la stessa 
 \end{snippetproposition}
 
 Quindi questo vale non solo per le Hermitiane.
+
+\end{blackhole}
+
+\pagebreak
+
+\section{Decomposizione ai valori singolari}
+
+Notiamo che la parola decomposizione è distinta da una fattorizzazione
+e non è nemmeno una forma normale.
+
+\begin{snippettheorem}{Decomposizione ai valori singolari}
+    Sia \(A \in \complexnumbers^{n \times m}\).
+    Allora, \(\exists U \in \matrices_n(\complexnumbers), V \in \matrices_m(\complexnumbers)\)
+    unitarie ed \(\exists ! \Sigma \in \realnumbers_{\geq 0}^{n \times m}\)
+    con \(\Sigma\) tale che \(\Sigma_{j,k} = 0\) se \(j \neq k\)
+    e tale che \[
+        A = U \Sigma U, \quad
+        \Sigma_{j,j} = b_j, j \in \{1, \cdots, \min\{n,m\}\}
+    \]
+    dove \(\sigma_j\) sono i \emph{valori singoari}. In particolare,
+    \[
+        \sigma_1 = ||A||_2
+        \geq \sigma_2 \geq \cdots \geq \sigma_p > 0
+        = \sigma_{p+1} = \cdots = \sigma_{\min\{n,m\}}
+    \]
+    quindi \(p\) è il rango di \(A\).
+\end{snippettheorem}
+
+Nel processing delle immagini viene utilizzata questa decomposizione in quanto
+la gran parte dell'informazione
+è contenuta nel rango basso.
+
+\begin{snippetproof}{Decomposizione ai valori singolari}
+    Distinguiamo due casi.
+    \begin{itemize}
+        \item \(n \geq m:\)
+        procediamo per induzione su \(m\). Il caso base è
+        \((n, 1)\). Abbiamo quindi \(A\) vettore con elementi \(a\).
+        Consideriamo la matrice di Hausholder \[
+            Ha = \begin{pmatrix}
+                \alpha \\ 0 \\ \vdots \\ 0
+            \end{pmatrix},
+            \quad H = I - \frac{2vv^*}{||v||_2}
+        \]
+        Ma quindi \(\alpha = |\alpha| e^{i\theta}\),
+        e sostituendo
+        \[
+            Ha = \begin{pmatrix}
+                |\alpha| \\ 0 \\ \vdots \\ 0
+            \end{pmatrix}\left[
+                e^{i\theta}
+            \right],
+            \quad a = H \begin{pmatrix}
+                |\alpha| \\ 0 \\ \vdots \\ 0
+            \end{pmatrix}
+            \left[e^{i\theta}\right]
+        \]
+        Notando che le matrici unitarie mantengono la norma due,
+        per completare osserviamo che
+        \[
+            |a| = ||A||_2
+        \]
+        Sia ora \(A \in \complexnumbers^{n \times m}\)
+        e \(m \geq 2\).
+        Notiamo che
+        \[
+            ||A||_2 = \max_{||x||_2 = 1} ||Ax||
+        \]
+        che oviamo essere il nostro \(\sigma_1\).
+        Essendo un massimo, ci deve essere un vettore che lo realizza.
+        Sia \(\hat x\) tale che \(||\hat x|| = 1\) e 
+        \(y = A\hat x\) con \(||y||_2 = ||A||_2\).
+        Definiamo quindi
+        \[
+            \hat V =
+            \left[
+                \begin{array}{c|c|c|c}
+                    & & & \\
+                    \hat x & s_2 & \cdots & s_m \\
+                    & & &
+                \end{array}
+            \right] \in \matrices_m(\complexnumbers)
+        \]
+        Costruiamo un'altra unitaria
+        \[
+            \hat U = \left[
+                \begin{array}{ccc}
+                    \frac{1}{||A||}y^* & & \\ \hline
+                    & t_2^* &  \\ \hline
+                    & \vdots & \\ \hline
+                    & t_n^* &
+                \end{array}
+            \right] \in \matrices_n(\complexnumbers)
+        \]
+        Studiamo quindi \begin{align*}
+            \hat U A \hat V
+            &= \hat U \left[
+                \begin{array}{c|c|c|c}
+                    & & & \\
+                    y & \hat s_2 & \cdots & \hat s_n \\
+                    & & &
+                \end{array}
+            \right]
+        \end{align*}
+        Ma eseguendo il prodotto troviamo
+        \[
+            \frac{1}{||A||}y^*y = \frac{||y||^2}{||A||^2} = ||A||
+        \]
+        quindi il primo elemento in testa è \(||A||\)
+        \[
+            \hat U A \hat V = \left[
+                \begin{array}{c|ccc}
+                    ||A|| &  & c^* & \\ \hline
+                    0 & & & \\
+                    \vdots & & \hat A & \\
+                    0 & & &
+                \end{array}
+            \right]
+        \]
+        Tuttavia non possiamo ancora applicare l'ipotesi induttiva.
+        Ricordiamo che \(||Pv||_2 = ||v||_2\) sempre per ogni \(P\) unitaria.
+        Ma allora, \begin{DispWithArrows*}
+            ||\hat U A \hat V||_2 &= \max_{||x||=1} ||\hat U A \hat Vx||_2 \Arrow{\(y = \hat Vx\)} \\
+            &= \max_{||y||_2 = 1} ||\hat H Ay||_2
+            = \max_{||y||_2 = 1} ||Ay||_2 = ||A||
+        \end{DispWithArrows*}
+        Vogliamo mostrare che \(c^*\) deve essere nullo.
+        Per mostrarlo scegliamo un vettore che lo mostra, denotando \(B = \hat U A \hat V\)
+        \begin{DispWithArrows*}
+            ||B||_2 &\geq
+            \left|\left|
+                B \begin{pmatrix}
+                    ||A||_2 \\ c
+                \end{pmatrix}
+            \right|\right|_2
+            \cdot \frac{1}{\left|\left|
+                \begin{pmatrix}
+                    ||A||_2 \\ c
+                \end{pmatrix}
+            \right|\right|} \\
+            &= \frac{1}{\sqrt{
+                 ||A||_2^2 + ||c||_2^2
+            }} \left|\left|
+                \begin{pmatrix}
+                    ||A||_2^2 + ||c||_2^2 \\
+                    \hat A c
+                \end{pmatrix}
+            \right|\right|_2 \Arrow{Minoriamo con \\ \(\hat A c = 0\)} \\
+            &\geq \left|\left|
+                \begin{pmatrix}
+                    ||A||_2^2 + ||c||_2^2 \\
+                    0 \\ \vdots \\ 0
+                \end{pmatrix}
+            \right|\right|_2 \\
+            &= \frac{
+                ||A|_2^2 + ||c||_2^2
+            }{
+                \sqrt{
+                    ||A||_2^2 + ||c||_2^2
+                }
+            } \\
+            &= \sqrt{||A||_2^2 + ||c||^2} \geq ||A||_2
+        \end{DispWithArrows*}
+        Ma se \(c\) avesse anche solo una componente non-nulla, allora avremmo
+        il segno maggiore stretto. Ma quindi, deve essere per forza \(c=0\).
+        Siccome \(c=0\), possiamo applicare l'ipotesi induttiva e segue il teorema
+        Allora scriviamo \[
+            \hat A = \tilde U \tilde \Sigma \tilde V
+        \]
+        con \(\tilde \Sigma_{1,1} \geq \tilde \Sigma_{2,2} \geq \cdots\).
+        Troviamo quindi
+        \begin{align*}
+            \hat U A \hat V &= \left[
+                \begin{array}{c|ccc}
+                    ||A||_2 & 0 & \cdots & 0 \\ \hline
+                    0 & & & \\
+                    \vdots & & \hat A & \\
+                    0 & & &
+                \end{array}
+            \right]
+            = \left[
+                \begin{array}{c|ccc}
+                    ||A||_2 & 0 & \cdots & 0 \\ \hline
+                    0 & & & \\
+                    \vdots & & \tilde U \tilde \Sigma \tilde V & \\
+                    0 & & &
+                \end{array}
+            \right] \\
+            &= \left[
+                \begin{array}{c|ccc}
+                    1 & 0 & \cdots & 0 \\ \hline
+                    0 & & & \\
+                    \vdots & & \tilde U& \\
+                    0 & & &
+                \end{array}
+            \right]
+            \left[
+                \begin{array}{c|ccc}
+                    ||A||_2 & 0 & \cdots & 0 \\ \hline
+                    0 & & & \\
+                    \vdots & & \tilde \Sigma & \\
+                    0 & & &
+                \end{array}
+            \right]
+            \left[
+                \begin{array}{c|ccc}
+                    1 & 0 & \cdots & 0 \\ \hline
+                    0 & & & \\
+                    \vdots & & \tilde V & \\
+                    0 & & &
+                \end{array}
+            \right] \\
+            A &= \underbrace{\hat U^* 
+            \left[
+                \begin{array}{c|ccc}
+                    1 & 0 & \cdots & 0 \\ \hline
+                    0 & & & \\
+                    \vdots & & \tilde U& \\
+                    0 & & &
+                \end{array}
+            \right]}_{U}
+            \underbrace{\left[
+                \begin{array}{c|ccc}
+                    ||A||_2 & 0 & \cdots & 0 \\ \hline
+                    0 & & & \\
+                    \vdots & & \tilde \Sigma & \\
+                    0 & & &
+                \end{array}
+            \right]}_{\Sigma}
+            \underbrace{\left[
+                \begin{array}{c|ccc}
+                    1 & 0 & \cdots & 0 \\ \hline
+                    0 & & & \\
+                    \vdots & & \tilde V & \\
+                    0 & & &
+                \end{array}
+            \right]
+            \hat V^*}_{V}
+        \end{align*}
+        che hanno la forma giusta e soddisfano tutte le proprietà per ipotesi induttiva-
+        \item \(n < m:\) Sia \(B = A^*\). Adesso possiamo utilizzare il primo caso
+        \[
+            B = A^* = U_B \Sigma_B V_B,
+            \quad \Sigma_B
+            = \operatorname{diag}(\sigma_1(B), \sigma_2(B), \cdots, \sigma_p(B), 0, \cdots, 0)
+        \]
+        Con le proprietà che
+        \[
+            \sigma_1(B) = ||B||_2
+            \geq \sigma_2(B) \geq \cdots \geq \sigma_p(B) > 0
+            = \sigma_{p+1}(B) = \cdots = \sigma_m(B)
+        \]
+        Riapplicando la trasposta coniugata otteniamo
+        \[
+            A = B^* = V_B^* \Sigma_B^T U_B^*
+        \]
+        dove \(V_B^*\) è unitaria in \(\matrices_n(\complexnumbers)\)
+        e \(U_B^*\) è unitaria in \(\matrices_m(\complexnumbers)\).
+        Scegliendo quindi \(U = V_B^*, \Sigma = \Sigma_B^T\) e \(V = U_B^*\),
+        troviamo la tesi se mostriamo anche le proprietà aggiuntive.
+        Sappiamo che \(p = \operatorname{rank}(B) = \operatorname{rank}(A)\)
+        e che \[
+            \sigma_1(B) = ||B||_2 = \sqrt{\rho(B^*B)} =
+            \sqrt{\rho(A A^*)} = \sqrt{\rho(A^*A)} 
+            = ||A||_2 = \sigma_1(A)
+        \]
+        usando la commutazione degli autovalori (gli zeri aggiuntivi nello spettro non ci interessano).
+    \end{itemize}
+\end{snippetproof}
+
+Nel caso normale, il modulo degli autovalori sono i valori singolari
+dopo averli ordinati.
 
 \pagebreak
 
