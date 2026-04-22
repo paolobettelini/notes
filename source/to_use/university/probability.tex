@@ -4775,6 +4775,280 @@ non è discreta, cioè non esiste \(D\) discreto tale che \(\mu(D) = 1\).
     \wrapfill
 \end{snippetnote}
 
+\subsection{Eventi impossibili e densità continue}
+
+Abbiamo visto che data una misura di probabilità su
+\((\realnumbers, \mathcal B(\realnumbers))\)
+e \(F_\mu\) la sua funzione di ripartizione se \(F_\mu \colon \realnumbers \fromto [0,1]\)
+è continua allora \[
+    \mu(\{x\}) = 0, \quad \forall x \in \realnumbers
+\]
+A differenza del caso discreto, la nozione di evento impossibile è più delicata.
+Per esempio, se vogliamo studiare la durata della vita di un macchinario,
+non siamo interessati a calcolare la probabilità che smetta di funzionare esattamente ad un certo istante.
+Siamo piuttosto interessati a misurare
+la probabilità che il macchinario funzioni per un certo intervallo temporale.
+
+\begin{snippetdefinition}{Misure assolutamente continue}
+    Sia \(\mu\) misura di probabilità su \((\realnumbers, \mathcal B(\realnumbers))\)
+    e \(F_\mu\) la sua funzione di ripartizione. Diciamo che \(\mu\)
+    è \emph{assolutamente continua risptto a Lebesgue}
+    se \(\exists f \colon \realnumbers \fromto [0,+\infty]\) tale che
+    valgono una delle seguenti due condizioni equivalenti:
+    \begin{enumerate}
+        \item \[
+            \mu((a,b)) = \integral[a][b][f(x)][x],
+            \quad \forall a,b \in \realnumbers \suchthat a < b
+        \]
+        \[
+            F_\mu(x) = \integral[-\infty][x][f(y)][y], \quad
+            \forall x \in \realnumbers
+        \]
+    \end{enumerate}
+\end{snippetdefinition}
+
+Le due condizioni sono equivalenti in quanto \(\mathcal B(\realnumbers)\)
+è generata sia dalle semirette
+che dagli intervalli. Queste sono anche equivalenti a
+\[
+    \mu(A) = \int_A f(x)\,dx, \quad \forall A \in \mathcal B(\realnumbers)
+\]
+Inoltre, \(f\) è unica a meno di insiemi di misura nulla rispetto a Lebesgue.
+Dal punto di vista della teoria della misura stiamo dicendo
+che \[
+    \int_A \d\mu(x) = \mu(A) = \int_A f(x)\,dx
+\]
+con abuso di notazioni \[
+    f(x) = \frac{d\mu(x)}{dx}
+\]
+\(f(x)\) è chiamata derivata di Radon-Nikodym di \(\mu\)
+rispetto alla misura di Lebesgue. Chiaramente questo è solo un senso che non ha senso puntualmente,
+è solo un simbolo poiché la relazione è rigorosa solo nel senso integrale.
+
+\begin{snippetdefinition}{}
+    Nelle notazioni del teorema precedente chiamiamo \(f\) \emph{densità di \(\mu\)}
+    e la indichiamo con \(f_n\).
+\end{snippetdefinition}
+
+Visto che la funzione di ripartizione determina univocamente la misura di probabilità,
+allora anche la densità la determina univocamente. Cioè, 
+se \(\mu\) e \(\gamma\) sono misure di probabilità assolutamente continue con
+densità \(f_\mu\) e \(f_\gamma\), allora \(f_\mu = f_\gamma\)
+quasi ovunque se e solo se \(\mu = \gamma\).
+
+\begin{snippetproposition}{Proprietà delle densità}
+    Sia \(\mu\) una misura di probabilità assolutamente continua con
+    funzione di ripartizione \(F_\mu\) e densità \(f_\mu\). Allora,
+    \begin{enumerate}
+        \item \(f_\mu \geq 0\) quasi ovunque;
+        \item \(f_\mu\) è integrabile rispetto a Lebesgue;
+        \item \[
+            \integral[-\infty][+\infty] f_n(x)\,d\mu = 1
+        \]
+        \item \(F_\mu\) è continua.
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Le proposizioni \((1)\) e \((2)\) seguono dal fatto che
+    \[
+        \integral[a][b][f(x)][x]
+        = \mu((a,b)) \in [0,1]
+    \]
+    Per la \((3)\), per definizione
+    \[
+        \integral[-\infty][+\infty][f_\mu(y)][y]
+        = \lim_{x\to \infty} \integral[-\infty][x][f_\mu(y)][y]
+        = \lim_{x \to \infty} F_\mu(x) = 1
+    \]
+    La \((4)\) segue dal teorema fondamentale del calcolo: visto che \(f\)
+    è integrabile su tutto \(\realnumbers\) e \[
+        F(x) = \integral[-\infty][x][f(y)][y]
+    \]
+    Per le proprietà base dell'integrazione \(F_\mu\) è continua.
+\end{snippetproof}
+
+\begin{snippettheorem}{}
+    Sia \(f \colon \realnumbers \fromto [0,+\infty)\) una densità, cioè
+    è integrabile e \[
+        \int_\realnumbers f(x)\,dx = 1
+    \]
+    Allora, \(\exists! \mu\) misura di probabilità assolutamente continua su
+    \((\realnumbers, \mathcal B(\realnumbers))\) tale che \(f_\mu = f\).
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Consideriamo la funzione \[
+        F(x) = \integral[-\infty][x][f(y)][y]
+    \]
+    Notiamo che:
+    \begin{enumerate}
+        \item \(F \colon \realnumbers \fromto [0,1]\) continua e quindi continua da destra
+        \item visto che \(f \geq 0\) quasi ovunque, allora \(F\)
+        è monotona non decrescente.
+        \item \[
+            \lim_{x \to \infty} F(x) = \integral[-\infty][\infty][f(x)][x] = 1
+        \]
+        \item \[
+            \lim_{x \to -\infty} F(x) = \lim_{x \to -\infty} \integral[-\infty][x][f(y)][y] = 0
+        \]
+    \end{enumerate}
+    Quindi, per uno degli ultimi teoremi, esiste unica
+    \(\mu\) misura di probabilità tale che \(F_\mu = F\).
+    Ma quindi, \[
+        F_\mu(x) = F(x) = \integral[-\infty][x][f(y)][y], \quad \forall x \in \realnumbers
+    \]
+    quindi per definizione di misura di probabilità assolutamente continua
+    \(\mu\) è assolutamente continua e \(f_\mu = f\).
+\end{snippetproof}
+
+Dalla definizione di assoluta continuità
+di una misura di probabilità \(\mu\),
+abbiamo che  \[
+    \mu((a,b)) = \integral[a][b][f_\mu(x)][x]
+\]
+è l'area sottesa da \(f_\mu\).
+Ciò è analogo a quando nel caso discreto facevamo la somma discreta.
+Cioè per esempio, la probabilità che qualcosa sia fra \(2\) e \(5\)
+è la somma delle probabilità che sia \(2,3,4,5\) come se fossero degli istogrammi.
+
+Se \(\gamma\) e \(\mu\) sono discrete con densità \(\rho_\gamma, \rho_\mu\)
+allora \[
+    \mu = \gamma \iff \rho_\gamma = \rho_\mu
+\]
+Se invece \(\gamma\) e \(\mu\) sono assolutamente continue con densità
+\(f_\gamma\) e \(f\mu\) allora
+\[
+    \mu = \gamma \iff f_\gamma = f_\mu
+\]
+quasi ovunque. Dunque, per definire una misura di probabilità su \(\realnumbers\)
+ci basta definire una funzione di ripartizione, oppure una densità
+o una denstià discreta.
+
+\begin{snippetexample}{Distribuzione esponenziale}
+    Consideriamo la funzione \[
+        f(x) = \lambda e^{-\lambda x} \chi_{[0,+\infty]}(x)
+    \]
+    Mostriamo che è una densità. Abbiamo che
+    \begin{align*}
+        \int_\realnumbers f(x)\,dx
+        = \left[
+            - e^{-\lambda x} \chi_{[0,+\infty)}(x)
+        \right]_\infty^\infty
+        = \left[
+            - e^{-\lambda x}
+        \right]_0^\infty
+        = 1
+    \end{align*}
+    Quindi, \(f\) è una densità.
+\end{snippetexample}
+
+La misura di probabilità che ha come densità \(\mu\)
+si chiama esponenziale di parametro \(\lambda\), e la indichiamo con
+\[
+    \mu = \text{exp}(\lambda), \quad \lambda > 0
+\]
+
+Questa distribuzione è spesso usata per modellizzare il tempo di vita di un macchinario.
+
+In questo caso la coda della misura di probabilità è data da
+\begin{align*}
+    \mu((x, +\infty)) &= 1 - \mu((-\infty, x])
+    = 1 - F(x) \\
+    &= 1 - \integral[0][x][\lambda e^{-\lambda y}][y] = e^{-\lambda x}
+\end{align*}
+con \(x > 0\),
+ossia la velocità di decadimento della coda. Questo valore rappresenta la probabilità che
+il macchinario viva oltre l'istante \(x\). Giustamente, più \(x\) è grande
+più questa probabilità è piccola.
+
+Sia \(\mu\) misura di probabilità su \((\realnumbers, \mathcal B(\realnumbers))\)
+e \(F_\mu\) funzione di ripartizione abbiamo già visto che se \(\mu\)
+è assolutamente continua, allora \(F_\mu\)
+è continua. Inoltre, se ladensità \(f_\mu\)
+è anch'essa continua, \(F_\mu\) saré \(\mathcal C^1\)
+per il teorema fondamentale del calcolo.
+Vale anche un viceversa.
+
+\begin{snippetproposition}{}
+    Sia \(\mu\) misura di probabilità su \((\realnumbers, \mathcal B(\realnumbers))\)
+    e \(F_\mu\) funzione di ripartizione di \(\mu\).
+    Se \(F_\mu\) è continua su tutto \(\realnumbers\)
+    e \(\mathcal C^1\) a meno di un numero finito di punti
+    (basterebbe \(\mathcal C^1\) a tratti),
+    allora \(\mu\)
+    è assolutamente continua con densità \[
+        f_\mu = F'_\mu
+    \]
+    quasi ovunque.
+    Si tolgono i punti in cui \(F_\mu\) non è derivabile.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Abbiamo \[
+        f(x) = \begin{cases}
+            F'(x) & F \text{ is } \mathcal C^1 \text{ in } x \\
+            0 & \text{otherwise}
+        \end{cases}
+    \]
+    Sappiamo che \(F_\mu\) è continua non decrescente, quindi \(A\)
+    è non negativa. Dal teorema fondamentale del calcolo
+    \[
+        \integral[-\infty][\infty][f(x)][x]
+        = \lim_{a \to -\infty} \lim_{b\to +\infty}
+        \integral[a][b][f(x)][x]
+        = \lim_{a \to -\infty} \lim_{b\to +\infty}
+        F(b) - F(a) = 1 - 0 = 1
+    \]
+    per le proprietà delle funzioni di ripartizione.
+    Quindi, \(f\) è una densità, e per il teorema precedente
+    \(\exists ! \tilde \mu\) tale che \(f_{\tilde \mu} = f\)
+    ma per definizione \[
+        F_{\tilde \mu} = F_\mu
+    \]
+    e quindi \(\tilde \mu = \mu\).
+    Quindi, \(\mu\) è assolutamente continua con densità
+    \(f_\mu = f\).
+\end{snippetproof}
+
+Come recap abbiamo visto che se \(\mu\) è una misura di probabilità
+su \((\realnumbers, \mathcal B(\realnumbers))\) con funzione di ripartizione \(F_\mu\), allora,
+\begin{enumerate}
+    \item \(F_\mu\) discontinua e costante a tratti se e solo se \(\mu\) discreta;
+    \item \(F_\mu\) continua implica \(\mu\) non discreta;
+    \item \(\mu\) assolutamente continua allora \(F_\mu\) continua;
+    \item \(F_\mu\) continua e \(\mathcal C^1\) a tratti implica \(\mu\) assolutamente continua.
+\end{enumerate}
+
+
+\begin{snippetexample}{\(F_\mu\) continua non implica assolutamente continua}
+    Il controesempio è una funzione cantoriana normalizzata.
+\end{snippetexample}
+
+\begin{snippettheorem}{Decomposizione di Lebesgue}
+    C'è un risultato generale che dice che \(\mu\)
+    può essere sempre decomposta
+    come \[
+        \mu = \alpha \mu_1 + \beta \mu_2 + \sigma \mu_3
+    \]
+    dove
+    \begin{enumerate}
+        \item \(\alpha + \beta + \sigma = 1\);
+        \item \(\mu_1\) misura di probabilità discreta;
+        \item \(\mu_2\) misura di probabilità assolutamente continua;
+        \item \(\mu_3\) misura di probabilità continua singoalare (o cantoriana),
+        cioè \(F_\mu\) è continua.
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetexample}{}
+    Consideriamo l'esempio del tempo di vita di un macchinario.
+    A volte si può tenere conto anche di eventuali difetti di fabbrica.
+    ... da fare settimana prossima.
+\end{snippetexample}
+
+
+
 \pagebreak
 
 \section{Esercizi}

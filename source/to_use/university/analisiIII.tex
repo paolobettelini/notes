@@ -1539,7 +1539,7 @@ Analogamente
         \left(
             \lim_n \sum_{i=1}^n f_i(x)
         \right)
-        \lim_n \left(
+        = \left(
             \lim_{x\to 1}\lim_n \sum_{i=1}^n f_i(x)
         \right)
     \]
@@ -5666,9 +5666,318 @@ Inoltre, siccome \(\overline I\) è compatto, \(F\) è uniformemente continuo.
     se \(A\) è un aperto reale?
 \end{snippetexercise}
 
+Sappiamo che se \(f\) è Riemann integrabile su \((a,b)\),
+allora la funzione integrale \(F\) è derivabile in tutti i punti in cui \(f\) è continua.
+Quindi, siccome \(f\) è continua quasi ovunque, \(F\) è derivabile quasi ovunque.
+Per le funzioni Lebesgue-integrabili, la questione è più delicata.
+
+\begin{snippettheorem}{}
+    Le funzioni integrali di funzioni integrabili secondo Lebesgue
+    sono quasi ovunque derivabili.
+\end{snippettheorem}
+
+Per questo tipo di considerazioni non è strettamente necessario che \(f\)
+stia in \(\mathcal L^1(I)\). Mi basta che sia localmente integrabile,
+quindi che per ogni punto del dominio di \(f\) esista un intorno dove la funzione è integrabile.
+
+\begin{snippetexample}{}
+    Consideriamo \(f(t) = \sfrac1t\) su \(I = (0,+\infty)\).
+    Per ogni \(x \in I\),
+    \[
+        F(x) = \integral[a][x][\frac1t][t]
+    \]
+    ha senso nonostante \(f \notin \mathcal L^1((0,+\infty))\)
+    ed p definita su \((0,+\infty)\).
+    In questo caso però non posso scegliere \(a \in \partial I\).
+    Se \(a = 0\), allora \(F(x)\) è definita solo in \(0\)
+    in quanto l'insieme ha misura nulla. Oppure, se \(a = +\infty\)
+    allora \(F(x)\) non è mai definita.
+\end{snippetexample}
 
 
+\begin{snippetdefinition}{Localmente integrabile}
+    Sia \(A \subseteq \realnumbers^n\) aperto, diciamo che \(f \in  \mathcal L^1_{\text{loc}}(A)\)
+    se \(\forall p \in A\) esiste un intorno \(U\) di \(p\) in cui \(f \in \mathcal L^1(U)\).
+\end{snippetdefinition}
 
+\begin{snippetexample}{}
+    Dimostrare che \(f\) è localmente integrabile se e solo se è integrabile su tutti i compatti
+    \(K\) contenuti in \(A\).
+\end{snippetexample}
+
+In generale, quando stiamo lavorando con una misura completa,
+per trattare qualsiasi aspetto degli integrali, non serve che la funzione sia definita dappertuto,
+ma basta che sia definita quasi ovunque. Infatti, possiamoe estendere
+tale funzione arbitrariamente senza cambiare l'integrale.
+
+Una funzione è quasi ovunque limitata se è limitata
+salvo che al più su di un insieme di misura nulla.
+
+\begin{snippetexample}{Funzione limitata qusiquasi ovunque}
+    Consideriamo \(\{q_n\}\) che enumera i razionali e definiamo
+    \(f(x) = 0\) se \(x \in realnumbers \difference \rationalnumbers\),
+    mentre \(f(q_n) = n\).
+    Chiaramenta tale funzione è quasi ovunque limitata
+    perché se togliamo i razionali otteniamo la funzione costante.
+\end{snippetexample}
+
+Diamo ora una definizione di supremum e infimum adatta per quando trattiamo di teoria della misura.
+
+\begin{snippetdefinition}{}
+    Si dice \emph{estremo superiore essenziale} di \(f\)
+    \[
+        \mu-\operatorname{ess sup} f
+        \triangleq \inf \{
+            k \in [-\infty, +\infty] \suchthat k \geq g \text{ almost everywhere }    
+        \}
+    \]
+\end{snippetdefinition}
+
+Cioè abbiamo preso l'infimum dei maggioranti di \(f\)
+a meno di un insieme di misura nulla.
+In realtà, questo infimum è un minimo.
+\begin{snippetexercise}{}
+    Dimostrare che l'infimum della definizione di sup essenziale è un minimo.
+    Cioè, esiste \(E\) tale che \(\mu(E) = 0\)
+    tale che \[
+        \restr{\sup f}{X \difference E} = \operatorname{ess sup} f
+    \]
+\end{snippetexercise}
+
+\begin{snippetexercise}{}
+    Consideriamo \[
+        f(x) = \sum_{n=1}^\infty \frac{\ln x}{n(nx^2 + 1)}
+    \]
+    Vediamo se \(f \in \mathcal L^1(\realnumbers^+)\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    Cominciamo studiando la convergenza puntuale.
+    Chiaramente deve essere \(x>0\), e infatti la funzione converge puntualmente
+    in \((0, +\infty)\) per confronto asintotico.
+    Vogliamo mostrare che la serie è continua.
+    La convergenza non può essere uniforme in tutto \((0,+\infty)\),
+    altrimenti la serie convergerebbe puntualmente anche in \(x=0\),
+    che non è vero. Tuttavia, la continuità è una proprietà locale,
+    quindi ci basta che la funzione converge localmente uniformemente.
+    Consideriamo \begin{align*}
+        \left|
+            \frac{\ln x}{n(nx^2 + 1)}
+        \right|
+        &\leq \left|
+            \frac{\ln x}{n^2 x^2}
+        \right|
+    \end{align*}
+    Consideriamo l'intervallo \([a,+\infty]\).
+    Su tale intervallo, \(\sfrac{|\ln x|}{x^2} \leq K_a\). Quindi,
+    \[
+        \left|f_n(x)|\right| \leq \frac{K_a}{n^2}
+    \]
+    Quindi, abbiamo convergenza totale (e quindi uniforme) su \([a,+\infty]\).
+    Quindi \(f\) è continua, e quindi misurabile. Parliamo ora dell'integrabilità.
+    Spezziamo l'integrale e consideriamo la parte \((1, +\infty)\).
+    Tutte le \(f_n\) sono misurabili e positive, quindi per il teorema di integrazione per serie
+    ci basta calcolare l'integrale di queste e poi usare il limite.
+    Abbiamo che \begin{align*}
+        \integral[1][+\infty][f_n][x]
+        &\leq \frac{1}{n^2} \integral[1][\infty][\frac{\ln x}{x^2}][x]
+    \end{align*}
+    e questo integrale converge.
+    Quindi, \[
+        \sum \int f_n \leq \sum \frac{1}{n^2} \int f_n < +\infty
+    \]
+    Dobbiamo quindi studiare l'integrale
+    in \((0,1)\). In questo intervallo le funzioni sono positive,
+    quindi possiamo comunque considerarle con un meno davanti e usare gli stessi criteri.
+    Abbiamo \begin{align*}
+        \integral[0][1][\frac{\ln x}{n(nx^2 + 1)}][x]
+        &= \frac1{n\sqrt{n}} \left\{
+            \cancelto{0}{\left[
+                \ln x \arctan(\sqrt{n}x)
+            \right]^1_0} - \integral[0][1][
+                \frac{\arctan (\sqrt{n}x)}{x}
+            ][x]
+        \right\} \\
+        &= - \frac{1}{n\sqrt n} \integral[0][1][
+            \frac{\arctan (\sqrt nx)}{x}
+        ][x]
+    \end{align*}
+    Se usiamo la maggiorazione \(\arctan(\sqrt nx) \leq \sqrt nx\)
+    la serie poi non convergerà più. Quindi, questa maggiorazione la usiamo solamente vicino all'origine,
+    quindi spezziamo l'integrale, e nell'altro integrale maggioriamo l'arcotangente con
+    \(\sfrac\pi 2\). Scegliendo \(x = \sfrac{1}{\sqrt n}\) come punto di spezzamento otteniamo
+    \begin{align*}
+        - \frac{1}{n\sqrt n} \integral[0][1][
+            \frac{\arctan (\sqrt nx)}{x}
+        ][x]
+        &= -\frac{1}{n\sqrt n} \left[
+            \integral[0][\sfrac1{\sqrt n}][
+                \frac{\arctan(\sqrt nx)}{x}
+            ][x]
+            +
+            \integral[\sfrac1{\sqrt n}][1][
+                \frac{\arctan(\sqrt nx)}{x}
+            ][x]
+        \right] \\
+        &\leq - \frac{1}{n\sqrt n} \left[
+            \integral[0][\sfrac1{\sqrt n}][
+                \sqrt n
+            ][x]
+            +
+            \integral[\sfrac1{\sqrt n}][1][
+                \frac{\pi}{2x}
+            ][x]
+        \right] \\
+        &= - \frac{1}{n\sqrt n} \left[
+            \frac{1}{\sqrt n} \cdot \sqrt n + \frac{\pi}{2}
+            \left(- \log\frac{1}{\sqrt n}\right)
+        \right] \\
+        &= - \frac{1}{n\sqrt{n}} \left[
+            1 + \frac{\pi}{2} \log \sqrt n
+        \right]
+    \end{align*}
+    che converge, quindi \(f \in \mathcal L^1(\realnumbers^+)\).
+    Abbiamo scelto il punto \(x = \sfrac{1}{\sqrt n}\)
+    per non rompere la convergenza della serie, cioè in maniera tale che uscisse \(1\)
+    e non distruggessimo il termine che fa convergere la serie.
+\end{snippetsolution}
+
+\subsection{Integrali dipendenti da un parametro}
+
+Consideriamo funzioni del tipo \[
+    F(x) = \int_E f(t,x)\,dt
+\]
+dove \(E\) è uno spazio misurabile in \(\realnumbers^n\)
+e \(x \in A \subseteq \realnumbers^m\) aperto.
+Quindi, \(f \colon E \cartesianprod A \fromto \realnumbers\).
+Chiaramente, richiediamo che \(f(-, x) \in \mathcal L^1(E)\).
+
+Sapendo che \(f\) è continua, possiamo dedurre che \(F\) è continua? No.
+
+\begin{snippetexample}{}
+    Consideriamo \(E = (0,+\infty)\) e \[
+        F(x) = \integral[0][+\infty][\frac{x}{1 + t^2x^2}][t]
+    \]
+    e \(A = (-\infty, +\infty)\).
+    Chiaramente \(f\) è continua, anzi liscia.
+    Notiamo che \(F(0) = 0\). Sia ora \(x>0\). Allora,
+    \[
+        F(x) = \left[
+            \arctan(tx)
+        \right]_0^\infty = \frac\pi2
+    \]
+    Quindi \(F\) non è continua.
+\end{snippetexample}
+
+Quello che necessitiamo è che
+\[
+    \lim_{x\to x_0} F(x) = F(x_0)
+\]
+Ci viene comodo pensarlo come limite di successione \(\{x_n\} \subseteq A\)
+tale che \(\{x_n\} \to x_0\). Allora abbiamo l'integrale di una successione di funzioni
+\[
+    F(x_n) = \int_E f(t,x)\,dt
+\]
+Supponiamo che \(f(t_0, -)\) sia continua in \(x_0\)
+per ogni \(t_0 \in E\) quasi ovunque.
+Vorrei che \[
+    \lim_n F(x_n) = \int_E \lim_n f(t, x_0)\,d
+    = \int_E f(t,x_0)\,dt = F(x_0)
+\]
+Se riuscissimo a dominare tutte le \(f_n\) cioè \(f(t, x_n)\),
+allora il tutto funziona per il teorema della convergenza dominata.
+Chiediamo quindi che \(\exists g \in \mathcal L^1(E)\) tale che
+\[
+    |f(t,x)| \leq g(t)
+\]
+per quasi tutti i \(t \in E\) e \(\forall x \in \mathcal U(x)\).
+A questo punto, \(f(t, x_n) \to f(t,x_0)\) puntualmente e per il teorema della convergenza
+dominata, \(F\) è continua.
+
+\begin{snippettheorem}{}
+    Sia \(E \subseteq \realnumbers^n\) misurabile, \(A \subseteq \realnumbers^m\)
+    aperto, \(f \colon E \cartesianprod A \fromto \realnumbers\) e \[
+        F(x) \triangleq \int_E f(t,x)\,dt
+    \]
+    Se \(f(t, -)\) è continua in \(x_0\) per quasi ogni \(t\)
+    in \(E\) e se \(\exists g \in \mathcal L^1(E)\) tale che
+    \[
+        |f(t,x)| \leq g(t)
+    \]
+    per quasi ogni \(t \in E\) e per ogni \(x \in \mathcal U(x)\),
+    allora \(F\) è continua in \(x_0\).
+\end{snippettheorem}
+
+\begin{snippetcorollary}{}
+    In particolare, se \(f\) è continua su \(E \cartesianprod A\),
+    allora \(F\) è automaticamente continua in \(A\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{}
+    Siccome \(f\) è continua su un compatto è limitata da una costante che è
+    \(\mathcal L^1\).
+\end{snippetproof}
+
+Nel file di analisi 2 della derivazione sotto il segno di integrale c'è il medesimo
+teorema ma nel caso dell'integrale di Riemann.
+
+In generale, l'integrale di Lebesgue
+ci permette di avere un passaggio al limite più agevole.
+Il fatto che questo integrale possa integrare più funzioni è in realtà quasi un difetto in quanto
+aumenta la patologia.
+
+Per la continuità abbiamo appena visto un risultato puntuale,
+mentre con la differenziabilità avremo un risultato locale.
+
+Sia \(A \subseteq \realnumbers\) e \[
+    F(x) = \int_E f(t,x)\,dt
+\]
+Vogliamo calcolare \(F'(x_0)\), quindi vogliamo calcolare il rapporto incrementale
+\[
+    \lim_{h\to 0} \frac{F(x_0 + h)-F(x_0)}{h}
+    = \lim_{h\to 0} \int_E \frac{f(t,x_0 + h)-f(t,x_0)}{h}\,dt
+\]
+Passiamo ad una successione, quindi sia \(\{h_n\}\) una successione tale che \(\{h_n\} \to 0\), 
+e quindi vogliamo calcolare
+\[
+    \lim_n \int_E \frac{f(t, x_0 + h_n) - f(t, x_0)}{h_n}\,dt
+\]
+Vorremo poter portare il limite dentro l'integrale, quindi ci serve dominare la derivata
+\[
+    \left|
+        \frac{\partial f}{\partial x}(t,x)
+    \right| \leq g(t) \in \mathcal L^1(E)
+\]
+
+Questo lo si può fare su \(\realnumbers^m\),
+ma lo facciamo su \(\realnumbers\) per semplicità.
+
+\begin{snippettheorem}{}
+    Sia \(E \subseteq \realnumbers^n\) misurabile, \(A \subseteq \realnumbers\)
+    aperto.
+    Sia \(f \colon E \cartesianprod A \fromto \realnumbers\) tale che
+    \[
+        \exists \frac{\partial f}{\partial x}(t,x), \quad \forall x \in \mathcal U(x_0)
+    \]
+    ed \(f\) è integrabile per \(x\) fissato, e
+    tale che \(\exists g \in \mathcal L^1(E)\) tale che
+    \[
+        \left|
+            \frac{\partial f}{\partial x}(t,x)
+        \right| \leq g(t) \in \mathcal L^1(E)
+    \]
+    quasi ovunque. Allora,
+    \[
+        \exists F'(x) = \int_E \frac{\partial f}{\partial x}(t,x)\,dt,
+        \quad \forall x \in \mathcal U(x_0)
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Notiamo che ci serve che la derivata di \(f\) sia misurabile.
+    Ma essendo \(f\) misurabile, il suo rapporto incrementale è composizione di funzioni misurabili,
+    che è misurabili, e il suo limite rimane una funzione misurabile.
+\end{snippetproof}
 
 
 
