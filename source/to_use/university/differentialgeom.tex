@@ -4739,20 +4739,29 @@ di grado \(k\).
 \begin{snippetdefinition}{}
     Consideriamo l'ideale bilatero
     \(a\) generato dagli elementi
-    \(\cdots \otimes v \otimes \cdots \otimes v \cdots\)
+    \(v \otimes \cdots \otimes v\)
     con \(v \in V\). Allora definiamo \[
         \bigwedge^\circ \triangleq \frac{
             \text{Tensori di } V
         }{
             \left(
-                \cdots \otimes v \otimes \cdots \otimes v \cdots
+                v \otimes \cdots \otimes v
             \right)
         }
         = \bigoplus_{k \geq 0} \bigwedge^k V
     \]
 \end{snippetdefinition}
 
-con le proprietà:
+L'idea è quella di quozientare tutti i prodotti che sono nulli
+se due elementi sono uguali, proprio i  wedge.
+Serve un ideale bilatero perché vogliamo che questa relazione resti vera anche
+quando moltiplichi a sinistra o a destra per altri tensori.
+
+Gli elementi \(v \otimes \cdots \otimes v\)
+possono essere scritti \(v \otimes t \otimes v\)
+con \(t\) tensore arbitrario.
+
+Abbiamo le proprietà:
 \begin{enumerate}
     \item \(\bigwedge^\circ V\) è generato dai singoli
     \(v_1 \wedge \cdots \wedge v_k\), \(v_i \in V, k \in \naturalnumbers\);
@@ -4762,9 +4771,460 @@ con le proprietà:
         v_1 \wedge \cdots \wedge v_i \wedge v_j \wedge \cdots \wedge v_k
         = - v_1 \wedge \cdots \wedge v_j \wedge v_i \wedge \cdots \wedge v_k
     \]
+    Più in generale lo stesso vale con una permutazione
+    \[
+        v_{\sigma(1)}
+        \wedge \cdots \wedge v_{\sigma(k)}
+        = \operatorname{sign}(\sigma) v_1 \wedge \cdots \wedge v_k
+    \]
+    dove \(\operatorname{sign}(\sigma)\) si scrive spesso \((-1)^\sigma\).
 \end{enumerate}
 \(v_1 \wedge \cdots \wedge v_k\)
 è la classe di \(v_1 \otimes \cdots \otimes v_k\)
 modulo \(a\).
+
+\begin{snippetproposition}{}
+    Se \(\mathbb K\) contiene \(\naturalnumbers\)
+    come sotto anello, cioè \(\operatorname{char}(\mathbb K) = 0\),
+    allora esiste inclusione di \(\mathbb K\)-spazio vettoriali
+    \[
+        \alpha \colon \bigwedge^\circ V \fromto
+        T^\circ V
+    \]
+    definita sui generatori \(v_1 \wedge \cdots \wedge v_k\)
+    di \(\bigwedge^\circ V\) come segue:
+    \[
+        \alpha(v_1 \wedge \cdots \wedge v_k)
+        = \frac{1}{k!} \sum_{\sigma \in S_k} (-1)^\sigma v_{\sigma(1)}
+        \otimes \cdots \otimes v_{\sigma(k)}
+    \]
+    Si ha \(\pi \circ \alpha = \operatorname{id}_{\bigwedge^\circ V}\)
+    dove \[
+        \pi \colon T^\circ V \fromto \bigwedge^\circ V
+    \]
+    è la proiezione canonica.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    È sufficiente provare che \(\pi \circ \alpha = \operatorname{id}_{\bigwedge^\circ V}\)
+    perché ciò assicura anche l'iniettività di \(\alpha\).
+    In effetti, sui generatori abbiamo
+    \begin{align*}
+        \pi\left(
+            \alpha(v_1 \wedge \cdots \wedge v_k)
+        \right) &= \pi\left(
+            \frac{1}{k!} \sum_{\sigma \in S^k}
+            (-1)^\sigma v_{\sigma(1)} \wedge \cdots \wedge v_{\sigma(k)}
+        \right) \\
+        &= \frac{1}{k!} \sum_{\sigma \in S^k}
+        (-1)^\sigma (-1)^\sigma v_1 \wedge \cdots \wedge v_k \\
+        &= \frac{1}{k!} k! v_1 \wedge \cdots \wedge v_k
+        = v_1 \wedge \cdots \wedge v_k 
+    \end{align*}
+\end{snippetproof}
+
+Applicando la proposizione, in particolare ad
+\[
+    \alpha \bigwedge^n V^* \fromto V^* \otimes \cdots \otimes V^*
+\]
+dove \(V^*\) è lo spazio vettoriale duale e \(n = \dim V\).
+Se \(w_1, \cdots, w_n\) è una base del duale di \(v_1, \cdots, v_n\)
+base di \(V\), allora
+\[
+    \alpha(w_1 \wedge \cdots \wedge w_n)
+    = \frac{1}{n!} \sum_{\sigma \in S^n} (-1)^\sigma w_\sigma(1) \otimes \cdots \otimes w_{\sigma(n)}
+\]
+
+\begin{snippetlemma}{}
+    \(V^* \otimes \cdots \otimes V^*\)
+    è il duale di \(V \otimes \cdots \otimes V\)
+    tramite l'accoppiamento indotto da
+    \[
+        \omega_1' \otimes \cdots \otimes \omega_n'
+        \left(
+            v_1' \otimes \cdots \otimes v_n'
+        \right)
+        = \omega_1'(v_1') \cdots \omega_n'(v_n')
+    \]
+\end{snippetlemma}
+
+\begin{snippetproof}{}
+    Facile usando le basi duali di \(V\) e \(V^*\).
+\end{snippetproof}
+
+\begin{snippetlemma}{}
+    Sia \(\alpha(\omega_1 \wedge \cdots \omega_n)\)
+    definita come sopra, si annulla come forma lineare
+    su \(V \otimes \cdots \otimes V\),
+    su ogni elemento dell'ideale
+    \(a\), dunque induce una forma lineare
+    su \[
+        \bigwedge^n V = \frac{V^{\otimes n}}{a \intersection V^{\otimes n}}
+    \]
+    tale che \[
+        \alpha(\omega_1 \wedge \cdots \wedge \omega_n)
+        (v_1 \wedge \cdots \wedge v_n) = \frac{1}{n!}
+    \]
+\end{snippetlemma}
+
+\begin{snippetproof}{}
+    Abbiamo che
+    \[
+        \alpha(\omega_1 \wedge \cdots \wedge \omega_n)
+        = \frac{1}{n!} \sum_{\sigma \in S^n}
+        (-1)^\sigma \omega_{\sigma(1)} \wedge \cdots \wedge \omega_{\sigma(n)}
+    \]
+    è antisimmetrica, quindi si annulla su ogni generatore
+    \[
+        \xi \otimes v \otimes t \otimes v \otimes \mu \in a \intersection V^{\otimes n}
+    \]
+    che sono i generatori come spazio vettoriale, abbiamo moltiplicato per tensori a destra e sinistra. 
+    E questo quindi si annulla su \(a \intersection V^{\otimes n}\)
+    cioè \(\alpha(\omega_1 \wedge \cdots \wedge \omega_n)\) identificata con
+    \[
+        \omega_1 \wedge \cdots \wedge \omega_n
+        \in \bigwedge^n V^*
+    \]
+    Induce una forma lineare sul quoziente \[
+        \bigwedge^n V = \frac{V^{\otimes n}}{a \intersection V^{\otimes n}}
+    \]
+    calcolata come segue sul generatore \(v_1 \wedge \cdots \wedge v_n
+    = \pi(v_1 \otimes \cdots \otimes v_n)\) \begin{align*}
+        (\omega_1 \wedge \cdots \wedge \omega_k)
+        (v_1 \wedge \cdots \wedge v_n)
+        &= \alpha(\omega_1 \wedge \cdots \wedge \omega_n)
+        (v_1 \otimes \cdots \otimes v_n) \\
+        &= \frac{1}{n!} \sum_\sigma (-1)^\sigma
+        \left(
+            \omega_{\sigma(1)} \otimes \cdots \otimes \omega_{\sigma(n)}
+        \right)
+        \left(
+            v_1 \otimes \cdots \times v_n
+        \right) \\
+        &= \frac{1}{n!} \sum_\sigma (-1)^{\sigma}
+        \omega_{\sigma(1)}(v_1) \cdots \omega_{\sigma(n)}(v_n) \\
+        &= \frac{1}{n!} \underbrace{\omega_1(v_1)}_{1} \cdots
+        \underbrace{\omega_n(v_n)}_{1} = \frac{1}{n!}
+    \end{align*}
+    usando \(\omega_j(v_i) = \delta_{i,j}\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{}
+    Lo spazio \[
+        \bigwedge^n V  = \mathcal L(v_1 \wedge \cdots \wedge v_n)
+    \]
+    ha dimensione 1. Il suo duale è \[
+        \bigwedge^n V^*
+    \]
+    Inoltre, la mappa bilineare indotta dal prodotto wedge
+    \[
+        \bigwedge^k V \times \bigwedge^{n-k} V
+        \fromto \bigwedge^n V \cong K
+    \]
+    indotta da \[
+        (u_1 \wedge \cdots \wedge u_k,
+        u_{k+1} \wedge \cdots \wedge v_n) \mapsto u_1 \wedge \cdots \wedge u_n
+    \]
+    sui generatori, è un accoppiamento perfetto, cioè
+    bilineare non degenere (cosa vuol dire?) e identifica \[
+        \bigwedge^{n-k} V \cong \bigwedge^k V^*
+    \]
+    una volta scelto isomorfismo \(\bigwedge V^n V \cong K\)
+    (dipendente dalla scelta della base \(v_1 \wedge \cdots \wedge v_n\) per \(\bigwedge^n V\)).
+\end{snippetcorollary}
+
+\begin{snippetproof}{Cenno di dimostrazione}
+    Usando generatori
+    \(v_{i_1} \wedge \cdots \wedge v_{i_k}\)
+    e \(v_{k+1} \wedge \cdots \wedge v_{n-k}\)
+    di \(\bigwedge^n V\) e \(\bigwedge^{n-k} V\) rispettivamente, 
+    troviamo che \(v_I \wedge v_J \neq 0\)
+    se e solo se \(I \union J = \{1, \cdots, n\}\)
+    cioè \(I = (i_1 < \cdots < i_k)\)
+    e \(J = (j_{k+1} < \cdots < j_n)\)
+    sono tali che \(i_1, \cdots, i_j, j_{k+1}, \cdots, j_n\)
+    è permutazione di \(\{1, \cdots, n\}\).
+    Quindi, \begin{align*}
+        &\left\{
+            v_I \suchthat I = i_1 < \cdots < i_k
+        \right\} \\
+        &\left\{
+            v_J \suchthat J = j_{k+1} < \cdots < j_n
+        \right\}
+    \end{align*}
+    sono non solo insiemi di generatori per \(\bigwedge^k V\)
+    e \(\bigwedge^{n-k} V\), ma sono anche basi fra loro duali rispetto
+    all'accoppiamento di sopra (da dimostrare per esercizio).
+    Da questo segue pure che l'accoppiameto è non degenere.
+\end{snippetproof}
+
+\begin{snippetcorollary}{}
+    \[
+        \dim \bigwedge^k V = \binom{n}{k}
+    \]
+    essendo \(v_{i_1} \wedge \cdots \wedge v_{i,k}\)
+    con \(i_1 < \cdots < i_n\)
+    base per \(\bigwedge^k V\).
+\end{snippetcorollary}
+
+Abbiamo quindi la struttura \begin{align*}
+    \bigwedge^0 V &\cong \mathbb K \\
+    \bigwedge^1 V &\cong V \cong \mathbb K^n \\
+    \bigwedge^2 V &\cong \mathbb K^{\binom{n}{2}} \\
+    &\vdots \\
+    \bigwedge^n V &\cong \mathbb K
+\end{align*}
+Le dimensioni delle componenti sono simmetriche rispetto al centro.
+In effetti, \[
+    \bigwedge^{n-k} V \cong \left(\bigwedge^k V\right)^*
+\]
+
+\subsection{Forme differenziali}
+
+\begin{snippetdefinition}{\(k\)-forme puntuali}
+    Posto \(V = T_{X,x}\),
+    allora \[
+        \bigwedge^k V^* = \bigwedge^k T_{X,x}^*
+    \]
+    è detto \emph{lo spazio delle \(k\)-forme in \(x\) su \(X\)}.
+\end{snippetdefinition}
+
+Data una base \(\partial_1, \cdots, \partial_n\) di \(T_{X,x}\)
+associata a una carta \(\varphi\), cioè
+\[
+    \partial_i = \text d\varphi \left(\frac{\partial}{\partial x_i}\right)    
+\]
+allora denotiamo \(\text dx_1, \cdots, \text dx_n\)
+la sua base duale e troviamo che ogni \(k\)-forma in \(x\)
+si può scrivere \[
+    \omega = \sum_{I = i_1 < \cdots < i_k} \lambda_I \text dx_{i_1} \wedge \cdots \wedge \text dx_{i_k}
+\]
+con \[
+    \lambda_I = \lambda_{i_1, \cdots, i_k} \in \realnumbers
+\]
+
+\begin{snippetdefinition}{\(k\)-forma}
+    Per ogni \(x \in X\)
+    di una \(k\)-forma \[
+        \omega_x \in \bigwedge^k T_{X,x}^*
+    \]
+    che vari con la classe \(\mathcal C^\infty\)
+    con \(x\).
+\end{snippetdefinition}
+
+Cioè che rispetto ad una scelta di base come sopra,
+\[
+    \omega(x) = \sum_I \lambda_I(x) \text dx_{i_1} \wedge \cdots \wedge \text dx_{i_k}
+\]
+con \(\lambda_I(x)\)
+con funzione \(\mathcal C^\infty\).
+
+\subsection{Funtorialità delle \(k\)-forme}
+
+\begin{snippetdefinition}{Pullback}
+    Data \(F \colon X \fromto Y\) e \[
+        \left(\text dF\right)_x \colon T_{X,x} \fromto T_{Y,F(y)}
+    \]
+    il suo differenziale, allora se ne deduce \[
+        F_x^* = T_{Y, F(x)}^* \fromto T_{X,x}^*
+    \]
+    con \[
+        F_x^* \triangleq \left(
+            \text dF
+        \right)_x^T
+    \]
+    e piu in generale
+    \[
+        F_x^* \colon \bigwedge^k T_{Y,F(x)}^* \fromto \bigwedge^k T_{X,x}^*
+    \]
+    è una mappa indotta sulla \(k\)-forme puntuali così definita:
+    data \[
+        \omega \in \bigwedge^l T_{Y,F(x)}, \quad
+        \omega = \omega_1 \wedge \cdots \wedge \omega_k
+    \]
+    con \(\omega\) fra i generatori di \(\bigwedge^k T^*\),
+    definiamo
+    \[
+        F_x^*(\omega_1 \wedge \cdots \wedge \omega_k)
+        \triangleq F_x^*(\omega_1) \wedge \cdots \wedge F_x^*(\omega_k)
+    \]
+    dove \[
+        F_x^*(\omega_i) \in T_{X,x}^*
+    \]
+    sono definita da \[
+        F_x^*(\omega_i)(v) = \omega\left(
+            \left(\text dF\right)_x(v)
+        \right)
+    \]
+    Se \(\omega\) è una \(k\)-forma su \(Y\) definiamo
+    \[
+        F^*(\omega)(x) = F_x^*(\omega(F(x))), \quad \forall x \in X
+    \]
+    %per un generatore \[
+    %    v_1 \wedge \cdots \wedge v_k \in \bigwedge^k T_{X,x}
+    %\]
+\end{snippetdefinition}
+
+Cioè le \(k\)-forme vanno all'indietro.
+
+\begin{snippetexample}{Pullback}
+    Sia \(\Phi \colon \realnumbers^n \fromto \realnumbers^n\),
+    allora \(\text d\Phi = J(\Phi)\) rispetto alle basi canoniche e scriviamo
+    \(\Phi(x) = (\Phi_1(x), \cdots, \Phi_n(x))\).
+    Dato un oggetto della forma \[
+        \omega = f \text dy_1 \wedge \cdots \wedge \text dy_n
+    \]
+    Allora \begin{align*}
+        \Phi^* \omega
+        &= \left(
+            f \circ \Phi
+        \right)(x) \text d\Phi_1 \wedge \cdots \wedge \text d\Phi_n \\
+        &= (f \circ \Phi)(x) \cdot \det J(\Phi) \text dx_1 \wedge \cdots \wedge \text dx_n
+    \end{align*}
+\end{snippetexample}
+
+\begin{snippetproof}{}
+    Il pullback \(\Phi^* \omega\) è compatibile
+    con il prodotto esterno \[
+        \Phi^*(\xi \wedge \eta) = \Phi^*(\xi)
+        \wedge \Phi^*(\eta)
+    \]
+    cioè segue dalla definizione
+    \[
+        \Phi^*(\omega_1 \wedge \cdots \wedge \omega_k)(v_1 \wedge \cdots \wedge v_k)
+        = (\omega_1 \wedge \cdots \wedge \omega_k)
+        \left(
+            \text d\Phi(v_1) \wedge \cdots \wedge \text d\Phi(v_k)
+        \right)
+    \]
+    è compatibile ocn il prodotto esterno per definizione
+    \[
+        \Phi^*(\xi \wedge \eta)
+        = \Phi^*(\xi) \wedge \Phi^*(\eta)
+    \]
+    Se avessimo usato la definizione più generale (?)
+    avremmo dovuto fare qualcosa di più (qualcosa che centra con la shuffle permutation boh).
+    Abiamo quindi
+    \begin{align*}
+        \Phi^*(f \text dy_1 \wedge \cdots \wedge \text y_n)
+        &= \Phi^*(f) \Phi^*(\text dy_1) \wedge \cdots \wedge \Phi^*(\text dy_n) \\
+        &= \left(f \circ \Phi\right)
+        \Phi^*(\text dy_1) \wedge \cdots \wedge \Phi^*(\text dy_n) \\
+        \Phi^*(\text dy_i)\left(\frac{\partial}{\partial x_j}\right)
+        &= \left(\text dy_i\right)\left((\text d\Phi)\left(\frac{\partial}{\partial_j}\right)\right) \\
+        &= \text dy_i \left(
+            \sum_k \frac{\partial \Phi_k}{\partial x_j} \frac{\partial}{\partial y_k}
+        \right),\quad \text dy_i, \frac{\partial}{\partial y_k} \text{ duali} \\
+    \end{align*}
+    Dunque \[
+        \Phi^*(\text dy_i) = \sum_j \frac{\partial \Phi_i}{\partial x_j} \text dx_j = \text d\Phi_i
+    \]
+    Quindi troviamo, notando che nei prodotti wedge sopravvivono solo quelli senza doppioni
+    \begin{align*}
+        \Phi^*(f \text dy_1 \wedge \cdots \wedge \text dy_n)
+        &= (f \circ \Phi) \text d\Phi_1 \wedge \cdots \wedge \text d\Phi_n \\
+        &= (f \circ \Phi) \sum_{i_1 \cdots i_n} \frac{\partial \Phi_1}{\partial x_{i_1}} \text dx_{i_1}
+        \wedge \frac{\partial \Phi_2}{\partial x_{i_2}} \text dx_{i_2} \wedge \cdots \wedge
+        \frac{\partial \Phi_n}{\partial x_{i_n}}\text dx_{i_n} \\
+        &= (f \circ \Phi) \cdot \det J(\Phi) \cdot \text dx_1 \wedge \cdots \wedge \text dx_n
+    \end{align*}
+\end{snippetproof}
+
+La teoria del determinante la si può fare sui prodotti wedge e l'abbiamo data per scontata
+in tutti questi capitoli.
+
+\begin{snippetdefinition}{Differenziale esterno}
+    Data una \(1\)-forma \(\omega\) su \(X\)
+    definiamo \(\text d\omega\) come segue:
+    se localmente \[
+        \omega = \sum f_i \text dx_i
+    \]
+    allora \[
+        \text d\omega \triangleq \sum \frac{\partial f_i}{\partial x_k} \text dx_k
+    \]
+    Se invece \(\omega\) è una \(k\)-forma localmente scritta come
+    \[
+        \omega = \sum f_i \text dx_{i_1} \wedge \cdots \wedge \text dx_{i_k}
+    \]
+    Allora definiamo
+    \[
+        \text d\omega = \sum \text f_i \wedge \text dx_{i_1}
+        \wedge \cdots \wedge \text dx_{i_k}
+    \]
+\end{snippetdefinition}
+
+Queste definizioni non dipendono dalla scelta di coordinate locali.
+Infatti si trova la seguente proposizione
+
+\begin{snippetproposition}{}
+    Per \(f \in \mathcal C^\infty(X)\) una funzione cioè \(0\)-forma,
+    cioè funzione \(\mathcal C^\infty\) si ha
+    \[
+        \left(\text df\right)(\xi) = \xi(f)
+    \]
+    per ogni \(\xi\) campo vettoriale su \(x\).
+    Per una \(\omega\) che è una \(1\)-forma si ha
+    \[
+        \left(\text d\omega\right)(\xi \wedge \eta)
+        = \omega\left(
+            [\xi, \eta]
+        \right)
+    \]
+    con il prodotto di Lie. Si estende la definizione ponendo
+    \[
+        \text d\left(
+            \omega_1 \wedge \omega_2
+        \right)
+        = \left(
+            text d \omega_1
+        \right)
+        \wedge \omega_2
+        + (-1)
+        \omega_1 \wedge \left(\text d\omega_2\right)
+    \]
+\end{snippetproposition}
+
+Dimostrazione per fortuna omessa.
+
+\begin{snippetproposition}{Compatibilità con il pullback}
+    Sia \(F \colon X \fromto Y\)
+    e data una \(\omega\) \(k\)-forma (siamo nella categoria \(\mathcal C^\infty\)),
+    allora \[
+        F^*(\text d\omega) = \text d F^*\omega .
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    È sufficientemente mostrarlo sulle \(0,1\)-forme. Abbiamo per le \(0\)-forme
+    \begin{align*}
+        F^*(\text df)(\xi)
+        &= \text df(\text dF(\xi))
+        = \left(\text dF\right)(\xi)(f) \\
+        &= \xi(f \circ F) = \xi(F^*(f))
+    \end{align*}
+    e quindi, per definizione di \(\text d(f \circ F)\),
+    \[
+        \text dF^*(f) = \text d \left(f \circ F\right)
+        = F^*(\text df).
+    \]
+
+    Per le \(1\)-forme, localmente possiamo scrivere
+    \[
+        \omega = \sum_i f_i \,\text dg_i .
+    \]
+    Allora
+    \begin{align*}
+        \text d(F^*\omega)
+        &= \text d\left(\sum_i (f_i \circ F)\,\text d(g_i \circ F)\right) \\
+        &= \sum_i \text d(f_i \circ F)\wedge \text d(g_i \circ F)
+            + \sum_i (f_i \circ F)\,\text d^2(g_i \circ F) \\
+        &= \sum_i \text d(f_i \circ F)\wedge \text d(g_i \circ F) \\
+        &= \sum_i \text d(F^*f_i)\wedge \text d(F^*g_i) \\
+        &= \sum_i F^*(\text df_i)\wedge F^*(\text dg_i) \\
+        &= \sum_i F^*(\text df_i\wedge \text dg_i) \\
+        &= F^*\left(\sum_i \text df_i\wedge \text dg_i\right) \\
+        &= F^*(\text d\omega).
+    \end{align*}
+\end{snippetproof}
 
 \end{document}
