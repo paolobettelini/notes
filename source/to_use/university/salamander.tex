@@ -7,6 +7,7 @@
 \usepackage{parskip}
 \usepackage{fullpage}
 \usepackage{wrapfig}
+\usepackage{xfrac}
 \usepackage{tikz}
 \usepackage{tikz-3dplot}
 
@@ -144,9 +145,9 @@ con struttura \(L = \{l_i\}_{i=1}^h \subseteq \{-1,0\}^n\)
 e \(U = \{u_i\}_{i=1}^k \subseteq \{0,+1\}^n\) abbiamo
 \[
     H_L^U = \frac{
-        \bigcap_{i=1}^k \ker \partial[0,u_i]
+        \bigcap_{i=1}^k \ker \partial[0,U_i]
     }{
-        \sum_{i=1}^h \im \partial[l_i,0]
+        \sum_{i=1}^h \im \partial[L_i,0]
     }
 \]
 quando esiste.
@@ -172,7 +173,7 @@ come i gruppi comologici perfettamente diagonali che traversano l'oggetto centra
     The \emph{\(n\)-receptor} centered at \(x\) is defined as
     \[
         R(x) \triangleq \frac{
-            \bigcap_{i=1}^n \ker \partial[x, x + e_i]
+            \displaystyle\bigcap_{i=1}^n \ker \partial[x, x + e_i]
         }{
             \im \partial[x-1, x]
         }
@@ -186,10 +187,23 @@ come i gruppi comologici perfettamente diagonali che traversano l'oggetto centra
         D(x) \triangleq \frac{
             \ker \partial[x,x+1]
         }{
-            \sum_{i=1}^n \partial[x-e_i, x]
+            \displaystyle\sum_{i=1}^n \im \partial[x-e_i, x]
         }
         = H_{-e_1, \cdots, -e_n}^1
     \]
+\end{definition}
+
+\begin{definition}
+    The \emph{\(i\)-axial cohmology} centered at \(x\) is defined as
+    \[
+        H_i(x) \triangleq \frac{
+            \ker \partial[x,x+e_i]
+        }{
+            \im \partial[x-e_i, x]
+        }
+        = H_{-e_i}^{e_i}
+    \]
+    for \(i \in \{1, \cdots, n\}\).
 \end{definition}
 
 Cominciamo dimostrando esplicitamente il lemma 1.4 del paper originale
@@ -216,28 +230,165 @@ per poi generalizzarlo.
             \im a + \im b
         },
         \quad
-        {}^\bx A = \frac{
+        {}^\bx B = \frac{
             \ker c \cap \ker d
         }{
             \im p
         }
     \]
-    Let \([x] \in A_\bx\). Then,
-    the induced map \(\tilde f \colon A_\bx \to {}^\bx B\) is given by
-    \([x] \mapsto [f(x)]\).
-    It suffices to show that this map maps elements from \(\ker q\) into \(\ker c \cap \ker d\)
-    and elements from \(\im a + \im b\) into \(\im p\).
+    Let \[
+        K := \ker q, \quad M := \im a + \im b, \quad H := \ker c \cap \ker d, \quad N := \im p
+    \]
+    we need to show that \(f \colon A \to B\) induces a map
+    \(K/M \to H/N\).
+    We need to ensure that the quotients are well-defined, meaning that \(\im a + \im b \subseteq \ker q\) and \(\im p \subseteq \ker c \cap \ker d\).
+    Since the rows and columns are complexes and the squares commute, these inclusions hold.
     \begin{itemize}
-        \item Let \(x \in \ker q\).
-        Then, \(q(x) = 0 = c(f(x))\) and thus \(f(x) \in \ker c\).
-        By the definition of cochain, \(d(f(x)) = (d\circ f)(x) = 0\)
-        and thus \(f(x) \in \ker d\). We conclude that \(f(x) \in \ker c \cap \ker d\).
-        \item Let \(x \in \im a + \im b\), meaning \(x = a(y) + b(z)\) for some \(y\) and \(z\).
-        We have that \(f(b(z)) = p(z) \in \im p\) by commutativity, and by the
-        definition of cochain \(f(a(y)) = (f \circ a)(y) = 0\).
-        Thus, \(f(x) = f(a(y) + b(z)) = f(a(y)) + f(b(z)) = 0 + p(x) = p(x) \in \im p\).
+        \item \emph{\(f\) sends \(\ker q\) into \(\ker c \cap \ker d\)}:
+        let \(\iota_K \colon \ker q \hookrightarrow A\) and \(\iota_H \colon \ker c \cap \ker d \hookrightarrow B\) be the canonical inclusions.
+        By definition of \(q\) and \(\ker q\), \(q \iota_K = cf\iota_K = 0\).
+        By the properties of the complex, \(df = 0\) and thus \(df\iota_K = 0\).
+        Thus, \(f\iota_K \colon K \fromto B\) is nullified both by \(d\) and \(c\).
+        By the universal property of the intersection of kernels, meaning the pullback of \(\ker c \cap \ker d\),
+        there exists a unique morphism \(\tilde f \colon K \fromto H\) such that
+        \(\iota_H \tilde f = f\iota_K\). Thus, \(f\) is restricted to \(\tilde f \colon \ker q \to \ker c \cap \ker d\).
+        \item \emph{\(\tilde f\) sends \(\im a + \im b\) into \(\im p\):}
+        we can separately check \(\im a\) and \(\im b\).
+        By the properties of the complex, \(fa = 0\) meaning that \(fa\) factors through the suboject \(\im p \hookrightarrow B\)
+        via the zero morphism.
+        By definition of \(p\), \(fb = p\) and thus the image of \(fb\) is contained in \(\im p\).
+        By the universal property of the sum of subobjects, \(\im a + \im b\) is the smallest object
+        of \(A\) containing both \(\im a\) and \(\im b\).
     \end{itemize}
+    We now have the following diagram:
+    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAFkQBfU9TXfIRRkAjFVqMWbAHLdeIDNjwEiI8uPrNWiEAGk5fJYNWkx1TVJ0AJAwv7KhyAEzrzk7XoD0nHoYEqUFzMJLTYrT1kucRgoAHN4IlAAMwAnCABbJDUQHAgkAGZqHDosBjYACwgIAGtbVIykMhy8xBcckrKdSpq6tMzEJtys3xB6-rahxEKQBjoAIxgGAAV7Yx0UrFjynBA3UJ0AHQO8BlgAAiTehqmiloBWanKYOig2HAB3CCeXhD3LECOaCwAH0bNRZgtlqsAiANlsdiMxkgJi0ACyPZ6vHQfL6Y34zeaLFZGGEMGBJHZ-DyAkH6RF9JDo5pIB4zLBgDxQOhwJ6vKlsI5zOgpC7cChcIA
+    \begin{tikzcd}
+        M \arrow[r, hook] \arrow[d] & K \arrow[d, "\tilde f"'] \arrow[r, "\pi_K", two heads] & K/M \arrow[d, "\bar f", dashed] \\
+        N \arrow[r, hook]           & H \arrow[r, "\pi_H"', two heads]                       & H/N                            
+    \end{tikzcd}
+    with \(\pi_K \colon K \to K/M\) and \(\pi_H \colon H \to H/N\) canonical projections.
+
+    Since \(\pi_H \tilde f\) vanishes on \(M\), by the universal property of the cokernel of \(M \hookrightarrow K\),
+    there exists a unique morphism \(\bar f \colon K/M \to H/N\) such that \(\bar f \pi_K = \pi_H \tilde f\).
+    Thus, there exists a unique map
+    \[
+        \bar f \colon \frac{\ker q}{\im a + \im b} \to \frac{\ker c \cap \ker d}{\im p} 
+    \]
+    induced by \(f\).
 \end{proof}
+
+% Element-wise proof
+%Let \([x] \in A_\bx\). Then,
+%the induced map \(\tilde f \colon A_\bx \to {}^\bx B\) is given by
+%\([x] \mapsto [f(x)]\).
+%It suffices to show that this map maps elements from \(\ker q\) into \(\ker c \cap \ker d\)
+%and elements from \(\im a + \im b\) into \(\im p\).
+%\begin{itemize}
+%    \item Let \(x \in \ker q\).
+%    Then, \(q(x) = 0 = c(f(x))\) and thus \(f(x) \in \ker c\).
+%    By the definition of cochain, \(d(f(x)) = (d\circ f)(x) = 0\)
+%    and thus \(f(x) \in \ker d\). We conclude that \(f(x) \in \ker c \cap \ker d\).
+%    \item Let \(x \in \im a + \im b\), meaning \(x = a(y) + b(z)\) for some \(y\) and \(z\).
+%    We have that \(f(b(z)) = p(z) \in \im p\) by commutativity, and by the
+%    definition of cochain \(f(a(y)) = (f \circ a)(y) = 0\).
+%    Thus, \(f(x) = f(a(y) + b(z)) = f(a(y)) + f(b(z)) = 0 + p(x) = p(x) \in \im p\).
+%\end{itemize}
+
+Written using our notation, this lemma states that for \(n=2\), a morphism \(\partial[x,x+e_i]\) induces
+a morphism \(D(x) \to R(x + e_i)\) for every \(i \in \{1, 2\}\).
+The same lemma does not generalize for \(n>2\).
+
+\begin{proof}
+    Consider the following 
+    counterexample: we consider \(\mathbf{Vect}_{\mathbb K}\) for some field \(\mathbb K\).
+    We construct a \(3\)-cocomplex where all the objects are zero except for
+    \[
+        A = \mathbb K, \quad A_{1,0,0} = \mathbb K, \quad A_{1,0,1} = \mathbb K, \quad A_{0,0,1} = \mathbb K = B
+    \]
+    All the maps are the null maps, except the maps
+    between the latter objects which are the identity \(\operatorname{id}_{\mathbb K}\).
+
+    \begin{minipage}{0.5\textwidth}
+        % General diagram
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZAJgBoBWAXVJADcBDAGwFcYkQAdDgI2ccZg4QAX1LpMufIRRkAzNTpNW7AIIixIDNjwEiAFlLyaDFm0ScefAUNHjtU-RQUnl5rr36D1dybpSzSYmclMxAAIW9NCR1pZHJA4NN2dysvWyj7PzjSPUTXCw9rSK1fWICABjzQlM8bDRKYojIARirky1ri6IcUctJW4xD2wrT67qzm0krBpLcOovSGnuQ+o0VZgtS6n0aUSaCZ-JqFsczYydzD0K6zxwH1-JvSogDLh+r5tIUYKABzeCIoAAZgAnCAAWyQkxAOAgSD06VBEPhNFhSHIiLBkMQ0LRiGImORONRcMQ5UJ2L6MNJsgpSAC1KQADY6fiSejWWRGYhaRokdj4tyWXysUgAOzsxAIkVEgAckuarIl3NlrIAnAryTLsc0qXixerJartVDcaTFSbEBruc0LcDRTiuXjpfaibqFQTLc0GXi7SB+SibS7-Q7bR7WWbmTRGFgwKEoPQ4AALH4gK7sACOaZAjHo3BgjAACuNpCAQVhfkntiGidbndHY-HEymoNmXKE0Nnc-miyX2OXK9WA2SFRivYK8cLXdiDDaMZRhEA
+        \begin{tikzcd}
+                                                                            & \bullet \arrow[rr] \arrow[dd] &                                                               & \bullet \arrow[dd] \arrow[ld]      &                               &                    \\
+        \bullet \arrow[ru] \arrow[rr] \arrow[dd] \arrow[rrrd, "p"', dashed] &                               & \bullet \arrow[dd]                                            &                                    & {}                            &                    \\
+                                                                            & \bullet \arrow[rr]            &                                                               & B \arrow[rr] \arrow[ru] \arrow[dd] &                               & \bullet \arrow[dd] \\
+        \bullet \arrow[rr] \arrow[ru]                                       &                               & A \arrow[ru] \arrow[rr] \arrow[dd] \arrow[rrrd, "q"', dashed] &                                    & \bullet \arrow[ru] \arrow[dd] &                    \\
+                                                                            & {} \arrow[ru]                 &                                                               & \bullet \arrow[rr]                 &                               & \bullet            \\
+                                                                            &                               & \bullet \arrow[rr] \arrow[ru]                                 &                                    & \bullet \arrow[ru]            &                   
+        \end{tikzcd}
+    \end{minipage}
+    \begin{minipage}{0.5\textwidth}
+        % Counterexample diagram
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZAJgBoBWAXVJADcBDAGwFcYkQAGEAX1PU1z5CKMgGZqdJq3YAdGQFt6OABYAjVQAIA0jz4gM2PASIAWUuJoMWbRCDmKV67bv6GhpihKvTbXXq8FjFFFSYi8pGzsFJTVNHX99ASNhZHJQ8OtZaMc4l0S3INTSEwyfTjyDQJSQjlLIvz1K5KIyAEY69gaA5pQOUnbLCM6KpPcUVtJawczfEYKUvotJGfKEprHkCbDpsq78qqIJkp3IuYOUMwHlsrOe5BDj6-qeCRgoAHN4IlAAMwAnCDyJATEA4CBIMwgRj0VQwRgABVGQRAfyw72UOBAJyyEDQMD+SggfzA9HkMGAWCg3AA+sB7DEnFpuHl-oCITQwUg0lCYXDEfN2Kj0ZjsbY5Lj8YTiaTyZSaXTsrFtMyEqygYgQZzEGQnji8QSwdKyRSqbT6TllViebCEUjhCAsGBsLAWQD1ZrwYgOKq3Ug+qDPaIfWzECEA0gAGzB9U6rXc7yRcX6qUk41ys2KxnMmjQm3884otEY10h2OB6NcjmeqN6NVIADsVYhFcQAA4mxqW43w22WwBODutb2130a-1a+v9jutlutD3Aqc9uezsvNkchoeD4izsNa1otyF7kyz+ca7fr90diM5x2RKD0ODKN5W3N8u2Cosi3W2ACOJfVA49pCjC3uw96Ps+or6C+vK2gKthCsWLbjp6rTkLO3JajWvyjoeqHoZQ3BAA
+        \begin{tikzcd}
+                                                                    & 0 \arrow[rr] \arrow[dd] &                                                                                                                                                      & 0 \arrow[dd] \arrow[ld]                                                      &                                                                   &                      \\
+        0 \arrow[ru] \arrow[rr] \arrow[dd] \arrow[rrrd, "p"', dashed] &                         & 0 \arrow[dd]                                                                                                                                         &                                                                              & {}                                                                &                      \\
+                                                                    & 0 \arrow[rr]            &                                                                                                                                                      & \mathbb K \arrow[rr, "\operatorname{id}_{\mathbb K}"'] \arrow[ru] \arrow[dd] &                                                                   & \mathbb K \arrow[dd] \\
+        0 \arrow[rr] \arrow[ru]                                       &                         & \mathbb K \arrow[ru, "\operatorname{id}_{\mathbb K}"'] \arrow[rr, "\operatorname{id}_{\mathbb K}" description] \arrow[dd] \arrow[rrrd, "q"', dashed] &                                                                              & \mathbb K \arrow[ru, "\operatorname{id}_{\mathbb K}"'] \arrow[dd] &                      \\
+                                                                    & {} \arrow[ru]           &                                                                                                                                                      & 0 \arrow[rr]                                                                 &                                                                   & 0                    \\
+                                                                    &                         & 0 \arrow[rr] \arrow[ru]                                                                                                                              &                                                                              & 0 \arrow[ru]                                                      &                     
+        \end{tikzcd}
+    \end{minipage}
+    The diagram commutes as the compositions of the non-trivial quare are still the identity.
+    We will now compute the donor of \(A\), \(D(0)\) and the receiver of \(B\), \(D(e_3)\).
+    \begin{enumerate}
+        \item \emph{donor of \(A\):} we have \[
+            D(0) = \frac{\ker \partial[0,1]}{
+                \im \partial[-e_1, 0]
+                + \im \partial[-e_2, 0]
+                + \im \partial[-e_3, 0]
+            }
+        \]
+        In particular, every monotone path from coordinates \(0\) to \(1\) must go through the second dimension (downwards), which is the zero morphism. Thus,
+        \(\partial[0,1] = 0\). This means that every element of \(\mathbb K\) is sent to \(0\) and thus \(\ker\partial[0,1] = \mathbb K\).
+        Furthermore, \(A_{-e_1} = A_{-e_2} = A_{-e_3} = 0\) meaning that \[
+            \im \partial[-e_1, 0]
+            + \im \partial[-e_2, 0]
+            + \im \partial[-e_3, 0] = 0
+        \]
+        Thus, \(D(0) = \mathbb K\).
+        \item \emph{receiver of \(B\):} we have \[
+            R(e_2) = \frac{
+                \ker \partial[e_3,e_3 + e_1]
+                \cap \ker \partial[e_3,e_3 + e_2]
+                \cap \ker \partial[e_3,2e_3]
+            }{
+                \im \partial[e_3-1, e_2]
+            }
+        \]
+        For the kernels we have \[
+            \ker \partial[e_3,e_3 + e_1]
+            \cap \ker \partial[e_3,e_3 + e_2]
+            \cap \ker \partial[e_3,2e_3]
+            = \ker 0 \intersection \ker 0 \intersection \ker \operatorname{id}_{\mathbb K} = 0
+        \]
+        Furtermore, \(A_{e_3 - 1} = A_{-1, -1, 0} = 0\), and thus \(\im p = 0\).
+        Thus, \(R(e_3)=0\).
+    \end{enumerate}
+    Suppose that \(f = \operatorname{id}_{\mathbb K} \colon A \to B\) 
+    induces a morphism \(D(0) \to R(e_3)\).
+    Then, \(f\) must send elements of the numerator of \(D(0)\) into the numerator of \(R(e_3)\), meaning
+    \[
+        f(\ker \partial[0,1]) \subseteq \ker \partial[e_3,e_3 + e_1]
+        \cap \ker \partial[e_3,e_3 + e_2]
+        \cap \ker \partial[e_3,2e_3]
+    \]
+    However, \(\ker \partial[0,1] = \mathbb K\)
+    and \(f = \operatorname{id}_{\mathbb K} \colon A_0 \to A_{e_3}\)
+    meaning that \(f\) doe snot factor through the zero subobject \(0 \hookrightarrow A_{e_3}\).
+    In particular the arrow \(f \colon A_0 \to A_{e_3}\) does not restrict to an arrow
+    \[
+        \ker \partial[0,1] \to \ker \partial[e_3,e_3 + e_1]
+        \cap \ker \partial[e_3,e_3 + e_2]
+        \cap \ker \partial[e_3,2e_3]
+    \]
+    Thus, \(f\) does not induce such a map.
+\end{proof}
+
+
 
 \subsection{Caso monodimensionale}
 
@@ -399,9 +550,6 @@ Abbiamo i seguenti \(18\) oggetti comologici
 
 \section{Altro}
 
-\newcommand{\Don}{\operatorname{Don}}
-\newcommand{\Rec}{\operatorname{Rec}}
-
 Caso verticale del diagramma del bicomplesso.
 
 \[
@@ -414,24 +562,14 @@ M \arrow[r,"k"'] & B \arrow[r,"h"'] \arrow[d,"m"'] & D \\
 \]
 
 \[
-\Don(A)=\frac{\ker(h\circ v)}{\operatorname{im}c+\operatorname{im}d}
+D(A)=\frac{\ker(h\circ v)}{\operatorname{im}c+\operatorname{im}d}
       =\frac{\ker(g\circ e)}{\operatorname{im}c+\operatorname{im}d},
 \qquad
-\Rec(B)=\frac{\ker h\cap\ker m}{\operatorname{im}(v\circ d)}
+R(B)=\frac{\ker h\cap\ker m}{\operatorname{im}(v\circ d)}
       =\frac{\ker h\cap\ker m}{\operatorname{im}(k\circ b)}.
 \]
 
 \subsection{Casi tridimensionali}
-
-% https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZAJgBoBWAXVJADcBDAGwFcYkQAdDgI2ccZg4QAX1LpMufIRRkAzNTpNW7AIIixIDNjwEiAFlLyaDFm0ScefAUNHjtU-RQUnl5rr36D1dybpSzSYmclMxAAIW9NCR1pZHJA4NN2dysvWyj7PzjSPUTXCw9rSK1fWICABjzQlM8bDRKYojIARirky1ri6IcUctJW4xD2wrT67qzm0krBpLcOovSGnuQ+o0VZgtS6n0aUSaCZ-JqFsczYydzD0K6zxwH1-JvSogDLh+r5tIUYKABzeCIoAAZgAnCAAWyQkxAOAgSD06VBEPhNFhSHIiLBkMQ0LRiGImORONRcMQ5UJ2L6MNJsgpSAC1KQADY6fiSejWWRGYhaRokdj4tyWXysUgAOzsxAIkVEgAckuarIl3NlrIAnAryTLsc0qXixerJartVDcaTFSbEBruc0LcDRTiuXjpfaibqFQTLc0GXi7SB+SibS7-Q7bR7WWbmTRGFgwKEoPQ4AALH4gK7sNBpkCMejcGCMAAK42kIBBWF+Se2IaJ1ud0dj8cTKagWZcoQAjlmc3nC8X2GWK1WA2SFRivYK8cLXTqJ6SEZRhEA
-\begin{tikzcd}
-                                                                    & \bullet \arrow[rr] \arrow[dd] &                                                               & \bullet \arrow[dd] \arrow[ld] &                               &                    \\
-\bullet \arrow[ru] \arrow[rr] \arrow[dd] \arrow[rrrd, "q"', dashed] &                               & \bullet \arrow[dd]                                            &                               & {}                            &                    \\
-                                                                    & \bullet \arrow[rr]            &                                                               & B \arrow[rr] \arrow[ru]       &                               & \bullet \arrow[dd] \\
-\bullet \arrow[rr] \arrow[ru]                                       &                               & A \arrow[ru] \arrow[rr] \arrow[dd] \arrow[rrrd, "p"', dashed] &                               & \bullet \arrow[ru] \arrow[dd] &                    \\
-                                                                    & {} \arrow[ru]                 &                                                               & \bullet \arrow[rr] \arrow[uu] &                               & \bullet            \\
-                                                                    &                               & \bullet \arrow[rr] \arrow[ru]                                 &                               & \bullet \arrow[ru]            &                   
-\end{tikzcd}
 
 Ci piacerebbe dire che un morfismo A->B induce un morfiso D(A) -> D(B)
 questo già non è vero per n=3. Controesempio sugli spazi vettoriali.
@@ -439,15 +577,123 @@ Che cosa ci servirebbe? Ci servirebbe un donor che ha l'intersezione dei 3 kerne
 Ma questo è l'elemento 14, infatti dati A->B->C abbiamo due mappe indotte D(A) -> M(B) -> R(C).
 Abbiamo quindi 3 * 2 = 6 casi, ma per la commutatività metà coincidono quindi 3.
 
-Il controesempio dovrebbe esssere
-% https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZAJgBoBWAXVJADcBDAGwFcYkQAGEAX1PU1z5CKMgGZqdJq3YBrHnxAZseAkQAspcTQYs2iEHN79lQ9RQk7p+rkcUCVw5KNLELUvQfnHBqlORduurJedia+yP5qgVacIUo+js4c0R42CvEORGQAjCnsad6ZKBykudru+XH2pijZpMnlQdZVYY4lWpJNsbYZNch1ro0xBaEJRHVRQx4tYygaZZ0xM0VOpJOLqTwSMFAA5vBEoABmAE4QALZIdSA4EEgaIIz0AEYwjAAK1b4gJ1i7ABY4EBTdgAHVBEDQMBO9FuJzA9HOMGAWCg3AA+oYFKcLvcaLckP5Hi83p9WuxfgCgSD9ODIdDYRB4YjkaiMVjjmdLohrgTEGQNmCIVCYXCEUiUWjMcDia8Pl9hCAsGBsLAQjjuby7ogOLYNUgSjdtaI9VykM4jUgAGym3H8-HaomWDx0kWM5kStnSmhPOVk2Y-P6A9Vm+2WxAm7Ghol8m1Ru0Adgd91t3IAHMmeamkEnw2ns4gAJyZ7K6+Oaw18hMF4t5gvZLVXGsl7L1gV8tT1yva7LEesWvmt8t48PZTvDnmNnl9idTq0+5UeKD0OD-HYy53sNAy32khUUoNA5vhh6MRfsZer9c0kAARx3JPl5P0lODBe7V3I9Zj2rjnLt2Q-imlDcEAA
-\begin{tikzcd}
-                                                              & 0 \arrow[rr] \arrow[dd] &                                                                                                                          & 0 \arrow[dd] \arrow[ld]                         &                                                 &              \\
-0 \arrow[ru] \arrow[rr] \arrow[dd] \arrow[rrrd, "q"', dashed] &                         & 0 \arrow[dd]                                                                                                             &                                                 & {}                                              &              \\
-                                                              & 0 \arrow[rr]            &                                                                                                                          & k \arrow[rr, "\operatorname{id}_k"'] \arrow[ru] &                                                 & k \arrow[dd] \\
-0 \arrow[rr] \arrow[ru]                                       &                         & k \arrow[ru, "\operatorname{id}_k"'] \arrow[rr, "\operatorname{id}_k" description] \arrow[dd] \arrow[rrrd, "p"', dashed] &                                                 & k \arrow[ru, "\operatorname{id}_k"'] \arrow[dd] &              \\
-                                                              & {} \arrow[ru]           &                                                                                                                          & 0 \arrow[rr] \arrow[uu]                         &                                                 & 0            \\
-                                                              &                         & 0 \arrow[rr] \arrow[ru]                                                                                                  &                                                 & 0 \arrow[ru]                                    &             
-\end{tikzcd}
+E questo invece dovrebbe essere le intramural maps. \\
+\begin{tikzpicture}[
+    >=Latex,
+    x=1.2cm, y=1.0cm,
+    every node/.style={
+        draw,
+        rounded corners,
+        minimum width=8mm,
+        minimum height=6mm,
+        inner sep=2pt,
+        font=\small
+    }
+]
+
+%---------------------------------
+% Nodes
+%---------------------------------
+
+% Level 0
+\node (n15) at (0,0) {(15)};
+
+% Level 1
+\node (n2)  at (-4.5,2) {(2)};
+\node (n1)  at (-1.5,2) {(1)};
+\node (n6)  at ( 1.5,2) {(6)};
+\node (n3)  at ( 4.5,2) {(3)};
+
+% Level 2
+\node (n5)  at (-5.0,4) {(5)};
+\node (n4)  at (-2.8,4) {(4)};
+\node (n17) at ( 1.0,4) {(17)};
+\node (n18) at ( 4.2,4) {(18)};
+
+% Level 3
+\node (n16) at (-2.0,6) {(16)};
+\node (n14) at ( 1.2,6) {(14)};
+
+% Level 4
+\node (n8)  at (-4.0,8) {(8)};
+\node (n7)  at (-1.3,8) {(7)};
+\node (n11) at ( 1.4,8) {(11)};
+\node (n9)  at ( 4.1,8) {(9)};
+
+% Level 5
+\node (n12) at (-1.5,10) {(12)};
+\node (n10) at ( 1.8,10) {(10)};
+
+% Level 6
+\node (n13) at (0,12) {(13)};
+
+%---------------------------------
+% Arrows: cover relations only
+%---------------------------------
+
+% From (15)
+\draw[->] (n15) -- (n1);
+\draw[->] (n15) -- (n2);
+\draw[->] (n15) -- (n3);
+\draw[->] (n15) -- (n6);
+
+% From (1)
+\draw[->] (n1) -- (n8);
+\draw[->] (n1) -- (n9);
+\draw[->] (n1) -- (n16);
+
+% From (2)
+\draw[->] (n2) -- (n4);
+\draw[->] (n2) -- (n5);
+\draw[->] (n2) -- (n17);
+
+% From (3)
+\draw[->] (n3) -- (n14);
+\draw[->] (n3) -- (n17);
+\draw[->] (n3) -- (n18);
+
+% From (6)
+\draw[->] (n6) -- (n14);
+
+% From (4)
+\draw[->] (n4) -- (n14);
+\draw[->] (n4) -- (n16);
+
+% From (5)
+\draw[->] (n5) -- (n14);
+
+% From (16)
+\draw[->] (n16) -- (n7);
+
+% From (17)
+\draw[->] (n17) -- (n11);
+\draw[->] (n17) -- (n12);
+
+% From (18)
+\draw[->] (n18) -- (n10);
+\draw[->] (n18) -- (n11);
+
+% From (14)
+\draw[->] (n14) -- (n7);
+\draw[->] (n14) -- (n8);
+\draw[->] (n14) -- (n9);
+\draw[->] (n14) -- (n11);
+
+% From (7)
+\draw[->] (n7) -- (n10);
+\draw[->] (n7) -- (n12);
+
+% From (8)
+\draw[->] (n8) -- (n12);
+
+% From (9)
+\draw[->] (n9) -- (n10);
+
+% To the top (13)
+\draw[->] (n10) -- (n13);
+\draw[->] (n11) -- (n13);
+\draw[->] (n12) -- (n13);
+
+\end{tikzpicture}
 
 \end{document}
