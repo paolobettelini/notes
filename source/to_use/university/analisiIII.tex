@@ -5976,12 +5976,394 @@ ma lo facciamo su \(\realnumbers\) per semplicità.
 \begin{snippetproof}{}
     Notiamo che ci serve che la derivata di \(f\) sia misurabile.
     Ma essendo \(f\) misurabile, il suo rapporto incrementale è composizione di funzioni misurabili,
-    che è misurabili, e il suo limite rimane una funzione misurabile.
+    che è misurabili, e il suo limite puntuale rimane una funzione misurabile.
+    Quindi la derivata è pure integrabile in quanto dominata per ipotesi, e ha senso scrivere \[
+        \int_E \frac{\partial f}{\partial x}(t,x)\,dt
+    \]
+    resta da verificare che la derivata di \(F(x)\) sia precisamente questo integrabile.
+    Calcoliamo tale derivata usando la definizione. Vogliamo dimostrare che
+    \begin{align*}
+        \frac{F(x + h_n) - F(x)}{h_n} - \int_E \frac{\partial f}{\partial x}(t,x)\,dt
+        \to 0
+    \end{align*} 
+    per \(n \to +\infty\) dove \(\{h_n\} \to 0\) per \(n\to+\infty\).
+    Possiamo riscrivere il rapporto incrementale espandendo la definizione di \(F\)
+    \begin{align*}
+        \int_E \frac{f(t, x + h_n) - f(t,x)}{h_n}
+        - \frac{\partial f}{\partial x}(t,x)\,dt
+    \end{align*}
+    Possiamo passare al modulo e minorare
+    \begin{align*}
+        \left|
+        \int_E \frac{f(t, x + h_n) - f(t,x)}{h_n}
+        - \frac{\partial f}{\partial x}(t,x)\,dt\right|
+        \leq \int_E \left|\frac{f(t, x + h_n) - f(t,x)}{h_n}
+        - \frac{\partial f}{\partial x}(t,x)\right|\,dt \to 0
+    \end{align*}
+    Usando il teorema di Lagrange esiste \(\Theta_n\) tale che \[
+        \frac{f(t, x + h_n) - f(t,x)}{h_n}
+        = \frac{\partial f}{\partial x}(t, x + \Theta_n h_n)
+    \]
+    Quindi pe rla funzione integranda \[
+        \left|\frac{f(t, x + h_n) - f(t,x)}{h_n}
+        - \frac{\partial f}{\partial x}(t,x)\right|
+        = \left|
+            \frac{\partial f}{\partial x}(t, x + \Theta_n h_n)
+            - \frac{\partial f}{\partial x}(t,x)
+        \right| \leq 2g(t) \in \mathcal L^1
+    \]
+    Siccome questo modulo tende puntualmente a \(0\)
+    quasi ovunque, per il teorema della convergenza dominata con \(2g(t)\) otteniamo la tesi.
 \end{snippetproof}
 
+Lo stesso vale nel caso di più variabili con tutte le derivate parziali, e la stessa cosa vale
+anche per la differenziabilità.
+In particolare, se \(E\) è compatto e \(f \in \mathcal C^1(E \cartesianprod A)\),
+allora \(F \in \mathcal C^1(A)\) senza bisogno della dominante \(\mathcal L^1\),
+in quanto possiamo prendere una costante come dominante.
+
+\begin{snippettheorem}{Di integrazione per serie}
+    Sia \((X, \mathcal M, \mu)\) uno spazio d misura, \(f_n \colon X \fromto \complexnumbers\)
+    misurabili, definite quasi ovunque in \(X\).
+    Supponiamo che \[
+        \sum_{n=1}^\infty \int_X |f_n|\,d\mu < +\infty
+        \implies \sum_{n=1}^\infty f_n \overset{\text{a.e.}}{=} f \in \mathcal L^1(\mu)
+    \]
+    e \[
+        \int_X f = \sum_{n=1}^\infty \int_X f_n\,d\mu
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Poniamo \[
+        E_n = \left\{
+            x \in X \suchthat f_n \text{ non è definita}
+        \right\}
+    \]
+    e sia \(E = X \difference \left(\bigcup E_n\right)\).
+    Allora \(\mu(E_n) = 0\) implica che \(\mu\left(\bigcup E_n\right) = 0\).
+    Senza perdere nulla dal punto di vista della misura
+    si può supporre che le \(f_n\) siano definite dappertutto.
+    Nonostante ciò, sulla tesi non possiamo garantire la convergenza di \(\sum f_n\) dappertutto.
+    Poniamo \[
+        \varphi(x) = \sum_{n=1}^\infty |f_n(x)|, \quad \varphi \colon X \fromto [0,+\infty]
+    \]
+    Calcoliamo \[
+        \int_X \varphi\,d\mu = \int_X \sum_{n=1}^\infty |f_n|\,d\mu
+        = \sum_{n=1}^\infty \int_X |f_n| \,d\mu < +\infty
+    \]
+    per il teorema della convergenza monotona.
+    Consideriamo l'insieme \[
+        \left\{
+            x \in X \suchthat \varphi(x) = +\infty
+        \right\}
+    \]
+    Questo insieme è misurabile in quanto è una fibra. Addirittura l'insieme ha misura nulla, altrimenti
+    l'integrabil avrebbe valore infinito.
+    Quindi \(\varphi\) è quasi ovunque finita e quindi \(\sum |f_n|\) converge puntualmente
+    quasi ovunque, e quindi \(\sum f_n\) converge assolutamente quasi ovunque.
+    Manca da dimostrare che \(f\) è \(\mathcal L^1\).
+    Le somme parziali possono essere maggiorate da
+    \[
+        \left|\sum_{n=1}^k f_n\right|
+        \leq \sum_{n=1}^k |f_n| \leq \varphi \in \mathcal L^1(\mu)
+    \]
+    e quindi \(f \in \mathcal L^1(\mu)\).
+    Ci manca da dimostrare chde si può integrare termine a termine, e per fare cio usiamo la convergenza dominata.
+    \begin{align*}
+        \int_X \sum_{n=1}^k f_n \,d\mu = \sum_{n=1}^k \int_X f_n \,d\mu
+        \to \int_X f\,d\mu
+    \end{align*}
+\end{snippetproof}
+
+La convergnza della serie è solo quasi ovunque perché può succedere che l'insieme in cui \(\varphi(x) = \infty\)
+è non vuoto.
+
+\begin{snippetexample}{}
+    Consideriamo \(X = [0,1]\) con la misura di Lebesgue, e consideriamo \[
+        f_n(x) = \begin{cases}
+            \frac{1}{2^n \sqrt{x}} & x \neq 0 \\
+            1 & x = 0
+        \end{cases}
+    \]
+    Allora, \[
+        \sum f_n(0) = +\infty
+    \]
+    e in questo caso
+    \[
+        \varphi(x) = \begin{cases}
+            \frac{1}{\sqrt x} & x \neq 0 \\
+            +\infty = 0
+        \end{cases}
+    \]
+\end{snippetexample}
+
+\begin{snippettheorem}{}
+    Sia \(f \colon X \fromto [0,+\infty]\)
+    misurabile. Allora, \[
+        \int_X f\,d\mu = 0 \implies f = 0 \text{ almost everywhere}
+    \]
+\end{snippettheorem}
+
+Se la misura non è atomica, cio se ci sono dei punti con misura nulla,
+non possiamo pretendere di rimuovere il quasi ovunque.
+
+\begin{snippetproof}{}
+    Consideriamo \[
+        A_n = \left\{
+            x \in X \suchthat f(x) > \frac 1n
+        \right\}
+    \]
+    che è misurabile in quanto \(f\) è misurabile.
+    Allora, \(\mu(A_n) = 0\), in quanto se non lo fosse,
+    per la monotonia avremmo che \[
+        \int_X f \geq \frac{1}{n}\mu(A_n) \neq 0
+    \]
+    Per ogni \(x \in X\) tale che \(f \neq 0\), \(x \in A_n\) per qualche \(n\).
+    Ma quindi \[
+        \mu\left(\bigcup A_n\right) = 0
+    \]
+    e allora \(f = 0\) quasi ovunque.
+\end{snippetproof}
+
+\begin{snippettheorem}{}
+    Sia \(f \colon X \fromto \complexnumbers\)
+    misurabile e \(\forall E \in \mathcal M\) vale che \[
+        \int_E f\,d\mu = 0
+    \]
+    allora \(f=0\) quasi ovunque.
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Scriviamo \(f = u+iv\) con \(u,v \colon X \fromto \realnumbers\)
+    (che sono misurabili in quanto parte reali e immaginaria) e consideriamo
+    \[
+        E_1 = \left\{
+            x \in X \suchthat u(x) \geq 0
+        \right\}
+    \]
+    che è misurabile in quanto insieme di sopralivello di una funzione misurabile.
+    Allora, \[
+        \int_{E_1} f\,d\mu =
+        \int_{E_1}u\,d\mu + i\int_{E_1}v\,d\mu = 0
+    \]
+    In particolare, il primo termine è nullo.
+    Per il teorema precedente, \(u = 0\) quasi ovunque in \(E_1\). Consideriamo ora \[
+        E_2 = \left\{
+            x \in X \suchthat u(x) \leq 0
+        \right\}
+    \]
+    Per lo stesso motivo \(u=0\) quasi ovunque in \(E_2\).
+    Siccome \(X = E_1 \union E_2\), e quindi \(u = 0\) quasi ovunque su \(X\).
+    Lo stesso ragionamento vale per \(v\) con analoghi \(E_3, E_4\).
+    Otteniamo quindi la tesi.
+\end{snippetproof}
+
+\pagebreak
+
+\section{Misure su spazi prodotti}
+
+Supponiamo di avere due spazi di misura \((X, \mathcal M, \mu), (Y, \mathcal S, \lambda)\).
+Vogliamo costruire una misura su \(X \cartesianprod Y\).
+Se \(A_x \in \mathcal M\) e \(A_y \in \mathcal S\) allora costruiamo il \emph{rettangolo misurabile}
+\(A_x \cartesianprod A_y\).
+La \(\sigma\)-algebra prodotto, che denotiamo con \(\mathcal M \cartesianprod \mathcal S\),
+è la più piccola \(\sigma\)-algebra di \(X \cartesianprod Y\)
+che contiene i rettangoli misurabili.
+Sia \(E \in \mathcal M \cartesianprod \mathcal S\).
+Tutte le sezioni di \(E\) (verticali e orizzontali)
+\[
+    E_x = \left\{
+        y \in Y \suchthat (x,y) \in E
+    \right\}, \quad
+    E^y = \left\{
+        x \in X \suchthat (x,y) \in E
+    \right\}
+\]
+sono insiemi misurabili nelle rispettive \(\sigma\)-algebre.
+
+\begin{snippettheorem}{}
+    Se \(E \in \mathcal M \cartesianprod \mathcal S\)
+    allora \(E_x \in \mathcal S\) e \(E^y \in \mathcal M\)
+    per ogni \(x \in X\) e \(y \in Y\).
+\end{snippettheorem}
+
+\begin{snippettheorem}{}
+    Se \(\varphi \colon X \cartesianprod Y \fromto \complexnumbers\)
+    è \(\mathcal M \cartesianprod \mathcal S\)-misurabile, allora \(\varphi_x\)
+    è \(\mathcal S\)-misurabile per ogni \(x \in X\)
+    e \(\varphi^y\) è \(\mathcal M\)-midurabile per ogni \(y \in Y\), dove \[
+        \varphi_x(t) = \varphi(x,t), \quad
+        \varphi^y(t) = \varphi(y,t)
+    \]
+\end{snippettheorem}
+
+Adesso, vogliamo costruire la misura prodotto.
+Abbiamo una nuova ipotesi fondamentale che prima non ci serviva in generale,
+cioè che le due misure fattori siano \(\sigma\)-finite
+
+\begin{snippetdefinition}{Spazio \(\sigma\)-finito}
+    La misura \(\mu\) sullo spazio \(X\) è \emph{\(\sigma\)-finita}
+    se \(X\) è unione numerabile di insiemi di misura finita.
+\end{snippetdefinition}
+
+Per esempio la misura di Lebesgue su \(\realnumbers\) è \(\sigma\)-finita,
+mentre la misura del conteggio su \(\realnumbers\) non lo è.
+
+Sia \(E \in \mathcal M \cartesianprod \mathcal S\).
+Sappiamo che \(\forall x \in X, E_x \in \mathcal S\)
+e quindi possiamo considerare \(\lambda(E_x) = \varphi(x)\).
+Abbiamo definito quindi
+\(\varphi \colon X \fromto [0,+\infty]\). Allo stesso modo possiamo definire
+\(\mu(E^y) = \Psi(y)\) ben definita con \(\Psi \colon Y \fromto [0,+\infty]\).
+Ci aspettiamo che \(\varphi\) sia misurabile in \(\mathcal M\)
+e che \(\Psi\) sia misurabile in \(\mathcal S\).
+Si dimostra che è così e che vale che
+\[
+    \int_X \varphi\,d\mu = \int_Y\Psi\,d\lambda
+\]
+Questo non è banale e vale solo se la misura è \(\sigma\)-finita.
+
+\begin{snippetdefinition}{}
+    la misura prodotto di \(E\) è \[
+        (\mu \times \lambda)(E) \triangleq
+        \int_X \varphi \,d\mu = \int_Y \Psi\,d\lambda
+    \]
+    con \(\mu \times \lambda \colon \mathcal M \cartesianprod \mathcal S \fromto [0,+\infty]\)
+\end{snippetdefinition}
+
+\begin{snippetexample}{Non funziona se una delle due misure è \(\sigma\)-finita}
+    Sia \(X = Y = \realnumbers^n\) con la misura di Lebesgue su \(X\)
+    e la misura del conteggio su \(Y\). Consideriamo un segmento di diagonale \[
+        E = \left\{(x,x) \in \realnumbers^2 \suchthat 0 \leq x \leq 1\right\}
+    \]
+    Mostriamo che tale insieme è misurabile: per ogni \(n \in \naturalnumbers\)
+    consideriamo gli intervalli \[
+        I_j^n = \left[\frac{j-1}{n}, \frac jn\right]
+    \]
+    e poniamo i rettangoli \[
+        Q_n = \bigcup_{i=1}^n \left(
+            I_i^n \cartesianprod I_i^n
+        \right)
+    \]
+    Chiaramente, \[
+        \bigcap_{n=1}^\infty Q_n = E
+    \]
+    che è quindi intersezione numerabile di unioni numerabili di rettangoli,
+    e quindi è misurabile.
+    \begin{center}
+        \begin{tikzpicture}[x=6cm,y=6cm,>=stealth]
+        \definecolor{qfive}{RGB}{70,130,180}
+        \definecolor{ediag}{RGB}{200,40,40}
+        \draw[->] (-0.05,0) -- (1.12,0) node[right] {$x$};
+        \draw[->] (0,-0.05) -- (0,1.12) node[above] {$y$};
+        \fill[qfive!25] (0,0) rectangle (0.2,0.2);
+        \fill[qfive!25] (0.2,0.2) rectangle (0.4,0.4);
+        \fill[qfive!25] (0.4,0.4) rectangle (0.6,0.6);
+        \fill[qfive!25] (0.6,0.6) rectangle (0.8,0.8);
+        \fill[qfive!25] (0.8,0.8) rectangle (1,1);
+        \draw[step=0.2,gray!70,dashed] (0,0) grid (1,1);
+        \draw[thick] (0,0) rectangle (1,1);
+        \draw[very thick,qfive] (0,0) rectangle (0.2,0.2);
+        \draw[very thick,qfive] (0.2,0.2) rectangle (0.4,0.4);
+        \draw[very thick,qfive] (0.4,0.4) rectangle (0.6,0.6);
+        \draw[very thick,qfive] (0.6,0.6) rectangle (0.8,0.8);
+        \draw[very thick,qfive] (0.8,0.8) rectangle (1,1);
+        \draw[very thick,ediag] (0,0) -- (1,1);
+        \foreach \k/\lab in {0/0,0.2/\frac15,0.4/\frac25,0.6/\frac35,0.8/\frac45,1/1}{
+        \draw (\k,0.015) -- (\k,-0.015) node[below=4pt] {$\lab$};
+        \draw (0.015,\k) -- (-0.015,\k) node[left=4pt] {$\lab$};
+        }
+        \node[ediag,fill=white,inner sep=1pt] at (0.72,0.82) {$E$};
+        \end{tikzpicture}
+    \end{center}
+    È chiaro che \(E^y\) e \(E_x\) sono singoletti, e \(\mu(E^y) = 0\) per tutte le \(y\)
+    mentre \(\lambda(E_x) = 1\) per tutte le \(x\). Quindi,
+    \[
+        \int_Y \mu(E^y)\,d\lambda = 0, \quad
+        \int_X \lambda(E_x)\,d\mu = +\infty
+    \]
+    che non coincidono.
+\end{snippetexample}
 
 
 
+
+\pagebreak
+
+\section{Temporaneo - Foglio 4}
+
+\begin{snippetexercise}{}
+    Calcolare \[
+        F(x) = \integral[0][+\infty][e^{-(t-\sfrac xt)^2}][t]
+    \]
+    per \(x>0\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    Chiaramente \(F(0) = \frac{\sqrt{\pi}}{2}\).
+    Basta mostrare che \(F\) è costante per \(x \geq 0\).
+    Se riusciamo a mostrare che la derivata è nulla, ed è continua da destra allora è costante
+    e il valore vale quello in \(F(0)\).
+    Da fare: la parte della continuità.
+    Per la derivata, calcoliamo \(F'(x)\) per \(x>0\). Se si può passare sotto il segno di integrale viene
+    \begin{DispWithArrows*}
+        F'(x) &= \integral[0][+\infty][-2\left(t-\frac xt\right)\left(-\frac 1t\right)e^{-(t - \sfrac xt)^2}][t] \\
+        &= \integral[0][+\infty][\frac 2t \left(t - \frac xt\right)e^{-(t-\sfrac xt)^2}][t] \Arrow{\(y = \sfrac xt\) \\ \(dy = - \frac x{t^2}dt\)} \\
+        &= \integral[+\infty][0][
+            \left(
+                \frac xy - y
+            \right)e^{-\left(\frac xy - y\right)^2}
+            \cdot \left(-2 \frac xy\right) \cdot \frac 1x
+        ][y] \\
+        &= \integral[0][+\infty][
+            \frac{2}{y} \left(\frac xy - y\right)e^{-\left(y - \frac xy\right)^2}
+        ][y] = -F'(x)
+    \end{DispWithArrows*}
+    Verifichiamo che possiamo derivare sotto il segno di integrale
+    e che \(F\) sia derivabile.
+    Siccome la derivata è una funzione locale, mi basta dominarla
+    in un intorno di ogni \(x_0 > 0\) fissato.
+    Abbiamo \begin{align*}
+        \left|
+            \frac{\partial f}{\partial x}(t,x)
+        \right|
+        &= \frac2t \left|t - \frac xt\right|
+        e^{-\left(t - \sfrac xt\right)^2}
+    \end{align*}
+    La funzione \(\left|t - \frac xt\right|\)
+    ha un punto di spigolo in \(\sqrt x\).
+    \begin{center}
+        \begin{tikzpicture}[x=1.6cm,y=0.85cm,>=stealth]
+        \pgfmathsetmacro{\c}{1.5811}
+        \draw[->] (0,0) -- (4.7,0) node[right] {$t$};
+        \draw[->] (0,0) -- (0,6.4);
+        \foreach \x/\lab in {1/{\sqrt{x_1}},1.5/{\sqrt{x_0}},2/{\sqrt{x_2}}}{
+        \draw[dashed,gray!70] (\x,0) -- (\x,1.15);
+        \draw (\x,0.08) -- (\x,-0.08) node[below=4pt] {$\lab$};
+        }
+        \draw[very thick] plot[domain=0.65:1.5,samples=150] (\x,{2.25/\x-\x});
+        \draw[very thick] plot[domain=1.5:4.5,samples=150] (\x,{\x-2.25/\x});
+        \draw[very thick,red] plot[domain=0.65:\c,samples=150] (\x,{4/\x-\x});
+        \draw[very thick,red] plot[domain=\c:4.5,samples=150] (\x,{\x-1/\x});
+        \draw[very thick,blue] plot[domain=0.65:1,samples=150] (\x,{1/\x-\x});
+        \draw[very thick,blue] (1,0) -- (2,0);
+        \draw[very thick,blue] plot[domain=2:4.5,samples=150] (\x,{\x-4/\x});
+        \draw[thick,blue,dashed] plot[domain=1:\c,samples=120] (\x,{\x-1/\x});
+        \draw[thick,blue,dashed] plot[domain=\c:2,samples=120] (\x,{4/\x-\x});
+        \node[red] at (0.95,4.65) {$h$};
+        \node[blue] at (3.55,1.25) {$k$};
+        \end{tikzpicture}
+    \end{center}
+    Dobbiamo maggiorarla in \(x_1 < x_0 < x_2\). Se consideriamo
+    le tre funzioni con punto di spigolo nei punti \(\sqrt x_1, \sqrt x_0, \sqrt x_2\)
+    riusciamo a maggiorare e minorare la funzione centrata.
+    Poniamo \[
+        g(t) = \frac{2}{t} h(t) e^{-k^2(t)}
+    \]
+    Quindi \(g\) è una maggiorante della derivata ed è \(\mathcal L^1\)
+    perché sia in zero che infinite l'esponenziale rende tutto integrabile.
+\end{snippetsolution}
 
 \pagebreak
 
