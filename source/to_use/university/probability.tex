@@ -2268,14 +2268,14 @@ in generale l'uguaglianza in distrubzione non implica quella quasi certa.
 \end{snippetexample}
 
 Tuttavia vale il viceversa.
-Usiamo la notazione \(X =_\alpha Y\)
+Usiamo la notazione \(X =_d Y\)
 per indicare che \(X\) è uguale a \(Y\) in legge.
 
 \begin{snippetproposition}{}
     Consideriamo \((\Omega, \powerset(\Omega), \mathbb P)\)
     spazio di probabilità discreto e \(X, Y \colon \Omega \fromto E \subseteq \realnumbers\)
     variabili aleatorie discrete.
-    Allora, se \(X = Y\) quasi ovunque, \(X =_\alpha Y\).
+    Allora, se \(X = Y\) quasi ovunque, \(X =_d Y\).
 \end{snippetproposition}
 
 \begin{snippetproof}{}
@@ -2328,8 +2328,8 @@ per indicare che \(X\) è uguale a \(Y\) in legge.
     con \(F \subseteq \realnumbers^n\) discreto.
     Allora,
     \[
-        X =_\alpha Y \implies
-        f \circ X =_\alpha f \circ Y
+        X =_d Y \implies
+        f \circ X =_d f \circ Y
     \]
 \end{snippetproposition}
 
@@ -2839,7 +2839,7 @@ Questa proposizione è generalizzabile.
     \(X_i' \colon \Omega \fromto E_i\) con \(i \in \{1, \cdots, n\}\).
     Supponiamo che
     \[
-        (X_1, \cdots, X_n) =_\alpha (X_1', \cdots, X_n')
+        (X_1, \cdots, X_n) =_d (X_1', \cdots, X_n')
     \]
     Allora \(X_1, \cdots, X_n\) sono indipendenti se e solo se
     \(X_1', \cdots, X_n'\) sono indipendenti.
@@ -5044,8 +5044,336 @@ su \((\realnumbers, \mathcal B(\realnumbers))\) con funzione di ripartizione \(F
 \begin{snippetexample}{}
     Consideriamo l'esempio del tempo di vita di un macchinario.
     A volte si può tenere conto anche di eventuali difetti di fabbrica.
-    ... da fare settimana prossima.
+    Lo vediamo martedì. XXX.
 \end{snippetexample}
+
+\pagebreak
+
+\section{Variabili aleatorie in spazi continui}
+
+Sia \((\Omega, \mathcal F, \mathbb P)\) uno spazio di probabilità generico.
+
+\begin{snippetdefinition}{Variabile aleatorie}
+    Chiamiamo \emph{variabile aleatorie}
+    una funzione \(X \colon \Omega \fromto \realnumbers^n\) (borel) misurabile,
+    cioè \[
+        \forall A \in \mathcal B(\realnumbers^n),
+        X^{-1}(A) \in \mathcal F
+    \]
+\end{snippetdefinition}
+
+Nel caso \(\Omega\) discreto stavamo usando la \(\sigma\)-algebra delle parti,
+e quindi la misurabilità era automatica.
+Se prendiamo \(\Omega = \realnumbers^n\) e \(\mathcal F = \mathcal B(\realnumbers^n)\),
+allora \(X\) continua implica \(X\) (borel) misurabile.
+
+\begin{snippetproposition}{}
+    Sia \(X \colon \Omega \fromto \realnumbers^n\)
+    variabile aleatorie. La funzione \(\mu_X \colon \mathcal B(\realnumbers^n) \fromto [0,1]\)
+    definita da \[
+        \mu_X(A) \triangleq \mathbb P(X^{-1}(A))
+        = \mathbb P(X \in A), \quad A \in \mathcal B(\realnumbers^n)
+    \]
+    è una misurabile di probabilità su \((\realnumbers^n, \mathcal B(\realnumbers^n))\).
+    La chiameremo \emph{legge} o \emph{distribuzione} di \(X\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Identica a quella discreta sostituendo \(\powerset(\Omega)\)
+    con \(\mathcal F\).
+\end{snippetproof}
+
+La misurabilità di \(X\) ci serve per garantire che \(\mu_X\)
+sia ben definita.
+
+\begin{snippetproposition}{}
+    Data \(\mu\) misura di probabilità su \((\realnumbers^n, \mathcal B(\realnumbers^n))\)
+    esiste sempre \(X\) variabile aleatorie tale che \(\mu\)
+    è la sua legge, cioè \(\mu_X = \mu\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Basta prendere \(\Omega = \realnumbers^n\),
+    \(\mathcal F = \mathcal B(\realnumbers^n)\)
+    e \(\mathbb P = \mu\). Allora, presa \(X = \operatorname{Id}_{\realnumbers^n}\),
+    che è ovviamente misurabile, e \[
+        \mu_X(A) = \mathbb P(X^{-1}(A))
+        = \mathbb P(A) = \mu(A), \quad \forall A \in \mathcal B(\realnumbers^n)
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{}
+    Sia \(X \colon \Omega \fromto \realnumbers^n\)
+    variabile aleatorie e \(f \colon \realnumbers^n \fromto \realnumbers^m\)
+    funzione misurabile. Allora,
+    \(f \circ X = f(X) \colon \Omega \fromto \realnumbers^m\) è pure variabile aleatorie-
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Basta mostrare che \(f \circ X\) è misurabile.
+    In generale non è vero per funzioni misurabili.
+    Sia \(A \in \mathcal B(\realnumbers^m)\).
+    Allora, \[
+        (f\circ X)^{-1}(A) = \{
+            \omega \in \Omega \suchthat f(X(\omega)) \in A
+        \}
+        = \{
+            \omega \in \Omega \suchthat X(\omega) \in f^{-1}(A)
+        \}
+        = X^{-1}(f^{-1}(A)) \in \mathcal F
+    \]
+    in quanto \(X\) è misurabile e \(f\) misurabile e quindi \(f^{-1}(A) \in \mathcal B(\realnumbers^n)\).
+\end{snippetproof}
+
+\begin{snippetdefinition}{}
+    Sia \(X \colon \Omega \fromto \realnumbers^n\) variabile aleatoria.
+    Chiamiamo \emph{\(\sigma\)-algebra generata da \(X\)} la più piccola \(\sigma\)-algebra
+    che contiene la famiglia di insiemi \[
+        \mathcal J \triangleq \left\{
+            X^{-1}(A) \suchthat A \in \mathcal B(\realnumbers^n)
+        \right\}
+    \]
+    \emph{Syntax:} scriviamo \(\sigma(X)\).
+\end{snippetdefinition}
+
+Cioè stiamo intersecando tutte le famiglie che rendono la funzione continua.
+Se anziché fissare lo spazio di probabilità
+\((\Omega, \mathcal F, \mathbb P)\)
+fissiamo solo \(\Omega\) e prendiamo una funzione
+\(X \colon \Omega \fromto \realnumbers^n\), \(\sigma(X)\)
+non è altro che la più piccola \(\sigma\)-algebra che rende \(X\)
+misurabile.
+Da questo deduciamo subito che se \(X \colon \Omega \fromto \realnumbers^n\)
+è misurabile rispetto ad una \(\sigma\)-algebra \(\mathcal F\) su \(\Omega\), allora
+\(\sigma(X) \subseteq \mathcal F\).
+
+\begin{snippetnote}{Problema del quasi certamente}
+    Nel caso discreto, abbiamo detto che una proposizione
+    è vera quasi certamente se l'insieme degli \(\omega \in \Omega\)
+    tale per cui quella proposizione è vera ha probabilità piena.
+    Nel caso di \(\Omega\) generico, non possiamo sempre prendere \(\mathcal F = \powerset(\Omega)\),
+    e quindi di conseguenza non è detto che un insieme arbitrario sia misurabile,
+    in particolare non è detto che l'insieme di tutti gli \(\omega\)
+    che rendono vera una certa proposizione sia misurabile.
+    Ci sono due modi per ovviare a ciò:
+    \begin{itemize}
+        \item Diciamo che una proposizione è vera quasi certamente se \(\exists A \in \mathcal F\)
+        tale che \(\forall \omega \in A\) la proposizione è vera e \(\mathbb P(A) = 1\).
+        Quindi si richiede che ne esista almeno uno. Per esempio diciamo che \(X \geq 0\)
+        quasi certamente rispetto a \(\mathbb P\).
+        Se \(\exists A \in \mathcal F\) tale che \(\mathbb P(A) = 1\) e \[
+            A \subseteq \left\{
+                \omega \in \Omega \suchthat X(\omega) \geq 0
+            \right\}
+        \]
+        Nel caso discreto richiederemmo che l'insieme totale abbia misura \(1\).
+        In questo caso richiediamo che ne esista uno più piccolo misurabile, che per monotonia ha pure lui
+        misura piena.
+        Chiaramente se \(\left\{
+                \omega \in \Omega \suchthat X(\omega) \geq 0
+            \right\} \in \mathcal F\), possiamo prendere direttamente questo come \(A\), come nel caso discreto.
+        \item Possiamo completare la \(\sigma\)-algebra \(\mathcal F\)
+        con gli insiemi di misura nulla, cioè definiamo \[
+            \mathcal N = \left\{
+                A \subseteq \Omega \suchthat \exists A_0 \in \mathcal F,
+                A \subseteq A_0 \land \mathbb P(A_0) = 0
+            \right\}
+        \]
+        Cioè stiamo considerando tutti gli insiemi contenuti in insiemi di misura nulla.
+        Chiamiamo \emph{completamento} di \(\mathcal F\) la \(\sigma\)-algebra generata
+        \(\mathcal F \union \mathcal N\).
+        In questo modo contiene anche quelli di misura \(1\) in quanto complementari.
+    \end{itemize}
+\end{snippetnote}
+
+\begin{snippetdefinition}{}
+    Siano \((\Omega_1, \mathcal F_1, \mathbb P_1), (\Omega_2, \mathcal F_2, \mathbb P_2)\)
+    spazi di probabilità generici e \(X \colon \Omega_1 \fromto \realnumbers^n, Y \colon \Omega_2 \fromto \realnumbers^n\)
+    variabili aleatorie.
+    \begin{enumerate}
+        \item \(X =_d Y\) (uguali in distribuzione) se \(\mu_X = \mu_Y\)
+        \item \(X = Y\) quasi certamente se \(\Omega_1 = \Omega_2\)
+        e \(\mathcal F_1 = \mathcal F_2\) e \(\mathcal P_1 = \mathcal P_2\) e
+        \(\exists A \in \mathcal F\) tale che \[
+            A \subseteq \left\{
+                \omega \in \Omega \suchthat X(\omega) = Y(\omega)
+            \right\}
+        \]
+        e \(\mathbb P(A) = 1\).
+    \end{enumerate}
+\end{snippetdefinition}
+
+Ricordiamo che se \(f \colon \realnumbers^n \fromto \realnumbers^m\)
+misurabile allora \[
+    f(X) =_d f(Y) \iff X = Y
+\]
+e \(X=Y\) quasi certamente implica \(X=_d Y\) ma non il viceversa.
+Valgono tutti i risultati visti
+nel caso discreto, per le dimostrazioni è sufficiente
+sostituire \(\powerset(\Omega) = \mathcal F\).
+
+\subsection{Variabili aleatorie assolutamente continue}
+
+\begin{snippetdefinition}{Funzione di ripartizione}
+    Sia \(X \colon X \fromto \realnumbers\) variabile aleatorie con legge \(\mu_X\).
+    Chhiamiamo \emph{funzione di ripartizione} di \(X\) la funzione di ripartizione
+    \(F_x\) associata alla misura di probabilità \(\mu_X\), cioè \[
+        F_X(x) = \mathbb P(X \leq x) = \mu_X((-\infty, x]), \quad \forall x \in \realnumbers
+    \]
+\end{snippetdefinition}
+
+Abbiamo già visto che il caso discreto
+si ``immerge in questo caso'' più generale.
+Analogamente a quanto fatto prima, data \(X \colon \Omega \fromto \realnumbers^n\)
+con legge \(\mu_X\) diciamo che \(X\) è discreta se \(\mu_X\) è discreta, cioè
+\(\exists S \subseteq \realnumbers^n\) discreto tale che \[
+    P(X \in S) = \mu_X(S) = 1
+\]
+Come già visto nella prima parte del corso,
+possiamo definire \(p_X \colon \realnumbers^n \fromto [0,1]\)
+data da \[
+    p_X(x) = \mathbb P(X=x) = \mu_X(\{x\}), \quad \forall x \in \realnumbers^n
+\]
+Notiamo sempre che \(p_X(x) = 0\) per ogni \(x \notin S\) che è il nostro insieme discreto.
+
+\begin{snippetdefinition}{Variabile aleatoria assolutamente continua}
+    Sia \(X \colon \Omega \fromto \realnumbers\) variabile aleatorie con legge \(\mu_X\).
+    Diciamo che \(X\) è assolutamente continua se
+    \(\mu_X\) è assolutamente continua e chiamiamo \emph{densità di \(X\)}
+    la densità \(f_X\) associata a \(\mu_X\), cioè
+    \[
+        \mathbb P(X \in A) = \mu_X(A) = \int_A f_X(x)\,d\mu
+    \]
+\end{snippetdefinition}
+
+Ricordiamo sempre la condizione sufficiente per l'assoluta
+continuità. In generale vale che \[
+    F_x(x) = \integral[-\infty][x][f(y)][y]
+\]
+Abbiamo visto che \(X\) assolutamente continua se la sua funzione di ripartizione
+\(F_X \colon \realnumbers \fromto \realnumbers\) è continua e \(\mathcal C^1\) a tratti.
+In questo caso, \(f_X = F_X'\) quasi ovunque.
+
+Mettendo insieme tutto quello che abbiamo fatto, possiamo concludere che
+data una funzione \(F \colon \realnumbers \fromto [0,1]\), monotona non decrescente,
+continua da destra e \(\lim_{x\to \infty}F(x) = 1\) e \(\lim_{x \to -\infty} F(x) = 0\)
+allora esiste spazio di probability con \(F_X = F\).
+
+Importante: abbiamo visto che \(\mu\) misura di probabilità su \(\realnumbers\)
+tale che \(F\) è la sua funzione di distribuzione ma fissata \(\mu\)
+possono esistere infinite variabili aleatorie con legge \(\mu\) e quindi
+funzione di ripartizione \(F\), uguali in distribuzione (hanno la stessa legge),
+ma non uguali quasi certamente.
+
+Nello stesso modo, data \(p \colon \realnumbers \fromto [0,1]\)
+densità discreta o \(f \colon \realnumbers \fromto [0,+\infty]\)
+densità rispetto a Lebesgue, allora \(\exists (\Omega, \mathcal F, \mathbb P)\)
+spazio di probabilità e \(X \colon \Omega \fromto \realnumbers\)
+discreta o assolutamente contunua con densità \(p\) o \(f\).
+
+Importante: data una funzione di ripartizione o densità, esiste sempre una variabile aleatoria ad esse associata,
+ma loro determinano univocamente solo la legge della variabile aleatoria, non la variabile aleatoria stessa.
+
+\subsection{Valore atteso di variabili aleatorie generiche}
+
+L'idea è quella di considerare \((\Omega. \mathcal F, \mathbb P)\)
+spazio di probabilità e \(X \colon \Omega \fromto \realnumbers\)
+variabile aleatoria con legge \(\mu_X\). Vorremmo definire
+\[
+    \mathbb E[X] \triangleq \int_\Omega X(\omega) \,d\mathbb P(\omega)
+\]
+Sostituendo la variabile \(x = X(\omega)\) otteniamo
+\[
+    \mathbb E[X] = \int_\realnumbers x \left(\mathbb P \circ X^{-1}\right)\,dx
+    = \int_\realnumbers x\mu_X\,dx
+\]
+
+Se \(\mathbb P\) è discreta, la definizione coincide con quella vecchia \[
+    \mathbb E[X] = \sum_{\omega \in \Omega} X(\omega) \mathbb P(\{\omega\})
+\]
+Sempre nel caso discreto, abbiamo visto
+il cambio variabile \(x = X(\omega)\) \[
+    \mathbb E[X] = \sum_{\omega \in \Omega} X(\omega) \mathbb P(\{\omega\})
+    = \sum_{x \in \realnumbers} x \mu(\{x\})
+    = \sum_{x \in \realnumbers} x p_X(x)
+\]
+dove \(\mu(\{x\}) > 0\) su al più una quantità numerabile.
+Quindi, nel caso assolutamente continuo troviamo
+\begin{align*}
+    \mathbb E[X] = \int_\realnumbers x\mu_X\,dx
+    = \int_\realnumbers x f_X(x)\,dx
+\end{align*}
+La prendiamo come data in quanto non abbiamo visto la teoria per il cambio di variabile.
+Prendiamo quindi quest'ultima come la definizione di valore atteso.
+
+\begin{snippetdefinition}{Valore atteso}
+    Sia \(X \colon \fromto \realnumbers\) variabile aleatoria assolutamente continua
+    con densità \(f_X\).
+    Allora definiamo il valore atteso come \[
+        \mathbb E[X] = \int_\realnumbers xf_X(x)\,dx
+    \]
+    se esiste.
+\end{snippetdefinition}
+
+Dalle proprietà dell'integrale di Lebesgue sappiamo che \(\mathbb E[X]\)
+esiste finite se e solo se \[
+    \int_\realnumbers |x| f_X(x)\,d\mu < +\infty
+\]
+
+Valgono tutte le proprietà del valore atteso viste nel caso discreto,
+in particolare ricordiamo che se \(X\) e \(Y\)
+sono variabili aleatorie assolutamente continue con densità
+\(f_X\) e \(f_Y\) allora se \(f_X = f_Y\) quasi ovunque, allora i valori attesi coincidono.
+
+\begin{snippettheorem}{}
+    Sia \(X \colon \Omega \fromto \realnumbers\) variabile aleatoria assolutamente continua e \(g \colon \realnumbers \fromto \realnumbers\)
+    funzione misurabile. Allora \(g \circ X = g(X) \colon \Omega \fromto \realnumbers\)
+    ammette valore atteso finito se e solo se \[
+        \int_\realnumbers |g(x)| f_X(x)\,dx < +\infty 
+    \]
+    In tal caso,
+    \[
+        \mathbb E[g(X)] = \int_\realnumbers g(x) f_X(x)\,dx
+    \]
+\end{snippettheorem}
+
+Questo teorema ci permette di definire la varianza.
+
+\begin{snippetdefinition}{}
+    Sia \(X \colon \Omega \fromto \realnumbers\) variabile aleatorie assolutamente continua
+    con densità \(f_X \colon \realnumbers \fromto [0,+\infty]\) e tale che
+    \[
+        \int_\realnumbers |x|^2 f_X(x)\,dx < +\infty
+    \]
+    Definiamo \emph{varianza} di \(X\) la quantità
+    \[
+        \operatorname{Var}(X) =
+        = \mathbb E[(X - \mathbb E[X])^2] = \int_\realnumbers (x - \mathbb E[X])^2 f_X(x)\,dx
+    \]
+\end{snippetdefinition}
+
+Possiamo anche scrivere \[
+    \mathbb E[X^2] - \mathbb E[X]^2 = \int_\realnumbers x^2 f_X(x)\,dx - \mathbb E[X]^2
+\]
+
+Come nel caso discreto, se il momento secondo è finito allora pure il momento primo è finito
+\begin{align*}
+    \int_\realnumbers  xf_X(x)\,dx &= \int_\realnumbers 1 \cdot f^{\sfrac12}_X(x)
+    \cdot x \cdot f_X^{\sfrac12}(x)\,dx \\
+    &\leq \left(\int_\realnumbers 1 f_X(x)\,dx\right)^{\sfrac12}
+    \cdot \left(
+        \int_\realnumbers x^2 f_X(x)\,dx
+    \right)^{\sfrac12} \\
+    &= 1^{\sfrac12} \cdot \left(
+        \int_\realnumbers x^2 f_X(x)\,dx
+    \right)^{\sfrac12} < +\infty
+\end{align*}
+con disuguaglianza per Hölder, e l'integrale fa \(1\) in quanto \(f_X\) è densità.
+
+In generale,
+\[
+    \mathbb E[x^p] < +\infty \implies \mathbb E[x^q] < +\infty, \quad \forall p \leq p 
+\]
 
 
 
