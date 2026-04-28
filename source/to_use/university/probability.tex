@@ -5044,7 +5044,7 @@ su \((\realnumbers, \mathcal B(\realnumbers))\) con funzione di ripartizione \(F
 \begin{snippetexample}{}
     Consideriamo l'esempio del tempo di vita di un macchinario.
     A volte si può tenere conto anche di eventuali difetti di fabbrica.
-    Lo vediamo martedì. XXX.
+    TODO da prendere dai fogli
 \end{snippetexample}
 
 \pagebreak
@@ -5374,6 +5374,364 @@ In generale,
 \[
     \mathbb E[x^p] < +\infty \implies \mathbb E[x^q] < +\infty, \quad \forall p \leq p 
 \]
+
+\subsection{Variabili aleatorie assolutamente continue}
+
+\begin{snippetdefinition}{}
+    Chiamiamo \emph{vettore aleatorio di \(\realnumbers^n\)}
+    una \(n\)-tupla \((X_1, \cdots, X_n)\) dove \[
+        X_i \colon \Omega \fromto \realnumbers
+    \]
+    variabile aleatorie per ogni \(i \in \{1, \cdots, n\}\).
+\end{snippetdefinition}
+
+Abbiamo già visto quelli discreti e ora ci concentreremo su quelli assolutamente continui.
+Anche in questo caso possiamo vedere il vettore aleatorio
+come una variabile aleatoria a valori in \(\realnumbers^n\),
+\(X = (X_1, \cdots, X_n) \colon \Omega \fromto \realnumbers^n\).
+Notiamo che \(X\) è Borel-misurabile se e solo se
+\(X_1, \cdots, X_n\) sono Borel misurabili.
+Questo segue dal fatto che \(\mathcal B(\realnumbers^n)\)
+è generata da insiemi del tipo \(A_1 \cartesianprod \cdots \cartesianprod A_n\)
+con \(A_1, \cdots, A_n \in \mathcal B(\realnumbers)\).
+Questo ci dà la direzione da destra a sinistra. Il converso è dato dal fatto che,
+dato \(X\) se voglio trovare un \(X_i\) usiamo la proiezione canonica,
+che è una funzione continua anzi un operatore lineare, quindi misurabile.
+È un operatore lineare in quanto \(X_i = \pi(X)\)
+con \(\pi(X) \colon \realnumbers^n \fromto \realnumbers\)
+data dal prodotto scalare \[
+    \pi(\overline x) = \langle e_i, \overline x \rangle
+\]
+con \(\overline x \in \realnumbers^n\)
+e \(e_i\) vettori della base canonica.
+Quindi, \(X_i = \pi \circ X\) dove la prima è continua e la seconda misurabile, quindi
+\(X_i\) misurabile.
+Abbiamo quindi una corrispondenza biunivoca fra le variabili
+aleatorie di \(\realnumbers^n\)
+e vettori aleatori di \(\realnumbers^n\).
+
+\begin{snippetdefinition}{Leggi congiunte e marginali}
+    Sia \(X = (X_1, \cdots, X_n)\) vettore aleatorio di
+    \(\realnumbers^n\). Chiamiamo \emph{legge congiunta}
+    la legge \[
+        \mu_{X_1, \cdots, X_n}
+    \]
+    di \(X\) visto come variabile aleatoria di \(\realnumbers^n\),
+    cioè \(\forall A_1, \cdots, A_n \in \mathcal B(\realnumbers)\),
+    \[
+        \mathbb P(X \in A_1 \cartesianprod \cdots \cartesianprod A_n)
+        = \mathbb P(X_1 \in A_1, \cdots, X_n \in A_n)
+        = \mu_{X_1, \cdots, X_n}(A_1 \cartesianprod \cdots \cartesianprod A_n)
+    \]
+    Allo stesso modo, con \(\forall k \in \{1, \cdots, n\}\)
+    con \(i_1 < \cdots < i_k \in \{1, \cdots, n\}\)
+    chiamiamo \emph{legge marginale} del vettore \((X_1, \cdots, X_n)\)
+    rispetto ad \(I = (i_1, \cdots, i_k)\) la legge della variabile
+    aleatoria \(X_I = (X_{i_1}, \cdots, X_{i_k}) \colon \Omega \fromto \realnumbers^k\)
+    e la indichiamo con \(\mu_{X_{i_1}, \cdots, X_{i_k}}\)
+    oppure \(\mu_I\), cioè \(\forall A_1, \cdots, A_k \in \mathcal B(\realnumbers)\)
+    \[
+        \mathbb P(X_I \in A_1 \cartesianprod \cdots \cartesianprod A_k)
+        = \mathbb P(X_{i_1} \in A_1, \cdots, X_{i_k} \in A_k)
+    \]
+\end{snippetdefinition}
+
+Anche in questo caso chiamiamo \emph{marginali unidimensionali}
+le leggi delle variabili aleatorie reali
+\(X_i\) e le indichiamo con \(\mu_{X_i}\) oppure \(\mu_i\).
+Anche in questo caso generico la congiunta determina univocamente le marginali.
+
+\begin{snippetproposition}{}
+    \(\forall A_{i_1}, \cdots, A_{i_k} \in \mathcal B(\realnumbers)\)
+    vale che \[
+        \mu_{X_{i_1}, \cdots, X_{i_k}}(A_{i_1} \cartesianprod \cdots \cartesianprod A_{i_k})
+        = \mu(X_1, \cdots, X_n)(C_1 \cartesianprod \cdots \cartesianprod C_n)
+    \]
+    dove \[
+        C_j = \begin{cases}
+            \realnumbers & j \notin \{i_1, \cdots, i_k\} \\
+            A_j & j \in \{i_1, \cdots, i_k\}
+        \end{cases}
+    \]
+    In particolare nel caso \(k=1\) vale \begin{align*}
+        \mu_{X_1}(A_1) &= \mathbb P(X_1\in A_i)
+        = \mathbb P(X_1 \in \realnumbers, \cdots, X_i \in A_i, \cdots, X_n \in \realnumbers) \\
+        &= \mu_{X_1, \cdots, X_n}(
+            \realnumbers \cartesianprod
+            \cdots \cartesianprod A_i \cartesianprod \cdots \realnumbers
+        )
+    \end{align*}
+\end{snippetproposition}
+
+La dimostrazione è analoga al caso discreto.
+
+\begin{snippetdefinition}{Funzione di ripartizione}
+    Sia \(X=(X_1, \cdots, X_n)\) vettore aleatorio di \(\realnumbers^n\)
+    con legge congiunta \(\mu_{X_1, \cdots, X_n}\).
+    Diciamo che la \emph{funzione di ripartizione congiunta del vettore} è la funzione
+    \[
+        F_{X_1, \cdots, X_n} \colon \realnumbers^n \fromto \realnumbers
+    \]
+    tale che \(\forall \overline x = (x_1, \cdots, x_n) \in \realnumbers^n\)
+    \[
+        F_{X_1, \cdots, X_n}(\overline x)
+        = \mathbb P(X_1 \leq x_1, \cdots, X_n \leq x_n)
+        = \mu_{X_1, \cdots, X_n}((-\infty, \overline x])
+    \]
+    Preso \(k \in \{1, \cdots, n\}\) e \(i_1 < \cdots < i_k \in \{1, \cdots, n\}\)
+    chiamiamo funzione di ripartizione marginale rispetto ad
+    \(I = (i_1, \cdots, i_k)\) la funzione \[
+        F_{X_{i_1}, \cdots, X_{i_k}}\colon \realnumbers^k \fromto \realnumbers
+    \]
+    tale che \(\forall \overline x = (x_1, \cdots, x_n) \in \realnumbers^k\)
+    \[
+        F_{X_{i_1}, \cdots, X_{i_k}}(\overline x)
+        = \mathbb P(X_{i_1} \leq x_1, \cdots, X_{i_k} \leq x_k)
+    \]
+\end{snippetdefinition}
+
+Anche in questo caso possiamo ritrovare le marginali dalla funzione di ripartizione congiunta.
+In questo caso prendiamo il limite
+\[
+    F_{X_{i_1}, \cdots, X_{i_k}}(X_{i_1}, \cdots, X_{i_1})
+    = \lim_{\substack{x_j \to \infty \\ j \notin \{i_1, \cdots, i_k\}}}
+    F_{X_1, \cdots, X_n}(X_1, \cdots, X_n)
+\]
+In particolare pe rle funzioni di ripartizione unidimensionali vale
+\[
+    F_{X_1}(x_i) = \lim_{x_j \to \infty \\ j \neq i}
+    F_{X_1, \cdots, X_n}(x_1, \cdots, x_n)
+\]
+cioè li facciamo andare tuti ad infinito tranne una.
+
+\begin{snippetproof}{}
+    Per comodità prendiamo \(i_1 = 1, \cdots, i_k = k\). Abbiamo
+    \begin{DispWithArrows*}
+        F_{X_1, \cdots, X_k}(x_1, \cdots, x_k)
+        &= \mathbb P(X_1 \leq x_1, \cdots, X_k \leq x_k) \\
+        &= \mathbb P(X_1 \leq x_1, \cdots, X_k \leq x_k, X_{k+1} \in \realnumbers, X_n \in \realnumbers) \Arrow{Continuità \\ dal basso} \\
+        &= \lim_{\substack{x_{k+1} \to +\infty \\ \cdots \\ x_n \to +\infty}}
+        \mathbb P(X_1 \leq x_1, \cdots, X_k \leq x_k, X_{k+1} \leq X_{k+1}, \cdots, X_n \leq x_n) \\
+        &= \lim_{\substack{x_{k+1} \to +\infty \\ \cdots \\ x_n \to +\infty}}
+        F_{X_1, \cdots, X_n}(x_1, \cdots, x_n)
+    \end{DispWithArrows*}
+\end{snippetproof}
+
+Come nel caso discreto, non vale il viceversa.
+Le stessi leggi o funzioni di ripartizione non determinano univocamente
+la congiunta o legge funzione di ripartizione.
+
+Anche nel caso di \(\realnumbers^n\) la funzione di ripartizione determina univocamente
+la legge. Di conseguenza possiamo lavorare con la funzione di ripartizione per dedurre risultati sulla legge.
+Inoltre, la funzione di ripartizione può essere sempre definita
+indipendentemente dalla forma delle \(X_1, \cdots, X_n\)
+(non necessariamente discrete o assolutamente continue).
+
+\begin{snippetdefinition}{Indipendenza}
+    Siano \(X_1, \cdots, X_n\) variabili aleatorie reali \(X_i \colon \Omega \fromto \realnumbers\).
+    Diciamo che \(X_1, \cdots, X_n\) sono \emph{indipendenti}
+    se le \(\sigma\)-algebre da loro generate
+    \(\sigma(X_1), \cdots, \sigma(X_n)\) sono indipendenti, cioè
+    \[
+        \mathbb P\left(
+            \bigcap_{i=1}^n A_i
+        \right)
+        = \prod_{i=1}^n \mathbb P(A_i)
+    \]
+    per tutte le \(A_1 \in \sigma(X_1), \cdots, A_n \in \sigma(X_n)\).
+\end{snippetdefinition}
+
+Questa è una definizione che generalizza tutte le indipendenze.
+
+\begin{snippetproposition}{}
+    Siano \(\mathcal F_1, \cdots, \mathcal F_n\)
+    delle \(\sigma\)-algebre su \(\Omega\)
+    e \(\mathcal I_1, \cdots, \mathcal I_n\)
+    famiglie di sottoinsiemi di \(\Omega\)
+    chiuse rispetto l'intersezione finita
+    tali che \(\mathcal F_i = \sigma(I_i)\).
+    Allora, \(\mathcal F_1, \cdots, \mathcal F_n\)
+    indipendenti se e solo se \[
+        \mathbb P\left(
+            \bigcap_{i=1}^n A_i
+        \right)
+        = \prod_{i=1}^n \mathbb P(A_i)
+    \]
+    per tutte le \(A_1 \in \mathcal I_1, \cdots, A_n \in \mathcal I_n\).
+\end{snippetproposition}
+
+Quindi, mi basta verificare l'indipendenza dei generatori
+delle \(\sigma\)-algebre e la ottengo
+per le \(\sigma\)-algebre.
+
+Nel caso discreto questa proposizione si concretizza dati \(X \colon \Omega \fromto \realnumbers\)
+e \(Y \colon \Omega \fromto \realnumbers\) discreti.
+In generale sappiamo che \(\sigma(X)\) è la \(\sigma\)-algebra
+generata dagli insiemi del tipo \(\{X \in A\}\)
+con insieme della \(\sigma\)-algebra ina rrivo che nel caso discreto
+è \(A \in \powerset(X(\Omega))\).
+In questo caso \(\powerset(X(\Omega))\) è generato dagli insiemi
+\(\{x\}\) con \(x \in X(\Omega)\). Di conseguenza,
+\(\sigma(X)\) è generata da dagli insiemi del tipo
+\(\{X = x\}\) con \(x \in X(\Omega)\) oppure \(\realnumbers\).
+Nel caso generico in arrivo abbiamo tutta la \(\sigma\)-algebra di Borel,
+che può essere generata dalle semirette \((-\infty, x]\)
+con \(x \in \realnumbers\). Di conseguenza,
+\(\sigma(X)\) è generata dagli insiemi del tipo:
+\begin{itemize}
+    \item \(\{X \in A\}\) con \(A \in \mathcal B(\realnumbers)\);
+    \item XXXX. TODO 28 aprile.
+\end{itemize}
+
+\begin{snippettheorem}{}
+    Siano \(X_1, \cdots, X_n\) variabili reali \(X_i \colon \Omega \fromto \realnumbers\).
+    Le seguenti affermazioni sono equivalenti:
+    \begin{enumerate}
+        \item \(X_1, \cdots, X_n\) indipendenti;
+        \item \(\forall A_1, \cdots, A_n \in \mathcal B(\realnumbers)\)
+        vale \begin{align*}
+            \mu_{X_1, \cdots, X_n}(A_1 \cartesianprod \cdots \cartesianprod A_n)
+            &= \mathbb P(X_1 \in A_1, \cdots, X_n \in A_n) \\
+            &= \prod_{i=1}^n \mathbb P(X_i \in A_i)
+            = \prod_{i=1}^n \mu_{X_i}(A_i)
+        \end{align*}
+        \item \(\forall x_1, \cdots, x_n \in \realnumbers\) vale
+        \begin{align*}
+            F_{X_1, \cdots, X_n}(x_1, \cdots, x_n)
+            &= \mathbb P(X_1 \leq x_1, \cdots, X_n \leq x_n) \\
+            &= \prod_{i=1}^n \mathbb P(X_i \leq x_i)
+            = \prod_{i=1}^n F_{X_i}(x_i)
+        \end{align*}
+        \item Se \(X_1, \cdots, X_n\) discrete (già visto)
+        allora \(\forall x_1, \cdots, x_n \in \realnumbers\)
+        \[
+            \mathbb P(X_1 = x_1, \cdots, X_n = x_n)
+            = \prod_{i=1}^n \mathbb P(X_i = x_i)
+        \]
+    \end{enumerate}
+\end{snippettheorem}
+
+\subsection{Vettori aleatori assolutamente continui}
+
+\begin{snippetdefinition}{Vettore aleatorio assolutamente continuo}
+    Sia \((X_1, \cdots, X_n)\)
+    vettori aleatori con congiunta
+    \(\mu_{X_1, \cdots, X_n}\) e funzione di ripartizione
+    \(F_{X_1, \cdots, X_n}\).
+    Diciamo che il vettore è \emph{assolutamente continuo}
+    se \(\exists f_{X_1, \cdots, X_n} \colon \realnumbers^n \fromto [0,+\infty]\)
+    tale che una delle seguenti affermazioni è vera:
+    \begin{enumerate}
+        \item \(\forall a_1 < b_1, \cdots, a_n < b_n\) vale
+        \[
+            \mu_{X_1, \cdots, X_n}
+            \left(
+                \prod_{i=1}^n (a_i, b_i)
+            \right)
+            = \int_{
+                \prod_{i=1}^n (a_i, b_i)
+            }
+            f_{X_1, \cdots, X_n}\,d\mu_n
+        \]
+        \item \(\forall x_1, \cdots, x_n \in \realnumbers\) vale
+        \[
+            F_{X_1, \cdots, X_n}
+            (x_1, \cdots, x_n)
+            = \int\limits_{-\infty}^{x_1}
+            \cdots
+            \int\limits_{-\infty}^{x_k}
+            f_{X_1, \cdots, X_n}(y_1, \cdots, y_n)\,d(y_1, \cdots, y_n)
+        \]
+        In questo caos chiamiamo \(f_{X_1, \cdots, X_n}\)
+        densità congiunta di \(X\).
+    \end{enumerate}
+\end{snippetdefinition}
+
+Se \((X_1, \cdots, X_n)\) vettore aleatorio assolutamente continuo con densité
+\(f\) allora \[
+    \int_{\realnumbers^n} f(x_1, \cdots, x_n)\,d(x_1, \cdots, x_n)
+    = \mathbb P(x_1 \in \realnumbers, \cdots, x_n \in \realnumbers) = 1
+\]
+Di conseguenza \(f\) è integrabile rispetto a Lebesgue e quindi posso applicare Fubini-Tonelli
+a piacere.
+
+Anche in questo caso \(f_{X_1, \cdots, X_n}\) è unica
+quasi ovunque e determina univocamente la legge di \((X_1, \cdots, X_n)\).
+
+Anche in questo la congiunta determina la natura delle marginali.
+
+\begin{snippetproposition}{}
+    \(\forall k \in \{1, \cdots, n\}\)
+    e \(i_1 < \cdots < i_k \in \{1, \cdots, n\}\) il vettore aleatorio
+    \((X_{i_1}, \cdots, X_{i_k})\) è assolutamente continuo con densità
+    \(f_{X_{i_1}, \cdots, X_{i_k}} \colon \realnumbers^k \fromto [0,+\infty]\)
+    data da \[
+        f_{X_1, \cdots, X_n}(x_{i-1}, \cdots, x_{i_k})
+        = \underbrace{
+            \int_\realnumbers \cdots \int_\realnumbers
+        }_{n-k \text{ volte}} f_{X_1, \cdots, X_n}(x_1, \cdots, x_n)
+        \,d(x_{j_1}, \cdots, x_{n-k})
+    \]
+    con \(j_1 < \cdots < j_{n-k} \notin \{i_1, \cdots, i_k\}\).
+    In particolare \(\forall i \in \{1, \cdots, n\}\), \(X_i\)
+    è assolutamente continua con densità \(f_{X_i} \colon \realnumbers [0,+\infty)\)
+    data da
+    \[
+        f_{X_1}(x_i) = \underbrace{\int_\realnumbers \cdots \int_\realnumbers}_{n-1 \text{ volte}}
+        f_{X_1, \cdots, X_n}(x_1, \cdots, x_n)\,d(x_1, \cdots, x_{i-1}, x_{i+1}, \cdots, x_n)
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Dimostriamolo nel caso \(i_1 = 1, \cdots, i_k = k\).
+    Verifichiamo che il vettore \((X_1, \cdots, X_k)\) verifichi la seconda
+    condizione della definizione. Usando i risultati precedenti sulla
+    funzione di ripartizione deduciamo che
+    \begin{DispWithArrows*}
+        F_{X_1, \cdots, X_n}(x_1, \cdots, x_k)
+        &= \lim_{\substack{x_{k+1} \to +\infty \\ \cdots \\ x_n \to +\infty}}
+        F_{X_1, \cdots, X_n}(x_1, \cdots, x_n) \Arrow{Continuità \\ assoluta} \\
+        &= \lim_{\substack{x_{k+1} \to +\infty \\ \cdots \\ x_n \to +\infty}}
+        \int\limits_{-\infty}^{x_1}
+        \cdots
+        \int\limits_{-\infty}^{x_n}
+        f_{X_1, \cdots, X_n}(x_1, \cdots, x_n)\,d(x_1, \cdots, x_n) \Arrow{Fubini-Tonelli \\ e limite} \\
+        &= \int\limits_{-\infty}^{x_1}
+        \cdots
+        \int\limits_{-\infty}^{x_n} g(x_1, \cdots, x_k)\,d(x_1, \cdots, x_k)
+    \end{DispWithArrows*}
+    dove \begin{align*}
+        g(x_1, \cdots, x_k)
+        = \underbrace{
+            \int_\realnumbers \cdots \int_\realnumbers
+        }_{n-k \text{ volte}} f(x_1, \cdots, x_n)\,d(x_{k+1}, \cdots, x_n)
+    \end{align*}
+    Quindi il vettore \((X_1, \cdots, X_k)\) verifica la (2)
+    con densità \(g\).
+\end{snippetproof}
+
+Come già visto nel caso discreto, le marginali non determinano la congiunta,
+ma qua è ancora peggio.
+In questo caso se le \(X_i\) sono assolutamente continue per tutte le
+\(i \in \{1, \cdots, n\}\) non è detto che \((X_1, \cdots, X_n)\)
+sia assolutamente continuo.
+
+\begin{snippetexample}{Controesempio}
+    Prendiamo \(Y \colon \Omega \fromto \realnumbers\)
+    assolutamente continua e consideriamo il vettore
+    \((Y,Y)\). Notiamo subito che
+    \[
+        \mathbb P((Y,Y) \in D) = 1
+    \]
+    dove \(D = \{(x,y) \in \realnumbers^2 \suchthat x=y\}\), cioè la diagonale del piano bidimensionale.
+    Se per assurdo \((Y,Y)\) fosse assolutamente continua, allora esisterebbe
+    \(f \colon \realnumbers^2 \fromto [0,+\infty)\) tale che
+    \[
+        1 = \mathbb P((Y,Y) \in D) = \int_D f(x,y)\,d(x,y) = 0
+    \]
+    in quanto \(D\) ha misura nulla di Lebesgue, e quindi è assurdo.
+\end{snippetexample}
+
 
 
 
