@@ -65,8 +65,6 @@ class CenterOfMass extends InteractiveBox {
         this.#loadAdditionalContent();
     }
 
-    gay = 0;
-
     draw(ctx) {
         if (this.#signal.length < 2)
             return;

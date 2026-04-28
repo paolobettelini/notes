@@ -560,36 +560,6 @@ Allora, l'oggetto (13) si immerge naturalmente nell'oggetto (14), non
 il (15) come dimostratosi, mentre l'oggetto (14) si immerge naturalmente
 nell'oggetto (15). Possiamo quindi estendere il lemma originale aggiungendo un passaggio intermedio.
 
-\begin{definition}
-    The \emph{\(3\)-middle object} centered at \(x\) is defined as
-    \[
-        M(x) \triangleq \frac{
-            \displaystyle\bigcap_{\substack{i,j=1 \\ i \neq j}}^{3}
-            \ker \partial[x, x + e_i + e_j]
-        }{
-            \displaystyle\sum_{\substack{i,j=1 \\ i \neq j}}^{3}
-            \im \partial[x-e_i - e_j, x]
-        }
-        = XXXXX
-    \]
-\end{definition}
-
-O più in generale
-\begin{definition}
-    The \emph{\(n\)-middle object} centered at \(x\) is defined as
-    \[
-        M(x) \triangleq \frac{
-            \displaystyle\bigcap_{\substack{k_1=1, \cdots, k_{n-1}=1 \\ k_1 \neq \cdots \neq k_{n-1}}}^{n}
-            \ker \partial\left[x, x +  \sum_{j=1}^{n-1} e_{k_j}\right]
-        }{
-            \displaystyle\sum_{\substack{k_1=1, \cdots, k_{n-1}=1 \\ k_1 \neq \cdots \neq k_{n-1}}}^{n}
-            \im \partial\left[x- \sum_{j=1}^{n-1} e_{k_j}, x\right]
-        }
-        = XXXXX
-    \]
-\end{definition}
-
-
 Abbiamo allora il seguente lemma.
 
 \begin{lemma}
@@ -597,16 +567,174 @@ Abbiamo allora il seguente lemma.
     \begin{center}
         % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAEEQBfU9TXfIRQBGclVqMWbAELdeIDNjwEiAJjHV6zVohABhbuJhQA5vCKgAZgCcIAWyRkQOCElETtbS3Ku2HidxckdRAGOgAjGAYABX5lIVCYSxwQTUkdEBNDLiA
         \begin{tikzcd}
-        A \arrow[r, "f"] & B \arrow[r, "g"] & C
+        A_x \arrow[r, "f"] & A_{x+e_i} \arrow[r, "g"] & A_{x+e_i+d_j}
         \end{tikzcd}
     \end{center}
+    for every \(i,j \in \{1, \cdots, n\}\) with \(i \neq j\),
     induces the arrows
     \begin{center}
         % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRABEAKAQQEoQAvqXSZc+QigCM5KrUYs2AWU4AhfkJHY8BIgCYZ1es1aIQAJU4BhdbJhQA5vCKgAZgCcIAWyRkQOCEiSGiDuXoHU-kj6IAx0AEYwDAAKotoSMTAuOIIUAkA
         \begin{tikzcd}
-        D(A) \arrow[r] & M(B) \arrow[r] & R(C)
+        D(A_x) \arrow[r] & M(A_{x+e_i}) \arrow[r] & R(A_{x+e_i + e_j})
         \end{tikzcd}
     \end{center}
+    where \[
+        M(x) \triangleq \frac{
+            \ker \partial[x, x + e_1 + e_2]
+            \intersection
+            \ker \partial[x, x + e_2 + e_3]
+            \intersection
+            \ker \partial[x, x + e_1 + e_3]
+        }{
+            \im \partial[x - e_1 - e_2, x]
+            +
+            \im \partial[x - e_2 - e_3, x]
+            +
+            \im \partial[x - e_1 - e_3, x]
+        }
+        = H_{(-,0,-), (0,-,-), (-,-,0)}^{(+,+,0), (0,+,+), (+,0,+)}(x)
+    \]
+\end{lemma}
+
+Calcolo di quante ce ne sono con fattoriale XXX.
+
+Questo lemma può essere ulteriore generalizzato a \(n\)-complessi.
+Se consideriamo il lemma generalizzato per \(n=3\), notiamo che il
+donatore è costruito considerando kernel di mappe di lunghezza \(3\) (composizione di \(3\) morfismo),
+di cui ce n'è uno solo, e immagini di mappe di lunghezza \(1\), ci cui ce ne sono \(3\).
+L'oggetto intermedio è costruito con kernel e immagini di mappe entrambe di lunghezza 3.
+Infine, il receiver è costituito da nuclei di mappe di lunghezza uno e immagini di mappe di lunghezza \(3\).
+Per ognuno di questi tre oggetti, consideriamo le tuple \((a,b)\) dove \(a\) è la lunghezza
+dei morfismi di cui vengono considerate le immagini e \(b\) è la lunghezza dei morfismi di cui vengono considerati i kernel.
+Il lemma ci dà quindi una successione di mappe della forma \((3,1) \to (2,2) \to (1,3)\).
+Questa simmetria ci suggerisce che il lemma possa essere generalizzato da un \(n\) complessi
+con una successione di mappe fra \(n\) oggetti comologici diagonali della forma
+\[
+    (n,1) \to (n-1, 2) \to \cdots \to (2, n-1) \to (1,n)
+\]
+Definiamo quindi oggetti comologici diagonali che seguono questa forma.
+
+\begin{definition}
+    Sia \(1 \leq k \leq n\). Definiamo il \emph{\(k\)-diagonal cohomological object} as
+    \[
+        M_k(x) \triangleq \frac{
+            \displaystyle
+            \bigcap_{
+                \substack{
+                    J \subseteq \{1, \cdots, n\} \\
+                    |J| = n-k+1
+                }
+            } \ker\partial\left[
+                x, x + \sum_{j \in J} e_j
+            \right]
+        }{
+            \displaystyle
+            \sum_{
+                \substack{
+                    J \subseteq \{1, \cdots, n\} \\
+                    |J| = k
+                }
+            } \im\partial\left[
+                x - \sum_{j \in J} e_j, x
+            \right]
+        }
+    \]
+\end{definition}
+
+Questa è infatti una generalizzazione del donor e del receiver, con quest'ultimi
+che si trovano ai rispettivi capi della successione di oggetti.
+Infatti, per \(k=1\) ritroviamo il donor
+\[
+    M_1(x) = \frac{
+        \displaystyle
+        \bigcap_{
+            \substack{
+                J \subseteq \{1, \cdots, n\} \\
+                |J| = n
+            }
+        } \ker\partial\left[
+            x, x + \sum_{j \in J} e_j
+        \right]
+    }{
+        \displaystyle
+        \sum_{
+            \substack{
+                J \subseteq \{1, \cdots, n\} \\
+                |J| = 1
+            }
+        } \im\partial\left[
+            x - \sum_{j \in J} e_j, x
+        \right]
+    }
+    = \frac{
+        \ker\partial\left[
+            x, x + \displaystyle\sum_{j=1}^n e_j
+        \right]
+    }{
+        \displaystyle
+        \sum_{j=1}^n
+        \im\partial\left[
+            x - e_j, x
+        \right]
+    }
+    = \frac{
+        \ker\partial\left[
+            x, x + 1
+        \right]
+    }{
+        \displaystyle
+        \sum_{j=1}^n
+        \im\partial\left[
+            x - e_j, x
+        \right]
+    } = D(x)
+\]
+mentre per \(k=n\) ritroviamo il receiver
+\[
+    M_k(x) = \frac{
+        \displaystyle
+        \bigcap_{
+            \substack{
+                J \subseteq \{1, \cdots, n\} \\
+                |J| = 1
+            }
+        } \ker\partial\left[
+            x, x + \sum_{j \in J} e_j
+        \right]
+    }{
+        \displaystyle
+        \sum_{
+            \substack{
+                J \subseteq \{1, \cdots, n\} \\
+                |J| = n
+            }
+        } \im\partial\left[
+            x - \sum_{j \in J} e_j, x
+        \right]
+    }
+    = \frac{
+        \displaystyle
+        \bigcap_{j=1}^n \ker \partial[x, x + e_j]
+    }{
+        \im \partial\left[
+            x - \displaystyle\sum_{j=1}^n e_j, x
+        \right]
+    }
+    = \frac{
+        \displaystyle
+        \bigcap_{j=1}^n \ker \partial[x, x + e_j]
+    }{
+        \im \partial\left[
+            x - 1, x
+        \right]
+    } = R(x)
+\]
+Abbiamo quindi un cammino discreto di oggetti comologici diagonali fra \(D(x)\) e \(R(x)\).
+
+Dobbiamo assicurarci che questi siano oggetti della forma di Bergman (quindi oltre che siano ben definiti). TODO.
+
+\begin{lemma}
+    XXX
 \end{lemma}
 
 \begin{proof}
@@ -772,5 +900,9 @@ E questo invece dovrebbe essere le intramural maps. \\
 \draw[->] (n12) -- (n13);
 
 \end{tikzpicture}
+
+La prima parte di "Generalization of extramural maps" è in realtà
+una generalizzazione dei cocomplessi su n-complessi. Spiegare quali sono gli oggetti di Bergman generalizzati
+e perché coincidono con il numero di Dedekind.
 
 \end{document}
