@@ -8,6 +8,7 @@
 \usepackage{fullpage}
 \usepackage{tikz}
 \usepackage{wrapfig}
+\usepackage{xfrac}
 \usepackage{witharrows}
 
 \WithArrowsOptions{displaystyle}
@@ -5225,6 +5226,412 @@ Dimostrazione per fortuna omessa.
         &= F^*\left(\sum_i \text df_i\wedge \text dg_i\right) \\
         &= F^*(\text d\omega).
     \end{align*}
+\end{snippetproof}
+
+\pagebreak
+
+\section{Lezione del 28/04/2026}
+
+\begin{snippetdefinition}{Partizione dell'unità}
+    Dato \(X\) varietà differenziale e \(\mathcal U = \{U_\alpha\}\)
+    un suo ricoprimento aperto, diremo che \(\lambda_\alpha \colon X \fromto \realnumbers\)
+    è una \emph{partizione dell'unità subordinata a \(\mathcal U\)}
+    se per la funzione \(\lambda_\alpha\) sono soddisfatte le seguenti
+    proprietà: \begin{enumerate}
+        \item per ogni \(x \in X\) esiste un intorno aperto \(W\)
+        tale che solo un numero finito di \(\lambda_\alpha\) è non-nullo
+        su \(W\).
+        \item \(\lambda_\alpha \geq 0\) e \(\operatorname{Supp}(\lambda_\alpha) \subseteq U_\alpha\)
+        per ogni \(\alpha\), dove \[
+            \operatorname{Supp}(f) = \overline{\left\{x \in X \suchthat f(x) \neq 0\right\}}
+        \]
+        e si ha \[
+            \sum_\alpha \lambda_a(x) = 1
+        \]
+        per ogni \(x \in X\).
+    \end{enumerate}
+\end{snippetdefinition}
+
+Il nome viene preso dall'ultima condizione.
+
+\begin{snippetexample}{Partizione dell'unità}
+    Consideriamo \(X = S^1\) vista nei complessi con il ricoprimento aperto
+    \(\mathcal U = \{U_0, U_1\}\) dove \(U_0 = S^1 \difference \{1\}\)
+    e \(U_1 = S^1 \difference \{-1\}\).
+    Ricordiamo \(S^1 \cong \realnumbers/\mathbb{Z}\)
+    mediante la mappa esponenziale \(e \colon \realnumbers \fromto S^1\)
+    data da \(e(t) = e^{2\pi it}\).
+    Infatti, \(1 = e(\mathbb Z)\) mentre \(-1 = e\left(\sfrac 12 + \mathbb Z\right)\).
+    Dobbiamo considerare delel funzoni che sono nulle in un intorno di ogni punto
+    alternandosi.
+    \begin{center}
+        \begin{tikzpicture}[x=1.8cm,y=1.4cm,>=latex,line cap=round,line join=round]
+        \def\xmin{-2.7}
+        \def\xmax{3.2}
+        \def\a{0.14}
+
+        \draw[->,thick] (\xmin,0) -- (\xmax+0.2,0);
+        \node at (\xmin+0.15,0.12) {$\cdots$};
+        \node at (\xmax-0.10,0.12) {$\cdots$};
+
+        \foreach \n in {-3,-2,-1,0,1,2,3}{
+            \draw[blue,thick] (\n-\a,1) -- (\n+\a,1);
+        }
+        \foreach \n in {-3,-2,-1,0,1,2}{
+            \draw[blue,thick,samples=80,smooth,domain={\n+\a}:{\n+0.5-\a}]
+            plot (\x,{pow(cos(90*(\x-(\n+\a))/(0.5-2*\a)),2)});
+            \draw[blue,thick] (\n+0.5-\a,0) -- (\n+0.5+\a,0);
+            \draw[blue,thick,samples=80,smooth,domain={\n+0.5+\a}:{\n+1-\a}]
+            plot (\x,{pow(sin(90*(\x-(\n+0.5+\a))/(0.5-2*\a)),2)});
+        }
+
+        \foreach \n in {-3,-2,-1,0,1,2,3}{
+            \draw[red,thick] (\n-\a,0) -- (\n+\a,0);
+        }
+        \foreach \n in {-3,-2,-1,0,1,2}{
+            \draw[red,thick,samples=80,smooth,domain={\n+\a}:{\n+0.5-\a}]
+            plot (\x,{pow(sin(90*(\x-(\n+\a))/(0.5-2*\a)),2)});
+            \draw[red,thick] (\n+0.5-\a,1) -- (\n+0.5+\a,1);
+            \draw[red,thick,samples=80,smooth,domain={\n+0.5+\a}:{\n+1-\a}]
+            plot (\x,{pow(cos(90*(\x-(\n+0.5+\a))/(0.5-2*\a)),2)});
+        }
+
+        \foreach \n in {-2,-1,0,1,2,3}{
+            \fill[blue] (\n,0) circle (1.8pt);
+            \node[below=4pt] at (\n,0) {$\n$};
+        }
+
+        \foreach \x in {-1.5,-0.5,0.5,1.5,2.5}{
+            \fill[red] (\x,0) circle (1.8pt);
+        }
+        \end{tikzpicture}
+    \end{center}
+    Se \(\lambda_0\) e \(\lambda_1\) sono nulle rispettivamente su un intorno di \(1\) e \(-1\)
+    allora \(\operatorname{supp}(\lambda_0) \subseteq U_0\)
+    e \(\operatorname{supp}(\lambda_1) \subseteq U_1\) e per costruzione
+    \(\lambda_1, \lambda_2\) definiscono una partizione dell'unità subordinata a \(\mathcal U\).
+    Le funzioni sul cerchio hanno la forma:
+    \begin{center}
+        \begin{tikzpicture}[x=1.7cm,y=1.7cm,line cap=round,line join=round]
+            \def\R{1.55}
+            \def\H{0.42}
+            \def\epsang{18}
+
+            \draw[thick] (0,0) circle (\R);
+
+            \fill (\R,0) circle (1.3pt);
+            \fill (-\R,0) circle (1.3pt);
+            \node[right] at (\R,0) {$1$};
+            \node[left] at (-\R,0) {$-1$};
+
+            \draw[blue,thick,samples=2,domain=0:\epsang,variable=\ang]
+                plot ({(\R+\H)*cos(\ang)}, {(\R+\H)*sin(\ang)});
+            \draw[blue,thick,samples=2,domain={360-\epsang}:360,variable=\ang]
+                plot ({(\R+\H)*cos(\ang)}, {(\R+\H)*sin(\ang)});
+
+            \draw[blue,thick,samples=100,smooth,domain=\epsang:{180-\epsang},variable=\ang]
+                plot ({(\R+\H*pow(cos(90*(\ang-\epsang)/(180-2*\epsang)),2))*cos(\ang)},
+                    {(\R+\H*pow(cos(90*(\ang-\epsang)/(180-2*\epsang)),2))*sin(\ang)});
+
+            \draw[blue,thick,samples=2,domain={180-\epsang}:{180+\epsang},variable=\ang]
+                plot ({\R*cos(\ang)}, {\R*sin(\ang)});
+
+            \draw[blue,thick,samples=100,smooth,domain={180+\epsang}:{360-\epsang},variable=\ang]
+                plot ({(\R+\H*pow(sin(90*(\ang-(180+\epsang))/(180-2*\epsang)),2))*cos(\ang)},
+                    {(\R+\H*pow(sin(90*(\ang-(180+\epsang))/(180-2*\epsang)),2))*sin(\ang)});
+
+            \draw[red,thick,samples=2,domain=0:\epsang,variable=\ang]
+                plot ({\R*cos(\ang)}, {\R*sin(\ang)});
+            \draw[red,thick,samples=2,domain={360-\epsang}:360,variable=\ang]
+                plot ({\R*cos(\ang)}, {\R*sin(\ang)});
+
+            \draw[red,thick,samples=100,smooth,domain=\epsang:{180-\epsang},variable=\ang]
+                plot ({(\R+\H*pow(sin(90*(\ang-\epsang)/(180-2*\epsang)),2))*cos(\ang)},
+                    {(\R+\H*pow(sin(90*(\ang-\epsang)/(180-2*\epsang)),2))*sin(\ang)});
+
+            \draw[red,thick,samples=2,domain={180-\epsang}:{180+\epsang},variable=\ang]
+                plot ({(\R+\H)*cos(\ang)}, {(\R+\H)*sin(\ang)});
+
+            \draw[red,thick,samples=100,smooth,domain={180+\epsang}:{360-\epsang},variable=\ang]
+                plot ({(\R+\H*pow(cos(90*(\ang-(180+\epsang))/(180-2*\epsang)),2))*cos(\ang)},
+                    {(\R+\H*pow(cos(90*(\ang-(180+\epsang))/(180-2*\epsang)),2))*sin(\ang)});
+        \end{tikzpicture}
+    \end{center}
+\end{snippetexample}
+
+\begin{snippettheorem}{Esistenza partizione}
+    Data una varietà \(X\)
+    e ricoprimento \(\mathcal U = \{U_\alpha\}\),
+    esiste sempre una partizione dell'unità subordinata a \(\mathcal U\). \\
+    Inoltre, si può anche costruire una partizione dell'unità \(\lambda_i\)
+    tale che \(\operatorname{supp}(\lambda_i)\) compatto, contenuto in \(U_\beta(i)\)
+    per una scelta \(\beta(i)\) di indici.
+\end{snippettheorem}
+
+Per dimostrazione questo teorema ci serve un lemma e definizione di topologia.
+
+\begin{snippetdefinition}{}
+    Un ricoprimento \(\mathcal U = \{V_\alpha\}\)
+    si dice \emph{localmente finite} se ogni \(x \in X\)
+    ha un intorno aperto aperto \(W_x\) tale che \(W_x \intersection V_\alpha \neq \emptyset\)
+    solo per un numero finito di \(\alpha\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Paracompatto}
+    Uno spazio topologico è detto \emph{paracompatto}
+    se da ogni ricoprimento aperto si può estrarre un sottoricoprimento
+    localmente finito.
+\end{snippetdefinition}
+
+\begin{snippetproposition}{}
+    Se \(X\) è uno spazio localmente compatto
+    di Hausdorff a base numerabile, allora \(X\) è paracompatto.
+\end{snippetproposition}
+
+Localmente compatto significa che per ogni \(x \in X\) vi è un intorno aperto
+d chiusura compatta.
+
+Notiamo che se \(X\) è una varietà differenziale, allora
+per definizione soddisfa
+le condizioni della proposizione. Infatti,
+\(X\) è di Hausdorff per definizione e ogni \(x \in X\)
+ha un intorno aperto omeomorfo a \(\realnumbers^n\)
+e quindi in particolare anche intorni omeomorfi a \(B_\delta(0) \subseteq \realnumbers^n\)
+con la chiusa di tale bolla che è compatta.
+
+\begin{snippetproof}{}
+    Sia \(X\) con le ipotesi della proposizione e sia \(\mathcal U = \{U_\alpha\}\). \\
+    \textbf{Passo 1:} costruiamo una famiglia numerabile di aperti \(V_i\) per \(i \geq 1\) tali che
+    \(\overline {V_i} \subseteq V_{i+1}\), \(\overline {V_i}\) compatto e tale che \[
+        X = \bigcup V_i
+    \]
+    Possiamo supporre che \(\mathcal U = \{U_i\}\) numerabile in quanto \(X\)
+    ha base numerabile, e dunque da ogni ricoprimento possiamo estrarne uno numerabile.
+    Inoltre, possiamo raffinare \(\{U_i\}\) in modo da avere \(\overline {U_i}\) compatto
+    (per ipotesi di \(X\) localmente compatto). Poniamo \(V_1 = U_1\),
+    per ricorsione dato \(V_k = U_1 \cup \cdots \cup U_{i_k}\)
+    consideriamo \(\overline {V_k}\) compatto e un numero finito \(i_{k+1} > i_k\)
+    tale che \[
+        \overline {V_k} \subseteq U_1 \cup \cdots \cup U_{i_k+1}
+    \]
+    che è possibile per compattezza. Allora definiamo \[
+        V_{k+1} = U_1 \cup \cdots \cup U_{i_k+1}
+    \]
+    e otteniamo quanto richiesto:
+    \[
+        \overline {V_k} \subseteq V_{k+1}, \quad
+        \bigcup_{k=1}^\infty V_k = X
+    \]
+    in quanto è successione di indicii che tende a \(+\infty\). \\
+    \textbf{Passo 2:}
+    una volta costruiti \(V_1 \subseteq V_2 \cdots\) come nel passo \(1\),
+    consideriamo i seguenti aperti del ricoprimento
+    supponiamo dato un ricoprimento \(\{W_\alpha\}\)
+    aperto arbitrario di \(X\) e consideriamo
+    un sottoricoprimento aperto di \(\overline {V_2}\)
+    (che è compatto) finito e costituito da aperti del tipo
+    \(W_\alpha \cap V_3 \neq \emptyset\) (ricordiamo che \(\overline {V_2} \subseteq V_3\)).
+    Per ogni \(i \geq 3\) consideriamo un sottoricoprimento di aperti del tipo \[
+        W_\alpha \intersection \left(V_{i+1} \difference \overline{V_{i-2}}\right)
+    \]
+    finito che ricopre \(\overline {V_i} \difference V_{i-1}\).
+    Stiamo scegliendo un numero finito di \(W_\beta\)
+    per ogni \(V_i\) per \(i \geq 2\).
+    Tali \(W_\alpha\) scelti costituiscono un sottoricoprimento
+    localmente finito
+    del ricoprimento iniziale \(\{W_\alpha\}\).
+    Infatti ogni \(x \in X\) sta in un \(V_i \difference \overline {V_{i-1}}\)
+    (poniamo \(V_0 = \emptyset\)). Tale aperto \(V_i \difference \overline {V_{i-1}}\)
+    è coinvolto nelle scelte dei \(W_\beta\) che lo intersecano solo come sottoinsieme di \[
+        V_{i+1} \difference \overline {V_{i-1}}, \quad
+        V_{i+1} \difference \overline{V_{i-2}}, \quad 
+        V_{i+1} \difference \overline{V_{i-3}}
+    \]
+    Se \(W_\beta\) è fra questi scelti, ma non interseca
+    uno di quest'ultimi tre aperti, allora non può intersecare
+    \(V_i \difference \overline{V_{i-1}}\).
+    Quindi \(x \in X\) ha l'intorno \(V_i \difference \overline {V_{i-1}}\)
+    che interseca solo un numero finito dei \(W_\beta\),
+    sottoricoprimento di \(\{W_\alpha\}\).
+\end{snippetproof}
+
+\pagebreak
+
+\begin{snippetlemma}{}
+    Esiste funzione \(\mathcal C^\infty\)
+    sul \(\realnumbers^n\) tale che \(\tau \equiv 1\)
+    sull'ipercubo \([-1,1]^n\) e \(\operatorname{supp}(\tau) \subseteq [-1,1]^n\).
+\end{snippetlemma}
+
+\begin{snippetproof}{}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+        \begin{tikzpicture}[x=1cm,y=1cm,line cap=round,line join=round]
+            \draw[->] (-0.8,0) -- (3.2,0);
+            \draw[->] (0,-0.1) -- (0,1.15);
+            \draw (-0.03,0) -- (0.03,0) node[below=4pt] {$0$};
+            \draw (1,-0.03) -- (1,0.03) node[below=4pt] {$1$};
+            \draw[dashed,thin] (0,1) -- (3,1);
+            \draw[thick] (-0.75,0) -- (0,0);
+            \draw[thick] plot[smooth] coordinates {
+                (0,0)
+                (0.12,0.01)
+                (0.25,0.04)
+                (0.45,0.12)
+                (0.7,0.24)
+                (1,0.37)
+                (1.4,0.52)
+                (1.9,0.66)
+                (2.5,0.77)
+                (3,0.83)
+            };
+            \node at (2.55,0.5) {$f$};
+        \end{tikzpicture}
+
+        \begin{tikzpicture}[x=1cm,y=1cm,line cap=round,line join=round]
+            \draw[->] (-0.8,0) -- (2.4,0);
+            \draw[->] (0,-0.1) -- (0,1.15);
+            \draw (-0.03,0) -- (0.03,0) node[below=4pt] {$0$};
+            \draw (1,-0.03) -- (1,0.03) node[below=4pt] {$1$};
+            \draw[dashed,thin] (0,1) -- (2.2,1);
+            \draw[dashed,thin] (1,0) -- (1,1);
+            \draw[thick] (-0.75,0) -- (0,0);
+            \draw[thick] plot[smooth] coordinates {
+                (0,0)
+                (0.1,0.01)
+                (0.2,0.04)
+                (0.35,0.14)
+                (0.5,0.35)
+                (0.65,0.68)
+                (0.8,0.9)
+                (0.92,0.98)
+                (1,1)
+            };
+            \draw[thick] (1,1) -- (2.2,1);
+            \node at (1.75,0.78) {$g$};
+        \end{tikzpicture}
+
+        \begin{tikzpicture}[x=0.95cm,y=1cm,line cap=round,line join=round]
+            \draw[->] (-2.6,0) -- (2.6,0);
+            \draw[->] (0,-0.1) -- (0,1.15);
+            \draw (-2,-0.03) -- (-2,0.03) node[below=4pt] {$-2$};
+            \draw (-1,-0.03) -- (-1,0.03) node[below=4pt] {$-1$};
+            \draw (1,-0.03) -- (1,0.03) node[below=4pt] {$1$};
+            \draw (2,-0.03) -- (2,0.03) node[below=4pt] {$2$};
+            \draw[dashed,thin] (-2.2,1) -- (2.2,1);
+            \draw[dashed,thin] (-1,0) -- (-1,1);
+            \draw[dashed,thin] (1,0) -- (1,1);
+            \draw[thick] (-2.5,0) -- (-2,0);
+            \draw[thick] plot[smooth] coordinates {
+                (-2,0)
+                (-1.9,0.02)
+                (-1.75,0.1)
+                (-1.55,0.32)
+                (-1.35,0.68)
+                (-1.18,0.92)
+                (-1.05,0.99)
+                (-1,1)
+            };
+            \draw[thick] (-1,1) -- (1,1);
+            \draw[thick] plot[smooth] coordinates {
+                (1,1)
+                (1.05,0.99)
+                (1.18,0.92)
+                (1.35,0.68)
+                (1.55,0.32)
+                (1.75,0.1)
+                (1.9,0.02)
+                (2,0)
+            };
+            \draw[thick] (2,0) -- (2.5,0);
+            \node at (.250,0.78) {$\sigma$};
+        \end{tikzpicture}
+        \end{center}
+    \end{wrapfigure}
+    Tale funzione è tutta \(1\) dentro l'ipercubo, poi esternamente man mano scende
+    verso lo zero fino che, in un ipercubo più grande, è tutta nulla.
+    Consideriamo la funzione \[
+        f(t) = \begin{cases}
+            e^{-\sfrac1t} & t > 0 \\
+            0 & t \leq 0
+        \end{cases}
+    \]
+    Questa funzione è positiva e continua.
+    Da questa funzione costruiamo \[
+        g(t) = \frac{f(t)}{g(t) + f(1-t)}
+    \]
+    tale che \(g(t) \equiv 1\) per ogni \(t \geq 1\), mentre
+    \(g(t) \equiv 0\) per \(t \leq 0\).
+    Da questa ancora costruiamo \[
+        \sigma(t) = g(t + 2)g(2-t)
+    \]
+    e infine poniamo
+    \[
+        \tau(x_1, \cdots, x_n)
+        = \prod_{i=1}^n \sigma(x_i)
+    \]
+    Questa funzione ha le proprietà richieste, cioè stiamo espandendo \(\sigma\)
+    a tutti gli assi e quindi otteniamo la tesi.
+    \wrapfill
+\end{snippetproof}
+
+\begin{snippetproof}{Del teorema di esistenza}
+    Dato \(\mathcal U = \{U_\alpha\}\)
+    ricoprimento arbitrario, possiamo assumerlo localmente finito per la proposizione precedente. % todo cite
+    Per ogni \(x \in X\), e per la costruzione della dimostrazione della proposizione, per ogni \(i = 2,3, \cdots\)
+    solo un numero finito di \(U_\alpha\) interseca \(G_i \difference \overline{G_{i-1}}\)
+    e un numero finito di essi ricopre il compatto \(\overline {G_i} \difference G_{i-1}\).
+    Per \(x \in X\) sia \(i \geq 2\) tale che
+    \(x \in G_i \difference \overline {G_{i-1}}\)
+    e sia, per ogni \(\beta\) tale che \(x \in U_\beta\),
+    \(\varphi \colon \realnumbers^n \fromto X\) una carta tale che
+    \[
+        x \in \operatorname{Im}(\varphi) \subseteq U_\beta
+    \]
+    Ovviamente c'è solo un numero finito di tali \(\beta\),
+    quindi questa carta esiste. Consideriamo una funzione \(\tau\)
+    come nel lemma % todo cite
+    dell'ipercubo, e la funzione \(\tau \circ \varphi^{-1}\)
+    (estesa a zero fuori da \(\operatorname{Im} (\varphi)\))
+    per ogni \(\beta\) tale che \(\operatorname{Im}(\varphi) \subseteq U_\beta \).
+    Scegliendo per ogni \(i \geq 2\) un numero finito di punti
+    \(x_k \in \overline {G_i} \difference G_{i-1}\)
+    tale che se \(\varphi_\ast \colon \realnumbers^n \fromto X\)
+    è carta in intorno di \(x\) come sopra, allora
+    \(\operatorname{Im}\varphi_k\) ricoprono \(\overline{G_i} \difference G_{i-1}\),
+    produciamo funzioni \(\lambda_k\) come sopra, che possiamo ordinare
+    in una successione numerabile
+    \[
+        \lambda_1, \lambda_2, \lambda_3, \cdots,
+    \]
+    Poniamo infine
+    \[
+        \overline {\lambda_i} = \frac{\lambda_i}{\sum \lambda_i}
+    \]
+    allora \(\overline{\lambda_i}\) sono partizione dell'unità
+    in quanto \(\sum \lambda_i = 1\) con supporti compatti contenuti
+    in aperti \(U_\beta\) e formanti ricoprimento localmente finito
+    (per la stesso proprietà degli \(U_\beta\)).
+    Abbiamo provato,
+    \begin{itemize}
+        \item per ogni ricoprimento aperto \(U_\alpha\) esiste partizione dell'unità
+        \(\{\overline {\lambda_i}\}\) tale che
+        \(\operatorname{supp}(\overline {\lambda_i})\) compatti ed esiste \(\beta(i)\)
+        tale che \[
+            \operatorname{supp}(\overline {\lambda_i})
+            \subseteq U_\beta(i)
+        \]
+        \item per ottenere la tesi del teorema, dato \(U_\beta\) consideriamo \[
+            \varphi_\beta = \sum_{\operatorname{supp}(\overline{\lambda_i}) \subseteq U_\beta} \overline{\lambda_i}
+        \]
+        con \(\varphi_\beta = 0\) se non vi sono tali funzioni. Poniamo poi
+        \[
+            \overline{\varphi_\beta} = \frac{\varphi_\beta}{\sum_\beta \varphi_\beta}
+        \]
+        anche le \(\overline {\varphi_\beta}\) sono partizioni dell'unità,
+        con supporto in \(U_\beta\) per ogni \(\beta\)
+        ma non necessariamente compatti.
+    \end{itemize}
 \end{snippetproof}
 
 \end{document}

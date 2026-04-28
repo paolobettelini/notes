@@ -6286,8 +6286,272 @@ Questo non è banale e vale solo se la misura è \(\sigma\)-finita.
     che non coincidono.
 \end{snippetexample}
 
+\begin{snippettheorem}{Teorema di Fubini}
+    Siano \((X, \mathcal M, \mu), (Y, \mathcal S, \lambda)\)
+    spazi di misura \(\sigma\)-finiti.
+    \begin{enumerate}
+        \item Sia \(0 \leq f \leq +\infty\) una funzione reale
+        misurabile rispetto ad \(\mathcal M \times \mathcal S\).
+        Si consideriamo le funzioni ovunque definite
+        \[
+            \varphi(x) = \int_Y f_x\,d\lambda, \quad
+            \Psi(y) = \int_X f^y\,d\mu
+        \]
+        Allora, \(\varphi\) è misurabile rispetto ad \(\mathcal M\)
+        e \(\Psi\) è misurabile rispetto a \(\mathcal S\) e vale
+        \[
+            \int_X \varphi\,d\mu = \int_X \Psi\,d\lambda
+            = \int_{X \cartesianprod Y} f\,d(\mu \times \lambda)
+        \]
+        \item Sia \(f \colon X \cartesianprod Y \fromto \complexnumbers\),
+        \(f \in \mathcal L^1(\mu \times \lambda)\). Allora, \[
+            \varphi(x) = \int_Y f_x\,d\lambda, \quad
+            \Psi(y) = \int_X f^y\,d\mu
+        \]
+        sono definite quasi ovunque nei rispettivi spazi,
+        \(\varphi \in \mathcal L^1(\mu)\), \(\Psi \in \mathcal L^1(\lambda)\) e vale \[
+            \int_{X \cartesianprod Y} f\,d(\mu \times \lambda)
+        \]
+    \end{enumerate}
+\end{snippettheorem}
 
+Nel secondo punto stiamo rinunciando all'ipotesi che \(f\) sia positiva.
+Notiamo che \(f_x\) e \(f^y\) potrebbero non essere \(\mathcal L^1\)
+dei rispettivi spazi per un insieme di valori di \(x\) e \(y\)
+rispettivamente che ha misura nulla.
 
+In generale non è facile capire se una funzione è \(\mathcal L^1\)
+rispetto alla misura prodotto, come nel secondo punto. Vorremmo un criterio
+per dedurlo dalle singole misure separatamente.
+
+\begin{snippettheorem}{Criterio di Tonelli}
+    Siano \((X, \mathcal M, \mu), (Y, \mathcal S, \lambda)\)
+    spazi di misura \(\sigma\)-finiti.
+    Sia \(f \colon X \cartesianprod Y \fromto \complexnumbers\)
+    misurabile rispetto a \(\mathcal M \times \mathcal S\). Se \[
+        \int_X \left[
+            \int_Y |f|_x \,d\lambda
+        \right]\,d\mu < +\infty 
+    \]
+    allora \(f \in \mathcal L^1(\mu \times \lambda)\).
+\end{snippettheorem}
+
+Con qualsiasi ordine. Notiamo che siccome \(|f|\) è una funzione positiva,
+misurabile rispetto a \(\mathcal M \times \mathcal S\),
+si può applicare il primo punto del teorema di Fubini.
+In particolare, gli integrali iterati si possono essere calcolati anche nell'ordine
+inverso.
+
+Non è possibile calcolare gli integrali separatamente e dire
+che se coincidono allora \(f \in \mathcal L^1\) e quello è l'integeale doppio,
+quindi bypassando il criterio di Tonelli.
+
+\pagebreak
+
+\begin{snippetexample}{Integrali iterati esistono e coincidono ma la funzione non è integrabile nella misura prodotto}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+            \begin{tikzpicture}[x=0.58cm,y=0.58cm]
+            \foreach \n in {-4,-3,...,3}{
+                \fill[blue!35] (\n,\n) rectangle ++(1,1);
+                \fill[red!35] (\n,{-\n-1}) rectangle ++(1,1);
+            }
+            \draw[step=1,gray!50,very thin] (-4,-4) grid (4,4);
+            \draw[thick] (-4,-4) rectangle (4,4);
+            \draw[->] (-4.3,0) -- (4.3,0) node[right] {$x$};
+            \draw[->] (0,-4.3) -- (0,4.3) node[above] {$y$};
+            \foreach \n in {-4,-3,...,3}{
+                \node at ({\n+0.5},{\n+0.5}) {\scriptsize $1$};
+                \node at ({\n+0.5},{-\n-0.5}) {\scriptsize $-1$};
+            }
+            \end{tikzpicture}
+            \vspace{-1cm}
+        \end{center}
+    \end{wrapfigure}
+    Siano \(X = Y = \realnumbers\) con la misura di Lebesgue.
+    Consideriamo la funzione \(f \colon \realnumbers^2 \fromto \realnumbers\) che ha valore \(1\)
+    sui quadratini che intersecano la diagonale, mentre \(-1\)
+    su quelli che intersecano la seconda diagonale, e tutti gli altri zero altrove
+    (omessi nel grafico). Data una qualsiasi sezione verticale, l'integrale vale esattamente
+    zero in quanto abbiamo un quadratino dove la funzione vale \(1\) e uno in cui vale \(-1\), e questi
+    si elidono. Il medesimo vale pure per ogni sezione in orizzontale.
+    Tuttavia, la nostra funzione \(f\) non è \(\mathcal L^1(\realnumbers^2)\).
+    \wrapfill
+\end{snippetexample}
+
+\begin{snippetexample}{Integrali iterati con valore diverso}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+            \begin{tikzpicture}[x=5.4cm,y=5.4cm]
+            \foreach \n in {0,1,2,3}{
+                \pgfmathsetmacro{\a}{pow(2,-\n)}
+                \pgfmathsetmacro{\b}{pow(2,-\n-1)}
+                \pgfmathsetmacro{\c}{pow(2,-\n-2)}
+                \fill[blue!30] (\b,\b) rectangle (\a,\a);
+                \fill[red!30] (\c,\b) rectangle (\b,\a);
+                \draw[thin] (0,\b) -- (\a,\b);
+                \draw[thin] (\b,\b) -- (\b,\a);
+                \draw[thin] (\c,\b) -- (\c,\a);
+            }
+            \node at (0.75,0.75) {\scriptsize $1$};
+            \node at (0.375,0.75) {\scriptsize $-2$};
+            \node at (0.375,0.375) {\scriptsize $4$};
+            \node at (0.1875,0.375) {\scriptsize $-8$};
+            \node at (0.06,0.06) {\tiny $\ddots$};
+            \draw[thick] (0,0) rectangle (1,1);
+            \draw[->] (-0.06,0) -- (1.08,0) node[right] {$x$};
+            \draw[->] (0,-0.06) -- (0,1.08) node[above] {$y$};
+            \node[below left] at (0,0) {\scriptsize $0$};
+            \node[below] at (1,0) {\scriptsize $1$};
+            \node[left] at (0,1) {\scriptsize $1$};
+            \end{tikzpicture}
+            \vspace{-1.25cm}
+        \end{center}
+    \end{wrapfigure}
+    Consideriamo la funzione \(f \colon \realnumbers^2 \fromto \realnumbers\)
+    che assume i valori come in figura.
+    Data una qualsiasi sezione orizzontale l'integrale ha valore nullo,
+    mentre per una qualsiasi sezione verticale, tutti i valori si compensano tranne l'ultima,
+    che ha valore sempre \(1 \cdot \frac12 = \frac12\).
+    Otteniamo quindi che \[
+        \int_\realnumbers f^y\,dx = 0 \implies
+        \int_\realnumbers \left(
+            \int_\realnumbers f^y\,dx
+        \right)\,dy = 0
+    \]
+    mentre
+    \[
+        \int_\realnumbers f^x\,dx
+        = \begin{cases}
+            \frac12 & x \in \left[\frac12, 1\right] \\
+            0 & x \in \left[0, \frac12\right]
+        \end{cases} 
+        \implies
+        \int_\realnumbers \left(
+            \int_\realnumbers f_x\,dy
+        \right)\,dx = \frac14
+    \]
+    D'altro canto, \(f\) non è \(\mathcal L^1(\mu_2)\),
+    infatti prendendo il modulo otteniamo una serie divergente.
+    \wrapfill
+\end{snippetexample}
+
+\pagebreak
+
+\begin{snippetexample}{Nel criterio di Tonelli è necessario appurare la misurabilità di \(f\)}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+            \begin{tikzpicture}[x=4.8cm,y=2.4cm]
+            \draw[thick] (0,0) rectangle (1,2);
+            \draw[thick] (0,1) -- (1,1);
+            \foreach \a/\b in {0.00/0.06,0.10/0.16,0.22/0.27,0.31/0.39,0.46/0.50,0.58/0.66,0.72/0.76,0.84/0.92,0.96/1.00}{
+                \fill[blue!30] (\a,0) rectangle (\b,1);
+            }
+            \foreach \a/\b in {0.06/0.10,0.16/0.22,0.27/0.31,0.39/0.46,0.50/0.58,0.66/0.72,0.76/0.84,0.92/0.96}{
+                \fill[blue!30] (\a,1) rectangle (\b,2);
+            }
+            \foreach \x in {0.06,0.10,0.16,0.22,0.27,0.31,0.39,0.46,0.50,0.58,0.66,0.72,0.76,0.84,0.92,0.96}{
+                \draw[thin] (\x,0) -- (\x,2);
+            }
+            \draw[->] (-0.06,0) -- (1.08,0) node[right] {$x$};
+            \draw[->] (0,-0.08) -- (0,2.12) node[above] {$y$};
+            \node[below left] at (0,0) {\scriptsize $0$};
+            \node[below] at (1,0) {\scriptsize $1$};
+            \node[left] at (0,1) {\scriptsize $1$};
+            \node[left] at (0,2) {\scriptsize $2$};
+            \node at (0.5,0.5) {\scriptsize $F\times[0,1]$};
+            \node at (0.5,1.5) {\scriptsize $\left([0,1]\setminus F\right)\times[1,2]$};
+            \end{tikzpicture}
+        \end{center}
+    \end{wrapfigure}
+    Siano \(X = Y = \realnumbers\) con la misura di Lebesgue.
+    Sappiamo che in \(\realnumbers\) c'è un sottoinsieme \(F\)
+    non misurabile. Questo implica che ogni intervallo di \(\realnumbers\)
+    contiene un sottoinsieme non misurabile (in quanto la misura di Lebesgue è invariante per traslazioni,
+    posso scrivere i reali come unione numerabile di intervalli non degeneri misurabili,
+    ma almeno una di queste traslazioni incontra l'insieme \(F\) non misurabile, e quindi
+    questo intersecato al non misurabile, è non misurabile.
+    Ma per l'invarianza per traslazioni anche questo sottoinsieme traslato
+    all'intervallo originale è non misurabile).
+    Abbiamo quindi un insieme non misurabile \(F \subseteq [0,1]\).
+    Costruiamo quindi \[
+        E = \left(
+            F \cartesianprod [0,1]
+        \right) \union \left(
+            \left([0,1] \difference F\right)
+            \cartesianprod [1,2]
+        \right)
+    \]
+    Tale insieme \(E\) non è misurabile nel prodotto,p erché nessuna sua sezione orizzontale è misurabile
+    (cioè \(F\) e il suo complementare non sono misurabili). Quindi, \(\chi_E\)
+    è una funzione non misurabile.
+    Studiamo ora le sezioni per calcolare gli integrali iterati della funzione caratteristica.
+    Abbiamo che \(E^y\) è pari a \(F\)
+    per ogni \(0<y<1\) mentre \([0,1] \difference F\) per \(1<y<2\).
+    Integrando prima in orizzontale non arriviamo in fondo, in quanto \(\chi_{E^y}\) è non mimsurabile.
+    Però integrando prima in verticale, si ottiene un segmento di lunghezza \(1\) quindi
+    \[
+        \integral[0][1][
+            \integral[0][1][\chi_{E_x}][y]
+        ][x] = \integral[0][1][1][x] = 1
+    \]
+    \wrapfill
+\end{snippetexample}
+
+Quindi arrivare in fondo non implica nulla sulla misurabilità di \(f\)
+nel prodotto.
+C'è un esempio in cui si arriva allo stesso risultato con entrambi gli integrali iterati,
+ma la funzione non è misurabile.
+
+Se anche \(\mu\) e \(\lambda\) sono misure complete, può succedere che
+\(\mu \times \lambda\) non sia completa.
+Basta che \(\mu\) abbia in punto con misura nulla \(\mu(\{x_0\}) = 0\)
+e che \(\lambda\) abbia un insieme non misurabile \(F\).
+Allora, \(\{x_0\} \cartesianprod F\) non è misurabile
+in quanto la sua sezione verticale non è misurabile.
+Tuttavia, \(\{x_0\} \cartesianprod F \subseteq \{x_0\} \cartesianprod Y\)
+ha misura nulla. Infatti, \[
+    (\mu \times \lambda)(\{x_0\} \cartesianprod Y)
+    = \mu(\{x_0\}) \cdot \lambda(Y) = 0 \cdot \infty = 0
+\]
+Abbiamo quindi trovato un insieme di misura nulla che contiene un sottoinsieme non misurabile.
+
+Come conseguenza, la misura prodotto delle misure di Lebesgue reali,
+non è la misura di Lebesgue in \(\realnumbers^2\) (e \(\realnumbers^n\)).
+Ci aspettiamo tuttavia che la misura di Lebesgue di \(\realnumbers^2\)
+sia il complementamento di \(\mu \cartesianprod \mu\).
+
+\begin{snippettheorem}{}
+    Sia \(n = a+b\). Allora \((\realnumbers^n, \text{Leb})\) è il completamento dello spazio
+    \((\realnumbers^a, \text{Leb}) \cartesianprod (\realnumbers^b, \text{Leb})\).
+\end{snippettheorem}
+
+Dobbiamo quindi riformulare il teorema di Fubini in termini del completamneto del prodotto.
+Indicheremo con \((\mathcal M \times \mathcal S)^\ast\) il completamento della \(\sigma\)-algebra
+prodotto.
+
+\begin{snippettheorem}{Teorema di Fubini con completamento della misura prodotto}
+    \begin{enumerate}
+        \item Sia \(0 \leq f \leq +\infty\) misurabile rispetto ad \((\mathcal M \times \mathcal S)^\ast\).
+        Siano \[
+            \varphi(x) = \int_Y f_x\,d\lambda, \quad
+            \Psi(y) = \int_X f^y\,d\mu
+        \]
+        Allora, \(\varphi\) è misurabile rispetto a \(\mathcal M\)
+        e definita quasi ovunque e \(\Psi\) è misurabile rispetto a \(\mathcal S\)
+        e definita quasi ovunque e \[
+            \int_X \varphi\,d\mu = \int_Y \Psi \,d\lambda
+            = \int_{X \cartesianprod Y} f\,d(\mu \times \lambda)
+        \]
+        \item Questo punto rimane invariato.
+    \end{enumerate}
+\end{snippettheorem}
+
+Abbiamo quindi dovuto aggiungere la condizione del quasi ovunque.
+In particolare, applicando l'enunciato ad \(f = \chi_E\)
+si ottiene che se \(E \in (\mathcal M \times \mathcal S)^\ast\),
+allora quasi tutte le sezioni di \(E\) sono misurabili nei fattori
+(ma non necessariamente tutte).
 
 \pagebreak
 
@@ -6363,6 +6627,84 @@ Questo non è banale e vale solo se la misura è \(\sigma\)-finita.
     \]
     Quindi \(g\) è una maggiorante della derivata ed è \(\mathcal L^1\)
     perché sia in zero che infinite l'esponenziale rende tutto integrabile.
+\end{snippetsolution}
+
+\begin{snippetexercise}{Esercizio 17}
+    Preso dal foglio 4.
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    L'insieme ha forma di cono gelato.
+    La funzione è continua, a parte forse per \(z=0\) che però non fa parte dell'insieme,
+    quindi \(f_n\) è misurabile.
+    Usiamo le coordinate cilindriche in quanto la definizione dell'insieme diventa
+    \[
+        S = \left\{
+            (\rho, \theta, z) \suchthat \rho < z < \sqrt{1-\rho^2}
+        \right\}
+    \]
+    Per proiettare l'insieme sul paino \(xy\), ignoriamo \(z\)
+    e quindi otteniamo \(\rho < \sqrt{1-\rho^2}\).
+    Questo ci dice che \(\rho \leq 1\) e \(\rho^2 \leq 1 - \rho^2\),
+    e quindi \(0 \leq \rho < \sfrac{1}{\sqrt 2}\).
+    Dobbiamo stimare l'integranda con una funzione \(\mathcal L^1(S)\).
+    Anticipando il secondo punto, vorremo usare il teorema della convergenza dominata e quindi
+    è auspicabile già trovare una funzione dominante \(\mathcal L^1(S)\) indipendente da \(n\).
+    Potremmo avere problemi di integrabilità vicino ad \(z=0\), che è punto di accumulazione.
+    Se \(z \to 0\), allora anche \(x,y \to 0\).
+    Il limite puntuale della funzione è dato da \[
+        \lim_n f_n(x,y,z) = \frac{\sinh(y)}{z^3}x^{\sfrac 13} = f(x,y,z)
+    \]
+    e quindi il limite dell'integrale, scambiando il limite e l'integrale,
+    è l'integrale di \(f\), che fa zero per simmetria
+    \(f(x,-y,z) = -f(x,y,z)\). Troviamo quindi la dominante.
+    Possiamo maggiorare \(\sfrac yn \leq 1\) in \(S\), quindi
+    \(e^{\sfrac yn} \leq e\). L'altro termine indifferente è
+    \[
+        \left(x + \frac1n\right)^{\sfrac13} \leq \left(1 + 1\right)^{\sfrac13} = 2^{\sfrac13}
+    \]
+    Abbiamo quindi in modulo
+    \[
+        |f_n(x,y,z)| \leq \frac{\sinh(y)}{z^3}
+    \]
+    Provando a maggiorare il seno iperbolico per una costante \(K\),
+    l'integrale è dato da
+    \begin{align*}
+        \int_S \frac{K}{z^3}\,d\mu
+        &= \integral[0][2\pi][
+            \integral[0][\sfrac{1}{\sqrt 2}][
+                \left(
+                    \integral[\rho][\sqrt{1 - \rho^2}][\frac{K}{z^3}][z]
+                \right)\rho
+            ][\rho]
+        ][\theta] \\
+        &= K_1 \integral[0][\sfrac{1}{\sqrt 2}][
+            \left(
+                \frac{1}{1-\rho^2} - \frac{1}{\rho^2}
+            \right)
+            \rho
+        ][\rho] \\
+        &= K \integral[0][\sfrac{1}{\sqrt 2}][
+            \frac{2\rho^2 - 1}{\rho(1 - \rho^2)}
+        ][\rho]
+    \end{align*}
+    che non converge. Dunque ci serve il seno iperbolico. Non serve tutti, basta
+    usare il fatto che \(\sinh|y| \leq K |y|\), e usiamo la maggiorante
+    \[
+        g = K \frac{|y|}{z^3} \leq K \frac{\sqrt{x^2 + y^2}}{z^3}
+    \]
+    Questa volta otteniamo
+    \begin{align*}
+        \int_S K \frac{\sqrt{x^2 + y^2}}{z^3}\,d\mu
+        &= K \integral[0][\sfrac{1}{\sqrt 2}][
+            \frac{
+                \cancel{\rho^2}(2\rho^2 - 1)
+            }{
+                \cancel{\rho^2} (1-\rho^2)
+            }
+        ][\rho]
+    \end{align*}
+    che converge, quindi le \(f_n\) sono tutte integrabili.
 \end{snippetsolution}
 
 \pagebreak
