@@ -5372,16 +5372,17 @@ Per dimostrazione questo teorema ci serve un lemma e definizione di topologia.
 
 \begin{snippetdefinition}{}
     Un ricoprimento \(\mathcal U = \{V_\alpha\}\)
-    si dice \emph{localmente finite} se ogni \(x \in X\)
+    si dice \emph{localmente finito} se ogni \(x \in X\)
     ha un intorno aperto aperto \(W_x\) tale che \(W_x \intersection V_\alpha \neq \emptyset\)
     solo per un numero finito di \(\alpha\).
 \end{snippetdefinition}
 
 \begin{snippetdefinition}{Paracompatto}
     Uno spazio topologico è detto \emph{paracompatto}
-    se da ogni ricoprimento aperto si può estrarre un sottoricoprimento
-    localmente finito.
+    se da ogni ricoprimento aperto ha un raffinamento localmente finito numerabile.
 \end{snippetdefinition}
+
+TODO cos'è un raffinamento?
 
 \begin{snippetproposition}{}
     Se \(X\) è uno spazio localmente compatto
@@ -5399,7 +5400,7 @@ ha un intorno aperto omeomorfo a \(\realnumbers^n\)
 e quindi in particolare anche intorni omeomorfi a \(B_\delta(0) \subseteq \realnumbers^n\)
 con la chiusa di tale bolla che è compatta.
 
-\begin{snippetproof}{}
+\begin{snippetproof}{TODO: Da riscrivere usando il raffinamento}
     Sia \(X\) con le ipotesi della proposizione e sia \(\mathcal U = \{U_\alpha\}\). \\
     \textbf{Passo 1:} costruiamo una famiglia numerabile di aperti \(V_i\) per \(i \geq 1\) tali che
     \(\overline {V_i} \subseteq V_{i+1}\), \(\overline {V_i}\) compatto e tale che \[
@@ -5632,6 +5633,350 @@ con la chiusa di tale bolla che è compatta.
         con supporto in \(U_\beta\) per ogni \(\beta\)
         ma non necessariamente compatti.
     \end{itemize}
+\end{snippetproof}
+
+\pagebreak
+
+\section{Lezione del 29/04/2026}
+
+\begin{snippettheorem}{}
+    Una varietà \(X\) con \(n = \dim X\) è orientabile
+    se e solo se possiede una \(n\)-forma \(\omega\) mai nulla.
+\end{snippettheorem}
+
+Questo significa che data la scrittura locale con coordinate locali \((x_1, \cdots, x_n)\)
+\[
+    \omega = f\text dx_1 \wedge \cdots \wedge \text d_n
+\]
+allora \(f(x) \neq 0\) non è mai nulla la funzione.
+Equivalentemente
+\[
+    \omega(x) \in \bigwedge^n T_{X,x}^\ast
+\] vale \(\omega(x) \neq 0\).
+
+\begin{snippetproof}{Cenno}
+    \begin{ffiproof}
+        \item Supponiamo che esista tale \(\omega\).
+        Mostriamo che in tal caso, possiamo costruire un atlante orientato di \(X\).
+        Dato \(\varphi^{-1}=(x_1, \cdots, x_n)\)
+        un sistema di coordinat locale per \(X\), cioè \[
+            \varphi \colon \Omega \fromto X
+        \]
+        carta, \(\Omega \subseteq \realnumbers^n\) aperto, \(x_1, \cdots, x_n\)
+        di \(\realnumbers^n\), diciamo che è \emph{orientato}
+        se e solo se \[
+            \omega = f\text dx_1 \wedge \cdots \wedge \text d_n
+        \]
+        con \(f(x) > 0\) per ogni \(x \in X\).
+        Equivalentemente
+        \[
+            \varphi^\ast \omega = (f \circ \varphi)(x) \text dx_1 \wedge \cdots \wedge \text dx_n 
+        \]
+        \((f \circ \varphi)(x) > 0\) per tutte le \(x \in \Omega\).
+        Due tali carte \(\varphi, \Psi\), soddisferanno la suguente relazione
+        \begin{align*}
+            (\Psi^{-1} \circ \varphi)^\ast (\Psi^\ast \omega)
+            &= \varphi^\ast \cancel{(\Psi^{-1})^\ast}
+            \cancel{(\Psi^\ast)} \omega = \varphi^\ast(\omega)= f \circ \varphi \text dx_1 \wedge \cdots \wedge \text dx_n 
+        \end{align*}
+        D'altra parte se \(\Psi^\ast = g \circ \Psi \text dy_1 \wedge \cdots \wedge \text dy_n\)
+        con \((y_1, \cdots, y_n) = \Psi^{-1}\), sappiamo che
+        \begin{align*}
+            (\Psi^{-1} \circ \varphi)^\ast (\Psi^\ast \omega)
+            &= (\Psi^{-1} \circ \varphi)^\ast (g \circ \Psi) \text dy_1 \wedge \cdots \wedge \text dy_n \\
+            &= f \circ \Psi \circ \Psi^{-1} \circ \varphi(x) \cdot \det J(\Psi^{-1} \circ \varphi)(x) \text dx_1 \wedge \cdots \wedge \text dx_n  \\
+            &= f \circ \varphi \text dx_1 \wedge \cdots \wedge \text dx_n
+        \end{align*}
+        Sapendo che \[
+            \begin{cases}
+                g \circ \varphi(x) \cdot \det J(\Psi^{-1} \circ \varphi) = f \circ \varphi, \quad > 0 \\
+                g \circ \Psi > 0 \implies (g \circ \Psi) \circ (\Psi^{-1} \circ \varphi) = g \circ \varphi > 0
+            \end{cases}
+        \]
+        Troviamo \(\det J(\Psi^{-1} \circ \varphi) > 0\), cioè le carta
+        \(\varphi, \Psi\) sono orientate in modo compatibile. \\
+        L'esistenza di \((x_1, \cdots, x_n) = \varphi^{-1}\) tale che
+        \[
+            \varphi^\ast \omega = f \circ \varphi \text dx_1 \wedge \cdots \wedge \text dx_n
+        \]
+        abbia \(f \circ \varphi > 0\) è provata in modo simile al teorema sulla orientabilità
+        delle ipersuperfici. Cioè, se \((x_1, \cdots, x_n) = \varphi^{-1}\) non soddisfa
+        \(f \circ \varphi > 0\), allora la modifichiamo in
+        \[
+            (-x_1, x_2, \cdots, x_n) = \varphi_1^{-1}
+        \]
+        in maniera tale da fare risultare il pullback
+        \[
+            \varphi_1^\ast \omega = (f \circ \varphi_1) \cdot \det J (\varphi^{-1} \circ \varphi_1) \text dx_1 \wedge\cdots\wedge\text dx_n
+        \]
+        Ma questo determinante è il determinante della matrice identica ma con un \(-1\) al posto del primo \(-1\),
+        quindi è meno uno e allora \(\varphi_1^\ast \omega = -f \circ \varphi_1 \, \text dx_1\wedge\cdots\wedge\text dx_n\)
+        con \(- f \circ \varphi_1 = -(f \circ \varphi)(\varphi^{-1} \circ \varphi_1) > 0\).
+        \item Supponiamo che \(X\) abbia un atlante \(\{(U_i, \varphi_i)\}\) orientato. Poniamo \[
+            \omega_i = \text dx_1^{(i)} \wedge \cdots \wedge \text dx_n^{(i)}
+        \]
+        dove \[
+            \left(x_1^{(i)}, \cdots, x_n^{(i)}\right) = \varphi_i^{-1}
+        \]
+        il sistema di coordinate associato ad \(\varphi_i\).
+        Consideriamo \(\lambda_i\) partizione dell'unità subordinata a \(U_i\) ed estendiamo
+        \(\omega_i\) a \(n\)-forma \(\lambda_i\omega_i\) definita su tutto \(X\).
+        Chiaramente \(\lambda_i\omega_i = 0\) fuori da \(U_i\), in quanto
+        \(\operatorname{supp}(\lambda_i) \subseteq U_i\).
+        Poniamo dunque \[
+            \omega \triangleq \sum \lambda_i \omega_i
+        \]
+        Questa è una \(n\)-forma su \(X\),
+        che proveremo essere mai nulla. Consideriamo \(x \in X\)
+        \[
+            \omega(x) = \sum_{x \in \operatorname{supp}(\lambda_i) \subseteq U_i} \lambda_i(x) \omega_i(x)
+        \]
+        Se \(i,j\) sono tali che \(x \in U_i \intersection U_j\), allora \begin{align*}
+            \omega_i(x) &= \restr{
+                \text dx_1^{(i)} \wedge \cdots \wedge \text dx_n^{(i)}
+            }{x} \\
+            \omega_j(x) &= \restr{
+                \text dx_1^{(j)} \wedge \cdots \wedge \text dx_n^{(j)}
+            }{x} = \mu \restr{\text dx_1^{(i)} \wedge \cdots \wedge \text dx_n^{(i)}}{y} = \mu\omega_i(x)
+        \end{align*}
+        con \[
+            \mu = \det\left(
+                \frac{
+                    \partial x^{(j)}
+                }{
+                    \partial x^{(i)}
+                }
+            \right) = \det J(\varphi_j^{-1} \circ \varphi_i) > 0
+        \]
+        cioè tutte le \(\omega_j\) sono multipli positivi di una fissata
+        \(\omega_i\) tale che \(x \in \operatorname{supp}(\lambda_i) \subseteq U_i\).
+        Quindi \[
+            \omega(x) = \sum_j \lambda_j(x) \mu_j \omega_i(x)
+            = \left(
+                \sum \lambda_i(x) \mu_i
+            \right) \omega_i(x)
+        \]
+        Concludiamo quindi che \(\omega(x) \neq 0\) in \(X\).
+    \end{ffiproof}
+\end{snippetproof}
+
+\subsection{Integrali}
+
+Una seconda applicazione della partizione dell'unità è quella dell'integrale di una
+\(n\)-forma su una varietà \(n\)-dimensionale orientabile.
+
+\begin{snippetdefinition}{Integrale di una \(n\)-forma su \(\realnumbers^n\)}
+    Sia \[
+        \omega = f\text dx_1 \wedge \cdots \wedge \text dx_n
+    \]
+    Allora definiamo \[
+        \int_{\realnumbers^n} \omega \triangleq \int f\text dx_1 \wedge \cdots \wedge \text dx_n
+    \]
+\end{snippetdefinition}
+
+Notiamo che
+\[
+    \int f\text dx_{\sigma(1)} \wedge \cdots \wedge \text dx_{\sigma(n)}
+    = (-1)^\sigma \int f\text dx_1 \wedge \cdots \wedge \text dx_n
+\]
+Inoltre, se \(T \colon \realnumbers^n \fromto \realnumbers^n\)
+diffeomorfismo
+(possiamo anche sostituire \(\realnumbers^n\) con un suo aperto), allora l'integrale del pullback
+\begin{align*}
+    \int T^\ast \omega &= \int T^\ast (f\text dx_1 \wedge \cdots \wedge \text dx_n)
+    = \int f \circ T \det J(T) \text dy_1 \wedge \cdots \wedge dy_n \\
+    &= \int f \circ T \det J(T) \text dy_1 \cdots dy_n
+\end{align*}
+Confrontando con \[
+    \int f f\text dx_1 \wedge \cdots \wedge \text dx_n
+    = f\text dx_1 \cdots \text dx_n
+    = \int f \circ T |det J(T)| \text dy_1 \wedge \cdots \wedge \text dy_n
+\]
+Troviamo che \[
+    \int T^\ast \omega = \pm \int \omega
+\]
+se segno \(+\) se e solo se \(T\) preserva l'orientazione e \(-\) se la inverte.
+
+\begin{snippetdefinition}{Integrale su varietà orientata}
+    Sia \(\omega\) una \(n\)-forma su varietà \(X\)
+    orientata, \(\dim X = n\), definiamo \[
+        \int_X \omega \triangleq \sum_i \int_{U_i} \lambda_i \omega
+        = \sum_i \int_{\realnumbers^n} \varphi_i^\ast(\lambda_i \omega)
+    \]
+    dove \(\varphi_i \colon \Omega_i \fromto U_i\) sono carta, \(\{(U_i, \varphi_i)\}\)
+    atlante orientato e \(\lambda_i\) partizione dell'unità
+    dove \(\lambda_i\) partizione dell'unità subordinara a \(U_i\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{}
+    La definizione di integrale è ben definita.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Notiamo innanzitutto che
+    \[
+        \int_{\realnumbers^n} \varphi_i^\ast(\lambda_i\omega)
+    \]
+    non dipende dalla carta \(\varphi_i\) orientata sceltata, in quanto
+    posto \(T = \varphi_i^{-1} \circ \Psi_i\) si ha
+    \begin{align*}
+        \int_{\realnumbers^n} \Psi^\ast(\lambda_i\omega)
+        &= \int \Psi^\ast(\varphi_i^{-1})^\ast (\varphi_i)^\ast (\lambda_i \omega)\\
+        &= \int(\varphi_i^{-1} \circ \Psi)^\ast \circ \varphi_i^\ast(\lambda_i \omega) \\
+        &= \int T^\ast \varphi_i^\ast(\lambda_i \omega) = \int \varphi_i^\ast(\lambda_i \omega)
+    \end{align*}
+    poiché \(T\) preserva l'orientazione.
+    Inoltre \(\int_X \omega\) non dipende dalla scelta dell'atlante e della partizione subordinata, per il calcolo
+    seguente: sia \(\{V_j\}\) altro atlante orientato e \(\{X_j\}\) altra partizione subordinata
+    \[
+        \int_X \omega = \sum_i \int_{U_i} \lambda_i \omega = \sum_{i,j}
+        \int_{U_i} \lambda_i X_j \omega
+    \]
+    Notare che \(\operatorname{supp}(\lambda_I X_j) \subseteq U_i \intersection V_j\),
+    quindi l'integrale a destra si può scrivere anche come integrale su \(V_i\)
+    \[
+        = \sum_{i,j} \int_{V_j} \lambda_i X_j \omega
+        = \sum_j \int_{V_i} X_i \omega
+    \]
+    quindi abbiamo provato \[
+        \sum_i \int_{U_i} \lambda_i \omega = \sum_j \int_{V_j} X_j \omega
+    \]
+    quindi l'indipendenza fra atlante e partizione.
+\end{snippetproof}
+
+L'integrale è come la somma degli integrali degli aperti se fosseri tutti disgiunti.
+Tuttavia, non lo sono. Le partizioni dell'unità sono nulle nelle intersezioni e hanno somma unitaria (in particolare sono unitarie nei punti che appartiene solo ad uno degli aperti),
+quindi permettono di fare l'integrale senza contare le stesse cose molteplici volte.
+
+\begin{snippetdefinition}{Varietà con bordo}
+    \(X\) è detta \emph{varietà con bordo}
+    se oltre ad essere Hausdorff, base numerabile, ha carte \(\varphi_i \colon \Omega_i \fromto U_i\)
+    con \(\Omega_i\) aperto di \(\realnumbers^n\) aperto oppure \[
+        \mathbb H^n = \{(x_1, \cdots, x_n) \suchthat x_n \geq 0\}
+    \]
+    L'insieme dei punti \[
+        \{x \in X \suchthat x \in \varphi_i(\partial \mathbb H^n) = \left\{
+            \varphi_i(x_1, \cdots, x_{n-1}, 0)
+        \right\} \}
+    \]
+    è detto \emph{bordo di \(X\)} e denotato con \(\partial X\).
+\end{snippetdefinition}
+
+Qua dei disegnigni di esempi ma non li ho fatti perché non mi sembravano interessati.
+
+Le condizioni di compatibilità \(\varphi_j^{-1} \circ \varphi_i\)
+di classe \(\mathcal C^\infty\) richiedono di definire cosa voglia dire
+\[
+    F \colon \mathbb H^n \fromto \mathbb H^n
+\]
+sia \(\mathcal C^\infty\) (o fra aperti di \(\mathbb H^n\)).
+Ciô vuol dire (come al solito) che \(F\) può essere estesa a mappa \(\mathcal C^\infty\)
+fra intorni di aperti del semipiano superiore.
+In particolare, \(\left(d F\right)_x\) è definito anche sul bordo \[
+    \partial H^n = \{(x_1, \cdots, x_{n-1}, 0) \cong \realnumbers^{n-1}\}
+\]
+
+\begin{snippetlemma}{}
+    Un diffeomorfismo fra aperti di \(\mathbb H^n\)
+    manda \(\partial \mathbb H^n\) su \(\partial \mathbb H^n\). e si restringe ad un diffeomorfismo
+    fra i bordi. Inoltre,
+    se \(F\) preserva l'orientazione, anche
+    \(\restr{F}{\partial \mathbb H^n}\) la preserva.
+\end{snippetlemma}
+
+\begin{snippetcorollary}{}
+    Se \(X\) è una varietà con bordo orientabile (esistenza di atlante orientato),
+    allora \(\partial X\) è varietà orientabile orientabile. In ogni caso \(\partial X\)
+    è una varietà (ordinaria cioè \(\partial(\partial X) = \emptyset\)).
+\end{snippetcorollary}
+
+\begin{snippetdefinition}{}
+    Sia \(X\) varietà con bordo orientata e sia \[
+        \omega = f\,\text dx_1 \wedge\cdots\wedge\text dx_n
+    \]
+    \(n\)-forma non nulla \(f>0\), \(x_1, \cdots, x_n\)
+    coordinate su aperto di \(X\) diffeomorfo a \(\mathbb H_n\).
+    Allora definiamo l'orientazione di \(\partial X\) come quella indotta da
+    \[
+        (-1)^n f\,\text dx_1 \wedge\cdots\wedge\text dx_n
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexample}{}
+    Consideriamo il disco \(X = D_2\) che ha bordo \(\partial X = S^1\).
+    In questo caso la \(1\)-forma che orienta \(S^1 = \partial D_2\) è \(\text dx_1\).
+    Ciò vuol dire che la base orientata di ogni \(T_{S^1, x}\) è \[
+        \frac{\partial}{\partial x_1} = \partial_1
+    \]
+    e quindi l'orientamento è antorario.
+    \begin{center}
+        \begin{tikzpicture}[scale=1.1, line cap=round, line join=round]
+            \def\r{2.2}
+            \coordinate (O) at (0,0);
+            \coordinate (S) at (0,-\r);
+
+            \fill[blue!12] (O) circle (\r);
+            \begin{scope}
+                \clip (O) circle (\r);
+                \fill[orange!35, opacity=.9] (0,-1.75) ellipse (1.15 and 0.75);
+            \end{scope}
+            \draw[thick] (O) circle (\r);
+
+            \fill (S) circle (1.2pt);
+            \draw[->, thick] (S) -- ++(1.6,0) node[below right] {$x_1$};
+            \draw[->, thick] (S) -- ++(0,1.5) node[left] {$x_2$};
+
+            \node[above] at (0,0.25) {$D^2$};
+            \node[below right] at (0.75,-1.55) {$U$};
+
+            \draw[->, thick] (150:\r) arc[start angle=150,end angle=115,radius=\r];
+            \node[left] at (-2.2,0.1) {$\partial D^2=S^1$};
+        \end{tikzpicture}
+    \end{center}
+    Se invece consideriamo la sfera piena \(X = D_3\), allora \(\partial X = S^2\),
+    abbiamo un punto del bordo un sistema di coordinatr tridimensionale.
+    In tal caso l'orientazione di \(T_{S^2, x}\) è data da
+    \(-\text dx_1 \wedge \text dx_2\) dove \(x_1, x_2\) sono coordinate tali che
+    \(x_1, x_2, x_3\) definisce diffeomorfismo locale di \(D_3\) con \(\mathbb H_3\).
+    \begin{center}
+        \begin{tikzpicture}[scale=1.15, line cap=round, line join=round]
+            \def\r{2.3}
+            \coordinate (O) at (0,0);
+            \coordinate (S) at (0,-\r);
+
+            \shade[ball color=blue!15] (O) circle (\r);
+
+            \begin{scope}
+                \clip (O) circle (\r);
+                \fill[orange!40, opacity=.9] (0,-1.65) ellipse (1.25 and 0.8);
+            \end{scope}
+
+            \draw[thick] (O) circle (\r);
+            \draw[dashed] (-\r,0) arc[start angle=180,end angle=360,x radius=\r,y radius=0.62];
+            \draw[thick] (\r,0) arc[start angle=0,end angle=180,x radius=\r,y radius=0.62];
+
+            \fill (S) circle (1.2pt);
+            \draw[->, thick] (S) -- ++(1.55,0) node[below right] {$x_1$};
+            \draw[->, thick] (S) -- ++(-1.0,0.75) node[left] {$x_2$};
+            \draw[->, thick] (S) -- ++(0,1.7) node[below left] {$x_3$};
+
+            \node at (0,0.45) {$D^3$};
+            \node at (0.8,-1.55) {$U$};
+            \node[left] at (-2.2,0.25) {$\partial D^3=S^2$};
+        \end{tikzpicture}
+    \end{center}
+    In questo caso l'orientazione non è quella standard. Vista dal centro l'orientauione è in senso orario.
+\end{snippetexample}
+
+\begin{snippettheorem}{Teorema di Stokes}
+    Sia \(X\) varietà con bordo orientata e \(\dim X = n\), allora
+    per ogni \((n-1)\)-forma \(\omega\) su \(X\) si ha \[
+        \int_X \text d\omega = \int_{\partial X} \omega
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Bott-Tu pagina \(31-32\).
 \end{snippetproof}
 
 \end{document}
