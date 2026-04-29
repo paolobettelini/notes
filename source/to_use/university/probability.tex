@@ -5732,8 +5732,111 @@ sia assolutamente continuo.
     in quanto \(D\) ha misura nulla di Lebesgue, e quindi è assurdo.
 \end{snippetexample}
 
+\subsection{Distribuzione uniforme}
 
+Consideriamo \(X \sim \operatorname{Unif}((a,b))\)
+con \(a<b\), \(X\) è una variabile aleatoria reale
+assolutamente continua con densità \[
+    f_X(x) = \frac{\chi_{[a,b]}}{b-a}
+\]
+Notiamo subito che
+\[
+    \int_\realnumbers f_X(x)\,dx = 1
+\]
+quindi è una distribuzione.
+Questa si chiama uniforme sull'insieme \((a,b)\), poiché analogamente
+al caso discreto, a segmenti di lunghezza uguale (cardinalità nel caso discreto)
+viene assegnata la medesima probabilità.
+Calcoliamo ora valore atteso e varianza
+\begin{align*}
+    \mathbb E[X] &= \int_\realnumbers x f_X(x)\,dx
+    &= \integral[a][b][\frac{x}{b-a}][x]
+    = \frac{b^2 - a^2}{2(b-a)} = \frac{b+a}{2}
+\end{align*}
+che è la coordinata del punto medio.
+Per la varianza
+\begin{align*}
+    \mathbb E[X^2] - \mathbb E[X]^2 &=
+    \mathbb E[X^2] - \frac{(b+a)^2}4
+\end{align*}
+con \begin{align*}
+    \mathbb E[X^2] &= \int_\realnumbers x^2f_x(x)\,dx
+    = \integral[a][b][\frac{x^2}{b-a}][x] \\
+    &= \frac{b^3 - a^3}{3(b-a)} = \frac{a^2 + ab + b^2}{3}
+\end{align*}
+Quindi la varianza non è altro che
+\[
+    \operatorname{Var}(X) =  \frac{a^2 + ab + b^2}{3}
+    - \frac{(a+b)^2}{4}
+\]
 
+\subsection{Distribuzione esponenziale}
+
+Sia \(X \sim \operatorname{Exp}(\lambda)\) con \(\lambda > 0\).
+Allora \(X\) è una variabile aleatoria assolutamente continua con densità
+\[
+    f_X(x) = \lambda e^{-\lambda x} \chi_{[0,+\infty]}(x)
+\]
+Avevamo già visto che \(f_x\) integra a \(1\) su tutto \(\realnumbers\).
+Anche la distribuzione esponenziale ha la proprietà di perdita della memoria della geometrica,
+cioè \[
+    \mathbb P(X = y + h | X > y) = \mathbb P(X > h), \quad \forall y,h > 0
+\]
+Dimostriamolo, calcoliamo la funzione di ripartizione 
+\begin{align*}
+    F_x(\mu) &= \integral[-\infty][x][f_X(y)][y]\\
+    &= \begin{cases}
+        0 & x \leq 0 \\
+        \integral[0][x][\lambda e^{-\lambda y}][y] & x > 0
+    \end{cases}
+    = \begin{cases}
+        0 & x \leq 0 \\
+        1-e^{-\lambda x} & x > 0
+    \end{cases}
+\end{align*}
+Notiamo che \(\forall x > 0\)
+\[
+    \mathbb P(X > h) = 1 - \mathbb P(X \leq x)
+    = 1 - F_X(x) = e^{-\lambda x}
+\]
+Quindi, concludiamo che
+\begin{align*}
+    \mathbb P(X > y + h | X > y) &= \frac{\mathbb P(X > y + h, X > y)}{\mathbb P(X > y)} \\
+    &= \frac{\mathbb (X > y + h)}{\mathbb P(X > y)}
+    = \frac{e^{-\lambda(y + h)}}{e^{-\lambda y}}
+    = e^{-\lambda h} = e^{-\lambda h}
+\end{align*}
+
+Calcoliamo media e varianza. Abbiamo
+\begin{align*}
+    \mathbb E[X] &= \int_\realnumbers x f_X(x)\,dx 
+    = \integral[0][\infty][\lambda x e^{-\lambda x}][x] \\
+    &= \left[
+        -e^{-\lambda x}x
+    \right]_0^{+\infty} + \integral[0][+\infty][e^{-\lambda x}][x]
+    = \frac1\lambda
+\end{align*}
+Per la varianza abbiamo \begin{align*}
+    \operatorname{Var}(X) &= \mathbb E[X^2] - \frac{1}{\lambda^2}
+\end{align*}
+con 
+\begin{align*}
+    \mathbb E[X^2] &= \int_\realnumbers x^2f_X(x)\,dx
+    = \integral[0][+\infty][\lambda x^2 e^{-\lambda x}][x] \\
+    &= \left[-e^{-\lambda x}x^2\right]_0^\infty + \frac{2}{\lambda}
+    \integral[0][\infty][\lambda x e^{-\lambda x}][x] \\
+    &= \frac{2}{\lambda^2}
+\end{align*}
+Quindi la varianza è \[
+    \operatorname{Var}(X) = \frac{2}{\lambda^2} - \frac{1}{\lambda^2}
+    = \frac{1}{\lambda^2}
+\]
+
+I valori di media e varianza tormano da un punto di vista modellistico,
+infatti più è grande \(\lambda\), più la coda dell'esponenziale
+si appiattisce sull'asse delle ascisse, di conseguenza la probabilità
+di concentra sempre di più su di un intorno destro di zero, e quindi la media
+si avvicina a zero e la varianza diminuisce.
 
 \pagebreak
 
@@ -6006,6 +6109,173 @@ sia assolutamente continuo.
             \mathbb P(X_1 + X_2 = 4) &= p_{X_1, X_2}(2,2) = \cdots
         \end{align*}
         \item TODO XXX
+    \end{enumerate}
+\end{snippetsolution}
+
+\begin{snippetexercise}{}
+    Consideriamo la variabile aleatoria reale \(X\) la cui funzione di ripartizione \(F \colon \realnumbers \fromto \realnumbers\)
+    è definitsa \[
+        F(t) \triangleq \begin{cases}
+            0 & t < 0 \\
+            t & t \in [0, \sfrac12) \\
+            at^2 + bt + \frac12 & t \in [\sfrac12, 1) \\
+            1 & t \geq 1
+        \end{cases}
+    \]
+    \begin{enumerate}
+        \item Dimostrare che per \(a=1\) e \(b=-\sfrac12\) è una variabile aleatoria assolutamente continua.
+        Calcolare la denstià di \(X\)
+        \item fissati \(a = 1\) e \(b = -\sfrac12\). Determinare il più piccolo intervallo chiuso
+        e limitato \(S\) di \(\realnumbers\) tale per cui la probabilità che \(X\)
+        prenda valori in \(S\) è uguale a \(1\).
+        \item Fissati \(a=1\) e \(b= -\sfrac12\). Calcolare media e varianza di \(X\).
+        \item Per quali valori di \(a, b\), \(X\) è una variabile aleatoria tale che la probabilità
+        dell'evento \(\{X = \sfrac12\}\) è 0 e la probabilità dell'evento
+        \(\{X=1\}\) è \(\sfrac14\)? In questo caso \(X\) è ancora assolutamente continua?
+   \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    \begin{enumerate}
+        \item Una condizione suficiente per garantire che \(X\)
+        sia assolutamente continua è che sia contunua e \(\mathcal C^1\) a tratti.
+        Chiaramente è \(\mathcal C^1\) a tratti per la definizione. 
+        Studiamo quindi la continuità nei punti \(t=0, \sfrac12, 1\).
+        Ricordiamo che la funzione di ripartizione è continua da destra.
+        \begin{itemize}
+            \item Per \(t=0\) abbiamo \(F(0) = 0\) \[
+                \lim_{x \to 0^+} F(x) = 0
+            \]
+            e quindi è continua.
+            \item Per \(t=\sfrac12\) abbiamo \[
+                F\left(\frac12\right) = \frac{a}{4} + \frac b2 + \frac12
+            \]
+            mentre il limite
+            \[
+                \lim_{x \to {\frac12}^-} F(x) = \frac12
+            \]
+            Serve quindi che \[
+                \frac a4 + \frac 2b + \frac12 = \frac12 \implies a = -2b
+            \]
+            \item Per \(t=1\) abbiamo \[
+                \lim_{x \to 1^-} F(x) = -2b + b + \frac12
+            \]
+            e \(F(1) = 1\), quindi serve \[
+                -b + \frac12 = 1 \implies b = -\frac12
+            \]
+            e di conseguenza \(a=1\).
+        \end{itemize}
+        Abbiamo quindi la funzione \[
+            F_X(t) = \begin{cases}
+                0 & t < 0 \\
+                t & t \in [0,\sfrac12) \\
+                t^2 - \frac t2 + \frac12 & t \in [\sfrac12, 1) \\
+                1 & t \geq 1
+            \end{cases}
+        \]
+        La densità è data da
+        \(f_x = F_x'\) quasi ovunque, quindi \[
+            f_X(x) = \begin{cases}
+                0 & x < 0 \\
+                1 & x \in [0,\sfrac12) \\
+                2x - \frac12 & x \in [\sfrac12, 1) \\
+                0 & x \geq 1
+            \end{cases}
+        \]
+        \item Bisogna trovare il più piccolo compatto \(S\) tale che \[
+            \mathbb P(X \in S) = 1
+        \]
+        Dalla forma della densità troviamo immediatamente che \(S = [0,1]\)
+        in quanto altrove la funzione è nulla. Dobbiamo tuttavia dimostrare che questo è il più piccolo compatto.
+        Notiamo che la funzione di ripartizione è crescente e strettamente crescente in \([0,1]\).
+        Allora, \(\forall a,b \in \realnumbers\) con \(0 < a < b < 1\) vale che \[
+            \mathbb P(X \in (a,b)) = F(b) - F(a) > 0
+        \]
+        Se esistesse \(S' \subseteq S\) chiuso tale che
+        \(\mathbb P(X \in S') = 1\), allora
+        \[
+            \mathbb P(X \in S \difference S') = 0
+        \]
+        Ma allora, \(F_x\) costante in \(S \difference S'\)
+        che è assurdo in quanto \(F_x\) è crescente in \(S\).
+        \item TODO media e varianza.
+        \item Abbiamo bisogno che \[
+            \mathbb P\left(X = \frac12\right) = F_x\left(\frac12\right)
+            - \lim_{x \to {\frac{1}{2}}^-} F_x(x) = \frac 12
+        \]
+        e
+        \[
+            \mathbb P(X = 1) = F_x\left(1\right)
+            - \lim_{x \to 1-} F_x(x) = \frac 14
+        \]
+        Dai conti precedenti abbiamo che \(a=-2b\).
+        Abbiamo \(1 + 2b - b - \sfrac12 = \frac14\)
+        e quindi \(b=-\frac14\) e di conseguenza \(a=\sfrac12\).
+        Chiaramente non è più assolutamente continua in quanto la funzione non è più continua
+        in un punto.
+    \end{enumerate}
+\end{snippetsolution}
+
+\begin{snippetsolution}{Esercizio 1 del foglio 3}
+    \begin{enumerate}
+        \item Integrale gaussiano normalizzato
+        \item Il valore atteso è dato da \begin{align*}
+            \mathbb E[Z] &= \int_\realnumbers z \varphi(z)\,dz 
+            = \int_\realnumbers \frac{z}{\sqrt{2\pi}} e^{-\sfrac{z^2}{2}}\,dz = 0
+        \end{align*}
+        per simmetria. Quindi la varianza è data da
+        \[
+            \operatorname{Var}(Z) = \mathbb E[Z^2] - \mathbb E[Z]^2
+            = \mathbb E[Z^2]
+        \]
+        con \begin{align*}
+            \mathbb E[Z^2] &= \int_\realnumbers \frac{z^2}{\sqrt{2\pi}} e^{-\sfrac{z^2}{2}}\,dz \\
+            &= 2 \integral[0][\infty][
+                \frac{z^2}{\sqrt{2\pi}} e^{-\sfrac{z^2}{2}}
+            ][z] \\
+            &= \frac{2}{\sqrt{2\pi}} \left(
+                \left[
+                    - z e^{-\sfrac{z^2}{2}}
+                \right]_0^\infty + \integral[0][+\infty][
+                    e^{-\sfrac{z^2}{2}}
+                ][z]
+            \right) \\
+            &= 2\integral[0][+\infty][
+                \frac{1}{\sqrt{2\pi}} e^{-\sfrac{z^2}{2}}
+            ][z] = 1
+        \end{align*}
+        \item Sia \(X = \sigma Z + \mu\) e calcoliamone la funzione di ripartizione associata
+        \begin{DispWithArrows*}
+            F_X(x) &= \mathbb P(X \leq x) = \mathbb P(\sigma Z + \mu \leq x) \\
+            &= \mathbb P\left(Z \leq \frac{x - \mu}{\sigma}\right)
+            = \integral[-\infty][\frac{x - \mu}{\sigma}][
+                \frac{1}{\sqrt{2\pi}} e^{-\sfrac{z^2}{2}}
+            ][z] \Arrow{\(t = z\sigma + \mu\)} \\
+            &= \integral[-\infty][x][
+                \frac{1}{\sqrt{2\pi}} e^{-\frac{(t-\mu)^2}{2\sigma^2}}
+                \cdot \frac{1}{\sigma}
+            ][t]
+        \end{DispWithArrows*}
+        Al posto del cambio di variabile avremmo potuto derivare il tutto rispetto a \(x\).
+        Abbiamo quindi ottenuto \[
+            F_X(x) = \integral[-\infty][x][
+                \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(t-\mu)^2}{2\sigma^2}}
+                \cdot
+            ][x]
+        \]
+        Quindi \(X\) verifica la definizione
+        di assoluta continuità
+        con densità \[
+            f_X(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{- \frac{(x - \mu)^2}{2\sigma^2}}
+        \]
+        \item Abbiamo la media \[
+            \mathbb E[X] = \mathbb E[\sigma Z + \mu]
+            = \cancelto{0}{\sigma \mathbb E[Z]} + \mu = \mu
+        \]
+        e la varianza \[
+            \operatorname{Var}(Z) = \operatorname{Var}(\sigma Z + \mu)
+            = \sigma^2 \operatorname{Var}(Z) + 0 = \sigma^2
+        \]
     \end{enumerate}
 \end{snippetsolution}
 
