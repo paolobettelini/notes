@@ -6553,9 +6553,491 @@ si ottiene che se \(E \in (\mathcal M \times \mathcal S)^\ast\),
 allora quasi tutte le sezioni di \(E\) sono misurabili nei fattori
 (ma non necessariamente tutte).
 
+Abbiamo visto che
+\((\mathcal C^0([0,1]), ||\cdot||_\infty)\)
+è uno spazio di Banach.
+Sullo stesso insieme \(\mathcal C^0([0,1])\)
+possiamo usare la norma \[
+    ||f|| = \integral[0][1][|f|][\mu]
+\]
+Questo, tuttavia, non è uno spazio di Banach.
+In questo contesto con la convergenza non ha nulla a che vedere con la convergenza puntuale o uniforme, bensì
+\(f_n \to f\) rispetto a questa norma se
+\[
+    \integral[0][1][|f_n - f|][\mu] \to 0
+\]
+
+\begin{snippetexample}{Controesempio}
+    Consideriamo per esempio la funzione \(\sfrac{1}{\sqrt{x}}\),
+    possiamo trovare ad altezza \(n\) con ascissa \(\sfrac{1}{n^2}\). Consideriamo allora la successione di funzioni
+    \[
+        f_n(x) = \begin{cases}
+            n & x \in \left[0, \frac{1}{n^2}\right] \\
+            \frac{1}{\sqrt{x}} & x \in \left[\frac{1}{n}, 1\right]
+        \end{cases}
+    \]
+    \begin{center}
+        \begin{tikzpicture}[x=10cm,y=1.2cm]
+        \def\m{2}
+        \def\n{4}
+        \pgfmathsetmacro{\xm}{1/(\m*\m)}
+        \pgfmathsetmacro{\xn}{1/(\n*\n)}
+        \pgfmathsetmacro{\xmax}{1.05}
+        \pgfmathsetmacro{\ymax}{4.6}
+
+        \fill[orange!35] (0,\m) rectangle (\xn,\n);
+        \fill[orange!35] plot[domain=\xn:\xm,smooth] (\x,{1/sqrt(\x)}) -- (\xm,\m) -- (\xn,\m) -- cycle;
+
+        \draw[->] (-0.02,0) -- (\xmax,0) node[below] {$x$};
+        \draw[->] (0,-0.1) -- (0,\ymax) node[left] {$y$};
+
+        \draw[dashed,gray] plot[domain=0.03:1,smooth] (\x,{1/sqrt(\x)}) node[pos=0.82,right] {$\frac{1}{\sqrt{x}}$};
+
+        \draw[very thick,blue] (0,\n) -- (\xn,\n) plot[domain=\xn:1,smooth] (\x,{1/sqrt(\x)});
+        \draw[very thick,red] (0,\m) -- (\xm,\m) plot[domain=\xm:1,smooth] (\x,{1/sqrt(\x)});
+
+        \draw[dashed] (\xn,0) -- (\xn,\n);
+        \draw[dashed] (\xm,0) -- (\xm,\m);
+        \draw[dashed] (0,\n) -- (\xn,\n);
+        \draw[dashed] (0,\m) -- (\xm,\m);
+
+        \node[left] at (0,\n) {$n$};
+        \node[left] at (0,\m) {$m$};
+        \node[below] at (\xn,0) {$\frac{1}{n^2}$};
+        \node[below] at (\xm,0) {$\frac{1}{m^2}$};
+
+        \node[blue,above right] at (0.11,3.55) {$f_n$};
+        \node[red,above right] at (0.22,2.15) {$f_m$};
+        \end{tikzpicture}
+    \end{center}
+    Affermiamo che questa successione è di Cauchy rispetto alla norma integrabile.
+    Calcoliamo quindi la norma
+    \begin{align*}
+        ||f_n - f_m||
+        &= \integral[0][1][|f_n - f_m|][x]
+        = \left|\integral[n][m][\frac{1}{x^2}][x]\right| \\
+        &= \left|
+            \frac1n - \frac1m
+        \right| \to 0
+    \end{align*}
+    per \(n\to+\infty\). Quindi, è una successione di Cauchy.
+    Dimostriamo ora che questa non converge.
+    Supponiamo per assurdo che \(f_n \to g \in \mathcal C^0([0,1])\) rispetto alla norma integrale.
+    Allora, \(g\) è continua su un compatto e quindi limitata da \(K >0\),
+    quindi \(|g| \leq K\). Allora possiamo stimare per \(n\) sufficientemente grande,
+    l'integrale è maggiore dell'area in futuro
+    \[
+        \integral[0][1][|f_n - f|][x] \geq
+        \integral[K][x][\frac{1}{x^2}][x] = \left|
+            \frac1n - \frac1K
+        \right|
+    \]
+    che non tende a zero. Quindi, non è uno spazio di Banach.
+\end{snippetexample}
+
+Se \((X, d)\) non è completo, è possibile completarlo ad uno spazio
+più grande completo. Sia \(Y = \{\{x_n\} \suchthat x_n \text{ è di Cauchy in } X\}\),
+e introduciamo una relazione di equivalenza su \(Y\) tale per cui
+\(\{x_n\} \sim \{y_n\}\) se \(d(x_n, y_n) \to 0\) per \(n \to \infty\).
+Lo spazio quoziente è uno spazio metrico.
+Lo spazio quoziente, quindi con le successioni che sono spazi di equivalenza,
+sono lo spazio completato.
+Qualunque successione di Cauchy che converge ad un qualsiasi punto è equivalente
+alla successione costante di quel punto. Cioè stiamo prendendo tutti i buchi, le successioni
+che non convergono, e le stiamo tappando.
+
+Ci chiediamo quindi chi sia il completamento di \((\mathcal C^0([0,1]), ||\cdot||)\)
+con la norma integrale?
+
+Sappiamo che \(\mathcal L^1(\mu)\) è uno spazio vettoriale, quindi può essere dotato di una norma.
+Consideriamo, per \(f \in \mathcal L^1(\mu)\), consideriamo
+\[
+    ||f|| = \int_X |f|\,d\mu
+\]
+Questa è positivamente omogenea ed è anche subadditiva (disuguaglianza triangolare).
+È anche vero che la funzione è non-negativa. Tuttavia, non è vero che
+il valore è zero se e solo se la funzione è costantemente nulla.
+Si dice quindi una \emph{semi-norma}.
+Se \(\int_X |f| = 0\), non possiamo dire che \(f\equiv0\),
+ma possiamo dire che \(f=0\) quasi ovunque.
+Quello che possiamo è quindi definire una relazione di equivalenza \(\sim\)
+dove due funzioni sono uguali se lo sono quasi ovuque, e quozientare lo spazio.
+Chiaramente questa è una relazione di equivalenza: è banalmente
+riflessiva e simmetrica, ed è transitiva in quanto le due funzioni ai capi
+sono distinte in un unione di due insiemi di misura nulla, che ha a sua volta misura nulla.
+Per quozientare uno spazio vettoriale, dobbiamo assicurarci
+che la struttura algebrica rimanga rispettiva.
+In generale, quando quozientiamo con un sottooggetto algebrico, dobbiamo assicurarci
+che che la relazione di equivalenza sia una congruenza, cioè
+se gli elementi che sono equivalenti all'elemento neutro compongono una sottostruttura.
+Abbiamo infatti \(N = \{f \in \mathcal L^1(\mu) \suchthat f = 0 \text{ quasi ovunque}\}\)
+è un sottospazio. Quindi \(\mathcal L^1(\mu) / N\) è uno spazio vettoriale,
+che viene indicato con \(L^1(\mu)\).
+Gli elementi di \(L^1\) sono classi di equivalenza di funzioni che coincidono quasi ovunque.
+In questo spazio la nostra norma integrale si denota con \(||\cdot||_1\) data da
+\[
+    ||f||_1 = \int_X |f|\,d\mu
+\]
+Verifichiamo che sia ben definita e che sia una norma.
+Siano \(f,g \in \mathcal L^1(\mu)\) tali che \(f=g\) quasi ovunque.
+Allora, \[
+    \int_X |f|\,d\mu = \int_X |g|\,d\mu
+\]
+in quanto \(|f| = |g|\) quasi ovunque. Quindi la norma è ben definita nello spazio quoziente.
+Per la norma verifichiamo l'annullamento: supponiamo che
+\[
+    \int_X |f| = 0
+\]
+Allora, siccome \(|f| \geq 0\), \(f\) è quasi ovunque nulla, e quindi
+è equivalente alla funzione costantemente nulla.
+Concludiamo quindi che
+\[
+    (L^1(\mu), ||\cdot||_1) = (\mathcal L^1(\mu) / N, ||\cdot||_1)
+\]
+Non solo, mostriamo pure che è uno spazio di Banach, e che è precisamente il complemento
+dello spazio originale (più complicato).
+
+\begin{snippettheorem}{}
+    Uno spazio normato \((X, ||\cdot||)\) è completo
+    se e solo se ogni serie assolutamente convergente di elementi di \(X\)
+    è convergente in \(X\).
+\end{snippettheorem}
+
+In generale non è sempre vero che le serie assolutamente convergini convergono.
+Questa in realtà è la vera condizione.
+Per definire una serie mi serve una nozione di somma e una struttura topologica per fare i limiti.
+Uno spazio normato ha entrambi. La nozione di convergenza assoluta la si può definire solo in uno spazio normato.
+
+\begin{snippetproof}{}
+    \begin{iffproof}
+        \item Supponiamo che \((X,\|\cdot\|)\) sia completo e sia
+        \[
+            \sum_{n=1}^{\infty} x_n
+        \]
+        una serie assolutamente convergente in \(X\), cioè
+        \[
+            \sum_{n=1}^{\infty} \|x_n\| < +\infty.
+        \]
+        Vogliamo mostrare che la serie
+        \[
+            \sum_{n=1}^{\infty} x_n
+        \]
+        converge in \(X\).
+        Sia
+        \[
+            s_N = \sum_{n=1}^{N} x_n
+        \]
+        la successione delle somme parziali. Dimostriamo che \((s_N)\) è una successione di Cauchy in \(X\).
+        Siano \(M > N\). Allora
+        \[
+            s_M - s_N = \sum_{n=N+1}^{M} x_n.
+        \]
+        Per la disuguaglianza triangolare,
+        \[
+            \|s_M - s_N\|
+            =
+            \left\|\sum_{n=N+1}^{M} x_n\right\|
+            \leq
+            \sum_{n=N+1}^{M} \|x_n\|.
+        \]
+        Poiché la serie numerica
+        \[
+            \sum_{n=1}^{\infty} \|x_n\|
+        \]
+        è convergente, le sue code tendono a \(0\). Quindi, per ogni \(\varepsilon > 0\), esiste \(N_0 \in \mathbb{N}\) tale che, per ogni \(M > N \geq N_0\),
+        \[
+            \sum_{n=N+1}^{M} \|x_n\| < \varepsilon.
+        \]
+        Di conseguenza,
+        \[
+            \|s_M - s_N\| < \varepsilon.
+        \]
+        Dunque \((s_N)\) è una successione di Cauchy in \(X\).
+        Poiché \(X\) è completo, ogni successione di Cauchy in \(X\) converge in \(X\). Pertanto esiste \(s \in X\) tale che
+        \[
+            s_N \to s.
+        \]
+        Ma questo significa precisamente che la serie
+        \[
+            \sum_{n=1}^{\infty} x_n
+        \]
+        converge in \(X\).
+        Quindi, se \(X\) è completo, ogni serie assolutamente convergente di elementi di \(X\) è convergente in \(X\).
+        \item Supponiamo che tutte le serie assolutamente convergenti convergono, cioè che se
+        \[
+            \sum_{n=1}^\infty ||y_n||
+        \]
+        converge allora \[
+            \sum_{n=1}^\infty y_n
+        \]
+        converge con \(y_n \in X\).
+        Sia quindi \(\{x_n\}\) una successione di Cauchy in \(X\).
+        Dobbiamo dimostrare che \(\{x_n\}\) converge in \(X\).
+        Dobbiamo costruire una serie a parte dalla successione, e per farlo consideriamo la serie telescopica
+        \[
+            x_n = \sum_{i=1}^n \underbrace{(x_i - x_{i-1})}_{y_i} + x_0
+        \]
+        Abbiamo scritto \(x_n\) come la serie telescopica. Se riesco a dimostrare che la serie
+        \(\sum y_i\) converge, allora \(y_n\) converge. Ma il problema è che
+        \(\sum ||x_i - x_{i-1}||\) non converge necessariamente. Se consideriamo per esempio
+        una successione di elementi che formano una spirale molto lenta, i termini \(|x_i - x_{i-1}|\)
+        sono i segmenti della spirale, ma non è detto che tale spirale sia rettificabile. Tuttavia,
+        sfruttando l'ipotesi che tutte le successioni sono di Cauchy,
+        possiamo costruire una sottosuccessione che va direttamente al centro della spirale,
+        nell'esempio della spirale. Abbiamo quindi che esiste \(n_1\)
+        tale che \(\forall n > n_1\) vale \[
+            ||x_n - x_{n_1}|| < \frac{1}{2^1}
+        \]
+        Successivamente esiste \(n_2 > n_1\) tale che \(\forall n > n_2\),
+        \[
+            ||x_n - x_{n-2}|| < \frac{1}{2^2}
+        \]
+        e così via con \(n_k\).
+        Abbiamo quindi una sottosuccessione di \(\{x_n\}\),
+        \(\{x_{n_k}\}\) tale che vale\[
+            ||x_{n_k} - x_{n_{k-1}}|| \leq \frac{1}{2^{k-1}}
+        \]
+        Scriviamo quindi \[
+            x_{n_k} = \sum_{j=2}^k \left(
+                x_{n_j} - x_{n_{j-1}}
+            \right) + x_{m_1}
+        \]
+        L'abbiamo quindi riscritta come serie telescopica.
+        Sia ora \(y_j = x_{n_j} - x_{n_{j-1}}\) e osserviamo che
+        \(\sum y_i\) converge assolutamente. Infatti,
+        \[
+            \left|\left|
+                \sum_{j=2}^k y_i
+            \right|\right|
+            \leq \sum_{j=2}^k ||y_i|| =
+            \sum_{j=2}^k ||x_{n_j} - x_{n_{j-1}}|| \leq
+            \sum_{j=2}^k \frac{1}{2^{j-1}}
+        \]
+        che converge. Per ipotesi, \(\sum y_i\)
+        converge, e quindi converge la sottosuccessione. La successione di Cauchy ha quindi una sottosuccessione
+        convergente, e quindi lei stessa converge.
+    \end{iffproof}
+\end{snippetproof}
+
+\begin{snippettheorem}{}
+    Sia \((X, \mathcal M, \mu)\) spazio di misura.
+    Allora, \((L^1(\mu), ||\cdot||_1)\) è uno spazio di Banach.
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Basta dimostrare che ogni serie assolutamente convdergente in \(L^1\) converge.
+    La convergenza assoluta significa che
+    \[
+        \sum ||f_n|| = \sum \int_X |f_n|\,d\mu < \infty
+    \]
+    Dobbiamo dimostrare che \(\exists f \in L^1(\mu)\) tale che
+    \[
+        \left|\left|
+            \sum_{n=1}^k f_n - f
+        \right|\right|_1 \to 0
+    \]
+    per \(n \to \infty\) cioè che
+    \[
+        \int_X \left|\sum_{n=1}^k f_n - f\right| \to 0
+    \]
+    Ma per il teorema di integrazione per serie, se
+    \[
+        \sum^\infty \int_X |f_n| < +\infty
+    \]
+    allora \(\sum f_n\) converge quasi ovunque a \(f\)
+    \[
+        \sum \int f_n = \int f
+    \]
+    e la convergenza è dominata.
+    Quindi, per il teorema della convergenza dominata,
+    \[
+        \int_X \left|\sum^k f_n - f \right| \to 0
+    \]
+\end{snippetproof}
+
+Il fatto che sia dominata non è presente nell'enunicato del teorema ma nella dimostrazione.
+
+Il teorema della convergenza dominata può essere
+riletto così: una successione di funzioni di \(L^1\) dominata 
+da una funzione \(L^1\) converge quasi ovunque a una funzione \(L^1\) in \(L^1\).
+\(L^1\) è uno spazio completo e ogni convergenza quasi ovunque, dominata, è una convergenza in norma \(L^1\).
+
+\begin{snippetexample}{Non è vero in generale che una convergenza in \(L^1\) è sempre dominata - Typewriter example}
+    \begin{center}
+        \begin{tikzpicture}[x=3cm,y=1.8cm,every node/.style={font=\small}]
+            \begin{scope}[shift={(0,0)}]
+            \draw[->] (-0.02,0) -- (1.08,0);
+            \draw[->] (0,-0.05) -- (0,1.15);
+            \fill[blue!15] (0,0) rectangle (0.5,1);
+            \draw[very thick,blue] (0,1) -- (0.5,1) -- (0.5,0) -- (1,0);
+            \draw (0,1) -- (-0.03,1) node[left] {$1$};
+            \draw (0.5,0) -- (0.5,-0.03) node[below] {$\frac12$};
+            \draw (1,0) -- (1,-0.03) node[below] {$1$};
+            \node[below left] at (0,0) {$0$};
+            \node at (0.5,1.28) {$f_1$};
+            \end{scope}
+
+            \begin{scope}[shift={(1.55,0)}]
+            \draw[->] (-0.02,0) -- (1.08,0);
+            \draw[->] (0,-0.05) -- (0,1.15);
+            \fill[blue!15] (0.5,0) rectangle (1,1);
+            \draw[very thick,blue] (0,0) -- (0.5,0) -- (0.5,1) -- (1,1);
+            \draw (0,1) -- (-0.03,1) node[left] {$1$};
+            \draw (0.5,0) -- (0.5,-0.03) node[below] {$\frac12$};
+            \draw (1,0) -- (1,-0.03) node[below] {$1$};
+            \node[below left] at (0,0) {$0$};
+            \node at (0.5,1.28) {$f_2$};
+            \end{scope}
+
+            \begin{scope}[shift={(3.1,0)}]
+            \draw[->] (-0.02,0) -- (1.08,0);
+            \draw[->] (0,-0.05) -- (0,1.15);
+            \fill[blue!15] (0,0) rectangle (0.25,1);
+            \draw[very thick,blue] (0,1) -- (0.25,1) -- (0.25,0) -- (1,0);
+            \draw (0,1) -- (-0.03,1) node[left] {$1$};
+            \draw (0.25,0) -- (0.25,-0.03) node[below] {$\frac14$};
+            \draw (1,0) -- (1,-0.03) node[below] {$1$};
+            \node[below left] at (0,0) {$0$};
+            \node at (0.5,1.28) {$f_3$};
+            \end{scope}
+
+            \begin{scope}[shift={(0,-1.9)}]
+            \draw[->] (-0.02,0) -- (1.08,0);
+            \draw[->] (0,-0.05) -- (0,1.15);
+            \fill[blue!15] (0.25,0) rectangle (0.5,1);
+            \draw[very thick,blue] (0,0) -- (0.25,0) -- (0.25,1) -- (0.5,1) -- (0.5,0) -- (1,0);
+            \draw (0,1) -- (-0.03,1) node[left] {$1$};
+            \draw (0.25,0) -- (0.25,-0.03) node[below] {$\frac14$};
+            \draw (0.5,0) -- (0.5,-0.03) node[below] {$\frac12$};
+            \draw (1,0) -- (1,-0.03) node[below] {$1$};
+            \node[below left] at (0,0) {$0$};
+            \node at (0.5,1.28) {$f_4$};
+            \end{scope}
+
+            \begin{scope}[shift={(1.55,-1.9)}]
+            \draw[->] (-0.02,0) -- (1.08,0);
+            \draw[->] (0,-0.05) -- (0,1.15);
+            \fill[blue!15] (0.5,0) rectangle (0.75,1);
+            \draw[very thick,blue] (0,0) -- (0.5,0) -- (0.5,1) -- (0.75,1) -- (0.75,0) -- (1,0);
+            \draw (0,1) -- (-0.03,1) node[left] {$1$};
+            \draw (0.5,0) -- (0.5,-0.03) node[below] {$\frac12$};
+            \draw (0.75,0) -- (0.75,-0.03) node[below] {$\frac34$};
+            \draw (1,0) -- (1,-0.03) node[below] {$1$};
+            \node[below left] at (0,0) {$0$};
+            \node at (0.5,1.28) {$f_5$};
+            \end{scope}
+
+            \begin{scope}[shift={(3.1,-1.9)}]
+            \draw[->] (-0.02,0) -- (1.08,0);
+            \draw[->] (0,-0.05) -- (0,1.15);
+            \fill[blue!15] (0.75,0) rectangle (1,1);
+            \draw[very thick,blue] (0,0) -- (0.75,0) -- (0.75,1) -- (1,1);
+            \draw (0,1) -- (-0.03,1) node[left] {$1$};
+            \draw (0.75,0) -- (0.75,-0.03) node[below] {$\frac34$};
+            \draw (1,0) -- (1,-0.03) node[below] {$1$};
+            \node[below left] at (0,0) {$0$};
+            \node at (0.5,1.28) {$f_6$};
+            \end{scope}
+            \end{tikzpicture}
+    \end{center}
+    Questa successione converge \(f_n \to 0\) in \(L^1\),
+    mentre non converge puntualmente mai.
+    È possibile trovare sottosuccessioni che convergono puntualmente
+    a zero, ma nessuna a qualcosa che non sia zero (Teorema di Riesz-Weil).
+\end{snippetexample}
+
+Le stesse costruzioni fatte con \(||\cdot||_1\) possono essere rifatte considerando
+\(p \in \realnumbers\) con \(p \geq 1\) e definendo
+\begin{align*}
+    ||f||_p = \left(
+        \int_X |f|\,d\mu
+    \right)^{\sfrac1p}
+\end{align*}
+con \(\mathcal L^p(\mu)\)
+insieme delle funzioni misurabili tale che \(|f|^p\) è integrabile.
+Si dimostra che pure \((L^p(\mu), ||\cdot||)\) è uno spazio di Banach.
+
+Se \(X = \{1, \cdots, n\}\)
+e \(\mu\) è la misura del conteggio, allora \(L^p(\mu) = \realnumbers^n\)
+oppure \(\complexnumbers^n\) e \(||\cdot||_p\)
+è la norma classica discreta (in particolare per \(p=2\) otteniamo la norma euclidea).
+Per \(p \to \infty\), si ottiene \(||f||_\infty = \operatorname{ess sup}|f|\).
+Nel caso discreto abbiamo gli spazi \(l^p\), dove \(l^1\)
+sono le serie assolutamente convergenti, \(l^2\) a quadrato sommabile etc.
+
+Il teorema della converenza dominata dice che se \(f_n \in L^1\)
+dominata da un elemento di \(L^1\),
+allora \(f_n\) converge quasi ovunque ad un elemento di \(L^1\)
+in norma \(L^1\), cioè
+\[
+    \int_X |f_n - |\,d\mu \to 0, \quad ||f_n - f|| \to 0
+\]
+L'operatore di integrale \[
+    \int_X \colon L^1(\mu) \fromto \complexnumbers
+\]
+è un funzione lineare ed è continuo, infatti
+\[
+    \left|
+        \int_X f_n\,d\mu - \int_X f\,d\mu
+    \right|
+    \leq \int_X |f_n - f|\,d\mu = ||f_n- f|| \to 0
+\]
+L'integrale è un elemento del duale topologico di \(L^1\).
+Ricordiamo che in spazi vettoriali infiniti, non tutti i funzionali lineari sono continui,
+a differenza del caso finito.
+Il duale algebrico è \(L^1(\mu)^*\), cioè l'insieme dei funzionali lineari.
+Mentre \((L^1(\mu))'\) è il duale topologico (più piccolo),
+cioè l'insieme dei funzionali lineari continui.
+Il duale topologico di \(\mathcal L^p(\mu)\)
+è un'altro spazio \(\mathcal L^q(\mu)\) tale che \(\frac1p + \sfrac1q = 1\).
+In particolare, il duale di \(\mathcal L^2(\mu)\) è sè stesso.
+
+Consideriamo ora \(L^1(\realnumbers)\) con la misura di Lebesgue.
+Esistono classi di equivalenza dove uno dei rappresentati è continuo, e ne esistono alcune che non
+ne contenogno nessuno. Per esempio se la funzione ha un salto, allora non ci sono rappresentati
+continui nella classe di questa.
+Se ci troviamo in una classe di equivalenza
+con un rappresentante continuo, allora questo è unico, in quanto
+due funzioni continue distinte devono essere diversi su almeno un aperto che non ha misura nulla.
+Esistono laterali di questo spazio che non contengono nessun rappresentante
+Riemann-integrabile in senso improprio?
+La funzione di Dirichlet non è interessante in quanto
+questa è equivalenza alla funzione nulla. Se tali rappresentanti Riemann-integrabilii
+in senso improprio esistessero sempre, allora lo spazio \(L^1\)
+sarebbe lo spazio delle funzioni Riemann integrabili.
+In realtà, la teoria di Lebesgue è più raffinata e infatti contiene
+elementi che nonhanno rappresentanti integrabili nel senso improprio di Riemann.
+
+\begin{snippetexample}{}
+    Prossimamente
+\end{snippetexample}
+
 \pagebreak
 
 \section{Temporaneo - Foglio 4}
+
+\begin{snippetsolution}{Esercizio 18}
+    Il limite puntuale è \[
+        f(x,y) = \frac{1}{1 + x^2 + y^2}
+    \]
+    \begin{enumerate}
+        \item XXX
+        \item XX 
+        \item Tutte le \(f_n\) sono positive, quindi per il lemma di Fatou
+        \[
+            \lim \int f_n\,d\mu \geq \int f\,d\mu
+        \]
+        Questo integrale è \begin{align*}
+            \int_{\realnumbers^2} d\,d\mu
+            &= \integral[0][2\pi][
+                \integral[0][\infty][\frac{\rho}{1 + \rho^2}][\rho]
+            ][\theta]
+        \end{align*}
+        In un intorno di zero, l'integrale converge, ma in un intorno di infinite
+        l'integrale diverge per confronto asintotico, quindi il limite iniziale
+        è infinite. Allora, non esistono maggioranti appartenenti ad \(L^1(\realnumbers)\).
+    \end{enumerate}
+\end{snippetsolution}
 
 \begin{snippetsolution}{Esercizio}
     Abbiamo \(D=\realnumbers^2\), \(F(0,0) = 0\) con derivata parziale
