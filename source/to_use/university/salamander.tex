@@ -8,6 +8,7 @@
 \usepackage{fullpage}
 \usepackage{wrapfig}
 \usepackage{xfrac}
+\usepackage{witharrows}
 \usepackage{tikz}
 \usepackage{tikz-3dplot}
 
@@ -129,6 +130,12 @@ Denotiamo pure sempre \(A = A_0\).
     Se \(x\leq y\) coordinata per coordinata, definiamo \(\partial[x,y] \colon A_x \to A_y\) come la composizione lungo
     un qualsiasi cammino monotono da \(x\) a \(y\).
     Per commutatività dei quadrati elementari, tale composizione è indipendente dal cammino scelto.
+\end{definition}
+
+\begin{definition}
+    Se \(x\leq y\) coordinata per coordinata e \(\partial[x,y] \colon A_x \to A_y\)
+    definiamo \(\#\partial[x,y] \subseteq \{e_1, \cdots, e_n\}\) come
+    l'insieme di tutte le direzioni percorse fra \(x\) e \(y\). 
 \end{definition}
 
 \subsection{First dimensional cases}
@@ -490,7 +497,7 @@ The same lemma does not generalize for \(n>2\).
         \end{tikzcd}
     \end{minipage}
     The diagram commutes as the compositions of the non-trivial quare are still the identity.
-    We will now compute the donor of \(A\), \(D(0)\) and the receiver of \(B\), \(D(e_3)\).
+    We will now compute the donor of \(A\), \(D(0)\) and the receiver of \(B\), \(R(e_3)\).
     \begin{enumerate}
         \item \emph{donor of \(A\):} we have \[
             D(0) = \frac{\ker \partial[0,1]}{
@@ -508,18 +515,18 @@ The same lemma does not generalize for \(n>2\).
         \]
         Thus, \(D(0) = \mathbb K\).
         \item \emph{receiver of \(B\):} we have \[
-            R(e_2) = \frac{
+            R(e_3) = \frac{
                 \ker \partial[e_3,e_3 + e_1]
                 \cap \ker \partial[e_3,e_3 + e_2]
                 \cap \ker \partial[e_3,2e_3]
             }{
-                \im \partial[e_3-1, e_2]
+                \im \partial[e_3-1, e_3]
             }
         \]
         For the kernels we have \[
-            \ker \partial[e_3,e_3 + e_1]
+            \ker \partial[e_3,2e_3]
             \cap \ker \partial[e_3,e_3 + e_2]
-            \cap \ker \partial[e_3,2e_3]
+            \cap \ker \partial[e_3,e_3 + e_1]
             = \ker 0 \intersection \ker 0 \intersection \ker \operatorname{id}_{\mathbb K} = 0
         \]
         Furtermore, \(A_{e_3 - 1} = A_{-1, -1, 0} = 0\), and thus \(\im p = 0\).
@@ -556,8 +563,8 @@ che l'oggetto comologico avesse intersezioni di nuclei di composizioni di due ma
 non solo una. Lo stesso ragionamento vale per il denominatore con le immagini.
 Notiamo che un tale oggetto è precisamente l'oggetto numerato (14),
 che è una sorta di middle object, sia donor che receiver.
-Allora, l'oggetto (13) si immerge naturalmente nell'oggetto (14), non
-il (15) come dimostratosi, mentre l'oggetto (14) si immerge naturalmente
+Allora, l'oggetto (13) mappa naturalmente nell'oggetto (14), non
+il (15) come dimostratosi, mentre l'oggetto (14) mappa naturalmente
 nell'oggetto (15). Possiamo quindi estendere il lemma originale aggiungendo un passaggio intermedio.
 
 Abbiamo allora il seguente lemma.
@@ -596,8 +603,6 @@ Abbiamo allora il seguente lemma.
     \]
 \end{lemma}
 
-Calcolo di quante ce ne sono con fattoriale XXX.
-
 Questo lemma può essere ulteriore generalizzato a \(n\)-complessi.
 Se consideriamo il lemma generalizzato per \(n=3\), notiamo che il
 donatore è costruito considerando kernel di mappe di lunghezza \(3\) (composizione di \(3\) morfismo),
@@ -610,7 +615,7 @@ Il lemma ci dà quindi una successione di mappe della forma \((3,1) \to (2,2) \t
 Questa simmetria ci suggerisce che il lemma possa essere generalizzato da un \(n\) complessi
 con una successione di mappe fra \(n\) oggetti comologici diagonali della forma
 \[
-    (n,1) \to (n-1, 2) \to \cdots \to (2, n-1) \to (1,n)
+    (1,n) \to (2, n-1) \to \cdots \to (n-1, 2) \to (n,1)
 \]
 Definiamo quindi oggetti comologici diagonali che seguono questa forma.
 
@@ -731,11 +736,19 @@ mentre per \(k=n\) ritroviamo il receiver
 \]
 Abbiamo quindi un cammino discreto di oggetti comologici diagonali fra \(D(x)\) e \(R(x)\).
 
-Dobbiamo assicurarci che questi siano oggetti della forma di Bergman (quindi oltre che siano ben definiti). TODO.
+TODO: Dobbiamo assicurarci che questi siano oggetti della forma di Bergman (quindi oltre che siano ben definiti).
 
 \begin{lemma}
-    Let \(i_1, i_2, \cdots, i_{n-1} \in \{1, \cdots, n\}\)
-    such that \(i_1 \neq \cdots \neq i_{n-1}\). Then, any sequence of morphisms
+    For every \(x\in\mathbb Z^n\) and every \(i\in\{1,\dots,n\}\), the morphism
+    \[
+        A_x\to A_{x+e_i}
+    \]
+    induces a canonical morphism
+    \[
+        M_k(x)\to M_{k+1}(x+e_i).
+    \]
+    In particular, let \(i_1, i_2, \cdots, i_{n-1} \in \{1, \cdots, n\}\).
+    Then, for every \(x\in\mathbb Z^n\), every sequence of morphisms
     \[
         A_{x} \to
         A_{x + e_{i_1}} \to
@@ -743,37 +756,153 @@ Dobbiamo assicurarci che questi siano oggetti della forma di Bergman (quindi olt
         \cdots \to
         A_{x + \sum_{j=1}^{n-1} e_{i,j}}
     \]
-    induces morphisms
+    induces a chain of morphisms
     \[
         M_1\left(A_{x}\right) \to
         M_2\left(A_{x + e_{i_1}}\right) \to
         M_3\left(A_{x + e_{i_1} + e_{i_2}}\right) \to
         \cdots \to
-        M_{n-1}\left(A_{x + \sum_{j=1}^{n-1} e_{i,j}}\right)
+        M_{n}\left(A_{x + \sum_{j=1}^{n-1} e_{i,j}}\right)
     \]
 \end{lemma}
 
-\begin{proof}
-    Fissiamo \(r\) tale che \(1 \leq r < n - 1\) e consideriamo il morfismo \(f \colon A \to B\)
-    con \[
-        A = A_{x + \sum_{j=1}^r e_{i_j}}, \quad
-        B = A_{x + \sum_{j=1}^{r+1} e_{i_j}}
-    \]
-    e mostriamo che questo morfismo induce un morfismo \(M_r(A) \to M_{r+1}(B)\).
-    Mostriamo quindi separamente che la mappa manda...
-\end{proof}
+If the indices \(i_1,\dots,i_{n-1}\) are pairwise distinct,
+these chains are precisely the maximal paths in the Boolean diagram indexed by subsets of \(\{1,\cdots, n\}\),
+meaning that we can construct a Boolean lattice of induced morphism.
+In general, we can consider the chains where the indices are not disjoint. However,
+by the commutativity of the diagram, we can write such a chain as a path of morphism
+such that at least two morphisms in the same direction are adjacent, meaning that the map is null
+by the properties of a complex. These kind of map are outside of the Boolean lattice.
 
-Da questa dimostrazione possiamo dedurre un criterio generale per quando
-un oggetto si immerge naturalmente in un altro oggetto comologico.
-Fissata una direzione \(e_i\) per ogni \(i \in \{1, \cdots, n\}\)
-consideriamo due oggetti comologici arbitrari adiacenti nella direzione \(e_i\):
-\[
-    A = \frac{
-        X
-    }{
-        X
-    }
-\]
+We can also count the amount of maximal chains. We need to choose \(n-1\) distict
+directions, meaning that the amount of maximal chains is \(n\cdot (n-1)! = n!\).
+However, by the commutativity of the diagram, the \((n-1)!\) terminating
+in the same vertex are all equa. Thus, there are \(n\) composite maps from the
+donor and the receiver.
+
+Future TODO: the squares of the Boolean diagram commute.
+
+\begin{proof}
+    Fissiamo \(r\) tale che \(1 \leq r < n\) e consideriamo il morfismo \(f \colon A \to B\)
+    con \[
+        A = A_{x + \sum_{j=1}^{r-1} e_{i_j}}, \quad
+        B = A_{x + \sum_{j=1}^{r} e_{i_j}}
+    \]
+    che ha direzione \(\#f = \{e_{i_r}\}\),
+    e mostriamo che questo morfismo induce un morfismo \(M_r(A) \to M_{r+1}(B)\).
+    Scriviamo esplicitamente \(M_r(A)\) e \(M_{r+1}(B)\) e introduciamo un cambio di variabile
+    per lavorare su uno spazio centrato in \(A\). Abbiamo per \(A\)
+    \begin{DispWithArrows*}
+        M_r(A) &= \frac{
+            \displaystyle\bigcap_{\substack{J \subseteq \{1, \cdots, n\} \\ |J| = n-r+1}}
+            \ker\partial\left[
+                x + \displaystyle\sum_{j=1}^{r-1} e_{i_j},
+                x + \displaystyle\sum_{j=1}^{r-1} e_{i_j} + \displaystyle\sum_{j \in J} e_j
+            \right]
+        }{
+            \displaystyle\sum_{\substack{J \subseteq \{1, \cdots, n\} \\ |J| = r}}
+            \im\partial\left[
+                x + \displaystyle\sum_{j=1}^{r-1} e_{i_j} - \displaystyle\sum_{j \in J} e_j,
+                x + \displaystyle\sum_{j=1}^{r-1} e_{i_j}
+            \right]
+        } \Arrow{\(y = \displaystyle\sum_{j=1}^{r-1} e_{i_j}\)} \\
+        &= \frac{
+            \displaystyle\bigcap_{\substack{J \subseteq \{1, \cdots, n\} \\ |J| = n-r+1}}
+            \ker\overbrace{
+                \partial\left[
+                    y,
+                    y + \displaystyle\sum_{j \in J} e_j
+                \right]
+            }^{\partial_{J,n-r+1}}
+        }{
+            \displaystyle\sum_{\substack{J \subseteq \{1, \cdots, n\} \\ |J| = r}}
+            \im\underbrace{
+                \partial\left[
+                    y - \displaystyle\sum_{j \in J} e_j,
+                    y
+                \right]
+            }_{\partial^{J, r}}
+        }
+    \end{DispWithArrows*}
+    Mentre per \(B\) abbiamo
+    \begin{DispWithArrows*}
+        M_{r+1}(B) &= \frac{
+            \displaystyle\bigcap_{\substack{J \subseteq \{1, \cdots, n\} \\ |J| = n-r}}
+            \ker\partial\left[
+                x + \displaystyle\sum_{j=1}^{r-} e_{i_j},
+                x + \displaystyle\sum_{j=1}^{r-} e_{i_j} + \displaystyle\sum_{j \in J} e_j
+            \right]
+        }{
+            \displaystyle\sum_{\substack{J \subseteq \{1, \cdots, n\} \\ |J| = r+1}}
+            \im\partial\left[
+                x + \displaystyle\sum_{j=1}^{r} e_{i_j} - \displaystyle\sum_{j \in J} e_j,
+                x + \displaystyle\sum_{j=1}^{r} e_{i_j}
+            \right]
+        } \Arrow{\(y = \displaystyle\sum_{j=1}^{r-1} e_{i_j}\)} \\
+        &= \frac{
+            \displaystyle\bigcap_{\substack{J \subseteq \{1, \cdots, n\} \\ |J| = n-r}}
+            \ker\overbrace{
+                \partial\left[
+                    y + e_{i_r},
+                    y + e_{i_r} + \displaystyle\sum_{j \in J} e_j
+                \right]
+            }^{\partial_{J,n-r}}
+        }{
+            \displaystyle\sum_{\substack{J \subseteq \{1, \cdots, n\} \\ |J| = r+1}}
+            \im\underbrace{
+                \partial\left[
+                    y + e_{i_r} - \displaystyle\sum_{j \in J} e_j,
+                    y + e_{i_r}
+                \right]
+            }_{\partial^{J, r+1}}
+        }
+    \end{DispWithArrows*}
+    Mostriamo quindi separamente che la mappa manda
+    \(K = \bigcap \ker\partial_{J, n-r+1}\)
+    in \(M = \bigcap \ker\partial_{J, n-r}\)
+    e \(H = \sum \im\partial_{J, r}\)
+    in \(N = \sum \im\partial_{J, r+1}\).
+    \begin{itemize}
+        \item \(f\) manda \(K\) in \(M\): consideriamo un morfismo \(\partial_{J, n-r}\)
+        arbitrario della definizione di \(M\) e mostriamo che esiste sempre
+        un morfismo della definizione di \(K\) tale per cui \(f\) si restringe
+        fra questi due.
+        Per costruzione, \(\#f = \{e_{i_r}\}\) che ha lunghezza \(1\) e \(\#\partial_{J, n-r} = \{e_j\}_{j \in J}\)
+        con lunghezza \(n-r\) per costruzione di \(J\).
+        Consideriamo il morfismo \(\partial_{J,n-r} \circ f\), che connette \(A\) al morfismo
+        scelto dalla definizione di \(M\), e distinguiamo due casi:
+        \begin{itemize}
+            \item se \(e_{i_r} \in \#\partial_{J,n-r}\), allora \((\partial_{J,n-r} \circ f)\) traversa
+            due volte la direzione \(e_{i_r}\). Per commutatività del complesso, possiamo scegliere
+            una rappresentazione di \((\partial_{J,n-r} \circ f)\) tale per cui i primi due morfismi
+            nella composizione traversano la direzione \((e_{i_r})\). Ma quindi, per definizione di cocomplesso,
+            abbiamo che \(\partial_{J,n-r} \circ f = 0\) sempre.
+            \item se \(e_{i_r} \notin \#\partial_{J,n-r}\), allora \((\partial_{J,n-r} \circ f)\) traversa
+            solo una volta la direzione \(e_{i_r}\).
+            Nella definizione di \(K\) vengono usati tutti i morfismi partenti da \(A\) di lunghezza
+            \(n-r+1\). Fra questi, consideriamo solo quelli che includono un morfismo che traversa la direzione
+            \(e_{i_r}\), cioè \[
+                E = \left\{
+                    \partial_{J, n-r+1} \mid J \subseteq \{1, \cdots, n\} \land |J| = n-r+1 \land i_r \in J
+                \right\}
+            \]
+            Per ogni \(\partial \in E\), possiamo rappresentare \(\partial\) come
+            \(\partial = \alpha_1 \circ \cdots \circ \alpha_{n-r+1}\) dove \(|\#\alpha_i| = 1\),
+            cioè come composizione di morfismi di lunghezza uno. Per commutatività del diagramma,
+            possiamo scegliere tale rappresentazione tale che \(\#\alpha_{n-r+1} = \{e_{i_r}\}\).
+            Ma quindi, data una tale rappresentazione, deve essere per forza \(\alpha_{n-r+1} = f\) e possiamo scrivere
+            \(\partial = (\alpha_1 \circ \cdots \circ \alpha_{n-r}) \circ f\).
+            Per definizione, \(E\) contiene tutti i possibili morfismi di lunghezza \(n-r+1\).
+            In particolare, il termine \((\alpha_1 \circ \cdots \circ \alpha_{n-r})\) può assumere
+            qualsiasi cammino di lunghezza \(n-r\) che parte da \(fA = B\), e quindi deve esistere
+            \(\partial \in E\) tale che \(\partial = \partial_{J,n-r} \circ f\).
+            Se consideriamo ora l'inclusione canonica \(\iota \colon \ker \partial \to A\), troviamo che
+            \(\partial \iota = \partial_{J,n-r} f \iota = 0\). XXX
+        \end{itemize}
+        \item \(f\) manda \(H\) in \(N\): Omessa per ora ma stessa forma.
+    \end{itemize}
+    XXX
+\end{proof}
 
 \pagebreak
 
