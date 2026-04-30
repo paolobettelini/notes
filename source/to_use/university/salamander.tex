@@ -16,9 +16,9 @@
 \usetikzlibrary{decorations.pathreplacing}
 \usetikzlibrary{cd}
 
-\title{Salamander Lemma on polycomplexes}
-\author{}
-\date{}
+\title{On Diagram-Chasing in Higher-Dimensional Cocomplexes}
+\author{Paolo Bettelini}
+\date{\today}
 
 \DeclareMathOperator{\im}{im}
 
@@ -73,19 +73,18 @@
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{definition}{Definition}[section]
 
 \begin{document}
 
 \maketitle
+
+\begin{abstract}
+    This paper explores the generalization of George M. Bergman's results on diagram-chasing in double complexes to n-dimensional cocomplexes.
+\end{abstract}
+
 \tableofcontents
-
-\pagebreak
-
-\section{Abstract}
-
-Questo paper generalizza il paper di Bergman
-a dimensioni di cocomplessi superiori.
 
 \section{Introduction}
 
@@ -135,8 +134,75 @@ Denotiamo pure sempre \(A = A_0\).
 \begin{definition}
     Se \(x\leq y\) coordinata per coordinata e \(\partial[x,y] \colon A_x \to A_y\)
     definiamo \(\#\partial[x,y] \subseteq \{e_1, \cdots, e_n\}\) come
-    l'insieme di tutte le direzioni percorse fra \(x\) e \(y\). 
+    l'insieme di tutte le direzioni percorse fra \(x\) e \(y\).
 \end{definition}
+
+\begin{definition}
+    Data una famiglia di indici \(J \in \mathcal P(\{1, \cdots, n\})\), denotiamo
+    \[
+        e_J := \sum_{j \in J} e_j
+    \]
+\end{definition}
+
+\subsection{Generalized setting}
+
+\begin{definition}
+    Per ogni \(x \in \mathbb{Z}^n\), e per ogni due famiglie finite \(L \subseteq {\mathbb{Z}}_{\leq 0}^n \difference \{0\}^n\), \(U \subseteq \mathbb{N}^n \difference \{0\}^n\)
+    tali che abbia senso, poniamo
+    \[
+        I_L(x) := \sum_{\lambda \in L} \im \partial[x + \lambda, x], \quad
+        K_U(x) := \bigcap_{\mu \in U} \ker \partial[x, x+\mu]
+    \]
+    Quando vale \[
+        I_L(x) \subseteq K_u(x)
+    \]
+    definiamo
+    \[
+        H_L^U(x) := \frac{K_U(x)}{I_L(x)}
+    \]
+\end{definition}
+
+Concretamente, per gli oggetti comologici centrati su un oggetto centrale \(A_0\)
+con struttura \(L = \{l_i\}_{i=1}^h \subseteq \{-1,0\}^n\)
+e \(U = \{u_i\}_{i=1}^k \subseteq \{0,+1\}^n\) abbiamo
+\[
+    H_L^U = \frac{
+        \displaystyle\bigcap_{i=1}^k \ker \partial[0,U_i]
+    }{
+        \displaystyle\sum_{i=1}^h \im \partial[L_i,0]
+    }
+\]
+quando esiste.
+Ci stiamo quindi restringendo ad un intorno locale dell'oggetto centrale.
+
+Nel paper di Bergman viene notato che il reticolo di oggetti comologici viene generato
+dai down-set. In generale questo numero combinatorico è il numero di Dedekind \(M(n)\).
+Tuttavia, vengono scartati i casi banali del down-set vuoto e del down-set totale. Quindi in generale abbiamo
+\begin{itemize}
+    \item \(n=1\): \(M(1)-2 = 1\)
+    \item \(n=2\): \(M(2)-2 = 4\)
+    \item \(n=3\): \(M(3)-2 = 18\)
+    \item \(n=4\): \(M(4)-2 = 166\)
+    \item \(n=5\): \(M(5)-2 = 7579\)
+\end{itemize}
+
+\begin{lemma}
+    Sia \(A\) un \(n\)-cocomplesso in una categoria abeliana.
+    Se \(v \in \mathbb N^n\) ha almeno una coordinata \(\geq 2\), allora
+    \[
+        \partial[x,x+v] = 0.
+    \]
+\end{lemma}
+
+\begin{proof}
+    Se la coordinata \(i\)-esima di \(v\) è almeno \(2\), ogni cammino monotono da \(x\) a
+    \(x + b\) usa almeno due volte la direzione \(e_i\). Per commutatività dei quadrati elementari, possiamo scegliere
+    un cammino equivalente in cui due passi \(e_i\) sono consecutivi. Allora la composizione contiene un fattore
+    \[
+        \partial_{z + e_i}^{(i)} \circ \partial_z^{(i)} = 0
+    \]
+    per qualche \(z\), per definizione di cocomplesso.
+\end{proof}
 
 \subsection{First dimensional cases}
 
@@ -149,7 +215,7 @@ For the one-dimensional case we have the cochain complex
 
 We can only define the classical comological object
 \begin{align*}
-    H_{-}^+ \triangleq \frac{
+    H_{-}^+ := \frac{
         \ker \partial[0,+]
     }{
         \im \partial[-,0]
@@ -182,7 +248,7 @@ We define the directional homological objects, which are Bergman's objects, as f
         \bicomplexdot{(2,1)}
     \end{tikzpicture}
     & 
-    $\displaystyle H_{-,0}^{+,0} \triangleq \frac{\ker \partial[0,(+,0)]}{\im \partial[(-,0),0]}$
+    $\displaystyle H_{-,0}^{+,0} := \frac{\ker \partial[0,(+,0)]}{\im \partial[(-,0),0]}$
     & 
     \begin{tikzpicture}[baseline=(current bounding box.center), scale=0.8]
         \bicomplex
@@ -191,7 +257,7 @@ We define the directional homological objects, which are Bergman's objects, as f
         \bicomplexdot{(1,0)}
     \end{tikzpicture}
     & 
-    $\displaystyle H_{-}^{(0,+), (+,0)} \triangleq \frac{\ker \partial[0,(+,0)] \cap \ker \partial[0,(0,+)]}{\im \partial[-,0]}$ \\[8ex]
+    $\displaystyle H_{-}^{(0,+), (+,0)} := \frac{\ker \partial[0,(+,0)] \cap \ker \partial[0,(0,+)]}{\im \partial[-,0]}$ \\[8ex]
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{tikzpicture}[baseline=(current bounding box.center), scale=0.8]
         \bicomplex
@@ -199,7 +265,7 @@ We define the directional homological objects, which are Bergman's objects, as f
         \bicomplexdot{(1,0)}
     \end{tikzpicture}
     & 
-    $\displaystyle H_{-,0}^{+,0} \triangleq \frac{\ker \partial[0,(0,+)]}{\im \partial[(0,-),0]}$
+    $\displaystyle H_{-,0}^{+,0} := \frac{\ker \partial[0,(0,+)]}{\im \partial[(0,-),0]}$
     & 
     \begin{tikzpicture}[baseline=(current bounding box.center), scale=0.8]
         \bicomplex
@@ -208,7 +274,7 @@ We define the directional homological objects, which are Bergman's objects, as f
         \bicomplexdot{(2,0)}
     \end{tikzpicture}
     & 
-    $\displaystyle H_{(-,0), (0,-)}^{+,-} \triangleq \frac{\ker \partial[0,+]}{\im \partial[(-,0),0] + \im \partial[(0,-),0]}$ \\
+    $\displaystyle H_{(-,0), (0,-)}^{+,-} := \frac{\ker \partial[0,+]}{\im \partial[(-,0),0] + \im \partial[(0,-),0]}$ \\
 \end{tabular}
 \end{center}
 
@@ -254,32 +320,32 @@ We have the following \(18\) comological objects:
 \end{center}
 
 \begin{align*}
-    (1) \quad &H_{(-,0,0)}^{(+,0,0), (0,0,+)} \triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,0,+)]}{\im \partial[(-,0,0),0]} \\
-    (2) \quad &H_{(-,-,0)}^{(+,0,0), (0,+,0)} \triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,0)]}{\im \partial[(-,-,0),0]} \\
-    (3) \quad &H_{(0,-,-)}^{(0,+,+), (0,0,+)} \triangleq \frac{\ker \partial[0,(0,+,0)] \cap \ker \partial[0,(0,0,+)]}{\im \partial[(0,-,-),0]} \\
-    (4) \quad &H_{(-,-,0), (-,0,-)}^{(+,0,0), (0,+,+)} \triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(-,-,0),0] + \im \partial[(-,0,-),0]} \\
-    (5) \quad &H_{(-,-,0), (0,-,-)}^{(+,0,0), (0,+,+)} \triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(-,-,0),0] + \im \partial[(0,-,-),0]} \\
-    (6) \quad &H_{(-,0,-), (0,-,-)}^{(+,0,0), (0,+,+)} \triangleq \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(-,0,-),0] + \im \partial[(0,-,-),0]} \\
-    (7) \quad &H_{(0,-,-), (-,0,0)}^{(+,+,0), (+,0,+)} \triangleq \frac{\ker \partial[0,(+,+,0)] \cap \ker \partial[0,(+,0,+)]}{\im \partial[(0,-,-),0] + \im \partial[(-,0,0),0]} \\
-    (8) \quad &H_{(0,-,-), (-,0,0)}^{(+,+,0), (0,+,+)} \triangleq \frac{\ker \partial[0,(+,+,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(0,-,-),0] + \im \partial[(-,0,0),0]} \\
-    (9) \quad &H_{(0,-,-), (-,0,0)}^{(0,+,+), (+,0,+)} \triangleq \frac{\ker \partial[0,(0,+,+)] \cap \ker \partial[0,(+,0,+)]}{\im \partial[(0,-,-),0] + \im \partial[(-,0,0),0]} \\
-    (10) \quad &H_{(0,0,-), (-,0,0)}^{(+,0,+)} \triangleq \frac{\ker \partial[0,(+,0,+)]}{\im \partial[(0,0,-),0] + \im \partial[(-,0,0),0]} \\
-    (11) \quad &H_{(0,0,-), (0,-,0)}^{(0,+,+)} \triangleq \frac{\ker \partial[0,(0,+,+)]}{\im \partial[(0,0,-),0] + \im \partial[(0,-,0),0]} \\
-    (12) \quad &H_{(-,0,0), (0,-,0)}^{(+,+,0)} \triangleq \frac{\ker \partial[0,(+,+,0)]}{\im \partial[(-,0,0),0] + \im \partial[(0,-,0),0]} \\
-    (13) \quad &H_{(0,0,-), (-,0,0), (0,-,0)}^{+} \triangleq \frac{\ker \partial[0,+]}{\im \partial[(0,0,-),0] + \im \partial[(-,0,0),0] + \im \partial[(0,-,0),0]} \\
-    (14) \quad &H_{(-,0,-), (0,-,-), (-,-,0)}^{(+,+,0), (0,+,+), (+,0,+)} \triangleq \frac{\ker\partial[0,(+,+,0)] \cap \ker\partial[0,(0,+,+)] \cap \ker\partial[0,(+,0,+)]}{\im \partial[(-,0,-),0] + \im \partial[(0,-,-),0] + \im \partial[(-,-,0),0]} \\
-    (15) \quad &H_{-}^{(0,+,0), (+,0,0), (0,0,+)} \triangleq \frac{\ker \partial[0,(0,+,0)] \cap \ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,0,+)]}{\im \partial[-,0]} \\
-    (16) \quad & H_{-,0,0}^{+,0,0} \triangleq \frac{
+    (1) \quad &H_{(-,0,0)}^{(+,0,0), (0,0,+)} := \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,0,+)]}{\im \partial[(-,0,0),0]} \\
+    (2) \quad &H_{(-,-,0)}^{(+,0,0), (0,+,0)} := \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,0)]}{\im \partial[(-,-,0),0]} \\
+    (3) \quad &H_{(0,-,-)}^{(0,+,+), (0,0,+)} := \frac{\ker \partial[0,(0,+,0)] \cap \ker \partial[0,(0,0,+)]}{\im \partial[(0,-,-),0]} \\
+    (4) \quad &H_{(-,-,0), (-,0,-)}^{(+,0,0), (0,+,+)} := \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(-,-,0),0] + \im \partial[(-,0,-),0]} \\
+    (5) \quad &H_{(-,-,0), (0,-,-)}^{(+,0,0), (0,+,+)} := \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(-,-,0),0] + \im \partial[(0,-,-),0]} \\
+    (6) \quad &H_{(-,0,-), (0,-,-)}^{(+,0,0), (0,+,+)} := \frac{\ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(-,0,-),0] + \im \partial[(0,-,-),0]} \\
+    (7) \quad &H_{(0,-,-), (-,0,0)}^{(+,+,0), (+,0,+)} := \frac{\ker \partial[0,(+,+,0)] \cap \ker \partial[0,(+,0,+)]}{\im \partial[(0,-,-),0] + \im \partial[(-,0,0),0]} \\
+    (8) \quad &H_{(0,-,-), (-,0,0)}^{(+,+,0), (0,+,+)} := \frac{\ker \partial[0,(+,+,0)] \cap \ker \partial[0,(0,+,+)]}{\im \partial[(0,-,-),0] + \im \partial[(-,0,0),0]} \\
+    (9) \quad &H_{(0,-,-), (-,0,0)}^{(0,+,+), (+,0,+)} := \frac{\ker \partial[0,(0,+,+)] \cap \ker \partial[0,(+,0,+)]}{\im \partial[(0,-,-),0] + \im \partial[(-,0,0),0]} \\
+    (10) \quad &H_{(0,0,-), (-,0,0)}^{(+,0,+)} := \frac{\ker \partial[0,(+,0,+)]}{\im \partial[(0,0,-),0] + \im \partial[(-,0,0),0]} \\
+    (11) \quad &H_{(0,0,-), (0,-,0)}^{(0,+,+)} := \frac{\ker \partial[0,(0,+,+)]}{\im \partial[(0,0,-),0] + \im \partial[(0,-,0),0]} \\
+    (12) \quad &H_{(-,0,0), (0,-,0)}^{(+,+,0)} := \frac{\ker \partial[0,(+,+,0)]}{\im \partial[(-,0,0),0] + \im \partial[(0,-,0),0]} \\
+    (13) \quad &H_{(0,0,-), (-,0,0), (0,-,0)}^{+} := \frac{\ker \partial[0,+]}{\im \partial[(0,0,-),0] + \im \partial[(-,0,0),0] + \im \partial[(0,-,0),0]} \\
+    (14) \quad &H_{(-,0,-), (0,-,-), (-,-,0)}^{(+,+,0), (0,+,+), (+,0,+)} := \frac{\ker\partial[0,(+,+,0)] \cap \ker\partial[0,(0,+,+)] \cap \ker\partial[0,(+,0,+)]}{\im \partial[(-,0,-),0] + \im \partial[(0,-,-),0] + \im \partial[(-,-,0),0]} \\
+    (15) \quad &H_{-}^{(0,+,0), (+,0,0), (0,0,+)} := \frac{\ker \partial[0,(0,+,0)] \cap \ker \partial[0,(+,0,0)] \cap \ker \partial[0,(0,0,+)]}{\im \partial[-,0]} \\
+    (16) \quad & H_{-,0,0}^{+,0,0} := \frac{
         \ker \partial[0,(+,0,0)]
     }{
         \im \partial[(-,0,0),0]
     } \\
-    (17) \quad &H_{0,-,0}^{0,+,0} \triangleq \frac{
+    (17) \quad &H_{0,-,0}^{0,+,0} := \frac{
         \ker \partial[0,(0,+,0)]
     }{
         \im \partial[(0,-,0),0]
     } \\
-    (18) \quad &H_{0,0,-}^{0,0,+} \triangleq \frac{
+    (18) \quad &H_{0,0,-}^{0,0,+} := \frac{
         \ker \partial[0,(0,0,+)]
     }{
         \im \partial[(0,0,-),0]
@@ -290,53 +356,13 @@ We have the following \(18\) comological objects:
 
 \subsection{Generalization of extramural maps}
 
-\begin{definition}
-    Per ogni \(x \in \mathbb{Z}^n\), e per ogni due famiglie finite \(L \subseteq {\mathbb{Z}}_{\leq 0}^n \difference \{0\}^n\), \(U \subseteq \mathbb{N}^n \difference \{0\}^n\)
-    tali che abbia senso, poniamo
-    \[
-        I_L(x) \triangleq \sum_{\lambda \in L} \im \partial[x + \lambda, x], \quad
-        K_U(x) \triangleq \bigcap_{\mu \in U} \ker \partial[x, x+\mu]
-    \]
-    Quando vale \[
-        I_L(x) \subseteq K_u(x)
-    \]
-    definiamo
-    \[
-        H_L^U(x) \triangleq \frac{K_U(x)}{I_L(x)}
-    \]
-\end{definition}
-
-Concretamente, per gli oggetti comologici centrati su un oggetto centrale \(A_0\)
-con struttura \(L = \{l_i\}_{i=1}^h \subseteq \{-1,0\}^n\)
-e \(U = \{u_i\}_{i=1}^k \subseteq \{0,+1\}^n\) abbiamo
-\[
-    H_L^U = \frac{
-        \bigcap_{i=1}^k \ker \partial[0,U_i]
-    }{
-        \sum_{i=1}^h \im \partial[L_i,0]
-    }
-\]
-quando esiste.
-Ci stiamo quindi restringendo ad un intorno locale dell'oggetto centrale.
-
-Nel paper di Bergman viene notato che il reticolo di oggetti comologici viene generato
-dai down-set. In generale questo numero combinatorico è il numero di Dedekind \(M(n)\).
-Tuttavia, vengono scartati i casi banali del down-set vuoto e del down-set totale. Quindi in generale abbiamo
-\begin{itemize}
-    \item \(n=1\): \(M(1)-2 = 1\)
-    \item \(n=2\): \(M(2)-2 = 4\)
-    \item \(n=3\): \(M(3)-2 = 18\)
-    \item \(n=4\): \(M(4)-2 = 166\)
-    \item \(n=5\): \(M(5)-2 = 7579\)
-\end{itemize}
-
 Cominciamo generalizzando il concetto di \emph{donor} e \emph{receptor}
 come i gruppi comologici perfettamente diagonali che traversano l'oggetto centrale.
 
 \begin{definition}
     The \emph{\(n\)-receptor} centered at \(x\) is defined as
     \[
-        R(x) \triangleq \frac{
+        R(x) := \frac{
             \displaystyle\bigcap_{i=1}^n \ker \partial[x, x + e_i]
         }{
             \im \partial[x-1, x]
@@ -348,7 +374,7 @@ come i gruppi comologici perfettamente diagonali che traversano l'oggetto centra
 \begin{definition}
     The \emph{\(n\)-donor} centered at \(x\) is defined as
     \[
-        D(x) \triangleq \frac{
+        D(x) := \frac{
             \ker \partial[x,x+1]
         }{
             \displaystyle\sum_{i=1}^n \im \partial[x-e_i, x]
@@ -360,7 +386,7 @@ come i gruppi comologici perfettamente diagonali che traversano l'oggetto centra
 \begin{definition}
     The \emph{\(i\)-axial cohmology} centered at \(x\) is defined as
     \[
-        H_i(x) \triangleq \frac{
+        H_i(x) := \frac{
             \ker \partial[x,x+e_i]
         }{
             \im \partial[x-e_i, x]
@@ -586,7 +612,7 @@ Abbiamo allora il seguente lemma.
         \end{tikzcd}
     \end{center}
     where \[
-        M(x) \triangleq \frac{
+        M(x) := \frac{
             \ker \partial[x, x + e_1 + e_2]
             \intersection
             \ker \partial[x, x + e_2 + e_3]
@@ -611,7 +637,7 @@ L'oggetto intermedio è costruito con kernel e immagini di mappe entrambe di lun
 Infine, il receiver è costituito da nuclei di mappe di lunghezza uno e immagini di mappe di lunghezza \(3\).
 Per ognuno di questi tre oggetti, consideriamo le tuple \((a,b)\) dove \(a\) è la lunghezza
 dei morfismi di cui vengono considerate le immagini e \(b\) è la lunghezza dei morfismi di cui vengono considerati i kernel.
-Il lemma ci dà quindi una successione di mappe della forma \((3,1) \to (2,2) \to (1,3)\).
+Il lemma ci dà quindi una successione di mappe della forma \((1,3) \to (2,2) \to (3,1)\).
 Questa simmetria ci suggerisce che il lemma possa essere generalizzato da un \(n\) complessi
 con una successione di mappe fra \(n\) oggetti comologici diagonali della forma
 \[
@@ -622,7 +648,7 @@ Definiamo quindi oggetti comologici diagonali che seguono questa forma.
 \begin{definition}
     Sia \(1 \leq k \leq n\). Definiamo il \emph{\(k\)-diagonal cohomological object} as
     \[
-        M_k(x) \triangleq \frac{
+        M_k(x) := \frac{
             \displaystyle
             \bigcap_{
                 \substack{
@@ -630,7 +656,7 @@ Definiamo quindi oggetti comologici diagonali che seguono questa forma.
                     |J| = n-k+1
                 }
             } \ker\partial\left[
-                x, x + \sum_{j \in J} e_j
+                x, x + e_J
             \right]
         }{
             \displaystyle
@@ -640,11 +666,37 @@ Definiamo quindi oggetti comologici diagonali che seguono questa forma.
                     |J| = k
                 }
             } \im\partial\left[
-                x - \sum_{j \in J} e_j, x
+                x - e_J, x
             \right]
         }
     \]
 \end{definition}
+
+\begin{proposition}
+    L'oggetto \(M_k(x)\) è ben definito.
+    % TODO Mostrare che questi sono effettivamente oggetti della forma di Bergman?
+\end{proposition}
+
+\begin{proof}
+    Siano \(K_k(x) = \bigcap \ker \partial[x,x+e_J]\) e
+    \(I_k(x) = \sum \im \partial[x-e_J, x]\) cosicché \(M_k(x) = K_k(x)/I_k(x)\).
+    Bisogna mostrare che \(I_k(x) \subseteq K_k(x)\).
+    Fissiamo \(S,T \subseteq \{1, \cdots, n\}\) tali che
+    \(|S| = n-k+1\) e \(|T| = k\).
+    Naturalmente, \(|S| + |T| = n+1 > n\) e quindi \(S \cap T \neq \varnothing\).
+    Sia \(i \in S \cap T\) e consideriamo il composto
+    \begin{center}
+        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAEEB9YADwFoYnACoBfECNLpMufIRQBGclVqMWbLj3GSQGbHgJEATEur1mrRB248A1IIDKYkcphQA5vCKgAZgCcIALZIZCA4EEiKKuZsADoxaHS+eIzI-IJCpDwUWj7+QYiRYUjGUWqWcQlJWCk8mXac9tkSuYHB1EWIJQBGMGBQSHwAzCFmZSAVickMqQLCdQ7Z1Ax0PQwACtL6ciC+WG4AFjjiFCJAA
+        \begin{tikzcd}
+        A_{x-e_T} \arrow[r, "{\partial[x-e_T,x]}"] \arrow[rr, "{\partial[x-e_T,x+e_S]}"', bend right] & A_x \arrow[r, "{\partial[x,x+e_S]}"] & A_{x+e_S}
+        \end{tikzcd}
+    \end{center}
+    In particolare, abbiamo \(e_i \in \#\partial[x-e_T,x] \cap \#\partial[x,x+e_S]\),
+    e quindi la direzione \(e_i\) viene traversata \(\geq 2\) volte e quindi per il lemma % TODO: citare
+    vale \(\partial[x-e_T, x+e_T] = 0\).
+    Dunque, \(\im \partial[x-e_T, x] \subseteq \ker \partial[x, x+e_T]\).
+    Per arbitrarietà di \(S\) e \(T\) troviamo che \(I_k(x) \subseteq K_k(x)\).
+\end{proof}
 
 Questa è infatti una generalizzazione del donor e del receiver, con quest'ultimi
 che si trovano ai rispettivi capi della successione di oggetti.
@@ -658,7 +710,7 @@ Infatti, per \(k=1\) ritroviamo il donor
                 |J| = n
             }
         } \ker\partial\left[
-            x, x + \sum_{j \in J} e_j
+            x, x + e_J
         \right]
     }{
         \displaystyle
@@ -668,7 +720,7 @@ Infatti, per \(k=1\) ritroviamo il donor
                 |J| = 1
             }
         } \im\partial\left[
-            x - \sum_{j \in J} e_j, x
+            x - e_J, x
         \right]
     }
     = \frac{
@@ -704,7 +756,7 @@ mentre per \(k=n\) ritroviamo il receiver
                 |J| = 1
             }
         } \ker\partial\left[
-            x, x + \sum_{j \in J} e_j
+            x, x + e_J
         \right]
     }{
         \displaystyle
@@ -714,7 +766,7 @@ mentre per \(k=n\) ritroviamo il receiver
                 |J| = n
             }
         } \im\partial\left[
-            x - \sum_{j \in J} e_j, x
+            x - e_J, x
         \right]
     }
     = \frac{
@@ -736,8 +788,6 @@ mentre per \(k=n\) ritroviamo il receiver
 \]
 Abbiamo quindi un cammino discreto di oggetti comologici diagonali fra \(D(x)\) e \(R(x)\).
 
-TODO: Dobbiamo assicurarci che questi siano oggetti della forma di Bergman (quindi oltre che siano ben definiti).
-
 \begin{lemma}
     For every \(x\in\mathbb Z^n\) and every \(i\in\{1,\dots,n\}\), the morphism
     \[
@@ -758,11 +808,11 @@ TODO: Dobbiamo assicurarci che questi siano oggetti della forma di Bergman (quin
     \]
     induces a chain of morphisms
     \[
-        M_1\left(A_{x}\right) \to
-        M_2\left(A_{x + e_{i_1}}\right) \to
-        M_3\left(A_{x + e_{i_1} + e_{i_2}}\right) \to
+        M_1\left(x\right) \to
+        M_2\left(x + e_{i_1}\right) \to
+        M_3\left(x + e_{i_1} + e_{i_2}\right) \to
         \cdots \to
-        M_{n}\left(A_{x + \sum_{j=1}^{n-1} e_{i,j}}\right)
+        M_{n}\left(x + \sum_{j=1}^{n-1} e_{i,j}\right)
     \]
 \end{lemma}
 
@@ -797,12 +847,12 @@ Future TODO: the squares of the Boolean diagram commute.
             \displaystyle\bigcap_{\substack{J \subseteq \{1, \cdots, n\} \\ |J| = n-r+1}}
             \ker\partial\left[
                 x + \displaystyle\sum_{j=1}^{r-1} e_{i_j},
-                x + \displaystyle\sum_{j=1}^{r-1} e_{i_j} + \displaystyle\sum_{j \in J} e_j
+                x + \displaystyle\sum_{j=1}^{r-1} e_{i_j} + e_J
             \right]
         }{
             \displaystyle\sum_{\substack{J \subseteq \{1, \cdots, n\} \\ |J| = r}}
             \im\partial\left[
-                x + \displaystyle\sum_{j=1}^{r-1} e_{i_j} - \displaystyle\sum_{j \in J} e_j,
+                x + \displaystyle\sum_{j=1}^{r-1} e_{i_j} - e_J,
                 x + \displaystyle\sum_{j=1}^{r-1} e_{i_j}
             \right]
         } \Arrow{\(y = \displaystyle\sum_{j=1}^{r-1} e_{i_j}\)} \\
@@ -811,14 +861,14 @@ Future TODO: the squares of the Boolean diagram commute.
             \ker\overbrace{
                 \partial\left[
                     y,
-                    y + \displaystyle\sum_{j \in J} e_j
+                    y + e_J
                 \right]
             }^{\partial_{J,n-r+1}}
         }{
             \displaystyle\sum_{\substack{J \subseteq \{1, \cdots, n\} \\ |J| = r}}
             \im\underbrace{
                 \partial\left[
-                    y - \displaystyle\sum_{j \in J} e_j,
+                    y - e_J,
                     y
                 \right]
             }_{\partial^{J, r}}
@@ -830,12 +880,12 @@ Future TODO: the squares of the Boolean diagram commute.
             \displaystyle\bigcap_{\substack{J \subseteq \{1, \cdots, n\} \\ |J| = n-r}}
             \ker\partial\left[
                 x + \displaystyle\sum_{j=1}^{r-} e_{i_j},
-                x + \displaystyle\sum_{j=1}^{r-} e_{i_j} + \displaystyle\sum_{j \in J} e_j
+                x + \displaystyle\sum_{j=1}^{r-} e_{i_j} + e_J
             \right]
         }{
             \displaystyle\sum_{\substack{J \subseteq \{1, \cdots, n\} \\ |J| = r+1}}
             \im\partial\left[
-                x + \displaystyle\sum_{j=1}^{r} e_{i_j} - \displaystyle\sum_{j \in J} e_j,
+                x + \displaystyle\sum_{j=1}^{r} e_{i_j} - e_J,
                 x + \displaystyle\sum_{j=1}^{r} e_{i_j}
             \right]
         } \Arrow{\(y = \displaystyle\sum_{j=1}^{r-1} e_{i_j}\)} \\
@@ -844,19 +894,21 @@ Future TODO: the squares of the Boolean diagram commute.
             \ker\overbrace{
                 \partial\left[
                     y + e_{i_r},
-                    y + e_{i_r} + \displaystyle\sum_{j \in J} e_j
+                    y + e_{i_r} + e_J
                 \right]
             }^{\partial_{J,n-r}}
         }{
             \displaystyle\sum_{\substack{J \subseteq \{1, \cdots, n\} \\ |J| = r+1}}
             \im\underbrace{
                 \partial\left[
-                    y + e_{i_r} - \displaystyle\sum_{j \in J} e_j,
+                    y + e_{i_r} - e_J,
                     y + e_{i_r}
                 \right]
             }_{\partial^{J, r+1}}
         }
     \end{DispWithArrows*}
+    %Siano \(K_k(x) = \bigcap \ker \partial[x,x+e_J]\) e
+    %\(I_k(x) = \sum \im \partial[x-e_J, x]\) cosicché \(M_k(x) = K_k(x)/I_k(x)\).
     Mostriamo quindi separamente che la mappa manda
     \(K = \bigcap \ker\partial_{J, n-r+1}\)
     in \(M = \bigcap \ker\partial_{J, n-r}\)
@@ -906,7 +958,7 @@ Future TODO: the squares of the Boolean diagram commute.
 
 \pagebreak
 
-\section{Altro XXX}
+\section{Work in progress}
 
 Caso verticale del diagramma del bicomplesso.
 
@@ -968,12 +1020,12 @@ E questo invece dovrebbe essere le intramural maps. \\
 
 % Level 3
 \node (n16) at (-2.0,6) {(16)};
-\node (n14) at ( 1.2,6) {(14)};
+\node (n14) at ( 1.6,6) {(14)};
 
 % Level 4
 \node (n8)  at (-4.0,8) {(8)};
 \node (n7)  at (-1.3,8) {(7)};
-\node (n11) at ( 1.4,8) {(11)};
+\node (n11) at ( 0.4,8) {(11)};
 \node (n9)  at ( 4.1,8) {(9)};
 
 % Level 5
