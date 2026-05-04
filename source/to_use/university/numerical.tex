@@ -2080,6 +2080,267 @@ quindi se \(|\omega-1| \geq 1\) non convergerà.
     quindi ancora una volta abbiamo il raggio spettrale pari a \(1\).
 \end{snippetexample}
 
+\subsection{Gauss-Seidel è il doppio più veloce di Jacobi in certi casi}
+
+\begin{snippetdefinition}{Consistentemente ordinata}
+    Siano \(A \in \matrices_n(\complexnumbers)\)
+    e \(\det A \neq 0\)
+    con \(A = D - B - C\) e \(\det D \neq 0\).
+    Scriviamo \(P_J = D^{-1}(D + B)\)
+    e \(P_{GS} = (D-B)^{-1}C\).
+    Per semplicità indichiamo \(P_J = L+U\)
+    con \(L = D^{-1}B\)
+    e \(U = D^{-1}C\), e analogamente
+    \[
+        P_{GS} = (D(I-D^{-1}B))^{-1}C = (I - D^{-1} B)^{-1}D^{-1}C
+        = (I-L)U
+    \]
+    Si dice che \(A\) è \emph{consistentemente ordinata}
+    se \(\forall \alpha \neq 0\) vale \(P_J\)
+    è simile \[
+        P_J(\alpha) \triangleq \alpha L + \frac{1}{\alpha}U
+    \]
+\end{snippetdefinition}
+
+Le matrici tridiagonali che soddisfano le ipotesi della definizione sono
+consistentemente ordinate. Sia infati \(A \in \matrices_n(\complexnumbers)\)
+tridiagonale, allora \(B\) è nulla tranne la sottodiagonale, e \(C\)
+è nulla tranne la sopradiagonale. Siccome la riscalatura
+non cambia il pattern della matrice, pure \(L\) hanno queste forme rispettivamente.
+\[
+    L = \begin{pmatrix}
+        0 & & && \\
+        l_{2,1} & \ddots & && \\
+        & l_{3,2} & \ddots && \\
+        & & \ddots & \ddots & \\
+        & & & l_{n,n-1} & 0      
+    \end{pmatrix}, \quad
+    U = \begin{pmatrix}
+        0 & u_{1,2} & && \\
+         & \ddots & u_{2,3} && \\
+        & &  \ddots & \ddots & \\
+        & & & 0 & u_{n-1,n}      
+    \end{pmatrix}
+\]
+Consideriamo la matrice \(\Delta = \operatorname{diag}(1, \alpha, \alpha^2, \cdots, \alpha^{n-1})\)
+da cui \(\Delta P_J = \Delta^{-1} = P_J(\alpha)\).
+Questa matrice applicata ad ogni matrice della forma \(X = J + U\)
+produce la forma \(\alpha L + \frac{1}{\alpha}U\).
+Quindi, questa classe include le tridiagonali ed è abbastanza ampia da chiedersi
+cosa fanno i metodi iterativi.
+
+\begin{snippettheorem}{}
+    Siano \(A \in \matrices_n(\complexnumbers)\)
+    e \(\det A \neq 0\)
+    con \(A = D - B - C\) e \(\det D \neq 0\).
+    Scriviamo \(P_J = D^{-1}(D + B)\)
+    e \(P_{GS} = (D-B)^{-1}C\).
+    Per semplicità indichiamo \(P_J = L+U\)
+    con \(L = D^{-1}B\)
+    e \(U = D^{-1}C\), e analogamente
+    \[
+        P_{GS} = (D(I-D^{-1}B))^{-1}C = (I - D^{-1} B)^{-1}D^{-1}C
+        = (I-L)U
+    \]
+    Sia \(A\) consistentemente ordinata.
+    Allora, \[
+        \rho\left(P_{GS}\right)
+        = \rho^2(P_J)
+    \]
+\end{snippettheorem}
+
+Quindi, o divergono assieme o convergono assieme, e quando convergono Gauss-Seidel
+è il doppio più veloce.
+
+\begin{snippetproof}{}
+    Valutiamo il polinomio caratteristico
+    \begin{DispWithArrows*}
+        \det(P_{GS} - \lambda I)
+        &= \det\left((I-L)^{-1}U - \lambda I\right)
+        = \cancelto{1}{\det((I-L)^{-1})}
+        \det(U - \lambda(I-L)) \\
+        &= \det(U + \lambda L - \lambda I) \Arrow{\(\lambda \neq 0\)} \\
+        &= \det\left(
+            \sqrt\lambda \left(
+                \sqrt\lambda L + \frac{1}{\sqrt\lambda} U - \sqrt\lambda I
+            \right)
+        \right) \\
+        &= \left(\sqrt \lambda\right)^n
+        \det \left(
+            \sqrt \lambda L + \frac{1}{\sqrt \lambda} U - \sqrt \lambda I
+        \right) = g(\lambda)
+    \end{DispWithArrows*}
+    Possiamo eliminare il caso \(\lambda \neq 0\)
+    in quanto la radice nulla non contribuisce verso il raggio spettrale.
+    Facciamo diventare questa funzione a due variabili, cioè \(g(\lambda) = f(\lambda, \sqrt\lambda)\)
+    \begin{align*}
+        f(\lambda, \mu) &= (\sqrt\lambda)^n \det\left(
+            \sqrt\lambda L + \frac{1}{\sqrt\lambda}U - \mu I
+        \right) \\
+        &= (\sqrt\lambda)^n \operatorname{pol. char}\underbrace{\left(\sqrt\lambda L + \frac{1}{\sqrt \lambda}U\right)(\mu)}_{P_J(\sqrt\lambda) \sim P_J}(\mu)
+        = (\sqrt\lambda)^n \det\left(
+            P_j - \mu I
+        \right)
+    \end{align*}
+    Quindi, purché \(\lambda\) sia autovalore nullo, che non mi interessa, allora
+    per \(\lambda\) che annulla il polinomio caratteristico di Gauss-Seidel, quello
+    che annulla il polinomio caratteristico di Jacobi è \(\sqrt\lambda\).
+    Ciò vale per tutti gli autovalori grandi e quindi vale per il raggio spettrale.
+    Quindi abbiamo inolte dimostrato che per ogni autovalore non-nullo di Gauss-Seidel
+    ne corrisponde uno, la radice, per la matrice di Jacobi.
+\end{snippetproof}
+
+Questa condizione/problematicca dell'autovalore nullo è in realtà inevitabile.
+Consideriamo
+\[
+    A = \begin{pmatrix}
+        1 & \alpha \\ \alpha & 1
+    \end{pmatrix} \in \matrices_2(\complexnumbers)
+\]
+con \(|\alpha|<1\). I metodi convergono
+e la matrice è tridiagonale (come tutte le matrici \(2\times 2\)).
+Abbiamo quindi
+\[
+    P_J = D^{-1}(B + C) = \begin{pmatrix}
+        0 & -\alpha & \alpha & 0
+    \end{pmatrix}
+\]
+Se consideriamo il vettore di tutti \(1\), troviamo che un autovalore è
+per esempio \(\alpha\). Siccome la traccia è nulla l'altro autovalore è \(-\alpha\).
+D'altra parte abbiamo \[
+    P_{GS} = (D-B)^{-1}C = \begin{pmatrix}
+        1 & 0 \\ \alpha 1
+    \end{pmatrix}^{-1}
+    \begin{pmatrix}
+        0 & -\alpha \\ 0 & 0
+    \end{pmatrix}
+    = \begin{pmatrix}
+        1 & 0 \\ -\alpha & 1
+    \end{pmatrix}\begin{pmatrix}
+        0 & -\alpha \\ 0 & 0 
+    \end{pmatrix}
+    = \begin{pmatrix}
+        0 & -\alpha \\ 0 & \alpha^2
+    \end{pmatrix}
+\]
+Quindi a zero non corrisponde la radice di zero cioè zero come autovalore.
+La matrice di Jacobi ha sempre uno autovalore nullo,
+mentre quella di Gauss-Seidel non necessariamente.
+Esistono matrici per cui \(J\) e \(GS\) sono ben definite tali che \(\rho(P_J) < 1\)
+e \(\rho(P_{GS}) > 1\).
+Esistono matrici per cui \(J\) e \(GS\) sono ben definite tale che
+\(\rho(P_{GS}) < 1\) e \(\rho(P_J) > 1\).
+
+\begin{snippetexercise}{
+    Per \(M>1\) esistono matrici per cui \(J\) e \(GS\) sono ben definite tali che
+    \(\rho(P_{GS}) < 1\) e \(\rho(P_J) > M\).
+}
+    In questo modo, abbiamo sempre la convergenza di Gauss-Seidel in quanto la matrice è
+    definita positiva, ma sufficientemente poco a predominanza diagonale da non fare
+    convergere Jacobi.
+
+    Vogliamo costruire un caso limite di una matrice definita positiva ma non troppo
+    a predominanza diagonale. Consideriamo la matrice con tutti elementi uguali a \(1\)
+    e aggiungiamo \(\varepsilon I\), con \(\varepsilon>0\):
+    \[
+        A_{n,\varepsilon}
+        =
+        \begin{pmatrix}
+            1 & 1 & \cdots & 1 \\
+            1 & 1 & \cdots & 1 \\
+            \vdots & \vdots & \ddots & \vdots \\
+            1 & 1 & \cdots & 1
+        \end{pmatrix}
+        + \varepsilon I.
+    \]
+    Indichiamo con \(E\) la matrice con tutti elementi uguali a \(1\). Allora
+    \[
+        A_{n,\varepsilon}=E+\varepsilon I.
+    \]
+    Questa matrice è definita positiva, infatti gli autovalori di \(E\) sono
+    \[
+        \lambda(E)=
+        \begin{cases}
+            0 & \text{con molteplicità } n-1, \\
+            n & \text{con molteplicità } 1,
+        \end{cases}
+    \]
+    quindi gli autovalori di \(A_{n,\varepsilon}\) sono
+    \[
+        \lambda(A_{n,\varepsilon})=
+        \begin{cases}
+            \varepsilon & \text{con molteplicità } n-1, \\
+            n+\varepsilon & \text{con molteplicità } 1.
+        \end{cases}
+    \]
+    Dunque \(A_{n,\varepsilon}\) è definita positiva per ogni \(\varepsilon>0\).
+    Per il teorema di convergenza di Gauss-Seidel per matrici hermitiane definite positive,
+    abbiamo quindi
+    \[
+        \rho(P_{GS})<1.
+    \]
+
+    Calcoliamo ora il raggio spettrale della matrice di iterazione di Jacobi.
+    Poiché
+    \[
+        D=(1+\varepsilon)I,
+    \]
+    si ha
+    \[
+        P_J=-D^{-1}(L+U).
+    \]
+    Siccome \(L+U=E-I\), otteniamo
+    \[
+        P_J
+        =
+        -\frac{1}{1+\varepsilon}(E-I)
+        =
+        \frac{1}{1+\varepsilon}(I-E).
+    \]
+    Quindi
+    \[
+        \rho(P_J)
+        =
+        \frac{1}{1+\varepsilon}\rho(I-E).
+    \]
+    Gli autovalori di \(I-E\) sono
+    \[
+        \lambda(I-E)=
+        \begin{cases}
+            1 & \text{con molteplicità } n-1, \\
+            1-n & \text{con molteplicità } 1.
+        \end{cases}
+    \]
+    Pertanto, per \(n\geq 2\),
+    \[
+        \rho(I-E)=n-1,
+    \]
+    e quindi
+    \[
+        \rho(P_J)=\frac{n-1}{1+\varepsilon}.
+    \]
+
+    Fissato \(M>1\), scegliamo ad esempio \(\varepsilon>0\) e poi \(n\) tale che
+    \[
+        \frac{n-1}{1+\varepsilon}>M,
+    \]
+    cioè
+    \[
+        n>M(1+\varepsilon)+1.
+    \]
+    Allora
+    \[
+        \rho(P_{GS})<1
+        \qquad\text{e}\qquad
+        \rho(P_J)>M,
+    \]
+    come volevamo.
+\end{snippetexercise}
+
+\begin{snippetexercise}{Altro caso}
+    \todo
+\end{snippetexercise}
+
 \section{Sistemi lineari}
 
 \subsection{Errore inerenti nei processi di soluzione di sistemi lineari}
