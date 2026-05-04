@@ -7102,11 +7102,290 @@ continua a quella originale, che è una funzione che contiene dei picchi di area
 sempre più stretti tale che la serie delle aree sei picchi sia assolutamente convergente.
 Al massimo possiamo dire che lo zero deve stare nella classe limite.
 
+\begin{snippetexample}{Insieme non misurabile secondo Lebesgue}
+    Assumiamo l'assioma della scelta e consideriamo \([0,1]\).
+    Su tale insiemi consideriamo la relazione di equivalenza
+    \(x\sim y\) se \(x-y \in \rationalnumbers\).
+    In particolare, ogni classe di equivalenza è numerabile.
+    Una singola classe contiene tutti i razionali, mentre tutte le altri non ne contengono.
+    Da ogni classe di equivalenza, scegliamo un rappresentante
+    usando l'assioma della scelta, e sia \(E\) tale insieme.
+    Chiaramente la cardinalità di \(E\)
+    è quella del continuo ed \(E\) contiene esattamente un razionale.
+    Consideriamo ora le traslazioni di questo insieme
+    \(E+r\) al variare di \(r \in \rationalnumbers\intersection[0,1]\).
+    Può capire, o meno a seconda di \(E\) e \(r\), che tale traslazioni debordi da \([0,1]\).
+    In casl caso, l'insieme degli elementi che debordano vengono ritraslati
+    nell'insieme \([0,1]\) (effetto pacman). Definiamo in tal modo
+    \[
+        E_r = \left(
+            (E + r) \intersection[0,1]
+        \right)
+        \union \left(
+            (E + (r-1)) \intersection [0,1]
+        \right)
+    \]
+    Notiamo che tale unione è disgiunta.
+    Siccome \(E_r\) è ottenuto da \(E\) con traslazioni,
+    e ``spezzamenti'', se \(E\) è misurabile lo è pure \(E_r\),
+    e \(\mu(E_r) = \mu(E)\) per ogni \(r \in \rationalnumbers\intersection[0,1]\).
+    Notiamo ora che \[
+        \bigcup_{r \in \rationalnumbers\intersection[0,1]} E_r = [0,1]
+    \]
+    in quanto per ogni \(x \in [0,1], \exists y \in E \suchthat x \sim y\).
+    Notiamo inoltre che \(E_r \intersection E_s = \emptyset\)
+    per ogni \(r \neq s\).
+    Infatti, se ci fosse un'intersezione, dovrebbe essere \(x + r = y + s\)
+    per qualche \(x,y \in E\). Ma allora \(x \sim y\), che è assurdo in quanto
+    abbiamo scelto un rappresentante solo per classe.
+    Studiamo ora il valore della misura di \(E\).
+    Abbiamo due casi: \(\mu(E) = 0\) oppure \(\mu(E) \neq 0\).
+    Se fosse \(\mu(E) = 0\), siccome \(\mu\) è numerabilmente additiva,
+    \[
+        1 = \mu([0,1])
+        = \sum_{r \in \rationalnumbers\intersection[0,1]} \mu(E_r) = 0
+    \]
+    che è assurdo \lightning.
+    Se \(\mu(E) \neq 0\), avremmo che \[
+        1 = \mu([0,1])
+        = \sum_{r \in \rationalnumbers\intersection[0,1]} \mu(E_r) = \infty
+    \]
+    che è assurdo \lightning.
+    Quindi, \(E\) non è misurabile secondo Lebesgue.
+    Il passaggio di avere spezzato l'insieme non era quindi per esempio lecito.
+\end{snippetexample}
 
+Questo esempio mostra anche che la misura esterna non è nemmeno finitamente additivita
+(da mettere in una proposizione).
+Per costruzione, \(\mu^*(E_r) = \mu^*(E)\) per ogni \(r\).
+Inoltre, la misura esterna è subadditiva. Quindi, \[
+    \mu\left(
+        \bigcup_{r \in \rationalnumbers\intersection[0,1]}
+        E_r
+    \right) \leq
+    \sum_{r \in \rationalnumbers\intersection[0,1]} \mu^*(E_r)
+\]
+Non sappiamo quanto valgano le misure degli \(E_r\), sappiamo solo che
+\[
+    1 = \mu^*([0,1]) = \mu^*\left(
+        \bigcup_{r \in \rationalnumbers\intersection[0,1]}
+        E_r
+    \right) \leq \sum_{r \in \rationalnumbers\intersection[0,1]} \mu^*(E_r)
+\]
+Se fosse \(\mu^*(E_r) = 0\), allora avremmo \(1 \leq 0\)
+che è assurdo. Quindi deve essere \(\mu^*(E_r) > 0\).
+Tuttavia, se \(\mu^*(E_r) > 0\), pur di prenderne abbastanza,
+superiamo \(1\) cioè \(\exists N\) tale che \[
+    \sum_{n=1}^N \mu^*(E_{r_n})>1
+\]
+Ma \[
+    \bigcup_{n=1}^n \mu^*(E_{r_n}) \subseteq [0,1]
+\]
+e quindi si avrebbe
+\[
+    1 = \mu^*([0,1])
+    \geq
+    \mu^*\left(
+        \bigcup_{n=1}^N E_{r_n}
+    \right)
+    = \sum_{n=0}^N \mu^*(E_{r_n}) > 1
+\]
+che è assurdo,
+dove il \(\geq\) è dato dalla monotonia
+della misura esterna, che esiste sempre.
+
+\begin{snippetexercise}{Costruire un insieme non misurabile secondo Lebesgue di \(\realnumbers^n\)}
+    Facciamo il prodotto cartesiano fra un intervallo \([0,1]\) e \(E\).
+    Abbiamo quindi un insieme le cui sezioni non sono misurabili.
+    Attenzioni: non è vero che il prodotto cartesiano di due non misurabili
+    è non misurabile.
+\end{snippetexercise}
+
+\begin{snippetexercise}{}
+    Dimostrare che ogni insieme di misura positiva in \(\realnumbers\)
+    contiene un sottoinsieme non misurabile.
+    Attenzione: esistono insiemi di misura positiva che non contengono nessun intervallo.
+\end{snippetexercise}
+
+\subsection{Insieme ternario di Cantor}
+
+L'insieme di Cantor è un insieme compatto e perfetto (coincide con il suo derivato)
+di \(\realnumbers\). In particolare gli insiemi
+perfetti devono avere cardinalità del continuo.
+Inoltre, non contiene intervalli e ha misura di Lebesgue nulla.
+\begin{tikzpicture}[x=9cm,y=1cm,line cap=round]
+    \foreach \y/\lbl in {0/0,-0.8/1,-1.6/2,-2.4/3}{
+        \node[left] at (-0.05,\y) {$n=\lbl$};
+    }
+
+    \draw[line width=1.2pt] (0,0) -- (1,0);
+
+    \draw[line width=1.2pt] (0,-0.8) -- (1/3,-0.8);
+    \draw[line width=1.2pt] (2/3,-0.8) -- (1,-0.8);
+
+    \foreach \a in {0,2/3}{
+        \draw[line width=1.2pt] (\a,-1.6) -- ({\a+1/9},-1.6);
+        \draw[line width=1.2pt] ({\a+2/9},-1.6) -- ({\a+1/3},-1.6);
+    }
+
+    \foreach \a in {0,2/9,2/3,8/9}{
+        \draw[line width=1.2pt] (\a,-2.4) -- ({\a+1/27},-2.4);
+        \draw[line width=1.2pt] ({\a+2/27},-2.4) -- ({\a+1/9},-2.4);
+    }
+
+    \node at (0.5,-3) {$\vdots$};
+\end{tikzpicture}
 
 \pagebreak
 
 \section{Temporaneo - Foglio 4}
+
+\begin{snippetexercise}{}
+    Studiare \[
+        F(x) = \integral[0][x][
+            \frac{\ln(1 + \sfrac tx)}{1 + t^3}
+        ][t]
+    \]
+    Come quello del foglio ma c'è \(t^3\) al posto di \(t^2\).
+\end{snippetexercise}
+
+\begin{snippetexercise}{}
+    Per \(x=0\) la funzione non è definita.
+    Di base non è necessario definire la funzione per \(x=0\)
+    in quanto l'intervallo in integrazione in quel caso è una singoletta che ha misura nulla.
+    Potremmo anche studiare i limiti per definizione la funzione
+    accordatamente al futuro studio della continuità.
+    Il logaritmo esiste sempre in quanto \(\sfrac tx > 0\),
+    visto che \(t\) sta fra \(0\) e \(x\), e non possiamo nemmeno avvicinarsi all'asintoto
+    del logaritmo. Di conseguenza, pure il logaritmo è sempre positivo.
+    Per via del cubo a denominatore, per \(x < -1\) il denominatore è negativo.
+    Sia \(x > -1\). Abbiamo che \(f(t,x)\) è continua e quindi integrabile
+    fra \(0\) e \(x\). Per \(x = -1\) troviamo \begin{align*}
+        F(-1) = \integral[0][-1][\frac{\ln(1 - t)}{1 + t^3}][t]
+    \end{align*}
+    Notiamo che \(1+t^3\) ha uno zero del primo ordine, ma il numeratore
+    non aiuta, quindi non è integrabile e \(F(-1)\) non è definita.
+    Consideriamo ora \(x < -1\). In tal caso, il denominatore ha ancora uno zero del primo ordine,
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+            \begin{tikzpicture}[x=1.15cm,y=1.15cm]
+            \draw[->] (-1.6,0) -- (4.2,0);
+            \draw[->] (0,-2.8) -- (0,1.8);
+
+            \draw[densely dashed] (-1,-2.7) -- (-1,1.7);
+            \node[below] at (-1,0) {$-1$};
+
+            \draw[thick]
+                plot[smooth] coordinates {
+                    (-0.93,-2.6)
+                    (-0.82,-1.9)
+                    (-0.65,-1.15)
+                    (-0.45,-0.62)
+                    (-0.25,-0.25)
+                    (-0.08,-0.06)
+                    (0,0)
+                };
+
+            \draw[thick]
+                plot[smooth] coordinates {
+                    (0,0)
+                    (0.35,0.28)
+                    (0.8,0.55)
+                    (1.25,0.68)
+                    (1.8,0.62)
+                    (2.5,0.42)
+                    (3.3,0.2)
+                    (4,0.08)
+                };
+        \end{tikzpicture}
+        \end{center}
+    \end{wrapfigure}
+    come prima non converge. Allora, il dominio è \((-1, +\infty)\).
+    Calcoliamo i limiti agli estremi del dominio e studiamo la continutià di \(F\).
+    Ci aspettiamo che \(F(x) \to -\infty\) per \(x \to -\infty\).
+    Mostriamo ciò maggiorando \(F\) che tende a meno infinito.
+    Ricordiamo che abbiamo \(x<t<0\).
+    Vediamo se \(\ln\left(1 + \sfrac tx\right) > \ln(1 -t)\).
+    Il logaritmo è crescente, quindi basta controllare se
+    \(1 + \sfrac tx > 1 -t\), cioè \(t\left(1 + \sfrac 1x\right) > 0\)
+    cioè \(\frac tx (x+1) > 0\). Siccome \(\sfrac tx > 0\) allora questo è vero se e solo se
+    \(x+1>0\) ossia \(x > -1\).
+    \begin{align*}
+        F(x) &= \integral[0][x][
+            \frac{\ln\left(1 + \frac tx\right)}{1 + t^3}
+        ][t]
+        \leq \integral[0][x][
+            \frac{\ln(1 -t)}{1 + t^3}
+        ][t] \to -\infty
+    \end{align*}
+    per \(x \to -1\). Calcoliamo ora il limite di \(F\) all'infinito.
+    Consideriamo una successione \(\{x_n\} \to \infty\).
+    Per ogni \(t\) fissato, il limite puntuale di
+    \[
+        \frac{\ln\left(1 + \sfrac{t}{x_0}\right)}{1 + t^3} \to 0
+    \]
+    per \(n \to +\infty\). Cerchiamo una dominante \(L^1\). Abbiamo
+    \begin{align*}
+        F(x_n) &< \integral[0][+\infty][
+            \frac{\ln(1 + \sfrac t{x_0})}{1 + t^3}
+        ][t]
+    \end{align*}
+    visto che l'integranda è posiiva. In questo modo abbiamo tolto la \(x_n\)
+    dall'estremo di integrazione. Maggioriamo come segue
+    \begin{align*}
+        \frac{\ln(1 + \sfrac t{x_n})}{1 + t^3}
+        &\leq \frac{\ln 2}{1 + t^3}
+    \end{align*}
+    e prendiamo questa come dominante in \(L^1((0,+\infty))\), quindi
+    \[
+        F(x_n) < \integral[0][+\infty][
+            \frac{\ln(1 + \sfrac t{x_n})}{1 + t^3}
+        ][t] \to 0
+    \]
+    per \(x_n \to +\infty\).
+    La continuità di \(F\) per \(x \neq 0\) si tratta allo stesso modo con la convergenza dominante.
+    Sia \(\tilde x \neq 0\) e sia \(x_n \to \tilde x\). Dobbiamo mostrare che \(F(x_n) \to F(\tilde x)\)
+    per \(n \to +\infty\). Per non far comprarire \(x_n\) usiamo la funzione caratteristica
+    \begin{align*}
+        F(x_n) = \integral[0][+\infty][
+            \sfrac{\log(1 + \sfrac t{x_0})}{1 + t^3}
+            \chi_{(0, x_n)}
+        ][t]
+    \end{align*}
+    La dominante \(L^1\) è la medesima di prima \(\sfrac{\ln 2}{1 + t^3}\).
+    Questo dimostra che \(F\) è continua fuori dall'origine.
+    Per \(x=0\) dobbiamo mostrare che \(F(x_n) \to 0\) se \(x_n \to 0\).
+    Anche in questo caso vale la maggioranza \[
+        |F(x)| \leq \left|
+            \integral[0][x_n][
+                \frac{\ln 2}{1 + t^3}
+            ][t]
+        \right|
+    \]
+    perché \(\sfrac t{x_n} < 1\). Siccome \[
+        \integral[0][x_n][\frac{\ln 2}{1 + t^3}][t] \to 0
+    \]
+    per \(n \to +\infty\), per il teorema di convergenza dominata \(F\)
+    è continua in \(0\).
+    Calcoliamo ora \begin{align*}
+        \integral[0][+\infty][F(x)][x]
+        &= \integral[0][+\infty][\integral[0][x][f(t,x)][t]][x] \\
+        &= \int_E f(t,x) \,dt\,dx
+    \end{align*}
+    dove \(E\) è il dominio di integrazione, cioè
+    la parte del primo quadrante delimitata dalla diagonale e da \(x=0\).
+    Proviamo ad usare Fubini
+    per scambiare questi integrali.
+    La nostra funzione è quasi ovunque continua e quindi misurabile.
+    Quindi, per il teorema di Fubini
+    \begin{align*}
+        \integral[0][+\infty][\integral[0][x][f(t,x)][t]][x]
+        &= \integral[0][+\infty][\integral[t][+\infty][f(t,x)][x]][t]
+    \end{align*}
+    Per \(x \to +\infty\), \(\ln\left(1 + \sfrac tx\right)\)
+    va a zero troppo lentamente, quindi l'integrale divergente e allora
+    \(F \notin L^1((0,+\infty))\).
+\end{snippetexercise}
 
 \begin{snippetexercise}{Non del foglio}
     Sia \[
