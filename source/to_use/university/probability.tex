@@ -5838,7 +5838,239 @@ si appiattisce sull'asse delle ascisse, di conseguenza la probabilità
 di concentra sempre di più su di un intorno destro di zero, e quindi la media
 si avvicina a zero e la varianza diminuisce.
 
+%\end{blackhole}
+
+\subsection{Indipendenza e vettori assolutamente continui}
+
+\begin{snippetproposition}{}
+    Sia \((X_1, \cdots, X_n)\)
+    vettore aleatorio di \(\realnumbers^n\)
+    assolutamente continuo con densità congiunta
+    \[
+        f_{X_1, \cdots, X_n} \colon \realnumbers^n \fromto [0,+\infty)
+    \]
+    \(X_1, \cdots, X_n\) indipendenti se e solo se
+    \[
+        f_{X_1, \cdots, X_n}(\overline x)
+        = \prod_{i=1}^n f_{X_i}(x_i)
+    \]
+    quasi ovunque con \(\overline x = (x_1, \cdots, x_n) \in \realnumbers^n\)
+    e dove \[
+        f_{X_1} \colon \realnumbers \fromto [0,+\infty)
+    \]
+    sono le densità marginali di \(X_i\) per ogni \(i \in \{1, \cdots, n\}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Entrambi le direzioni si dimostrano con il teorema di Fubini (in ambo i sensi).
+    \begin{iffproof}
+        \item Sfruttiamo la caratterizzazione di indipendenza con le funzioni di ripartizioni.
+        Sia \(F_{X_1, \cdots, X_n}\) funzione di ripartizione congiunta e \(F_{X_i}\)
+        la funzione di ripartizione marginale di \(X_i\) per ogni \(i \in \{1, \cdots, n\}\).
+        Visto che \(X_1, \cdots, X_n\) sono indipendenti, allora
+        per ogni \(\overline x = (x_1, \cdots, x_n)\) vale
+        \begin{align*}
+            F_{X_1, \cdots, X_n}(\overline x)
+            &= \prod_{i=1}^n F_{X_i}(x_i)
+            = \prod_{i=1}^n \integral[-\infty][x_i][f_{X_i}(y_i)][y_i] \\
+            &= \int_{[-\infty, \overline x]} \prod_{i=1}^n f_{X_i}(y_i)\,d(y_1, \cdots, y_n)
+        \end{align*}
+        Visto che abbiamo un prodoto di cose integrabilki abbiamo applicato il teorema di Fubini.
+        Ma quindi la funzione \(\prod_{i=1}^n f_{X_i}\) verifica la definizione di vettore
+        assolutamente continuo per \((X_1, \cdots, X_n)\).
+        Di conseguenza, per l'unicità quasi ovunque della denstià
+        \[
+            F_{X_1, \cdots, X_n} = \prod_{i=1}^n f_{X_i}
+        \]
+        quasi ovunque su \(\realnumbers\).
+        \item Nello stesso modo, \(\forall \overline x = (x_1, \cdots, x_n) \in \realnumbers^n\),
+        \begin{align*}
+            F_{X_1, \cdots, X_n}(\overline x)
+            &= \int_{[-\infty, \overline x]} f_{X_1, \cdots, X_n}(\overline y)\,d(\overline y) \\
+            &= \int_{(-\infty, \overline x)} \prod_{i=1}^n f_{X_i}(y_i)\,dy_i
+            = \prod_{i=1}^n \integral[-\infty][x_i][f_{X_i}(y_i)][y_i]
+             \\ &= \prod_{i=1}^n F_{X_i}(x_i)
+        \end{align*}
+        Quindi per la caratterizzazione di indipendenza con le funzioni di ripartizioni
+        \(X_1, \cdots, X_n\) sono indipendenti.
+    \end{iffproof}
+\end{snippetproof}
+
+Le uguaglianze quasi ovunque per le densità diventano
+``ovunque'' per le funzioni di ripartizioni poiché esse hanno una definizione non locale,
+in questo caso particolare la funzione di ripartizione dipende dall'integrale
+su \((-\infty, \overline x)\), non interessa a nulla cosa succede sul singolo valore.
+
+A differenza del caso discreto, per dimostrare che \(X_1, \cdots, X_n\)
+non sono indipendenti, non basta mostrare esiste un punto \(\overline x = (x_1, \cdots, x) \in \realnumbers\)
+tale che \[
+    f_{X_1, \cdots, X_n}(x_1, \cdots, x_n) \neq \prod_{i=1}^n f_{X_i}(x_i)
+\]
+in quanto il punto ha misura di Lebesgue nulla, e la condizione adopeta il quasi ovunque.
+Tuttavia, se \(f_{X_1, \cdots, x_n}\) e \(f_{x_i}\) sono continue per tutte le \(i \in \{1, \cdots, n\}\),
+allora la funzione \[
+    g := f_{x_1, \cdots, x_n} - \prod_{i=1}^n f_{X_i}
+\]
+è pure continua e diversa da zero in \(\overline x\).
+Di conseguenza, esiste \(r > 0\) tale che \(g(\overline y) \neq 0\)
+per tutte le \(\overline y \in B_r(\overline x)\), che è una bolla con misura non nulla.
+Quindi la densità congiunta non fattorizza nelle marginali su un insieme non trascurabile.
+Quindi nel caso di funzioni continue vale comunque il criterio su un singolo punto.
+
+Come nel caso discreto, dato un vettore \((X_1, X_2)\) assolutamente continuo,
+\(X_1\) e \(X_2\) sono indipendenti se e solo se \(\exists \alpha, \beta \colon \realnumbers \fromto [0,+\infty)\)
+tale che \[
+    f_{X_1, X_2} \propto \alpha(x_1)\beta(x_2)
+\]
+quasi ovunque in \(\realnumbers^n\). Se \[
+    \int_\realnumbers \alpha(x)\,dx
+    = \int_\realnumbers \beta(x)\,dx = 1
+\]
+\(\alpha\) e \(\beta\) sono le marginali di \(X_1\) e \(X_2\) rispettivamente.
+
+\begin{snippetcorollary}{}
+    Sia \((X_1, \cdots, X_n)\) vettore aleatorio di \(\realnumbers^n\).
+    \(X_1, \cdots, X_n\) indipendenti e assolutamente continui con densità
+    \(f_{X_1}, \cdots, f_{X_n}\). Allora, il vettore \((X_1, \cdots, X_n)\)
+    è assolutamente continuo con denstià
+    \[
+        f_{X_1, \cdots, X_n}(\overline x)
+        = \prod_{i=1}^n f_{X_i}(x_i)
+    \]
+    quasi ovunque  con \(\overline x = (x_1, \cdots, x_n) \in \realnumbers^n\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{}
+    identica al caso \(\impliedby\) della dimostrazione.
+\end{snippetproof}
+
+\subsection{Covarianza tra due variabili aleatorie assolutamente continue}
+
+\begin{snippettheorem}{di cambio di variabile}
+    Sia \((X_1, \cdots, X_n)\) vettore aleatorio assolutamente continuo
+    con densità congiunta \(f_{X_1, \cdots, X_n} \colon \realnumbers^n \fromto \realnumbers\).
+    Sia \(g \colon \realnumbers^n \fromto \realnumbers\) continua.
+    Allora, la variabile aleatoria reale \(g \circ X = g(X) \colon \Omega \fromto \realnumbers\)
+    ammette valore atteso finito se e solo se
+    \[
+        \int_{\realnumbers^n} |g(\overline x)| f_{X_1, \cdots, X_n}(\overline x)\,d\overline x < +\infty
+    \]
+    In tal caso,
+    \[
+        \mathbb E[g(X)] = \int_{\realnumbers^n} g(\overline x)f_{X_1, \cdots, X_n}(\overline x)\,d\overline x
+    \]
+\end{snippettheorem}
+
+Non ci è dato che \(g(X)\) sia assolutamente continuo.
+
+\begin{snippetdefinition}{Covarianza tra due variabili aleatorie assolutamente continue}
+    Siano \(X,Y\) variabili aleatorie reali tali che
+    \((X,Y)\) è un vettore aleatorio assolutamente continuo con densità
+    congiunta \(f_{X,Y} \colon \realnumbers^2 \fromto [0,+\infty)\).
+    Supponiamo che \(\mathbb E[X^2], \mathbb E[X]^2 < +\infty\). Definiamo come \emph{covarianza}
+    \begin{align*}
+        \operatorname{Cov}(X,Y) &\triangleq \mathbb E[(X- \mathbb E[X])(Y- \mathbb E[Y])]
+        = \mathbb E[XY] - \mathbb E[X]\mathbb E[Y] \\
+        &= \int_{\realnumbers^2} xyf_{X,Y}(x,y)\,d(x,y) - \int_\realnumbers xf_X(x)\,dx
+        \int_\realnumbers yf_Y(y)\,dy \\
+        &= \int_{\realnumbers^2}(X- \mathbb E[X])(Y - \mathbb E[Y]) f_{X,Y}(x,y)\,d(x,y)
+    \end{align*}
+    dove \(f_X\) e \(f_Y\) sono le marginali di \(X,Y\).
+\end{snippetdefinition}
+
+Valgono tutte le proprietà del caso discreto.
+L'unica che ricordiamo è
+
+\begin{snippetproposition}{}
+    Siano \(X,Y \colon \Omega \fromto \realnumbers\) variabili aleatorie assolutamente continue
+    con densità
+    \(f_X\) e \(f_Y\) e tale che \(\mathbb E[|X|], \mathbb E[|Y|] < +\infty\) e indipendenti.
+    Allora, \begin{align*}
+        \mathbb E[|XY|] &= \mathbb E[|X|]\mathbb E[|Y|] \\
+        \mathbb E[XY] &= \mathbb E[X] \mathbb E[Y]
+    \end{align*}
+    In particolare, \(\operatorname{Cov}(X,Y) = 0\).
+\end{snippetproposition}
+
+Se \(X,Y\) sono assolutamente continue e indipendenti possiamo dedurre che
+\((X,Y)\) vettore aleatorio assolutamente continuo
+con densità \(f_X \cdot f_Y\).
+
+\begin{snippettheorem}{}
+    Sia \((X,Y)\) vettore aleatorio assolutamente continuo
+    di \(\realnumbers^n\) con densità \(f_{X,Y} \colon \realnumbers^2 \fromto [0,+\infty)\)
+    tale che le funzioni \[
+        x \to f_{X,Y}(x, z-x), \qquad
+        y \to f_{X,Y}(z-y, y)
+    \]
+    siano integrabili \(\forall z \in \realnumbers\).
+    Allora, la variabile aleatoria \(Z = X + Y\) è assolutamente continua con densità
+    \[
+        f_Z(z) = \int_\realnumbers f_{X,Y}(x, z-x)\,dx
+        = \int_\realnumbers f_{X,Y}(z-y, y)\,dy
+    \]
+    quasi ovunque \(\forall z \in \realnumbers\).
+    In particolare, se \(X\) e \(Y\) sono indipendenti con marginali
+    \(f_X\) e \(f_Y\), allora \[
+        f_Z(z) = \int_\realnumbers f_X(x)f_Y(z-x)\,dx
+        = \int_\realnumbers f_X(z-y)f_Y(y)\,dy
+    \]
+\end{snippettheorem}
+
+\begin{snippetproposition}{}
+    Consideriamo il dominio \[
+        D_z = \left\{
+            (x,y) \in \realnumbers^2 \suchthat x + y \leq z
+        \right\}
+    \]
+    con \(z \in \realnumbers\). Calcoliamo la funzione di ripartizione di \(Z = X+Y\)
+    \begin{DispWithArrows*}
+        F_Z(z) &= \mathbb P(Z \leq z)
+        = \mathbb P(X + Y \leq z) = \mathbb P((X,Y) \in D_z) \Arrow{\((X,Y)\) ass. \\ continuo} \\
+        &= \int_{D_z} f_{X,Y}(x,y)\,d(x,y) \Arrow{Fubini} \\
+        &= \int_\realnumbers \integral[-\infty][z-x][f_{X,Y}(x,y)][y]\,dx \Arrow{\(t = y+x\) \\ \(y = t-x\)} \\
+        &= \int_\realnumbers \integral[-\infty][z][f_{X,Y}(x,t-x)][t]\,dx \Arrow{Fubini} \\
+        &= \integral[-\infty][z][
+            \underbrace{
+                \left[
+                    \int_\realnumbers f_{X,Y}(x, t-x)\,dx
+                \right]
+            }_{g(t)}
+        ][t]
+    \end{DispWithArrows*}
+    La funzione \(g\) verifica la definizione di assoluta continuità per la variabile reale \(Z\),
+    quindi è la sua densità. Per fare l'altra uguaglianza basta usare Fubini
+    con \(x \in (-\infty, z-y)\) e \(y \in \realnumbers\).
+\end{snippetproposition}
+
+Ricordiamo il cambio di variabile con diffeomorfismo \(\Psi\)
+\[
+    \int_A g(x)\,dx = \int_{\Psi(A)} g(\Psi(z))
+    |\det([J\psi](z))|\,dz
+\]
+
+\begin{snippetproposition}{}
+    Sia \((X_1, \cdots, X_n)\) vettore aleatorio assolutamente continuo
+    con densità congiunta \(f_{X_1, \cdots, X_n}\).
+    Sia \(A \subseteq \realnumbers^n\) tale che
+    \[
+        \mathbb P((X_1, \cdots, X_n) \in A) = 1
+    \]
+    Sia \(\varphi \colon A \subseteq \realnumbers^n \fromto \realnumbers^n\)
+    diffeomorfismo.
+    Allora, il vettore aleatorio \(\Psi = \varphi(X_1, \cdots, X_n)\colon \Omega \fromto \realnumbers^n\)
+    è assolutamente continuo con densità
+    \[
+        f_{Y_1, \cdots, Y_n}(\overline y)
+        = \begin{cases}
+            f_{X_1, \cdots, X_n}(\varphi^{-1}(\overline y)) |\det([J\varphi^{-1} J(\overline y)](\overline y))|, \quad \overline y \in \varphi(A) \\
+            0 & XXX
+        \end{cases}
+    \]
+\end{snippetproposition}
+
 \pagebreak
+
 
 \section{Esercizi}
 
