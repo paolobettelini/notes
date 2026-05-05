@@ -7213,6 +7213,9 @@ L'insieme di Cantor è un insieme compatto e perfetto (coincide con il suo deriv
 di \(\realnumbers\). In particolare gli insiemi
 perfetti devono avere cardinalità del continuo.
 Inoltre, non contiene intervalli e ha misura di Lebesgue nulla.
+
+\begin{radioactive}
+\begin{center}
 \begin{tikzpicture}[x=9cm,y=1cm,line cap=round]
     \foreach \y/\lbl in {0/0,-0.8/1,-1.6/2,-2.4/3}{
         \node[left] at (-0.05,\y) {$n=\lbl$};
@@ -7235,6 +7238,400 @@ Inoltre, non contiene intervalli e ha misura di Lebesgue nulla.
 
     \node at (0.5,-3) {$\vdots$};
 \end{tikzpicture}
+\end{center}
+\end{radioactive}
+
+\begin{snippetdefinition}{Cantor set}
+    Per costruire l'insieme di Cantor consideriamo l'intervallo
+    \(E_0 = [0,1]\).
+    Definiamo successivamente \[
+        E_1 = \left[
+            0, \frac13
+        \right] \union \left[\frac23, 1\right]
+    \]
+    Successivamente definiamo \[
+        E_2 = \left[
+            0, \frac19
+        \right]
+        \union\left[
+            \frac29, \frac13
+        \right]
+        \union\left[
+            \frac23, \frac75
+        \right]
+        \union\left[
+            \frac89, 1
+        \right]
+    \]
+    Continuiamo iterativamente rimuovendo sempre
+    l'intervallo centrale aperto della divisione ternaria di ogni intervallo, ottenendo \(E_n\).
+    Il \emph{Cantor set} è definito come \[
+        E := \bigcap_{n=0}^\infty E_n
+    \]
+\end{snippetdefinition}
+
+Notiamo che \(E\) è non-vuoto, compatto.
+Tutti gli estremi di ogni intervallo chiuso degli \(E_n\)
+stanno in \(E\). Oltre a questi punti devono necessariamente rimanere
+anche altri punti, in quanto se così non fosse \(E\) avrebbe cardinalità numerabile,
+ma essendo un insieme perfetto ha cardinalità del continuo.
+
+\begin{snippetproposition}{}
+    \(x \in E\) se e solo se \(x\)
+    può essere rappresentato in base 3 usando soltando
+    le cifre \(0,2\).
+\end{snippetproposition}
+
+Per esempio \(\sfrac13\) si scrive come \(0.1\) in base \(3\),
+ma questo può anche essere scritto come espansione periodica \(0.0\overline 2\) in base tre.
+Quindi il numero può pure terminare con un \(1\) in quanto possiamo rappresentarlo
+in modo periodico, e in tal caso ritroviamo gli elementi degli estremi degli intervalli
+di \(E_n\).
+
+\begin{snippetproposition}{}
+    \(E\) è un insieme perfetto.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Mostriamo che \(E = E'\).
+    Ovviamente \(E\) contiene tutti i suoi punti di accumulazione in quanto è chiuso.
+    Mostriamo quindi che essun punto di \(E\) è isolato.
+    Sia \(x \in E\) e sia \(A\) un intorno aperto di \(x\).
+    Dobbiamo dimostrare che in \(A\) cade almeno un punto di \(E\) diverso da \(x\).
+    Se \(x\) sta in \(E\), allora sta in tutti gli \(E_n\).
+    Sia \(I_n\) l'intervallo chius di \(E_n\) tale che \(x \in I_n\).
+    Pur di prendere \(n\) sufficientemente grande, \(I_n \subseteq A\)
+    in quanto la sua lunghezza tende a zero. Sia quindi \(x_n\) un estremo di
+    \(I_n\) diverso da \(x\) (se \(x\) è già un estremo esiste l'altro estremo, se \(x\)
+    non è un estremo possiamo considerare qualsiasi dei due estremi di \(I_n\)).
+    Chiaramente \(x_n \in E\) in quanto se \(x \in E_n\) allora \(x \in E_{n+1}\),
+    e quindi otteniamo che \(x \in E'\).
+\end{snippetproof}
+
+\begin{snippetproposition}{}
+    Nessun insieme perfetto può essere numerabile.
+\end{snippetproposition}
+
+\begin{snippetproposition}{}
+    La misura di Lebesgue dell'insieme di Cantor è \(0\).
+\end{snippetproposition}
+
+Questo insieme è misurabile secondo Lebesgue ma anche anche secondo Jordan in quanto compatto
+con misura nulla. Questo insieme ha la cardinalità del continuo ma ha misura zero.
+
+\begin{snippetproof}{}
+    Calcoliamo la misura della parte che viene rimossa ad ogni step.
+    Chiaramente tutti gli intervalli sono disgiunti e quindi non abbiamo intersezioni.
+    Abbiamo \begin{align*}
+        \mu([0,1] \difference E)
+        &= \frac{1}{2} \sum_{n=1}^\infty \left(\frac23\right)^n
+        = \frac12 \left(\frac{1}{1 - \sfrac23} - 1\right)
+        = \frac12(3-1) = 1
+    \end{align*}
+    e quindi \(\mu(E) = 0\).
+\end{snippetproof}
+
+\begin{snippetdefinition}{Fat Cantor set}
+    La costruzione del ternario di Cantor si può generalizzare
+    rimuovendo ad ogni passo degli intervalli
+    di ampiezza \(\lambda^n\) con \(0 < \lambda \leq \sfrac13\).
+    In questo modo si ottiene un insieme chiamato
+    \(E_\lambda\) che ha le medesime proprietà topologiche dell'insieme di Cantor.
+\end{snippetdefinition}
+
+Dal punto di vista della misura tuttavia c'è qualcosa di diverso.
+Se \(\lambda < \sfrac13\) allora la misura è strettamente positiva.
+
+\begin{snippetproposition}{Misura del fat Cantor set}
+    La misura di Lebesgue di \(E_\lambda\) ha misura
+    \[
+        \mu(E_\lambda) = \frac{1-3\lambda}{1-2\lambda} 
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Calcoliamo la misura della parte che viene rimossa ad ogni step.
+    Chiaramente tutti gli intervalli sono disgiunti e quindi non abbiamo intersezioni.
+    Abbiamo \begin{align*}
+        \mu([0,1] \difference E_\lambda)
+        &= \frac{1}{2} \sum_{n=1}^\infty \left(2\lambda\right)^n
+        = \frac12 \left(\frac{1}{1 - 2\lambda} - 1\right)
+    \end{align*}
+    e quindi segue la tesi.
+\end{snippetproof}
+
+\begin{snippetproposition}{}
+    Il fat cantor set non contiene intervalli.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Siano \(x,y \in E_\lambda\) con \(x \neq y\)
+    e mostriamo che fra \(x\) e \(y\) c'è almeno un punto
+    che non sta in \(E_\lambda\).
+    Ciascuno degli intervalli che costituiscono l'insieme \(E_\lambda^n\),
+    la cui intersezione è \(E_\lambda\), ha lunghezza \(l^n\)
+    con \(l^n \to 0\) per \(n \to +\infty\).
+    Quindi, \(\exists N\) tale che \(\forall n > N\), \(l^n < |x-y|\),
+    quindi a partire da \(N\), \(x\) e \(y\)
+    non possono stare nello stesso intervallino (di quelli che compongono \(E_\lambda^n\)).
+    Segue quindi la tesi.
+\end{snippetproof}
+
+Dato \(\mu(E_\lambda) > 0\), allora \(E_\lambda\) contiene insiemi non misurabili.
+
+L'insieme \(E_\lambda\) consente di non costruire
+un elemento di \(L^1\) che non contiene nessun
+rappresentante Riemann-integrabile. Tale funzione è \(\chi_{E_y}\).
+Questa è integrabile in quanto caratteristica di un insieme misurabile.
+Questa funzione è sicuramente continua in \([0,1] \difference E_{\lambda}\),
+in quanto in questi punti la funzione è costante e nulla e ogni punti è centrato in intervalli aperti.
+In tutti i punti di \(E_{\lambda}\), la funzione è discontinua
+in quanto, non esistendo intervalli in \(E_{\lambda}\), in ogni intorno di \(x \in E_\lambda\)
+esistono punti sia di \(E_{\lambda}\) di valore uno e punti del complementare di valore zero.
+Quindi, \(\chi_{E_\lambda}\) è continua esattamente in \([0,1] \difference E_\lambda\).
+
+Se \(\lambda < \sfrac13\), allora abbiamo una funzione Lebesgue integrabile,
+ma discontinua su un insieme di misura positiva,
+e quindi non è Riemann-integrabile.
+
+Inoltre, non è nemmeno possibile alterare la definizione di \(\chi_{E_\lambda}\)
+su un insieme di misura nulla per renderla quasi ovunque continua.
+Consideriamo \(F\) come l'insieme di misura nulla sul quale alteriamo la funzione.
+\(F\) non contiene intervalli. Sia \(x \in E_\lambda \intersection [0,1] \difference F\).
+In ogni intorno di \(x\) ci sono punti di \([0,1] \difference E_\lambda\),
+e quindi la funzione è discontinua in \(x\).
+Quindi, è discontinua su \(E_\lambda \intersection [0,1] \difference F\), che ha misura positiva.
+Quindi, la funzione non può essere Riemann-integrabile nemmeno a meno di equivalenza
+quasi ovunque.
+
+\(E_\lambda\) con \(\lambda < \sfrac13\) è un compatto che non è misurabile secondo Peano-Jordan,
+in quanto la sua frontiera è sè stesso e lui non ha misura nulla.
+
+\begin{snippetdefinition}{Funzione di Cantor-Vitali o scala del diavolo}
+    Definiamo \(F_0:[0,1]\to[0,1]\) ponendo
+    \[
+        F_0(x)=x.
+    \]
+    Per ogni \(n\geq 0\), definiamo ricorsivamente \(F_{n+1}:[0,1]\to[0,1]\) ponendo
+    \[
+        F_{n+1}(x)=
+        \begin{cases}
+            \dfrac{1}{2}F_n(3x), & x\in\left[0,\dfrac{1}{3}\right], \\[1.2em]
+            \dfrac{1}{2}, & x\in\left[\dfrac{1}{3},\dfrac{2}{3}\right], \\[1.2em]
+            \dfrac{1}{2}+\dfrac{1}{2}F_n(3x-2), & x\in\left[\dfrac{2}{3},1\right].
+        \end{cases}
+    \]
+    La successione \((F_n)_{n\in\mathbb{N}}\) converge uniformemente su \([0,1]\). Si definisce quindi
+    \[
+        F(x)=\lim_{n}F_n(x),
+        \qquad x\in[0,1].
+    \]
+    La funzione \(F:[0,1]\to[0,1]\) così ottenuta
+    è detta \emph{funzione di Cantor-Vitali o scala del diavolo}.
+\end{snippetdefinition}
+
+\newcommand{\baseframe}{
+    \draw[->] (-0.03,0) -- (1.08,0) node[right] {$x$};
+    \draw[thin] (0,0) rectangle (1,1);
+    \node[below left] at (0,0) {$0$};
+    \node[below] at (1,0) {$1$};
+    \node[left] at (0,1) {$1$};
+}
+
+\begin{center}
+    \begin{tikzpicture}[scale=0.9,x=4cm,y=4cm,baseline=(current bounding box.center)]
+        \baseframe
+        \draw[gray!50, thin] (1/3,0) -- (1/3,1);
+        \draw[gray!50, thin] (2/3,0) -- (2/3,1);
+        \draw[blue, very thick]
+            (0,0) --
+            (1/3,1/2) --
+            (2/3,1/2) --
+            (1,1);
+    \end{tikzpicture}
+    \hspace{0.4cm}
+    \begin{tikzpicture}[scale=0.9,x=4cm,y=4cm,baseline=(current bounding box.center)]
+        \baseframe
+        \foreach \x in {1/9,2/9,1/3,2/3,7/9,8/9}
+            \draw[gray!50, thin] (\x,0) -- (\x,1);
+        \draw[blue, very thick]
+            (0,0) --
+            (1/9,1/4) --
+            (2/9,1/4) --
+            (1/3,1/2) --
+            (2/3,1/2) --
+            (7/9,3/4) --
+            (8/9,3/4) --
+            (1,1);
+    \end{tikzpicture}
+    \hspace{0.4cm}
+    \begin{tikzpicture}[scale=0.9,x=4cm,y=4cm,baseline=(current bounding box.center)]
+        \baseframe
+        \foreach \x in {1/27,2/27,1/9,2/9,7/27,8/27,1/3,2/3,19/27,20/27,7/9,8/9,25/27,26/27}
+            \draw[gray!50, thin] (\x,0) -- (\x,1);
+        \draw[blue, very thick]
+            (0,0) --
+            (1/27,1/8) --
+            (2/27,1/8) --
+            (1/9,1/4) --
+            (2/9,1/4) --
+            (7/27,3/8) --
+            (8/27,3/8) --
+            (1/3,1/2) --
+            (2/3,1/2) --
+            (19/27,5/8) --
+            (20/27,5/8) --
+            (7/9,3/4) --
+            (8/9,3/4) --
+            (25/27,7/8) --
+            (26/27,7/8) --
+            (1,1);
+    \end{tikzpicture}
+\end{center}
+
+Le funzioni sono continue, monotone non decrescenti che convergono uniformemente alla funzione
+\(F\) che è anch'essa continua e monotona non decrescente.
+La derivata di \(F\) è nulla su tutti i punti dell'insieme di Cantor.
+La \(F\) è una funzione monotona, quindi è quasi ovunque deriabile
+e \(F' = 0\) quasi ovunque.
+
+Se \(F\) fosse ovunque derivabile, per un teorema che non dimostriamo,
+dovrebbe valere che \[
+    F(x) = \integral[0][x][F'(t)][t]
+\]
+come nel caso di Riemann, che invece non è vero.
+
+Dato \(F(x) = \integral[0][x][f(t)][t]\) con \(f \in \mathcal L^1\), allora \(F\)
+è derivabile quasu ovunque e \(F'(x) = f(x)\) quasi ovunque.
+Se \(f\) è derivabile quasi ovunque, allora ha senso scrivere \[
+    \integral[0][x][f'(t)][t]
+\]
+se \(f' \in \mathcal L^1\), ma non è in generale vero che
+\[
+    f(x) = \integral[0][x][f'(t)][t]
+\]
+Questo teorema vale solo se \(f\) è derivabile ovunque con \(f' \in \mathcal L^1\).
+Chiediamoci quindi quali sono le funzioni che sono l'integrale della propria derivata.
+Queste funzioni sono esattamente quelle esattamente continue.
+
+Se io compongo una misurabile con una continua, allora è misurabile,
+ma comporre una continua con una misurabile non è necessariamente misurabile (cioè se quella interna è continua).
+
+\begin{snippetexample}{In generale la composizione di due funzioni misurabili non è misurabile}
+    Sia \(f\) la funzione di scala del diavolo. Definiamo la funzione
+    \(g \colon [0,1] \fromto [0,2]\) data da \[
+        g(x) := x + f(x)
+    \]
+    che è strettamente crescente, e quindi biiettiva.
+    Sia \(E\) il Cantor set e \(A = [0,1] \difference E\).
+    Possiamo scrivere \([0,1] = A \sqcup E\) e quindi
+    \([0,2] = g(A) \sqcup g(E)\). Per il teorema da compatto ad Hausdorff \(g\)
+    è chiusa, e quindi essendo biunivoca è un omeomorfismo.
+    In particolare, \(g(A)\) è aperto e \(g(E)\) è chiuso.
+    Quindi sono entrambi insiemi misurabili in quanto borealini.
+    L'insieme \(A\) è unione disgiunta di intervalli aperti
+    \[
+        A =\bigcup_{k=1}^\infty I_k
+    \] 
+    dove \(I_k\) sono i terzi medi aperti della definizione di Cantor set.
+    Siccome \(f\) è costante su ciascun \(I_k\), \(g\) porta ciascun \(I_k\)
+    in una sua copia traslata. Siccome la misura di Lebesgue è invariante per traslazione,
+    \(\mu(g(I_k)) = \mu(I_k)\). Allora, siccome \(I_k\) sono a due a due disgiunti,
+    e un omeomorfismo porta insiemi disgiunti in insiemi disgiunti, \begin{align*}
+        \mu(g(A)) &= \sum \mu(g(I_k)) = \sum \mu(I_k) = \mu(A) = 1
+    \end{align*}
+    quindi pure \(\mu(g(E)) = 1\).
+    Siccome \(g(E)\) ha misura positiva, contiene un sottoinsieme \(D\) non misurabili.
+    Ma \(g^{-1}(D)\) è misurabile e ha misura nulla in quanto
+    è un sottoinsieme di \(E\). Tuttavia, \(g^{-1}(D)\) non può essere un borealino
+    in quanto un omeomorfismo manda un borealiano in un borealiano.
+    Costruiamo la funzione \(h = \chi_{g^{-1}(D)} \circ g^{-1}\)
+    che è la composizione di due funzioni misurabili. Addirittura, la componente interna è continua
+    in quanto \(g\) è omeomorfismo.
+    Tuttavia, \(h\) non è misurabile in quanto \(h = \chi_D\) che non è misurabile.
+\end{snippetexample}
+
+\begin{snippettheorem}{Egeroff}
+    Sia \(X \subseteq (\realnumbers, \text{Leb})\) tale che
+    \(\mu(X) < +\infty\), \(f_n(x) \to f(x)\) quasi ovunque, \(f_n\)
+    quasi ovunque continua. Allora, \(\forall \varepsilon > 0\),
+    esiste \(E\) con \(\mu(E) < \varepsilon\) tale che \(f_n \to f\) uniformemente su \(X \difference E\).
+\end{snippettheorem}
+
+Quindi togliendo un insieme di misura piccola la convergenza puntuale diventa uniforme.
+
+\begin{snippetexample}{Non vale il teorema se \(\mu(X) = \infty\)}
+    Consideriamo la funzione \(\chi_{[-n,n]}\) sui reali.
+    Questa funzione non può diventare uniforme nemmeno togliendo un insieme di misura \(\varepsilon\).
+\end{snippetexample}
+
+\begin{snippettheorem}{Teorema di Lusin}
+    Sia \(f \colon \realnumbers \fromto \realnumbers\)
+    misurabile. Allora, \(\forall \varepsilon >0\), esiste \(E\)
+    con \(\mu(E) < \varepsilon\) e \(\exists g \colon \realnumbers \fromto \realnumbers\)
+    continua tale che \(g=f\) su \(\realnumbers \difference E\).
+    Inoltre, \[
+        \sup|g| \leq \operatorname{ess sup}|f|
+    \]
+\end{snippettheorem}
+
+\begin{snippetcorollary}{}
+    Lo spazio con la norma integrale \((C^0([0,1]), ||\cdot||)\) è denso in
+    \(L^1([0,1])\).
+\end{snippetcorollary}
+
+Se volessi estendere il teorema su \(\realnumbers\) dovrei restringermi
+alle funzioni continue con supporto completo.
+
+\subsection{Misura di Hausdorff (teoria geometrica della misura)}
+
+La misura di Lebesgue è adatta a misurare insiemi che hanno la stessa
+dimensione dello spazio ambiente. Per esempio, in \(\realnumbers^2\)
+misura le aree, mentre in \(\realnumbers^3\) misura i volumi.
+
+Tuttavia, molti insiemi geometricamente interessanti hanno dimensione
+inferiore rispetto allo spazio in cui sono immersi. Una curva piana semplice,
+vista come sottoinsieme di \(\realnumbers^2\), ha area nulla:
+\[
+    \lambda^2(\gamma)=0.
+\]
+Questo non significa però che la curva sia ``trascurabile'' dal punto di vista
+geometrico: essa può avere una lunghezza positiva.
+
+L'idea della misura di Hausdorff è quindi quella di misurare un insieme usando
+la dimensione corretta. Per questo si introduce una famiglia di misure
+\[
+    \mathcal H^s,
+    \qquad s\geq 0,
+\]
+dove il parametro \(s\) rappresenta la dimensione con cui vogliamo osservare
+l'insieme.
+
+Per esempio:
+\[
+    \mathcal H^1
+    \quad\text{misura lunghezze,}
+\]
+\[
+    \mathcal H^2
+    \quad\text{misura aree,}
+\]
+\[
+    \mathcal H^3
+    \quad\text{misura volumi.}
+\]
+Quando \(s=n\), la misura di Hausdorff \(\mathcal H^n\) coincide, a meno di una
+costante di normalizzazione, con la misura di Lebesgue \(n\)-dimensionale su
+\(\realnumbers^n\).
+
+Il vantaggio principale è che il parametro \(s\) non deve essere necessariamente
+intero. Questo permette di descrivere insiemi la cui dimensione geometrica è
+intermedia tra due dimensioni intere, come accade per molti insiemi frattali.
+
+\begin{snippetdefinition}{Frattale}
+    Un frattale è, informalmente, un insieme la cui dimensione di Hausdorff
+    non è intera.
+\end{snippetdefinition}
 
 \pagebreak
 
