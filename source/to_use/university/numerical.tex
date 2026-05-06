@@ -3796,6 +3796,195 @@ dopo averli ordinati.
 
 \pagebreak
 
+\section{Teoria dell'approssimazione}
+
+Consideriamo lo spazio \(\mathcal C([0,1])\)
+di funzioni continue a valori reali su \([0,1]\).
+Vogliamo esibire una successione \(P_n(x)\)
+di polinomi tale che \[
+    ||f-P_n||_{\infty, [0,1]} \to 0
+\]
+per \(n \to +\infty\).
+
+\begin{snippetdefinition}{Operatore lineare positivo}
+    Sia
+    \[
+        \phi \colon (\mathcal A, \leq_{\mathcal A}) \fromto (\mathcal B, \leq_{\mathcal B})
+    \]
+    Diciamo che \(\phi\) è \emph{lineare positivo} (LPO) se
+    \(\mathcal A, \mathcal B\)
+    spazi vettoriali con ordinamenti parziali tale che:
+    \begin{enumerate}
+        \item \[
+            \phi(\alpha f  + \beta g) = \alpha \phi(f) + \beta\phi(g)
+        \]
+        per ogni \(f,g \in \mathcal A\)
+        e per ogni \(\alpha,\beta \in \mathbb K\) campo.
+        \item Se \(f \geq_{\mathcal A} 0_{\mathcal A}\) allora \[
+            \phi(f) \geq_{\mathcal B} 0_{\mathcal B}
+        \]
+    \end{enumerate}
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Polinomi di Bernstein}
+    Consideriamo \(\mathcal C([0,1])\) e \(f \in \mathcal C([0,1])\).
+    Un \emph{polinomio di Bernstein} è definito come
+    \[
+        B_n(f)(x) = \sum_{k=0}^n f\left(\frac kn\right) \binom{n}{k} x^k (1-x)^{n-k}
+    \]
+    con \(B_n \colon \mathcal C([0,1]) \fromto \mathcal C([0,1])\).
+    Equipaggiamo inoltre l'ordinamento \(f \geq g\) se e solo se
+    \(f(x) \geq g(x)\) per ogni \(x \in [0,1]\).
+\end{snippetdefinition}
+
+Se fosse stato uno spazio \(L^p\) al posto di un per ogni avremmo un quasi ovunque.
+L'oggetto \(B_n\) è un polinomio di grado al più \(n\), in quanto combinazione lineari di tali.
+
+\begin{snippetproposition}{}
+    \(B_n\) è un endooperatore lineare positivo in \(\mathcal C([0,1])\) per ogni \(n\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Siano \(\alpha, \beta \in \realnumbers\) e \(f,g \in \mathcal C([0,1])\).
+    Abbiamo \begin{align*}
+        B_n(\alpha f + \beta g)(x) &= \sum_{n=0}^n \left(\alpha f + \beta g\right)\left(\frac{k}{n}\right)
+        \binom{k}{n} x^k(1-x)^{n-k} \\
+        &= \sum_{n=0}^n \left(
+            \alpha f\left(\frac{n}{k}\right) + \beta g\left(\frac{n}{k}\right)
+        \right) x^k(1-x)^{n-k} \\
+        &= \alpha \sum_{k=0}^n f\left(\frac kn\right) \binom{n}{k} x^k (1-x)^{n-k}
+        + \beta \sum_{k=0}^n g\left(\frac kn\right) \binom{n}{k} x^k (1-x)^{n-k} \\
+        &= \alpha B_n(f) + \beta B_n(g)
+    \end{align*}
+    quindi è lineare. Per la positività vediamo,
+    se \(f \geq 0\) allora \(f\left(\sfrac kn\right) \geq 0\) e quindi dalla definizione
+    una serie di termini positivi su \([0,1]\).
+\end{snippetproof}
+
+\begin{snippetproposition}{}
+    Un operatore lineare positivo \(\phi \colon \mathcal C([0,1]) \to \mathcal C([0,1])\)
+    è monotono e isotono.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    \begin{enumerate}
+        \item per la monotonia notiamo che \(f-g \geq 0\), allora
+        \(\phi(f-g) \geq 0\), ma quindi per linearità \(\phi(f) - \phi(g) \geq 0\)
+        cioè \(\phi(f) \leq \phi(g)\).
+        \item per l'isotonia notiamo che \(-|f| \leq f \leq |f|\).
+        Per la monotonia abbiamo che \(-\phi(|f|) \leq \phi(f) \leq \phi(|f|)\)
+        da cui troviamo che \(|\phi(f)| \leq phi(|f|)\).
+    \end{enumerate}
+\end{snippetproof}
+
+Gli integrali di funzioni positive sono operatori lineari positivi.
+
+\begin{snippettheorem}{Teorema di Korovkin in una dimensione}
+    Sia \(\{\phi_n\}\) una successione di endooperatori lineari positivi su
+    \(\mathcal C(K)\) con \(K\) compatto di \(\realnumbers\).
+    Supponiamo che \[
+        ||\phi(y^j)(x) - x^j||_{\infty, K} \to 0
+    \]
+    per \(n \to +\infty\) con \(j=0,1,2\), allora
+    \(\forall f \in \mathcal C(K)\), \[
+        \left|\left|
+            \phi_n(f(y)) - f(x)
+        \right|\right|_{\infty, K} \to 0
+    \]
+    per \(n \to +\infty\).
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+    Scriviamo \[
+        \phi_n(y^j)(x) = x^k + \varepsilon_n^{(j)}(x),
+        \quad \left|\left|
+            \varepsilon_n^{(j)}(x)
+        \right|\right|_{\infty, K} \to 0
+    \]
+    per \(n \to \infty\).
+    Ficciamo \(f \in \mathcal C(K)\) e fissiamo \(\varepsilon > 0\).
+    Dobbiamo trovare \(n_\varepsilon\) tale che \(\forall n \geq n_\varepsilon\)
+    \[
+        \Delta_n(f,x) \triangleq |\phi_n(f(y))(x) - f(x)| \leq \varepsilon, \quad \forall x \in K
+    \]
+    Quel \(\forall x \in K\) ci dà la convergenza uniforme.
+    Scriviamo ora \begin{DispWithArrows*}
+        \Delta_n(f,x) &= |\phi_n(f(y))(x) - (\phi_n(1)(x) - \varepsilon_n^{(0)}(x))f(x)| \\
+        &= |\phi_n(f(y))(x) - f(x) \cdot \phi_n(1)(x) + \varepsilon_n^{(0)}(x)f(x)| \Arrow{Disugliagnza \\ triangolare} \\
+        &\leq |\phi_n(f(y))(x) - f(x) \phi_n(1)(x)| + ||\varepsilon_n^{(0)}||_{\infty, K}
+        \cdot ||f||_\infty \\
+        &\leq |\phi_n(f(y))(x) - f(x)\phi_n(1)(x)| + \sfrac{\varepsilon}{3}, \quad \forall n \geq n_\varepsilon \\
+        &= |\phi_n(f(y) - f(x))(x)| + \sfrac{\varepsilon}{3} \Arrow{isotonia} \\
+        &= \phi_n(|f(y) - f(x)|)(x) + \sfrac{\varepsilon}{3}
+    \end{DispWithArrows*}
+    Visto che siamo su un compatto, la continuità è pari alla continuità uniforme, quindi
+    \(\forall \tilde \varepsilon > 0\) esiste \(\tilde \delta > 0\) tale che 
+    se \(|x-y| < \tilde \delta\) allora \(|f(y) - f(x)| < \tilde \varepsilon\)
+    per tutte le \(x,y \in K\).
+    Siccome questa ultima condizione val solo quando \(|y-x|\), possiamo estenderla scrivendo
+    \[
+        |f(y) - f(x)| \leq \tilde \varepsilon \chi_{y \suchthat \tilde \delta > |y-x|}(y)
+    \]
+    Magioriamo questo termine con \(|f(y)| + |f(x)|\), e loro volta maggioriamo ognuno di questi con
+    \(||f||_{\infty, K}\), ottenendo quindi \[
+        |f(y) - f(x)| \leq \tilde\varepsilon + 2||f||_{\infty, K} \chi_{y \suchthat \tilde \delta \leq |y-x|}(y)
+    \]
+    Per \(y\) tale che \(|y-x| \geq \tilde \delta\), vale che
+    \(\sfrac{|y-x|}{\tilde \delta} \geq 1\), ma questo è equivalente a dire che
+    \(\sfrac{(y-x)^2}{\tilde \delta^2} \geq 1\).
+    Quindi possiamo aggiroanre la maggiorazione a \begin{align*}
+        |f(y) - f(x)| &\leq \tilde \varepsilon + 2||f||_{\infty, K}
+        \frac{(y-x)^2}{\tilde \delta^2}
+    \end{align*}
+    Sostituendo questa troviamo che per monotonia \begin{DispWithArrows*}
+        \Delta(f,x) &\leq \phi_n\left(
+            \frac{y^2 - 2xy + x^2}{\tilde \delta^2}
+            \cdot 2||f||_{\infty, K} + \tilde\varepsilon
+        \right)(x) + \frac{\varepsilon}{3} \\
+        &= \tilde\varepsilon\phi_n(1)(x) + 2\frac{||f||_{\infty, K}}{\tilde\delta^2}
+        \left[
+            \phi_n(y^2)(x) - 2x\phi_n(y)(x) + x^2\phi_n(1)(x)
+        \right] + \frac{\varepsilon}{3} \\
+        &= \tilde\varepsilon(1 + \varepsilon_n^{(0)}(x)) + 2\frac{||f||_{\infty, K}}{\tilde \delta^2}
+        \left[
+            x^2 + \varepsilon_n^{(2)}(x) - 2x\left(x + \varepsilon_n^{(1)}(x)\right)
+            + x^2\left(1 + \varepsilon_n^{(0)}(x)\right)
+        \right] + \frac{\varepsilon}{3} \Arrow{Scegliendo \\ \(\tilde\varepsilon = \sfrac{\varepsilon}{6}\)} \\
+        &= \frac{2}{3}\varepsilon + 2\frac{||f||_{\infty, K}}{\tilde \delta^2}
+        \left[
+            \varepsilon_n^{(2)}(x) - 2x\varepsilon_n^{(1)}(x) + x^2 \varepsilon_n^{(0)}(x)
+        \right]
+    \end{DispWithArrows*}
+    Otteniamo quindi la successione numerica che va a zero \begin{align*}
+        Q_n &\leq \frac{2||f||_{\infty, K}}{\tilde \delta^2} \left(
+            ||\varepsilon_n^{(2)}||_{\infty, K} + 2 \hat M ||\varepsilon_n^{(1)}||_{\infty, K}
+            + \hat M^2 ||\varepsilon_n^{(0)}||_{\infty, K}
+        \right) < \frac{\varepsilon}{3}
+    \end{align*}
+    per \(n \geq n_\varepsilon\) con \(\hat M = \operatorname{diag}(\varepsilon)\).
+\end{snippetproof}
+
+Il teorema può essere esteso per la convergenza in \(L^p\).
+
+Vediamo il test di Korovkin sui primi \(B_n(\cdot)\). Abbiamo \begin{enumerate}
+    \item Vediamo se \(B_n(1)(x)\) converge a \(1\). Abbiamo
+    \[
+        \sum_{k=0}^n \binom{n}{k}x^k(1-x)^{n-k} = ((1 - x) + x)^n = 1
+    \]
+    e quindi \(\varepsilon_n^{(0)} = 0\).
+    \item Vediamo se \(B_n(y)(x)\) converge a \(y\). Abbiamo \begin{align*}
+        B_n(y)(x) &= \sum_{k=0}^n \binom{n}{k} \frac{k}{n} x^n(1-x)^{n-k} \\
+        &= \sum_{k=0}^n \frac{n!}{n!(n-k)!} \frac{k}{x} x^n(1-x)^{n-k} \\
+        &= \sum_{k=1}^n \binom{n-1}{k-1} x^k(1-x)^{n-k} \\
+        &= x \cdot \sum_{q = 0}^{n-1} \binom{n-1}{q} x^q (1-x)^{n-1-q} \\
+        &= x \cdot B_{n-1}(1)(x) = x
+    \end{align*}
+    quindi \(\varepsilon_n^{(1)} = 0\).
+    \item TODO
+\end{enumerate}
+
+\pagebreak
+
 \section{Esercizi}
 
 \begin{snippetexercise}{}
