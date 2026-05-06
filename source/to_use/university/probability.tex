@@ -6064,13 +6064,39 @@ Ricordiamo il cambio di variabile con diffeomorfismo \(\Psi\)
         f_{Y_1, \cdots, Y_n}(\overline y)
         = \begin{cases}
             f_{X_1, \cdots, X_n}(\varphi^{-1}(\overline y)) |\det([J\varphi^{-1} J(\overline y)](\overline y))|, \quad \overline y \in \varphi(A) \\
-            0 & XXX
+            0 & y \notin \varphi(A)
         \end{cases}
     \]
 \end{snippetproposition}
 
-\pagebreak
+\begin{snippetproposition}{Trasformazione affine}
+    Consideriamo \((X_1, \cdots, X_n)\) vettore aleatorio assolutamente continuo con densità
+    congiunta \(f_{X_1, \cdots, X_n} \colon \realnumbers^n \fromto [0,+\infty)\)
+    e prendiamo \(\varphi \colon \realnumbers^n \fromto \realnumbers^n\) definita da
+    \[
+        \varphi(\overline x) = A\overline x + \overline b, \quad \overline x \in \realnumbers^n
+    \]
+    con \(A\) matrice \(n \times n\) non singolare e \(\overline b \in \realnumbers^n\).
+    Allora, il vettore aleatorio \(Y = \varphi(X)\)
+    è assolutamente continuo con densità
+    \[
+        f_Y(\overline y) = \frac{1}{|\det A|} f(A^{-1}(\overline y - \overline b)), \quad
+        \overline y \in \realnumbers^n
+    \]
+\end{snippetproposition}
 
+Applicazione del teorema di trasformazione.
+
+\begin{snippetdefinition}{}
+    Dato un vettore \((X_1, \cdots, X_n)\) diciamo che ha legge uniforme
+    su \(\mathcal O \subseteq \realnumbers^n\) di misura positiva, vuol dire che è un vettore assolutamente
+    continuo con densità \[
+        f_{X_1, \cdots, X_n}(x_1, \cdots, x_n) = \frac{1}{\mu(\mathcal O)} \chi_{\mathcal O}(x_1, \cdots, x_n)
+    \]
+    dove \(\mu\) è la misura di Lebesgue.
+\end{snippetdefinition}
+
+\pagebreak
 
 \section{Esercizi}
 
@@ -6509,6 +6535,341 @@ Ricordiamo il cambio di variabile con diffeomorfismo \(\Psi\)
             = \sigma^2 \operatorname{Var}(Z) + 0 = \sigma^2
         \]
     \end{enumerate}
+\end{snippetsolution}
+
+\begin{snippetexercise}{Da mettere come proposizione con già il risultato qua}
+    Sia \(Z \sim \mathcal N(0,1)\). \(Z\) variabile aleatoria reale assolutamente continua 
+    con densità \[
+        f_Z(z) = \frac{1}{\sqrt{2\pi}} e^{-\sfrac{z^2}{2}}
+    \]
+    Vogliamo calcolare i momenti di ordine \(k \in \naturalnumbers\), cioè
+    \[
+        \mathbb E[Z^k] = \int_\realnumbers z^k \frac{1}{\sqrt{2\pi}} e^{-\sfrac{z^2}{2}}\,dz
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    Sicuramente per \(k=1\) otteniamo il valore atteso \(\mathbb E[Z] = 0\).
+    Per \(k=2\) otteniamo la varianza \(\mathbb E[Z^2] = 1\).
+    Per \(k=3\) l'integranda è una funzione dispari per una funzione dispari,
+    quindi pure questo integrale è zero.
+    Quindi, \[
+        \mathbb E[Z^{2k+1}] = 0
+    \]
+    Ci mancano i momenti pari. Ci sono vari modi: integrale per parti e per induzione
+    trovare la forma chiusa, sfruttare la funzione generatrice dei momenti. Quello che facciamo è invece
+    il seguente: speriamo che \(Y\) abbia una legge nella per cui è facile calcolarne i momenti
+    \begin{align*}
+        \mathbb E[Z^{2k}]
+        &= \mathbb E[Y^{2k}]
+    \end{align*}
+    Calcoliamo la legge di \(Y^2\) usando la funzione di ripartizione. Notiamo subito che
+    \begin{align*}
+        F_y(y) &= \mathbb P(Y \leq y) = \mathbb P(Z^2 \leq y) = 0, \quad \forall y \leq 0
+    \end{align*}
+    Studiamola per \(y>0\). Abbiamo
+    \begin{DispWithArrows*}
+        F_Y(y) &= \mathbb P(Y \leq y) = \mathbb P(Z^2 \leq y) = \mathbb P(-\sqrt{y} \leq Z \leq \sqrt{y}) \\
+        &= 1 - \mathbb P(\left\{Z < -\sqrt{y}\right\} \union \left\{Z > \sqrt{y}\right\}) \Arrow{\(Z\) ass. continua quindi \\ aggiunta trascurabile} \\
+        &= 1 - \mathbb P(\left\{Z \leq -\sqrt{y}\right\} \union \left\{Z \geq \sqrt{y}\right\}) \Arrow{Medesima area} \\
+        &= 1 - 2 \mathbb P(\left\{Z \geq \sqrt y\right\}) = 2F_Z(\sqrt y) - 1
+    \end{DispWithArrows*}
+    dove \[
+        F_z(z) = \mathbb P(Z \leq z) = \integral[-\infty][z][f_Z(y)][y]
+    \]
+    Quindi abbiamo dimostrato che
+    \[
+        F_Y(y) = \begin{cases}
+            F_Y(y) = 2F_z(\sqrt y) - 1 & y \geq 0\\
+            0 & y < 0
+        \end{cases}
+    \]
+    Notiamo che \(F_Y\) è sicuramente continua in \(\realnumbers \difference \{0\}\)
+    e in \(0\) vale che \[
+        F_Y(0) = 2F_z(0) - 1 = 1-1 = 0 = \lim_{y\to 0^-} F_y(y)
+    \]
+    Abbiamo quindi dimostrato che \(F_y(y) = 2F_Z(\sqrt{y}) - 1\).
+    Questo ci dice che \(F_Y\) è continua in quanto \(F_Z\) è continua.
+    In realtà è pure \(C^1\) a tratti.
+    Quindi, \(Y\) è assolutamente continua con densità
+    \[
+        f_Y(y) = \begin{cases}
+            F_Y'(y) = 2F_z'(\sqrt y) \cdot \frac{1}{\sqrt y} = \frac{1}{\sqrt {2\pi y}} e^{-\sfrac y2} & y \geq 0\\
+            0 & y < 0
+        \end{cases}
+    \]
+    In altre parole,
+    \[
+        f_Y(y) = \frac{1}{2y\pi} e^{-\sfrac y2} \chi_{(0,+\infty)}(y)
+    \]
+    Una variabile aleatoria con tale densità è chiamata legge gamma di parametri
+    \(\sfrac12\) e \(\sfrac12\) e viene indicata con \(\Gamma(\sfrac 12, \sfrac12)\).
+    In generale la gamma è data dalla densità
+    \[
+        f_Y(x) = \frac{\beta^\alpha x^{\alpha-1} e^{-\beta x}}{\Gamma(\alpha)}
+        \chi_{(0,+\infty)}(x)
+    \]
+    con \(\alpha, \beta > 0\). In questo caso usiamo la notazione \(X \sim \Gamma(\alpha, \beta)\).
+    Ricordiamo le proprietà di \(\Gamma\):
+    \begin{enumerate}
+        \item \(\Gamma(\alpha + 1) = \alpha \gamma(\alpha)\). Questa la si mostra per parti.
+        \item \begin{DispWithArrows*}
+            \Gamma\left(\frac12\right) &= \integral[0][+\infty][\frac{1}{\sqrt y} e^{-x}][x] \Arrow{\(y = \sqrt x\)} \\
+            &= \integral[0][+\infty][
+                \frac{1}{y} e^{-y^2} \cdot 2y
+            ][y] = \sqrt{\pi}
+        \end{DispWithArrows*}
+        \item se \(\alpha \in \naturalnumbers\) allora
+        \(\Gamma(\alpha) = (\alpha-1)! \Gamma(1) = (\alpha - 1)!\).
+    \end{enumerate}
+    Dimostriamo quindi che questa effettivamente integra a 1 (da mettere in una proposizione separata)
+    \begin{DispWithArrows*}
+        \int_\realnumbers f_X(x)\,dx &= \frac{1}{\Gamma(\alpha)}
+        \integral[0][+\infty][\beta^\alpha x^{\alpha - 1} e^{\beta x}][x] \Arrow{\(y = \beta x\)} \\
+        &= \frac{1}{\Gamma(\alpha)} \integral[0][+\infty][y^{\alpha - 1} e^{-y}][y]
+        = \frac{\Gamma(\alpha)}{\Gamma(\alpha)} = 1
+    \end{DispWithArrows*}
+    Da questo conto abbiamo visto che \(\beta\) non è altro che un fattore di scala,
+    in particolare \(X \sim \Gamma(\alpha, \beta)\) equivalente a dire
+    \(X \sim \frac{W}{\beta}\) dove \(W \sim \Gamma(\alpha, 1)\).
+    Calcoliamo ora i momenti della distribuzione gamma.
+    Partiamo da \(W \sim \Gamma(\alpha, 1)\). Abbiamo
+    \begin{align*}
+        \mathbb E[W^k] &= \int_\realnumbers y^k f_W(y)\,dy
+        = \frac{1}{\Gamma(\alpha)} \integral[0][\infty][y^k y^{\alpha - 1} e^{-y}][y] \\
+        &= \frac{\Gamma(\alpha + k)}{\Gamma(\alpha)}
+        = (\alpha + k - 1)(\alpha + k - 2) \cdots \alpha
+    \end{align*}
+    Ricordando che \(X \sim \Gamma(\alpha, \beta)\) equivalente \(X=\frac{W}{\beta}\) troviamo
+    \begin{align*}
+        \mathbb E[X^k] &= \mathbb E\left[
+            \frac{1}{\beta^k} W^k
+        \right] = \frac{1}{\beta^k}(a+k-1) \cdots \alpha
+    \end{align*}
+    Tornando al nostro problema iniziale avevamo \(Z \sim \mathcal N(0,1)\) e dobbiamo calcolare
+    \begin{align*}
+        \mathbb E[Z^{2k}]
+        &= \mathbb E[(Z^2)^k]
+    \end{align*}
+    Abbiamo trovato che \(Y = Z^2 \sim \Gamma\left(\sfrac12, \sfrac12\right)\) e quindi
+    \begin{align*}
+        \mathbb E[Z^{2k}] &= \mathbb E[Y^k]
+        = 2^k \left(\frac12 + k - 1\right)\left(\frac{1}2 k - 2\right) \cdots \frac12 \\
+        &= (2k-1)(2k-3)(2k-5)\cdots 1 = (2k-1)!!
+    \end{align*}
+\end{snippetsolution}
+
+\begin{snippetexercise}{}
+    Sia \((X,Y)\) il vettore aleatorio di \(\realnumbers^2\)
+    assolutamente continuo con densità \[
+        f_{X,Y}(x,y) = \frac{x}{4} e^{- \frac{x^2}{4}}y \chi_{D}(x,y)
+    \]
+    con \[
+        D = \left\{(x,y) \in \realnumbers^2 \suchthat 0 < y < x\right\}
+        \subseteq \realnumbers^+ \cartesianprod \realnumbers^+
+    \]
+    \begin{enumerate}
+        \item Calcolare le marginali del vettore
+        \item Determinare se \(X\) e \(Y\) sono indipendenti.
+        \item Consideria il vettore \((X, \sfrac XY)\), questo
+        ha componenti indipendenti?
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetexercise}{}
+    \begin{enumerate}
+        \item abbiamo per \(x>0\) \begin{align*}
+            f_X(x) &= \int_\realnumbers f_{X,Y}(x,y)\,dy
+            = \integral[0][x][
+                \frac{x}{4} e^{-\frac{x^2}{4}} y
+            ][y] \\
+            &= \frac{x}{4} e^{-\frac{x^2}{4}} \left[\frac{y^2}{2}\right]_0^x
+            = \frac{x^3}{8}e^{-\frac{x^2}{4}}
+        \end{align*}
+        Quindi \[
+            f_X(x) = \frac{x^3}{8}e^{-\frac{x^2}{4}} \chi_{(0,+\infty)}(x)
+        \]
+        Analogamente troviamo per \(y>0\)
+        \begin{align*}
+            f_Y(y) &= \int_\realnumbers f_{X,Y}(x,y)\,dx
+            = \integral[y][+\infty][
+                \frac{x}{4} e^{-\frac{x^2}{4}} y
+            ][x] \\
+            &= \frac{y}{2} \integral[y][+\infty][\frac{x}{2} e^{-\frac{x^2}{4}}][x] \\
+            &= \frac{y}{2}\left[-e^{-\frac{x^2}{4}}\right]_y^\infty = \frac{y}{2}e^{-\frac{y^2}{4}}
+        \end{align*}
+        Quindi \[
+            f_Y(y) = \frac{y}{2} e^{-\frac{y^2}{4}} \chi_{(0,+\infty)}(y)
+        \]
+        \item Guardiamo se il prodotto delle marginali coincide con la congiunta.
+        Ad occhio, non sembrano indipendenti in quanto non si riesce a fattorizzare
+        la funzione indicatrice \(\chi_D\). Una funzione indicatrice di un prodotto cartesiano è il prodotto
+        delle funzioni indicatrici, ma in questo caso la funzione indicatrice è su un dominio non rettangolare.
+        Chiaramente \(f_{X,Y}\) è continua in \[
+            C= \left\{(x,y) \in \realnumbers^2 \suchthat 0 < x < y\right\}
+        \]
+        e pure \(f_X\) e \(f_Y\).
+        Evitiamo quindi i punti sulla bisettrice.
+        Se prendiamo un punto \((x,y) \in C\), allora \(f_{X,Y}(x,y) = 0\).
+        Tuttavia, \(f_X(x) > 0\) e \(f_Y(y) > 0\) e quindi \(X\) e \(Y\) non sono indipendenti.
+        \item Per prima cosa dobbiamo calcolare la legge del vettore \((U,V) = (X, \sfrac XY)\).
+        Usiamo il teorema di trasformazione con diffeomorfismo.
+        Chiaramente \(\mathbb P((X,Y) \in D) = 1\) e \((U,V) = \varphi(X,Y)\)
+        con \(\varphi(x,y) = (x, \sfrac xy)\). Di conseguenza,
+        siccome \(x\) è sempre maggiore di \(y\), abbiamo
+        \[
+            \varphi(D) = \realnumbers^+ \cartesianprod (1, +\infty)
+        \]
+        Per il teorema \[
+            f_{U,V}(u,v) = \begin{cases}
+                f_{X,Y}(\varphi^{-1}(u,v))|\det([J\varphi^{-1}](u,v))| & (u,v) \in \varphi(D) \\
+                0 & (u,v) \notin \varphi(D)
+            \end{cases}
+        \]
+        Dobbiamo calcolare \(\varphi^{-1}\). Invertendo trobiamo \(x=u\) e \(y = \sfrac uv\),
+        cioè \[
+            \varphi^{-1}(u,v) = \left(u, \sfrac uv\right)
+        \]
+        La Jacobiana è data da \[
+            [J \varphi^{-1}](u,v) = \begin{pmatrix}
+                1 & 0 \\ \frac{1}{v} & -\frac{u}{v^2}
+            \end{pmatrix}
+        \]
+        il cui determinante è \(- \frac{u}{v^2}\) che è non-nullo per ogni \(u,v \in \varphi(D)\).
+        Quindi, \begin{align*}
+            f_{U,V}(u,v) &= f_{X,Y}(\varphi^{-1}(u,v)) \frac{u}{v^2} \chi_{\varphi(D)}(u,v) \\
+            &= \frac{v}{4} e^{-\sfrac{v^2}{4}} \frac{u}{v} \frac{u}{v^2} \chi_{
+                (0,+\infty) \cartesianprod (1,+\infty)
+            }(u,v) \\
+            &= \frac 14 \frac{u^3}{v^3} e^{-\frac{v^2}{4}}
+            \chi_{(0,+\infty)}(u) \cdot \chi_{(+,\infty)}(v) \\
+            &= \alpha(u) \beta(v)
+        \end{align*}
+        con \[
+            \alpha(u) = \frac{1}{4}u^3 e^{-\frac{v^2}{4}} \chi_{(0,+\infty)}(u), \quad
+            \beta(v) = \frac{1}{v^3}\chi_{(1,+\infty)}(v)
+        \]
+        Quindi, \(U=X\) e \(V = \sfrac XY\) sono indipendenti.
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetexercise}{}
+    Sia \((X,Y)\) vettore aleatotio assolutamente continuo con legge uniforme sul quadrato
+    \([-1,1]^2\), cioè ha densità \[
+        f_{X,Y}(x,y) = \frac 14 \chi_{[-1,1]^2}(x,y)
+    \]
+    È facile dimostrare che \(X\) e \(Y\) sono indipendenti con
+    distribuzione uniforme sul segmento \([-1, 1]\) cioè \[
+        f_X(x) = \frac12 \chi_{[-1,1]}(x),\quad
+        f_Y(y) = \frac12 \chi_{[-1,1]}(y)
+    \]
+    Inoltre, il supporto di \((X,Y)\) è precisamente il quadrato \([-1,1]^2\).
+    Vogliamo ruotare il quadrato di 45 gradi in senso antiorario e studiare cosa succede alla variabile aleatoria.
+    Ci aspettiamo che dopo la rotazione le componenti del vettore non siano più indipendenti. Dimostrarlo.
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+    Dobbiamo trovare la trasformazione data, cioè \[
+        A = \begin{pmatrix}
+            \cos \theta & - \sin \theta \\
+            \sin \theta & \cos \theta
+        \end{pmatrix}
+        = \frac{\sqrt 2}{2} \begin{pmatrix}
+            1 & -1 \\ 1 & 1
+        \end{pmatrix}
+    \]
+    Notiamo subito che \(\det A = 1\) in quanto elemento del gruppo ortogonale e
+    \[
+        A^{-1} = \frac{A^t}{\det (A)} = \frac{\sqrt 2}{2} \begin{pmatrix}
+            1 & 1 \\ -1 & 1
+        \end{pmatrix}
+    \]
+    Il nostro vettore è dato da \((U,V) = \varphi(X,Y)\)
+    con \(\varphi(x,y) = A \begin{pmatrix}x \\ y\end{pmatrix}\).
+    Applichiamo il teorema circa le trasformazioni affini e otteniamo
+    \begin{align*}
+        f_{U,V}(u,v) &= \frac{1}{\det A} f_{X,Y} (A^{-1}(u,v)) \\
+        &= f_{X,Y}
+    \end{align*}
+    con \[
+        A^{-1} \begin{pmatrix}u \\ v\end{pmatrix}
+        = \frac{\sqrt 2}{2} \begin{pmatrix}
+        1 & 1 \\ -1 & 1
+        \end{pmatrix}\begin{pmatrix}u \\ v\end{pmatrix}
+        = \left(
+            \frac{\sqrt 2}{2}(u+v), \frac{\sqrt 2}{2}(v-u)
+        \right)
+    \]
+    Otteniamo quindi \begin{align*}
+        f_{X,Y}\left(
+            \frac{\sqrt 2}{2}(u+v), \frac{\sqrt 2}{2}(v-u)
+        \right) &= \frac{1}{4} \chi_{[-1,1]^2}\left(
+            \frac{\sqrt 2}{2}(u+v), \frac{\sqrt 2}{2}(v-u)
+        \right) \\
+        &= \frac14 \chi_{[-1,1]}\left( \frac{\sqrt 2}{2}(u+v)\right)
+        \chi_{[-1,1]}\left( \frac{\sqrt 2}{2}(v-u)\right)
+    \end{align*}
+    Possiamo per esempio mettere a sistema
+    \[
+        \begin{cases}
+            -1 \leq \frac{\sqrt 2}{2} (u+v) \leq 1 \\
+            -1 \leq \frac{\sqrt 2}{2} (v-u) \leq 1
+        \end{cases}
+        \quad \rightarrow \quad
+        \begin{cases}
+            \frac{2}{\sqrt 2} \leq u+v \leq \frac{2}{\sqrt 2} \\
+            \frac{2}{\sqrt 2} \leq v-u \leq \frac{2}{\sqrt 2}
+        \end{cases}
+        \quad \rightarrow \quad
+        \begin{cases}
+            \frac{2}{\sqrt 2} - u \leq v \leq \frac{2}{\sqrt 2} - u \\
+            \frac{2}{\sqrt 2} -u \leq v \leq \frac{2}{\sqrt 2} - u
+        \end{cases}
+    \]
+    Questo è precisamente il rombo
+    \begin{center}
+        \begin{tikzpicture}[scale=1.4]
+            \draw[->] (-2,0) -- (2,0) node[right] {\(u\)};
+            \draw[->] (0,-2) -- (0,2) node[above] {\(v\)};
+
+            \coordinate (A) at (0,{sqrt(2)});
+            \coordinate (B) at ({sqrt(2)},0);
+            \coordinate (C) at (0,{-sqrt(2)});
+            \coordinate (D) at ({-sqrt(2)},0);
+
+            \draw[thick] (A) -- (B) -- (C) -- (D) -- cycle;
+
+            \fill (A) circle (1pt) node[above right] {\((0,\sqrt{2})\)};
+            \fill (B) circle (1pt) node[above right] {\((\sqrt{2},0)\)};
+            \fill (C) circle (1pt) node[below right] {\((0,-\sqrt{2})\)};
+            \fill (D) circle (1pt) node[above left] {\((-\sqrt{2},0)\)};
+
+            \node at (0.9,0.75) {\(v=\sqrt{2}-u\)};
+            \node at (-0.9,0.75) {\(v=\sqrt{2}+u\)};
+            \node at (-0.95,-0.75) {\(v=-\sqrt{2}-u\)};
+            \node at (0.95,-0.75) {\(v=u-\sqrt{2}\)};
+        \end{tikzpicture}
+    \end{center}
+    Mostriamo quindi che sono dipendenti.
+    Abbiamo quindi \[
+        f_{U,V}(u,v) = \frac14 \chi_{[-\sqrt 2, \sqrt 2]}(u+v) \chi_{[-\sqrt 2, \sqrt 2]}(v-u)
+    \]
+    Calcoliamo le marginali
+    \begin{align*}
+        f_U(u) &= \int_\realnumbers f_{U,V}(u,v)\,dv = \int_\realnumbers \frac14\chi_{[-\sqrt 2, \sqrt 2]}(u+v) \chi_{[-\sqrt 2, \sqrt 2]}(v-u)\,du \\
+        f_V(v) &= \int_\realnumbers f_{U,V}(u,v)\,du = \int_\realnumbers \frac14\chi_{[-\sqrt 2, \sqrt 2]}(u+v) \chi_{[-\sqrt 2, \sqrt 2]}(v-u)\,dv
+    \end{align*}
+    Ci serve un punto \((v_0, v_0)\) interno al rombo tale che \[
+        f_{U,V}(u_0, v_0) \neq f_U(u_0)f_V(v_0)
+    \]
+    Prendiamo \((u_0, v_0) = (0,0)\). Abbiamo che \(f_{U,V} (0,0) = \frac14\), mentre
+    \begin{align*}
+        f_U(0) &= \int_\realnumbers \frac14 \chi_{[-\sqrt 2, \sqrt 2]}(v) \chi_{[-\sqrt 2, \sqrt 2]}(v)\,dv \\
+        = \frac{\sqrt 2}{2}
+        f_V(0) &= \int_\realnumbers \frac14 \chi_{[-\sqrt 2, \sqrt 2]}(u) \chi_{[-\sqrt 2, \sqrt 2]}(u)\,du \\
+        = \frac{\sqrt 2}{2}
+    \end{align*}
+    e quindi \(f_V(0)f_U(0) = \frac12 \neq \frac14 = f_{U,V}(0,0)\).
 \end{snippetsolution}
 
 \end{document}

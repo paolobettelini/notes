@@ -3881,9 +3881,9 @@ Gli integrali di funzioni positive sono operatori lineari positivi.
 
 \begin{snippettheorem}{Teorema di Korovkin in una dimensione}
     Sia \(\{\phi_n\}\) una successione di endooperatori lineari positivi su
-    \(\mathcal C(K)\) con \(K\) compatto di \(\realnumbers\).
+    \(\mathcal C(K)\), con \(K\) compatto di \(\realnumbers\).
     Supponiamo che \[
-        ||\phi(y^j)(x) - x^j||_{\infty, K} \to 0
+        ||\phi_n(y^j)(x) - x^j||_{\infty, K} \to 0
     \]
     per \(n \to +\infty\) con \(j=0,1,2\), allora
     \(\forall f \in \mathcal C(K)\), \[
@@ -3896,13 +3896,13 @@ Gli integrali di funzioni positive sono operatori lineari positivi.
 
 \begin{snippetproof}{}
     Scriviamo \[
-        \phi_n(y^j)(x) = x^k + \varepsilon_n^{(j)}(x),
+        \phi_n(y^j)(x) = x^j + \varepsilon_n^{(j)}(x),
         \quad \left|\left|
             \varepsilon_n^{(j)}(x)
         \right|\right|_{\infty, K} \to 0
     \]
     per \(n \to \infty\).
-    Ficciamo \(f \in \mathcal C(K)\) e fissiamo \(\varepsilon > 0\).
+    Fissiamo \(f \in \mathcal C(K)\) e fissiamo \(\varepsilon > 0\).
     Dobbiamo trovare \(n_\varepsilon\) tale che \(\forall n \geq n_\varepsilon\)
     \[
         \Delta_n(f,x) \triangleq |\phi_n(f(y))(x) - f(x)| \leq \varepsilon, \quad \forall x \in K
@@ -3910,34 +3910,34 @@ Gli integrali di funzioni positive sono operatori lineari positivi.
     Quel \(\forall x \in K\) ci dà la convergenza uniforme.
     Scriviamo ora \begin{DispWithArrows*}
         \Delta_n(f,x) &= |\phi_n(f(y))(x) - (\phi_n(1)(x) - \varepsilon_n^{(0)}(x))f(x)| \\
-        &= |\phi_n(f(y))(x) - f(x) \cdot \phi_n(1)(x) + \varepsilon_n^{(0)}(x)f(x)| \Arrow{Disugliagnza \\ triangolare} \\
+        &= |\phi_n(f(y))(x) - f(x) \cdot \phi_n(1)(x) + \varepsilon_n^{(0)}(x)f(x)| \Arrow{Disuguaglianza \\ triangolare} \\
         &\leq |\phi_n(f(y))(x) - f(x) \phi_n(1)(x)| + ||\varepsilon_n^{(0)}||_{\infty, K}
-        \cdot ||f||_\infty \\
+        \cdot ||f||_{\infty, K} \\
         &\leq |\phi_n(f(y))(x) - f(x)\phi_n(1)(x)| + \sfrac{\varepsilon}{3}, \quad \forall n \geq n_\varepsilon \\
-        &= |\phi_n(f(y) - f(x))(x)| + \sfrac{\varepsilon}{3} \Arrow{isotonia} \\
-        &= \phi_n(|f(y) - f(x)|)(x) + \sfrac{\varepsilon}{3}
+        &= |\phi_n(f(y) - f(x))(x)| + \sfrac{\varepsilon}{3} \Arrow{positività} \\
+        &\leq \phi_n(|f(y) - f(x)|)(x) + \sfrac{\varepsilon}{3}
     \end{DispWithArrows*}
-    Visto che siamo su un compatto, la continuità è pari alla continuità uniforme, quindi
+    Visto che siamo su un compatto, la continuità implica la continuità uniforme, quindi
     \(\forall \tilde \varepsilon > 0\) esiste \(\tilde \delta > 0\) tale che 
     se \(|x-y| < \tilde \delta\) allora \(|f(y) - f(x)| < \tilde \varepsilon\)
     per tutte le \(x,y \in K\).
-    Siccome questa ultima condizione val solo quando \(|y-x|\), possiamo estenderla scrivendo
+    Siccome questa ultima condizione vale solo quando \(|y-x| < \tilde \delta\), possiamo estenderla scrivendo
     \[
-        |f(y) - f(x)| \leq \tilde \varepsilon \chi_{y \suchthat \tilde \delta > |y-x|}(y)
+        |f(y) - f(x)| \leq \tilde \varepsilon +
+        2||f||_{\infty, K} \chi_{\{y \suchthat \tilde \delta \leq |y-x|\}}(y)
     \]
-    Magioriamo questo termine con \(|f(y)| + |f(x)|\), e loro volta maggioriamo ognuno di questi con
-    \(||f||_{\infty, K}\), ottenendo quindi \[
-        |f(y) - f(x)| \leq \tilde\varepsilon + 2||f||_{\infty, K} \chi_{y \suchthat \tilde \delta \leq |y-x|}(y)
-    \]
+    Infatti, quando \(|y-x| < \tilde \delta\) usiamo la continuità uniforme, mentre nell'altro caso
+    maggioriamo \(|f(y)-f(x)|\) con \(|f(y)| + |f(x)|\), e a loro volta maggioriamo ognuno di questi con
+    \(||f||_{\infty, K}\).
     Per \(y\) tale che \(|y-x| \geq \tilde \delta\), vale che
     \(\sfrac{|y-x|}{\tilde \delta} \geq 1\), ma questo è equivalente a dire che
     \(\sfrac{(y-x)^2}{\tilde \delta^2} \geq 1\).
-    Quindi possiamo aggiroanre la maggiorazione a \begin{align*}
+    Quindi possiamo aggiornare la maggiorazione a \begin{align*}
         |f(y) - f(x)| &\leq \tilde \varepsilon + 2||f||_{\infty, K}
         \frac{(y-x)^2}{\tilde \delta^2}
     \end{align*}
     Sostituendo questa troviamo che per monotonia \begin{DispWithArrows*}
-        \Delta(f,x) &\leq \phi_n\left(
+        \Delta_n(f,x) &\leq \phi_n\left(
             \frac{y^2 - 2xy + x^2}{\tilde \delta^2}
             \cdot 2||f||_{\infty, K} + \tilde\varepsilon
         \right)(x) + \frac{\varepsilon}{3} \\
@@ -3950,37 +3950,66 @@ Gli integrali di funzioni positive sono operatori lineari positivi.
             x^2 + \varepsilon_n^{(2)}(x) - 2x\left(x + \varepsilon_n^{(1)}(x)\right)
             + x^2\left(1 + \varepsilon_n^{(0)}(x)\right)
         \right] + \frac{\varepsilon}{3} \Arrow{Scegliendo \\ \(\tilde\varepsilon = \sfrac{\varepsilon}{6}\)} \\
-        &= \frac{2}{3}\varepsilon + 2\frac{||f||_{\infty, K}}{\tilde \delta^2}
-        \left[
+        &\leq \frac{2}{3}\varepsilon + 2\frac{||f||_{\infty, K}}{\tilde \delta^2}
+        \left|
             \varepsilon_n^{(2)}(x) - 2x\varepsilon_n^{(1)}(x) + x^2 \varepsilon_n^{(0)}(x)
-        \right]
+        \right|
     \end{DispWithArrows*}
+    dove abbiamo anche scelto \(n_\varepsilon\) abbastanza grande da avere
+    \(||\varepsilon_n^{(0)}||_{\infty, K} \leq 1\).
+    Poiché \(K\) è compatto, poniamo \[
+        \hat M = \sup_{x \in K}|x| < +\infty.
+    \]
     Otteniamo quindi la successione numerica che va a zero \begin{align*}
-        Q_n &\leq \frac{2||f||_{\infty, K}}{\tilde \delta^2} \left(
+        Q_n &\triangleq \frac{2||f||_{\infty, K}}{\tilde \delta^2} \left(
             ||\varepsilon_n^{(2)}||_{\infty, K} + 2 \hat M ||\varepsilon_n^{(1)}||_{\infty, K}
             + \hat M^2 ||\varepsilon_n^{(0)}||_{\infty, K}
         \right) < \frac{\varepsilon}{3}
     \end{align*}
-    per \(n \geq n_\varepsilon\) con \(\hat M = \operatorname{diag}(\varepsilon)\).
+    per \(n \geq n_\varepsilon\).
+    Quindi, per ogni \(x \in K\), abbiamo \[
+        \Delta_n(f,x) \leq \frac{2}{3}\varepsilon + Q_n < \varepsilon,
+    \]
+    e dunque
+    \[
+        \left|\left|
+            \phi_n(f(y)) - f(x)
+        \right|\right|_{\infty, K} \to 0.
+    \]
 \end{snippetproof}
 
-Il teorema può essere esteso per la convergenza in \(L^p\).
+Il teorema può essere esteso, sotto ipotesi opportune, anche alla convergenza in \(L^p\).
 
-Vediamo il test di Korovkin sui primi \(B_n(\cdot)\). Abbiamo \begin{enumerate}
+Vediamo il test di Korovkin sugli operatori di Bernstein \(B_n(\cdot)\) su \([0,1]\). Abbiamo \begin{enumerate}
     \item Vediamo se \(B_n(1)(x)\) converge a \(1\). Abbiamo
     \[
         \sum_{k=0}^n \binom{n}{k}x^k(1-x)^{n-k} = ((1 - x) + x)^n = 1
     \]
     e quindi \(\varepsilon_n^{(0)} = 0\).
-    \item Vediamo se \(B_n(y)(x)\) converge a \(y\). Abbiamo \begin{align*}
-        B_n(y)(x) &= \sum_{k=0}^n \binom{n}{k} \frac{k}{n} x^n(1-x)^{n-k} \\
-        &= \sum_{k=0}^n \frac{n!}{n!(n-k)!} \frac{k}{x} x^n(1-x)^{n-k} \\
-        &= \sum_{k=1}^n \binom{n-1}{k-1} x^k(1-x)^{n-k} \\
+    \item Vediamo se \(B_n(y)(x)\) converge a \(x\). Abbiamo \begin{align*}
+        B_n(y)(x) &= \sum_{k=0}^n \binom{n}{k} \frac{k}{n} x^k(1-x)^{n-k} \\
+        &= \sum_{k=1}^n \binom{n}{k} \frac{k}{n} x^k(1-x)^{n-k} \\
+        &= x\sum_{k=1}^n \binom{n-1}{k-1} x^{k-1}(1-x)^{n-k} \\
         &= x \cdot \sum_{q = 0}^{n-1} \binom{n-1}{q} x^q (1-x)^{n-1-q} \\
-        &= x \cdot B_{n-1}(1)(x) = x
+        &= x
     \end{align*}
     quindi \(\varepsilon_n^{(1)} = 0\).
-    \item TODO
+    \item Vediamo se \(B_n(y^2)(x)\) converge a \(x^2\). Abbiamo \begin{align*}
+        B_n(y^2)(x) &= \sum_{k=0}^n \binom{n}{k} \frac{k^2}{n^2} x^k(1-x)^{n-k} \\
+        &= \frac{1}{n^2}\sum_{k=0}^n k^2 \binom{n}{k} x^k(1-x)^{n-k} \\
+        &= \frac{1}{n^2}\sum_{k=0}^n k(k-1) \binom{n}{k} x^k(1-x)^{n-k}
+        + \frac{1}{n^2}\sum_{k=0}^n k \binom{n}{k} x^k(1-x)^{n-k} \\
+        &= \frac{n(n-1)}{n^2}x^2 + \frac{n}{n^2}x \\
+        &= x^2 + \frac{x(1-x)}{n}
+    \end{align*}
+    quindi
+    \[
+        \varepsilon_n^{(2)}(x) = \frac{x(1-x)}{n}
+    \]
+    e
+    \[
+        ||\varepsilon_n^{(2)}||_{\infty, [0,1]} \leq \frac{1}{4n} \to 0.
+    \]
 \end{enumerate}
 
 \pagebreak
