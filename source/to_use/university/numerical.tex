@@ -4428,109 +4428,185 @@ con matrici quadrate.
         \alpha_j = 1 + \frac{1}{9 + j}, \quad
         \frac{1}{10} \leq \delta_j \leq \frac15
     \]
-    Studiare lo spettro.
+    \begin{enumerate}
+        \item Studiare lo spettro di \(A\);
+        \item Determinare se \(\exists_{=1} \lambda\) autovalore tale che \(\lambda = \rho(A)\);
+        \item Determinare se \(A\) è invertibile.
+        \item Trovare un algoritmo veloce per risolvere \(Ax=b\) e calcolarne il costo computazionale.
+        \item Mostra la convergenza. Qual'è il \(k\) minimo?.
+    \end{enumerate}
 \end{snippetexercise}
 
 \begin{snippetsolution}{}
-    Dalla forma della matrice sappiamo che \[
-        \sigma(A) = \sigma(B_1) \union \sigma(B_2)
-    \]
-    Lo si vede usando la formula generale sopra data.
-    Studiamo quindi separamente questi spettri. I dischi di Gershgorin di \(B_1\) abbiamo
-    \begin{align*}
-        D_{1,m_1} &= \{ z \in \complexnumbers \suchthat |z-3| \leq 1\} = [2,4] \\
-        D_i &= \{ z \in \complexnumbers \suchthat |z-3| \leq 2\} = [1,5], \quad 1 < i < m_1 \\
-    \end{align*}
-    siccome la matrice è Hermitiana e quindi gli autovalori sono positivi.
-    Allora abbiamo che \(\sigma(B_1) \subseteq [1,5]\).
-    La matrice \(B_1\) è irriducibile in quanto il suo grafo associato è fortemente connesso (esempio con \(m_1 = 6\)):
-    \begin{center}
-        \begin{tikzpicture}[>=stealth, node distance=2cm]
-            \node[circle, draw, thick, minimum size=8mm] (1) at (0,0) {1};
-            \node[circle, draw, thick, minimum size=8mm] (2) at (2.5,0) {2};
-            \node[circle, draw, thick, minimum size=8mm] (3) at (5,0) {3};
-            \node[circle, draw, thick, minimum size=8mm] (4) at (7.5,0) {4};
-            \node[circle, draw, thick, minimum size=8mm] (5) at (10,0) {5};
-            \node[circle, draw, thick, minimum size=8mm] (6) at (12.5,0) {6};
-
-            \foreach \i in {1,2,3,4,5,6} {
-                \draw[->, thick] (\i) to[out=60, in=120, looseness=6] (\i);
-            }
-
-            \foreach \i/\j in {1/2, 2/3, 3/4, 4/5, 5/6} {
-                \draw[->, thick] (\i) to[bend left=20] (\j);
-                \draw[->, thick] (\j) to[bend left=20] (\i);
-            }
-        \end{tikzpicture}
-    \end{center}
-    Per il terzo teorema di Gershgorin, se un autovalore fosse \(1\) o \(5\)
-    dovrebbe stare sul bordo di tutti i dischi, cioè nell'intersezione, che non contiene \(1\) e \(5\).
-    Quindi \(\sigma(B_1) \subseteq (1,5)\). Studiamo ora lo spettro di \(B_2\).
-    Studiamo lo spettro di \(\tilde B = D^{-1} B_2 D\) con \(D\) diagonale che tanto non cambia.
-    Costruiamo la matrice \(D\) come
-    \[
-        D = \operatorname{diag}(d_1, \cdots, d_{m_2})
-    \]
-    con \[
-        d_1 = 1, \quad \frac{d_{j+1}}{d_j} = \sqrt{
-            \frac{\alpha_j}{\delta_j}
-        }
-    \]
-    Eseguendo il prodotto troviamo
-    \[
-        \tilde B = \begin{pmatrix}
-            2 & \alpha_1 \frac{d_1}{d_2} & \\
-            \delta_i \frac{d_2}{d_1} & \ddots & \ddots  \\
-            & \ddots & \ddots & \\
-            & & & 12
-         \end{pmatrix}
-         = \begin{pmatrix}
-            2 & \alpha_1 \sqrt{\frac{\delta_1}{\alpha_1}} & \\
-            \delta_i \sqrt{\frac{\alpha_1}{\delta_1}} & \ddots & \ddots  \\
-            & \ddots & \ddots & \\
-            & & & 12
-         \end{pmatrix}
-         = \begin{pmatrix}
-            2 & \alpha_1 \sqrt{\alpha_1\delta_1} & \\
-            \delta_i \sqrt{\alpha_1\delta_1} & \ddots & \ddots  \\
-            & \ddots & \ddots & \\
-            & & & 12
-         \end{pmatrix}
-    \]
-    Abbiamo precisamente scelto i valori \(d_j\) per forzare una matrice Hermitiana.
-    Sia \(\gamma_i =  \sqrt{\alpha_i \gamma_i}\). Calcoliamo ora i dischi di Gershgorin di questa matrice
-    \begin{align*}
-        D_1 &= \left[2 - \sqrt{\alpha_1 \delta_1}, 2 + \sqrt{\alpha_2 \delta_2}\right] \\
-        D_i &= \left[2 - (\sqrt{\alpha_{i-1}\delta_{i-1}} + \sqrt{\alpha_i \delta_i}), 2 + (\sqrt{\alpha_{i-1} \delta_{i-1}} + \sqrt{\alpha_i \delta_i})\right], \quad 1 < i < m_2 \\
-        D_{m_2} &= \left[12 - \sqrt{\alpha_{m_2 - 1} \delta_{m_2 - 1}}, 12 + \sqrt{\alpha_{m_2 - 1} \delta_{m_2 - 1}}\right]
-    \end{align*}
-    Chiaramente \(D_1 \subseteq D_2\) e quindi lo scartiamo.
-    Diamo un bound \[
-        \frac1{10} \left(1 + \frac{1}{9+j}\right) \leq
-        \alpha_j \delta_j \leq \frac15 \left(1 + \frac{1}{9+j}\right)
-        \leq \frac{11}{50}
-    \]
-    Vogliamo anche stimare la somma \[
-        \sqrt{\alpha_{i-1}\delta_{i-1}} + \sqrt{\alpha_i \delta_i}
-        = \sqrt{
-            \frac{10 + j}{9 + j}\frac15
-        } + \sqrt{
-            \frac{11 + j}{10 + j}\frac15
-        } \leq \sqrt{\frac{11}{50}} + \sqrt{\frac{12}{55}}
-    \]
-    per \(i=2\). Quindi, \[
-        \tilde D = \left[
-            2 - \sqrt{\frac{11}{50}} + \sqrt{\frac{12}{55}}, 2 + \sqrt{\frac{11}{50}} + \sqrt{\frac{12}{55}}
-        \right]
-        \union \left[
-            12 - \sqrt{\frac{\alpha_{n_2-1}}{5}}, 12 + \sqrt{\frac{\alpha_{n_2-1}}{5}}
-        \right]
-    \]
-    Il raggio più grande del secondo termine avviene per \(m_2 = 2\), così otteniamo una stima globale
-    per qualsiasi grandezza, cioè raggio \(\sqrt{\sfrac{11}{55}}\).
-    Questo può essere usato per controllare che l'ultimo cerchio sia isolato rispetto agli altri, cosa che è.
-    Inoltre, per il terzo teorema di Gershgorin, siccome i due intervalli sono disgiunti, il secondo intervallo lo possiamo considerare
-    aperto.
+    \begin{enumerate}
+        \item Dalla forma della matrice sappiamo che \[
+                \sigma(A) = \sigma(B_1) \union \sigma(B_2)
+            \]
+            Lo si vede usando la formula generale sopra data.
+            Studiamo quindi separamente questi spettri. I dischi di Gershgorin di \(B_1\) abbiamo
+            \begin{align*}
+                D_{1,m_1} &= \{ z \in \complexnumbers \suchthat |z-3| \leq 1\} = [2,4] \\
+                D_i &= \{ z \in \complexnumbers \suchthat |z-3| \leq 2\} = [1,5], \quad 1 < i < m_1 \\
+            \end{align*}
+            siccome la matrice è Hermitiana e quindi gli autovalori sono positivi.
+            Allora abbiamo che \(\sigma(B_1) \subseteq [1,5]\).
+            La matrice \(B_1\) è irriducibile in quanto il suo grafo associato è fortemente connesso (esempio con \(m_1 = 6\)):
+            \begin{center}
+                \begin{tikzpicture}[>=stealth, node distance=2cm]
+                    \node[circle, draw, thick, minimum size=8mm] (1) at (0,0) {1};
+                    \node[circle, draw, thick, minimum size=8mm] (2) at (2.5,0) {2};
+                    \node[circle, draw, thick, minimum size=8mm] (3) at (5,0) {3};
+                    \node[circle, draw, thick, minimum size=8mm] (4) at (7.5,0) {4};
+                    \node[circle, draw, thick, minimum size=8mm] (5) at (10,0) {5};
+                    \node[circle, draw, thick, minimum size=8mm] (6) at (12.5,0) {6};
+        
+                    \foreach \i in {1,2,3,4,5,6} {
+                        \draw[->, thick] (\i) to[out=60, in=120, looseness=6] (\i);
+                    }
+        
+                    \foreach \i/\j in {1/2, 2/3, 3/4, 4/5, 5/6} {
+                        \draw[->, thick] (\i) to[bend left=20] (\j);
+                        \draw[->, thick] (\j) to[bend left=20] (\i);
+                    }
+                \end{tikzpicture}
+            \end{center}
+            Per il terzo teorema di Gershgorin, se un autovalore fosse \(1\) o \(5\)
+            dovrebbe stare sul bordo di tutti i dischi, cioè nell'intersezione, che non contiene \(1\) e \(5\).
+            Quindi \(\sigma(B_1) \subseteq (1,5)\). Studiamo ora lo spettro di \(B_2\).
+            Studiamo lo spettro di \(\tilde B = D^{-1} B_2 D\) con \(D\) diagonale che tanto non cambia.
+            Costruiamo la matrice \(D\) come
+            \[
+                D = \operatorname{diag}(d_1, \cdots, d_{m_2})
+            \]
+            con \[
+                d_1 = 1, \quad \frac{d_{j+1}}{d_j} = \sqrt{
+                    \frac{\alpha_j}{\delta_j}
+                }
+            \]
+            Eseguendo il prodotto troviamo
+            \[
+                \tilde B = \begin{pmatrix}
+                    2 & \alpha_1 \frac{d_1}{d_2} & \\
+                    \delta_i \frac{d_2}{d_1} & \ddots & \ddots  \\
+                    & \ddots & \ddots & \\
+                    & & & 12
+                \end{pmatrix}
+                = \begin{pmatrix}
+                    2 & \alpha_1 \sqrt{\frac{\delta_1}{\alpha_1}} & \\
+                    \delta_i \sqrt{\frac{\alpha_1}{\delta_1}} & \ddots & \ddots  \\
+                    & \ddots & \ddots & \\
+                    & & & 12
+                \end{pmatrix}
+                = \begin{pmatrix}
+                    2 & \alpha_1 \sqrt{\alpha_1\delta_1} & \\
+                    \delta_i \sqrt{\alpha_1\delta_1} & \ddots & \ddots  \\
+                    & \ddots & \ddots & \\
+                    & & & 12
+                \end{pmatrix}
+            \]
+            Abbiamo precisamente scelto i valori \(d_j\) per forzare una matrice Hermitiana.
+            Sia \(\gamma_i =  \sqrt{\alpha_i \gamma_i}\). Calcoliamo ora i dischi di Gershgorin di questa matrice
+            \begin{align*}
+                D_1 &= \left[2 - \sqrt{\alpha_1 \delta_1}, 2 + \sqrt{\alpha_2 \delta_2}\right] \\
+                D_i &= \left[2 - (\sqrt{\alpha_{i-1}\delta_{i-1}} + \sqrt{\alpha_i \delta_i}), 2 + (\sqrt{\alpha_{i-1} \delta_{i-1}} + \sqrt{\alpha_i \delta_i})\right], \quad 1 < i < m_2 \\
+                D_{m_2} &= \left[12 - \sqrt{\alpha_{m_2 - 1} \delta_{m_2 - 1}}, 12 + \sqrt{\alpha_{m_2 - 1} \delta_{m_2 - 1}}\right]
+            \end{align*}
+            Chiaramente \(D_1 \subseteq D_2\) e quindi lo scartiamo.
+            Diamo un bound \[
+                \frac1{10} \left(1 + \frac{1}{9+j}\right) \leq
+                \alpha_j \delta_j \leq \frac15 \left(1 + \frac{1}{9+j}\right)
+                \leq \frac{11}{50}
+            \]
+            Vogliamo anche stimare la somma \[
+                \sqrt{\alpha_{i-1}\delta_{i-1}} + \sqrt{\alpha_i \delta_i}
+                = \sqrt{
+                    \frac{10 + j}{9 + j}\frac15
+                } + \sqrt{
+                    \frac{11 + j}{10 + j}\frac15
+                } \leq \sqrt{\frac{11}{50}} + \sqrt{\frac{12}{55}}
+            \]
+            per \(i=2\). Quindi, \[
+                \tilde D = \left[
+                    2 - \sqrt{\frac{11}{50}} + \sqrt{\frac{12}{55}}, 2 + \sqrt{\frac{11}{50}} + \sqrt{\frac{12}{55}}
+                \right]
+                \union \left[
+                    12 - \sqrt{\frac{\alpha_{n_2-1}}{5}}, 12 + \sqrt{\frac{\alpha_{n_2-1}}{5}}
+                \right]
+            \]
+            Il raggio più grande del secondo termine avviene per \(m_2 = 2\), così otteniamo una stima globale
+            per qualsiasi grandezza, cioè raggio \(\sqrt{\sfrac{11}{55}}\).
+            Questo può essere usato per controllare che l'ultimo cerchio sia isolato rispetto agli altri, cosa che è.
+            Inoltre, per il terzo teorema di Gershgorin, siccome i due intervalli sono disgiunti, il secondo intervallo lo possiamo considerare
+            aperto.
+        \item Per il secondo teorema di Gershgorin, \(D\) è unico cerchio e quindi contiene un unico autovalore
+        \(\lambda\) e siccome \(D \supset D_1\) è precisamente il raggio spettrale.
+        \item \(A\) è invertibile in quanto \(0 \notin \sigma(A)\).
+        \item Siccome la matrice è a blocchi possiamo scrivere
+        \[
+            \begin{pmatrix}
+                B_1 & C \\ 0 & B_2
+            \end{pmatrix}
+            \begin{pmatrix}
+                Z \\ Y
+            \end{pmatrix} = \begin{pmatrix}
+                b_1 \\ b_2
+            \end{pmatrix}
+        \]
+        dove \(\begin{pmatrix}Z \\ Y\end{pmatrix}\) è un vettore a blocchi, quindi
+        \(B_1 Z + C_y = b_1\) e \(B_2 X = b_2\). Dobbiamo capire il costo di \(B_2 Y = b_2\).
+        Possiamo adoperare l'algoritmo di Gauss e poi risolvere con sostituzione all'indietro.
+        % Magari qua mettere tutti i calcoli per tutti i passaggi per le prossime cose.
+        La parte di eliminazione di Gauss costa di \(m_2\).
+        Per l'eliminazione forward abbiamo 3 prodotti e de somme.
+        Ricorsivamente per \(i\) abbiamo il costo dell'eliminazione di \(5(n-1)\).
+        Per la back substitution troviamo \(1+3(n-1)\), quindi in totale \(8n - 7\) operazioni.
+        Per \(CY\) troviamo un costo \(n\) (assengnazione dei valori).
+        Quindi \(B_1Z = b_1 - CY\) quindi operazione tra vettori \(m_2 \times 1\).
+        Per trovare il costo risolvo con \(B_1 = 8m_1 - 7\). Calcolo \(CY = m_2\), in totale \((8m_1 - 7)+m_2\).
+        Il costo totale è quindi \[
+            (8m_1 - 7)+m_2 + (8m_2 - 7) = 9m_1 + 9m_2 - 14
+        \]
+        \item Sia \(A=M-N\) con \[
+            M = \begin{pmatrix}
+                B_1 & 0 \\ 0 & B_2
+            \end{pmatrix}, \quad D = M^{-1}N
+        \]
+        con \[
+            \lim_{n \to +\infty} (M^{-1} N)^k = 0
+        \]
+        Abbiamo \[
+            M^{-1} = \begin{pmatrix}
+                B_1^{-1} & \\
+                & B_2^{-1}
+            \end{pmatrix}, \quad N = \begin{pmatrix}
+                0 & -C \\ 0 & 0
+            \end{pmatrix}, \quad
+            M^{-1}N = \begin{pmatrix}
+                B_1^{-1} & 0 \\ 0 & B_2^{-1}
+            \end{pmatrix}
+            \begin{pmatrix}
+                0 & -C \\ 0 & 0
+            \end{pmatrix} = \begin{pmatrix}
+                0 & B_1^{-1}C \\ 0 & 0
+            \end{pmatrix} = P
+        \]
+        Viene calcolato il quadrato della matrice di iterazione \(P\) per verificare dopo quanti passi il metodo converge esattamente,
+        \[
+            P^2 = \begin{pmatrix}
+                0 & -B_1^{-1}C \\
+                0 & 0
+            \end{pmatrix}
+            \begin{pmatrix}
+                0 & -B_1^{-1}C \\
+                0 & 0
+            \end{pmatrix}=
+            \begin{pmatrix}
+                0 & 0 \\
+                0 & 0
+            \end{pmatrix}
+        \]
+        Il \(k\) minimo è \(k=2\).
+    \end{enumerate}
 \end{snippetsolution}
 
 
