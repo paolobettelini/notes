@@ -4393,18 +4393,20 @@ Formula generale dal complemento di Schur. Se \(E\) è invertibile allora
 con matrici quadrate.
 
 \begin{snippetexercise}{3/04/2025}
-    Sia \begin{align*}
+    Sia
+    \[
         A = \begin{pmatrix}
             B_1 & C \\
             0 & B_2
         \end{pmatrix}
-    \end{align*}
-    matrice a blocchi e siano \(m_1, m_2 \in \naturalnumbers^+\)
-    tali che \(n < m_1 + n_2\) così da definire
+    \]
+    una matrice a blocchi, con \(m_1, m_2 \in \naturalnumbers^+\), \(m_1, m_2 \geq 2\),
+    \(n=m_1+m_2\), così da definire
     \(B_1 \in \matrices_{m_1}(\realnumbers)\)
-    e \(B_2 \in \matrices_{m_2}(\realnumbers)\)
-    e \[
-        (C)_{i,j} = 1 + i
+    e \(B_2 \in \matrices_{m_2}(\realnumbers)\), e
+    \(C \in \matrices_{m_1 \times m_2}(\realnumbers)\) tale che
+    \[
+        (C)_{i,j} = 1 + i, \quad 1 \leq i \leq m_1, \quad 1 \leq j \leq m_2
     \]
     Le matrici hanno forma
     \[
@@ -4423,17 +4425,17 @@ con matrici quadrate.
             & & & \delta_{m_2-1} & 12
         \end{pmatrix}
     \]
-    dove la diagonal di \(B_2\) è tutta costante tranen l'ultimo elemento, e gli elementi sono definiti come
+    dove la diagonale di \(B_2\) è tutta costante tranne l'ultimo elemento, e gli elementi sono definiti come
     \[
         \alpha_j = 1 + \frac{1}{9 + j}, \quad
-        \frac{1}{10} \leq \delta_j \leq \frac15
+        \frac{1}{10} \leq \delta_j \leq \frac15, \quad j=1,\cdots,m_2-1.
     \]
     \begin{enumerate}
         \item Studiare lo spettro di \(A\);
         \item Determinare se \(\exists_{=1} \lambda\) autovalore tale che \(\lambda = \rho(A)\);
-        \item Determinare se \(A\) è invertibile.
-        \item Trovare un algoritmo veloce per risolvere \(Ax=b\) e calcolarne il costo computazionale.
-        \item Mostra la convergenza. Qual'è il \(k\) minimo?.
+        \item Determinare se \(A\) è invertibile;
+        \item Trovare un algoritmo veloce per risolvere \(Ax=b\) e calcolarne il costo computazionale;
+        \item Mostrare la convergenza. Qual è il \(k\) minimo?
     \end{enumerate}
 \end{snippetexercise}
 
@@ -4442,13 +4444,13 @@ con matrici quadrate.
         \item Dalla forma della matrice sappiamo che \[
                 \sigma(A) = \sigma(B_1) \union \sigma(B_2)
             \]
-            Lo si vede usando la formula generale sopra data.
-            Studiamo quindi separamente questi spettri. I dischi di Gershgorin di \(B_1\) abbiamo
+            Lo si vede usando la forma triangolare a blocchi.
+            Studiamo quindi separatamente questi spettri. I dischi di Gershgorin di \(B_1\) sono
             \begin{align*}
-                D_{1,m_1} &= \{ z \in \complexnumbers \suchthat |z-3| \leq 1\} = [2,4] \\
+                D_1 = D_{m_1} &= \{ z \in \complexnumbers \suchthat |z-3| \leq 1\} = [2,4] \\
                 D_i &= \{ z \in \complexnumbers \suchthat |z-3| \leq 2\} = [1,5], \quad 1 < i < m_1 \\
             \end{align*}
-            siccome la matrice è Hermitiana e quindi gli autovalori sono positivi.
+            siccome la matrice è simmetrica, quindi gli autovalori sono reali.
             Allora abbiamo che \(\sigma(B_1) \subseteq [1,5]\).
             La matrice \(B_1\) è irriducibile in quanto il suo grafo associato è fortemente connesso (esempio con \(m_1 = 6\)):
             \begin{center}
@@ -4471,9 +4473,13 @@ con matrici quadrate.
                 \end{tikzpicture}
             \end{center}
             Per il terzo teorema di Gershgorin, se un autovalore fosse \(1\) o \(5\)
-            dovrebbe stare sul bordo di tutti i dischi, cioè nell'intersezione, che non contiene \(1\) e \(5\).
-            Quindi \(\sigma(B_1) \subseteq (1,5)\). Studiamo ora lo spettro di \(B_2\).
-            Studiamo lo spettro di \(\tilde B = D^{-1} B_2 D\) con \(D\) diagonale che tanto non cambia.
+            dovrebbe stare sul bordo di tutti i dischi, ma \(1,5 \notin D_1 = D_{m_1}\).
+            Quindi \(\sigma(B_1) \subseteq (1,5)\). In realtà, essendo \(B_1\) tridiagonale di Toeplitz,
+            \[
+                \sigma(B_1) = \left\{3 - 2\cos\left(\frac{k\pi}{m_1+1}\right) \suchthat k=1,\cdots,m_1\right\}.
+            \]
+            Studiamo ora lo spettro di \(B_2\).
+            Studiamo lo spettro di \(\tilde B = D B_2 D^{-1}\) con \(D\) diagonale invertibile, che tanto non cambia.
             Costruiamo la matrice \(D\) come
             \[
                 D = \operatorname{diag}(d_1, \cdots, d_{m_2})
@@ -4486,32 +4492,28 @@ con matrici quadrate.
             Eseguendo il prodotto troviamo
             \[
                 \tilde B = \begin{pmatrix}
-                    2 & \alpha_1 \frac{d_1}{d_2} & \\
-                    \delta_i \frac{d_2}{d_1} & \ddots & \ddots  \\
-                    & \ddots & \ddots & \\
-                    & & & 12
+                    2 & \alpha_1 \frac{d_1}{d_2} & & & \\
+                    \delta_1 \frac{d_2}{d_1} & 2 & \alpha_2 \frac{d_2}{d_3} & & \\
+                    & \delta_2 \frac{d_3}{d_2} & \ddots & \ddots & \\
+                    & & \ddots & 2 & \alpha_{m_2-1} \frac{d_{m_2-1}}{d_{m_2}} \\
+                    & & & \delta_{m_2-1} \frac{d_{m_2}}{d_{m_2-1}} & 12
                 \end{pmatrix}
                 = \begin{pmatrix}
-                    2 & \alpha_1 \sqrt{\frac{\delta_1}{\alpha_1}} & \\
-                    \delta_i \sqrt{\frac{\alpha_1}{\delta_1}} & \ddots & \ddots  \\
-                    & \ddots & \ddots & \\
-                    & & & 12
-                \end{pmatrix}
-                = \begin{pmatrix}
-                    2 & \alpha_1 \sqrt{\alpha_1\delta_1} & \\
-                    \delta_i \sqrt{\alpha_1\delta_1} & \ddots & \ddots  \\
-                    & \ddots & \ddots & \\
-                    & & & 12
+                    2 & \gamma_1 & & & \\
+                    \gamma_1 & 2 & \gamma_2 & & \\
+                    & \gamma_2 & \ddots & \ddots & \\
+                    & & \ddots & 2 & \gamma_{m_2-1} \\
+                    & & & \gamma_{m_2-1} & 12
                 \end{pmatrix}
             \]
-            Abbiamo precisamente scelto i valori \(d_j\) per forzare una matrice Hermitiana.
-            Sia \(\gamma_i =  \sqrt{\alpha_i \gamma_i}\). Calcoliamo ora i dischi di Gershgorin di questa matrice
+            dove \(\gamma_j = \sqrt{\alpha_j\delta_j}\). Abbiamo precisamente scelto i valori \(d_j\) per forzare una matrice Hermitiana.
+            Calcoliamo ora i dischi di Gershgorin di questa matrice:
             \begin{align*}
-                D_1 &= \left[2 - \sqrt{\alpha_1 \delta_1}, 2 + \sqrt{\alpha_2 \delta_2}\right] \\
-                D_i &= \left[2 - (\sqrt{\alpha_{i-1}\delta_{i-1}} + \sqrt{\alpha_i \delta_i}), 2 + (\sqrt{\alpha_{i-1} \delta_{i-1}} + \sqrt{\alpha_i \delta_i})\right], \quad 1 < i < m_2 \\
-                D_{m_2} &= \left[12 - \sqrt{\alpha_{m_2 - 1} \delta_{m_2 - 1}}, 12 + \sqrt{\alpha_{m_2 - 1} \delta_{m_2 - 1}}\right]
+                D_1 &= \left[2 - \gamma_1, 2 + \gamma_1\right] \\
+                D_i &= \left[2 - (\gamma_{i-1} + \gamma_i), 2 + (\gamma_{i-1} + \gamma_i)\right], \quad 1 < i < m_2 \\
+                D_{m_2} &= \left[12 - \gamma_{m_2 - 1}, 12 + \gamma_{m_2 - 1}\right]
             \end{align*}
-            Chiaramente \(D_1 \subseteq D_2\) e quindi lo scartiamo.
+            I primi \(m_2-1\) dischi stanno tutti vicino a \(2\), mentre l'ultimo sta vicino a \(12\).
             Diamo un bound \[
                 \frac1{10} \left(1 + \frac{1}{9+j}\right) \leq
                 \alpha_j \delta_j \leq \frac15 \left(1 + \frac{1}{9+j}\right)
@@ -4519,27 +4521,38 @@ con matrici quadrate.
             \]
             Vogliamo anche stimare la somma \[
                 \sqrt{\alpha_{i-1}\delta_{i-1}} + \sqrt{\alpha_i \delta_i}
-                = \sqrt{
-                    \frac{10 + j}{9 + j}\frac15
+                \leq \sqrt{
+                    \frac{i + 9}{i + 8}\frac15
                 } + \sqrt{
-                    \frac{11 + j}{10 + j}\frac15
+                    \frac{i + 10}{i + 9}\frac15
                 } \leq \sqrt{\frac{11}{50}} + \sqrt{\frac{12}{55}}
             \]
-            per \(i=2\). Quindi, \[
-                \tilde D = \left[
-                    2 - \sqrt{\frac{11}{50}} + \sqrt{\frac{12}{55}}, 2 + \sqrt{\frac{11}{50}} + \sqrt{\frac{12}{55}}
+            dove il massimo si ottiene per \(i=2\). Quindi, \[
+                \sigma(B_2) = \sigma(\tilde B) \subseteq
+                \left[
+                    2 - \left(\sqrt{\frac{11}{50}} + \sqrt{\frac{12}{55}}\right),
+                    2 + \sqrt{\frac{11}{50}} + \sqrt{\frac{12}{55}}
                 \right]
-                \union \left[
-                    12 - \sqrt{\frac{\alpha_{n_2-1}}{5}}, 12 + \sqrt{\frac{\alpha_{n_2-1}}{5}}
-                \right]
+                \union
+                \left[
+                    12 - \sqrt{\frac{11}{50}},
+                    12 + \sqrt{\frac{11}{50}}
+                \right].
             \]
             Il raggio più grande del secondo termine avviene per \(m_2 = 2\), così otteniamo una stima globale
-            per qualsiasi grandezza, cioè raggio \(\sqrt{\sfrac{11}{55}}\).
+            per qualsiasi grandezza, cioè raggio \(\sqrt{\sfrac{11}{50}}\).
             Questo può essere usato per controllare che l'ultimo cerchio sia isolato rispetto agli altri, cosa che è.
-            Inoltre, per il terzo teorema di Gershgorin, siccome i due intervalli sono disgiunti, il secondo intervallo lo possiamo considerare
-            aperto.
-        \item Per il secondo teorema di Gershgorin, \(D\) è unico cerchio e quindi contiene un unico autovalore
-        \(\lambda\) e siccome \(D \supset D_1\) è precisamente il raggio spettrale.
+            Per il secondo teorema di Gershgorin, il primo intervallo contiene \(m_2-1\) autovalori di \(B_2\)
+            e il secondo intervallo contiene un unico autovalore. Inoltre, per il terzo teorema di Gershgorin,
+            siccome \(\tilde B\) è irriducibile, questo autovalore non può stare sul bordo del disco isolato.
+        \item Per il secondo teorema di Gershgorin, c'è un unico autovalore \(\lambda_\ast\) di \(B_2\) vicino a \(12\).
+        Inoltre,
+        \[
+            \lambda_\ast \geq 12 - \sqrt{\frac{11}{50}} > 5
+        \]
+        mentre gli autovalori di \(B_1\) stanno in \((1,5)\) e gli altri autovalori di \(B_2\) stanno
+        nell'intervallo centrato in \(2\), che è contenuto in \((1,3)\). Quindi \(\rho(A)=\lambda_\ast\),
+        e questo autovalore è unico.
         \item \(A\) è invertibile in quanto \(0 \notin \sigma(A)\).
         \item Siccome la matrice è a blocchi possiamo scrivere
         \[
@@ -4553,33 +4566,38 @@ con matrici quadrate.
             \end{pmatrix}
         \]
         dove \(\begin{pmatrix}Z \\ Y\end{pmatrix}\) è un vettore a blocchi, quindi
-        \(B_1 Z + C_y = b_1\) e \(B_2 X = b_2\). Dobbiamo capire il costo di \(B_2 Y = b_2\).
-        Possiamo adoperare l'algoritmo di Gauss e poi risolvere con sostituzione all'indietro.
-        % Magari qua mettere tutti i calcoli per tutti i passaggi per le prossime cose.
-        La parte di eliminazione di Gauss costa di \(m_2\).
-        Per l'eliminazione forward abbiamo 3 prodotti e de somme.
-        Ricorsivamente per \(i\) abbiamo il costo dell'eliminazione di \(5(n-1)\).
-        Per la back substitution troviamo \(1+3(n-1)\), quindi in totale \(8n - 7\) operazioni.
-        Per \(CY\) troviamo un costo \(n\) (assengnazione dei valori).
-        Quindi \(B_1Z = b_1 - CY\) quindi operazione tra vettori \(m_2 \times 1\).
-        Per trovare il costo risolvo con \(B_1 = 8m_1 - 7\). Calcolo \(CY = m_2\), in totale \((8m_1 - 7)+m_2\).
-        Il costo totale è quindi \[
-            (8m_1 - 7)+m_2 + (8m_2 - 7) = 9m_1 + 9m_2 - 14
+        \(B_1 Z + CY = b_1\) e \(B_2 Y = b_2\). Dobbiamo quindi risolvere prima
+        \(B_2 Y = b_2\), e poi \(B_1 Z = b_1 - CY\).
+        Possiamo adoperare l'algoritmo di Thomas, cioè l'eliminazione di Gauss specializzata alle matrici tridiagonali,
+        e poi risolvere con sostituzione all'indietro.
+        Per una matrice tridiagonale \(r \times r\), la parte di eliminazione costa \(5(r-1)\) operazioni,
+        mentre la sostituzione all'indietro costa \(1+3(r-1)\), quindi in totale \(8r - 7\) operazioni.
+        Per \(CY\) non conviene costruire \(C\): siccome \(C_{i,j}=1+i\),
+        \[
+            (CY)_i = (1+i)\sum_{j=1}^{m_2}Y_j.
         \]
+        Calcoliamo quindi \(s=\sum_{j=1}^{m_2}Y_j\) in \(m_2-1\) somme e poi \(b_1-CY\) in \(2m_1\) operazioni.
+        Il costo totale è quindi \[
+            (8m_2 - 7) + (m_2 - 1 + 2m_1) + (8m_1 - 7)
+            = 10m_1 + 9m_2 - 15
+        \]
+        cioè \(\mathcal{O}(m_1+m_2)\).
         \item Sia \(A=M-N\) con \[
             M = \begin{pmatrix}
                 B_1 & 0 \\ 0 & B_2
-            \end{pmatrix}, \quad D = M^{-1}N
+            \end{pmatrix}, \quad
+            N = \begin{pmatrix}
+                0 & -C \\ 0 & 0
+            \end{pmatrix}
         \]
-        con \[
-            \lim_{n \to +\infty} (M^{-1} N)^k = 0
+        Il metodo iterativo converge se
+        \[
+            \lim_{k \to +\infty} {(M^{-1} N)}^k = 0.
         \]
         Abbiamo \[
             M^{-1} = \begin{pmatrix}
                 B_1^{-1} & \\
                 & B_2^{-1}
-            \end{pmatrix}, \quad N = \begin{pmatrix}
-                0 & -C \\ 0 & 0
             \end{pmatrix}, \quad
             M^{-1}N = \begin{pmatrix}
                 B_1^{-1} & 0 \\ 0 & B_2^{-1}
@@ -4587,7 +4605,7 @@ con matrici quadrate.
             \begin{pmatrix}
                 0 & -C \\ 0 & 0
             \end{pmatrix} = \begin{pmatrix}
-                0 & B_1^{-1}C \\ 0 & 0
+                0 & -B_1^{-1}C \\ 0 & 0
             \end{pmatrix} = P
         \]
         Viene calcolato il quadrato della matrice di iterazione \(P\) per verificare dopo quanti passi il metodo converge esattamente,
@@ -4605,7 +4623,7 @@ con matrici quadrate.
                 0 & 0
             \end{pmatrix}
         \]
-        Il \(k\) minimo è \(k=2\).
+        Quindi \(P\) è nilpotente, \(\rho(P)=0\), e il metodo converge. Siccome \(P \neq 0\), il \(k\) minimo è \(k=2\).
     \end{enumerate}
 \end{snippetsolution}
 
