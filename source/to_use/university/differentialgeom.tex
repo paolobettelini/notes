@@ -5975,8 +5975,357 @@ In particolare, \(\left(d F\right)_x\) è definito anche sul bordo \[
     \]
 \end{snippettheorem}
 
-\begin{snippetproof}{}
-    Bott-Tu pagina \(31-32\).
+\newcommand{\Hn}{\mathbb{H}^n}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Area}{\operatorname{Area}}
+
+\begin{snippetproof}{Bott-Tu pagina \(31-32\).}
+    Il primo e il secondo membro dell'identità da dimostrare sono lineari in \(\omega\), quindi, scrivendo
+    \[
+    \omega=\sum_i \lambda_i\omega
+    \]
+    con \(\{\lambda_i\}\) una partizione dell'unità a supporto compatto, \(\supp(\lambda_i)\subset U_i\), dove gli \(U_i\) sono aperti immagini di carte
+    \[
+    \varphi_i:\realnumbers^n\longrightarrow U_i,
+    \qquad\text{oppure}\qquad
+    \varphi_i:\Hn\longrightarrow U_i,
+    \]
+    possiamo ricondurci a provare l'identità per \(\lambda_i\omega\) al posto di \(\omega\), cioè
+    \[
+    \int_X d(\lambda_i\omega)=\int_{\partial X}\lambda_i\omega
+    \qquad\text{per ogni }i.
+    \]
+    Notiamo che \(\supp(\lambda_i)\subset U_i\), quindi
+    \[
+    \int_X d(\lambda_i\omega)=\int_{U_i}d(\lambda_i\omega),
+    \qquad
+    \int_{\partial X}\lambda_i\omega=\int_{\partial X\cap U_i}\lambda_i\omega .
+    \]
+    Di conseguenza, assumendo \(\{(U_i,\varphi_i)\}\) un atlante orientato per \(X\), si ha
+    \[
+    \int_{U_i}d(\lambda_i\omega)
+    =
+    \int_{\operatorname{dom}(\varphi_i)}\varphi_i^*d(\lambda_i\omega)
+    =
+    \int_{\operatorname{dom}(\varphi_i)}d\bigl(\varphi_i^*(\lambda_i\omega)\bigr),
+    \]
+    con \(\operatorname{dom}(\varphi_i)=\realnumbers^n\) oppure \(\Hn\) e con \(\varphi_i^*(\lambda_i\omega)\) forma a supporto compatto. Ci riconduciamo quindi a provare la formula di Stokes per una \((n-1)\)-forma \(\omega\) a supporto compatto su \(\realnumbers^n\) oppure su \(\Hn\).
+    \begin{itemize}
+        \item Caso 1: \(\omega\) \((n-1)\)-forma a supporto compatto su \(\realnumbers^n\).
+        Poiché \(\partial\realnumbers^n=\varnothing\), per linearità possiamo ricondurci, a meno di permutazioni, al caso
+        \[
+        \omega=f\,dx_1\wedge\cdots\wedge dx_{n-1},
+        \qquad f\in C_c^\infty(\realnumbers^n).
+        \]
+        Allora
+        \[
+        \begin{aligned}
+        \int_{\realnumbers^n}d\omega
+        &=
+        \int_{\realnumbers^n}\frac{\partial f}{\partial x_n}\,dx_n\wedge dx_1\wedge\cdots\wedge dx_{n-1} \\
+        &\stackrel{\mathrm{def}}{=}
+        \int_{\realnumbers^n}\frac{\partial f}{\partial x_n}\,dx_1\cdots dx_n \\
+        &\stackrel{\text{Fubini}}{=}
+        \int_{\realnumbers^{n-1}}\left(\int_{\realnumbers}\frac{\partial f}{\partial x_n}\,dx_n\right)
+        \,dx_1\cdots dx_{n-1} \\
+        &=
+        \int_{\realnumbers^{n-1}}
+        \left[f(x_1,\ldots,x_{n-1},+\infty)-f(x_1,\ldots,x_{n-1},-\infty)\right]
+        \,dx_1\cdots dx_{n-1} \\
+        &=0,
+        \end{aligned}
+        \]
+        dove i limiti per \(x_n\to\pm\infty\) sono da intendersi nel senso ovvio, e sono nulli perché \(f\) ha supporto compatto.
+        D'altra parte
+        \[
+        \int_{\partial\realnumbers^n}\omega=0
+        \]
+        poiché \(\partial\realnumbers^n=\varnothing\). Quindi la formula di Stokes vale in questo caso.
+        \item Caso 2: \(\omega\) \((n-1)\)-forma a supporto compatto su \(\Hn\).
+        Sia
+        \[
+        \Hn=\{(x_1,\ldots,x_n):x_n\ge 0\},
+        \qquad
+        \partial\Hn=\realnumbers^{n-1}\times\{0\}.
+        \]
+        Come sopra, per linearità possiamo assumere che \(\omega\) sia di uno dei due tipi
+        \[
+        \omega=f\,dx_1\wedge\cdots\wedge dx_{n-1}
+        \]
+        oppure
+        \[
+        \omega=g\,dx_1\wedge\cdots\wedge\widehat{dx_k}\wedge\cdots\wedge dx_{n-1}\wedge dx_n,
+        \qquad 1\le k\le n-1.
+        \]
+        Nel secondo caso osserviamo che
+        \[
+        \omega|_{\partial\Hn}=0,
+        \]
+        poiché il pullback di \(dx_n\) su \(\partial\Hn\) è nullo. Quindi
+        \[
+        \int_{\partial\Hn}\omega=0.
+        \]
+        D'altra parte,
+        \[
+        \begin{aligned}
+        \int_{\Hn}d\omega
+        &=\int_{\Hn}d\left(g\,dx_1\wedge\cdots\wedge\widehat{dx_k}\wedge\cdots\wedge dx_{n-1}\wedge dx_n\right) \\
+        &=\int_{\Hn}\frac{\partial g}{\partial x_k}
+        \,dx_k\wedge dx_1\wedge\cdots\wedge\widehat{dx_k}\wedge\cdots\wedge dx_{n-1}\wedge dx_n \\
+        &\stackrel{\text{Fubini}}{=}
+        \int_{\realnumbers^{n-1}}
+        \left(g(+\infty)-g(-\infty)\right)
+        \,dx_1\cdots\widehat{dx_k}\cdots dx_n \\
+        &=0,
+        \end{aligned}
+        \]
+        perché \(g\) ha supporto compatto.
+        
+        Nel primo caso, cioè se
+        \[
+        \omega=f\,dx_1\wedge\cdots\wedge dx_{n-1},
+        \]
+        si ha
+        \[
+         d\omega=\frac{\partial f}{\partial x_n}\,dx_n\wedge dx_1\wedge\cdots\wedge dx_{n-1}.
+        \]
+        Pertanto
+        \[
+        \begin{aligned}
+        \int_{\Hn}d\omega
+        &=(-1)^{n-1}
+        \int_{\Hn}\frac{\partial f}{\partial x_n}\,dx_1\wedge\cdots\wedge dx_n \\
+        &=(-1)^{n-1}\int_{\realnumbers^{n-1}}\left(\int_0^{+\infty}\frac{\partial f}{\partial x_n}\,dx_n\right)
+        \,dx_1\cdots dx_{n-1} \\
+        &=(-1)^{n-1}\int_{\realnumbers^{n-1}}
+        \left[f(x_1,\ldots,x_{n-1},+\infty)-f(x_1,\ldots,x_{n-1},0)\right]
+        \,dx_1\cdots dx_{n-1} \\
+        &=(-1)^n\int_{\realnumbers^{n-1}}f(x_1,\ldots,x_{n-1},0)
+        \,dx_1\cdots dx_{n-1}.
+        \end{aligned}
+        \]
+        La forma di orientazione indotta su \(\partial\Hn\) è
+        \[
+        (-1)^n dx_1\wedge\cdots\wedge dx_{n-1},
+        \]
+        perciò
+        \[
+        \int_{\partial\Hn}\omega
+        =
+        \int_{\partial\Hn}f\,(-1)^n dx_1\wedge\cdots\wedge dx_{n-1}
+        =
+        \int_{\Hn}d\omega.
+        \]
+        Questa è la formula di Stokes in quest'ultimo caso.
+    \end{itemize}
 \end{snippetproof}
+
+\begin{snippetexample}{Teorema fondamentale del calcolo integrale}
+    Notiamo che \(X=[a,b]\) è una varietà di dimensione \(1\) con bordo
+    \[
+    \partial X=\{a,b\},
+    \]
+    orientabile con base orientata \(\partial/\partial t\) e \(1\)-forma associata \(dt\).
+    L'orientazione del bordo \(\{a,b\}\) è definita da una \(0\)-forma non nulla, cioè una funzione
+    \[
+    \delta:\{a,b\}\longrightarrow\realnumbers
+    \]
+    non nulla. Per definizione dell'orientazione di \(\partial[a,b]\), si prende
+    \[
+    \delta(b)=+1,
+    \qquad
+    \delta(a)=-1.
+    \]
+    Allora, data una \(0\)-forma \(\omega=f\) su \([a,b]\), troviamo
+    \[
+    \int_{[a,b]}df=\int_{\{a,b\}}f
+    \qquad\text{(Stokes)}.
+    \]
+    Per definizione, se \(df=f'(t)\,dt\), allora
+    \[
+    \int_{[a,b]}df
+    =
+    \int_{[a,b]}f'(t)\,dt
+    =
+    \int_a^b f'(t)\,dt
+    =f(b)-f(a),
+    \]
+    e
+    \[
+    \int_{\{a,b\}}f=f(b)-f(a).
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{Formula di Green}
+    Sia \(D\subset\realnumbers^2\) un dominio con \(\partial D\) curva semplice. Quindi \(D\) può essere inteso come varietà con bordo di dimensione \(2\), mentre \(\partial D\) ha dimensione \(1\).
+    Orientiamo \(D\) mediante \(dx_1\wedge dx_2\) e \(\partial D\) in senso antiorario.
+    \begin{center}
+        \begin{tikzpicture}[>=stealth,line cap=round,line join=round]
+        \coordinate (p) at (0,-1);
+
+        \draw[line width=0.8pt]
+        (p)
+        .. controls (0.55,-1.02) and (1.20,-0.88) .. (1.62,-0.48)
+        .. controls (2.08,-0.05) and (1.95,0.38) .. (2.08,0.82)
+        .. controls (2.25,1.42) and (1.70,1.78) .. (1.10,1.62)
+        .. controls (0.62,1.50) and (0.52,1.22) .. (0.12,1.24)
+        .. controls (-0.28,1.28) and (-0.38,1.04) .. (-0.82,0.98)
+        .. controls (-1.38,0.90) and (-1.78,0.48) .. (-1.86,-0.08)
+        .. controls (-1.96,-0.76) and (-1.48,-1.12) .. (-0.80,-1.10)
+        .. controls (-0.46,-1.09) and (-0.28,-1.01) .. (p);
+
+        \draw[->,line width=0.8pt] (-1.54,0.62) -- (-1.64,0.38);
+        \draw[->,line width=0.8pt] (2.02,0.28) -- (2.09,0.58);
+
+        \draw[->,cyan,line width=0.9pt] (p) -- ++(0.94,-0.34) node[right] {\(x_1\)};
+        \draw[->,cyan,line width=0.9pt] (p) -- ++(0.34,0.94) node[above right] {\(x_2\)};
+        \end{tikzpicture}
+    \end{center}
+    Vediamo cosa vuol dire la formula di Stokes. Sia \(\omega\) una \(1\)-forma,
+    \[
+    \omega=A\,dx_1+B\,dx_2.
+    \]
+    Allora
+    \[
+    \begin{aligned}
+    d\omega
+    &=dA\wedge dx_1+dB\wedge dx_2 \\
+    &=\left(\frac{\partial A}{\partial x_1}dx_1+\frac{\partial A}{\partial x_2}dx_2\right)\wedge dx_1
+    +
+    \left(\frac{\partial B}{\partial x_1}dx_1+\frac{\partial B}{\partial x_2}dx_2\right)\wedge dx_2 \\
+    &=\left(\frac{\partial B}{\partial x_1}-\frac{\partial A}{\partial x_2}\right)dx_1\wedge dx_2.
+    \end{aligned}
+    \]
+    Per Stokes,
+    \[
+    \int_D\left(\frac{\partial B}{\partial x_1}-\frac{\partial A}{\partial x_2}\right)dx_1\wedge dx_2
+    =
+    \int_{\partial D}(A\,dx_1+B\,dx_2).
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{Formula di Green di \(\realnumbers^2\)}
+    Sia \(D\subset\realnumbers^2\) un dominio con bordo regolare e semplice, e sia
+    \[
+    \sigma:[a,b]\longrightarrow\realnumbers^2
+    \]
+    una parametrizzazione di \(\partial D\) che orienta \(\partial D\) in senso antiorario. Allora
+    \[
+    \int_D\left(\frac{\partial B}{\partial x_1}-\frac{\partial A}{\partial x_2}\right)dx_1\wedge dx_2
+    =
+    \int_{\partial D}(A\,dx_1+B\,dx_2)
+    =
+    \int_a^b\left(A(\sigma(t))x_1'(t)+B(\sigma(t))x_2'(t)\right)dt.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{Formula dell'area di un dominio}
+    Se \(\sigma:[a,b]\to\partial D\) è una parametrizzazione di \(\partial D\) in senso antiorario, allora
+    \[
+    \Area(D)=\int_D dx_1\wedge dx_2
+    =
+    \int_{\partial D}\frac12\left(x_1\,dx_2-x_2\,dx_1\right).
+    \]
+    Infatti, posta
+    \[
+    \omega=\frac12\left(x_1\,dx_2-x_2\,dx_1\right),
+    \]
+    si ha
+    \[
+    d\omega
+    =\frac12 dx_1\wedge dx_2-\frac12 dx_2\wedge dx_1
+    =dx_1\wedge dx_2.
+    \]
+    Quindi
+    \[
+    \Area(D)=\int_D dx_1\wedge dx_2
+    \stackrel{\mathrm{def}}{=}
+    \int_D d\omega
+    =
+    \int_{\partial D}\omega.
+    \]
+\end{snippetexample}
+
+Il teorema di Stokes vale anche per varietà con bordo \(C^\infty\) a tratti; ad esempio, per \(D\subset\realnumbers^2\) dominio con bordo una curva \(C^\infty\) a tratti, o anche \(C^2\) a tratti.
+Il motivo è che \(D\) e \(\partial D\) sono approssimabili con varietà \(C^\infty\) con bordo; vedi, ad esempio, la discussione del teorema della tangente di Hopf.
+
+\section{Metriche su varietà}
+
+\begin{snippetdefinition}{Metrica Riemanniana}
+    Una \emph{metrica riemanniana} o \emph{pseudo-riemanniana} su una varietà differenziabile \(X\) è una scelta, per ogni \(x\in X\), di una forma bilineare simmetrica
+    \[
+    \langle\ ,\ \rangle_x:T_xX\times T_xX\longrightarrow\realnumbers,
+    \]
+    non degenere per ogni \(x\), di classe \(C^\infty\) rispetto a \(x\). Cioè, per ogni carta \(\varphi:U\to X\), con \(x\in\operatorname{Im}\varphi\), data la base canonica \(\partial_1,\ldots,\partial_n\) di \(T_xX\) associata a \(\varphi\), si deve avere
+    \[
+    g_{ij}(x)=\langle\partial_i,\partial_j\rangle_x
+    \]
+    funzione \(C^\infty\) su \(\operatorname{Im}\varphi=U\), per ogni \(i,j\).
+
+    La varietà \(X\) è detta \emph{riemanniana} se \(\langle\ ,\ \rangle_x\) è definita positiva per ogni \(x\in X\).
+    La varietà \(X\) è detta \emph{pseudo-riemanniana} altrimenti.
+\end{snippetdefinition}
+
+\begin{snippetexercise}{}
+    \(\realnumbers^n\) con \(\langle\ ,\ \rangle=\langle\ ,\ \rangle\) prodotto scalare euclideo:
+    \[
+    \langle v,w\rangle=\sum_{i=1}^n v_iw_i,
+    \qquad
+    v=(v_1,\ldots,v_n),\quad w=(w_1,\ldots,w_n).
+    \]
+    Allora \((\realnumbers^n,\langle\ ,\ \rangle)\) è una varietà riemanniana.
+\end{snippetexercise}
+
+\begin{snippetexercise}{}
+    \(\realnumbers^4\) con \(\langle\ ,\ \rangle_M\) prodotto di Minkowski. Per
+    \[
+    v=(v_t,v_x,v_y,v_z),
+    \qquad
+    w=(w_t,w_x,w_y,w_z),
+    \]
+    si pone
+    \[
+    \langle v,w\rangle_M
+    =
+    \begin{pmatrix}v_t&v_x&v_y&v_z\end{pmatrix}
+    \begin{pmatrix}
+    -1&0&0&0\\
+    0&1&0&0\\
+    0&0&1&0\\
+    0&0&0&1
+    \end{pmatrix}
+    \begin{pmatrix}w_t\\w_x\\w_y\\w_z\end{pmatrix}
+    =-v_tw_t+v_xw_x+v_yw_y+v_zw_z.
+    \]
+    Allora \((\realnumbers^4,\langle\ ,\ \rangle_M)\) è una varietà pseudo-riemanniana.
+\end{snippetexercise}
+
+Notare che l'iperquadrica di equazione
+\[
+\langle v,v\rangle_M=-v_t^2+v_x^2+v_y^2+v_z^2=0
+\]
+definisce un cono in \(\realnumbers^4\) detto \textit{cono luce}.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.2,>=Stealth]
+    \fill[yellow!35] (-2.0,-0.62)--(0,0)--(-2.0,0.62)--cycle;
+    \fill[yellow!35] (2.0,-0.62)--(0,0)--(2.0,0.62)--cycle;
+    \fill[cyan!18] (-0.62,1.55)--(0,0)--(0.62,1.55)--cycle;
+    \fill[cyan!18] (-0.62,-1.55)--(0,0)--(0.62,-1.55)--cycle;
+
+    \draw[->,thick] (-2.25,0)--(2.35,0) node[right] {\(v_t\)};
+    \draw[->,thick] (0,-1.7)--(0,1.8) node[above] {\(v_n\)};
+    \draw[thick] (-1.55,-1.25)--(1.55,1.25);
+    \draw[thick] (-1.55,1.25)--(1.55,-1.25);
+
+    \node[above left] at (-1.05,1.18) {tipo spazio};
+    \node[above right] at (1.02,0.58) {tipo tempo};
+    \node[left] at (-1.25,0.16) {tipo tempo};
+\end{tikzpicture}
+\end{center}
+
+\begin{snippettheorem}{}
+    Ogni varietà differenziabile \(X\) ha metriche riemanniane.
+\end{snippettheorem}
 
 \end{document}

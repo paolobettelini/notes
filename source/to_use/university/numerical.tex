@@ -3994,23 +3994,755 @@ Vediamo il test di Korovkin sugli operatori di Bernstein \(B_n(\cdot)\) su \([0,
         &= x
     \end{align*}
     quindi \(\varepsilon_n^{(1)} = 0\).
-    \item Vediamo se \(B_n(y^2)(x)\) converge a \(x^2\). Abbiamo \begin{align*}
-        B_n(y^2)(x) &= \sum_{k=0}^n \binom{n}{k} \frac{k^2}{n^2} x^k(1-x)^{n-k} \\
-        &= \frac{1}{n^2}\sum_{k=0}^n k^2 \binom{n}{k} x^k(1-x)^{n-k} \\
-        &= \frac{1}{n^2}\sum_{k=0}^n k(k-1) \binom{n}{k} x^k(1-x)^{n-k}
-        + \frac{1}{n^2}\sum_{k=0}^n k \binom{n}{k} x^k(1-x)^{n-k} \\
-        &= \frac{n(n-1)}{n^2}x^2 + \frac{n}{n^2}x \\
-        &= x^2 + \frac{x(1-x)}{n}
-    \end{align*}
-    quindi
+    \item %% Qua c'è da cambiare la variabile e usare la stessa degli ultimi due casi
+    Per definizione,
     \[
-        \varepsilon_n^{(2)}(x) = \frac{x(1-x)}{n}
+        B_n(f)(x)
+        =
+        \sum_{k=0}^{n}
+            \binom{n}{k}
+            f\left(\frac{k}{n}\right)
+            x^k(1-x)^{n-k}.
     \]
-    e
+    Dunque
+    \begin{align*}
+        B_n(X^2)(x)
+        &=
+        \sum_{k=0}^{n}
+            \binom{n}{k}
+            \left(\frac{k}{n}\right)^2
+            x^k(1-x)^{n-k} \\
+        &=
+        \sum_{k=1}^{n}
+            \frac{k}{n}
+            \binom{n}{k}
+            \frac{k}{n}
+            x^k(1-x)^{n-k} \\
+        &=
+        \frac{x}{n}
+        \sum_{k=1}^{n}
+            k
+            \binom{n}{k}
+            x^{k-1}(1-x)^{n-k}.
+    \end{align*}
+    Usando l'identità
     \[
-        ||\varepsilon_n^{(2)}||_{\infty, [0,1]} \leq \frac{1}{4n} \to 0.
+        k\binom{n}{k}
+        =
+        n\binom{n-1}{k-1},
+    \]
+    otteniamo
+    \begin{align*}
+        B_n(X^2)(x)
+        &=
+        \frac{x}{n}
+        \sum_{k=1}^{n}
+            k
+            \binom{n}{k}
+            x^{k-1}(1-x)^{n-k} \\
+        &=
+        \frac{x}{n}
+        \sum_{k=1}^{n}
+            n
+            \binom{n-1}{k-1}
+            \frac{k}{n}
+            x^{k-1}(1-x)^{n-k}.
+    \end{align*}
+    Scriviamo
+    \[
+        \frac{k}{n}
+        =
+        \frac{1}{n}+\frac{n-1}{n}\frac{k-1}{n-1}.
+    \]
+    Allora
+    \begin{align*}
+        B_n(X^2)(x)
+        &=
+        x
+        \sum_{k=1}^{n}
+            \binom{n-1}{k-1}
+            \left(
+                \frac{1}{n}
+                +
+                \frac{n-1}{n}\frac{k-1}{n-1}
+            \right)
+            x^{k-1}(1-x)^{n-k} \\
+        &=
+        \frac{x}{n}
+        \sum_{k=1}^{n}
+            \binom{n-1}{k-1}
+            x^{k-1}(1-x)^{n-k} \\
+        &\quad
+        +
+        \frac{x(n-1)}{n}
+        \sum_{k=1}^{n}
+            \binom{n-1}{k-1}
+            \frac{k-1}{n-1}
+            x^{k-1}(1-x)^{n-k}.
+    \end{align*}
+    Facendo il cambio di variabile \(j=k-1\), si ha
+    \[
+        \sum_{k=1}^{n}
+            \binom{n-1}{k-1}
+            x^{k-1}(1-x)^{n-k}
+        =
+        B_{n-1}(1)(x)=1,
+    \]
+    mentre
+    \[
+        \sum_{k=1}^{n}
+            \binom{n-1}{k-1}
+            \frac{k-1}{n-1}
+            x^{k-1}(1-x)^{n-k}
+        =
+        B_{n-1}(X)(x)=x.
+    \]
+    Quindi
+    \begin{align*}
+        B_n(X^2)(x)
+        &=
+        \frac{x}{n}
+        +
+        \frac{x(n-1)}{n}x \\
+        &=
+        \frac{x}{n}
+        +
+        \frac{n-1}{n}x^2 \\
+        &=
+        x^2+\frac{x(1-x)}{n}.
+    \end{align*}
+
+    Pertanto, se poniamo
+    \[
+        e_n^{(2)}(x)
+        =
+        B_n(X^2)(x)-x^2,
+    \]
+    allora
+    \[
+        e_n^{(2)}(x)
+        =
+        \frac{x(1-x)}{n}.
+    \]
+    Poiché
+    \[
+        0\leq x(1-x)\leq \frac{1}{4}
+        \qquad
+        \forall x\in[0,1],
+    \]
+    si ottiene
+    \[
+        \left\|e_n^{(2)}\right\|_{\infty,[0,1]}
+        \leq
+        \frac{1}{4n}
+        \xrightarrow[n\to\infty]{}
+        0.
     \]
 \end{enumerate}
+
+\begin{snippettheorem}{Teorema di Weierstrass in \(\realnumbers\)}
+	Sia \(K\subseteq \realnumbers\) compatto. Per ogni \(f\in C(K)\) esiste una successione di polinomi \(\{P_n\}\) tale che
+	\[
+		\left\|f-P_n\right\|_{\infty,K}
+		\xrightarrow[n\to\infty]{}
+		0.
+	\]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+	Procediamo per passi.
+
+	\medskip
+
+	\noindent
+	\textbf{Passo 1: \(K=[0,1]\).}
+
+	Consideriamo gli operatori di Bernstein
+	\[
+		B_n : C([0,1])\longrightarrow C([0,1]).
+	\]
+	Per costruzione \(B_n(f)\) è un polinomio di grado al più \(n\). Inoltre \(B_n\) è lineare positivo.
+
+	Abbiamo verificato che
+	\[
+		B_n(1)=1,
+		\qquad
+		B_n(X)=X,
+		\qquad
+		\left\|B_n(X^2)-X^2\right\|_{\infty,[0,1]}\to 0.
+	\]
+	Quindi \(B_n\) soddisfa il test di Korovkin su \([0,1]\). Per il teorema di Korovkin segue che
+	\[
+		\left\|B_n(f)-f\right\|_{\infty,[0,1]}
+		\xrightarrow[n\to\infty]{}
+		0
+		\qquad
+		\forall f\in C([0,1]).
+	\]
+
+	\medskip
+
+	\noindent
+	\textbf{Passo 2: \(K=[a,b]\), con \(a<b\).}
+
+	Sia \(f\in C([a,b])\). Definiamo
+	\[
+		g(t)
+		=
+		f(a+(b-a)t),
+		\qquad t\in[0,1].
+	\]
+	Allora \(g\in C([0,1])\). Per il passo precedente,
+	\[
+		\left\|g-B_n(g)\right\|_{\infty,[0,1]}
+		\xrightarrow[n\to\infty]{}
+		0.
+	\]
+	Per \(x\in[a,b]\) poniamo
+	\[
+		t=\frac{x-a}{b-a}.
+	\]
+	Allora \(t\in[0,1]\) e
+	\[
+		f(x)=g\left(\frac{x-a}{b-a}\right).
+	\]
+	Definiamo quindi
+	\[
+		P_n(x)
+		=
+		B_n(g)\left(\frac{x-a}{b-a}\right).
+	\]
+	Essendo composizione di un polinomio con un'affinità, \(P_n\) è un polinomio in \(x\). Inoltre
+	\begin{align*}
+		\left\|f-P_n\right\|_{\infty,[a,b]}
+		&=
+		\max_{x\in[a,b]}
+		\left|
+			f(x)
+			-
+			B_n(g)\left(\frac{x-a}{b-a}\right)
+		\right| \\
+		&=
+		\max_{t\in[0,1]}
+		\left|
+			g(t)-B_n(g)(t)
+		\right| \\
+		&=
+		\left\|g-B_n(g)\right\|_{\infty,[0,1]}
+		\xrightarrow[n\to\infty]{}
+		0.
+	\end{align*}
+
+	\medskip
+
+	\noindent
+	\textbf{Passo 3: \(K\subseteq\realnumbers\) compatto generico.}
+
+	Scegliamo un intervallo \([a,b]\) tale che
+	\[
+		K\subseteq(a,b).
+	\]
+	Per il teorema di estensione di Tietze, per ogni \(f\in C(K)\) esiste \(\widetilde f\in C([a,b])\) tale che
+	\[
+		\widetilde f_{\mid K}=f.
+	\]
+	Eventualmente si può scegliere l'estensione in modo che
+	\[
+		\widetilde f(a)=\widetilde f(b)=0.
+	\]
+
+	Per il passo precedente esiste una successione di polinomi \(\{P_n\}\) tale che
+	\[
+		\left\|\widetilde f-P_n\right\|_{\infty,[a,b]}
+		\xrightarrow[n\to\infty]{}
+		0.
+	\]
+	Restringendo a \(K\), otteniamo
+	\[
+		\left\|f-P_n\right\|_{\infty,K}
+		\leq
+		\left\|\widetilde f-P_n\right\|_{\infty,[a,b]}
+		\xrightarrow[n\to\infty]{}
+		0.
+	\]
+	Questo conclude la dimostrazione.
+\end{snippetproof}
+
+\begin{snippetproposition}{Osservazione sul test di Korovkin in dimensione \(1\)}
+	Sia \(K=[a,b]\) e sia
+	\[
+		\Phi:C(K)\longrightarrow C(K)
+	\]
+	un operatore lineare positivo. Se \(\Phi\) riproduce esattamente le funzioni test
+	\[
+		1,\qquad X,\qquad X^2,
+	\]
+	cioè
+	\[
+		\Phi(1)=1,
+		\qquad
+		\Phi(X)=X,
+		\qquad
+		\Phi(X^2)=X^2,
+	\]
+	allora \(\Phi(f)=f\) per ogni \(f\in C^2(K)\).
+
+	In particolare, per un operatore non banale non ci si aspetta che gli errori del test di Korovkin siano esattamente nulli; è sufficiente che tendano a zero uniformemente.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+	Fissiamo \(f\in C^2(K)\) e \(x\in K\). Scriviamo \(Y(t)=t\), per distinguere la variabile della funzione dal punto \(x\) in cui si valuta l'operatore.
+
+	Per il teorema di Taylor, per ogni \(y\in K\) esiste un punto \(\xi_{x,y}\) compreso tra \(x\) e \(y\) tale che
+	\[
+		f(y)
+		=
+		f(x)
+		+
+		f'(x)(y-x)
+		+
+		\frac{f''(\xi_{x,y})}{2}(y-x)^2.
+	\]
+	Quindi
+	\[
+		f(y)-f(x)
+		=
+		f'(x)(y-x)
+		+
+		\frac{f''(\xi_{x,y})}{2}(y-x)^2.
+	\]
+	Applicando \(\Phi\) e usando linearità e positività,
+	\begin{align*}
+		\left|
+			\Phi(f)(x)-f(x)
+		\right|
+		&=
+		\left|
+			\Phi(f(Y)-f(x))(x)
+		\right| \\
+		&\leq
+		\left|
+			f'(x)\Phi(Y-x)(x)
+		\right|
+		+
+		\frac{1}{2}\left\|f''\right\|_{\infty,K}
+		\Phi((Y-x)^2)(x).
+	\end{align*}
+	Ora
+	\[
+		\Phi(Y-x)(x)
+		=
+		\Phi(Y)(x)-x\Phi(1)(x)
+		=
+		x-x
+		=
+		0,
+	\]
+	e
+	\begin{align*}
+		\Phi((Y-x)^2)(x)
+		&=
+		\Phi(Y^2-2xY+x^2)(x) \\
+		&=
+		\Phi(Y^2)(x)-2x\Phi(Y)(x)+x^2\Phi(1)(x) \\
+		&=
+		x^2-2x^2+x^2 \\
+		&=
+		0.
+	\end{align*}
+	Pertanto
+	\[
+		\left|
+			\Phi(f)(x)-f(x)
+		\right|
+		=0
+		\qquad
+		\forall x\in K,
+	\]
+	da cui \(\Phi(f)=f\).
+\end{snippetproof}
+
+\begin{snippettheorem}{Teorema di Korovkin in \(\realnumbers^d\)}
+	Sia \(K\subseteq\realnumbers^d\) compatto e siano
+	\[
+		\Phi_n:C(K)\longrightarrow C(K)
+	\]
+	operatori lineari positivi.
+
+	Supponiamo che
+	\[
+		\left\|\Phi_n(g)-g\right\|_{\infty,K}
+		\xrightarrow[n\to\infty]{}
+		0
+	\]
+	per ogni
+	\[
+		g\in T,
+		\qquad
+		T=
+		\left\{
+			1,
+			X_1,\dots,X_d,
+			X_1^2+\cdots+X_d^2
+		\right\}
+	\]
+	Allora, per ogni \(f\in C(K)\),
+	\[
+		\left\|\Phi_n(f)-f\right\|_{\infty,K}
+		\xrightarrow[n\to\infty]{}
+		0.
+	\]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+	Indichiamo con
+	\[
+		\rho(X)=X_1^2+\cdots+X_d^2=\left\|X\right\|^2.
+	\]
+	L'ipotesi sul test di Korovkin equivale a dire che, per ogni \(g\in T\),
+	\[
+		\Phi_n(g)(x)
+		=
+		g(x)+\varepsilon_n^{(g)}(x),
+		\qquad
+		\left\|\varepsilon_n^{(g)}\right\|_{\infty,K}
+		\xrightarrow[n\to\infty]{}
+		0
+	\]
+	Fissiamo \(f\in C(K)\) e \(\varepsilon>0\). Poiché \(K\) è compatto, \(f\) è uniformemente continua. Quindi esiste \(\delta>0\) tale che
+	\[
+		\left\|y-x\right\|<\delta
+		\implies
+		|f(y)-f(x)|<\frac{\varepsilon}{3}
+		\qquad
+		\forall x,y\in K
+	\]
+	Inoltre, se \(\left\|y-x\right\|\geq\delta\), allora
+	\[
+		|f(y)-f(x)|
+		\leq
+		2\left\|f\right\|_{\infty,K}
+		\leq
+		\frac{2\left\|f\right\|_{\infty,K}}{\delta^2}
+		\left\|y-x\right\|^2.
+	\]
+	Combinando le due stime, otteniamo per ogni \(x,y\in K\):
+	\[
+		|f(y)-f(x)|
+		\leq
+		\frac{\varepsilon}{3}
+		+
+		\frac{2\left\|f\right\|_{\infty,K}}{\delta^2}
+		\left\|y-x\right\|^2.
+	\]
+
+	Fissiamo ora \(x\in K\). Scrivendo \(Y=(Y_1,\dots,Y_d)\) per la variabile della funzione su cui agisce \(\Phi_n\), abbiamo
+	\begin{align*}
+		\Phi_n(f)(x)-f(x)
+		&=
+		\Phi_n(f(Y)-f(x))(x)
+		+
+		f(x)\left(\Phi_n(1)(x)-1\right).
+	\end{align*}
+	Pertanto
+	\begin{align*}
+		\left|\Phi_n(f)(x)-f(x)\right|
+		&\leq
+		\Phi_n(|f(Y)-f(x)|)(x)
+		+
+		\left\|f\right\|_{\infty,K}
+		\left|\varepsilon_n^{(1)}(x)\right| \\
+		&\leq
+		\frac{\varepsilon}{3}\Phi_n(1)(x)
+		+
+		\frac{2\left\|f\right\|_{\infty,K}}{\delta^2}
+		\Phi_n(\left\|Y-x\right\|^2)(x)
+		+
+		\left\|f\right\|_{\infty,K}
+		\left|\varepsilon_n^{(1)}(x)\right|.
+	\end{align*}
+
+	Studiamo il termine quadratico. Poiché
+	\[
+		\left\|Y-x\right\|^2
+		=
+		\left\|Y\right\|^2
+		-
+		2\sum_{i=1}^{d}x_iY_i
+		+
+		\left\|x\right\|^2,
+	\]
+	si ha
+	\begin{align*}
+		\Phi_n(\left\|Y-x\right\|^2)(x)
+		&=
+		\Phi_n(\rho)(x)
+		-
+		2\sum_{i=1}^{d}x_i\Phi_n(Y_i)(x)
+		+
+		\left\|x\right\|^2\Phi_n(1)(x) \\
+		&=
+		\left\|x\right\|^2+\varepsilon_n^{(\rho)}(x)
+		-
+		2\sum_{i=1}^{d}x_i
+		\left(x_i+\varepsilon_n^{(X_i)}(x)\right) \\
+		&\quad
+		+
+		\left\|x\right\|^2
+		\left(1+\varepsilon_n^{(1)}(x)\right) \\
+		&=
+		\varepsilon_n^{(\rho)}(x)
+		-
+		2\sum_{i=1}^{d}x_i\varepsilon_n^{(X_i)}(x)
+		+
+		\left\|x\right\|^2\varepsilon_n^{(1)}(x).
+	\end{align*}
+	Poiché \(K\) è compatto, esiste \(M>0\) tale che
+	\[
+		\left\|x\right\|\leq M
+		\qquad
+		\forall x\in K.
+	\]
+	Dunque
+	\[
+		\left\|
+			\Phi_n(\left\|Y-\cdot\right\|^2)(\cdot)
+		\right\|_{\infty,K}
+		\xrightarrow[n\to\infty]{}
+		0.
+	\]
+
+	Inoltre
+	\[
+		\Phi_n(1)(x)
+		=
+		1+\varepsilon_n^{(1)}(x),
+	\]
+	quindi \(\Phi_n(1)\to 1\) uniformemente. Scegliendo \(n\) sufficientemente grande, tutti i termini d'errore precedenti sono minori di quanto serve affinché
+	\[
+		\left|\Phi_n(f)(x)-f(x)\right|<\varepsilon
+		\qquad
+		\forall x\in K.
+	\]
+	Ne segue
+	\[
+		\left\|\Phi_n(f)-f\right\|_{\infty,K}
+		\xrightarrow[n\to\infty]{}
+		0.
+	\]
+\end{snippetproof}
+
+Vogliamo ora dimostrare una versione multidimensionale del teorema di Weierstrass.
+
+\begin{snippettheorem}{Teorema di Weierstrass in \(\realnumbers^d\)}
+	Sia \(K\subseteq\realnumbers^d\) compatto. Per ogni \(f\in C(K)\) esiste una famiglia di polinomi \(\{P_{\mathbf n}\}_{\mathbf n}\), con
+	\[
+		\mathbf n=(n_1,\dots,n_d)\in\naturalnumbers^d,
+	\]
+	tale che
+	\[
+		\left\|P_{\mathbf n}-f\right\|_{\infty,K}
+		\xrightarrow[\min_i n_i\to\infty]{}
+		0.
+	\]
+	Si può scegliere \(P_{\mathbf n}\) di grado al più \(n_i\) nella variabile \(X_i\).
+\end{snippettheorem}
+
+Per dimostrare il risultato, cominciamo definendo i polinomi di Bernstein multidimensionali su \([0,1]^d\).
+
+Siano
+\[
+	\mathbf n=(n_1,\dots,n_d),
+	\qquad
+	\mathbf k=(k_1,\dots,k_d),
+\]
+con
+\[
+	0\leq k_i\leq n_i
+	\qquad
+	\forall i=1,\dots,d.
+\]
+Poniamo
+\[
+	\binom{\mathbf n}{\mathbf k}
+	=
+	\prod_{i=1}^{d}
+		\binom{n_i}{k_i},
+\]
+\[
+	x^{\mathbf k}
+	=
+	\prod_{i=1}^{d}
+		x_i^{k_i},
+	\qquad
+	(1-x)^{\mathbf n-\mathbf k}
+	=
+	\prod_{i=1}^{d}
+		(1-x_i)^{n_i-k_i}.
+\]
+Allora, per \(f\in C([0,1]^d)\), definiamo
+\[
+	B_{\mathbf n}(f)(x)
+	=
+	\sum_{k_1=0}^{n_1}
+	\cdots
+	\sum_{k_d=0}^{n_d}
+		f\left(
+			\frac{k_1}{n_1},
+			\dots,
+			\frac{k_d}{n_d}
+		\right)
+		\prod_{i=1}^{d}
+			\binom{n_i}{k_i}
+			x_i^{k_i}
+			(1-x_i)^{n_i-k_i}.
+\]
+In notazione multi-indice:
+\[
+	B_{\mathbf n}(f)(x)
+	=
+	\sum_{\mathbf k=0}^{\mathbf n}
+		\binom{\mathbf n}{\mathbf k}
+		f\left(\frac{\mathbf k}{\mathbf n}\right)
+		x^{\mathbf k}
+		(1-x)^{\mathbf n-\mathbf k},
+\]
+dove
+\[
+	\frac{\mathbf k}{\mathbf n}
+	=
+	\left(
+		\frac{k_1}{n_1},
+		\dots,
+		\frac{k_d}{n_d}
+	\right).
+\]
+
+\begin{snippetproof}{Dimostrazione del teorema di Weierstrass in \(\realnumbers^d\)}
+	Consideriamo prima il caso \(K=[0,1]^d\).
+
+	Gli operatori \(B_{\mathbf n}\) sono lineari positivi. Inoltre,
+	\[
+		B_{\mathbf n}(1)=1.
+	\]
+	Per ogni \(i=1,\dots,d\), poiché la variabile \(X_i\) dipende solo dalla \(i\)-esima coordinata,
+	\[
+		B_{\mathbf n}(X_i)=X_i.
+	\]
+	Analogamente, usando il calcolo unidimensionale già fatto,
+	\[
+		B_{\mathbf n}(X_i^2)(x)
+		=
+		x_i^2+\frac{x_i(1-x_i)}{n_i}.
+	\]
+	Quindi
+	\begin{align*}
+		B_{\mathbf n}(X_1^2+\cdots+X_d^2)(x)
+		&=
+		\sum_{i=1}^{d}
+			B_{\mathbf n}(X_i^2)(x) \\
+		&=
+		\sum_{i=1}^{d}
+			x_i^2
+		+
+		\sum_{i=1}^{d}
+			\frac{x_i(1-x_i)}{n_i}.
+	\end{align*}
+	Perciò
+	\[
+		\left|
+			B_{\mathbf n}(X_1^2+\cdots+X_d^2)(x)
+			-
+			(X_1^2+\cdots+X_d^2)(x)
+		\right|
+		=
+		\sum_{i=1}^{d}
+			\frac{x_i(1-x_i)}{n_i}.
+	\]
+	Siccome
+	\[
+		0\leq x_i(1-x_i)\leq\frac14,
+	\]
+	segue che
+	\[
+		\left\|
+			B_{\mathbf n}(X_1^2+\cdots+X_d^2)
+			-
+			(X_1^2+\cdots+X_d^2)
+		\right\|_{\infty,[0,1]^d}
+		\leq
+		\frac{d}{4\min_i n_i}
+		\xrightarrow[\min_i n_i\to\infty]{}
+		0.
+	\]
+	Dunque \(B_{\mathbf n}\) soddisfa il test di Korovkin multidimensionale. Pertanto
+	\[
+		\left\|B_{\mathbf n}(f)-f\right\|_{\infty,[0,1]^d}
+		\xrightarrow[\min_i n_i\to\infty]{}
+		0
+		\qquad
+		\forall f\in C([0,1]^d).
+	\]
+
+	Consideriamo ora un rettangolo
+	\[
+		Q=
+		[a_1,b_1]\times\cdots\times[a_d,b_d].
+	\]
+	Per \(f\in C(Q)\), definiamo
+	\[
+		g(t_1,\dots,t_d)
+		=
+		f\left(
+			a_1+(b_1-a_1)t_1,
+			\dots,
+			a_d+(b_d-a_d)t_d
+		\right),
+	\]
+	con \(t=(t_1,\dots,t_d)\in[0,1]^d\).
+	Allora \(g\in C([0,1]^d)\). Definiamo
+	\[
+		P_{\mathbf n}(x)
+		=
+		B_{\mathbf n}(g)
+		\left(
+			\frac{x_1-a_1}{b_1-a_1},
+			\dots,
+			\frac{x_d-a_d}{b_d-a_d}
+		\right).
+	\]
+	Allora \(P_{\mathbf n}\) è un polinomio in \(x_1,\dots,x_d\), di grado al più \(n_i\) nella variabile \(x_i\), e
+	\[
+		\left\|P_{\mathbf n}-f\right\|_{\infty,Q}
+		=
+		\left\|B_{\mathbf n}(g)-g\right\|_{\infty,[0,1]^d}
+		\xrightarrow[\min_i n_i\to\infty]{}
+		0.
+	\]
+
+	Infine, se \(K\subseteq\realnumbers^d\) è compatto generico, scegliamo un rettangolo \(Q\) tale che
+	\[
+		K\subseteq \operatorname{int}(Q).
+	\]
+	Per il teorema di estensione di Tietze, ogni \(f\in C(K)\) ammette un'estensione \(\widetilde f\in C(Q)\) con
+	\[
+		\widetilde f_{\mid K}=f.
+	\]
+	Per quanto appena dimostrato, esiste una famiglia di polinomi \(\{P_{\mathbf n}\}_{\mathbf n}\) tale che
+	\[
+		\left\|\widetilde f-P_{\mathbf n}\right\|_{\infty,Q}
+		\xrightarrow[\min_i n_i\to\infty]{}
+		0.
+	\]
+	Restringendo a \(K\), si ottiene
+	\[
+		\left\|f-P_{\mathbf n}\right\|_{\infty,K}
+		\leq
+		\left\|\widetilde f-P_{\mathbf n}\right\|_{\infty,Q}
+		\xrightarrow[\min_i n_i\to\infty]{}
+		0.
+	\]
+\end{snippetproof}
 
 \pagebreak
 

@@ -6135,6 +6135,490 @@ Applicazione del teorema di trasformazione.
     dove \(\mu\) è la misura di Lebesgue.
 \end{snippetdefinition}
 
+\section{Vettori gaussiani}
+
+\begin{snippetdefinition}{Vettore atteso}
+    Sia \((\Omega,\mathcal F,\mathbb P)\) uno spazio di probabilità e sia
+    \[
+        X=(X_1,\ldots,X_n)
+    \]
+    un vettore aleatorio a valori in \(\realnumbers^n\).
+    Chiamiamo \emph{vettore atteso} di \(X\) il vettore dei valori attesi, cioè
+    \[
+        \mathbb E[X]
+        =
+        \begin{pmatrix}
+            \mathbb E[X_1]\\
+            \vdots\\
+            \mathbb E[X_n]
+        \end{pmatrix}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{}
+    Sia \((\Omega,\mathcal F,\mathbb P)\) uno spazio di probabilità e sia
+    \[
+        X=(X_1,\ldots,X_n)
+    \]
+    un vettore aleatorio a valori in \(\realnumbers^n\).
+    Chiamiamo \emph{matrice di covarianza} di \(X\) la matrice \(Q_X\) definita da
+    \[
+        Q_X
+        =
+        (q_{ij})_{i,j=1}^n,
+        \qquad
+        q_{ij}
+        =
+        \operatorname{Cov}(X_i,X_j).
+    \]
+\end{snippetdefinition}
+
+Notiamo subito che \(Q_X\) è simmetrica. Inoltre
+\[
+	\operatorname{diag}(Q_X)
+	=
+	\bigl(
+		\operatorname{Var}(X_1),
+		\ldots,
+		\operatorname{Var}(X_n)
+	\bigr).
+\]
+
+Sia ora \(A\) una matrice \(m\times n\) e sia \(b\in\realnumbers^m\). Allora
+\[
+	\mathbb E[AX+b]
+	=
+	A\mathbb E[X]+b.
+\]
+Inoltre, se \(Q_X\) è la matrice di covarianza di \(X\), allora
+\[
+	Q_{AX+b}
+	=
+	AQ_XA^T.
+\]
+
+\begin{snippetdefinition}{Vettore gaussiano standard}
+    Sia \(X=(X_1,\ldots,X_n)\) un vettore aleatorio di \(\realnumbers^n\).
+    Diciamo che \(X\) è un \emph{vettore gaussiano standard} se è assolutamente continuo con densità
+    \[
+        f_X(x_1,\ldots,x_n)
+        =
+        \frac{1}{(2\pi)^{n/2}}
+        e^{-\frac12(x_1^2+\cdots+x_n^2)}.
+    \]
+    In questo caso usiamo la notazione
+    \[
+        X\sim\mathcal N(0,I_n).
+    \]
+\end{snippetdefinition}
+
+Se \(n=1\), ritroviamo esattamente la densità della gaussiana reale standard
+\(\mathcal N(0,1)\).
+
+Studiamo alcune proprietà immediate di questo vettore. La densità si può scrivere come
+\[
+	f_X(x_1,\ldots,x_n)
+	=
+	\prod_{i=1}^n
+	\frac{1}{\sqrt{2\pi}}
+	e^{-\frac{x_i^2}{2}}.
+\]
+Quindi \(X_1,\ldots,X_n\) sono variabili aleatorie indipendenti e identicamente distribuite, con
+\[
+	X_i\sim\mathcal N(0,1)
+	\qquad
+	\forall i\in\{1,\ldots,n\}.
+\]
+Da ciò segue che
+\[
+	\mathbb E[X_i]=0,
+	\qquad
+	\operatorname{Var}(X_i)=1
+	\qquad
+	\forall i\in\{1,\ldots,n\}.
+\]
+Inoltre, per indipendenza,
+\[
+	\operatorname{Cov}(X_i,X_j)=0
+	\qquad
+	\forall i\neq j.
+\]
+Di conseguenza
+\[
+	\mathbb E[X]=0,
+	\qquad
+	Q_X=I_n.
+\]
+
+\begin{snippetdefinition}{Vettore gaussiano}
+    Sia \(X=(X_1,\ldots,X_n)\) un vettore aleatorio di \(\realnumbers^n\).
+    Diciamo che \(X\) è un \emph{vettore gaussiano} se è assolutamente continuo con densità
+    \[
+        f_X(x)
+        =
+        \frac{1}{(2\pi)^{n/2}\sqrt{\det(Q)}}
+        e^{-\frac12\left\langle Q^{-1}(x-m),x-m\right\rangle},
+    \]
+    dove \(m\in\realnumbers^n\) e \(Q\) è una matrice \(n\times n\) simmetrica definita positiva, cioè
+    \[
+        \left\langle Qx,x\right\rangle>0
+        \qquad
+        \forall x\in\realnumbers^n\setminus\{0\}.
+    \]
+    In particolare \(Q\) è invertibile e \(\det(Q)>0\).
+    In questo caso usiamo la notazione
+    \[
+        X\sim\mathcal N(m,Q).
+    \]
+\end{snippetdefinition}
+
+Vedremo ora che \(m\) è effettivamente il vettore medio e \(Q\) è effettivamente la matrice di covarianza.
+
+\paragraph{Richiamo.}
+Se \(T\) è una matrice simmetrica definita positiva, allora esiste un'unica matrice simmetrica definita positiva \(V\) tale che
+\[
+	V^2=T.
+\]
+La matrice \(V\) si chiama \emph{radice quadrata} di \(T\) e si indica con
+\[
+	V=\sqrt T.
+\]
+Nel caso diagonale, se
+\[
+	T=\operatorname{diag}(\lambda_1,\ldots,\lambda_n),
+	\qquad
+	\lambda_i>0,
+\]
+allora
+\[
+	\sqrt T
+	=
+	\operatorname{diag}(\sqrt{\lambda_1},\ldots,\sqrt{\lambda_n}).
+\]
+
+\begin{snippettheorem}{Caratterizzazione tramite gaussiana standard}
+	Sia \(X=(X_1,\ldots,X_n)\) un vettore aleatorio di \(\realnumbers^n\), sia \(Q\) una matrice \(n\times n\) simmetrica definita positiva e sia \(m\in\realnumbers^n\).
+	Allora
+	\[
+		X\sim\mathcal N(m,Q)
+	\]
+	se e solo se
+	\[
+		X\stackrel{d}{=}\sqrt Q\,Z+m,
+		\qquad
+		Z\sim\mathcal N(0,I_n).
+	\]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+	\begin{iffproof}
+		\item
+		Supponiamo che
+		\[
+			X=\sqrt Q\,Z+m,
+			\qquad
+			Z\sim\mathcal N(0,I_n).
+		\]
+		Poiché \(Q\) è definita positiva, anche \(\sqrt Q\) è definita positiva, dunque è invertibile.
+		Consideriamo la mappa
+		\[
+			\varphi:\realnumbers^n\to\realnumbers^n,
+			\qquad
+			\varphi(z)=\sqrt Q\,z+m.
+		\]
+		Questa è un diffeomorfismo, con inversa
+		\[
+			\varphi^{-1}(x)
+			=
+			Q^{-1/2}(x-m).
+		\]
+		Per il teorema di trasformazione delle densità, \(X\) è assolutamente continuo con densità
+		\begin{align*}
+			f_X(x)
+			&=
+			f_Z\bigl(\varphi^{-1}(x)\bigr)
+			\left|\det\left(D\varphi^{-1}(x)\right)\right|\\
+			&=
+			\frac{1}{(2\pi)^{n/2}}
+			e^{-\frac12\left\|Q^{-1/2}(x-m)\right\|^2}
+			\cdot
+			\frac{1}{\det(\sqrt Q)}\\
+			&=
+			\frac{1}{(2\pi)^{n/2}\sqrt{\det(Q)}}
+			e^{-\frac12\left\|Q^{-1/2}(x-m)\right\|^2}.
+		\end{align*}
+		Ora, siccome \(Q^{-1/2}\) è simmetrica,
+		\[
+			\left\|Q^{-1/2}(x-m)\right\|^2
+			=
+			\left\langle Q^{-1}(x-m),x-m\right\rangle.
+		\]
+		Quindi
+		\[
+			f_X(x)
+			=
+			\frac{1}{(2\pi)^{n/2}\sqrt{\det(Q)}}
+			e^{-\frac12\left\langle Q^{-1}(x-m),x-m\right\rangle}.
+		\]
+		Dunque \(X\sim\mathcal N(m,Q)\).
+
+		\item
+		Viceversa, supponiamo che
+		\[
+			X\sim\mathcal N(m,Q).
+		\]
+		Definiamo
+		\[
+			Z
+			=
+			Q^{-1/2}(X-m).
+		\]
+		Applicando di nuovo il teorema di trasformazione delle densità al diffeomorfismo
+		\[
+			\psi(x)=Q^{-1/2}(x-m),
+		\]
+		si verifica che \(Z\) ha densità
+		\[
+			f_Z(z)
+			=
+			\frac{1}{(2\pi)^{n/2}}
+			e^{-\frac12\langle z,z\rangle}.
+		\]
+		Quindi
+		\[
+			Z\sim\mathcal N(0,I_n).
+		\]
+		Pertanto
+		\[
+			X=\sqrt Q\,Z+m,
+		\]
+		come volevamo.
+	\end{iffproof}
+\end{snippetproof}
+
+Dal teorema precedente deduciamo immediatamente che, se \(X\sim\mathcal N(m,Q)\), allora
+\[
+	\mathbb E[X]
+	=
+	\mathbb E[\sqrt Q\,Z+m]
+	=
+	\sqrt Q\,\mathbb E[Z]+m
+	=
+	m.
+\]
+Inoltre
+\[
+	Q_X
+	=
+	Q_{\sqrt Q\,Z}
+	=
+	\sqrt Q\,Q_Z\,(\sqrt Q)^T
+	=
+	\sqrt Q\,I_n\,\sqrt Q
+	=
+	Q.
+\]
+
+\begin{snippetproposition}{Trasformazioni lineari di vettori gaussiani}
+	Sia
+	\[
+		X\sim\mathcal N(m,Q),
+	\]
+	sia \(A\) una matrice \(n\times n\) invertibile e sia \(b\in\realnumbers^n\).
+	Allora il vettore
+	\[
+		Y=AX+b
+	\]
+	è gaussiano. Più precisamente,
+	\[
+		Y\sim\mathcal N(Am+b,AQA^T).
+	\]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+	Per quanto dimostrato prima, possiamo scrivere
+	\[
+		X=\sqrt Q\,Z+m,
+		\qquad
+		Z\sim\mathcal N(0,I_n).
+	\]
+	Allora
+	\begin{align*}
+		Y
+		&=
+		AX+b\\
+		&=
+		A(\sqrt Q\,Z+m)+b\\
+		&=
+		A\sqrt Q\,Z+Am+b.
+	\end{align*}
+	Il termine \(A\sqrt Q\,Z\) è un vettore gaussiano centrato. La sua matrice di covarianza è
+	\[
+		Q_{A\sqrt Q\,Z}
+		=
+		A\sqrt Q\,I_n\,(\sqrt Q)^TA^T
+		=
+		AQA^T.
+	\]
+	Quindi
+	\[
+		Y\sim\mathcal N(Am+b,AQA^T).
+	\]
+\end{snippetproof}
+
+\paragraph{Osservazione.}
+In generale, l'incorrelazione tra due variabili aleatorie, cioè
+\[
+	\operatorname{Cov}(X,Y)=0,
+\]
+non implica l'indipendenza. Nel caso gaussiano, però, questa implicazione diventa vera.
+
+\begin{snippettheorem}{Indipendenza delle componenti gaussiane}
+	Sia
+	\[
+		X=(X_1,\ldots,X_n)\sim\mathcal N(m,Q).
+	\]
+	Allora
+	\[
+		Q=\operatorname{diag}(\lambda_1,\ldots,\lambda_n),
+		\qquad
+		\lambda_i>0,
+	\]
+	se e solo se \(X_1,\ldots,X_n\) sono indipendenti e
+	\[
+		X_i\sim\mathcal N(m_i,\lambda_i)
+		\qquad
+		\forall i\in\{1,\ldots,n\}.
+	\]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+	\begin{iffproof}
+		\item
+		Supponiamo che
+		\[
+			Q=\operatorname{diag}(\lambda_1,\ldots,\lambda_n),
+			\qquad
+			\lambda_i>0.
+		\]
+		Allora
+		\[
+			\det(Q)=\lambda_1\cdots\lambda_n
+		\]
+		e
+		\[
+			Q^{-1}
+			=
+			\operatorname{diag}
+			\left(
+				\frac{1}{\lambda_1},
+				\ldots,
+				\frac{1}{\lambda_n}
+			\right).
+		\]
+		La densità di \(X\) diventa
+		\begin{align*}
+			f_X(x_1,\ldots,x_n)
+			&=
+			\frac{1}{(2\pi)^{n/2}\sqrt{\lambda_1\cdots\lambda_n}}
+			e^{-\frac12\sum_{i=1}^n\frac{(x_i-m_i)^2}{\lambda_i}}\\
+			&=
+			\prod_{i=1}^n
+			\frac{1}{\sqrt{2\pi\lambda_i}}
+			e^{-\frac{(x_i-m_i)^2}{2\lambda_i}}.
+		\end{align*}
+		Ogni fattore
+		\[
+			\frac{1}{\sqrt{2\pi\lambda_i}}
+			e^{-\frac{(x_i-m_i)^2}{2\lambda_i}}
+		\]
+		è la densità di una gaussiana reale \(\mathcal N(m_i,\lambda_i)\).
+		Quindi la densità congiunta fattorizza nel prodotto delle densità marginali. Per il criterio di indipendenza dei vettori assolutamente continui, \(X_1,\ldots,X_n\) sono indipendenti.
+
+		\item
+		Viceversa, supponiamo che \(X_1,\ldots,X_n\) siano indipendenti e che
+		\[
+			X_i\sim\mathcal N(m_i,\lambda_i),
+			\qquad
+			\lambda_i>0.
+		\]
+		Allora, per \(i\neq j\),
+		\[
+			\operatorname{Cov}(X_i,X_j)=0,
+		\]
+		mentre
+		\[
+			\operatorname{Var}(X_i)=\lambda_i.
+		\]
+		Dunque la matrice di covarianza di \(X\) è diagonale:
+		\[
+			Q=Q_X
+			=
+			\operatorname{diag}(\lambda_1,\ldots,\lambda_n).
+		\]
+	\end{iffproof}
+\end{snippetproof}
+
+\paragraph{Osservazione.}
+Fino a questo punto ci siamo limitati al caso dei vettori gaussiani assolutamente continui rispetto alla misura di Lebesgue, perché li abbiamo definiti come vettori assolutamente continui aventi una certa densità.
+
+La definizione classica, però, ammette anche il caso in cui il vettore gaussiano non sia assolutamente continuo rispetto alla misura di Lebesgue.
+
+Sia \(X=(X_1,\ldots,X_n)\) un vettore aleatorio di \(\realnumbers^n\).
+Secondo la definizione classica, diciamo che \(X\) è un vettore gaussiano se, per ogni \(v\in\realnumbers^n\), la variabile aleatoria reale
+\[
+	\langle X,v\rangle
+\]
+è una gaussiana reale oppure una delta di Dirac. Una delta di Dirac può essere interpretata come una gaussiana con varianza nulla.
+
+In questo caso la matrice di covarianza può essere soltanto semidefinita positiva, quindi non necessariamente invertibile. Quando ciò accade, il vettore gaussiano non è assolutamente continuo rispetto alla misura di Lebesgue su tutto \(\realnumbers^n\).
+
+Se \(Q\) è una matrice di covarianza semidefinita positiva, possiamo decomporre
+\[
+	\realnumbers^n
+	=
+	\operatorname{Im}(Q)\oplus\ker(Q).
+\]
+Grazie a questa decomposizione, possiamo disintegrare la legge del vettore gaussiano in due parti:
+\[
+	\text{parte assolutamente continua su }\operatorname{Im}(Q),
+	\qquad
+	\text{parte di Dirac su }\ker(Q).
+\]
+
+\begin{snippetexample}{Vettore gaussiano degenere}
+	Consideriamo
+	\[
+		X\sim\mathcal N
+		\left(
+			\begin{pmatrix}
+				0\\
+				0
+			\end{pmatrix},
+			\begin{pmatrix}
+				1 & 0\\
+				0 & 0
+			\end{pmatrix}
+		\right).
+	\]
+	In questo caso la prima componente è una gaussiana reale standard, associata all'autovettore
+	\[
+		\begin{pmatrix}
+			1\\
+			0
+		\end{pmatrix},
+	\]
+	mentre la seconda componente è una delta di Dirac in \(0\), associata all'autovettore
+	\[
+		\begin{pmatrix}
+			0\\
+			1
+		\end{pmatrix}.
+	\]
+\end{snippetexample}
+
+
+
 \pagebreak
 
 \section{Esercizi}
