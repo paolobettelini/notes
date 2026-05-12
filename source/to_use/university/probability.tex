@@ -6617,6 +6617,529 @@ Grazie a questa decomposizione, possiamo disintegrare la legge del vettore gauss
 	\]
 \end{snippetexample}
 
+\begin{snippetexercise}{}
+    Sia \((X,Y) \sim \mathcal N(0, Q)\), con \(Q\) definita positiva
+    \(2 \times 2\). In particolare,
+    \[
+        Q= \begin{pmatrix}
+            a & b \\ b & c
+        \end{pmatrix}.
+    \]
+    Sappiamo che
+    \[
+        a = \operatorname{Var}(X) > 0, \qquad
+        c = \operatorname{Var}(Y) > 0, \qquad
+        b = \operatorname{Cov}(X,Y),
+    \]
+    e, poiché \(Q\) è definita positiva,
+    \[
+        ac-b^2 > 0.
+    \]
+
+    Vogliamo calcolare la legge del vettore
+    \[
+        \begin{pmatrix}
+            V \\ Z
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            X \\ X+Y
+        \end{pmatrix}.
+    \]
+    Scriviamo
+    \[
+        \begin{pmatrix}
+            V \\ Z
+        \end{pmatrix}
+        =
+        A
+        \begin{pmatrix}
+            X \\ Y
+        \end{pmatrix},
+        \qquad
+        A =
+        \begin{pmatrix}
+            1 & 0 \\ 1 & 1
+        \end{pmatrix}.
+    \]
+    Poiché \(A\) è invertibile, si ha
+    \[
+        \begin{pmatrix}
+            V \\ Z
+        \end{pmatrix}
+        \sim
+        \mathcal N(0, \Sigma),
+        \qquad
+        \Sigma = AQA^t.
+    \]
+    Calcoliamo:
+    \[
+        \Sigma
+        =
+        \begin{pmatrix}
+            1 & 0 \\ 1 & 1
+        \end{pmatrix}
+        \begin{pmatrix}
+            a & b \\ b & c
+        \end{pmatrix}
+        \begin{pmatrix}
+            1 & 1 \\ 0 & 1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            a & a+b \\ a+b & a+c+2b
+        \end{pmatrix}.
+    \]
+    Poniamo quindi
+    \[
+        \Sigma =
+        \begin{pmatrix}
+            \alpha & \gamma \\
+            \gamma & \beta
+        \end{pmatrix},
+    \]
+    dove
+    \[
+        \alpha = a, \qquad
+        \gamma = a+b, \qquad
+        \beta = a+c+2b.
+    \]
+    In particolare,
+    \[
+        \beta
+        =
+        \operatorname{Var}(Z)
+        =
+        \operatorname{Var}(X+Y)
+        =
+        \operatorname{Var}(X)
+        +
+        \operatorname{Var}(Y)
+        +
+        2\operatorname{Cov}(X,Y).
+    \]
+
+    Vogliamo calcolare la legge di \(X+Y\). Poiché \(Z=X+Y\),
+    basta calcolare la densità marginale di \(Z\).
+
+    La densità congiunta di \((V,Z)\) è
+    \[
+        f_{V,Z}(v,z)
+        =
+        \frac{1}{2\pi\sqrt{\det \Sigma}}
+        e^{-\frac12
+        \left\langle
+            \Sigma^{-1}
+            \begin{pmatrix}
+                v \\ z
+            \end{pmatrix},
+            \begin{pmatrix}
+                v \\ z
+            \end{pmatrix}
+        \right\rangle}.
+    \]
+    Poiché
+    \[
+        \Sigma^{-1}
+        =
+        \frac{1}{\det \Sigma}
+        \begin{pmatrix}
+            \beta & -\gamma \\
+            -\gamma & \alpha
+        \end{pmatrix},
+    \]
+    otteniamo
+    \begin{align*}
+        \left\langle
+            \Sigma^{-1}
+            \begin{pmatrix}
+                v \\ z
+            \end{pmatrix},
+            \begin{pmatrix}
+                v \\ z
+            \end{pmatrix}
+        \right\rangle
+        &=
+        \frac{1}{\det \Sigma}
+        \left\langle
+            \begin{pmatrix}
+                \beta v - \gamma z \\
+                -\gamma v + \alpha z
+            \end{pmatrix},
+            \begin{pmatrix}
+                v \\ z
+            \end{pmatrix}
+        \right\rangle \\
+        &=
+        \frac{1}{\det \Sigma}
+        \left[
+            \beta v^2 - 2\gamma vz + \alpha z^2
+        \right].
+    \end{align*}
+    Quindi
+    \[
+        f_{V,Z}(v,z)
+        =
+        \frac{1}{2\pi\sqrt{\det \Sigma}}
+        e^{
+        -\frac{1}{2\det \Sigma}
+        \left[
+            \beta v^2 - 2\gamma vz + \alpha z^2
+        \right]
+        }.
+    \]
+
+    Calcoliamo ora la marginale di \(Z\):
+    \begin{align*}
+        f_Z(z)
+        &=
+        \int_{\mathbb R} f_{V,Z}(v,z)\,dv \\
+        &=
+        \frac{1}{2\pi\sqrt{\det \Sigma}}
+        \int_{\mathbb R}
+        e^{
+        -\frac{1}{2\det \Sigma}
+        \left[
+            \beta v^2 - 2\gamma vz + \alpha z^2
+        \right]
+        }
+        \,dv.
+    \end{align*}
+    Completiamo il quadrato:
+    \[
+        \beta v^2 - 2\gamma vz + \alpha z^2
+        =
+        \beta
+        \left(
+            v - \frac{\gamma}{\beta}z
+        \right)^2
+        +
+        \left(
+            \alpha - \frac{\gamma^2}{\beta}
+        \right)z^2.
+    \]
+    Quindi
+    \begin{align*}
+        f_Z(z)
+        &=
+        \frac{1}{2\pi\sqrt{\det \Sigma}}
+        e^{
+        -\frac{1}{2\det \Sigma}
+        \left(
+            \alpha - \frac{\gamma^2}{\beta}
+        \right)z^2
+        }
+        \int_{\mathbb R}
+        e^{
+        -\frac{\beta}{2\det \Sigma}
+        \left(
+            v - \frac{\gamma}{\beta}z
+        \right)^2
+        }
+        \,dv.
+    \end{align*}
+    Ora
+    \[
+        \int_{\mathbb R}
+        e^{
+        -\frac{\beta}{2\det \Sigma}
+        \left(
+            v - \frac{\gamma}{\beta}z
+        \right)^2
+        }
+        \,dv
+        =
+        \sqrt{\frac{2\pi \det \Sigma}{\beta}}.
+    \]
+    Dunque
+    \[
+        f_Z(z)
+        =
+        \frac{1}{\sqrt{2\pi\beta}}
+        e^{
+        -\frac{1}{2\det \Sigma}
+        \left(
+            \alpha - \frac{\gamma^2}{\beta}
+        \right)z^2
+        }.
+    \]
+    Poiché
+    \[
+        \det \Sigma = \alpha\beta - \gamma^2,
+    \]
+    si ha
+    \[
+        \frac{1}{\det \Sigma}
+        \left(
+            \alpha - \frac{\gamma^2}{\beta}
+        \right)
+        =
+        \frac{1}{\beta}.
+    \]
+    Pertanto
+    \[
+        f_Z(z)
+        =
+        \frac{1}{\sqrt{2\pi\beta}}
+        e^{-\frac{z^2}{2\beta}}.
+    \]
+    Quindi
+    \[
+        Z = X+Y \sim \mathcal N(0,\beta),
+    \]
+    cioè
+    \[
+        X+Y
+        \sim
+        \mathcal N
+        \left(
+            0,
+            \operatorname{Var}(X)
+            +
+            \operatorname{Var}(Y)
+            +
+            2\operatorname{Cov}(X,Y)
+        \right).
+    \]
+
+    Se \(X\) e \(Y\) sono indipendenti, allora
+    \[
+        \operatorname{Cov}(X,Y)=0,
+    \]
+    e quindi
+    \[
+        X+Y
+        \sim
+        \mathcal N
+        \left(
+            0,
+            \operatorname{Var}(X)+\operatorname{Var}(Y)
+        \right).
+    \]
+\end{snippetexercise}
+
+\begin{snippetproposition}{}
+    Sia \((X,Y) \sim \mathcal N(\overline m, Q)\) con \(\overline m = (m_1 + m_2)\).
+    Allora, \[
+        X + Y \sim \mathcal N(m_1 + m_2,
+        \operatorname{Var}(X) + \operatorname{Var}(Y)
+        + 2\operatorname{Cov}(X,Y)
+        )
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Simile all'esercizio soprastante.
+\end{snippetproof}
+
+Infatti preso \(v = (v_1, v_2) \in \realnumbers^2\), allora per quanto fatto
+\(\langle (X,Y) , v \rangle\) è una variabile aleatoria gaussiana per ogni \(v \in \realnumbers^2\).
+
+\section{Probabilità condizionate e variabili aleatorie}
+
+Sia \((\Omega, \mathcal F, \mathbb P)\) spazio di probabilità e \((X,Y)\)
+vettore aleaotrio di \(\realnumbers^2\).
+Vogliamo studiare la distribuzione di \(X\) dato \(Y=y\).
+
+\subsection{Caso discreto}
+
+Sia \(p_{X,Y}\) la densità discreta congiunta di
+\((X,Y)\). Sia \(S \subseteq \realnumbers^2\) discreto tale che
+\[
+    p_{X,Y}(x,y)> 0 \iff (x,y) \in S
+\]
+Dato \((x,y) \in S\), allora
+\[
+    \mathbb P(X=x | Y=y) = \frac{
+        \mathbb P(X=x, Y=y)
+    }{
+        \mathbb P(Y=y)
+    } = \frac{p_{X,Y}(x,y)}{
+        p_Y(y)
+    }
+\]
+
+\begin{snippetdefinition}{}
+    In questo caso chiamiamo densità di \(X\) dato \(Y\) la funzione
+    \[
+        p_{X|Y \colon \realnumbers \fromto [0,1]}
+    \]
+    tale che \[
+        p_{X|Y}(|y) = \frac{
+            p_{X,Y}(x,y)
+        }{
+            p_Y(y)
+        }
+    \]
+\end{snippetdefinition}
+
+Notiamo che \(p_{X|Y}\) è una densità. Infatti, per ogni \(y \in \realnumbers\)
+\[
+    \sum_{x\in \realnumbers} p_{X|Y}(x|y)
+    = \sum_{x\in \realnumbers} \frac{p_{X,Y}(x,y)}{p_Y(y)}
+    = \frac{1}{p_Y(y)} \cancelto{p_Y(y)}{
+        \sum_{x \in \realnumbers} p_{X,Y}(x,y)
+    } = 1
+\]
+
+Inoltre, se abbiamo l'indipendenza \[
+    p_{X|Y}(x|y) = \frac{p_{X,Y}(x,y)}{p_Y(y)}
+    = \frac{p_X(x)\cancel{p_Y(y)}}{\cancel{p_Y(y)}} = p_X(x)
+\]
+Succede esattamente quello che succede nel caso della probabilità condizionata fra due eventi
+indipendenti.
+
+Possiamo anche definire il valore atteso di \(X\) dato \(Y=y\) come segue
+\[
+    \mathbb E[X|Y=y] \triangleq \sum_{x \in \realnumbers} xp_{X|Y}(x|y)
+\]
+
+Se volessimo calcolare il valore atteso senza fissato \(y\),
+\[
+    \mathbb E[X | Y] = \sum_{x \in \realnumbers} x p_{X|Y}(x|Y)
+\]
+Questa è una variabile aleatoria definita da
+\[
+    \mathbb E[X|Y](\omega) = \sum_{x \in \realnumbers} x p_{X|Y}(x,y), \quad y = Y(\omega)
+\]
+Questa osservazione ci dà l'dea intuitiva
+che può essere formalizzato (avanzato) che il valore atteso condizionato
+può essere definito come l'unica variabile aleatoria \(\Omega \fromto \realnumbers\)
+che verifica una certa proprietà.
+
+\begin{snippetexercise}{}
+    Sia \(X \sim \operatorname{Poiss}(\lambda)\)
+    e \(Y \sim \operatorname{Poiss}(\gamma)\) indipendenti.
+    Vogliamo calcolare la densità discreta condizionata di \(X\) dato \(X+Y = n \in \naturalnumbers \union \{0\}\).
+    Ricordiamo che \(X + Y = \operatorname{Poiss}(\lambda + \gamma)\).
+    Quindi, per ogni \(n \in \naturalnumbers \union \{0\}\) e \(k \leq n\) vale
+    \begin{DispWithArrows*}
+        p_{X|X+Y}(k|n) &=
+        \mathbb P(X=k | X+Y=n)
+        = \frac{
+            \mathbb P(X=k, X+Y=n)
+        }{
+            \mathbb P(X + Y = n)
+        } = \frac{
+            \mathbb P(X=k, Y=n-k)
+        }{
+            P(X+Y=n)
+        } \Arrow{Indipendenza} \\
+        &= \frac{
+            \mathbb P(X=k) \mathbb P(Y=n-k)
+        }{
+            \mathbb P(X+Y = n)
+        }
+        = \frac{
+            \frac{\cancel{e^{-\lambda}} \lambda^k}{k!}
+            \frac{\cancel{e^{-\gamma}} \gamma^{n-k}}{(n-k)!}
+        }{
+            \frac{
+                \cancel{e^{-(\lambda + \gamma)} (\lambda + \gamma)^n}
+            }{n!}
+        } \\
+        &= \binom{n}{k}\left(
+            \frac{\lambda}{\lambda + \gamma}
+        \right)^k \left(
+            \frac{\gamma}{\lambda + \gamma}
+        \right)^{n-k}
+    \end{DispWithArrows*}
+    che è una densità di una \[
+        \operatorname{Bin}\left(n, \frac{\lambda}{\lambda + \gamma}\right)
+    \]
+    Quindi possiamo dire che per ogni \(n \in \naturalnumbers\),
+    \[
+        X | X + Y = n \sim \operatorname{Bin}\left(
+            n, \frac{\lambda}{\lambda + \gamma}
+        \right)
+    \]
+    Da questo deduciamo che
+    \[
+        \mathbb E[X|X + Y = n] = n \left(
+            \frac{\lambda}{\lambda + \gamma}
+        \right)
+    \]
+\end{snippetexercise}
+
+\subsection{Caso continuo}
+
+Sia \(f_{X,Y}\) densità congiunta di \((X,Y)\) e \(f_Y\) marginali di \(Y\).
+Analogamente al caso discreto
+
+\begin{snippetdefinition}{}
+    Fissati \(y \in \realnumbers\) tale che \(f_Y(y) > 0\) definiamo
+    densità di \(X\) dato \(Y\) la funzione
+    \[
+        f_{X|Y}(\cdot | y)\colon \realnumbers \fromto \realnumbers^+
+    \]
+    definita da
+    \[
+        f_{X|Y}(x,y) \triangleq \frac{f_{X,Y}(x,y)}{f_Y(y)}
+    \]
+    quasi ovunque \(x \in \realnumbers\).
+\end{snippetdefinition}
+
+Fissato \(y \in \realnumbers\), \(f_{X|Y}(\cdot|y)\) è una densità.
+Infatti,
+\begin{align*}
+    \int_\realnumbers f_{X|Y}(x|y)\,dx
+    &= \int_\realnumbers \frac{f_{X,Y}(x,y)}{f_Y(y)}\,dx \\
+    &= \frac{1}{f_Y(y)} \cancelto{f_Y(y)}{
+        \int_\realnumbers f_{X,Y}(x,y)\,dx
+    } = 1
+\end{align*}
+
+Anche in questo caso, se \(X\) e \(Y\) sono indipendenti, allora
+\begin{align*}
+    f_{X|Y}(x|y) &= \frac{f_{X,Y}(x,y)}{f_Y(y)} = \frac{f_X(x) f_Y(y)}{f_Y(y)}
+    = f_X(x)
+\end{align*}
+quasi ovunque \(x \in \realnumbers\).
+Nello stesso modo, possiamo definire il valore atteso condizionato come
+\[
+    \mathbb E[X|Y=y] = \int_\realnumbers xf_{X|Y}(x|y)\,dx
+\]
+
+\begin{snippetexercise}{}
+    Consideriamo \[
+        f_{X,Y}(x,y) = \frac{
+            e^{\sfrac xy}e^{-y}
+        }{
+            y
+        } \chi_{\realnumbers^+ \cartesianprod \realnumbers^+}(x,y)
+    \]
+    Calcoliamo la densità condizionata
+    di \(X\) dato \(Y\). Come prima cosa dobbiamo calcolare la marginale di \(Y\).
+    Per ogni \(y>0\) vale che
+    \begin{align*}
+        f_Y(y) &= \int_\realnumbers \frac{e^{-\sfrac xy}{e^-y}}{y}
+        \chi_{\realnumbers^+ \cartesianprod \realnumbers^+}(x,y)\,dx
+        = e^{-y} \integral[0][+\infty][
+            \frac{e^{-\sfrac xy}}{y}
+        ][x] \\
+        &= e^{-y}\left[-e^{-\sfrac xy}\right]_0^\infty = e^{-y}
+    \end{align*}
+    Da questo \[
+        f_Y(y) = e^{-y}\chi_{[0,+\infty]}(y)
+    \]
+    cioè \(Y \sim \operatorname{Exp}(1)\).
+    Da qua possiamo calcolare \(f_{X|Y}(\cdot|y)\) per ogni \(y>0\), cioè
+    \begin{align*}
+        f_{X|Y}(x|y) &=
+        \frac{f_{X,Y}(x,y)}{f_Y(y)} =
+        \frac{e^{-\sfrac xy} \cancel{e^{-y}}}{y \cancel{e^{-y}}} \chi_{[0,+\infty]}(x)
+    \end{align*}
+    Da questo deduciamo che \(X|Y = y \sim \operatorname{Exp}\left(\sfrac 1y\right)\).
+    Automaticamente possiamo calcolare il valore atteso condizionato
+    \[
+        \mathbb E[X|Y = y] = \frac{1}{\sfrac 1y} = y
+    \]
+\end{snippetexercise}
+
+
+
+
+
 
 
 \pagebreak
