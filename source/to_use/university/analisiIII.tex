@@ -7650,7 +7650,6 @@ dove \(dS\) rappresenta l'elemento di area sulla superficie.
 L'idea è descrivere la superficie mediante una parametrizzazione. In questo modo l'integrale su
 \(\Sigma\) viene ricondotto a un integrale su un sottoinsieme di \(\realnumbers^2\).
 
-
 \begin{snippetdefinition}{Superficie parametrizzata}
 Sia \(A\subset\realnumbers^k\) un aperto limitato. Una parametrizzazione \(k\)-dimensionale in
 \(\realnumbers^n\) è una funzione
@@ -7858,13 +7857,13 @@ una parametrizzazione regolare e semplice della superficie \(\Sigma=\sigma(\over
 \[
 	\int_\Sigma f\,dS
 	=
-	\integral[A][f(\sigma(u,v))\,\|\sigma_u(u,v)\times\sigma_v(u,v)\|][u\,v].
+    \int_A f(\sigma(u,v))\,\|\sigma_u(u,v)\times\sigma_v(u,v)\|\, du\,dv
 \]
 In particolare, l'area di \(\Sigma\) si ottiene scegliendo \(f\equiv1\):
 \[
 	\operatorname{Area}(\Sigma)
 	=
-	\integral[A][\|\sigma_u(u,v)\times\sigma_v(u,v)\|][u\,v].
+    \iint_A \|\sigma_u(u,v)\times\sigma_v(u,v)\|\, du\,dv
 \]
 \end{snippetdefinition}
 
@@ -7894,6 +7893,8 @@ una parametrizzazione regolare. Il vettore
 \]
 \end{snippetdefinition}
 
+Questo possiamo definirlo in quanto la codimensione è \(1\).
+In ogni punto abbiamo due scelte possibili.
 
 \begin{snippetexample}{La sfera unitaria}
 Consideriamo la sfera unitaria
@@ -8022,17 +8023,391 @@ L'area della sfera di raggio \(R\) è
 \]
 Infatti
 \begin{align*}
-	\operatorname{Area}(S_R^2)
-	&=
+	\operatorname{Area}(S_R^2)=
 	\integral[0][2\pi][
 		\integral[0][\pi][R^2\sin\varphi][\varphi]
-	][\theta]\\
-	&=
-	\integral[0][2\pi][2R^2][\theta]\\
-	&=
+	][\theta]=
+	\integral[0][2\pi][2R^2][\theta] =
 	4\pi R^2.
 \end{align*}
 \end{snippetcorollary}
+
+Quando adoperiamo l'elemento d'area \(dS\) stiamo facendo un pushforward della misura
+nella superficie, cioè l'immagine.
+Anche la formula dell'area \(\iint_A\) centra con la teoria misura. Esiste anche la formula della coarea.
+
+Una volta definita l'area
+\[
+	\operatorname{Area}(\Sigma)
+	=
+    \iint_A \|\sigma_u(u,v)\times\sigma_v(u,v)\|\, du\,dv
+\]
+Possiamo definire l'integrale di superficie di \(f \colon \Sigma \fromto \realnumbers\) su \(\Sigma\)
+come \[
+    \iint_\Sigma f\,dS \triangleq \iint_A f \circ \sigma ||\sigma_u \wedge \sigma_v|| \,du\,dv
+\]
+Dobbiamo tenere conto della misura pushforward e quindi della deformazione.
+
+\begin{snippetexample}{}
+    Consideriamo la superficie grafico di funzione
+    \(\sigma(x,y) = (x,y,z(x,y))\). Abbiamo \(\sigma_x = (1,0,z_x)\)
+    e \(\sigma_y = (0,1,z_y)\) e quindi troviamo il prodotto
+    \[
+        \sigma_x \wedge \sigma_y = (-z_x, -z_y, 1), \quad
+        ||\sigma_x \wedge \sigma_y|| = \sqrt{1 + z_x^2 + z_y^2} = \sqrt{1 + ||\gradient z||^2}
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{}
+    Nel caso della sfera di raggio \(R\) abbiamo
+    una parametrizzazione \(\sigma(\varphi, \theta) = (R\sin\varphi\cos\theta, R \sin\varphi\sin\theta, R\cos\varphi)\).
+    Abbiamo il prodotto
+    \[
+        \sigma_\varphi \wedge \sigma_\theta =
+        \left(
+            R^2 \sin^2\varphi\cos\theta, R^2 \sin^2\varphi\sin\theta, R^2 \sin\varphi\cos\varphi
+        \right)
+    \]
+    Prendendo un punto a caso, notiamo che questa normale punta verso l'esterno della sfera. Per continuità
+    deve puntare verso l'esterno ovunque (tranne in due punti in cui la parametrizzazione non è regolare).
+    Scegliendo per esempio \(\varphi = \sfrac\pi2\) e \(\theta = 0\),
+    troviamo \(\sigma\left(\sfrac\pi2,0\right) = (R,0,0)\), che corrisponde a
+    \[
+        (\sigma_\varphi \wedge \sigma_\theta)\left(\sfrac\pi2,0\right)
+        = (R^2, 0, 0)
+    \]
+    che puntano nella stessa direzione.
+    L'elemento d'area è dato da
+    \[
+        ||\sigma_\varphi \wedge \sigma_\theta|| = R^2 \sin\varphi
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{Cilindro}
+    Abbiamo l'equazione implicita \(x^2 + y^2 = R^2\).
+    Parametrizziamo il cilindro usando le coordinate cilindriche,
+    cioè \(\sigma(\theta, z) = (R\cos\theta, R\sin\theta, z)\)
+    con \(\theta \in [0,2\pi]\) e \(z \in \realnumbers\).
+    Abbiamo \(\sigma_\theta = (-R\sin\theta, R\cos\theta ,0)\)
+    e \(\sigma_z = (0,0,1)\) e il prodotto
+    \[
+        \sigma_\theta \wedge \sigma_z = (R\cos\theta, R\sin\theta,0)
+    \]
+    è la norma che punta verso l'esterno. Per l'elemento d'aria abbiamo
+    \[
+        ||\sigma_\theta \wedge \sigma_z|| = \sqrt{R^2 \cos^2\theta + R^2\sin^2\theta} = R
+    \]
+    Se \(R=1\) quindi non abbiamo deformazione data dalla parametrizzazione, quindi conserviamo le aree
+    ed è infati una isometria. L'applicazione \(\sigma\) non è iniettiva nel bordo dove abbiamo
+    degli incollamenti.
+\end{snippetexample}
+
+\begin{snippetexample}{Toro}
+    Il toro è una superficie regolare e semplice, a meno che non
+    intersechi l'asse di rotazione.
+    Sia \(R > r\).
+    Possiamo parametrizzare il toro parametrizzando il l'anello del toro
+    \[
+        \gamma(\theta) = (R+r\cos\theta,r\sin\theta)
+    \]
+    per \(\theta \in [0,2\pi]\), e lo facciamo ruotare attorno all'asse \(z\).
+    Abbiamo quindi \[
+        \sigma(\theta, \varphi)
+        = \left(
+            (R+r\cos\theta)\cos\varphi,
+            (R+r\cos\theta)\sin\varphi,
+            r \sin \theta
+        \right)
+    \]
+    L'elemento d'aria è dato da
+    \[
+        ||\sigma_\theta \wedge \sigma_\varphi|| = (R + r\cos\theta)r
+    \]
+    che è positivo in quanto \(R>r\). Per troviare l'area della superficie del toro dobbiamo integrale
+    \begin{align*}
+        \operatorname{Area}(T) &= \iint_{[0,2\pi] \cartesianprod [0,2\pi]} (R + r\cos\theta)r\,d\theta\,d\varphi
+        = 2\pi r\integral[0][2\pi][(R+r\cos\theta)][\theta] \\
+        &= (2\pi r)(2\pi R) = 4\pi^2 rR
+    \end{align*}
+    Notiamo che \(2\pi r\) è la lunghezza di \(\gamma\) e \(2\pi R\) è la lunghezza
+    della circonferenza che ha come ragio il baricentro di \(\gamma\).
+    Siccome la superficie è orientabile, la norma punta sempre o verso l'esterno o verso l'interno.
+\end{snippetexample}
+
+La bottiglia di Klein è una superficie non orientabile senza bordo.
+
+\begin{snippetexample}{Nastro di Möbius}
+    Il nastro di Möbius non è una superficie orientabile e non ha senso dire che la norma punta sempre
+    verso l'interno o l'esterno in modo coerente, in quanto non delinea una parte interna ed una esterna.
+    Consideriamo un segmento discosto dall'origine e facciamolo ruotare attorno a quest'ultima,
+    ma anche attorno al suo centro. Tuttavia, l'angolo della rotazione sul proprio centro deve essere la metà
+    dell'angolo della rotazione attorno all'origine. Otteniamo la paramtrizzazione
+    \[
+        \sigma(u,v) = \left(
+            \left(1 + \frac v2 \cos \frac u2\right)\cos u,
+            \left(1 + \frac v2 \cos \frac u2\right)\sin u,
+            \frac v2 \sin \frac u2
+        \right), \quad u \in [0,2\pi], v \in [-1,1]
+    \]
+    Il parametro \(u\) parametrizza la rotazione attorno all'asse \(z\),
+    mentre \(v\) parametrizza il segmento.
+    \begin{center}
+        \begin{tikzpicture}[
+            scale=2.4,
+            x={(0.86cm,-0.28cm)},
+            y={(0.45cm,0.38cm)},
+            z={(0cm,1cm)},
+            line cap=round,
+            line join=round,
+            >=Stealth
+        ]
+
+        \draw[->, gray!70] (0,0,-0.75) -- (0,0,0.9) node[above] {$z$};
+
+        \draw[dashed, gray!55]
+            plot[domain=0:360, samples=120, variable=\ang]
+            ({cos(\ang)}, {sin(\ang)}, {0});
+
+        \foreach \seg in {-1,-0.5,0,0.5,1} {
+            \draw[gray!35, thin]
+                plot[domain=0:360, samples=120, variable=\ang]
+                ({(1 + 0.5*\seg*cos(\ang/2))*cos(\ang)},
+                {(1 + 0.5*\seg*cos(\ang/2))*sin(\ang)},
+                {0.5*\seg*sin(\ang/2)});
+        }
+
+        \foreach \ang in {0,15,...,360} {
+            \draw[gray!35, thin]
+                ({(1 + 0.5*(-1)*cos(\ang/2))*cos(\ang)},
+                {(1 + 0.5*(-1)*cos(\ang/2))*sin(\ang)},
+                {0.5*(-1)*sin(\ang/2)})
+                --
+                ({(1 + 0.5*(1)*cos(\ang/2))*cos(\ang)},
+                {(1 + 0.5*(1)*cos(\ang/2))*sin(\ang)},
+                {0.5*(1)*sin(\ang/2)});
+        }
+
+        \foreach \seg in {-1,1} {
+            \draw[thick, gray!70]
+                plot[domain=0:360, samples=160, variable=\ang]
+                ({(1 + 0.5*\seg*cos(\ang/2))*cos(\ang)},
+                {(1 + 0.5*\seg*cos(\ang/2))*sin(\ang)},
+                {0.5*\seg*sin(\ang/2)});
+        }
+
+        \foreach \ang/\col/\lab in {
+            0/red!75!black/{$u=0$},
+            90/orange!85!black/{$u=\frac{\pi}{2}$},
+            180/blue!75!black/{$u=\pi$},
+            270/violet!80!black/{$u=\frac{3\pi}{2}$},
+            360/green!50!black/{$u=2\pi$}
+        } {
+            \draw[very thick, \col, ->]
+                ({(1 + 0.5*(-1)*cos(\ang/2))*cos(\ang)},
+                {(1 + 0.5*(-1)*cos(\ang/2))*sin(\ang)},
+                {0.5*(-1)*sin(\ang/2)})
+                --
+                ({(1 + 0.5*(1)*cos(\ang/2))*cos(\ang)},
+                {(1 + 0.5*(1)*cos(\ang/2))*sin(\ang)},
+                {0.5*(1)*sin(\ang/2)});
+
+            %\node[\col, font=\scriptsize] at
+            %    ({1.35*cos(\ang)}, {1.35*sin(\ang)}, {0.25})
+            %    {\lab};
+        }
+
+        \draw[->, thick]
+            plot[domain=15:80, samples=30, variable=\ang]
+            ({1.55*cos(\ang)}, {1.55*sin(\ang)}, {0});
+
+        \node at ({1.75*cos(55)}, {1.75*sin(55)}, {0.12}) {$u$};
+
+        \end{tikzpicture}
+    \end{center}
+\end{snippetexample}
+
+Per definire orientamento di uno spazio vettoriale, oltre al modo che abbimao visto ad algebra lineare,
+possiamo considerare lo spazio delle \(k\)-forme che ha dimesione \(1\), e quindi scegliere
+un elemento non nullo e definire in tal modo l'orientazione.
+
+\begin{snippetdefinition}{Superficie orientabile}
+    Diciamo che una superficie è \emph{orientabile} se è possibile scegliere
+    un'orientazione coerente per tutti gli spazi tangenti alla superficie nei suoi punti.
+\end{snippetdefinition}
+
+Questa definizione vale per sottovarietà \(k\)-dimensionali in \(\realnumbers^n\),
+quindi anche se non abbiamo codimensione 1 (cioè dove possiamo avere la normale).
+
+\begin{snippetexercise}{}
+    Sia \[
+        f(R) = \iint_{S_R} \frac{|x| - z^2}{\sqrt{x^2 + y^2 + z^2}}\,dS
+    \]
+    dove \(S_r\) è la sfera di raggio \(R\) centrata nell'origine.
+    Vogliamo ottimizzare \(f(R)\) in funzione di \(R\).
+    Abbiamo la parametrizzazione \(\sigma(\varphi, \theta) = (R\sin\varphi, R\sin\varphi,\sin\theta, R\cos\varphi)\)
+    con \(\theta \in [0,2\pi]\) e \(\varphi \in [0,\pi]\) e elemento d'area \(||\varphi_\varphi \wedge \varphi_theta|| = R^2\sin\theta\).
+    Scriviamo \begin{align*}
+        f(R) &= \iint_{[0,\pi] \cartesianprod [0,2\pi]}
+        \frac{|R\sin\varphi\cos\theta| - R^2\cos^2\varphi}{R}R^2 \sin\varphi\,d\varphi\,d\theta \\
+        &= R \integral[0][2\pi][
+            \integral[0][\pi][
+                R(|\sin\varphi\cos\theta| - R\cos^2\varphi) \sin\varphi
+            ][\varphi]
+        ][\theta]\\
+        &= R^2 \integral[0][2\pi][
+            \left[
+                \integral[0][\pi][\sin^2\varphi |\cos\theta|][\varphi]
+                - R \integral[0][\pi][\sin\varphi\cos^2\varphi][\varphi]
+            \right]
+        ][\theta] \\
+        &= R^2 \left\{
+            \integral[0][2\pi][|\cos\theta|][\theta]
+            \integral[0][\pi][\sin^2\varphi][\varphi]
+            - R \cdot 2 \pi \integral[0][\pi][\sin\varphi\cos^2\varphi][\varphi]
+        \right\} \\
+        &= R^2 \left\{
+            2 \integral[-\sfrac\pi2][\sfrac\pi2][\cos\theta][\theta]
+            \cdot \frac{\pi}{2} + 2\pi R \left[\frac{\cos^3\varphi}{3}\right]_0^\pi
+        \right\} \\
+        &= 2\pi R^2 - \frac43 r R^3
+    \end{align*}
+    Dove abbiamo usato il trucco che \begin{align*}
+        \integral[0][\pi][\sin^2\varphi][\varphi]
+        &= \integral[0][\pi][\cos^2\varphi][\varphi] \\
+        \integral[0][\pi][\sin^2\varphi][\varphi]
+        &= \frac12 \integral[0][\pi][\sin^2\varphi][\varphi] + \frac12 \integral[0][\pi][\cos^2\varphi][\varphi] \\
+        &= \frac12 \integral[0][\pi][][\varphi] = \frac\pi 2
+    \end{align*}
+    Notiamo che \(f'(R) = 4\pi R - 4rR^2 = 4rR(1-R)\)
+    e \(f(1) = \frac23\pi\) quindi questo è il massimo.
+\end{snippetexercise}
+
+\section{Flusso di un campo vettoriale attraverso una superficie}
+
+Sia \(\Sigma\) una superficie, parametrizzata da \(\sigma \colon \overline A \subseteq \realnumbers^2 \fromto \realnumbers^3\),
+\(F\) campo vettoriale in \(\realnumbers^3\), \(V\) aperto e \(E \subseteq V\)
+con \(F \colon V \subseteq \realnumbers^3 \fromto \realnumbers^3\).
+
+Per misurare il flusso consideriamo il prodotto scalare \(F \cdot n\) con la normale,
+per pesare i vettori secondo quanto stanno attraverso la superficie nel dato punto.
+Definiamo quindi l'integrale di superficie come \[
+    \iint_\Sigma F \cdot n \,dS
+\]
+In pratica \begin{align*}
+    \iint_\Sigma F \cdot n \,dS
+    &= \iint_A F(\sigma(u,v)) \cdot \frac{\sigma_u \wedge \sigma_v}{
+        \cancel{||\sigma_u \wedge \sigma_v||}
+    } \cdot \cancel{||\sigma_u \wedge \sigma_v||}\,du\,dv \\
+    &= \iint_A F(\sigma(u,v)) \cdot \sigma_u \wedge \sigma_v \,du\,dv
+\end{align*}
+dove \(\cdot\) è il prodotto misto.
+Notiamo che se espandiamo il prodoto misto troviamo
+\(F_1(y_uz_v - y_vz_u) - F_2(x_uz_v - x_vz_u) + F_3(x_uy_v - x_by_u)\).
+Quindi, l'integrale di flusso non è altro che un integrale su la \(2\)-forma \[
+    \left(
+        F_3 \text dx \wedge \text dy - F_2 \text dx \wedge \text dz
+        + F_1 \text dy \wedge \text dz
+    \right)(\sigma_u, \sigma_v) = \omega(\sigma_u, \sigma_v)
+\]
+cioè \[
+    \iint_\Sigma F\cdot n\,dS = \iint_\Sigma \omega
+\]
+
+Per parlare di flusso serve poter scegliere la normale in modo coerente su \(\Sigma\),
+quindi \(\Sigma\) deve essere una superficie orientabile.
+
+\begin{snippetexample}{}
+    Calcoliamo il flusso del campo \(F(x,y,z) = (0,0,z)\)
+    uscente dalla sfera di raggio \(R\) centrata nell'origine.
+    La sfera è una superficie compatta e senza bordo, e quindi in quanto tale delinea
+    un estero e un interno (una di quale è limitata, per il teorema della curva di Jordan esteso)
+    e quindi ha senso parlare di flusso uscente e entrante.
+    Abbiamo quindi \begin{align*}
+        \iint_{\Omega} F \cdot n \,dS &= \iint_{[0,2\pi] \cartesianprod [0,2\pi]}
+        (0,0,R\cos\varphi) \cdot \left(
+            R \sin \varphi
+            (R\sin\varphi\cos\theta, R \sin\varphi\sin\theta, R\cos\varphi)
+        \right)\,d\theta\,d\varphi \\
+        &= \integral[0][\pi][
+            \integral[0][2\pi][R\cos\varphi \cdot R^2 \sin\carphi \cos\varphi][\theta]
+        ][\varphi] \\
+        &= 2\pi R^3 \integral[0][\pi][
+            \sin\varphi\cos^2\varphi
+        ][\varphi] = \frac43\piR^3
+    \end{align*}
+    Non per caso esce il volume della sfera.
+\end{snippetexample}
+
+\begin{snippetexample}{Calcolare il flusso uscente dalla superficie laterale del cilindro}
+    Consideriamo il cilindro aperto
+    \[
+        \Sigma \colon \begin{cases}
+            x^2 + y^2 \leq R^2 \\
+            0 \leq z \leq 1
+        \end{cases}
+    \]
+    Non ha veramente senso parlare di flusso uscente e entrante ma lo usiamo in maniera informale.
+    Consideriamo il campo \(F(x,y,z) = (\sin z, y, x^2)\).
+    Abbiamo la parametrizzazione cilindrica \(\sigma(\theta, z) = (R\cos\theta, R\sin\theta, z)\)
+    e quindi \(\sigma_\theta(-R\sin\theta, R\cos\theta,0)\) e \(\sigma_z = (0,0,1)\).
+    Inoltre abbiamo
+    \[
+        \sigma_\theta \wedge \sigma_z = (R\cos\theta, R\sin\theta,0)
+    \]
+    Abbiamo quindi l'integrale 
+    \begin{align*}
+        \iint_\Sigma F \cdot n\,dS &=
+        \int_{[0,2\pi] \cartesianprod [0,1]} (\sin z, R\sin\theta, R^2\cos^2\theta)
+        \cdot (R\cos\theta, R\sin\theta, 0)\,d\theta\,dz \\
+        &= \integral[0][2\pi][
+            \integral[0][1][R\sin z \cos\theta + R^2\sin^2\theta][z]
+        ][\theta] \\
+        &= \pi R^2
+    \end{align*}
+    Non per caso questo è il volume del cilindro.
+    Calcoliamo pure il flusso attraverso i due tappi del cilindro.
+    I tappi sono \(\sigma_1(x,y) = (x,y,0)\) con \(n_1 = (0,0,-1)\) vderso il basso e
+    \(\sigma_2(x,y) = (x,x,1)\) con \(n_2 (0,0,1)\) verso l'alto. Abbiamo quindi l'integrale doppio sul disco
+    \begin{align*}
+        \iint_{\Sigma_1} F\cdot n_1\,dS &= \iint_{x^2 + y^2 \leq 1} F(x,y,0) \cdot (0,0,-1) \,dS \\
+        &= \iint_{x^2 + y^2 \leq 1} (0,y,x^2) \cdot (0,0,-1)\,dx\,dy = 0
+    \end{align*}
+    Analogamente
+    \[
+        \iint_{\Sigma2} F\cdot n_2\,dS = 0
+    \]
+    Abbiamo quindi trovato che il flusso uscente dalla superficie del cilindro solido
+    \(C\) è \[
+        \iint_{\partial C} F \cdot n \,dS
+    \] è pari al volume del cilindro.
+\end{snippetexample}
+
+\begin{snippettheorem}{Teorema della divergenza o di Gauss}
+    Sia \(\omega \subseteq \realnumbers^n\) aperto, connesso,
+    limitato e semplice rispetto a tutti gli assi,
+    \(\partial \Omega\) ipersuperificie regolare orientabile,
+    \(F \in \mathcal C^1(\overline \Omega, \realnumbers^n)\)
+    cioè è \(\mathcal C^1\) su un aperto che contiene \(\overline \Omega\).
+    Allora,
+    \[
+        \int_\Omega \text{div} F
+        \,\text d x_1 \, \text d x_2 \cdots \text d x_n
+        = \int_{\partial \Omega} F \cdot m_e \, \text d S
+    \]
+    dove \[
+        \text{div} F = \sum \frac{\partial F_i}{\partial x_i}
+    \]
+    dove \(F_i\) sono le componenti di \(F\).
+\end{snippettheorem}
+
+
+
+
+
+
+
+
+
 
 \pagebreak
 

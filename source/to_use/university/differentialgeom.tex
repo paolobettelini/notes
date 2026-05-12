@@ -6328,4 +6328,357 @@ definisce un cono in \(\realnumbers^4\) detto \textit{cono luce}.
     Ogni varietà differenziabile \(X\) ha metriche riemanniane.
 \end{snippettheorem}
 
+\section{Lezione 27: TODO}
+
+\pagebreak
+
+
+\section{Lezione 28: Geodetiche per varietà Riemanniane astratte}
+
+La Lagrangiana descrive localmente il moto, assegnando
+a ogni posizione e velocità un numero che misura il "costo" istantaneo
+del movimento. In meccanica classica spesso è data da energia cinetica
+meno energia potenziale.
+
+\begin{snippetdefinition}{Lagrangiana}
+    La \emph{Lagrangiana} di un sistema meccanico è definita come
+    \[
+        L = E - U
+    \]
+    dove \(E\) è l'energia cinetica e \(U\) è l'energia potenziale.
+    Piu in generale, nel caso di un punto materiale che si muove su una varietà riemanniana
+    \((M,g)\) senza forze esterne, si prende \(U = 0\), quindi
+    \[
+        L(p,v) = \frac{1}{2} g_p(v,v),
+    \]
+    dove \(p \in M\) e \(v \in T_pM\).
+\end{snippetdefinition}
+
+L'azione misura il costo totale di un moto, sommando nel tempo
+il contributo istantaneo dato dalla Lagrangiana. Le traiettorie fisicamente
+osservate sono quelle che rendono stazionaria l'azione.
+
+\begin{snippetdefinition}{Azione (concetto fisico)}
+    L'\emph{azione} associata a una curva
+    \(\gamma \colon [t_1,t_2] \to M\) è definita come
+    \[
+        S[\gamma] = \integral[t_1][t_2][L(\gamma(t), \dot{\gamma}(t))][t]
+    \]
+    dove \(L\) è la Lagrangiana.
+\end{snippetdefinition}
+
+L'azione è quindi un funzionale: prende in input una curva
+\(\gamma\) e restituisce un numero reale.
+
+Se la varietà \(M\) è un modello di spazio curvo, vogliamo che le geodetiche
+corrispondano alle leggi orarie dei moti di un punto materiale su \(M\)
+che rendono stazionaria l'azione.
+Data la Lagrangiana \(L = E-U\), l'energia cinetica in un punto è data da
+\[
+    E(\gamma(t)) = \frac12 m |\gamma'(t)|^2 = \frac12m \restr{\langle
+        \gamma'(t), \gamma'(t)
+    \rangle}{M, \gamma(t)}
+\]
+Dunque vogliamo che le geodetiche minimizzino (il costo), cioè l'integrale
+\[
+    \integral[a][b][
+        \restr{\langle
+            \gamma'(t), \gamma'(t)
+        \rangle}{M, \gamma(t)}
+    ][t]
+\]
+Per lo meno, vogliamo che \(\gamma(t)\) sia un punto critico per il funzionale precedente.
+
+\begin{snippetdefinition}{Geodetica}
+    Una \emph{geodetica} \(\gamma \colon [a,b] \fromto X\)
+    con \(X\) varietà riemanniana con \(\langle\,,\,\rangle\), è un ``punto critico''
+    per il funzionale \[
+        \integral[a][b][
+            \restr{\langle\sigma'(t), \sigma'(t)\rangle}{\gamma(t)}
+        ][t]
+    \]
+    definito sullo spazio delle curve \(\mathcal C^\infty\) a tratti,
+    \(\sigma \colon [a,b] \fromto X\) tali che \(\sigma(a) = P = \gamma(a)\)
+    e \(\sigma(b) = Q = \gamma(b)\), per ogni \(P,Q\) tali che \(\sigma([a,b])\)
+    e \(\gamma([a,b])\) contenute nell'immagine di una carta.
+\end{snippetdefinition}
+
+Dobbiamo definire la nozione di punto critico di un funzionale.
+
+\begin{snippetdefinition}{Punto critico}
+    Dotando lo spazio \[
+        \{\sigma \colon [a,b] \fromto \realnumbers^n \suchthat \sigma(a) = P \land \sigma(b) = Q \land \mathcal C^\infty \text{ a tratti}\}
+    \]
+    della metrica \[
+        ||\sigma| = \sup_t ||\sigma(t)|| + \sup_t ||\sigma'(t)||
+    \]
+    Allora, dato un funzionale \[
+        S(\sigma) \triangleq \integral[a][b][F(\sigma(t), \sigma'(t))][t]
+    \]
+    con \(F(\sigma, \sigma') \colon \realnumbers^n \cartesianprod \realnumbers^m \fromto \realnumbers\) funzione \(\mathcal C^\infty\),
+    diremo che \(\sigma\) è un \emph{punto critico} per \(S\) se per ogni
+    curva \(\delta \colon [a,b] \fromto \realnumbers^n\) con \(\delta(a) = 0 = \delta(b)\),
+    si ha \[
+        S(\sigma + \delta) = S(\sigma) + \mathcal O(||S||^2)
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{Scrittura generale}
+    In generale possiamo scrivere \[
+        S(\sigma + \delta) = S(\sigma) + L_\sigma(\delta) + \mathcal O(||S||^2)
+    \]
+    dove \(L_\sigma(\delta)\) è funzionale lineare in \(S\), definito sullo spazio
+    \[
+        \{\delta \colon [a,b] \fromto \realnumbers^n \suchthat \delta(a) = 0 = \delta(b)\}
+    \]
+    Inoltre,
+    \[
+        L_\sigma(\delta) = \integral[a][b][
+            \left(
+                \frac{\partial F}{\partial \sigma}(\sigma(t), \sigma'(t))
+                - \frac{d}{dt}\left(
+                    \frac{\partial F}{\partial \sigma'}(\sigma(t), \sigma'(t))
+                \right)
+            \right)\delta(t)
+        ][t]
+    \]
+\end{snippetproposition}
+
+\begin{snippetcorollary}{}
+    \(\sigma\) è punto critico per \(S\) se esolo se soddisfa il sistema di equazioni
+    differenziali di Eulero-Lagrange \[
+        \frac{\partial F}{\partial \sigma}\left(
+            \sigma(t), \sigma'(t)
+        \right) - \frac{d}{dt}\left(
+            \frac{\partial F}{\partial \sigma'}(\sigma(t), \sigma'(t))
+        \right) \equiv 0
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{}
+    Partendo dalla forma \[
+        L_\sigma(\delta) = \integral[a][b][
+            \left(
+                \frac{\partial F}{\partial \sigma}(\sigma(t), \sigma'(t))
+                - \frac{d}{dt}\left(
+                    \frac{\partial F}{\partial \sigma'}(\sigma(t), \sigma'(t))
+                \right)
+            \right)\delta(t)
+        ][t]
+    \]
+    Ricaviamo linearizzando e usando una espansione di Taylor
+    \begin{DispWithArrows*}
+        S(\sigma + \delta) &= \integral[a][b][F(\sigma + \delta, \sigma' + \delta')][t]
+        + \integral[a][b][
+            \left(
+                {\color{red} \frac{\partial F}{\partial \sigma} \cdot \delta} +
+                {\color{blue} \frac{\partial F}{\partial \sigma'} \cdot \delta'}
+            \right)
+        ][t]
+        + \integral[a][b][\mathcal O(||S||^2)][t] \Arrow{Integrazione \\ per parti} \\
+        &= S(\sigma) + {\color{red} \left(
+                \integral[a][b][\frac{\partial F}{\partial \sigma} \cdot \delta][t]
+            \right)
+            }
+        + {\color{blue}\left[
+            \frac{\partial F}{\partial \sigma'} \delta
+        \right]_a^b - \integral[a][b][\frac{d}{dt} \left(\frac{\partial F}{\partial \sigma'}\right)\delta][t]
+        } + \mathcal O(||S||^2)
+    \end{DispWithArrows*}
+    Abbiamo usato i gradienti e il prodotto scalare \(\cdot\).
+    La derivata del gradiente è fatta componente per componente.
+    Notiamo che \[
+        \left[
+            \frac{\partial F}{\partial \sigma'} \delta
+        \right]_a^b = 0
+    \]
+    in quanto \(\delta(a) = 0 = \delta(b)\), e quindi troviamo che il tutto è pari a
+    \[
+        S(\sigma) + \integral[a][b][
+            \left[
+                \frac{\partial F}{\partial \sigma} - \frac{d}{dt}\left(\frac{\partial F}{\partial \sigma'}\right)
+            \right]\delta
+        ][t] + \mathcal O(||S||^2)
+    \]
+\end{snippetproof}
+
+In realtà tutto questo vale su spazi di curve \(\mathcal C^1\) a tratti, o anche spazi più generali.
+
+\subsection{Equazione delle geodetiche}
+
+Introduciamo la notazione di Einstein:
+\begin{enumerate}
+    \item Convenzione della sommatoria su indici ripetuti:
+    \[
+        c_{i,k} = \sum_j a_{i,j} b_{j,k}
+    \]
+    oppure, più semplicemente,
+    \[
+        c_{i,k} = a_{i,j} b_{j,k}.
+    \]
+
+    \item Se \(A\) è una matrice con elementi \(a_{i,j}\), scriviamo
+    \[
+        A^{-1} = (a^{i,j}).
+    \]
+    In particolare,
+    \[
+        \delta^h_k = a^{h,j} a_{j,k},
+    \]
+    e anche
+    \[
+        \delta^h_k = a_{k,j} a^{j,h}.
+    \]
+\end{enumerate}
+
+\begin{snippetdefinition}{Funzionale energia su \(X, \langle\,,\,\rangle\)}
+    \[
+        \integral[a][b][
+            \langle \gamma'(t), \gamma'(t) \rangle
+        ][t]
+        =
+        \integral[a][b][
+            g_{i,j}(\gamma(t)) \gamma_i'(t) \gamma_j'(t)
+        ][t]
+        =
+        \integral[a][b][
+            E(\gamma(t), \gamma'(t))
+        ][t].
+    \]
+    dove \(g = (g_{i,j})\) è la matrice della metrica \(\langle\,,\,\rangle\) rispetto a una data carta e
+    \[
+        \gamma(t) = (\gamma_1(t), \dots, \gamma_n(t)).
+    \]
+    In tale carta si ha quindi
+    \[
+        \gamma'(t) = (\gamma_1'(t), \dots, \gamma_n'(t)).
+    \]
+\end{snippetdefinition}
+
+Quindi sommiamo su tutti gli indici ripetuti \(i,j\) e poi integriamo.
+
+\begin{snippetdefinition}{Equazioni di Eulero-Lagrange per il funzionale energia}
+    Se
+    \[
+        E(\gamma(t),\gamma'(t))
+        =
+        g_{i,j}(\gamma(t))\gamma_i'(t)\gamma_j'(t),
+    \]
+    allora le equazioni di Eulero-Lagrange sono
+    \[
+        \restr{
+            \frac{d}{dt}\left(
+                \frac{\partial E}{\partial \gamma_l'}
+            \right)
+            -
+            \frac{\partial E}{\partial \gamma_l}
+        }{(\gamma(t),\gamma'(t))}
+        = 0,
+        \quad l \in \{1, \dots, n\}.
+    \]
+\end{snippetdefinition}
+
+Derivando otteniamo
+\begin{DispWithArrows*}
+    0
+    &=
+    \frac{d}{dt}\left(
+        \frac{\partial E}{\partial \gamma_l'}
+    \right)
+    -
+    \frac{\partial E}{\partial \gamma_l}
+    \\
+    &=
+    \frac{d}{dt}\left(
+        2g_{l,j}(\gamma(t))\gamma_j'(t)
+    \right)
+    -
+    \frac{\partial g_{i,j}}{\partial \gamma_l}(\gamma(t))
+    \gamma_i'(t)\gamma_j'(t)
+    \\
+    &=
+    2g_{l,j}\gamma_j''
+    +
+    2\frac{\partial g_{l,j}}{\partial \gamma_r}
+    \gamma_r'\gamma_j'
+    -
+    \frac{\partial g_{i,j}}{\partial \gamma_l}
+    \gamma_i'\gamma_j'.
+\end{DispWithArrows*}
+
+Moltiplichiamo ora per \(\frac12 g^{m,l}\). Poiché
+\[
+    g^{m,l}g_{l,j} = \delta^m_j,
+\]
+otteniamo
+\begin{DispWithArrows*}
+    0
+    &=
+    \gamma_m''
+    +
+    g^{m,l}
+    \frac{\partial g_{l,j}}{\partial \gamma_r}
+    \gamma_r'\gamma_j'
+    -
+    \frac12 g^{m,l}
+    \frac{\partial g_{i,j}}{\partial \gamma_l}
+    \gamma_i'\gamma_j'
+    \\
+    &=
+    \gamma_m''
+    +
+    \frac12 g^{m,k}
+    \left(
+        \frac{\partial g_{k,j}}{\partial \gamma_i}
+        +
+        \frac{\partial g_{k,i}}{\partial \gamma_j}
+        -
+        \frac{\partial g_{i,j}}{\partial \gamma_k}
+    \right)
+    \gamma_i'\gamma_j'.
+\end{DispWithArrows*}
+
+Quindi le equazioni delle geodetiche sono
+\[
+    \gamma_l''
+    +
+    \Gamma^l_{i,j}\gamma_i'\gamma_j'
+    =
+    0,
+    \quad l \in \{1, \dots, n\},
+\]
+dove
+\[
+    \Gamma^l_{i,j}
+    \triangleq
+    \frac12 g^{l,k}
+    \left(
+        \frac{\partial g_{k,j}}{\partial \gamma_i}
+        +
+        \frac{\partial g_{k,i}}{\partial \gamma_j}
+        -
+        \frac{\partial g_{i,j}}{\partial \gamma_k}
+    \right).
+\]
+
+\begin{snippetdefinition}{Simboli di Christoffel}
+    I coefficienti \(\Gamma^l_{i,j}\) sono detti \emph{simboli di Christoffel}
+    della metrica \(\langle\,,\,\rangle\) relativi al sistema di coordinate
+    \((x_1,\dots,x_n)\).
+\end{snippetdefinition}
+
+Il sistema di equazioni \[
+    \gamma_l'' + \Gamma_{i,j}^l \gamma_i' \gamma_j' = 0, \quad l \in \{1, \cdots, n\}
+\]
+è detto \emph{sistemi di equazioni delle geodetiche} (nel dato sistema di coordinate).
+
+\begin{snippetcorollary}{}
+    La proprietà di deogetica non dipende dal sistema di coordinate, ed è invariante per isometrie (locali).
+\end{snippetcorollary}
+
+\begin{snippetproof}{}
+    Il motivo è che essere punto critico di un funzionale,
+    che dipende solo da \(\langle\,,\,\rangle\), è una proprietà indipendente dal sistema di coordinate.
+\end{snippetproof}
+
 \end{document}
