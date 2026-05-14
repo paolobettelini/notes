@@ -5727,26 +5727,32 @@ e dunque
         \delta(\beta).
     \end{align*}
     Quindi la divisione euclidea esiste, e \(\mathbb{Z}[i]\) è euclideo.
+    \begin{center}
+        \begin{tikzpicture}[scale=1.05]
+            \draw[->] (-2.3,0) -- (2.6,0);
+            \draw[->] (0,-1.8) -- (0,2.2);
+
+            \foreach \x in {-2,-1,0,1,2}
+                \foreach \y in {-1,0,1,2}
+                    \fill (\x,\y) circle (1.2pt);
+
+            \coordinate (q) at (1,1);
+            \coordinate (z) at (1.32,0.82);
+
+            \draw[dashed] (1,0) rectangle (2,1);
+
+            \fill (q) circle (2pt);
+            \node[above left=2pt] at (q) {\(q\)};
+
+            \fill[red] (z) circle (2pt);
+            \node[right=5pt] at (z) {\(z=\frac{\alpha}{\beta}\)};
+
+            \draw (q) -- (z)
+                node[midway, below right=3pt] {\(\leq \frac{\sqrt{2}}{2}\)};
+        \end{tikzpicture}
+    \end{center}
 \end{snippetexample}
 
-\begin{center}
-    \begin{tikzpicture}[scale=1.05]
-        \draw[->] (-2.3,0) -- (2.6,0);
-        \draw[->] (0,-1.8) -- (0,2.2);
-
-        \foreach \x in {-2,-1,0,1,2}
-            \foreach \y in {-1,0,1,2}
-                \fill (\x,\y) circle (1.2pt);
-
-        \draw[dashed] (0.5,0.5) rectangle (1.5,1.5);
-        \fill (1,1) circle (2pt) node[below left] {\(q\)};
-        \fill (1.32,0.82) circle (2pt) node[right] {\(z=\frac{\alpha}{\beta}\)};
-
-        \draw[decorate, decoration={brace, amplitude=4pt}]
-            (1,1) -- (1.32,0.82)
-            node[midway, below right=3pt] {\(\leq \frac{\sqrt{2}}{2}\)};
-    \end{tikzpicture}
-\end{center}
 
 \begin{snippetremark}{}
     Il fatto che \(\mathbb{Z}[i]\) sia euclideo implica in particolare che è un dominio a ideali principali.
@@ -11618,9 +11624,9 @@ La dimostrazione precedente si può visualizzare con diagrammi a colonne. Ogni s
             }
         }
         \draw[very thick, magenta] (0,0) -- (8,0);
-        \node[magenta] at (8.9,0.5) {\(\operatorname{Soc}_p(M)\)};
+        \node[magenta] at (11,0.5) {\(\operatorname{Soc}_p(M)\)};
         \draw[decorate, decoration={brace, amplitude=4pt}]
-            (8.2,0) -- (8.2,6)
+            (8.6,0) -- (8.6,6)
             node[midway, right=4pt] {\(\max n_i\)};
     \end{tikzpicture}
 \]
@@ -11635,7 +11641,7 @@ Dopo il quoziente per il socle si ottiene il diagramma con una riga in meno:
             }
         }
         \draw[very thick, magenta] (2,0) -- (8,0);
-        \node[magenta] at (8.9,0.5) {\(\operatorname{Soc}_p(M_2)\)};
+        \node[magenta] at (10.5,0.5) {\(\operatorname{Soc}_p(M_2)\)};
     \end{tikzpicture}
 \]
 
@@ -14378,27 +14384,44 @@ La forma di Jordan corrispondente è una matrice diagonale a blocchi in cui, per
     J_{m(i)_{r_i}}(a_i).
 \]
 
-\[
-    \begin{tikzpicture}[scale=0.5]
-        \draw[thick] (0,0) rectangle (1,1);
-        \node at (0.5,0.5) {\(J_{m(1)_1}(a_1)\)};
-
-        \draw[thick] (1.3,-0.3) rectangle (2.6,1.0);
-        \node at (1.95,0.35) {\(\cdots\)};
-
-        \draw[thick] (2.9,-0.8) rectangle (4.4,0.7);
-        \node at (3.65,-0.05) {\(J_{m(1)_{r_1}}(a_1)\)};
-
-        \draw[thick] (5.2,-1.5) rectangle (6.4,-0.3);
-        \node at (5.8,-0.9) {\(J_{m(2)_1}(a_2)\)};
-
-        \draw[thick] (6.7,-2.0) rectangle (8.2,-0.5);
-        \node at (7.45,-1.25) {\(\cdots\)};
-
-        \draw[thick] (9.0,-2.8) rectangle (10.7,-1.1);
-        \node at (9.85,-1.95) {\(J_{m(s)_{r_s}}(a_s)\)};
+\begin{center}
+    \begin{tikzpicture}[
+        block/.style={
+            draw,
+            thick,
+            minimum width=24mm,
+            minimum height=7mm,
+            align=center,
+            inner sep=1pt,
+            font=\scriptsize
+        },
+        dots/.style={
+            draw,
+            thick,
+            minimum width=10mm,
+            minimum height=7mm,
+            align=center,
+            inner sep=1pt,
+            font=\scriptsize
+        }
+    ]
+        \matrix[
+            matrix of nodes,
+            nodes in empty cells,
+            row sep=3mm,
+            column sep=3mm
+        ] {
+            |[block]| \(J_{m(1)_1}(a_1)\) &                              &                              &                              &                              &                              &                              \\
+                                         & |[dots]| \(\cdots\)          &                              &                              &                              &                              &                              \\
+                                         &                              & |[block]| \(J_{m(1)_{r_1}}(a_1)\) &                              &                              &                              &                              \\
+                                         &                              &                              & |[block]| \(J_{m(2)_1}(a_2)\) &                              &                              &                              \\
+                                         &                              &                              &                              & |[dots]| \(\cdots\)         &                              &                              \\
+                                         &                              &                              &                              &                              & |[block]| \(J_{m(2)_{r_2}}(a_2)\) &                              \\
+                                         &                              &                              &                              &                              &                              & |[dots]| \(\ddots\)         \\
+                                         &                              &                              &                              &                              &                              & |[block]| \(J_{m(s)_{r_s}}(a_s)\) \\
+        };
     \end{tikzpicture}
-\]
+\end{center}
 
 \begin{snippetremark}{Similitudine}
     Date due matrici
