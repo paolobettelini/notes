@@ -10,12 +10,14 @@
 \usepackage{wrapfig}
 \usepackage{xfrac}
 \usepackage{witharrows}
+\usepackage{mathrsfs}
 
 \WithArrowsOptions{displaystyle}
 
 \usetikzlibrary{calc}
 \usetikzlibrary{decorations.markings}
 \usetikzlibrary{cd}
+\usetikzlibrary{positioning}
 
 % Cancel color
 \renewcommand{\CancelColor}{\color{red}}
@@ -6324,16 +6326,1367 @@ definisce un cono in \(\realnumbers^4\) detto \textit{cono luce}.
 \end{tikzpicture}
 \end{center}
 
-\begin{snippettheorem}{}
-    Ogni varietà differenziabile \(X\) ha metriche riemanniane.
+\pagebreak
+
+\section{Lezione 26}
+
+\begin{snippettheorem}{Esistenza di metriche riemanniane}
+Ogni varietà differenziabile ammette una metrica riemanniana.
 \end{snippettheorem}
 
-\section{Lezione 27: TODO}
+\begin{snippetdefinition}{Metrica riemanniana indotta da una carta}
+Sia \(X\) una varietà differenziabile e sia
+\[
+    \varphi \colon U\fromto \Omega\subseteq \realnumbers^n
+\]
+una carta. Su \(U\) definiamo una metrica riemanniana trasportando tramite \(\varphi\) la metrica euclidea standard di \(\realnumbers^n\).
+
+In coordinate, per ogni \(x\in U\), poniamo
+\[
+    \partial_i^\varphi\big|_x
+    =
+    d(\varphi^{-1})_{\varphi(x)}(e_i),
+    \qquad
+    i=1,\ldots,n,
+\]
+dove \(e_1,\ldots,e_n\) è la base canonica di \(\realnumbers^n\). La metrica è definita imponendo
+\[
+    \left\langle \partial_i^\varphi,\partial_j^\varphi\right\rangle_x
+    =
+    \delta_{ij}.
+\]
+Cioè stiamo dichiarando che la base coordinata associata a \(\varphi\) è ortonormale.
+\end{snippetdefinition}
+
+Se \(v,w\in T_xX\), scriviamo
+\[
+    v=\sum_{i=1}^{n}\lambda_i\,\partial_i^\varphi,
+    \qquad
+    w=\sum_{i=1}^{n}\mu_i\,\partial_i^\varphi.
+\]
+Allora
+\[
+    \langle v,w\rangle_x
+    =
+    \sum_{i=1}^{n}\lambda_i\mu_i.
+\]
+In particolare
+\[
+    \langle v,v\rangle_x
+    =
+    \sum_{i=1}^{n}\lambda_i^2>0
+\]
+per ogni \(v\neq0\). Dunque la forma bilineare così definita è simmetrica e definita positiva.
+
+Una stessa varietà differenziabile può ammettere molte metriche riemanniane diverse. In geometria, però, non consideriamo metriche arbitrarie: spesso scegliamo metriche con proprietà geometriche naturali. Un caso fondamentale è quello delle metriche indotte da immersioni o embedding.
+
+\begin{snippetdefinition}{Metrica indotta da un embedding}
+Siano \(X\subseteq Y\) una sottovarietà embedded e sia \(\langle\cdot,\cdot\rangle_Y\) una metrica riemanniana su \(Y\). La metrica indotta su \(X\) è definita da
+\[
+    \langle v,w\rangle_X
+    =
+    \langle v,w\rangle_Y
+    \qquad
+    \forall v,w\in T_xX\subseteq T_xY.
+\]
+In particolare, se \(X\subseteq\realnumbers^m\) è una sottovarietà embedded, allora la metrica riemanniana indotta su \(X\) è la restrizione della metrica euclidea di \(\realnumbers^m\).
+\end{snippetdefinition}
+
+\begin{snippetexample}{Curve embedded in \(\realnumbers^m\)}
+Sia
+\[
+    \varphi:(a,b)\longrightarrow \realnumbers^m
+\]
+una curva semplice regolare, cioè un embedding di \((a,b)\) in \(\realnumbers^m\). Poniamo
+\[
+    X=\operatorname{Im}(\varphi).
+\]
+Allora
+\[
+    T_{\varphi(t)}X=\mathcal{L}(\varphi'(t))\subseteq \realnumbers^m.
+\]
+La metrica indotta dalla metrica euclidea di \(\realnumbers^m\) è determinata da
+\[
+    \left\langle \varphi'(t),\varphi'(t)\right\rangle_{\varphi(t)}
+    =
+    \|\varphi'(t)\|^2.
+\]
+
+\[
+    \begin{tikzpicture}[scale=0.9]
+        \draw[->] (-0.2,0) -- (4.4,0) node[right] {\(\realnumbers^m\)};
+        \draw[thick] (0.4,0.4) .. controls (1.3,1.4) and (2.5,-0.3) .. (3.7,1.1);
+        \draw[->, dashed] (1.9,0.55) -- (3.0,0.95) node[right] {\(T_{\varphi(t)}X\)};
+        \fill (1.9,0.55) circle (1.5pt) node[below] {\(\varphi(t)\)};
+        \node at (2.2,-0.45) {\(X=\operatorname{Im}(\varphi)\)};
+    \end{tikzpicture}
+\]
+
+Se \(\varphi\) è parametrizzata per lunghezza d'arco, allora
+\[
+    \|\varphi'(t)\|=1
+    \qquad
+    \forall t,
+\]
+e quindi la metrica indotta su \(X\), letta tramite la coordinata \(t\), coincide con la metrica euclidea standard su \((a,b)\subseteq\realnumbers\):
+\[
+    \left\langle \frac{\partial}{\partial t},\frac{\partial}{\partial t}\right\rangle=1.
+\]
+In questo senso ogni curva regolare embedded è localmente isometrica a un intervallo di \(\realnumbers\). Globalmente bisogna fare attenzione alla topologia: per esempio una circonferenza non è globalmente diffeomorfa a un intervallo.
+\end{snippetexample}
+
+\begin{snippetexample}{Piani affini in \(\realnumbers^3\)}
+Sia \(S\subseteq \realnumbers^3\) un piano affine:
+\[
+    S=p_0+\mathcal{L}(u_1,u_2)
+    =
+    \{p_0+\lambda_1u_1+\lambda_2u_2:\lambda_1,\lambda_2\in\realnumbers\}.
+\]
+Supponiamo che \(u_1,u_2\) siano ortonormali. Allora
+\[
+    T_xS=\mathcal{L}(u_1,u_2)
+    \qquad
+    \forall x\in S.
+\]
+La metrica indotta da \(\realnumbers^3\) ha matrice identità rispetto alla base \(u_1,u_2\). La mappa
+\[
+    S\longrightarrow \realnumbers^2,
+    \qquad
+    p_0+\lambda_1u_1+\lambda_2u_2
+    \longmapsto
+    (\lambda_1,\lambda_2)
+\]
+è quindi un'isometria. In particolare \(S\) è isometrico a \(\realnumbers^2\) con la metrica euclidea standard.
+
+\[
+    \begin{tikzpicture}[scale=0.85]
+        \draw (0,0) -- (3.5,0.5) -- (4.8,2) -- (1.3,1.5) -- cycle;
+        \fill (2,0.8) circle (1.5pt) node[below] {\(p_0\)};
+        \draw[->] (2,0.8) -- (3.1,1.0) node[right] {\(u_1\)};
+        \draw[->] (2,0.8) -- (2.4,1.6) node[above] {\(u_2\)};
+        \node at (4.4,0.5) {\(S\)};
+    \end{tikzpicture}
+\]
+\end{snippetexample}
+
+\begin{snippetexample}{La sfera}
+Consideriamo la sfera unitaria
+\[
+    \mathbb{S}^2
+    =
+    \{(x,y,z)\in\realnumbers^3:x^2+y^2+z^2=1\}.
+\]
+Per \(p\in\mathbb{S}^2\), il piano tangente è
+\[
+    T_p\mathbb{S}^2
+    =
+    \{v\in\realnumbers^3:\langle v,p\rangle_{\realnumbers^3}=0\}.
+\]
+La metrica riemanniana su \(\mathbb{S}^2\) è la restrizione del prodotto scalare euclideo di \(\realnumbers^3\).
+
+\[
+\begin{tikzpicture}[scale=1.05, line cap=round, line join=round, >=stealth]
+    % Parametri
+    \def\R{2.0}
+    \def\e{0.48}
+
+    % Punti principali
+    \coordinate (O) at (0,0);
+    \coordinate (P) at (1.08,1.12);
+    \coordinate (Q) at (1.46,-0.33); % punto sull'equatore
+    \coordinate (Xdir) at (-2.15,-1.05);
+
+    % Sfera
+    \draw[thick] (O) circle[radius=\R];
+
+    % Equatore
+    \draw[dashed]
+        (-\R,0) arc[start angle=180, end angle=360, x radius=\R, y radius=\e];
+    \draw[thick]
+        (\R,0) arc[start angle=0, end angle=180, x radius=\R, y radius=\e];
+
+    % Assi
+    \draw[->] (O) -- (0,2.55) node[above] {\(z\)};
+    \draw[->] (O) -- (2.75,0) node[right] {\(y\)};
+    \draw[->] (O) -- (Xdir) node[left] {\(x\)};
+
+    % Meridiano passante per P (curva verde, più rotonda)
+    \draw[green!60!black, thick]
+        plot[smooth] coordinates{
+            (0,2.00)
+            (0.35,1.92)
+            (0.75,1.62)
+            (P)
+            (1.34,0.42)
+            (Q)
+            (1.15,-1.02)
+            (0.58,-1.82)
+        };
+
+    % Raggio verso P
+    \draw[thick] (O) -- (P);
+
+    % Proiezione sul piano equatoriale
+    \draw[dashed] (Q) -- (P);
+
+    % Segmento rosso fino all'equatore
+    \draw[red, thick] (O) -- (Q);
+
+    % Punto P
+    \fill (P) circle[radius=1.8pt];
+    \node[anchor=west, xshift=4pt, yshift=2pt] at (P)
+        {\(P=\sigma(\theta,\varphi)\)};
+
+    % Angolo theta (rosso)
+    \draw[red, thick, ->]
+        (-154:0.62) arc[start angle=-154, end angle=-13, radius=0.62];
+    \node[red] at (0.10,-0.78) {\(\theta\)};
+
+    % Angolo varphi (verde)
+    \draw[green!60!black, thick, ->]
+        (90:0.78) arc[start angle=90, end angle=46, radius=0.78];
+    \node[green!60!black] at (0.42,0.97) {\(\varphi\)};
+\end{tikzpicture}
+\]
+
+Usiamo le coordinate sferiche
+\[
+    \sigma:(0,2\pi)\times(0,\pi)\longrightarrow \mathbb{S}^2,
+\]
+\[
+    \sigma(\theta,\varphi)
+    =
+    (\sin\varphi\cos\theta,\sin\varphi\sin\theta,\cos\varphi).
+\]
+Allora
+\[
+    \frac{\partial\sigma}{\partial\theta}
+    =
+    (-\sin\varphi\sin\theta,\sin\varphi\cos\theta,0),
+\]
+e
+\[
+    \frac{\partial\sigma}{\partial\varphi}
+    =
+    (\cos\varphi\cos\theta,\cos\varphi\sin\theta,-\sin\varphi).
+\]
+Perciò
+\begin{align*}
+    g_{\theta\theta}
+    &=
+    \left\langle
+        \frac{\partial\sigma}{\partial\theta},
+        \frac{\partial\sigma}{\partial\theta}
+    \right\rangle
+    =
+    \sin^2\varphi,\\
+    g_{\theta\varphi}
+    &=
+    \left\langle
+        \frac{\partial\sigma}{\partial\theta},
+        \frac{\partial\sigma}{\partial\varphi}
+    \right\rangle
+    =
+    0,\\
+    g_{\varphi\varphi}
+    &=
+    \left\langle
+        \frac{\partial\sigma}{\partial\varphi},
+        \frac{\partial\sigma}{\partial\varphi}
+    \right\rangle
+    =
+    1.
+\end{align*}
+Quindi la matrice della metrica in questa carta è
+\[
+    g_\sigma(\theta,\varphi)
+    =
+    \begin{pmatrix}
+        \sin^2\varphi & 0\\
+        0 & 1
+    \end{pmatrix}.
+\]
+Chiaramente, cambiando carta, cambia la matrice che rappresenta la metrica. Tuttavia la metrica geometrica è la stessa; cambia soltanto la sua espressione in coordinate.
+\end{snippetexample}
+
+\begin{snippetproposition}{Formula di cambiamento di carta per la matrice della metrica}
+Siano
+\[
+    \sigma:\Omega\longrightarrow X,
+    \qquad
+    \tau:\widetilde{\Omega}\longrightarrow X
+\]
+due carte di una varietà riemanniana \(X\), e sia
+\[
+    F=\tau^{-1}\circ\sigma
+\]
+la funzione di transizione. Indicando con \(J_F\) la matrice jacobiana di \(F\), vale
+\[
+    g_\sigma
+    =
+    J_F^{T}\,(g_\tau\circ F)\,J_F.
+\]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+Scriviamo \(z=(z^1,\ldots,z^n)\in\Omega\) e \(F(z)=(y^1,\ldots,y^n)\). Poiché
+\[
+    \sigma=\tau\circ F,
+\]
+derivando rispetto a \(z^i\) otteniamo
+\[
+    \frac{\partial\sigma}{\partial z^i}
+    =
+    \sum_{\alpha=1}^{n}
+    \frac{\partial F^\alpha}{\partial z^i}
+    \frac{\partial\tau}{\partial y^\alpha}.
+\]
+Quindi
+\begin{align*}
+    (g_\sigma)_{ij}
+    &=
+    \left\langle
+        \frac{\partial\sigma}{\partial z^i},
+        \frac{\partial\sigma}{\partial z^j}
+    \right\rangle\\
+    &=
+    \left\langle
+        \sum_{\alpha=1}^{n}
+        \frac{\partial F^\alpha}{\partial z^i}
+        \frac{\partial\tau}{\partial y^\alpha},
+        \sum_{\beta=1}^{n}
+        \frac{\partial F^\beta}{\partial z^j}
+        \frac{\partial\tau}{\partial y^\beta}
+    \right\rangle\\
+    &=
+    \sum_{\alpha,\beta=1}^{n}
+    \frac{\partial F^\alpha}{\partial z^i}
+    (g_\tau)_{\alpha\beta}(F(z))
+    \frac{\partial F^\beta}{\partial z^j}.
+\end{align*}
+In forma matriciale questa è esattamente
+\[
+    g_\sigma
+    =
+    J_F^T\,(g_\tau\circ F)\,J_F.
+\]
+\end{snippetproof}
+
+\begin{snippetdefinition}{Prima forma fondamentale}
+Sia \((X,\langle\cdot,\cdot\rangle)\) una varietà riemanniana. Per ogni \(x\in X\), la forma quadratica
+\[
+    T_xX\longrightarrow \realnumbers,
+    \qquad
+    v\longmapsto \langle v,v\rangle_x
+\]
+è detta prima forma fondamentale di \(X\) in \(x\).
+
+Data una carta
+\[
+    \sigma:\Omega\longrightarrow X,
+\]
+la matrice associata alla prima forma fondamentale rispetto alla base coordinata
+\[
+    \frac{\partial\sigma}{\partial x^1},
+    \ldots,
+    \frac{\partial\sigma}{\partial x^n}
+\]
+è
+\[
+    g_\sigma
+    =
+    \left(
+        \left\langle
+            \frac{\partial\sigma}{\partial x^i},
+            \frac{\partial\sigma}{\partial x^j}
+        \right\rangle
+    \right)_{i,j}.
+\]
+\end{snippetdefinition}
+
+\begin{snippetexample}{Cilindro in \(\realnumbers^3\)}
+Sia \(\gamma:I\longrightarrow\realnumbers^2\) una curva piana regolare,
+\[
+    \gamma(t)=(a(t),b(t)).
+\]
+Il cilindro generato da \(\gamma\) è la superficie parametrizzata da
+\[
+    \Phi:I\times\realnumbers\longrightarrow \realnumbers^3,
+\]
+\[
+    \Phi(t,z)=(a(t),b(t),z).
+\]
+
+\[
+    \begin{tikzpicture}[scale=0.8]
+        \draw[->] (-0.2,0) -- (4.2,0) node[right] {\(x\)};
+        \draw[->] (0,-0.2) -- (0,3.4) node[above] {\(z\)};
+        \draw (1.1,0.4) ellipse (0.55 and 0.18);
+        \draw (1.1,2.8) ellipse (0.55 and 0.18);
+        \draw (0.55,0.4) -- (0.55,2.8);
+        \draw (1.65,0.4) -- (1.65,2.8);
+        \draw[thick] (1.1,0.4) .. controls (2.1,1.0) and (0.2,1.9) .. (1.1,2.8);
+        \node at (2.7,1.7) {\(\Phi(t,z)\)};
+    \end{tikzpicture}
+\]
+
+Calcoliamo la metrica indotta da \(\realnumbers^3\). Abbiamo
+\[
+    \frac{\partial\Phi}{\partial t}
+    =
+    (a'(t),b'(t),0),
+    \qquad
+    \frac{\partial\Phi}{\partial z}
+    =
+    (0,0,1).
+\]
+Se \(\gamma\) è parametrizzata per lunghezza d'arco, allora
+\[
+    (a'(t))^2+(b'(t))^2=1.
+\]
+In tal caso
+\[
+    g_\Phi
+    =
+    \begin{pmatrix}
+        1 & 0\\
+        0 & 1
+    \end{pmatrix}.
+\]
+Dunque, localmente, il cilindro è isometrico al piano euclideo.
+\end{snippetexample}
+
+\begin{snippetdefinition}{Lunghezza di una curva parametrizzata in una varietà riemanniana}
+Sia \((X,\langle\cdot,\cdot\rangle)\) una varietà riemanniana e sia
+\[
+    \gamma:[a,b]\longrightarrow X
+\]
+una curva differenziabile. La lunghezza di \(\gamma\) è
+\[
+    L(\gamma)
+    =
+    \integral[a][b][
+        \sqrt{\left\langle \dot{\gamma}(t),\dot{\gamma}(t)\right\rangle_{\gamma(t)}}
+    ][t],
+\]
+dove
+\[
+    \dot{\gamma}(t)
+    =
+    d\gamma_t\left(\frac{\partial}{\partial t}\right)
+    \in T_{\gamma(t)}X.
+\]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Isometrie e isometrie locali}
+Siano \(X\) e \(Y\) due varietà riemanniane, con metriche rispettivamente
+\[
+    \langle\cdot,\cdot\rangle_X,
+    \qquad
+    \langle\cdot,\cdot\rangle_Y.
+\]
+Una mappa
+\[
+    f:X\longrightarrow Y
+\]
+è un'isometria se è un diffeomorfismo e
+\[
+    f^*\langle\cdot,\cdot\rangle_Y
+    =
+    \langle\cdot,\cdot\rangle_X.
+\]
+Equivalentemente, per ogni \(x\in X\) e per ogni \(v,w\in T_xX\),
+\[
+    \left\langle df_x(v),df_x(w)\right\rangle_Y
+    =
+    \langle v,w\rangle_X.
+\]
+
+La mappa \(f\) è un'isometria locale se ogni punto \(x\in X\) ammette un intorno aperto \(U\subseteq X\) tale che
+\[
+    f|_U:U\longrightarrow f(U)
+\]
+sia un'isometria sull'aperto \(f(U)\subseteq Y\).
+\end{snippetdefinition}
+
+In particolare, se \(\gamma:[a,b]\to X\) è una curva e \(f:X\to Y\) è un'isometria, allora
+\[
+    L(f\circ\gamma)=L(\gamma).
+\]
+Infatti
+\begin{align*}
+    L(f\circ\gamma)
+    &=
+    \integral[a][b][
+        \sqrt{
+            \left\langle
+                d(f\circ\gamma)_t\left(\frac{\partial}{\partial t}\right),
+                d(f\circ\gamma)_t\left(\frac{\partial}{\partial t}\right)
+            \right\rangle_Y
+        }
+    ][t]\\
+    &=
+    \integral[a][b][
+        \sqrt{
+            \left\langle
+                df_{\gamma(t)}(\dot{\gamma}(t)),
+                df_{\gamma(t)}(\dot{\gamma}(t))
+            \right\rangle_Y
+        }
+    ][t]\\
+    &=
+    \integral[a][b][
+        \sqrt{
+            \left\langle
+                \dot{\gamma}(t),
+                \dot{\gamma}(t)
+            \right\rangle_X
+        }
+    ][t]\\
+    &=
+    L(\gamma).
+\end{align*}
+
+Una caratterizzazione utile è la seguente: se \(\dim X=\dim Y\), una mappa liscia \(f:X\to Y\) è un'isometria locale se e solo se
+\[
+    f^*\langle\cdot,\cdot\rangle_Y
+    =
+    \langle\cdot,\cdot\rangle_X.
+\]
+Infatti questa condizione implica che \(df_x\) è iniettivo per ogni \(x\): se \(df_x(v)=0\), allora
+\[
+    0
+    =
+    \langle df_x(v),df_x(v)\rangle_Y
+    =
+    \langle v,v\rangle_X,
+\]
+quindi \(v=0\). Poiché le dimensioni sono uguali, \(df_x\) è un isomorfismo. Per il teorema della funzione inversa, \(f\) è un diffeomorfismo locale.
+
+\begin{snippetcorollary}{Il cilindro è localmente isometrico al piano}
+Sia \(X\subseteq\realnumbers^3\) un cilindro generato da una curva piana parametrizzata per lunghezza d'arco
+\[
+    \gamma(t)=(a(t),b(t)).
+\]
+Allora
+\[
+    \Phi:\realnumbers^2\longrightarrow X,
+    \qquad
+    \Phi(t,z)=(a(t),b(t),z),
+\]
+è un'isometria locale. Infatti la matrice della metrica \(\Phi^*g_X\) rispetto alle coordinate \((t,z)\) è
+\[
+    \begin{pmatrix}
+        1 & 0\\
+        0 & 1
+    \end{pmatrix},
+\]
+cioè coincide con la matrice della metrica euclidea standard di \(\realnumbers^2\).
+\end{snippetcorollary}
+
+\begin{snippetexample}{Cilindro circolare retto}
+Per il cilindro circolare retto di raggio \(1\), prendiamo
+\[
+    \Phi(t,z)=(\cos t,\sin t,z).
+\]
+Allora
+\[
+    \gamma(t)=(\cos t,\sin t)
+\]
+è la parametrizzazione per lunghezza d'arco della circonferenza unitaria. Dunque
+\[
+    \Phi:\realnumbers^2\longrightarrow X
+\]
+è un'isometria locale.
+
+\[
+    \begin{tikzpicture}[scale=0.85]
+        \draw (0,0) rectangle (1.8,1.2);
+        \node at (0.9,0.6) {\(\realnumbers^2\)};
+        \draw[->] (2.1,0.6) -- (3.0,0.6) node[midway,above] {\(\Phi\)};
+        \draw (4.1,0.2) ellipse (0.65 and 0.22);
+        \draw (4.1,1.9) ellipse (0.65 and 0.22);
+        \draw (3.45,0.2) -- (3.45,1.9);
+        \draw (4.75,0.2) -- (4.75,1.9);
+        \node at (4.1,2.35) {\(X\)};
+    \end{tikzpicture}
+\]
+
+Questa mappa non è un'isometria globale, perché non è iniettiva:
+\[
+    \Phi(t+2k\pi,z)=\Phi(t,z)
+    \qquad
+    \forall k\in\integernumbers.
+\]
+\end{snippetexample}
+
+\begin{snippetexample}{Elicoide e catenoide}
+Consideriamo l'elicoide \(X\subseteq\realnumbers^3\), cioè la superficie generata dalle rette orizzontali passanti per i punti dell'elica circolare
+\[
+    (\cos u,\sin u,au),
+    \qquad
+    a>0.
+\]
+Una parametrizzazione naturale è
+\[
+    \Psi(u,r)=(r\cos u,r\sin u,au).
+\]
+Per confrontarlo con il catenoide conviene usare la coordinata
+\[
+    r=a\sinh v.
+\]
+Poniamo quindi
+\[
+    H(u,v)=a(\sinh v\cos u,\sinh v\sin u,u).
+\]
+
+Il catenoide \(Y\) è la superficie di rotazione della catenaria. Una parametrizzazione è
+\[
+    C(u,v)=a(\cosh v\cos u,\cosh v\sin u,v).
+\]
+
+\[
+\begin{tikzpicture}[scale=0.9, line cap=round, line join=round, >=stealth]
+
+    %==================== ELICOIDE ====================
+    \begin{scope}[shift={(0,0)}]
+        \node at (0,2.45) {elicoide};
+
+        % Assi
+        \draw[->] (-1.8,0) -- (1.8,0);
+        \draw[->] (0,-1.5) -- (0,2.05);
+
+        % Asse centrale
+        \draw[dashed] (0,-1.25) -- (0,1.85);
+
+        % Generatrici
+        \draw (-0.35,-0.72) -- ( 0.35,-1.28);
+        \draw (-0.78,-0.38) -- ( 0.78,-0.82);
+        \draw (-1.02,-0.02) -- ( 1.02,-0.34);
+        \draw (-1.12, 0.32) -- ( 1.12, 0.32);
+        \draw (-1.02, 0.66) -- ( 1.02, 0.98);
+        \draw (-0.78, 1.02) -- ( 0.78, 1.46);
+        \draw (-0.35, 1.36) -- ( 0.35, 1.92);
+
+        % Bordi
+        \draw[thick] plot[smooth] coordinates {
+            (-0.35,-0.72)
+            (-0.78,-0.38)
+            (-1.02,-0.02)
+            (-1.12, 0.32)
+            (-1.02, 0.66)
+            (-0.78, 1.02)
+            (-0.35, 1.36)
+        };
+
+        \draw[thick] plot[smooth] coordinates {
+            ( 0.35,-1.28)
+            ( 0.78,-0.82)
+            ( 1.02,-0.34)
+            ( 1.12, 0.32)
+            ( 1.02, 0.98)
+            ( 0.78, 1.46)
+            ( 0.35, 1.92)
+        };
+    \end{scope}
+
+    %==================== CATENOIDE ====================
+    \begin{scope}[shift={(5.4,0)}]
+        \node at (0,2.45) {catenoide};
+
+        % Asse
+        \draw[->] (0,-1.45) -- (0,2.0);
+
+        % Profili laterali
+        \draw[thick] plot[smooth] coordinates {
+            (-1.00,-1.00)
+            (-0.68,-0.55)
+            (-0.48, 0.00)
+            (-0.68, 0.55)
+            (-1.00, 1.00)
+        };
+
+        \draw[thick] plot[smooth] coordinates {
+            ( 1.00,-1.00)
+            ( 0.68,-0.55)
+            ( 0.48, 0.00)
+            ( 0.68, 0.55)
+            ( 1.00, 1.00)
+        };
+
+        % Ellisse in basso
+        \draw[dashed]
+            (-1.00,-1.00) arc[start angle=180,end angle=360,x radius=1.00,y radius=0.22];
+        \draw[thick]
+            ( 1.00,-1.00) arc[start angle=0,end angle=180,x radius=1.00,y radius=0.22];
+
+        % Primo strato interno
+        \draw[dashed]
+            (-0.68,-0.55) arc[start angle=180,end angle=360,x radius=0.68,y radius=0.16];
+        \draw[thick]
+            ( 0.68,-0.55) arc[start angle=0,end angle=180,x radius=0.68,y radius=0.16];
+
+        % Collo centrale
+        \draw[dashed]
+            (-0.48,0.00) arc[start angle=180,end angle=360,x radius=0.48,y radius=0.12];
+        \draw[thick]
+            ( 0.48,0.00) arc[start angle=0,end angle=180,x radius=0.48,y radius=0.12];
+
+        % Secondo strato interno
+        \draw[dashed]
+            (-0.68,0.55) arc[start angle=180,end angle=360,x radius=0.68,y radius=0.16];
+        \draw[thick]
+            ( 0.68,0.55) arc[start angle=0,end angle=180,x radius=0.68,y radius=0.16];
+
+        % Ellisse in alto
+        \draw[dashed]
+            (-1.00,1.00) arc[start angle=180,end angle=360,x radius=1.00,y radius=0.22];
+        \draw[thick]
+            ( 1.00,1.00) arc[start angle=0,end angle=180,x radius=1.00,y radius=0.22];
+    \end{scope}
+
+\end{tikzpicture}
+\]
+
+Calcoliamo le metriche indotte. Per l'elicoide,
+\[
+    H_u
+    =
+    a(-\sinh v\sin u,\sinh v\cos u,1),
+    \qquad
+    H_v
+    =
+    a(\cosh v\cos u,\cosh v\sin u,0).
+\]
+Quindi
+\begin{align*}
+    \langle H_u,H_u\rangle
+    &=
+    a^2(\sinh^2 v+1)
+    =
+    a^2\cosh^2 v,\\
+    \langle H_u,H_v\rangle
+    &=0,\\
+    \langle H_v,H_v\rangle
+    &=
+    a^2\cosh^2 v.
+\end{align*}
+Dunque
+\[
+    g_H
+    =
+    a^2\cosh^2 v
+    \begin{pmatrix}
+        1 & 0\\
+        0 & 1
+    \end{pmatrix}.
+\]
+
+Per il catenoide,
+\[
+    C_u
+    =
+    a(-\cosh v\sin u,\cosh v\cos u,0),
+    \qquad
+    C_v
+    =
+    a(\sinh v\cos u,\sinh v\sin u,1).
+\]
+Allora
+\begin{align*}
+    \langle C_u,C_u\rangle
+    &=
+    a^2\cosh^2 v,\\
+    \langle C_u,C_v\rangle
+    &=0,\\
+    \langle C_v,C_v\rangle
+    &=
+    a^2(\sinh^2 v+1)
+    =
+    a^2\cosh^2 v.
+\end{align*}
+Quindi
+\[
+    g_C
+    =
+    a^2\cosh^2 v
+    \begin{pmatrix}
+        1 & 0\\
+        0 & 1
+    \end{pmatrix}.
+\]
+
+Le due superfici hanno dunque la stessa prima forma fondamentale nelle coordinate \((u,v)\). Ne segue che la mappa definita localmente da
+\[
+    h(H(u,v))=C(u,v)
+\]
+è un'isometria locale. Questa è un'isometria locale che geometricamente non è evidente guardando le due superfici.
+\end{snippetexample}
 
 \pagebreak
 
+\section{Lezione 27}
 
-\section{Lezione 28: Geodetiche per varietà Riemanniane astratte}
+
+Nella lezione precedente abbiamo visto che il catenoide e l'elicoide sono localmente isometrici. Riprendiamo il calcolo in modo esplicito.
+
+\begin{snippetexample}{Metrica del catenoide}
+Consideriamo il catenoide parametrizzato da
+\[
+    \psi(x,y)
+    =
+    (a\cosh x\cos y,\;a\cosh x\sin y,\;ax),
+    \qquad
+    a>0.
+\]
+Calcoliamo la matrice della metrica indotta dalla metrica euclidea di \(\realnumbers^3\). Abbiamo
+\[
+    \psi_x
+    =
+    (a\sinh x\cos y,\;a\sinh x\sin y,\;a),
+\]
+e
+\[
+    \psi_y
+    =
+    (-a\cosh x\sin y,\;a\cosh x\cos y,\;0).
+\]
+Quindi
+\begin{align*}
+    \langle \psi_x,\psi_x\rangle
+    &=
+    a^2\sinh^2x+a^2
+    =
+    a^2\cosh^2x,\\
+    \langle \psi_x,\psi_y\rangle
+    &=
+    0,\\
+    \langle \psi_y,\psi_y\rangle
+    &=
+    a^2\cosh^2x.
+\end{align*}
+Pertanto
+\[
+    g^\psi
+    =
+    \begin{pmatrix}
+        a^2\cosh^2x & 0\\
+        0 & a^2\cosh^2x
+    \end{pmatrix}.
+\]
+\end{snippetexample}
+
+\begin{snippetexample}{Riparametrizzazione dell'elicoide}
+Consideriamo l'elicoide parametrizzato da
+\[
+    \varphi(u,v)
+    =
+    (v\cos u,\;v\sin u,\;au).
+\]
+Usiamo l'automorfismo di \(\realnumbers^2\)
+\[
+    \lambda(x,y)=(y,\;a\sinh x).
+\]
+Allora
+\[
+    (\varphi\circ\lambda)(x,y)
+    =
+    (a\sinh x\cos y,\;a\sinh x\sin y,\;ay).
+\]
+Calcoliamo la matrice della metrica indotta tramite questa parametrizzazione. Si ha
+\[
+    (\varphi\circ\lambda)_x
+    =
+    (a\cosh x\cos y,\;a\cosh x\sin y,\;0),
+\]
+e
+\[
+    (\varphi\circ\lambda)_y
+    =
+    (-a\sinh x\sin y,\;a\sinh x\cos y,\;a).
+\]
+Quindi
+\begin{align*}
+    \left\langle
+        (\varphi\circ\lambda)_x,
+        (\varphi\circ\lambda)_x
+    \right\rangle
+    &=
+    a^2\cosh^2x,\\
+    \left\langle
+        (\varphi\circ\lambda)_x,
+        (\varphi\circ\lambda)_y
+    \right\rangle
+    &=
+    0,\\
+    \left\langle
+        (\varphi\circ\lambda)_y,
+        (\varphi\circ\lambda)_y
+    \right\rangle
+    &=
+    a^2\sinh^2x+a^2
+    =
+    a^2\cosh^2x.
+\end{align*}
+Dunque
+\[
+    g^{\varphi\circ\lambda}
+    =
+    \begin{pmatrix}
+        a^2\cosh^2x & 0\\
+        0 & a^2\cosh^2x
+    \end{pmatrix}
+    =
+    g^\psi.
+\]
+\end{snippetexample}
+
+\begin{snippetproposition}{Isometria locale tra catenoide ed elicoide}
+Sia \(X\) l'elicoide e sia \(Y\) il catenoide. Le parametrizzazioni
+\[
+    \varphi\circ\lambda:\realnumbers^2\longrightarrow X,
+    \qquad
+    \psi:\realnumbers^2\longrightarrow Y
+\]
+inducono la stessa matrice della metrica. Perciò \(X\) e \(Y\) sono localmente isometrici.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+Definiamo localmente
+\[
+    h:X\longrightarrow Y
+\]
+ponendo
+\[
+    h\circ(\varphi\circ\lambda)=\psi.
+\]
+In altre parole, \(h\) manda il punto dell'elicoide con coordinate \((x,y)\) nel punto del catenoide con le stesse coordinate \((x,y)\).
+
+Poiché
+\[
+    (\varphi\circ\lambda)^*\langle\cdot,\cdot\rangle_X
+    =
+    \psi^*\langle\cdot,\cdot\rangle_Y,
+\]
+segue che \(h\) preserva il prodotto scalare sui tangenti. Quindi \(h\) è un'isometria locale.
+\[
+    \begin{tikzpicture}[scale=0.9]
+        \node (r2a) at (0,0) {\(\realnumbers^2\)};
+        \node (x) at (3.2,0) {\(X\)};
+        \node (y) at (6.4,0) {\(Y\)};
+        \node (r2b) at (3.2,-1.8) {\(\realnumbers^2\)};
+        \draw[->] (r2a) -- node[above] {\(\varphi\circ\lambda\)} (x);
+        \draw[->] (x) -- node[above] {\(h\)} (y);
+        \draw[->] (r2b) -- node[right] {\(\psi\)} (y);
+        \draw[->] (r2a) -- node[left] {\(\operatorname{id}\)} (r2b);
+    \end{tikzpicture}
+\]
+\end{snippetproof}
+
+\subsection*{Integrazione di funzioni su varietà riemanniane}
+
+\begin{snippetdefinition}{Elemento di volume riemanniano}
+Sia \((X,\langle\cdot,\cdot\rangle)\) una varietà riemanniana di dimensione \(n\). In una carta
+\[
+    \varphi:\Omega\subseteq\realnumbers^n\longrightarrow X
+\]
+scriviamo
+\[
+    g_\varphi
+    =
+    \left(
+        \left\langle
+            \frac{\partial\varphi}{\partial x^i},
+            \frac{\partial\varphi}{\partial x^j}
+        \right\rangle
+    \right)_{i,j}.
+\]
+L'elemento di volume riemanniano in questa carta è
+\[
+    dM_X
+    =
+    \sqrt{\det g_\varphi}\,dx_1\cdots dx_n.
+\]
+Se \(U\subseteq X\) è contenuto nell'immagine della carta \(\varphi\), definiamo
+\[
+    M_X(U)
+    =
+    \int_{\varphi^{-1}(U)} \sqrt{\det g_\varphi}\,dx_1\cdots dx_n
+\]
+\end{snippetdefinition}
+
+Questa definizione non deve dipendere dalla carta scelta. Il risultato fondamentale è il seguente.
+
+\begin{snippetproposition}{Buona definizione dell'elemento di volume}
+L'espressione locale
+\[
+    \sqrt{\det g_\varphi}\,dx_1\cdots dx_n
+\]
+non dipende dalla scelta della carta, nel senso che si trasforma correttamente sotto cambiamento di coordinate.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+Siano
+\[
+    \varphi:\Omega\longrightarrow X,
+    \qquad
+    \psi:\widetilde{\Omega}\longrightarrow X
+\]
+due carte con immagini sovrapposte, e sia
+\[
+    \gamma=\psi^{-1}\circ\varphi
+\]
+la funzione di transizione. Dalla formula di trasformazione della matrice della metrica,
+\[
+    g_\varphi
+    =
+    J_\gamma^T\,(g_\psi\circ\gamma)\,J_\gamma.
+\]
+Passando ai determinanti,
+\[
+    \det g_\varphi
+    =
+    (\det J_\gamma)^2\,
+    \det(g_\psi\circ\gamma).
+\]
+Quindi
+\[
+    \sqrt{\det g_\varphi}
+    =
+    \sqrt{\det(g_\psi\circ\gamma)}\,\left|\det J_\gamma\right|.
+\]
+Per la formula di cambiamento di variabili,
+\[
+    \sqrt{\det g_\varphi(x)}\,dx_1\cdots dx_n
+    =
+    \sqrt{\det g_\psi(y)}\,dy_1\cdots dy_n,
+    \qquad
+    y=\gamma(x).
+\]
+Dunque l'integrale locale definito con una carta coincide con quello definito usando l'altra carta.
+\end{snippetproof}
+
+La definizione precedente si applica anche alle varietà non orientabili: non stiamo integrando una \(n\)-forma orientata, ma una densità positiva.
+
+\begin{snippetdefinition}{Integrale di una funzione}
+Sia \(h:X\longrightarrow\realnumbers\) una funzione misurabile non negativa. Definiamo
+\[
+    \int_X h\,dM_X
+\]
+sommando gli integrali locali mediante una partizione dell'unità subordinata a un ricoprimento per carte.
+
+In particolare, se \(\operatorname{supp}(h)\subseteq\operatorname{Im}(\varphi)\), allora
+\[
+    \int_X h\,dM_X
+    =
+    \int_{\varphi^{-1}(\operatorname{supp}(h))}
+    (h\circ\varphi)\sqrt{\det g_\varphi}\,dx_1\cdots dx_n
+\]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Volume di una varietà riemanniana}
+Il volume di una varietà riemanniana \(X\) è
+\[
+    \operatorname{Vol}(X)
+    =
+    \int_X dM_X
+\]
+Più in generale, se \(U\subseteq X\) è misurabile,
+\[
+    \operatorname{Vol}(U)
+    =
+    \int_U dM_X
+\]
+\end{snippetdefinition}
+
+\begin{snippetexample}{Area della sfera di raggio \(R\)}
+Sia
+\[
+    \mathbb{S}^2_R
+    =
+    \{(x,y,z)\in\realnumbers^3:x^2+y^2+z^2=R^2\}.
+\]
+Mostriamo che
+\[
+    \operatorname{Vol}(\mathbb{S}^2_R)=4\pi R^2.
+\]
+
+Usiamo le coordinate sferiche
+\[
+    \sigma:(0,2\pi)\times(0,\pi)\longrightarrow \mathbb{S}^2_R,
+\]
+\[
+    \sigma(\theta,\varphi)
+    =
+    (R\sin\varphi\cos\theta,\;R\sin\varphi\sin\theta,\;R\cos\varphi).
+\]
+Abbiamo già calcolato che la matrice della metrica è
+\[
+    g_\sigma
+    =
+    \begin{pmatrix}
+        R^2\sin^2\varphi & 0\\
+        0 & R^2
+    \end{pmatrix}.
+\]
+Pertanto
+\[
+    \sqrt{\det g_\sigma}
+    =
+    R^2\sin\varphi,
+    \qquad
+    \varphi\in(0,\pi).
+\]
+Allora
+\begin{align*}
+    \operatorname{Vol}(\mathbb{S}^2_R)
+    &=
+    \integral[0][2\pi][
+        \integral[0][\pi][R^2\sin\varphi][\varphi]
+    ][\theta]\\
+    &=
+    2\pi R^2
+    \integral[0][\pi][\sin\varphi][\varphi]\\
+    &=
+    2\pi R^2
+    \left[-\cos\varphi\right]_{0}^{\pi}\\
+    &=
+    4\pi R^2.
+\end{align*}
+
+    \begin{center}
+        \begin{tikzpicture}[scale=0.85]
+            \draw (0,0) circle (1.35);
+            \draw[dashed] (-1.35,0) arc (180:360:1.35 and 0.32);
+            \draw (1.35,0) arc (0:180:1.35 and 0.32);
+            \fill (0.45,0.8) circle (1.5pt);
+            \node[right] at (0.45,0.8) {\(\sigma(\theta,\varphi)\)};
+            \draw[->] (0,0) -- (0.45,0.8) node[midway,left] {\(R\)};
+            \node at (0,-1.75) {\(\mathbb{S}^2_R\)};
+        \end{tikzpicture}
+    \end{center}
+\end{snippetexample}
+
+Nella notazione classica per una superficie parametrizzata
+\[
+    \varphi(u,v),
+\]
+si scrive
+\[
+    g_\varphi
+    =
+    \begin{pmatrix}
+        E & F\\
+        F & G
+    \end{pmatrix},
+\]
+dove
+\[
+    E=\langle\varphi_u,\varphi_u\rangle,
+    \qquad
+    F=\langle\varphi_u,\varphi_v\rangle,
+    \qquad
+    G=\langle\varphi_v,\varphi_v\rangle.
+\]
+Allora
+\[
+    \sqrt{\det g_\varphi}
+    =
+    \sqrt{EG-F^2}.
+\]
+In \(\realnumbers^3\) questa quantità coincide con la formula classica dell'elemento di area:
+\[
+    \sqrt{EG-F^2}
+    =
+    \|\varphi_u\wedge\varphi_v\|.
+\]
+Quindi
+\[
+    \operatorname{Vol}(\operatorname{Im}\varphi)
+    =
+    \int_\Omega \sqrt{
+        \det\left(
+            \left(
+                \left\langle
+                    \frac{\partial\varphi}{\partial x^i},
+                    \frac{\partial\varphi}{\partial x^j}
+                \right\rangle
+            \right)_{i,j}
+        \right)
+    }
+    \,dx_1\cdots dx_n
+\]
+
+\subsection*{Classi speciali di mappe fra varietà riemanniane}
+
+\begin{snippetdefinition}{Isometrie locali, mappe conformi e mappe che preservano il volume}
+Siano \((X,\langle\cdot,\cdot\rangle_X)\) e \((Y,\langle\cdot,\cdot\rangle_Y)\) due varietà riemanniane, e sia
+\[
+    h:X\longrightarrow Y
+\]
+una mappa differenziabile.
+
+\begin{enumerate}
+\item \(h\) è un'isometria locale se
+\[
+        h^*\langle\cdot,\cdot\rangle_Y
+        =
+        \langle\cdot,\cdot\rangle_X.
+\]
+Equivalentemente, per ogni \(x\in X\) e per ogni \(v,w\in T_xX\),
+\[
+        \left\langle dh_x(v),dh_x(w)\right\rangle_Y
+        =
+        \langle v,w\rangle_X.
+\]
+
+\item \(h\) è conforme se esiste una funzione liscia
+\[
+        \rho:X\longrightarrow(0,+\infty)
+\]
+tale che
+\[
+        h^*\langle\cdot,\cdot\rangle_Y
+        =
+        \rho^2\langle\cdot,\cdot\rangle_X.
+\]
+Cioè
+\[
+        \left\langle dh_x(v),dh_x(w)\right\rangle_Y
+        =
+        \rho(x)^2\langle v,w\rangle_X.
+\]
+In particolare, una mappa conforme preserva gli angoli.
+
+\item \(h\) preserva il volume se
+\[
+        h^*dM_Y=dM_X.
+\]
+In coordinate locali \(x=(x_1,\ldots,x_n)\) su \(X\) e \(y=(y_1,\ldots,y_n)\) su \(Y\), questa condizione diventa
+\[
+        \sqrt{\det g_Y(h(x))}
+        \left|\det\left(\frac{\partial y}{\partial x}(x)\right)\right|
+        =
+        \sqrt{\det g_X(x)}.
+\]
+\end{enumerate}
+\end{snippetdefinition}
+
+\begin{snippetexample}{Isometrie locali}
+Ecco alcuni esempi importanti.
+
+\begin{enumerate}
+\item Sia \(X\subseteq\realnumbers^3\) un cilindro generato da una curva piana parametrizzata per lunghezza d'arco
+\[
+        \gamma(u)=(a(u),b(u)).
+\]
+Allora
+\[
+        h:\realnumbers^2\longrightarrow X,
+        \qquad
+        h(u,z)=(a(u),b(u),z),
+\]
+è un'isometria locale.
+
+\[
+        \begin{tikzpicture}[scale=0.8]
+            \draw (0,0) rectangle (1.6,1.1);
+            \node at (0.8,0.55) {\(\realnumbers^2\)};
+            \draw[->] (1.9,0.55) -- (2.8,0.55) node[midway,above] {\(h\)};
+            \draw (4.0,0.2) ellipse (0.6 and 0.2);
+            \draw (4.0,1.7) ellipse (0.6 and 0.2);
+            \draw (3.4,0.2) -- (3.4,1.7);
+            \draw (4.6,0.2) -- (4.6,1.7);
+            \node at (4.0,2.1) {\(X\)};
+        \end{tikzpicture}
+\]
+
+\item L'elicoide e il catenoide sono localmente isometrici, come mostrato sopra.
+\end{enumerate}
+\end{snippetexample}
+
+\begin{snippetexample}{Proiezione stereografica}
+La proiezione stereografica
+\[
+    \pi:\mathbb{S}^2\setminus\{(0,0,1)\}\longrightarrow\realnumbers^2
+\]
+è una mappa conforme.
+
+\[
+    \begin{tikzpicture}[scale=0.85]
+        \draw (-2.1,0) -- (2.4,0);
+        \draw (0,0.9) circle (0.9);
+        \fill (0,1.8) circle (1.5pt) node[above] {\(N\)};
+        \fill (0.55,0.55) circle (1.5pt) node[right] {\(p\)};
+        \draw (0,1.8) -- (1.65,0);
+        \fill (1.65,0) circle (1.5pt) node[below] {\(\pi(p)\)};
+        \node at (2.6,0) {\(\realnumbers^2\)};
+        \node at (-1.2,1.7) {\(\mathbb{S}^2\)};
+    \end{tikzpicture}
+\]
+
+Equivalentemente, la sua inversa
+\[
+    \pi^{-1}:\realnumbers^2\longrightarrow\mathbb{S}^2\setminus\{(0,0,1)\}
+\]
+è conforme. Questa proprietà è alla base di molte carte geografiche ottenute per proiezione stereografica della sfera terrestre, o più in generale di proiezioni che cercano di preservare gli angoli.
+
+Una mappa conforme preserva gli angoli: se due curve sulla sfera si incontrano con un certo angolo, allora le loro immagini tramite una mappa conforme si incontrano con lo stesso angolo.
+\end{snippetexample}
+
+\begin{snippetexample}{Proiezione cilindrica}
+Consideriamo la proiezione della sfera sul cilindro circoscritto. Questa proiezione, nella versione classica studiata da Archimede, preserva le aree.
+
+\[
+    \begin{tikzpicture}[scale=0.85]
+        \draw (0,0) circle (1.05);
+        \draw[dashed] (-1.05,0) arc (180:360:1.05 and 0.25);
+        \draw (1.05,0) arc (0:180:1.05 and 0.25);
+        \draw (-1.05,-1.25) -- (-1.05,1.25);
+        \draw (1.05,-1.25) -- (1.05,1.25);
+        \draw (-1.05,1.25) arc (180:360:1.05 and 0.25);
+        \draw[dashed] (-1.05,-1.25) arc (180:360:1.05 and 0.25);
+        \fill (0.7,0.45) circle (1.5pt) node[right] {\(p\)};
+        \draw[->] (0,0) -- (1.05,0.68);
+        \node at (0,-1.65) {proiezione cilindrica};
+    \end{tikzpicture}
+\]
+
+Questa proiezione preserva le aree, ma non preserva in generale gli angoli. È quindi un esempio naturale di mappa che conserva il volume ma non è conforme.
+\end{snippetexample}
+
+\begin{snippetexample}{Atlante scolastico}
+Le carte geografiche scolastiche spesso usano proiezioni che deformano le aree. Per esempio, regioni vicine ai poli appaiono molto più grandi rispetto alle regioni vicine all'equatore.
+
+Questo disegno vabbè lasciamo perdere
+\[
+    \begin{tikzpicture}[scale=0.8]
+        \draw (0,0) rectangle (6.8,2.6);
+        \draw (0.5,1.8) .. controls (0.8,2.2) and (1.2,2.1) .. (1.5,1.7)
+            .. controls (1.1,1.2) and (0.9,0.8) .. (0.6,0.5);
+        \node at (1.0,0.25) {America};
+        \draw (2.6,1.6) .. controls (3.1,2.1) and (3.8,1.9) .. (4.1,1.5)
+            .. controls (3.7,1.2) and (3.2,1.1) .. (2.7,1.3);
+        \node at (3.35,0.95) {Europa};
+        \draw (3.0,0.8) .. controls (3.5,1.1) and (4.0,0.9) .. (4.25,0.4)
+            .. controls (3.7,0.2) and (3.2,0.3) .. (3.0,0.8);
+        \node at (3.6,0.25) {Africa};
+        \draw (4.4,1.55) .. controls (5.1,2.1) and (6.0,1.8) .. (6.3,1.3)
+            .. controls (5.6,1.1) and (5.0,1.0) .. (4.4,1.55);
+        \node at (5.4,0.95) {Asia};
+        \draw (5.7,0.45) .. controls (6.0,0.7) and (6.3,0.6) .. (6.45,0.35)
+            .. controls (6.2,0.2) and (5.9,0.2) .. (5.7,0.45);
+        \node at (6.1,0.15) {Australia};
+        \node at (3.4,2.35) {Polo Nord};
+        \node at (3.4,-0.25) {Polo Sud};
+    \end{tikzpicture}
+\]
+Questo tipo di distorsione è una manifestazione del fatto che non esiste una mappa piana della sfera che preservi simultaneamente tutte le proprietà geometriche rilevanti.
+\end{snippetexample}
+
+\pagebreak
+
+\section{Lezione 28}
 
 La Lagrangiana descrive localmente il moto, assegnando
 a ogni posizione e velocità un numero che misura il "costo" istantaneo
@@ -6680,5 +8033,1222 @@ Il sistema di equazioni \[
     Il motivo è che essere punto critico di un funzionale,
     che dipende solo da \(\langle\,,\,\rangle\), è una proprietà indipendente dal sistema di coordinate.
 \end{snippetproof}
+
+\pagebreak
+
+\section{Lezione 29}
+
+
+\subsection*{Richiamo: equazioni delle geodetiche}
+
+Abbiamo definito le geodetiche di una varietà riemanniana \((X,g)\). In coordinate locali, se
+\[
+    \gamma:[a,b]\longrightarrow X
+\]
+è una curva e
+\[
+    \gamma(t)=\bigl(\gamma^1(t),\ldots,\gamma^n(t)\bigr)
+\]
+sono le sue coordinate in una carta, allora \(\gamma\) è una geodetica se e solo se soddisfa il sistema di equazioni differenziali
+\[
+    \gamma^k{}''(t)
+    +
+    \sum_{i,j=1}^{n}
+    \Gamma^k_{ij}(\gamma(t))\,
+    \gamma^i{}'(t)\gamma^j{}'(t)
+    =
+    0,
+    \qquad
+    k=1,\ldots,n.
+\]
+I coefficienti \(\Gamma^k_{ij}\) sono i simboli di Christoffel della metrica:
+\[
+    \Gamma^k_{ij}
+    =
+    \frac12
+    \sum_{\ell=1}^{n}
+    g^{k\ell}
+    \left(
+        \frac{\partial g_{j\ell}}{\partial x^i}
+        +
+        \frac{\partial g_{i\ell}}{\partial x^j}
+        -
+        \frac{\partial g_{ij}}{\partial x^\ell}
+    \right),
+\]
+dove \((g^{k\ell})\) è la matrice inversa di \((g_{k\ell})\).
+
+Poiché la metrica è simmetrica, si ha
+\[
+    \Gamma^k_{ij}
+    =
+    \Gamma^k_{ji}.
+\]
+
+\begin{snippetexample}{Geodetiche in \(\realnumbers^n\)}
+In \(\realnumbers^n\) con la metrica euclidea standard, la matrice della metrica è costante:
+\[
+    g_{ij}=\delta_{ij}.
+\]
+Quindi
+\[
+    \frac{\partial g_{ij}}{\partial x^k}=0
+    \qquad
+    \forall i,j,k,
+\]
+e perciò
+\[
+    \Gamma^k_{ij}=0.
+\]
+Le equazioni delle geodetiche diventano
+\[
+    \gamma^k{}''(t)=0,
+    \qquad
+    k=1,\ldots,n.
+\]
+Dunque
+\[
+    \gamma(t)=p+tv
+\]
+per qualche \(p,v\in\realnumbers^n\). Le geodetiche euclidee sono quindi le rette parametrizzate a velocità costante.
+\end{snippetexample}
+
+\subsection*{Simboli di Christoffel per una superficie}
+
+Sia \(S\subseteq\realnumbers^3\) una superficie con metrica indotta. In una carta locale
+\[
+    \varphi(u,v)
+\]
+la matrice della metrica si scrive classicamente
+\[
+    g
+    =
+    \begin{pmatrix}
+        E & F\\
+        F & G
+    \end{pmatrix},
+\]
+dove
+\[
+    E=\langle\varphi_u,\varphi_u\rangle,
+    \qquad
+    F=\langle\varphi_u,\varphi_v\rangle,
+    \qquad
+    G=\langle\varphi_v,\varphi_v\rangle.
+\]
+La matrice inversa è
+\[
+    g^{-1}
+    =
+    \frac1{EG-F^2}
+    \begin{pmatrix}
+        G & -F\\
+        -F & E
+    \end{pmatrix}.
+\]
+Poniamo
+\[
+    D=EG-F^2.
+\]
+Usando la formula generale dei simboli di Christoffel, otteniamo:
+\begin{align*}
+    \Gamma^1_{11}
+    &=
+    \frac{G E_u-F(2F_u-E_v)}{2D},\\
+    \Gamma^2_{11}
+    &=
+    \frac{-F E_u+E(2F_u-E_v)}{2D},\\
+    \Gamma^1_{12}
+    &=
+    \Gamma^1_{21}
+    =
+    \frac{G E_v-FG_u}{2D},\\
+    \Gamma^2_{12}
+    &=
+    \Gamma^2_{21}
+    =
+    \frac{-F E_v+EG_u}{2D},\\
+    \Gamma^1_{22}
+    &=
+    \frac{G(2F_v-G_u)-F G_v}{2D},\\
+    \Gamma^2_{22}
+    &=
+    \frac{-F(2F_v-G_u)+E G_v}{2D}.
+\end{align*}
+Qui, ad esempio, \(E_u=\frac{\partial E}{\partial u}\) e \(G_v=\frac{\partial G}{\partial v}\).
+
+\begin{snippetexample}{Superfici di rotazione}
+Consideriamo una superficie di rotazione parametrizzata da
+\[
+    \psi(\theta,t)
+    =
+    (a(t)\cos\theta,\;a(t)\sin\theta,\;b(t)).
+\]
+Supponiamo che la curva generatrice
+\[
+    t\longmapsto (a(t),b(t))
+\]
+sia parametrizzata per lunghezza d'arco, cioè
+\[
+    (a'(t))^2+(b'(t))^2=1.
+\]
+Allora
+\[
+    \psi_\theta
+    =
+    (-a(t)\sin\theta,\;a(t)\cos\theta,\;0),
+\]
+e
+\[
+    \psi_t
+    =
+    (a'(t)\cos\theta,\;a'(t)\sin\theta,\;b'(t)).
+\]
+Quindi
+\[
+    E=\langle\psi_\theta,\psi_\theta\rangle=a(t)^2,
+    \qquad
+    F=\langle\psi_\theta,\psi_t\rangle=0,
+    \qquad
+    G=\langle\psi_t,\psi_t\rangle=1.
+\]
+La matrice della metrica è dunque
+\[
+    g
+    =
+    \begin{pmatrix}
+        a(t)^2 & 0\\
+        0 & 1
+    \end{pmatrix}.
+\]
+
+Dalla formula precedente si ricavano gli unici simboli di Christoffel non nulli:
+\[
+    \Gamma^\theta_{\theta t}
+    =
+    \Gamma^\theta_{t\theta}
+    =
+    \frac{a'(t)}{a(t)},
+    \qquad
+    \Gamma^t_{\theta\theta}
+    =
+    -a(t)a'(t).
+\]
+Le equazioni delle geodetiche sono quindi
+\[
+    \begin{cases}
+        \theta''+2\dfrac{a'}{a}\theta't'=0,\\[1.2em]
+        t''-aa'(\theta')^2=0.
+    \end{cases}
+\]
+
+Nel caso della sfera unitaria, prendendo
+\[
+    a(t)=\sin t,
+    \qquad
+    b(t)=\cos t,
+\]
+si ottiene la metrica in coordinate sferiche.
+\end{snippetexample}
+
+\begin{snippetexample}{Catenoide ed elicoide}
+Riprendiamo l'isometria locale tra catenoide ed elicoide. Nelle coordinate adatte entrambe le superfici hanno metrica
+\[
+    g
+    =
+    \begin{pmatrix}
+        a^2\cosh^2x & 0\\
+        0 & a^2\cosh^2x
+    \end{pmatrix}.
+\]
+Quindi i simboli di Christoffel coincidono nelle due parametrizzazioni e le equazioni delle geodetiche hanno la stessa forma. Di conseguenza, l'isometria locale costruita tra le due superfici manda geodetiche in geodetiche.
+\end{snippetexample}
+
+\begin{snippetexample}{Esercizio}
+Dimostrare che il catenoide e l'elicoide non sono omeomorfi.
+\end{snippetexample}
+
+\begin{snippetsolution}{}
+L'elicoide è diffeomorfo a \(\realnumbers^2\), quindi è semplicemente connesso. Il catenoide è diffeomorfo a \(\mathbb{S}^1\times\realnumbers\), quindi ha gruppo fondamentale isomorfo a \(\integernumbers\). Poiché il gruppo fondamentale è un invariante topologico, le due superfici non sono omeomorfe.
+\end{snippetsolution}
+
+\subsection*{Esistenza e unicità delle geodetiche}
+
+\begin{snippettheorem}{Esistenza e unicità locale delle geodetiche}
+Per ogni \(x\in X\) e per ogni \(v\in T_xX\), esiste un'unica geodetica
+\[
+    \gamma:I\longrightarrow X
+\]
+definita su un intervallo massimale \(I\subseteq\realnumbers\), tale che
+\[
+    0\in I,
+    \qquad
+    \gamma(0)=x,
+    \qquad
+    \gamma'(0)=v.
+\]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+In coordinate locali le equazioni delle geodetiche formano un sistema di equazioni differenziali ordinarie del secondo ordine:
+\[
+    \gamma''=F(\gamma,\gamma'),
+\]
+dove \(F\) è una funzione liscia, quindi localmente lipschitziana. Il teorema di esistenza e unicità per sistemi di equazioni differenziali ordinarie garantisce allora l'esistenza e l'unicità della soluzione con dati iniziali assegnati. L'intervallo massimale si ottiene prolungando la soluzione finché è possibile.
+\end{snippetproof}
+
+\begin{snippetproposition}{Le isometrie mandano geodetiche in geodetiche}
+Sia \(G\) un gruppo che agisce su \(X\) per isometrie. Se \(\gamma\) è una geodetica e \(g\in G\), allora
+\[
+    g\circ\gamma
+\]
+è ancora una geodetica.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+Un'isometria preserva la metrica e quindi preserva le equazioni geometriche che definiscono le geodetiche. Equivalentemente, preserva la connessione di Levi-Civita, perciò
+\[
+    \nabla_{\dot{\gamma}}\dot{\gamma}=0
+    \quad
+    \Longrightarrow
+    \quad
+    \nabla_{(g\circ\gamma)'}(g\circ\gamma)'=0.
+\]
+Dunque \(g\circ\gamma\) è una geodetica.
+\end{snippetproof}
+
+\subsection*{Velocità costante delle geodetiche}
+
+\begin{snippettheorem}{Le geodetiche hanno velocità costante}
+Se \(\gamma\) è una geodetica di una varietà riemanniana \((X,g)\), allora
+\[
+    \|\gamma'(t)\|_{\gamma(t)}^2
+\]
+è costante.
+\end{snippettheorem}
+
+Per dimostrare il risultato useremo un lemma variazionale.
+
+\begin{snippetproposition}{Identità di Beltrami}
+Sia
+\[
+    \mathscr{L}(x,y)
+\]
+una funzione liscia che non dipende esplicitamente dal tempo \(t\). Se \(\gamma\) soddisfa le equazioni di Eulero-Lagrange per il funzionale
+\[
+    \integral[a][b][\mathscr{L}(\gamma(t),\gamma'(t))][t],
+\]
+allora
+\[
+    \mathscr{L}(\gamma,\gamma')
+    -
+    \sum_{k=1}^{n}
+    \gamma^k{}'
+    \frac{\partial\mathscr{L}}{\partial y^k}(\gamma,\gamma')
+\]
+è costante lungo \(\gamma\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+Poniamo
+\[
+    H(t)
+    =
+    \mathscr{L}(\gamma(t),\gamma'(t))
+    -
+    \sum_{k=1}^{n}
+    \gamma^k{}'(t)
+    \frac{\partial\mathscr{L}}{\partial y^k}(\gamma(t),\gamma'(t)).
+\]
+Derivando,
+\begin{align*}
+    \frac{dH}{dt}
+    &=
+    \sum_{k=1}^{n}
+    \frac{\partial\mathscr{L}}{\partial x^k}\gamma^k{}'
+    +
+    \sum_{k=1}^{n}
+    \frac{\partial\mathscr{L}}{\partial y^k}\gamma^k{}''\\
+    &\quad
+    -
+    \sum_{k=1}^{n}
+    \gamma^k{}''
+    \frac{\partial\mathscr{L}}{\partial y^k}
+    -
+    \sum_{k=1}^{n}
+    \gamma^k{}'
+    \frac{d}{dt}
+    \left(
+        \frac{\partial\mathscr{L}}{\partial y^k}
+    \right)\\
+    &=
+    \sum_{k=1}^{n}
+    \gamma^k{}'
+    \left[
+        \frac{\partial\mathscr{L}}{\partial x^k}
+        -
+        \frac{d}{dt}
+        \left(
+            \frac{\partial\mathscr{L}}{\partial y^k}
+        \right)
+    \right].
+\end{align*}
+Poiché \(\gamma\) soddisfa le equazioni di Eulero-Lagrange,
+\[
+    \frac{\partial\mathscr{L}}{\partial x^k}
+    -
+    \frac{d}{dt}
+    \left(
+        \frac{\partial\mathscr{L}}{\partial y^k}
+    \right)
+    =0.
+\]
+Quindi \(H'(t)=0\), cioè \(H\) è costante.
+\end{snippetproof}
+
+\begin{snippetproof}{Dimostrazione della velocità costante}
+Applichiamo l'identità di Beltrami alla lagrangiana energia
+\[
+    \mathscr{L}(x,y)=g_{ij}(x)y^i y^j.
+\]
+Lungo una curva,
+\[
+    \mathscr{L}(\gamma,\gamma')
+    =
+    \|\gamma'\|^2.
+\]
+Inoltre
+\[
+    \frac{\partial\mathscr{L}}{\partial y^k}
+    =
+    2\sum_{j=1}^{n}g_{kj}(\gamma)y^j.
+\]
+Quindi, lungo \(\gamma\),
+\[
+    \sum_{k=1}^{n}
+    \gamma^k{}'
+    \frac{\partial\mathscr{L}}{\partial y^k}
+    =
+    2\|\gamma'\|^2.
+\]
+L'identità di Beltrami dà allora
+\[
+    \mathscr{L}
+    -
+    \sum_{k=1}^{n}
+    \gamma^k{}'
+    \frac{\partial\mathscr{L}}{\partial y^k}
+    =
+    \|\gamma'\|^2-2\|\gamma'\|^2
+    =
+    -\|\gamma'\|^2
+\]
+costante. Pertanto
+\[
+    \|\gamma'(t)\|^2
+\]
+è costante.
+\end{snippetproof}
+
+\subsection*{Funzionale energia e funzionale lunghezza}
+
+\begin{snippetproposition}{Energia e lunghezza hanno gli stessi estremali a velocità costante}
+Consideriamo le lagrangiane
+\[
+    e(x,y)=g_{ij}(x)y^i y^j=\|y\|_x^2,
+\]
+e
+\[
+    \sqrt{e(x,y)}=\|y\|_x.
+\]
+Le soluzioni non costanti delle equazioni di Eulero-Lagrange per \(e\), cioè le geodetiche parametrizzate affinalmente, sono soluzioni delle equazioni di Eulero-Lagrange per \(\sqrt e\). Viceversa, le estremali del funzionale lunghezza, quando parametrizzate a velocità costante, soddisfano le equazioni delle geodetiche.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+Supponiamo che \(\gamma\) sia soluzione delle equazioni di Eulero-Lagrange per \(e\). Per il teorema precedente,
+\[
+    e(\gamma(t),\gamma'(t))
+    =
+    \|\gamma'(t)\|^2
+\]
+è costante. Poiché \(\gamma\) non è costante, questa costante è positiva. Dunque il fattore
+\[
+    \frac1{2\sqrt{e(\gamma,\gamma')}}
+\]
+è costante lungo \(\gamma\). Le equazioni di Eulero-Lagrange per \(\sqrt e\) sono
+\[
+    \frac{\partial\sqrt e}{\partial x^k}
+    -
+    \frac{d}{dt}
+    \left(
+        \frac{\partial\sqrt e}{\partial y^k}
+    \right)
+    =0.
+\]
+Sostituendo
+\[
+    \frac{\partial\sqrt e}{\partial x^k}
+    =
+    \frac1{2\sqrt e}\frac{\partial e}{\partial x^k},
+    \qquad
+    \frac{\partial\sqrt e}{\partial y^k}
+    =
+    \frac1{2\sqrt e}\frac{\partial e}{\partial y^k},
+\]
+e usando che \(\sqrt e\) è costante lungo \(\gamma\), otteniamo
+\[
+    \frac1{2\sqrt e}
+    \left[
+        \frac{\partial e}{\partial x^k}
+        -
+        \frac{d}{dt}
+        \left(
+            \frac{\partial e}{\partial y^k}
+        \right)
+    \right]
+    =0.
+\]
+Quindi \(\gamma\) soddisfa anche le equazioni di Eulero-Lagrange per \(\sqrt e\).
+
+Il viceversa va inteso scegliendo una parametrizzazione a velocità costante: il funzionale lunghezza è invariante per riparametrizzazione, mentre il funzionale energia seleziona le parametrizzazioni affini delle geodetiche.
+\end{snippetproof}
+
+\begin{snippetdefinition}{Funzionali lunghezza ed energia}
+La lunghezza di una curva \(\gamma:[a,b]\to X\) è
+\[
+    L(\gamma)
+    =
+    \integral[a][b][\|\gamma'(t)\|_{\gamma(t)}][t]
+    =
+    \integral[a][b][
+        \sqrt{g_{ij}(\gamma(t))\gamma^i{}'(t)\gamma^j{}'(t)}
+    ][t].
+\]
+L'energia di \(\gamma\) è
+\[
+    \mathcal{E}(\gamma)
+    =
+    \integral[a][b][\|\gamma'(t)\|_{\gamma(t)}^2][t].
+\]
+\end{snippetdefinition}
+
+\begin{snippettheorem}{Curve minimizzanti e geodetiche}
+Se una curva \(\gamma\), parametrizzata a velocità costante, minimizza la lunghezza tra due punti fissati \(p,q\in X\), allora minimizza anche l'energia. In particolare, le curve di lunghezza minima che collegano due punti sono geodetiche, dopo eventuale riparametrizzazione a velocità costante.
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+Per ogni curva \(\alpha:[a,b]\to X\), la disuguaglianza di Cauchy-Schwarz integrale dà
+\[
+    \left(
+        \integral[a][b][\|\alpha'(t)\|][t]
+    \right)^2
+    \leq
+    \left(
+        \integral[a][b][1^2][t]
+    \right)
+    \left(
+        \integral[a][b][\|\alpha'(t)\|^2][t]
+    \right).
+\]
+Cioè
+\[
+    L(\alpha)^2
+    \leq
+    (b-a)\mathcal{E}(\alpha),
+\]
+e quindi
+\[
+    \mathcal{E}(\alpha)
+    \geq
+    \frac{L(\alpha)^2}{b-a}.
+\]
+L'uguaglianza vale se e solo se \(\|\alpha'(t)\|\) è costante.
+
+Se \(\gamma\) è parametrizzata a velocità costante e minimizza \(L\), allora
+\[
+    \mathcal{E}(\gamma)
+    =
+    \frac{L(\gamma)^2}{b-a}.
+\]
+Per ogni curva \(\alpha\) con gli stessi estremi,
+\[
+    L(\gamma)\leq L(\alpha),
+\]
+quindi
+\[
+    \mathcal{E}(\gamma)
+    =
+    \frac{L(\gamma)^2}{b-a}
+    \leq
+    \frac{L(\alpha)^2}{b-a}
+    \leq
+    \mathcal{E}(\alpha).
+\]
+Dunque \(\gamma\) minimizza l'energia. Poiché gli estremali dell'energia sono le geodetiche, segue la tesi.
+\end{snippetproof}
+
+\subsection*{Geometria sferica}
+
+\begin{snippetexample}{Metrica della sfera}
+Sulla sfera unitaria
+\[
+    \mathbb{S}^2
+    =
+    \{(x,y,z)\in\realnumbers^3:x^2+y^2+z^2=1\}
+\]
+usiamo le coordinate sferiche
+\[
+    \sigma(\theta,\varphi)
+    =
+    (\sin\varphi\cos\theta,\;\sin\varphi\sin\theta,\;\cos\varphi),
+\]
+con
+\[
+    \theta\in(0,2\pi),
+    \qquad
+    \varphi\in(0,\pi).
+\]
+La matrice della metrica è
+\[
+    g
+    =
+    \begin{pmatrix}
+        \sin^2\varphi & 0\\
+        0 & 1
+    \end{pmatrix}.
+\]
+Quindi
+\[
+    g^{-1}
+    =
+    \begin{pmatrix}
+        \dfrac1{\sin^2\varphi} & 0\\[0.8em]
+        0 & 1
+    \end{pmatrix}.
+\]
+
+Gli unici simboli di Christoffel non nulli sono
+\[
+    \Gamma^\theta_{\theta\varphi}
+    =
+    \Gamma^\theta_{\varphi\theta}
+    =
+    \cot\varphi,
+    \qquad
+    \Gamma^\varphi_{\theta\theta}
+    =
+    -\sin\varphi\cos\varphi.
+\]
+Le equazioni delle geodetiche diventano
+\[
+    \begin{cases}
+        \theta''+2\cot\varphi\,\theta'\varphi'=0,\\
+        \varphi''-\sin\varphi\cos\varphi\,(\theta')^2=0.
+    \end{cases}
+\]
+
+\[
+    \begin{tikzpicture}[scale=0.85]
+        \draw (0,0) circle (1.35);
+        \draw[dashed] (-1.35,0) arc (180:360:1.35 and 0.32);
+        \draw (1.35,0) arc (0:180:1.35 and 0.32);
+        \draw[->] (0,-1.6) -- (0,1.75) node[above] {\(z\)};
+        \draw[thick] (0,0) ellipse (1.35 and 0.32);
+        \draw[thick] (0,-1.35) arc (-90:90:0.35 and 1.35);
+        \node at (1.65,0.15) {equatore};
+        \node at (0.8,1.2) {meridiano};
+    \end{tikzpicture}
+\]
+\end{snippetexample}
+
+\begin{snippettheorem}{Geodetiche della sfera}
+Le geodetiche della sfera \(\mathbb{S}^2\) sono tutte e sole le circonferenze massime, parametrizzate a velocità angolare costante.
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+Osserviamo prima che i meridiani sono geodetiche. Infatti un meridiano ha
+\[
+    \theta(t)=\theta_0,
+    \qquad
+    \varphi(t)=ct+d.
+\]
+Allora
+\[
+    \theta'=0,
+    \qquad
+    \theta''=0,
+    \qquad
+    \varphi''=0,
+\]
+e le equazioni delle geodetiche sono soddisfatte.
+
+Poiché il gruppo \(\operatorname{SO}(3)\) agisce su \(\mathbb{S}^2\) per isometrie, e poiché ogni circonferenza massima si ottiene ruotando un meridiano, ogni circonferenza massima è una geodetica.
+
+Resta da mostrare che non ci sono altre geodetiche. Sia \(\gamma\) una geodetica e fissiamo \(t_0\). I dati iniziali
+\[
+    p=\gamma(t_0),
+    \qquad
+    v=\gamma'(t_0)
+\]
+determinano un piano vettoriale
+\[
+    \Pi=\operatorname{span}\{p,v\}\subseteq\realnumbers^3.
+\]
+Poiché \(v\in T_p\mathbb{S}^2\), si ha \(\langle p,v\rangle=0\). L'intersezione
+\[
+    \Pi\intersection\mathbb{S}^2
+\]
+è una circonferenza massima. Essa ammette una parametrizzazione geodetica con gli stessi dati iniziali \(p\) e \(v\). Per unicità delle soluzioni delle equazioni geodetiche, \(\gamma\) coincide con questa circonferenza massima sul suo intervallo di definizione. Quindi tutte le geodetiche della sfera sono circonferenze massime.
+\end{snippetproof}
+
+Dunque la geometria sferica ha come ``rette'' le circonferenze massime. Essa soddisfa tutti gli assiomi euclidei del piano, eccetto il postulato delle parallele: date una retta e un punto esterno, non esistono rette sferiche parallele alla retta data.
+
+In particolare, nella geometria sferica la somma degli angoli interni di un triangolo geodetico è maggiore di \(\pi\). Per triangoli geodetici convessi sulla sfera unitaria vale
+\[
+    \alpha+\beta+\gamma
+    =
+    \pi+\operatorname{Area}(\Delta).
+\]
+Quindi la somma degli angoli misura l'area del triangolo in eccesso rispetto a \(\pi\).
+
+\begin{snippetexample}{Esercizio}
+Qual è il supremo della somma degli angoli interni di un triangolo geodetico su \(\mathbb{S}^2\)?
+\end{snippetexample}
+
+\begin{snippetsolution}{}
+Per triangoli geodetici orientati che possono delimitare una regione arbitrariamente vicina a tutta la sfera, l'area può tendere a \(4\pi\). Dalla formula
+\[
+    \alpha+\beta+\gamma
+    =
+    \pi+\operatorname{Area}(\Delta)
+\]
+segue che
+\[
+    \sup(\alpha+\beta+\gamma)=5\pi.
+\]
+Se invece si restringe l'attenzione ai triangoli geodetici convessi contenuti in un emisfero, il supremo diventa \(3\pi\).
+\end{snippetsolution}
+
+\pagebreak
+
+\section{Lezione 30}
+
+
+\subsection*{Geodetiche per superfici immerse in \(\realnumbers^3\)}
+
+Ricordiamo che le geodetiche possono essere caratterizzate come curve critiche del funzionale energia. In coordinate locali, se
+\[
+    \gamma(t)=\bigl(\gamma^1(t),\ldots,\gamma^n(t)\bigr),
+\]
+le equazioni delle geodetiche sono
+\[
+    \gamma^k{}''
+    +
+    \Gamma^k_{ij}(\gamma)\gamma^i{}'\gamma^j{}'
+    =
+    0,
+    \qquad
+    k=1,\ldots,n,
+\]
+dove usiamo la convenzione di somma sugli indici ripetuti e
+\[
+    \Gamma^k_{ij}
+    =
+    \frac12 g^{k\ell}
+    \left(
+        \frac{\partial g_{j\ell}}{\partial x^i}
+        +
+        \frac{\partial g_{i\ell}}{\partial x^j}
+        -
+        \frac{\partial g_{ij}}{\partial x^\ell}
+    \right).
+\]
+
+Sia ora \(S\subseteq\realnumbers^3\) una superficie con la metrica indotta dalla metrica euclidea. Sia
+\[
+    \psi:\Omega\subseteq\realnumbers^2\longrightarrow S
+\]
+una carta locale. Se
+\[
+    \sigma:[a,b]\longrightarrow S
+\]
+è una curva contenuta nell'immagine di \(\psi\), scriviamo
+\[
+    \sigma(t)=\psi(u^1(t),u^2(t)).
+\]
+Allora
+\[
+    \sigma'(t)
+    =
+    u^i{}'(t)\frac{\partial\psi}{\partial x^i}(u(t)).
+\]
+Quindi
+\begin{align*}
+    \langle\sigma',\sigma'\rangle
+    &=
+    u^i{}'u^j{}'
+    \left\langle
+        \frac{\partial\psi}{\partial x^i},
+        \frac{\partial\psi}{\partial x^j}
+    \right\rangle\\
+    &=
+    g_{ij}(u)u^i{}'u^j{}'.
+\end{align*}
+Il funzionale energia della curva è dunque
+\[
+    E(\sigma)
+    =
+    \integral[a][b][g_{ij}(u(t))u^i{}'(t)u^j{}'(t)][t].
+\]
+Applicando le equazioni di Eulero-Lagrange a questa lagrangiana si ottiene
+\[
+    u^k{}''
+    +
+    \Gamma^k_{ij}(u)u^i{}'u^j{}'
+    =
+    0,
+    \qquad
+    k=1,2.
+\]
+
+\begin{snippetproposition}{Simboli di Christoffel e derivate seconde della parametrizzazione}
+Sia
+\[
+    N=
+    \frac{\psi_1\wedge\psi_2}{\|\psi_1\wedge\psi_2\|}
+\]
+il versore normale locale alla superficie, dove
+\[
+    \psi_i=\frac{\partial\psi}{\partial x^i}.
+\]
+Per ogni \(i,j\in\{1,2\}\) possiamo scrivere
+\[
+    \psi_{ij}
+    =
+    A^k_{ij}\psi_k+h_{ij}N,
+\]
+dove
+\[
+    \psi_{ij}
+    =
+    \frac{\partial^2\psi}{\partial x^i\partial x^j}.
+\]
+Allora
+\[
+    A^k_{ij}
+    =
+    \Gamma^k_{ij}.
+\]
+In particolare
+\[
+    \psi_{ij}
+    =
+    \Gamma^k_{ij}\psi_k+h_{ij}N.
+\]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+Poiché \(\psi_1,\psi_2,N\) formano una base di \(\realnumbers^3\), possiamo decomporre
+\[
+    \psi_{ij}
+    =
+    A^k_{ij}\psi_k+h_{ij}N.
+\]
+Prendendo il prodotto scalare con \(\psi_\ell\), e usando \(N\perp T_{\psi(x)}S\), otteniamo
+\[
+    \langle\psi_{ij},\psi_\ell\rangle
+    =
+    A^k_{ij}\langle\psi_k,\psi_\ell\rangle
+    =
+    A^k_{ij}g_{k\ell}.
+\]
+Moltiplicando per \(g^{\ell m}\) segue
+\[
+    A^m_{ij}
+    =
+    g^{m\ell}\langle\psi_{ij},\psi_\ell\rangle.
+\]
+D'altra parte, dai calcoli delle equazioni di Eulero-Lagrange per l'energia, il coefficiente che compare nella parte tangenziale dell'accelerazione è proprio
+\[
+    \Gamma^m_{ij}
+    =
+    g^{m\ell}\langle\psi_{ij},\psi_\ell\rangle.
+\]
+Quindi
+\[
+    A^m_{ij}=\Gamma^m_{ij}.
+\]
+\end{snippetproof}
+
+\begin{snippettheorem}{Interpretazione geometrica delle geodetiche su una superficie}
+Sia \(S\subseteq\realnumbers^3\) una superficie con la metrica indotta. Una curva
+\[
+    \sigma:[a,b]\longrightarrow S
+\]
+è una geodetica se e solo se la sua accelerazione euclidea
+\[
+    \sigma''(t)\in\realnumbers^3
+\]
+è perpendicolare a \(T_{\sigma(t)}S\) per ogni \(t\).
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+Scriviamo
+\[
+    \sigma(t)=\psi(u^1(t),u^2(t)).
+\]
+Allora
+\[
+    \sigma'
+    =
+    u^i{}'\psi_i.
+\]
+Derivando di nuovo,
+\[
+    \sigma''
+    =
+    u^k{}''\psi_k
+    +
+    u^i{}'u^j{}'\psi_{ij}.
+\]
+Usando la decomposizione
+\[
+    \psi_{ij}
+    =
+    \Gamma^k_{ij}\psi_k+h_{ij}N,
+\]
+otteniamo
+\begin{align*}
+    \sigma''
+    &=
+    u^k{}''\psi_k
+    +
+    u^i{}'u^j{}'
+    \left(
+        \Gamma^k_{ij}\psi_k+h_{ij}N
+    \right)\\
+    &=
+    \left(
+        u^k{}''
+        +
+        \Gamma^k_{ij}u^i{}'u^j{}'
+    \right)\psi_k
+    +
+    h_{ij}u^i{}'u^j{}'N.
+\end{align*}
+Il primo termine è tangente alla superficie, mentre il secondo è normale. Perciò la parte tangenziale di \(\sigma''\) è nulla se e solo se
+\[
+    u^k{}''
+    +
+    \Gamma^k_{ij}u^i{}'u^j{}'
+    =
+    0,
+    \qquad
+    k=1,2.
+\]
+Queste sono precisamente le equazioni delle geodetiche. Dunque \(\sigma\) è una geodetica se e solo se
+\[
+    \sigma''(t)\perp T_{\sigma(t)}S
+\]
+per ogni \(t\).
+\end{snippetproof}
+
+\[
+    \begin{tikzpicture}[scale=0.9]
+        \draw (-0.4,0.2) .. controls (1.0,0.8) and (2.6,-0.2) .. (4.2,0.4);
+        \draw (0,1.1) .. controls (1.3,1.6) and (2.8,0.7) .. (4.4,1.2);
+        \draw (0.2,0.25) .. controls (0.7,0.85) and (0.9,1.15) .. (1.1,1.5);
+        \draw (2.1,0.0) .. controls (2.2,0.55) and (2.5,0.9) .. (2.8,1.35);
+        \draw[thick] (0.7,0.75) .. controls (1.45,1.05) and (2.2,0.55) .. (3.3,0.95);
+        \fill (2.2,0.65) circle (1.5pt) node[below] {\(\sigma(t)\)};
+        \draw[->] (2.2,0.65) -- (2.2,1.75) node[above] {\(N\)};
+        \draw[->] (2.2,0.65) -- (3.15,0.9) node[right] {\(T_{\sigma(t)}S\)};
+        \node at (4.55,0.75) {\(S\)};
+    \end{tikzpicture}
+\]
+
+\begin{snippetcorollary}{Geodetiche della sfera}
+Le geodetiche di \(\mathbb{S}^2\) sono tutte e sole le circonferenze massime percorse con velocità angolare costante.
+\end{snippetcorollary}
+
+\begin{snippetproof}{}
+Sia \(\gamma\) una circonferenza massima. A meno di una rotazione, possiamo scriverla come
+\[
+    \gamma(t)=(\cos(ct),\sin(ct),0),
+\]
+con \(c\in\realnumbers\) costante. Allora
+\[
+    \gamma''(t)
+    =
+    -c^2(\cos(ct),\sin(ct),0)
+    =
+    -c^2\gamma(t).
+\]
+Poiché, per la sfera,
+\[
+    T_{\gamma(t)}\mathbb{S}^2
+    =
+    \{v\in\realnumbers^3:\langle v,\gamma(t)\rangle=0\},
+\]
+il vettore \(\gamma(t)\) è normale alla sfera. Quindi \(\gamma''(t)\) è normale alla sfera e, per il teorema precedente, \(\gamma\) è una geodetica.
+
+Viceversa, sia \(\sigma\) una geodetica su \(\mathbb{S}^2\). Fissato \(t_0\), poniamo
+\[
+    p=\sigma(t_0),
+    \qquad
+    v=\sigma'(t_0).
+\]
+Il piano vettoriale
+\[
+    \Pi=\operatorname{span}\{p,v\}
+\]
+interseca \(\mathbb{S}^2\) in una circonferenza massima. Questa circonferenza massima ammette una parametrizzazione geodetica con gli stessi dati iniziali \(p\) e \(v\). Per unicità del problema di Cauchy per le geodetiche, \(\sigma\) coincide con essa. Dunque tutte le geodetiche sono circonferenze massime.
+\end{snippetproof}
+
+\subsection*{Il piano iperbolico nel modello del disco di Poincaré}
+
+\begin{snippetdefinition}{Disco di Poincaré}
+Sia
+\[
+    D=\{z\in\complexnumbers:|z|<1\}
+\]
+il disco aperto di raggio \(1\). Scriviamo
+\[
+    z=x+iy.
+\]
+Sul disco \(D\) poniamo la metrica riemanniana
+\[
+    ds^2
+    =
+    \frac{|dz|^2}{(1-|z|^2)^2}.
+\]
+Poiché
+\[
+    |dz|^2=dx^2+dy^2
+\]
+e
+\[
+    |z|^2=x^2+y^2,
+\]
+la metrica è
+\[
+    ds^2
+    =
+    \frac{dx^2+dy^2}{(1-x^2-y^2)^2}.
+\]
+Quindi, rispetto alle coordinate \((x,y)\), la matrice della metrica è
+\[
+    g
+    =
+    \begin{pmatrix}
+        \dfrac{1}{(1-x^2-y^2)^2} & 0\\[1em]
+        0 & \dfrac{1}{(1-x^2-y^2)^2}
+    \end{pmatrix}.
+\]
+La varietà riemanniana \((D,g)\) è detta piano iperbolico nel modello del disco di Poincaré.
+\end{snippetdefinition}
+
+La metrica è conforme alla metrica euclidea: è un multiplo positivo della metrica euclidea standard. Il fattore conforme è
+\[
+    \lambda(x,y)
+    =
+    \frac{1}{1-x^2-y^2}.
+\]
+Quindi, se \(\gamma(t)=x(t)+iy(t)\) è una curva in \(D\),
+\[
+    \|\gamma'(t)\|_g
+    =
+    \frac{\sqrt{x'(t)^2+y'(t)^2}}{1-x(t)^2-y(t)^2}.
+\]
+La lunghezza iperbolica è dunque
+\[
+    L_g(\gamma)
+    =
+    \integral[a][b][
+        \frac{\sqrt{x'(t)^2+y'(t)^2}}{1-x(t)^2-y(t)^2}
+    ][t].
+\]
+
+\begin{snippettheorem}{Geodetiche del disco di Poincaré}
+Le geodetiche di \((D,g)\) sono tutti e soli gli archi di circonferenza euclidea che intersecano ortogonalmente il bordo
+\[
+    \partial D=\{z\in\complexnumbers:|z|=1\},
+\]
+percorsi con velocità costante rispetto alla metrica iperbolica.
+
+In questa famiglia sono inclusi i diametri del disco, che si possono vedere come circonferenze passanti per l'infinito.
+\end{snippettheorem}
+
+Illustrazione delle geodetiche nel disco di pointcarè
+\[
+\begin{tikzpicture}[scale=1.05, line cap=round, line join=round]
+    \def\R{3}
+
+    \colorlet{bordodisco}{blue!70!black}
+    \colorlet{geod}{red!80!black}
+
+    % Raggi dei cerchi ortogonali al bordo
+    \pgfmathsetmacro{\rLeft}{sqrt((-4.20)^2 + (0.55)^2 - \R^2)}
+    \pgfmathsetmacro{\rRightBig}{sqrt((4.75)^2 + (0.20)^2 - \R^2)}
+    \pgfmathsetmacro{\rBottom}{sqrt((4.20)^2 - \R^2)}
+    \pgfmathsetmacro{\rRightSmall}{sqrt((3.25)^2 + (0.55)^2 - \R^2)}
+
+    % Bordo del disco di Poincare'
+    \draw[bordodisco, thick] (0,0) circle[radius=\R];
+
+    % Geodetiche che sono diametri
+    \draw[geod] (0,-\R) -- (0,\R);
+    \draw[geod] ({\R*cos(210)},{\R*sin(210)}) -- ({\R*cos(28)},{\R*sin(28)});
+
+    % Geodetiche che sono archi di cerchi ortogonali al bordo
+    \begin{scope}
+        \clip (0,0) circle[radius=\R];
+
+        % piccolo arco a sinistra
+        \draw[geod] (-4.20,0.55) circle[radius=\rLeft];
+
+        % grande arco a destra
+        \draw[geod] (4.75,0.20) circle[radius=\rRightBig];
+
+        % arco in basso
+        \draw[geod] (0,-4.20) circle[radius=\rBottom];
+
+        % piccolo arco a destra
+        \draw[geod] (3.25,0.55) circle[radius=\rRightSmall];
+    \end{scope}
+
+    % Simboli di ortogonalita' in basso
+    \begin{scope}[shift={({0.86*\R*cos(-134.4)},{0.86*\R*sin(-134.4)})}, rotate=-134.4]
+        \draw[geod] (0,0) -- (0.18,0) -- (0.18,0.18) -- (0,0.18);
+    \end{scope}
+
+    \begin{scope}[shift={({0.86*\R*cos(-45.6)},{0.86*\R*sin(-45.6)})}, rotate=-45.6]
+        \draw[geod] (0,0) -- (0.18,0) -- (0.18,0.18) -- (0,0.18);
+    \end{scope}
+\end{tikzpicture}
+\]
+
+
+L'ortogonalità al bordo è intesa nel senso euclideo. Poiché la metrica iperbolica è conforme a quella euclidea, gli angoli iperbolici coincidono con gli angoli euclidei.
+
+
+\begin{snippetexample}{Triangoli iperbolici}
+Un triangolo iperbolico è delimitato da tre segmenti geodetici. Poiché la metrica del disco è conforme a quella euclidea, gli angoli del triangolo si leggono come angoli euclidei tra gli archi di circonferenza.
+
+La somma degli angoli interni di un triangolo iperbolico è sempre strettamente minore di \(\pi\):
+\[
+    0<\alpha+\beta+\gamma<\pi.
+\]
+Il valore può essere arbitrariamente vicino a \(\pi\), ad esempio per triangoli molto piccoli vicino al centro del disco, e può essere arbitrariamente vicino a \(0\), ad esempio per triangoli con vertici che si avvicinano al bordo.
+
+\[
+\begin{tikzpicture}[scale=0.9, line cap=round, line join=round]
+
+    \colorlet{bordodisco}{blue!70!black}
+    \colorlet{geod}{red!80!black}
+    \colorlet{tratteggio}{blue!45}
+
+    %==================================================
+    % TRIANGOLO CON UN LATO DRITTO
+    %==================================================
+    \begin{scope}[shift={(0,0)}]
+        \def\R{2.4}
+
+        \node at (0,2.9) {triangolo con un lato dritto};
+
+        % Vertici ideali
+        \coordinate (A) at (-\R,0);
+        \coordinate (B) at ( \R,0);
+        \coordinate (C) at (0,-\R);
+
+        % Bordo del disco
+        \draw[bordodisco, thick] (0,0) circle[radius=\R];
+
+        % Tratteggio interno, ritagliato nel triangolo
+        \begin{scope}
+            \clip
+                (A) -- (B)
+                arc[start angle=90, end angle=180, radius=\R]
+                arc[start angle=0, end angle=90, radius=\R]
+                -- cycle;
+
+            \foreach \x in {-2.2,-1.9,-1.6,-1.3,-1.0,-0.7,-0.4,-0.1,0.2,0.5,0.8,1.1,1.4} {
+                \draw[tratteggio, thin] (\x,0.15) -- ({\x+0.85},-2.35);
+            }
+        \end{scope}
+
+        % Lati geodetici
+        \draw[geod, thick] (A) -- (B);
+
+        \draw[geod, thick]
+            (A) arc[start angle=90, end angle=0, radius=\R];
+
+        \draw[geod, thick]
+            (B) arc[start angle=90, end angle=180, radius=\R];
+
+        % Bordo del disco sopra tutto
+        \draw[bordodisco, thick] (0,0) circle[radius=\R];
+    \end{scope}
+
+
+    %==================================================
+    % TRIANGOLO CON TRE LATI CURVI
+    %==================================================
+    \begin{scope}[shift={(6.4,0)}]
+        \def\R{2.4}
+        \def\rho{4.1569}
+
+        \node at (0,2.9) {triangolo con tre lati curvi};
+
+        % Vertici ideali
+        \coordinate (A) at (90:\R);
+        \coordinate (B) at (210:\R);
+        \coordinate (C) at (330:\R);
+
+        % Bordo del disco
+        \draw[bordodisco, thick] (0,0) circle[radius=\R];
+
+        % Tratteggio interno, ritagliato nel triangolo
+        \begin{scope}
+            \clip
+                (A)
+                arc[start angle=0, end angle=-60, radius=\rho]
+                arc[start angle=120, end angle=60, radius=\rho]
+                arc[start angle=240, end angle=180, radius=\rho]
+                -- cycle;
+
+            \foreach \y in {-1.15,-0.9,-0.65,-0.4,-0.15,0.1,0.35,0.6,0.85,1.1,1.35} {
+                \draw[tratteggio, thin] (-1.55,\y) -- (1.55,{\y-0.35});
+            }
+        \end{scope}
+
+        % Lati geodetici curvi
+        \draw[geod, thick]
+            (A) arc[start angle=0, end angle=-60, radius=\rho];
+
+        \draw[geod, thick]
+            (B) arc[start angle=120, end angle=60, radius=\rho];
+
+        \draw[geod, thick]
+            (C) arc[start angle=240, end angle=180, radius=\rho];
+
+        % Bordo del disco sopra tutto
+        \draw[bordodisco, thick] (0,0) circle[radius=\R];
+    \end{scope}
+
+\end{tikzpicture}
+\]
+\end{snippetexample}
+
+In contrasto, sulla sfera la somma degli angoli interni di un triangolo geodetico è maggiore di \(\pi\), mentre nel piano euclideo è uguale a \(\pi\). Questo distingue geometricamente i tre modelli:
+\[
+    \begin{array}{c|c}
+        \text{geometria} & \text{somma degli angoli di un triangolo}\\
+        \hline
+        \text{ellittica/sferica} & >\pi\\
+        \text{euclidea} & =\pi\\
+        \text{iperbolica} & <\pi
+    \end{array}
+\]
 
 \end{document}

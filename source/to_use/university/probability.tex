@@ -13,6 +13,7 @@
 \usepackage{pgfplots}
 \usepackage{witharrows}
 \usepackage{xfrac}
+\usepackage{centernot}
 
 \pgfplotsset{compat=1.18}
 \WithArrowsOptions{displaystyle}
@@ -7135,6 +7136,1095 @@ Nello stesso modo, possiamo definire il valore atteso condizionato come
         \mathbb E[X|Y = y] = \frac{1}{\sfrac 1y} = y
     \]
 \end{snippetexercise}
+
+\pagebreak
+
+\section{Convergenza}
+
+Sia \((\Omega,\mathcal{F},\mathbb{P})\) uno spazio di probabilità. Consideriamo una successione \(\{X_n\}_{n\in\naturalnumbers}\) di variabili aleatorie reali e una variabile aleatoria reale \(X\).
+
+\begin{snippetdefinition}{Convergenza in legge o in distribuzione}
+Diciamo che \(\{X_n\}_{n\in\naturalnumbers}\) converge in legge, o in distribuzione, a \(X\) se, poste
+\[
+    F_n(x)=\mathbb{P}(X_n\leq x),
+    \qquad
+    F(x)=\mathbb{P}(X\leq x),
+\]
+vale
+\[
+    F_n(x)\longrightarrow F(x)
+\]
+per ogni punto \(x\in\realnumbers\) di continuità di \(F\).
+
+In questo caso scriviamo
+\[
+    X_n \xrightarrow{d} X.
+\]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Convergenza in probabilità}
+Diciamo che \(\{X_n\}_{n\in\naturalnumbers}\) converge in probabilità a \(X\) se, per ogni \(\varepsilon>0\),
+\[
+    \lim_{n\to+\infty}\mathbb{P}\bigl(|X_n-X|>\varepsilon\bigr)=0.
+\]
+Equivalentemente, per ogni \(\varepsilon>0\) e per ogni \(\eta>0\), esiste \(n_0\in\naturalnumbers\) tale che
+\[
+    \mathbb{P}\bigl(|X_n-X|>\varepsilon\bigr)<\eta
+    \qquad
+    \forall n\geq n_0.
+\]
+In questo caso scriviamo
+\[
+    X_n \xrightarrow{\mathbb{P}} X.
+\]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Convergenza quasi certa}
+Diciamo che \(\{X_n\}_{n\in\naturalnumbers}\) converge quasi certamente a \(X\) se esiste \(\Omega_0\in\mathcal{F}\) tale che
+\[
+    \mathbb{P}(\Omega_0)=1
+\]
+e
+\[
+    \lim_{n\to+\infty}X_n(\omega)=X(\omega)
+    \qquad
+    \forall \omega\in\Omega_0.
+\]
+In questo caso scriviamo
+\[
+    X_n \xrightarrow{\text{q.c.}} X.
+\]
+\end{snippetdefinition}
+
+Osserviamo subito alcune differenze importanti tra le tre nozioni.
+Per la convergenza in distribuzione non è necessario che le variabili aleatorie \(X_n\) e \(X\) siano definite sullo stesso spazio di probabilità: la definizione usa soltanto le funzioni di ripartizione.
+Per la convergenza quasi certa, invece, \(X_n(\omega)\) e \(X(\omega)\) devono essere confrontate punto per punto, quindi le variabili devono essere definite sullo stesso spazio di probabilità.
+Se l'insieme
+\[
+    \left\{\omega\in\Omega:\lim_{n\to+\infty}X_n(\omega)=X(\omega)\right\}
+\]
+è misurabile, allora nella definizione di convergenza quasi certa possiamo prendere direttamente
+\[
+    \Omega_0=
+    \left\{\omega\in\Omega:\lim_{n\to+\infty}X_n(\omega)=X(\omega)\right\}.
+\]
+
+Un'altra differenza concettuale è la seguente. Se interpretiamo la successione \(\{X_n\}_{n\in\naturalnumbers}\) come un vettore aleatorio a infinite componenti, allora per dimostrare la convergenza quasi certa serve, in generale, conoscere la legge congiunta dell'intero vettore. Per la convergenza in probabilità, invece, basta conoscere le distribuzioni delle differenze \(X_n-X\).
+Le implicazioni fondamentali sono:
+\[
+    \begin{tikzpicture}[baseline=(current bounding box.center), node distance=3.2cm]
+        \node (qc) {\(X_n\xrightarrow{\text{q.c.}}X\)};
+        \node[right of=qc] (p) {\(X_n\xrightarrow{\mathbb{P}}X\)};
+        \node[right of=p] (d) {\(X_n\xrightarrow{d}X\)};
+        \draw[->] (qc) -- (p);
+        \draw[->] (p) -- (d);
+        \draw[->, dashed] (p) to[bend left=35] node[above] {\(\not\Leftarrow\)} (qc);
+        \draw[->, dashed] (d) to[bend left=35] node[above] {\(\not\Leftarrow\)} (p);
+    \end{tikzpicture}
+\]
+
+\begin{snippettheorem}{La convergenza in probabilità implica la convergenza in distribuzione}
+Se
+\[
+    X_n \xrightarrow{\mathbb{P}} X,
+\]
+allora
+\[
+    X_n \xrightarrow{d} X.
+\]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+Fissiamo \(\varepsilon>0\). Per ogni \(x\in\realnumbers\) e per ogni \(n\in\naturalnumbers\), usando la formula delle probabilità totali,
+    \begin{align*}
+        F_n(x)
+        &=\mathbb{P}(X_n\leq x)\\
+        &=\mathbb{P}(X_n\leq x,\;X\leq x+\varepsilon)
+            +\mathbb{P}(X_n\leq x,\;X>x+\varepsilon).
+    \end{align*}
+Se \(X_n\leq x\) e \(X>x+\varepsilon\), allora
+\[
+    |X_n-X|>\varepsilon.
+\]
+Quindi
+    \begin{align*}
+        F_n(x)
+        &\leq \mathbb{P}(X\leq x+\varepsilon)
+            +\mathbb{P}(|X_n-X|>\varepsilon)\\
+        &=F(x+\varepsilon)+\mathbb{P}(|X_n-X|>\varepsilon).
+    \end{align*}
+Otteniamo così la prima disuguaglianza:
+\[
+    F_n(x)
+    \leq
+    F(x+\varepsilon)+\mathbb{P}(|X_n-X|>\varepsilon).
+\]
+
+Analogamente,
+    \begin{align*}
+        F(x-\varepsilon)
+        &=\mathbb{P}(X\leq x-\varepsilon)\\
+        &=\mathbb{P}(X\leq x-\varepsilon,\;X_n\leq x)
+            +\mathbb{P}(X\leq x-\varepsilon,\;X_n>x).
+    \end{align*}
+Se \(X\leq x-\varepsilon\) e \(X_n>x\), allora
+\[
+    |X_n-X|>\varepsilon.
+\]
+Di conseguenza
+\[
+    F(x-\varepsilon)
+    \leq F_n(x)+\mathbb{P}(|X_n-X|>\varepsilon),
+\]
+cioè
+\[
+    F_n(x)
+    \geq
+    F(x-\varepsilon)-\mathbb{P}(|X_n-X|>\varepsilon).
+\]
+
+Combinando le due disuguaglianze otteniamo
+\[
+    F(x-\varepsilon)-\mathbb{P}(|X_n-X|>\varepsilon)
+    \leq
+    F_n(x)
+    \leq
+    F(x+\varepsilon)+\mathbb{P}(|X_n-X|>\varepsilon).
+\]
+Poiché \(X_n\xrightarrow{\mathbb{P}}X\), vale
+\[
+    \mathbb{P}(|X_n-X|>\varepsilon)\longrightarrow 0.
+\]
+Passando al limite inferiore e al limite superiore:
+\[
+    F(x-\varepsilon)
+    \leq
+    \liminf_{n\to+\infty}F_n(x)
+    \leq
+    \limsup_{n\to+\infty}F_n(x)
+    \leq
+    F(x+\varepsilon).
+\]
+Se \(x\) è un punto di continuità di \(F\), facendo tendere \(\varepsilon\downarrow 0\) si ottiene
+\[
+    \liminf_{n\to+\infty}F_n(x)
+    =
+    \limsup_{n\to+\infty}F_n(x)
+    =
+    F(x).
+\]
+Dunque
+\[
+    F_n(x)\longrightarrow F(x)
+\]
+in ogni punto di continuità di \(F\), cioè \(X_n\xrightarrow{d}X\).
+\end{snippetproof}
+
+\begin{snippetexample}{La convergenza in distribuzione non implica la convergenza in probabilità}
+Sia
+\[
+    X\sim\operatorname{Ber}\left(\frac12\right),
+    \qquad
+    X_n=X
+    \quad
+    \forall n\in\naturalnumbers.
+\]
+Allora
+\[
+    X_n\xrightarrow{\text{q.c.}}X,
+\]
+e quindi anche
+\[
+    X_n\xrightarrow{d}X.
+\]
+
+Definiamo
+\[
+    Y=1-X.
+\]
+Allora anche
+\[
+    Y\sim\operatorname{Ber}\left(\frac12\right).
+\]
+Quindi \(X\) e \(Y\) hanno la stessa distribuzione, e perciò
+\[
+    X_n\xrightarrow{d}Y.
+\]
+Tuttavia \(X_n\) non converge in probabilità a \(Y\). Infatti, per ogni \(\varepsilon\in(0,1)\),
+    \begin{align*}
+        \mathbb{P}(|X_n-Y|>\varepsilon)
+        &=\mathbb{P}(|X-(1-X)|>\varepsilon)\\
+        &=\mathbb{P}(|2X-1|>\varepsilon)\\
+        &=1.
+    \end{align*}
+Dunque
+\[
+    \mathbb{P}(|X_n-Y|>\varepsilon)\not\longrightarrow 0.
+\]
+Questo mostra che
+\[
+    X_n\xrightarrow{d}Y
+    \centernot\implies
+    X_n\xrightarrow{\mathbb{P}}Y.
+\]
+
+L'unicità del limite va quindi intesa rispetto alla specifica nozione di convergenza che si sta usando. Nell'esempio, \(X\) e \(Y\) sono uguali in distribuzione, ma non sono uguali quasi certamente.
+\end{snippetexample}
+
+\begin{snippetdefinition}{Limite superiore e limite inferiore di eventi}
+Sia \(\{A_n\}_{n\in\naturalnumbers}\subseteq\mathcal{F}\) una successione di eventi. Definiamo
+\[
+    \limsup_{n\to+\infty}A_n
+    =
+    \bigcap_{m=1}^{+\infty}\bigcup_{n=m}^{+\infty}A_n.
+\]
+Equivalentemente,
+\[
+    \limsup_{n\to+\infty}A_n
+    =
+    \{\omega\in\Omega:\omega\in A_n\ \text{per infiniti }n\}.
+\]
+
+Definiamo inoltre
+\[
+    \liminf_{n\to+\infty}A_n
+    =
+    \bigcup_{m=1}^{+\infty}\bigcap_{n=m}^{+\infty}A_n.
+\]
+Equivalentemente,
+\[
+    \liminf_{n\to+\infty}A_n
+    =
+    \{\omega\in\Omega:\omega\in A_n\ \text{definitivamente}\}.
+\]
+\end{snippetdefinition}
+
+Poniamo
+\[
+    S_m=\bigcup_{n=m}^{+\infty}A_n,
+    \qquad
+    L_m=\bigcap_{n=m}^{+\infty}A_n.
+\]
+Allora \(\{S_m\}_{m\in\naturalnumbers}\) è decrescente e \(\{L_m\}_{m\in\naturalnumbers}\) è crescente:
+\[
+    S_{m+1}\subseteq S_m,
+    \qquad
+    L_m\subseteq L_{m+1}.
+\]
+Inoltre
+\[
+    \limsup_{n\to+\infty}A_n
+    =
+    \bigcap_{m=1}^{+\infty}S_m,
+    \qquad
+    \liminf_{n\to+\infty}A_n
+    =
+    \bigcup_{m=1}^{+\infty}L_m.
+\]
+Per la continuità della probabilità lungo successioni monotone,
+\[
+    \mathbb{P}(S_m)\downarrow
+    \mathbb{P}\left(\limsup_{n\to+\infty}A_n\right),
+\]
+e
+\[
+    \mathbb{P}(L_m)\uparrow
+    \mathbb{P}\left(\liminf_{n\to+\infty}A_n\right).
+\]
+
+Poiché, per ogni \(m\in\naturalnumbers\),
+\[
+    L_m\subseteq A_m\subseteq S_m,
+\]
+si ottiene la catena di disuguaglianze
+\[
+    \mathbb{P}\left(\liminf_{n\to+\infty}A_n\right)
+    \leq
+    \liminf_{n\to+\infty}\mathbb{P}(A_n)
+    \leq
+    \limsup_{n\to+\infty}\mathbb{P}(A_n)
+    \leq
+    \mathbb{P}\left(\limsup_{n\to+\infty}A_n\right).
+\]
+Questa è una forma del lemma di Fatou per successioni di eventi.
+
+In particolare, se
+\[
+    \liminf_{n\to+\infty}A_n
+    =
+    \limsup_{n\to+\infty}A_n
+    =
+    A,
+\]
+allora diciamo che \(A_n\) converge ad \(A\) e vale
+\[
+    \lim_{n\to+\infty}\mathbb{P}(A_n)=\mathbb{P}(A).
+\]
+
+\begin{snippettheorem}{Lemma di Borel-Cantelli}
+Sia \(\{A_n\}_{n\in\naturalnumbers}\subseteq\mathcal{F}\) una successione di eventi. Se
+\[
+    \sum_{n=1}^{+\infty}\mathbb{P}(A_n)<+\infty,
+\]
+allora
+\[
+    \mathbb{P}\left(\limsup_{n\to+\infty}A_n\right)=0.
+\]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+Poniamo
+\[
+    S_m=\bigcup_{n=m}^{+\infty}A_n.
+\]
+Allora
+\[
+    \limsup_{n\to+\infty}A_n
+    =
+    \bigcap_{m=1}^{+\infty}S_m,
+\]
+e \(\{S_m\}_{m\in\naturalnumbers}\) è decrescente. Quindi
+\[
+    \mathbb{P}(S_m)\downarrow
+    \mathbb{P}\left(\limsup_{n\to+\infty}A_n\right).
+\]
+Per subadditività,
+\[
+    \mathbb{P}(S_m)
+    =
+    \mathbb{P}\left(\bigcup_{n=m}^{+\infty}A_n\right)
+    \leq
+    \sum_{n=m}^{+\infty}\mathbb{P}(A_n).
+\]
+Poiché la serie \(\sum_{n=1}^{+\infty}\mathbb{P}(A_n)\) converge, il resto della serie tende a \(0\):
+\[
+    \sum_{n=m}^{+\infty}\mathbb{P}(A_n)\longrightarrow 0.
+\]
+Pertanto
+\[
+    \mathbb{P}\left(\limsup_{n\to+\infty}A_n\right)=0.
+\]
+\end{snippetproof}
+
+Per studiare la convergenza quasi certa introduciamo, per ogni \(\varepsilon>0\), gli eventi
+\[
+    A_n(\varepsilon)
+    =
+    \{\omega\in\Omega:|X_n(\omega)-X(\omega)|>\varepsilon\}.
+\]
+
+\begin{snippetproposition}{Criteri per la convergenza quasi certa}
+Con la notazione precedente valgono le seguenti affermazioni:
+\[
+    \mathbb{P}\left(\limsup_{n\to+\infty}A_n(\varepsilon)\right)=0
+    \quad
+    \forall \varepsilon>0
+    \quad
+    \Longleftrightarrow
+    \quad
+    X_n\xrightarrow{\text{q.c.}}X.
+\]
+Inoltre,
+\[
+    \sum_{n=1}^{+\infty}\mathbb{P}(A_n(\varepsilon))<+\infty
+    \quad
+    \forall \varepsilon>0
+    \quad
+    \Longrightarrow
+    \quad
+    X_n\xrightarrow{\text{q.c.}}X.
+\]
+Infine,
+\[
+    X_n\xrightarrow{\text{q.c.}}X
+    \quad
+    \Longrightarrow
+    \quad
+    X_n\xrightarrow{\mathbb{P}}X.
+\]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+Dimostriamo il primo punto.
+
+\begin{iffproof}
+\item Supponiamo che \(X_n\xrightarrow{\text{q.c.}}X\). Allora esiste \(\Omega_0\in\mathcal{F}\) tale che
+\[
+    \mathbb{P}(\Omega_0)=1
+\]
+e
+\[
+    X_n(\omega)\longrightarrow X(\omega)
+    \qquad
+    \forall \omega\in\Omega_0.
+\]
+Fissato \(\varepsilon>0\), se \(\omega\in\Omega_0\), allora \(\omega\) appartiene ad \(A_n(\varepsilon)\) solo per un numero finito di indici \(n\). Infatti, dalla convergenza puntuale segue che definitivamente
+\[
+    |X_n(\omega)-X(\omega)|\leq \varepsilon.
+\]
+Quindi
+\[
+    \Omega_0\intersection\limsup_{n\to+\infty}A_n(\varepsilon)=\emptyset.
+\]
+Pertanto
+\[
+    \mathbb{P}\left(\limsup_{n\to+\infty}A_n(\varepsilon)\right)=0.
+\]
+
+\item Supponiamo ora che
+\[
+    \mathbb{P}\left(\limsup_{n\to+\infty}A_n(\varepsilon)\right)=0
+    \qquad
+    \forall \varepsilon>0.
+\]
+È sufficiente considerare \(\varepsilon=1/k\), con \(k\in\naturalnumbers\). Definiamo
+\[
+    \Omega_0
+    =
+    \Omega
+    \setminus
+    \bigcup_{k=1}^{+\infty}
+    \limsup_{n\to+\infty}A_n\left(\frac1k\right).
+\]
+Per subadditività numerabile,
+\[
+    \mathbb{P}(\Omega_0)=1.
+\]
+Sia \(\omega\in\Omega_0\). Fissiamo \(\varepsilon>0\) e scegliamo \(k\in\naturalnumbers\) tale che
+\[
+    \frac1k<\varepsilon.
+\]
+Poiché \(\omega\notin\limsup_{n\to+\infty}A_n(1/k)\), esiste \(n_0\in\naturalnumbers\) tale che
+\[
+    \omega\notin A_n\left(\frac1k\right)
+    \qquad
+    \forall n\geq n_0.
+\]
+Cioè
+\[
+    |X_n(\omega)-X(\omega)|\leq \frac1k<\varepsilon
+    \qquad
+    \forall n\geq n_0.
+\]
+Dunque \(X_n(\omega)\to X(\omega)\). Poiché \(\omega\in\Omega_0\) era arbitrario e \(\mathbb{P}(\Omega_0)=1\), segue che
+\[
+    X_n\xrightarrow{\text{q.c.}}X.
+\]
+\end{iffproof}
+
+Il secondo punto segue immediatamente dal lemma di Borel-Cantelli applicato agli eventi \(A_n(\varepsilon)\), per ogni \(\varepsilon>0\), e dal primo punto.
+
+Dimostriamo il terzo punto. Se \(X_n\xrightarrow{\text{q.c.}}X\), dal primo punto abbiamo
+\[
+    \mathbb{P}\left(\limsup_{n\to+\infty}A_n(\varepsilon)\right)=0
+    \qquad
+    \forall \varepsilon>0.
+\]
+Applicando la disuguaglianza di Fatou per eventi,
+\[
+    \limsup_{n\to+\infty}\mathbb{P}(A_n(\varepsilon))
+    \leq
+    \mathbb{P}\left(\limsup_{n\to+\infty}A_n(\varepsilon)\right)=0.
+\]
+Quindi
+\[
+    \lim_{n\to+\infty}\mathbb{P}(A_n(\varepsilon))=0
+    \qquad
+    \forall \varepsilon>0.
+\]
+Per definizione,
+\[
+    \mathbb{P}(A_n(\varepsilon))
+    =
+    \mathbb{P}(|X_n-X|>\varepsilon),
+\]
+perciò
+\[
+    X_n\xrightarrow{\mathbb{P}}X.
+\]
+\end{snippetproof}
+
+\begin{snippetexample}{La convergenza in probabilità non implica la convergenza quasi certa}
+Ricordiamo prima che una successione \(\{X_n\}_{n\in\naturalnumbers}\) di variabili aleatorie si dice indipendente se, per ogni \(m\in\naturalnumbers\), le variabili aleatorie
+\[
+    X_1,\ldots,X_m
+\]
+sono indipendenti.
+
+Sia \(\{X_n\}_{n\in\naturalnumbers}\) una successione di variabili aleatorie indipendenti tali che
+\[
+    X_n\sim\operatorname{Ber}\left(\frac1n\right).
+\]
+Quindi
+\[
+    \mathbb{P}(X_n=1)=\frac1n,
+    \qquad
+    \mathbb{P}(X_n=0)=1-\frac1n.
+\]
+
+Mostriamo innanzitutto che
+\[
+    X_n\xrightarrow{\mathbb{P}}0.
+\]
+Sia \(\varepsilon>0\). Se \(\varepsilon\geq 1\), allora
+\[
+    \mathbb{P}(|X_n-0|>\varepsilon)=0.
+\]
+Se invece \(\varepsilon\in(0,1)\), allora
+\[
+    \mathbb{P}(|X_n-0|>\varepsilon)
+    =
+    \mathbb{P}(X_n=1)
+    =
+    \frac1n
+    \longrightarrow 0.
+\]
+Dunque \(X_n\xrightarrow{\mathbb{P}}0\).
+
+Mostriamo ora che \(X_n\) non converge quasi certamente a \(0\). Fissiamo \(\varepsilon\in(0,1)\) e poniamo
+\[
+    A_n(\varepsilon)=\{|X_n-0|>\varepsilon\}.
+\]
+Poiché \(X_n\in\{0,1\}\), per \(\varepsilon\in(0,1)\) si ha
+\[
+    A_n(\varepsilon)=\{X_n=1\}.
+\]
+Quindi
+\[
+    \mathbb{P}(A_n(\varepsilon))=\frac1n.
+\]
+Vogliamo calcolare
+\[
+    \mathbb{P}\left(\limsup_{n\to+\infty}A_n(\varepsilon)\right).
+\]
+Per ogni \(m\in\naturalnumbers\), poniamo
+\[
+    S_m=\bigcup_{n=m}^{+\infty}A_n(\varepsilon).
+\]
+Allora \(S_m\downarrow\limsup_{n\to+\infty}A_n(\varepsilon)\). Inoltre
+\[
+    \mathbb{P}(S_m)
+    =
+    1-\mathbb{P}\left(\bigcap_{n=m}^{+\infty}A_n(\varepsilon)^c\right).
+\]
+Usiamo l'indipendenza. Per \(k\geq m\),
+    \begin{align*}
+        \mathbb{P}\left(\bigcap_{n=m}^{k}A_n(\varepsilon)^c\right)
+        &=
+        \prod_{n=m}^{k}\mathbb{P}(A_n(\varepsilon)^c)\\
+        &=
+        \prod_{n=m}^{k}\left(1-\frac1n\right).
+    \end{align*}
+Se \(m\geq 2\), allora
+\[
+    \prod_{n=m}^{k}\left(1-\frac1n\right)
+    =
+    \prod_{n=m}^{k}\frac{n-1}{n}
+    =
+    \frac{m-1}{k}.
+\]
+Facendo \(k\to+\infty\), otteniamo
+\[
+    \mathbb{P}\left(\bigcap_{n=m}^{+\infty}A_n(\varepsilon)^c\right)=0.
+\]
+Quindi
+\[
+    \mathbb{P}(S_m)=1
+    \qquad
+    \forall m\in\naturalnumbers.
+\]
+Passando al limite lungo \(S_m\downarrow\limsup A_n(\varepsilon)\),
+\[
+    \mathbb{P}\left(\limsup_{n\to+\infty}A_n(\varepsilon)\right)=1.
+\]
+In particolare questo valore non è \(0\). Per il criterio precedente,
+\[
+    X_n\not\xrightarrow{\text{q.c.}}0.
+\]
+
+Abbiamo quindi costruito un esempio in cui
+\[
+    X_n\xrightarrow{\mathbb{P}}0
+    \qquad
+    \text{ma}
+    \qquad
+    X_n\not\xrightarrow{\text{a.e.}}0.
+\]
+\end{snippetexample}
+
+\subsection{Risultati asintotici}
+
+Supponiamo di avere una moneta, ma di non sapere se sia equilibrata oppure no. Per modellizzare questa situazione consideriamo una successione \(\{X_n\}_{n\in\naturalnumbers}\) di variabili aleatorie reali indipendenti, dove
+\[
+    X_n\sim \operatorname{Ber}(p),
+    \qquad
+    p\in[0,1],
+    \qquad
+    \forall n\in\naturalnumbers.
+\]
+Il parametro \(p\) è incognito e rappresenta la probabilità di ottenere testa. Dunque
+\[
+    \mathbb{P}(X_n=1)=p,
+    \qquad
+    \mathbb{P}(X_n=0)=1-p.
+\]
+
+Vogliamo trovare un modo per stimare \(p\). L'idea più semplice è quella frequentista: lanciamo la moneta \(n\) volte e facciamo il rapporto tra il numero di teste ottenute e il numero totale di lanci. Definiamo quindi
+\[
+    \overline{X}_n
+    =
+    \frac1n\sum_{k=1}^{n}X_k.
+\]
+Questa quantità è la frequenza relativa del numero di teste. In statistica, \(\overline{X}_n\) è uno stimatore di \(p\).
+
+La domanda naturale è: quanto grande deve essere \(n\) affinché \(\overline{X}_n\) sia abbastanza vicino a \(p\)? Per rispondere useremo le nozioni di convergenza viste nella lezione precedente.
+
+\subsection*{Legge debole dei grandi numeri}
+
+\begin{snippettheorem}{Legge debole dei grandi numeri}
+Sia \(\{X_n\}_{n\in\naturalnumbers}\) una successione di variabili aleatorie reali indipendenti tali che
+\[
+    \mathbb{E}[X_n]=\mu,
+    \qquad
+    \operatorname{Var}(X_n)=\sigma^2<+\infty,
+    \qquad
+    \forall n\in\naturalnumbers.
+\]
+Posto
+\[
+    \overline{X}_n=\frac1n\sum_{k=1}^{n}X_k,
+\]
+vale
+\[
+    \overline{X}_n\xrightarrow{\mathbb{P}}\mu.
+\]
+Cioè, per ogni \(\eta>0\),
+\[
+    \lim_{n\to+\infty}
+    \mathbb{P}\bigl(|\overline{X}_n-\mu|>\eta\bigr)=0.
+\]
+\end{snippettheorem}
+
+Per dimostrare questo teorema ci servono due disuguaglianze fondamentali.
+
+\begin{snippetproposition}{Disuguaglianze di Markov e Chebyshev}
+Sia \(X\) una variabile aleatoria reale.
+
+\begin{enumerate}
+\item Se \(X\geq0\) quasi certamente, allora per ogni \(\varepsilon>0\)
+\[
+        \mathbb{P}(X\geq\varepsilon)
+        \leq
+        \frac{\mathbb{E}[X]}{\varepsilon}.
+\]
+Questa è la disuguaglianza di Markov.
+
+\item Se \(\mathbb{E}[X^2]<+\infty\), allora per ogni \(\varepsilon>0\)
+\[
+        \mathbb{P}\bigl(|X-\mathbb{E}[X]|\geq \varepsilon\bigr)
+        \leq
+        \frac{\operatorname{Var}(X)}{\varepsilon^2}.
+\]
+Questa è la disuguaglianza di Chebyshev.
+\end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+Dimostriamo prima la disuguaglianza di Markov. Poiché \(X\geq0\) quasi certamente, per ogni \(\varepsilon>0\) vale
+\[
+    X\geq \varepsilon\,\mathbb{1}_{\{X\geq \varepsilon\}}
+    \qquad
+    \text{q.c.}
+\]
+Passando al valore atteso,
+\[
+    \mathbb{E}[X]
+    \geq
+    \mathbb{E}\bigl[\varepsilon\,\mathbb{1}_{\{X\geq \varepsilon\}}\bigr]
+    =
+    \varepsilon\,\mathbb{E}\bigl[\mathbb{1}_{\{X\geq \varepsilon\}}\bigr]
+    =
+    \varepsilon\,\mathbb{P}(X\geq \varepsilon).
+\]
+Quindi
+\[
+    \mathbb{P}(X\geq\varepsilon)
+    \leq
+    \frac{\mathbb{E}[X]}{\varepsilon}.
+\]
+
+Per Chebyshev applichiamo Markov alla variabile aleatoria non negativa
+\[
+    Y=(X-\mathbb{E}[X])^2.
+\]
+Allora
+\[
+    \begin{aligned}
+        \mathbb{P}\bigl(|X-\mathbb{E}[X]|\geq \varepsilon\bigr)
+        &=
+        \mathbb{P}\bigl((X-\mathbb{E}[X])^2\geq \varepsilon^2\bigr)\\
+        &\leq
+        \frac{\mathbb{E}\bigl[(X-\mathbb{E}[X])^2\bigr]}{\varepsilon^2}\\
+        &=
+        \frac{\operatorname{Var}(X)}{\varepsilon^2}.
+    \end{aligned}
+\]
+\end{snippetproof}
+
+\begin{snippetproof}{Dimostrazione della legge debole}
+Per ogni \(n\in\naturalnumbers\),
+\[
+    \mathbb{E}[\overline{X}_n]
+    =
+    \mathbb{E}\left[\frac1n\sum_{k=1}^{n}X_k\right]
+    =
+    \frac1n\sum_{k=1}^{n}\mathbb{E}[X_k]
+    =
+    \frac1n\,n\mu
+    =
+    \mu.
+\]
+Inoltre, usando l'indipendenza,
+\[
+    \operatorname{Var}(\overline{X}_n)
+    =
+    \operatorname{Var}\left(\frac1n\sum_{k=1}^{n}X_k\right)
+    =
+    \frac1{n^2}\sum_{k=1}^{n}\operatorname{Var}(X_k)
+    =
+    \frac1{n^2}\,n\sigma^2
+    =
+    \frac{\sigma^2}{n}.
+\]
+Applicando Chebyshev a \(\overline{X}_n\), per ogni \(\eta>0\) otteniamo
+\[
+    \mathbb{P}\bigl(|\overline{X}_n-\mu|>\eta\bigr)
+    \leq
+    \mathbb{P}\bigl(|\overline{X}_n-\mu|\geq\eta\bigr)
+    \leq
+    \frac{\operatorname{Var}(\overline{X}_n)}{\eta^2}
+    =
+    \frac{\sigma^2}{n\eta^2}
+    \longrightarrow 0.
+\]
+Dunque
+\[
+    \overline{X}_n\xrightarrow{\mathbb{P}}\mu.
+\]
+\end{snippetproof}
+
+\begin{snippetexample}{Applicazione al lancio di una moneta}
+Nel caso \(X_n\sim\operatorname{Ber}(p)\), abbiamo
+\[
+    \mathbb{E}[X_n]=p,
+    \qquad
+    \operatorname{Var}(X_n)=p(1-p).
+\]
+Quindi, per ogni \(\eta>0\), la legge debole e la disuguaglianza di Chebyshev danno
+\[
+    \mathbb{P}\bigl(|\overline{X}_n-p|>\eta\bigr)
+    \leq
+    \frac{p(1-p)}{n\eta^2}.
+\]
+Poiché
+\[
+    p(1-p)\leq \frac14
+    \qquad
+    \forall p\in[0,1],
+\]
+otteniamo anche la stima uniforme
+\[
+    \mathbb{P}\bigl(|\overline{X}_n-p|>\eta\bigr)
+    \leq
+    \frac1{4n\eta^2}.
+\]
+
+Questa disuguaglianza mostra due fatti intuitivi:
+\begin{itemize}
+\item più \(n\) è grande, più è piccola la probabilità che \(\overline{X}_n\) sia lontana da \(p\);
+\item più scegliamo \(\eta\) piccolo, cioè più vogliamo una stima precisa, più aumenta la probabilità di sbagliare di più di \(\eta\).
+\end{itemize}
+\end{snippetexample}
+
+La legge debole dice che, per \(n\) grande, è improbabile che \(\overline{X}_n\) si discosti da \(\mu\) più di \(\eta\). Tuttavia non afferma che tale probabilità sia mai esattamente nulla: per ogni \(n\) finito può ancora capitare una deviazione grande, anche se con probabilità piccola.
+
+\subsection*{Legge forte dei grandi numeri}
+
+\begin{snippettheorem}{Legge forte dei grandi numeri}
+Sia \(\{X_n\}_{n\in\naturalnumbers}\) una successione di variabili aleatorie reali indipendenti e identicamente distribuite, con
+\[
+    \mathbb{E}[X_n]=\mu,
+    \qquad
+    \operatorname{Var}(X_n)=\sigma^2<+\infty.
+\]
+Allora
+\[
+    \overline{X}_n\xrightarrow{\text{q.c.}}\mu.
+\]
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+Poniamo
+\[
+    S_n=\sum_{k=1}^{n}X_k,
+    \qquad
+    \overline{X}_n=\frac{S_n}{n}.
+\]
+
+Cominciamo osservando perché la dimostrazione non segue direttamente dalla legge debole. Fissato \(\eta>0\), poniamo
+\[
+    A_n(\eta)=
+    \left\{
+        \left|\frac{S_n}{n}-\mu\right|>\eta
+    \right\}.
+\]
+Per Chebyshev,
+\[
+    \mathbb{P}(A_n(\eta))
+    \leq
+    \frac{\sigma^2}{n\eta^2}.
+\]
+Ma
+\[
+    \sum_{n=1}^{+\infty}\frac{\sigma^2}{n\eta^2}=+\infty,
+\]
+quindi non possiamo applicare direttamente Borel-Cantelli agli eventi \(A_n(\eta)\).
+
+Il trucco è considerare prima la sottosuccessione degli indici quadrati. Per ogni \(k\in\naturalnumbers\), poniamo
+\[
+    A_{k^2}(\eta)=
+    \left\{
+        \left|\frac{S_{k^2}}{k^2}-\mu\right|>\eta
+    \right\}.
+\]
+Allora, sempre per Chebyshev,
+\[
+    \mathbb{P}(A_{k^2}(\eta))
+    \leq
+    \frac{\sigma^2}{k^2\eta^2}.
+\]
+Quindi
+\[
+    \sum_{k=1}^{+\infty}\mathbb{P}(A_{k^2}(\eta))
+    \leq
+    \frac{\sigma^2}{\eta^2}\sum_{k=1}^{+\infty}\frac1{k^2}
+    <+\infty.
+\]
+Per il lemma di Borel-Cantelli segue che
+\[
+    \frac{S_{k^2}}{k^2}\xrightarrow{\text{q.c.}}\mu.
+\]
+
+Supponiamo ora, per il momento, che
+\[
+    X_n\geq0
+    \qquad
+    \text{q.c.}
+    \qquad
+    \forall n\in\naturalnumbers.
+\]
+Allora la successione \(\{S_n\}_{n\in\naturalnumbers}\) è crescente quasi certamente. Per ogni \(n\) scegliamo \(k_n\in\naturalnumbers\) tale che
+\[
+    k_n^2\leq n < (k_n+1)^2.
+\]
+Poiché \(S_n\) è crescente,
+\[
+    S_{k_n^2}\leq S_n\leq S_{(k_n+1)^2}.
+\]
+Dividendo per \(n\) e usando
+\[
+    k_n^2\leq n <(k_n+1)^2,
+\]
+otteniamo
+\[
+    \frac{S_{k_n^2}}{(k_n+1)^2}
+    \leq
+    \frac{S_n}{n}
+    \leq
+    \frac{S_{(k_n+1)^2}}{k_n^2}.
+\]
+Riscriviamo gli estremi come
+\[
+    \frac{k_n^2}{(k_n+1)^2}\,
+    \frac{S_{k_n^2}}{k_n^2}
+    \leq
+    \frac{S_n}{n}
+    \leq
+    \frac{(k_n+1)^2}{k_n^2}\,
+    \frac{S_{(k_n+1)^2}}{(k_n+1)^2}.
+\]
+Quando \(n\to+\infty\), anche \(k_n\to+\infty\), e
+\[
+    \frac{k_n^2}{(k_n+1)^2}\longrightarrow1,
+    \qquad
+    \frac{(k_n+1)^2}{k_n^2}\longrightarrow1.
+\]
+Inoltre abbiamo già dimostrato che
+\[
+    \frac{S_{k^2}}{k^2}\xrightarrow{\text{q.c.}}\mu.
+\]
+Per il teorema dei carabinieri,
+\[
+    \frac{S_n}{n}\xrightarrow{\text{q.c.}}\mu
+\]
+nel caso \(X_n\geq0\) quasi certamente.
+
+Passiamo al caso generale. Scriviamo
+\[
+    X_n=X_n^+-X_n^-,
+\]
+dove
+\[
+    X_n^+=\max\{0,X_n\},
+    \qquad
+    X_n^-=\max\{0,-X_n\}.
+\]
+Poiché le variabili \(X_n\) sono identicamente distribuite e hanno momento secondo finito, anche \(\{X_n^+\}_{n\in\naturalnumbers}\) e \(\{X_n^-\}_{n\in\naturalnumbers}\) sono successioni indipendenti e identicamente distribuite di variabili non negative con momento secondo finito. Applicando il caso non negativo otteniamo
+\[
+    \frac1n\sum_{k=1}^{n}X_k^+
+    \xrightarrow{\text{q.c.}}
+    \mathbb{E}[X_1^+],
+\]
+e
+\[
+    \frac1n\sum_{k=1}^{n}X_k^-
+    \xrightarrow{\text{q.c.}}
+    \mathbb{E}[X_1^-].
+\]
+Sull'intersezione dei due insiemi di probabilità \(1\), possiamo sottrarre i due limiti:
+\[
+    \frac1n\sum_{k=1}^{n}X_k
+    =
+    \frac1n\sum_{k=1}^{n}X_k^+
+    -
+    \frac1n\sum_{k=1}^{n}X_k^-
+    \xrightarrow{\text{q.c.}}
+    \mathbb{E}[X_1^+]-\mathbb{E}[X_1^-]
+    =
+    \mathbb{E}[X_1]
+    =
+    \mu.
+\]
+Quindi
+\[
+    \overline{X}_n\xrightarrow{\text{q.c.}}\mu.
+\]
+\end{snippetproof}
+
+\begin{snippetremark}{Osservazioni sulle due leggi dei grandi numeri}
+Abbiamo dimostrato la legge debole e la legge forte sotto ipotesi molto simili. Poiché
+\[
+    \overline{X}_n\xrightarrow{\text{q.c.}}\mu
+    \quad
+    \Longrightarrow
+    \quad
+    \overline{X}_n\xrightarrow{\mathbb{P}}\mu,
+\]
+la legge forte implica la legge debole. Tuttavia entrambe le leggi possono essere dimostrate anche sotto ipotesi più deboli di quelle usate qui.
+
+La legge forte dice qualcosa di più della legge debole: \(\overline{X}_n\) può discostarsi molto da \(\mu\), ma l'insieme degli \(\omega\) per cui questo accade definitivamente in modo incompatibile con la convergenza ha probabilità nulla. Invece, nella legge debole, il limite riguarda le probabilità
+\[
+    \mathbb{P}\bigl(|\overline{X}_n-\mu|>\eta\bigr),
+\]
+cioè il limite è esterno allo spazio campionario.
+
+Infine, come già visto per le nozioni di convergenza, per risultati quasi certi serve in generale informazione sulla legge congiunta dell'intera successione \(\{X_n\}_{n\in\naturalnumbers}\). Per risultati in probabilità spesso bastano informazioni più deboli, come media e varianza di \(\overline{X}_n\).
+\end{snippetremark}
+
+\subsection*{Teorema centrale del limite}
+
+\begin{snippettheorem}{Teorema centrale del limite}
+Sia \(\{X_n\}_{n\in\naturalnumbers}\) una successione di variabili aleatorie reali indipendenti e identicamente distribuite, con
+\[
+    \mathbb{E}[X_n]=\mu,
+    \qquad
+    \operatorname{Var}(X_n)=\sigma^2\in(0,+\infty).
+\]
+Allora
+\[
+    \frac{\sqrt n}{\sigma}\bigl(\overline{X}_n-\mu\bigr)
+    \xrightarrow{d}
+    Z,
+    \qquad
+    Z\sim\mathcal{N}(0,1).
+\]
+\end{snippettheorem}
+
+Questo teorema non viene dimostrato qui. La nozione di convergenza usata è la più debole tra quelle considerate, cioè la convergenza in distribuzione. Tuttavia il teorema centrale del limite fornisce un'informazione molto precisa: descrive la legge limite delle fluttuazioni di \(\overline{X}_n\) attorno a \(\mu\), dopo la normalizzazione corretta.
+
+\begin{snippetremark}{Normalizzazione}
+Il fattore \(\sigma\) è essenziale. Infatti la forma equivalente del teorema è
+\[
+    \sqrt n\,(\overline{X}_n-\mu)
+    \xrightarrow{d}
+    \mathcal{N}(0,\sigma^2).
+\]
+Dividendo per \(\sigma\) si ottiene il limite normale standard:
+\[
+    \frac{\sqrt n}{\sigma}(\overline{X}_n-\mu)
+    \xrightarrow{d}
+    \mathcal{N}(0,1).
+\]
+\end{snippetremark}
+
+\begin{snippetexample}{Caso gaussiano}
+Supponiamo che
+\[
+    X_n\sim\mathcal{N}(\mu,\sigma^2)
+    \qquad
+    \forall n\in\naturalnumbers,
+\]
+e che le variabili \(X_n\) siano indipendenti. Allora la media campionaria è ancora gaussiana e vale
+\[
+    \overline{X}_n\sim\mathcal{N}\left(\mu,\frac{\sigma^2}{n}\right).
+\]
+Infatti la somma di variabili gaussiane indipendenti è gaussiana, e
+\[
+    \mathbb{E}[\overline{X}_n]=\mu,
+    \qquad
+    \operatorname{Var}(\overline{X}_n)=\frac{\sigma^2}{n}.
+\]
+Di conseguenza
+\[
+    \overline{X}_n-\mu
+    \sim
+    \mathcal{N}\left(0,\frac{\sigma^2}{n}\right),
+\]
+e quindi
+\[
+    \frac{\overline{X}_n-\mu}{\sigma/\sqrt n}
+    =
+    \frac{\sqrt n}{\sigma}(\overline{X}_n-\mu)
+    \sim
+    \mathcal{N}(0,1)
+    \qquad
+    \forall n\in\naturalnumbers.
+\]
+Se \(F_n\) è la funzione di ripartizione di
+\[
+    Z_n=
+    \frac{\sqrt n}{\sigma}(\overline{X}_n-\mu)
+\]
+e \(F\) è la funzione di ripartizione di \(Z\sim\mathcal{N}(0,1)\), allora
+\[
+    F_n(x)=F(x)
+    \qquad
+    \forall x\in\realnumbers,
+    \qquad
+    \forall n\in\naturalnumbers.
+\]
+Quindi, in questo caso, la convergenza in distribuzione è immediata.
+\end{snippetexample}
+
+
+
+
+
+
+
+
+
+
 
 
 
