@@ -47,8 +47,8 @@ pub async fn compile_latex<'a>(
 
     let pdf = tempdir.join(filename.replace(".tex", ".pdf"));
 
-    let top_offset = -20.0;
-    let bottom_offset = 9.5;
+    let top_offset = 20.0;
+    let bottom_offset = -9.5;
     let left_margin = None;
     let right_margin = None;
 

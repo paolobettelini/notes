@@ -27,7 +27,9 @@ async fn main() {
     /* === Init === */
 
     if std::env::var(LOG_ENV).is_err() {
-        std::env::set_var(LOG_ENV, "info");
+        unsafe {
+            std::env::set_var(LOG_ENV, "info");
+        }
     }
     env_logger::init();
 
