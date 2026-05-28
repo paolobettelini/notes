@@ -67,9 +67,46 @@
 \newcommand{\plain}[1]{%
 \@padcmd{!plain \detokenize{#1}}%
 }
-\NewDocumentCommand{\includesnpt}{O{} m}{
-    \@padcmd{!include #2 \IfNoValueF{#1}{#1}}
-}
+
+% Include snippet command
+% Usage: \includesnpt{id}
+%        \includesnpt[key1=val1,key2=val2,key3=val3]{id}
+%        \includesnpt[key={value,with,commas}]{id}
+\ExplSyntaxOn
+
+\tl_new:N \l__includesnpt_params_tl
+\tl_new:N \l__includesnpt_cmd_tl
+
+\cs_new_protected:Npn \__includesnpt_pad:nn #1 #2
+  {
+    \tl_set:Nn \l__includesnpt_cmd_tl { !include~#2 }
+
+    \tl_if_blank:nF { #1 }
+      {
+        \tl_put_right:Nn \l__includesnpt_cmd_tl { ~#1 }
+      }
+
+    \exp_args:NV \@padcmd \l__includesnpt_cmd_tl
+  }
+
+\cs_generate_variant:Nn \__includesnpt_pad:nn { Vn }
+
+\NewDocumentCommand{\includesnpt}{O{} m}
+  {
+    \tl_clear:N \l__includesnpt_params_tl
+
+    \clist_map_inline:nn { #1 }
+      {
+        \tl_if_empty:NF \l__includesnpt_params_tl
+          { \tl_put_right:Nn \l__includesnpt_params_tl { \& } }
+
+        \tl_put_right:Nn \l__includesnpt_params_tl { ##1 }
+      }
+
+    \__includesnpt_pad:Vn \l__includesnpt_params_tl { #2 }
+  }
+
+\ExplSyntaxOff
 
 \NewDocumentEnvironment{snippet}{m o}
 {\@padcmd{!snippet #1}}
