@@ -5357,5 +5357,310 @@ con matrici quadrate.
     \end{enumerate}
 \end{snippetsolution}
 
+\begin{snippetexercise}{}
+Siano \(n>3\) e
+\[
+	B =
+	\begin{pmatrix}
+		2 & -1 & \cdots & -1 \\
+		-\delta & 2 & & 0 \\
+		\vdots & & \ddots & \\
+		-\delta & 0 & & 2
+	\end{pmatrix}
+	\in \realnumbers^{n\times n},
+	\qquad
+	\frac{2}{n-1}<\delta<\frac{4}{n-1}.
+\]
+Studiare lo spettro di \(B\), risolvere il sistema \(Bx=b\), con
+\(b\in\realnumbers^n\), e stabilire la convergenza dei metodi di Jacobi e
+Gauss-Seidel.
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+Osserviamo anzitutto che i dischi di Gershgorin applicati direttamente alle
+righe non sono molto informativi: la prima riga ha raggio \(n-1\), quindi, per
+\(n\) grande, il disco corrispondente è molto ampio.
+
+Per migliorare la stima usiamo una similitudine diagonale. Sia
+\[
+	D_r=\operatorname{diag}(1,r,\ldots,r),
+	\qquad r>0.
+\]
+Allora \(B\) è simile a
+\[
+	D_r^{-1}BD_r =
+	\begin{pmatrix}
+		2 & -r & \cdots & -r \\
+		-\frac{\delta}{r} & 2 & & 0 \\
+		\vdots & & \ddots & \\
+		-\frac{\delta}{r} & 0 & & 2
+	\end{pmatrix}.
+\]
+I raggi dei dischi di Gershgorin per righe sono
+\[
+	R_1=(n-1)r,
+	\qquad
+	R_i=\frac{\delta}{r}, \quad i=2,\ldots,n.
+\]
+Bilanciamo i due raggi imponendo
+\[
+	(n-1)r=\frac{\delta}{r},
+	\qquad\text{cioè}\qquad
+	r=\sqrt{\frac{\delta}{n-1}}.
+\]
+Con questa scelta,
+\[
+	R_1=R_i=\sqrt{(n-1)\delta}.
+\]
+Poiché \(\delta<\frac{4}{n-1}\), si ha
+\[
+	\sqrt{(n-1)\delta}<2.
+\]
+Quindi tutti gli autovalori stanno nel disco
+\[
+	\left\{z\in\complexnumbers:|z-2|\leq \sqrt{(n-1)\delta}\right\},
+\]
+che non contiene \(0\). In particolare \(B\) è non singolare.
+
+Calcoliamo ora esattamente lo spettro. Scriviamo \(B\) come perturbazione di
+rango al più \(2\):
+\[
+	B=2I_n+EF,
+\]
+dove
+\[
+	E=
+	\begin{pmatrix}
+		0 & 1 \\
+		1 & 0 \\
+		\vdots & \vdots \\
+		1 & 0
+	\end{pmatrix}
+	\in\realnumbers^{n\times 2},
+	\qquad
+	F=
+	\begin{pmatrix}
+		-\delta & 0 & \cdots & 0 \\
+		0 & -1 & \cdots & -1
+	\end{pmatrix}
+	\in\realnumbers^{2\times n}.
+\]
+Infatti \(EF\) è la matrice con prima riga
+\[
+	(0,-1,\ldots,-1),
+\]
+prima colonna, dalla seconda riga in poi,
+\[
+	(-\delta,\ldots,-\delta)^T,
+\]
+e tutti gli altri elementi nulli.
+
+Gli autovalori non nulli di \(EF\) coincidono con quelli di \(FE\). Ora
+\[
+	FE=
+	\begin{pmatrix}
+		0 & -\delta \\
+		-(n-1) & 0
+	\end{pmatrix}.
+\]
+Dunque
+\[
+	\det(\lambda I_2-FE)
+	=
+	\lambda^2-(n-1)\delta,
+\]
+e quindi
+\[
+	\sigma(FE)=
+	\left\{
+		-\sqrt{(n-1)\delta},
+		\sqrt{(n-1)\delta}
+	\right\}.
+\]
+Poiché \(EF\) ha rango al più \(2\), gli altri \(n-2\) autovalori sono nulli.
+Pertanto
+\[
+	\sigma(EF)=
+	\left\{
+		-\sqrt{(n-1)\delta},
+		\sqrt{(n-1)\delta},
+		\underbrace{0,\ldots,0}_{n-2\text{ volte}}
+	\right\}.
+\]
+Siccome \(B=2I_n+EF\), otteniamo
+\[
+	\sigma(B)=
+	\left\{
+		2-\sqrt{(n-1)\delta},
+		2+\sqrt{(n-1)\delta},
+		\underbrace{2,\ldots,2}_{n-2\text{ volte}}
+	\right\}.
+\]
+In particolare, usando ancora \(\delta<\frac{4}{n-1}\),
+\[
+	2-\sqrt{(n-1)\delta}>0,
+\]
+quindi \(B\) è non singolare.
+
+Un modo equivalente per vedere l'autovalore \(2\) è considerare il sottospazio
+\[
+	W=
+	\left\{
+		v\in\realnumbers^n:
+		v_1=0,\ 
+		\sum_{j=2}^{n}v_j=0
+	\right\}.
+\]
+Se \(v\in W\), allora \(EFv=0\), quindi
+\[
+	Bv=2v.
+\]
+Poiché \(\dim W=n-2\), l'autovalore \(2\) ha molteplicità almeno \(n-2\), e
+dalla decomposizione precedente sappiamo che la molteplicità è esattamente
+\(n-2\).
+
+Passiamo ora alla risoluzione del sistema \(Bx=b\). Le equazioni sono
+\begin{align*}
+	2x_1-\sum_{j=2}^{n}x_j &= b_1, \\
+	-\delta x_1+2x_j &= b_j,
+	\qquad j=2,\ldots,n.
+\end{align*}
+Dalla seconda famiglia di equazioni ricaviamo
+\[
+	x_j=\frac{b_j+\delta x_1}{2},
+	\qquad j=2,\ldots,n.
+\]
+Poniamo
+\[
+	s_b=\sum_{j=2}^{n}b_j.
+\]
+Allora
+\[
+	\sum_{j=2}^{n}x_j
+	=
+	\sum_{j=2}^{n}\frac{b_j+\delta x_1}{2}
+	=
+	\frac{s_b+(n-1)\delta x_1}{2}.
+\]
+Sostituendo nella prima equazione,
+\begin{DispWithArrows*}
+	2x_1-\frac{s_b+(n-1)\delta x_1}{2} &= b_1
+	\Arrow{moltiplichiamo per \(2\)} \\
+	4x_1-s_b-(n-1)\delta x_1 &= 2b_1
+	\Arrow{raccogliamo \(x_1\)} \\
+	\left(4-(n-1)\delta\right)x_1 &= 2b_1+s_b.
+\end{DispWithArrows*}
+Poiché \(4-(n-1)\delta>0\), otteniamo
+\[
+	x_1=
+	\frac{
+		2b_1+\sum_{j=2}^{n}b_j
+	}{
+		4-(n-1)\delta
+	}.
+\]
+Poi, per \(j=2,\ldots,n\),
+\[
+	x_j=
+	\frac{b_j+\delta x_1}{2}.
+\]
+Questa formula richiede soltanto il calcolo di una somma e poi il calcolo
+indipendente delle componenti \(x_j\), \(j=2,\ldots,n\). Bisogna però prestare
+attenzione alla stabilità numerica quando \(\delta\) è molto vicino a
+\(\frac{4}{n-1}\), perché il denominatore
+\[
+	4-(n-1)\delta
+\]
+diventa piccolo.
+
+Studiamo infine Jacobi. La matrice diagonale di \(B\) è \(D=2I_n\), quindi la
+matrice di iterazione di Jacobi è
+\[
+	P_J=
+	\frac{1}{2}
+	\begin{pmatrix}
+		0 & 1 & \cdots & 1 \\
+		\delta & 0 & \cdots & 0 \\
+		\vdots & \vdots & \ddots & \vdots \\
+		\delta & 0 & \cdots & 0
+	\end{pmatrix}.
+\]
+Sul sottospazio
+\[
+	W=
+	\left\{
+		v\in\realnumbers^n:
+		v_1=0,\ 
+		\sum_{j=2}^{n}v_j=0
+	\right\}
+\]
+la matrice \(P_J\) è nulla. Rimane quindi da studiare l'azione sul sottospazio
+generato da \(e_1\) e dal vettore
+\[
+	w=(0,1,\ldots,1)^T.
+\]
+Rispetto alla base \(\{e_1,w\}\), l'azione è descritta dalla matrice
+\[
+	\begin{pmatrix}
+		0 & \frac{n-1}{2} \\
+		\frac{\delta}{2} & 0
+	\end{pmatrix}.
+\]
+Quindi
+\[
+	\sigma(P_J)=
+	\left\{
+		-\frac{1}{2}\sqrt{(n-1)\delta},
+		\frac{1}{2}\sqrt{(n-1)\delta},
+		\underbrace{0,\ldots,0}_{n-2\text{ volte}}
+	\right\}.
+\]
+Il raggio spettrale è
+\[
+	\rho(P_J)
+	=
+	\frac{1}{2}\sqrt{(n-1)\delta}.
+\]
+Poiché
+\[
+	\delta<\frac{4}{n-1},
+\]
+segue che
+\[
+	\rho(P_J)<1.
+\]
+Dunque il metodo di Jacobi converge.
+
+Per Gauss-Seidel, dalla forma delle equazioni, l'errore soddisfa
+\begin{align*}
+	e_1^{(k+1)}
+	&=
+	\frac{1}{2}\sum_{j=2}^{n}e_j^{(k)}, \\
+	e_i^{(k+1)}
+	&=
+	\frac{\delta}{2}e_1^{(k+1)}
+	=
+	\frac{\delta}{4}\sum_{j=2}^{n}e_j^{(k)},
+	\qquad i=2,\ldots,n.
+\end{align*}
+Da qui si vede che la matrice di iterazione di Gauss-Seidel ha come unico
+autovalore eventualmente non nullo
+\[
+	\frac{(n-1)\delta}{4}.
+\]
+Quindi
+\[
+	\rho(P_{GS})
+	=
+	\frac{(n-1)\delta}{4}
+	=
+	\rho(P_J)^2.
+\]
+Ancora una volta, poiché \(\delta<\frac{4}{n-1}\), si ha
+\[
+	\rho(P_{GS})<1.
+\]
+Dunque anche il metodo di Gauss-Seidel converge.
+\end{snippetsolution}
 
 \end{document}

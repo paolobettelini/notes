@@ -14,15 +14,20 @@
 
 \WithArrowsOptions{displaystyle}
 
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{patterns.meta}
+\usetikzlibrary{patterns}
 \usetikzlibrary{calc}
 \usetikzlibrary{decorations.markings}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.pathmorphing}
 \usetikzlibrary{cd}
 \usetikzlibrary{positioning}
 
 % Cancel color
 \renewcommand{\CancelColor}{\color{red}}
 
-\title{Differential geometry}
+\title{Geometria differenziale}
 \author{Paolo Bettelini}
 \date{}
 
@@ -31,7 +36,11 @@
 \maketitle
 \tableofcontents
 
-\section{Differential geometry}
+% Titoli riorganizzati per argomenti: le intestazioni di lezione/data sono state sostituite.
+
+\part{Curve}
+
+\section{Curve parametrizzate e richiami di geometria affine}
 
 %\begin{blackhole}
 
@@ -311,12 +320,1399 @@ La seconda intersezione è quella di auto intersecarsi.
     \end{enumerate}
 \end{snippetexample}
 
-TODO 3 lezioni.
+\section{Biliardo rettangolare}
+
+Consideriamo un biliardo ideale, cioè senza attrito, il cui tavolo è il rettangolo
+\[
+    S=[0,a]\times [0,b]\subseteq \realnumbers^2,
+    \qquad a,b>0.
+\]
+Una traiettoria è una curva spezzata: all'interno del rettangolo è un segmento di retta, mentre quando incontra un lato viene riflessa secondo la legge dell'uguaglianza fra angolo di incidenza e angolo di riflessione.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9, >=stealth]
+    \draw[->] (-0.3,0) -- (5.1,0) node[right] {$x$};
+    \draw[->] (0,-0.3) -- (0,2.9) node[above] {$y$};
+    \draw[thick] (0,0) rectangle (4,2);
+    \node[below] at (4,0) {$a$};
+    \node[left] at (0,2) {$b$};
+    \node[below left] at (0,0) {$0$};
+    \coordinate (P) at (0.55,1.25);
+    \fill (P) circle (1.5pt);
+    \node[above right] at (P) {$(x_0,y_0)$};
+    \draw[thick] (P) -- (1.55,0) -- (3.15,2) -- (4,0.95);
+    \node at (0.95,0.4) {$\mu$};
+    \node at (2.5,0.8) {$-\mu$};
+    \node at (3.55,1.2) {$\mu$};
+\end{tikzpicture}
+\end{center}
+
+\begin{snippettheorem}{Alternativa per il biliardo rettangolare}
+Sia la direzione iniziale del tiro data dalla retta
+\[
+    y-y_0=\mu(x-x_0),
+\]
+dove \(\mu\) è il coefficiente angolare. Allora vale la seguente alternativa.
+
+\begin{enumerate}
+    \item Se \(\mu\) è commensurabile con \(\frac{b}{a}\), cioè
+    \[
+        \frac{\mu}{b/a}=\frac{\mu a}{b}\in \rationalnumbers,
+    \]
+    allora la traiettoria ideale è periodica: dopo un numero finito di riflessioni ritorna alla stessa posizione con la stessa direzione.
+
+    \item Se \(\mu\) è incommensurabile con \(\frac{b}{a}\), cioè
+    \[
+        \frac{\mu a}{b}\notin \rationalnumbers,
+    \]
+    allora la traiettoria ideale è densa nel rettangolo \(S\).
+\end{enumerate}
+\end{snippettheorem}
+
+I tratti lineari della traiettoria appartengono a due soli fasci di rette parallele: quelli con coefficiente angolare \(\mu\) e quelli con coefficiente angolare \(-\mu\). Infatti una riflessione su un lato verticale cambia il segno della velocità orizzontale, mentre una riflessione su un lato orizzontale cambia il segno della velocità verticale; in entrambi i casi il coefficiente angolare cambia segno.
+
+Se si vuole parametrizzare la traiettoria come curva regolare a tratti
+\[
+    c(t)=\bigl(x(t),y(t)\bigr),
+\]
+si può scegliere \(t\) come distanza percorsa in orizzontale. Su ciascun tratto lineare si ha allora
+\begin{align*}
+    x(t)&=x_*+\varepsilon t,\\
+    y(t)&=y_*+\eta\mu t,
+\end{align*}
+dove \(x_*,y_*\in \realnumbers\) e \(\varepsilon,\eta\in\{-1,1\}\). Le costanti, i segni e gli intervalli di valori di \(t\) su cui valgono queste formule sono determinati univocamente dalla scelta iniziale di \((x_0,y_0)\) e di \(\mu\).
+
+\begin{snippetexercise}{Periodicità nel caso commensurabile}
+Dimostrare che, se \(\frac{\mu a}{b}\in \rationalnumbers\), allora la traiettoria del biliardo rettangolare è periodica.
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+Supponiamo
+\[
+    \frac{\mu a}{b}=\frac{m}{n},
+    \qquad m,n\in \mathbb{Z},\ n\neq 0.
+\]
+L'idea è quella di raddrizzare le riflessioni: invece di riflettere la traiettoria dentro il rettangolo, riflettiamo il rettangolo stesso. Nel piano ricoperto da copie riflesse del rettangolo, la traiettoria diventa la retta
+\[
+    y-y_0=\mu(x-x_0).
+\]
+
+Nel ricoprimento con periodi \(2a\) in orizzontale e \(2b\) in verticale, basta osservare cosa succede dopo uno spostamento orizzontale pari a \(2na\). Lo spostamento verticale corrispondente è
+\[
+    \mu\,2na
+    =
+    2n\mu a
+    =
+    2n\frac{m}{n}b
+    =
+    2mb.
+\]
+Dunque, nel piano sviluppato, la retta passa da un punto a un punto equivalente per la griglia di periodi \((2a,2b)\). Ripiegando il piano sul rettangolo iniziale, la traiettoria ritorna alla stessa posizione e alla stessa direzione. Quindi la traiettoria nel biliardo è periodica.
+\end{snippetsolution}
+
+\subsection{Sviluppo del biliardo sul piano}
+
+Per studiare la parte densa conviene sostituire le riflessioni della traiettoria con riflessioni del tavolo. Immaginiamo un foglio infinito diviso da un reticolo rettangolare di dimensioni \(a\times b\). Tracciamo nel piano la retta
+\[
+    y-y_0=\mu(x-x_0).
+\]
+Se ora ripieghiamo il foglio lungo tutte le rette del reticolo fino a sovrapporre ogni rettangolo al rettangolo campione \([0,a]\times[0,b]\), la retta tracciata sul foglio diventa esattamente una traiettoria di biliardo.
+
+\begin{center}
+    \begin{tikzpicture}[scale=0.85, >=stealth]
+        \def\A{2.4}
+        \def\B{1.3}
+
+        \foreach \i in {0,1,2,3,4} {
+            \draw[thick] ({\i*\A},0) -- ({\i*\A},{3*\B});
+        }
+
+        \foreach \j in {0,1,2,3} {
+            \draw[thick] (0,{\j*\B}) -- ({4*\A},{\j*\B});
+        }
+
+        \draw[very thick, blue] ({0.35*\A},{0.45*\B}) -- ({3.85*\A},{2.65*\B});
+
+        \node at ({0.5*\A},{0.12*\B}) {$a$};
+        \node at ({1.5*\A},{0.12*\B}) {$a$};
+
+        \node at ({-0.18*\A},{0.5*\B}) {$b$};
+        \node at ({-0.18*\A},{1.5*\B}) {$b$};
+        \node at ({-0.18*\A},{2.5*\B}) {$b$};
+    \end{tikzpicture}
+\end{center}
+Viceversa, ogni traiettoria di biliardo deriva da una retta del piano sviluppato. Infatti la traiettoria nel rettangolo è determinata univocamente dal punto iniziale \((x_0,y_0)\) e dalla pendenza \(\mu\), cioè dalla retta iniziale \(y-y_0=\mu(x-x_0)\).
+
+\subsection{Gruppo delle riflessioni del rettangolo}
+
+Indichiamo con
+\[
+    \iota_{na}(x,y)=(2na-x,y),
+    \qquad
+    \jmath_{mb}(x,y)=(x,2mb-y)
+\]
+le riflessioni rispettivamente rispetto alle rette verticali \(x=na\) e orizzontali \(y=mb\), con \(n,m\in \mathbb{Z}\). L'insieme delle riflessioni del reticolo è
+\[
+    \mathcal{R}
+    =
+    \{\iota_{na}:n\in\mathbb{Z}\}
+    \union
+    \{\jmath_{mb}:m\in\mathbb{Z}\}.
+\]
+Sia
+\[
+    G=\langle \mathcal{R}\rangle \subseteq \operatorname{Isom}(\realnumbers^2)
+\]
+il gruppo delle isometrie generato da tali riflessioni. Il rettangolo del biliardo si identifica con il quoziente
+\[
+    S=\realnumbers^2/G,
+\]
+dove due punti \(P,Q\in\realnumbers^2\) sono equivalenti se esiste \(g\in G\) tale che \(g(P)=Q\).
+
+\begin{center}
+    \begin{tikzpicture}[scale=0.85, >=stealth]
+        \draw[thick] (-0.2,0) -- (5.2,0);
+        \draw[thick] (-0.2,1.6) -- (5.2,1.6);
+        \draw[thick] (0,-0.4) -- (0,2.0);
+        \draw[thick] (2,-0.4) -- (2,2.0);
+        \draw[thick] (4,-0.4) -- (4,2.0);
+        \node[below right] at (0,0) {$0$};
+        \node[below right] at (2,0) {$a$};
+        \node[below right] at (4,0) {$2a$};
+        \node[left] at (0,0) {$0$};
+        \node[left] at (0,1.6) {$b$};
+        \draw[->] (0.6,-0.25) arc[start angle=200,end angle=340,radius=0.35];
+        \draw[->] (2.6,-0.25) arc[start angle=200,end angle=340,radius=0.35];
+        \draw[->] (4.6,-0.25) arc[start angle=200,end angle=340,radius=0.35];
+        \node at (0.2,-0.65) {$\iota_0$};
+        \node at (2.2,-0.65) {$\iota_a$};
+        \node at (4.2,-0.65) {$\iota_{2a}$};
+        \node[left] at (-0.05,0.8) {$\jmath_0$};
+        \node[left] at (-0.05,1.85) {$\jmath_b$};
+    \end{tikzpicture}
+\end{center}
+
+\begin{snippetexercise}{Generatori del gruppo delle riflessioni}
+Dimostrare che è sufficiente usare come generatori le quattro riflessioni rispetto ai lati del rettangolo campione:
+\[
+    G=\langle \iota_0,\iota_a,\jmath_0,\jmath_b\rangle.
+\]
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+Poniamo
+\[
+    T_x=\iota_a\circ \iota_0,
+    \qquad
+    T_y=\jmath_b\circ \jmath_0.
+\]
+Allora
+\begin{align*}
+    T_x(x,y)&=(x+2a,y),\\
+    T_y(x,y)&=(x,y+2b).
+\end{align*}
+Quindi il gruppo generato da \(\iota_0,\iota_a,\jmath_0,\jmath_b\) contiene le traslazioni di vettore \((2a,0)\) e \((0,2b)\).
+
+Ora, per ogni \(k\in \mathbb{Z}\), si ha
+\begin{align*}
+    T_x^k\circ \iota_0\circ T_x^{-k}&=\iota_{2ka},\\
+    T_x^k\circ \iota_a\circ T_x^{-k}&=\iota_{(2k+1)a}.
+\end{align*}
+Questo produce tutte le riflessioni verticali \(\iota_{na}\). Analogamente,
+\begin{align*}
+    T_y^k\circ \jmath_0\circ T_y^{-k}&=\jmath_{2kb},\\
+    T_y^k\circ \jmath_b\circ T_y^{-k}&=\jmath_{(2k+1)b},
+\end{align*}
+e quindi si ottengono tutte le riflessioni orizzontali \(\jmath_{mb}\). Pertanto le quattro riflessioni iniziali generano l'intero gruppo \(G\).
+\end{snippetsolution}
+
+\begin{snippetcorollary}{Sottogruppo delle traslazioni}
+Il gruppo \(G\) contiene il sottogruppo
+\[
+    N=\langle T_x,T_y\rangle
+    \cong \mathbb{Z}^2,
+\]
+dove
+\[
+    T_x(x,y)=(x+2a,y),
+    \qquad
+    T_y(x,y)=(x,y+2b).
+\]
+\end{snippetcorollary}
+
+\subsection{Dal rettangolo al toro}
+
+Il sottogruppo \(N=\langle T_x,T_y\rangle\) identifica il piano modulo le traslazioni di periodi \(2a\) e \(2b\). Otteniamo il toro
+\[
+    T^2
+    =
+    \realnumbers^2/N
+    \cong
+    \frac{\realnumbers}{2a\mathbb{Z}}\times \frac{\realnumbers}{2b\mathbb{Z}}
+    \cong
+    S^1\times S^1.
+\]
+La proiezione sul biliardo fattorizza quindi come
+\[
+    \realnumbers^2 \longrightarrow T^2 \longrightarrow S.
+\]
+
+\begin{tikzpicture}[scale=1, >=stealth]
+    \node (R) at (0,1.4) {$\realnumbers^2$};
+    \node (T) at (3.2,1.4) {$T^2=\realnumbers^2/N$};
+    \node (S) at (3.2,0) {$S=\realnumbers^2/G$};
+    \draw[->] (R) -- node[above] {$p$} (T);
+    \draw[->] (T) -- node[right] {$q$} (S);
+    \draw[->] (R) -- node[below left] {$\pi$} (S);
+\end{tikzpicture}
+
+\begin{snippetexercise}{Quoziente residuo}
+Trovare \(H=G/N\) e verificare che
+\[
+    S=T^2/H.
+\]
+Prima di farlo, provare che \(N\) è normale in \(G\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+Il sottogruppo \(N\) è normale in \(G\) perchè è stabile per coniugio rispetto ai generatori di \(G\). Ad esempio
+\begin{align*}
+    \iota_0\circ T_x\circ \iota_0&=T_x^{-1},
+    &
+    \iota_a\circ T_x\circ \iota_a&=T_x^{-1},\\
+    \jmath_0\circ T_y\circ \jmath_0&=T_y^{-1},
+    &
+    \jmath_b\circ T_y\circ \jmath_b&=T_y^{-1},
+\end{align*}
+mentre le riflessioni verticali commutano con \(T_y\) e le riflessioni orizzontali commutano con \(T_x\).
+
+Nel quoziente modulo \(N\), le riflessioni \(\iota_0\) e \(\iota_a\) inducono la stessa simmetria del toro, e analogamente \(\jmath_0\) e \(\jmath_b\) inducono la stessa simmetria. Quindi
+\[
+    H=G/N
+    \cong
+    (\mathbb{Z}/2\mathbb{Z})\times (\mathbb{Z}/2\mathbb{Z}),
+\]
+generato dalle classi di \(\iota_0\) e \(\jmath_0\). Il rettangolo del biliardo si ottiene dunque prendendo il toro e identificando ulteriormente i punti simmetrici rispetto alle due direzioni coordinate.
+\end{snippetsolution}
+
+\begin{tikzpicture}[scale=0.85, >=stealth]
+    \draw[thick] (0,0) rectangle (5,2.2);
+    \draw[dashed] (2.5,0) -- (2.5,2.2);
+    \draw[dashed] (0,1.1) -- (5,1.1);
+    \node[below] at (5,0) {$2a$};
+    \node[left] at (0,2.2) {$2b$};
+    \draw[thick] (-0.5,-0.2) -- (1.3,2.2);
+    \draw[thick] (1.0,0) -- (2.7,2.2);
+    \draw[thick] (2.6,0) -- (4.3,2.2);
+    \draw[thick] (4.2,0) -- (5.5,1.7);
+\end{tikzpicture}
+
+La riduzione fondamentale è la seguente: se \(\ell\subseteq \realnumbers^2\) è la retta sviluppata e \(c=\pi(\ell)\) è la traiettoria del biliardo, allora
+\[
+    \pi=q\circ p.
+\]
+Perciò, se \(p(\ell)\) è densa nel toro \(T^2\), allora \(\pi(\ell)=q(p(\ell))\) è densa in \(S\).
+
+Identifichiamo il toro con \(S^1\times S^1\) tramite la mappa
+\[
+    p\colon \realnumbers^2\longrightarrow S^1\times S^1,
+    \qquad
+    p(x,y)=
+    \left(
+        e^{\frac{2\pi \mathrm{i}x}{2a}},
+        e^{\frac{2\pi \mathrm{i}y}{2b}}
+    \right).
+\]
+Questa mappa è periodica rispetto a
+\[
+    x\mapsto x+2a,
+    \qquad
+    y\mapsto y+2b.
+\]
+
+La retta sviluppata
+\[
+    y-y_0=\mu(x-x_0)
+\]
+produce sul toro la curva
+\[
+    p(x)
+    =
+    \left(
+        e^{\frac{2\pi \mathrm{i}x}{2a}},
+        e^{\frac{2\pi \mathrm{i}\left(y_0+\mu(x-x_0)\right)}{2b}}
+    \right).
+\]
+
+I punti di questa curva con prima coordinata uguale a \(1\) sono quelli per cui
+\[
+    e^{\frac{2\pi \mathrm{i}x}{2a}}=1
+    \quad\Longleftrightarrow\quad
+    x=2ka,
+    \qquad k\in \mathbb{Z}.
+\]
+In tali punti la seconda coordinata è, a meno di una costante moltiplicativa su \(S^1\), della forma
+\[
+    e^{2\pi \mathrm{i}\frac{\mu a}{b}k}.
+\]
+Dunque la parte B del problema si riduce al problema classico della densità delle rotazioni irrazionali del cerchio.
+
+\begin{snippetexercise}{Problema sul cerchio}
+Dimostrare che, se \(\alpha\notin \rationalnumbers\), allora
+\[
+    \left\{e^{2\pi \mathrm{i}\alpha k}:k\in\mathbb{Z}\right\}
+\]
+è denso in \(S^1\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+Sia
+\[
+    K=\overline{\left\{e^{2\pi \mathrm{i}\alpha k}:k\in\mathbb{Z}\right\}}
+    \subseteq S^1.
+\]
+Allora \(K\) è un sottogruppo chiuso di \(S^1\). Se fosse finito, il generatore \(e^{2\pi \mathrm{i}\alpha}\) avrebbe ordine finito; quindi esisterebbe \(q\in\naturalnumbers\setminus\{0\}\) tale che
+\[
+    \left(e^{2\pi \mathrm{i}\alpha}\right)^q=1.
+\]
+Questo equivale a
+\[
+    q\alpha\in\mathbb{Z},
+\]
+e quindi \(\alpha\in\rationalnumbers\), contro l'ipotesi.
+
+Dunque \(K\) è infinito. Un sottogruppo chiuso infinito di \(S^1\) è tutto \(S^1\): infatti, se contiene elementi arbitrariamente vicini a \(1\), allora le loro potenze incontrano ogni arco del cerchio; passando alla chiusura, ogni arco interseca \(K\). Ne segue
+\[
+    K=S^1,
+\]
+cioè l'orbita \(\left\{e^{2\pi \mathrm{i}\alpha k}:k\in\mathbb{Z}\right\}\) è densa in \(S^1\).
+\end{snippetsolution}
+
+\begin{snippettheorem}{Densità della traiettoria incommensurabile}
+Se
+\[
+    \frac{\mu a}{b}\notin \rationalnumbers,
+\]
+allora la traiettoria ideale del biliardo rettangolare è densa in \(S=[0,a]\times[0,b]\).
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+Per quanto visto, basta provare che la retta sviluppata \(\ell\) ha immagine densa nel toro \(T^2\). Scriviamo
+\[
+    \alpha=\frac{\mu a}{b}.
+\]
+Per ipotesi \(\alpha\notin \rationalnumbers\).
+
+Consideriamo un aperto elementare del toro, cioè un prodotto di archi
+\[
+    U=A\times B\subseteq S^1\times S^1.
+\]
+Scegliamo \(s\in\realnumbers\) tale che
+\[
+    e^{\frac{2\pi \mathrm{i}s}{2a}}\in A.
+\]
+Per ogni \(k\in\mathbb{Z}\), ponendo \(x=2ka+s\), otteniamo un punto della curva \(p(\ell)\) con prima coordinata fissata in \(A\):
+\[
+    p(2ka+s)
+    =
+    \left(
+        e^{\frac{2\pi \mathrm{i}s}{2a}},
+        C_s\,e^{2\pi \mathrm{i}\alpha k}
+    \right),
+\]
+dove
+\[
+    C_s=e^{\frac{2\pi \mathrm{i}\left(y_0+\mu(s-x_0)\right)}{2b}}
+    \in S^1.
+\]
+Poichè \(\alpha\notin\rationalnumbers\), il problema sul cerchio mostra che
+\[
+    \left\{C_s\,e^{2\pi \mathrm{i}\alpha k}:k\in\mathbb{Z}\right\}
+\]
+è denso in \(S^1\). Possiamo quindi scegliere \(k\) in modo che la seconda coordinata appartenga a \(B\). Allora \(p(\ell)\cap U\neq\emptyset\).
+
+Poichè ogni aperto elementare del toro incontra \(p(\ell)\), la curva \(p(\ell)\) è densa in \(T^2\). Infine, siccome \(\pi=q\circ p\), l'immagine \(\pi(\ell)\), cioè la traiettoria del biliardo, è densa nel rettangolo \(S\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{}
+Nel caso incommensurabile la traiettoria non è periodica. Infatti una traiettoria periodica nel biliardo è costituita da un numero finito di tratti lineari, mentre una traiettoria densa deve incontrare ogni aperto del rettangolo.
+\end{snippetcorollary}
+
+\section{Fenomenologia delle curve parametrizzate}
+
+\begin{snippetexample}{Curva \(\mathcal{C}^\infty\) la cui immagine ha un angolo}
+Sia \(\sigma\colon \realnumbers \to \realnumbers^2\) definita da
+\[
+    \sigma(t)=
+    \begin{cases}
+        \left(0,e^{\frac{1}{t}}\right) & \text{se } t<0,\\
+        (0,0) & \text{se } t=0,\\
+        \left(e^{-\frac{1}{t}},0\right) & \text{se } t>0.
+    \end{cases}
+\]
+Allora \(\sigma\) è di classe \(\mathcal{C}^\infty\) su \(\realnumbers\), ma \(\operatorname{Im}\sigma\) ha un angolo nell'origine.
+
+Anzitutto
+\[
+    \lim_{t\to 0^-} e^{\frac{1}{t}}=0=\lim_{t\to 0^+} e^{-\frac{1}{t}},
+\]
+quindi \(\sigma\) è continua in \(t=0\). Calcoliamo la derivata fuori dall'origine:
+\[
+    \sigma'(t)=
+    \begin{cases}
+        \left(0,-\frac{1}{t^2}e^{\frac{1}{t}}\right) & \text{se } t<0,\\
+        \left(\frac{1}{t^2}e^{-\frac{1}{t}},0\right) & \text{se } t>0.
+    \end{cases}
+\]
+Ponendo \(y=\frac{1}{t}\), otteniamo
+\begin{align*}
+    \lim_{t\to 0^-} -\frac{1}{t^2}e^{\frac{1}{t}}
+    &= \lim_{y\to -\infty} -y^2e^y=0,\\
+    \lim_{t\to 0^+} \frac{1}{t^2}e^{-\frac{1}{t}}
+    &= \lim_{y\to +\infty} y^2e^{-y}=0.
+\end{align*}
+Dunque il moto si arresta in \(t=0\), cioè \(\sigma'(0)=(0,0)\).
+
+Per induzione, per ogni \(k\geq 1\), le componenti di \(\sigma^{(k)}(t)\) sono del tipo
+\[
+    p_k\left(\frac{1}{t}\right)e^{\pm \frac{1}{t}},
+\]
+con \(p_k\) polinomio. Ne segue che
+\[
+    \lim_{t\to 0^\pm} \sigma^{(k)}(t)=0,
+\]
+perché l'esponenziale prevale su qualunque polinomio. Quindi tutte le derivate si estendono con valore \(0\) in \(t=0\), e \(\sigma\colon \realnumbers\to \realnumbers^2\) è di classe \(\mathcal{C}^\infty\).
+\end{snippetexample}
+
+\paragraph{Regolarità e assenza di angoli.}
+L'esempio precedente mostra che, per ottenere una curva con immagine ``senza angoli'', non basta chiedere che \(\sigma\) sia di classe \(\mathcal{C}^\infty\). Serve anche la condizione di regolarità
+\[
+    \sigma'(t)\neq 0
+\]
+per ogni valore del parametro.
+
+\begin{snippetexample}{Curva regolare che si autointerseca}
+Sia \(\sigma\colon \realnumbers\to \realnumbers^2\) definita da
+\[
+    \sigma(t)=\left(t^3-4t,t^2-4\right).
+\]
+Mostriamo che è regolare. Si ha
+\[
+    \sigma'(t)=\left(3t^2-4,2t\right).
+\]
+Il sistema \(\sigma'(t)=0\) equivale a
+\[
+    \begin{cases}
+        3t^2-4=0,\\
+        2t=0,
+    \end{cases}
+\]
+che non ha soluzioni. Dunque \(\sigma'(t)\neq 0\) per ogni \(t\in\realnumbers\).
+
+Troviamo ora le coppie \(t_1<t_2\) tali che \(\sigma(t_1)=\sigma(t_2)\). Abbiamo
+\begin{align*}
+    \sigma(t_1)=\sigma(t_2)
+    \iff
+    \begin{cases}
+        t_1^3-4t_1=t_2^3-4t_2,\\
+        t_1^2-4=t_2^2-4.
+    \end{cases}
+\end{align*}
+Dalla seconda equazione segue \(t_1=\pm t_2\). La possibilità \(t_1=t_2\) è quella banale, quindi, per ottenere un'autointersezione, dobbiamo avere \(t_1=-t_2\). Sostituendo nella prima equazione:
+\begin{align*}
+    -t_2^3+4t_2 &= t_2^3-4t_2,\\
+    2t_2^3-8t_2 &=0,\\
+    2t_2(t_2^2-4)&=0.
+\end{align*}
+Escludendo \(t_2=0\), che darebbe di nuovo \(t_1=t_2\), otteniamo \(t_2=2\) e \(t_1=-2\). Infatti
+\[
+    \sigma(-2)=\sigma(2)=(0,0).
+\]
+La curva è quindi regolare, ma si autointerseca nell'origine.
+
+La forma della curva si può intuire intersecando \(\operatorname{Im}\sigma\) con il fascio di rette orizzontali \(y=k\), con \(k\in\realnumbers\). Poiché \(y=t^2-4\), esistono intersezioni reali solo per \(k\geq -4\); per \(k=0\) si ottengono i due parametri \(t=\pm 2\), che corrispondono allo stesso punto dell'immagine.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.55]
+    \draw[->] (-6,0) -- (6,0) node[right] {\(x\)};
+    \draw[->] (0,-5) -- (0,3) node[above] {\(y\)};
+    \draw[domain=-2.45:2.45,smooth,variable=\t,samples=120]
+        plot ({\t*\t*\t-4*\t},{\t*\t-4});
+    \fill (0,0) circle (2pt) node[above right] {\((0,0)\)};
+\end{tikzpicture}
+\end{center}
+\end{snippetexample}
+
+\begin{snippetexample}{Folium di Cartesio: autointersezione all'infinito}
+Sia \(\sigma\colon (-1,+\infty)\to \realnumbers^2\) definita da
+\[
+    \sigma(t)=\left(\frac{3t}{1+t^3},\frac{3t^2}{1+t^3}\right).
+\]
+Si ha
+\[
+    \lim_{t\to +\infty}\sigma(t)=(0,0).
+\]
+Mostriamo che \(\sigma\) è regolare e iniettiva: quindi non si autointerseca per valori finiti del parametro, anche se tende nuovamente all'origine per \(t\to +\infty\).
+
+Calcoliamo
+\begin{align*}
+    \sigma'(t)
+    &=\left(
+        \frac{3+3t^3-9t^3}{(1+t^3)^2},
+        \frac{6t+6t^4-9t^4}{(1+t^3)^2}
+    \right)\\
+    &=\left(
+        \frac{3-6t^3}{(1+t^3)^2},
+        \frac{6t-3t^4}{(1+t^3)^2}
+    \right).
+\end{align*}
+Dunque \(\sigma'(t)=(0,0)\) se e solo se
+\[
+    \begin{cases}
+        3-6t^3=0,\\
+        3t(2-t^3)=0.
+    \end{cases}
+\]
+La seconda equazione è verificata per \(t=0\) oppure per \(t^3=2\), ma in nessuno dei due casi la prima equazione è verificata. Quindi \(\sigma\) è regolare.
+
+Per l'iniettività, osserviamo che, se \(t\neq 0\), allora la prima coordinata è non nulla e
+\[
+    \frac{y(t)}{x(t)}
+    =\frac{\frac{3t^2}{1+t^3}}{\frac{3t}{1+t^3}}
+    =t.
+\]
+Quindi il parametro \(t\) si recupera dal punto \(\sigma(t)\). Se invece la prima coordinata è nulla, allora \(t=0\), e il punto è \((0,0)\). Ne segue che \(\sigma\) è iniettiva.
+
+\begin{center}
+\begin{tikzpicture}[scale=2.0]
+    \draw[->] (-0.2,0) -- (1.8,0) node[right] {\(x\)};
+    \draw[->] (0,-0.2) -- (0,1.8) node[above] {\(y\)};
+    \draw[domain=0:20,smooth,variable=\t,samples=180]
+        plot ({3*\t/(1+\t*\t*\t)},{3*\t*\t/(1+\t*\t*\t)});
+    \fill (0,0) circle (0.8pt) node[below left] {\((0,0)\)};
+\end{tikzpicture}
+\end{center}
+\end{snippetexample}
+
+\paragraph{Topologia locale delle autointersezioni.}
+Le immagini delle curve con autointersezioni non sono omeomorfe a intervalli di \(\realnumbers\). Per vederlo, basta considerare un intorno di un punto di autointersezione, togliere quel punto e contare le componenti connesse che rimangono: localmente non si ottiene la topologia di un intervallo.
+
+\section{Lunghezza, distanza intrinseca e parametro d'arco}
+
+\begin{snippetdefinition}{Lunghezza di una curva parametrizzata}
+Sia \(\sigma\colon [a,b]\to\realnumbers^n\) una curva di classe \(\mathcal{C}^1\) a tratti. La lunghezza di \(\sigma\) è
+\[
+    L(\sigma)\triangleq \integral[a][b][\left\|\sigma'(t)\right\|][t]
+    =\integral[a][b][\sqrt{\left\langle \sigma'(t),\sigma'(t)\right\rangle}][t].
+\]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{Lunghezza e distanza euclidea}
+Sia \(\sigma\colon [a,b]\to\realnumbers^n\) una curva di classe \(\mathcal{C}^1\) a tratti. Allora
+\[
+    L(\sigma)\geq \left\|\sigma(b)-\sigma(a)\right\|=d(\sigma(a),\sigma(b)).
+\]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+Per il teorema fondamentale del calcolo integrale,
+\[
+    \sigma(b)-\sigma(a)=\integral[a][b][\sigma'(t)][t].
+\]
+Applicando la disuguaglianza triangolare per l'integrale, otteniamo
+\begin{align*}
+    \left\|\sigma(b)-\sigma(a)\right\|
+    &=\left\|\integral[a][b][\sigma'(t)][t]\right\|\\
+    &\leq \integral[a][b][\left\|\sigma'(t)\right\|][t]\\
+    &=L(\sigma).
+\end{align*}
+\end{snippetproof}
+
+\paragraph{Compatibilità con la lunghezza euclidea.}
+La definizione di lunghezza è compatibile con la nozione elementare di lunghezza di un segmento. Se \(P,Q\in\realnumbers^n\) e
+\[
+    \sigma(t)=P+t(Q-P),\qquad t\in[0,1],
+\]
+allora
+\[
+    \sigma'(t)=Q-P
+\]
+e quindi
+\[
+    L(\sigma)=\integral[0][1][\left\|\sigma'(t)\right\|][t]
+    =\integral[0][1][\left\|Q-P\right\|][t]
+    =\left\|Q-P\right\|.
+\]
+
+\begin{snippetproposition}{Distanza intrinseca}
+Sia \(X\subseteq\realnumbers^n\) un sottoinsieme con la seguente proprietà: per ogni \(P,Q\in X\) esiste una curva \(\sigma\colon [a,b]\to X\), di classe \(\mathcal{C}^\infty\) a tratti e rettificabile, tale che
+\[
+    \sigma(a)=P,\qquad \sigma(b)=Q.
+\]
+Allora la funzione
+\[
+    d_X(P,Q)
+    =\inf\left\{
+        L(\sigma)\ \middle|\
+        \begin{array}{l}
+            \sigma\colon [a,b]\to X,\quad \sigma(a)=P,\quad \sigma(b)=Q,\\
+            \sigma \text{ è } \mathcal{C}^\infty \text{ a tratti e rettificabile}
+        \end{array}
+    \right\}
+\]
+è una distanza su \(X\). La funzione \(d_X\) si chiama distanza intrinseca di \(X\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+La non negatività è immediata, perché \(L(\sigma)\geq 0\) per ogni curva \(\sigma\). Inoltre, dalla proposizione precedente,
+\[
+    L(\sigma)\geq \left\|P-Q\right\|
+\]
+per ogni curva che congiunge \(P\) a \(Q\). Quindi
+\[
+    d_X(P,Q)\geq \left\|P-Q\right\|,
+\]
+e in particolare \(d_X(P,Q)=0\) implica \(P=Q\). Viceversa, \(d_X(P,P)=0\), perché si può considerare la curva costante.
+
+La simmetria segue invertendo il verso di percorrenza di una curva: se \(\sigma\) congiunge \(P\) a \(Q\), allora \(\widetilde{\sigma}(t)=\sigma(a+b-t)\) congiunge \(Q\) a \(P\) e ha la stessa lunghezza.
+
+Infine, se \(\sigma_1\) congiunge \(P\) a \(Q\) e \(\sigma_2\) congiunge \(Q\) a \(R\), la concatenazione \(\sigma_1*\sigma_2\) congiunge \(P\) a \(R\) e
+\[
+    L(\sigma_1*\sigma_2)=L(\sigma_1)+L(\sigma_2).
+\]
+Passando all'inf su tutte le curve ammissibili si ottiene
+\[
+    d_X(P,R)\leq d_X(P,Q)+d_X(Q,R).
+\]
+Dunque \(d_X\) soddisfa gli assiomi di distanza.
+\end{snippetproof}
+
+\begin{snippetexample}{Distanza su un cono circolare}
+Sia \(X\) un cono circolare di vertice \(V\). Se \(P\) e \(Q\) sono due punti del cono alla stessa quota e opposti rispetto all'asse, ci sono almeno due cammini naturali che li collegano:
+\begin{itemize}
+    \item l'arco di circonferenza alla stessa quota;
+    \item la spezzata \([P,V]\union[V,Q]\), che passa per la vetta.
+\end{itemize}
+Il problema è trovare l'angolo limite di apertura del cono per cui i due cammini hanno la stessa lunghezza.
+\end{snippetexample}
+
+\begin{snippetsolution}{}
+Indichiamo con \(\theta\) il semiangolo di apertura del cono, cioè l'angolo tra una generatrice e l'asse del cono. Se \(\ell=\left\|P-V\right\|=\left\|Q-V\right\|\), allora il raggio della circonferenza alla quota di \(P\) e \(Q\) è
+\[
+    r=\ell\sin\theta.
+\]
+Poiché \(P\) e \(Q\) sono opposti, l'arco di circonferenza che li congiunge ha lunghezza
+\[
+    L_{\mathrm{circ}}=\pi r=\pi\ell\sin\theta.
+\]
+La spezzata che passa per il vertice ha invece lunghezza
+\[
+    L_{\mathrm{vetta}}=\left\|P-V\right\|+\left\|V-Q\right\|=2\ell.
+\]
+Il caso limite è quindi dato da
+\begin{align*}
+    \pi\ell\sin\theta &= 2\ell,\\
+    \sin\theta &= \frac{2}{\pi},\\
+    \theta &= \arcsin\left(\frac{2}{\pi}\right).
+\end{align*}
+Se con ``angolo di apertura'' si intende l'angolo totale al vertice, allora il valore limite è
+\[
+    2\arcsin\left(\frac{2}{\pi}\right).
+\]
+\end{snippetsolution}
+
+\begin{snippetdefinition}{Curva parametrizzata per lunghezza d'arco}
+Sia \(\sigma\colon I\to\realnumbers^n\) una curva di classe \(\mathcal{C}^1\) a tratti. Diremo che \(\sigma\) è parametrizzata per lunghezza d'arco se
+\[
+    \forall t\in I,\qquad
+    \left\|\sigma'_{-}(t)\right\|=\left\|\sigma'_{+}(t)\right\|=1,
+\]
+dove \(\sigma'_{-}\) e \(\sigma'_{+}\) indicano rispettivamente la derivata sinistra e la derivata destra nei punti angolosi.
+\end{snippetdefinition}
+
+\paragraph{Interpretazione della velocità unitaria.}
+La definizione cattura l'idea di una curva percorsa con velocità scalare costante uguale a \(1\).
+
+\paragraph{Interpretazione del parametro d'arco.}
+Se \(\sigma(s)\) è una curva parametrizzata per lunghezza d'arco, allora
+\[
+    s_1-s_0
+    =\integral[s_0][s_1][1][s]
+    =\integral[s_0][s_1][\left\|\sigma'(s)\right\|][s]
+    =L\left(\sigma\big|_{[s_0,s_1]}\right).
+\]
+Quindi \(s_1-s_0\) è proprio lo spazio percorso dal punto mobile \(\sigma(s)\) tra \(s=s_0\) e \(s=s_1\).
+
+\begin{snippetproposition}{Unicità della parametrizzazione per lunghezza d'arco}
+Sia \(s=h(\widetilde{s})\) una riparametrizzazione di \(\sigma\colon I\to\realnumbers^n\), cioè
+\[
+    \widetilde{\sigma}(\widetilde{s})=\sigma(h(\widetilde{s})).
+\]
+Supponiamo che \(\sigma(s)\) e \(\widetilde{\sigma}(\widetilde{s})\) siano entrambe parametrizzazioni per lunghezza d'arco. Allora
+\[
+    h(\widetilde{s})=\pm\widetilde{s}+c,
+\]
+con \(c\in\realnumbers\) costante.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+Poiché entrambe le parametrizzazioni sono per lunghezza d'arco,
+\[
+    \left\|\sigma'(s)\right\|=1,
+    \qquad
+    \left\|\widetilde{\sigma}'(\widetilde{s})\right\|=1.
+\]
+Derivando la relazione \(\widetilde{\sigma}(\widetilde{s})=\sigma(h(\widetilde{s}))\), otteniamo
+\begin{align*}
+    1
+    &=\left\|\widetilde{\sigma}'(\widetilde{s})\right\|\\
+    &=\left\|\frac{d}{d\widetilde{s}}\sigma(h(\widetilde{s}))\right\|\\
+    &=\left\|\sigma'(h(\widetilde{s}))h'(\widetilde{s})\right\|\\
+    &=\left\|\sigma'(h(\widetilde{s}))\right\|\cdot \left|h'(\widetilde{s})\right|\\
+    &=\left|h'(\widetilde{s})\right|.
+\end{align*}
+Quindi \(h'(\widetilde{s})=\pm 1\). Poiché \(h'\) è continua e assume valori nell'insieme discreto \(\{-1,1\}\), il segno è costante su ogni componente connessa del dominio. Pertanto
+\[
+    h(\widetilde{s})=\pm\widetilde{s}+c.
+\]
+\end{snippetproof}
+
+\paragraph{Notazione per la parametrizzazione d'arco.}
+Per una curva regolare \(\sigma(t)\), indicheremo spesso con \(\sigma(s)\) una sua riparametrizzazione per lunghezza d'arco. Più formalmente, si dovrebbe scrivere
+\[
+    \widetilde{\sigma}(s)=\sigma(t(s)),
+\]
+ma, quando non c'è rischio di ambiguità, si mantiene lo stesso simbolo \(\sigma\).
+
+\begin{snippettheorem}{Esistenza della riparametrizzazione per lunghezza d'arco}
+Sia \(\sigma\colon [a,b]\to\realnumbers^n\) una curva regolare. Allora esiste una riparametrizzazione \(\widetilde{\sigma}\colon J\to\realnumbers^n\) di \(\sigma\) per lunghezza d'arco. Più precisamente,
+\[
+    \widetilde{\sigma}(s)=\sigma(t(s)),
+\]
+dove \(t\colon J\to [a,b]\) è un diffeomorfismo e \(J=[0,L(\sigma)]\).
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+Definiamo
+\[
+    s(t)=\integral[a][t][\left\|\sigma'(\tau)\right\|][\tau]
+    =L\left(\sigma\big|_{[a,t]}\right),
+\]
+cioè lo spazio percorso fino al punto \(\sigma(t)\). Per il teorema fondamentale del calcolo integrale,
+\[
+    \frac{d}{dt}s(t)=\left\|\sigma'(t)\right\|>0,
+\]
+perché \(\sigma\) è regolare. Quindi \(s(t)\) è strettamente crescente e definisce una biiezione
+\[
+    s\colon [a,b]\to [0,L(\sigma)].
+\]
+Sia
+\[
+    t\colon [0,L(\sigma)]\to [a,b]
+\]
+la funzione inversa. Ponendo \(J=[0,L(\sigma)]\), definiamo
+\[
+    \widetilde{\sigma}(s)=\sigma(t(s)).
+\]
+Allora
+\begin{align*}
+    \frac{d}{ds}\widetilde{\sigma}(s)
+    &=\sigma'(t(s))t'(s)\\
+    &=\sigma'(t(s))\cdot \frac{1}{s'(t(s))}\\
+    &=\frac{\sigma'(t(s))}{\left\|\sigma'(t(s))\right\|}.
+\end{align*}
+Il vettore ottenuto ha norma \(1\). Dunque \(\widetilde{\sigma}\) è parametrizzata per lunghezza d'arco.
+\end{snippetproof}
+
+\begin{snippetexample}{Parametrizzazione per lunghezza d'arco di un segmento}
+Il segmento \([P,Q]\) è solitamente parametrizzato da
+\[
+    \sigma(t)=P+t(Q-P),\qquad t\in[0,1].
+\]
+Allora
+\[
+    \sigma'(t)=Q-P,
+\]
+che non ha necessariamente norma \(1\). Una parametrizzazione per lunghezza d'arco è invece
+\[
+    \sigma(s)=P+s\frac{Q-P}{\left\|Q-P\right\|},
+    \qquad
+    s\in\left[0,\left\|Q-P\right\|\right]=[0,d(P,Q)].
+\]
+Infatti
+\[
+    \sigma'(s)=\frac{Q-P}{\left\|Q-P\right\|},
+    \qquad
+    \left\|\sigma'(s)\right\|=1.
+\]
+\end{snippetexample}
+
+\begin{snippetexample}{Parametrizzazione per lunghezza d'arco di una circonferenza}
+Una circonferenza di centro \(P\) e raggio \(R\) è solitamente parametrizzata da
+\[
+    \sigma(t)=P+R(\cos t,\sin t),
+    \qquad
+    t\in[0,2\pi].
+\]
+Si ha
+\[
+    \sigma'(t)=R(-\sin t,\cos t),
+    \qquad
+    \left\|\sigma'(t)\right\|=R.
+\]
+Applicando il teorema precedente,
+\[
+    s(t)=\integral[0][t][\left\|\sigma'(\tau)\right\|][\tau]=Rt,
+    \qquad
+    t=\frac{s}{R}.
+\]
+Quindi una parametrizzazione per lunghezza d'arco è
+\[
+    \widetilde{\sigma}(s)
+    =P+R\left(\cos\left(\frac{s}{R}\right),\sin\left(\frac{s}{R}\right)\right),
+    \qquad
+    s\in[0,2\pi R].
+\]
+\end{snippetexample}
+
+\subsection{Esempi di riparametrizzazione e prime nozioni di curvatura}
+Può essere impossibile trovare un'espressione della riparametrizzazione \(\widetilde{\sigma}(s)\) di una data curva \(\sigma(t)\) in termini di funzioni elementari.
+
+\begin{snippetexample}{Ellisse di semiassi \(a>b\)}
+Consideriamo
+\[
+    \sigma(t)=(a\cos t,b\sin t),
+    \qquad
+    t\in[0,2\pi],
+\]
+con \(a>b>0\). Allora \(\sigma(t)\) parametrizza l'ellisse di equazione
+\[
+    \frac{x^2}{a^2}+\frac{y^2}{b^2}=1.
+\]
+Infatti, se \(x=a\cos t\) e \(y=b\sin t\), allora
+\[
+    \frac{x^2}{a^2}+\frac{y^2}{b^2}
+    =\cos^2 t+\sin^2 t=1.
+\]
+
+Se proviamo a parametrizzare per lunghezza d'arco, otteniamo
+\begin{align*}
+    s(t)
+    &=\integral[0][t][\left\|\sigma'(\tau)\right\|][\tau]\\
+    &=\integral[0][t][\left\|(-a\sin\tau,b\cos\tau)\right\|][\tau]\\
+    &=\integral[0][t][\sqrt{a^2\sin^2\tau+b^2\cos^2\tau}][\tau].
+\end{align*}
+Per \(a\neq b\), questo integrale non ha una primitiva esprimibile come composizione di funzioni elementari: è un integrale ellittico. Di conseguenza, in generale, la riparametrizzazione per lunghezza d'arco dell'ellisse non ammette una formula elementare.
+\end{snippetexample}
+
+Ricordiamo che abbiamo costruito un parametro di lunghezza d'arco tramite la formula
+\[
+	 s(t)=\integral[a][t][\|\sigma'(\tau)\|][\tau]
+\]
+e che ogni possibile altro parametro di lunghezza d'arco è del tipo
+\[
+	 \tilde s = \pm s + c.
+\]
+Per trovare l'espressione di \(\sigma\) in funzione di \(s\) si calcola \(\sigma(t(s))\), con \(t(s)\) l'inversa di \(s(t)\).
+
+\begin{snippetexercise}{Spirale logaritmica}
+Sia
+\[
+	 \sigma \colon \realnumbers \to \realnumbers^2,
+	 \qquad
+	 \sigma(t)=e^t(\cos t,\sin t).
+\]
+Notiamo che
+\[
+	 \lim_{t\to -\infty}\sigma(t)=(0,0),
+\]
+poiché \(e^t\to 0\) per \(t\to -\infty\).
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+    \draw[->] (-1.8,0) -- (2.2,0) node[right] {\(x\)};
+    \draw[->] (0,-1.8) -- (0,2.2) node[above] {\(y\)};
+    \draw[smooth, samples=200, domain=-10:7] plot ({0.18*exp(0.15*\x)*cos(\x r)},{0.18*exp(0.15*\x)*sin(\x r)});
+    \draw (1.05,0) node[below] {\(1\)};
+\end{tikzpicture}
+\end{center}
+
+Calcolare:
+\begin{enumerate}
+    \item un parametro di lunghezza d'arco per \(\sigma\), ad esempio la funzione
+    \[
+    	 s(t)=\integral[0][t][\|\sigma'(\tau)\|][\tau],
+    \]
+    e la sua inversa \(t=t(s)\);
+    \item la lunghezza di \(\sigma(( -\infty,0])\).
+\end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{}
+Si ha
+\[
+	 \sigma'(t)=e^t(\cos t-\sin t,\sin t+\cos t),
+\]
+da cui
+\[
+	 \|\sigma'(t)\|=\sqrt{2}\,e^t.
+\]
+Quindi
+\[
+	 s(t)=\integral[0][t][\sqrt{2}e^{\tau}][\tau]=\sqrt{2}(e^t-1),
+\]
+perciò
+\[
+	 t(s)=\log\!\left(1+\frac{s}{\sqrt{2}}\right).
+\]
+Inoltre
+\[
+	 L\bigl(\sigma(( -\infty,0])\bigr)
+	 =\integral[-\infty][0][\sqrt{2}e^t][t]
+	 =\sqrt{2}.
+\]
+
+\end{snippetsolution}
+
+\begin{snippetdefinition}{Curvatura di una curva parametrizzata}
+Data una curva
+\[
+	 \sigma \colon I \to \realnumbers^n,
+\]
+che supponiamo già parametrizzata per lunghezza d'arco, definiamo la funzione curvatura
+\[
+	 k\colon I\to [0,+\infty),
+	 \qquad
+	 k(s)\overset{\mathrm{def}}{=} \|\ddot\sigma(s)\|.
+\]
+\end{snippetdefinition}
+
+\textbf{Notazione.} Indicando con \(\sigma(s)\) una parametrizzazione per lunghezza d'arco di \(\sigma\), si denotano anche
+\[
+	 \dot\sigma=\frac{d\sigma}{ds},
+	 \qquad
+	 \ddot\sigma=\frac{d^2\sigma}{ds^2}.
+\]
+Per un parametro generale \(t\) scriviamo invece
+\[
+	 \sigma'=\frac{d\sigma}{dt},
+	 \qquad
+	 \sigma''=\frac{d^2\sigma}{dt^2}.
+\]
+
+\begin{snippetproposition}{Derivate di forme bilineari}
+Sia \(B\colon \realnumbers^n\times \realnumbers^m\to \realnumbers^r\) una funzione bilineare a coefficienti costanti. Se \(\sigma(t)\in \realnumbers^n\) e \(\xi(t)\in \realnumbers^m\) sono due curve parametrizzate, allora
+\[
+	 \frac{d}{dt}B(\sigma(t),\xi(t)) = B(\sigma'(t),\xi(t))+B(\sigma(t),\xi'(t)).
+\]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+Siano \(\{u_i\}\), \(\{v_j\}\), \(\{w_k\}\) basi rispettivamente di \(\realnumbers^n\), \(\realnumbers^m\), \(\realnumbers^r\). Poiché \(B\) ha coefficienti costanti, esistono costanti \(\lambda_{ij}^{k}\in\realnumbers\) tali che
+\[
+	 B(x,y)=\sum_{i,j,k}\lambda_{ij}^{k}x_i y_j w_k,
+	 \qquad
+	 x=\sum_i x_i u_i,
+	 \quad
+	 y=\sum_j y_j v_j.
+\]
+Allora, ponendo \(x=\sigma(t)\) e \(y=\xi(t)\), la derivazione è il consueto calcolo coordinato e restituisce esattamente la formula di Leibniz scritta sopra.
+\end{snippetproof}
+
+\begin{snippetproposition}{}
+Si ha sempre
+\[
+	 \langle \dot\sigma,\ddot\sigma\rangle = 0,
+\]
+dove \(\langle\cdot,\cdot\rangle\) è il prodotto scalare standard di \(\realnumbers^n\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+Poiché \(\sigma\) è parametrizzata per lunghezza d'arco,
+\[
+	 \|\dot\sigma(s)\|=1,
+	 \qquad \text{cioè} \qquad
+	 \langle\dot\sigma(s),\dot\sigma(s)\rangle=1.
+\]
+Derivando rispetto a \(s\) e usando la proposizione precedente otteniamo
+\[
+	 0=\frac{d}{ds}\langle\dot\sigma,\dot\sigma\rangle
+	 =\langle\ddot\sigma,\dot\sigma\rangle+\langle\dot\sigma,\ddot\sigma\rangle
+	 =2\langle\dot\sigma,\ddot\sigma\rangle,
+\]
+per la simmetria del prodotto scalare. Dunque \(\langle\dot\sigma,\ddot\sigma\rangle=0\).
+\end{snippetproof}
+
+Il vettore \(\ddot\sigma\) punta sempre perpendicolarmente alla traiettoria. Questo vale solo per la parametrizzazione a velocità scalare costante, cioè con \(\|\sigma'(t)\|=\text{costante}\).
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+    \draw[smooth] 
+        (-2,0.9) .. controls (-1.1,0.15) and (-0.5,0.15) .. (0,0.15)
+        .. controls (0.5,0.15) and (1.1,0.15) .. (2,0.9);
+
+    \fill (0,0.15) circle (1.2pt);
+    \draw[->] (0,0.15) -- (1.6,0.15) node[right] {\(\dot\sigma\)};
+    \draw[->] (0,0.15) -- (0,1.45) node[above] {\(\ddot\sigma\)};
+    \draw (0,0.15) rectangle +(0.18,0.18);
+\end{tikzpicture}
+\end{center}
+
+\begin{snippetexample}{}
+Esempi.
+\begin{enumerate}
+    \item \textbf{Retta.} Se
+    \[
+    	 \sigma(s)=P+s\vec v,
+    	 \qquad
+    	 \|\vec v\|=1,
+    \]
+    allora \(\sigma\) è una parametrizzazione per lunghezza d'arco di una retta e
+    \[
+    	 \dot\sigma(s)=\vec v,
+    	 \qquad
+    	 \ddot\sigma(s)=0,
+    	 \qquad
+    	 k(s)=0.
+    \]
+    Viceversa, se \(k(s)=0\), allora \(\ddot\sigma(s)=0\), quindi \(\dot\sigma(s)=\vec v\) costante e ne segue
+    \[
+    	 \sigma(s)=P+s\vec v,
+    \]
+    cioè la curva è un intervallo di retta. Dunque gli intervalli di retta sono le uniche curve con curvatura identicamente nulla.
+
+    \item \textbf{Circonferenza di raggio \(R\) e centro \(O\).} Una parametrizzazione per lunghezza d'arco è
+    \[
+    	 \sigma(s)=O+R\left(\cos\frac{s}{R},\sin\frac{s}{R}\right).
+    \]
+    Allora
+    \[
+    	 \dot\sigma(s)=\left(-\sin\frac{s}{R},\cos\frac{s}{R}\right),
+    	 \qquad
+    	 \|\dot\sigma(s)\|=1,
+    \]
+    e
+    \[
+    	 \ddot\sigma(s)=-\frac{1}{R}\left(\cos\frac{s}{R},\sin\frac{s}{R}\right).
+    \]
+    Segue quindi
+    \[
+    	 k(s)=\frac{1}{R}.
+    \]
+    Quindi la curvatura di una circonferenza di raggio \(R\) è uguale a \(1/R\). Anche qui vale il viceversa: una curva piana con curvatura costante \(k>0\) è un arco di circonferenza di raggio \(R=1/k\).
+
+    \item \textbf{Elica circolare.} Sia
+    \[
+    	 \sigma(t)=R(\cos t,\sin t,at)\in\realnumbers^3,
+    	 \qquad a>0.
+    \]
+    Notiamo che non necessariamente \(\sigma(t)\) è parametrizzata per lunghezza d'arco. Infatti
+    \[
+    	 \sigma'(t)=R(-\sin t,\cos t,a)
+    \]
+    e
+    \[
+    	 \|\sigma'(t)\|=\sqrt{R^2\sin^2 t+R^2\cos^2 t+R^2a^2}
+    	 =R\sqrt{1+a^2}
+    	 = M,
+    \]
+    costante. Allora \(\sigma\bigl(s/M\bigr)\) è una parametrizzazione per lunghezza d'arco, perché
+    \[
+    	 \frac{d}{ds}\sigma\left(\frac{s}{M}\right)=\sigma'\left(\frac{s}{M}\right)\frac{1}{M}
+    	 = \frac{\sigma'(s/M)}{\|\sigma'(s/M)\|}
+    \]
+    è un vettore di modulo \(1\).
+
+    Inoltre
+    \begin{align*}
+        k(s)
+        &= \left\|\frac{d^2}{ds^2}\sigma\left(\frac{s}{M}\right)\right\| \\
+        &= \left\|\frac{d}{ds}\left(\frac{R}{M}\left(-\sin\frac{s}{M},\cos\frac{s}{M},a\right)\right)\right\| \\
+        &= \left\|\frac{R}{M^2}\left(-\cos\frac{s}{M},-\sin\frac{s}{M},0\right)\right\| \\
+        &= \frac{R}{M^2}
+        = \frac{1}{R(1+a^2)}.
+    \end{align*}
+    Quindi la curvatura dell'elica circolare è costante.
+\end{enumerate}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95]
+    \draw[->] (0,0) -- (-1.2,-0.8) node[below] {\(x\)};
+    \draw[->] (0,0) -- (1.6,0) node[right] {\(y\)};
+    \draw[->] (0,0) -- (0,2.8) node[above] {\(z\)};
+    \draw[smooth, samples=120, domain=0:6.2] plot ({0.55*cos(\x r)},{0.25*sin(\x r)+0.35*\x});
+\end{tikzpicture}
+\end{center}
+\end{snippetexample}
+
+\begin{snippetexercise}{Doppia elica}
+Siano
+\[
+	 \sigma_1(t)=R(\cos t,\sin t,at),
+	 \qquad
+	 \sigma_2(t)=R(\cos(t+\theta),\sin(t+\theta),at),
+\]
+con \(\theta\notin 2\pi\mathbb{Z}\). Mostrare che
+\[
+	 \operatorname{Im}\sigma_1 \intersection \operatorname{Im}\sigma_2 = \emptyset.
+\]
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9]
+    \draw (0,0) -- (0,4.2);
+    \draw[dashed] (-0.8,0.35) arc[start angle=180,end angle=360,x radius=0.8,y radius=0.25];
+    \draw (-0.8,0.35) arc[start angle=180,end angle=0,x radius=0.8,y radius=0.25];
+    \draw[smooth, samples=120, domain=0:6.2] plot ({0.85*cos(\x r)},{0.22*sin(\x r)+0.55*\x+0.35});
+    \draw[smooth, dashed, samples=120, domain=0:6.2] plot ({0.85*cos((\x+1.5) r)},{0.22*sin((\x+1.5) r)+0.55*\x+0.35});
+    \fill (0,0.35) circle (1.2pt) node[below left] {\(c=(R,0,0)\)};
+    \draw[->] (0,0.35) -- (0.58,0.68) node[right] {\(R(\cos\theta,\sin\theta,0)\)};
+\end{tikzpicture}
+\end{center}
+\end{snippetexercise}
+
+\begin{snippetdefinition}{Circonferenza osculatrice}
+Sia \(\sigma(s)\) una curva con \(k(s_0)>0\). Allora la circonferenza \(C\) passante per \(\sigma(s_0)\) e giacente sul piano
+\[
+	 \Pi = \sigma(s_0)+\mathcal L\bigl(\dot\sigma(s_0),\ddot\sigma(s_0)\bigr),
+\]
+tangente a \(\sigma\) in \(\sigma(s_0)\), con centro nel semipiano
+\[
+	 \Pi^+(\dot\sigma(s_0))=\bigl\{x\in\Pi \mid \langle x,\ddot\sigma(s_0)\rangle>0\bigr\}
+\]
+e raggio
+\[
+	 R=\frac{1}{k(s_0)},
+\]
+si dice \emph{circonferenza osculatrice} di \(\sigma\) in \(\sigma(s_0)\).
+\end{snippetdefinition}
+
+\begin{center}
+\tikzset{
+    accol/.style={decorate, decoration={amplitude=5pt}, red}
+}
+\begin{tikzpicture}[
+    scale=1,
+    line cap=round,
+    line join=round,
+    >={Latex[length=2mm,width=1.4mm]}
+]
+
+% colors
+\colorlet{planecol}{green!60!black}
+\colorlet{shadecol}{yellow!70!black}
+\colorlet{velcol}{cyan!90!blue}
+\colorlet{acccol}{red!80!orange}
+
+% angles
+\def\angT{47}   % direction of \dot\sigma
+\def\angN{137}  % normal direction = \angT + 90
+
+% main point
+\coordinate (P) at (0,0);
+
+% vectors
+\coordinate (T) at ($(P)+(\angT:1.75)$);
+\coordinate (A) at ($(P)+(\angN:1.45)$);
+
+% osculating circle center (so that the circle is tangent to the curve at P)
+\coordinate (C) at ($(P)+(\angN:0.88)$);
+
+% tilted plane \pi
+\coordinate (O) at (0.55,0.90);
+\coordinate (V1) at ($(O)+(-35:2.80)+(55:1.65)$);
+\coordinate (V2) at ($(O)+(145:2.80)+(55:1.65)$);
+\coordinate (V3) at ($(O)+(145:2.80)+(-125:1.65)$);
+\coordinate (V4) at ($(O)+(-35:2.80)+(-125:1.65)$);
+
+% shaded region:
+% inside the plane and on the LEFT side of the directed line with direction \dot\sigma(s_0)
+\begin{scope}
+    \clip (V1)--(V2)--(V3)--(V4)--cycle;
+    \coordinate (L1) at ($(P)+(\angT:8)$);
+    \coordinate (L2) at ($(P)+(\angT+180:8)$);
+    \path[
+        fill=yellow!10,
+        pattern={Lines[angle=0,distance=5pt,line width=0.35pt]},
+        pattern color=shadecol
+    ]
+        (L1) --
+        (L2) --
+        ($(L2)+(\angN:8)$) --
+        ($(L1)+(\angN:8)$) -- cycle;
+\end{scope}
+
+% plane boundary
+\draw[planecol, line width=1pt] (V1)--(V2)--(V3)--(V4)--cycle;
+\node[planecol] at ($(O)+(0,-1.68)$) {\(\pi\)};
+
+% curve, tangent to the blue direction at P
+\draw[black, line width=1pt]
+    (-3.05,-1.60)
+    .. controls (-3.12,-0.70) and ($(P)+(\angT+180:0.75)$) ..
+    (P)
+    .. controls ($(P)+(\angT:0.75)$) and (0.55,1.72) ..
+    (1.05,2.23)
+    .. controls (1.42,2.56) and (2.02,2.88) ..
+    (2.72,3.28);
+
+% osculating circle
+\draw[acccol, line width=0.9pt] (C) circle (0.88);
+
+% vectors
+\draw[->, line width=1pt, velcol] (P) -- (T);
+\draw[->, line width=1pt, accol] (P) -- (A);
+
+% right-angle marker: smaller
+\coordinate (Rt) at ($(P)!0.10!(T)$);
+\coordinate (Ra) at ($(P)!0.10!(A)$);
+\coordinate (Rq) at ($(Rt)+(Ra)-(P)$);
+\draw[black, line width=0.4pt] (Rt) -- (Rq) -- (Ra);
+
+% base point
+\fill[black] (P) circle (1.1pt);
+
+% labels
+\node[acccol] at (-0.38,1.13) {\(\ddot{\sigma}(s_0)\)};
+\node[velcol] at (1.86,1.03) {\(\dot{\sigma}(s_0)\)};
+\node[black] at (1.03,-0.18) {\(\sigma(s_0)\)};
+
+% yellow label + arrow to the shaded region
+\node[shadecol] at (-4.05,1.10) {\(\Pi\ddot{\sigma}(s_0)\)};
+\draw[->, shadecol, line width=0.8pt]
+    (-2.95,0.98) to[out=0,in=180] (-1.45,0.42);
+
+\end{tikzpicture}
+\end{center}
+
+\begin{snippettheorem}{}
+Sia come sopra \(\sigma\colon I\to\realnumbers^n\) una curva tale che \(\ddot\sigma(s_0)\neq 0\) (equivalentemente \(k(s_0)>0\)). Allora la circonferenza osculatrice \(C_{s_0}\), parametrizzata per lunghezza d'arco tramite \(\gamma(s)\), con
+\[
+	 \gamma(s_0)=\sigma(s_0),
+	 \qquad
+	 \dot\gamma(s_0)=\dot\sigma(s_0),
+\]
+è l'unica circonferenza tale che
+\[
+	 \|\sigma(s)-\gamma(s)\|=O\bigl((s-s_0)^3\bigr),
+\]
+cioè \(\gamma(s)\) approssima \(\sigma(s)\) intorno a \(s_0\) di ordine almeno \(2\).
+\end{snippettheorem}
+
+\begin{snippetproof}{}
+Osserviamo che \(\gamma(s_0)=\sigma(s_0)\) e \(\dot\gamma(s_0)=\dot\sigma(s_0)\). Inoltre \(\ddot\gamma(s_0)\) è ortogonale a \(\dot\gamma(s_0)=\dot\sigma(s_0)\), ha verso uguale al verso di \(\ddot\sigma(s_0)\) (si veda la posizione del centro di \(C\) e il verso dell'accelerazione centripeta) e modulo
+\[
+	 \|\ddot\gamma(s_0)\|=\frac{1}{R}=k(s_0)=\|\ddot\sigma(s_0)\|.
+\]
+Dunque \(\ddot\gamma(s_0)\) ha stessa direzione, stesso verso e stesso modulo di \(\ddot\sigma(s_0)\); quindi
+\[
+	 \ddot\gamma(s_0)=\ddot\sigma(s_0).
+\]
+Consideriamo allora la funzione vettoriale
+\[
+	 v(s)=\sigma(s)-\gamma(s).
+\]
+Si ha
+\[
+	 v(s_0)=\dot v(s_0)=\ddot v(s_0)=0.
+\]
+Per lo sviluppo di Taylor segue che esiste una funzione \(w(s)\) tale che
+\[
+	 v(s)=(s-s_0)^3w(s),
+\]
+e quindi
+\[
+	 \|v(s)\|=O\bigl((s-s_0)^3\bigr).
+\]
+L'unicità segue dal fatto che una circonferenza è determinata dai dati di punto, tangente e curvatura in quel punto.
+\end{snippetproof}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+    \draw (0,0) circle (1.35);
+    \fill (0,0) circle (1.2pt);
+    \fill (1.35,0) circle (1.2pt) node[right] {\(\sigma(s_0)\)};
+    \draw[->] (1.35,0) -- (0,0) node[below] {\(\ddot\gamma(s_0)\)};
+\end{tikzpicture}
+\end{center}
+
+\(C_{s_0}\) è inoltre l'unica circonferenza del piano \(\Pi\) passante per tre punti infinitamente vicini su \(\operatorname{Im}\sigma\) in \(\sigma(s_0)\). Equivalentemente, \(C_{s_0}\) è il limite della circonferenza passante per tre punti \(P,Q,R\in\operatorname{Im}\sigma\) quando questi tendono a \(\sigma(s_0)\).
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+    \draw[smooth] (-1.9,-0.2) .. controls (-1.0,-0.8) and (-0.2,-0.3) .. (0.1,0)
+                  .. controls (0.5,0.4) and (1.0,1.0) .. (1.8,1.25);
+    \draw[smooth] (-1.8,1.1) .. controls (-1.0,0.5) and (-0.1,0.05) .. (0.1,0)
+                  .. controls (0.4,-0.15) and (0.9,-0.1) .. (1.6,0.35);
+    \fill (-0.25,-0.03) circle (1.1pt);
+    \fill (0.0,0.0) circle (1.1pt);
+    \fill (0.25,0.03) circle (1.1pt);
+    \node[right] at (0.25,-0.55) {\(\sigma(s_0)\)};
+\end{tikzpicture}
+\end{center}
+
+\begin{snippetdefinition}{}
+Una curva qualsiasi \(\sigma\colon I\to\realnumbers^n\) si dice \emph{biregolare} in \(t_0\in I\) se \(\sigma'(t_0)\) e \(\sigma''(t_0)\) sono linearmente indipendenti.
+\end{snippetdefinition}
+
+Notare che qui \(\sigma(t)\) non è assunta parametrizzata per lunghezza d'arco.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+    \draw[smooth] (-2,0.7) .. controls (-1.0,1.3) and (0.3,1.2) .. (1.8,0.6);
+    \fill (0.1,1.08) circle (1.2pt);
+    \draw[->] (0.1,1.08) -- (1.55,1.45) node[right] {\(\sigma'(t_0)\)};
+    \draw[->] (0.1,1.08) -- (-0.4,0.2) node[left] {\(\sigma''(t_0)\)};
+\end{tikzpicture}
+\end{center}
+
+\begin{snippettheorem}{}
+Sia \(\sigma\colon I\to\realnumbers^n\) biregolare in \(t_0\) e sia \(s(t)\) un parametro per lunghezza d'arco con \(s_0=s(t_0)\). Allora valgono le formule
+\[
+	 \ddot\sigma(s_0)
+	 = \frac{\sigma''(t_0)}{\|\sigma'(t_0)\|^2}
+	 - \sigma'(t_0)\frac{\langle\sigma''(t_0),\sigma'(t_0)\rangle}{\|\sigma'(t_0)\|^4},
+\]
+\[
+	 k(s_0)=\|\ddot\sigma(s_0)\|
+	 = \frac{\sqrt{\|\sigma'(t_0)\|^2\|\sigma''(t_0)\|^2-\langle\sigma'(t_0),\sigma''(t_0)\rangle^2}}{\|\sigma'(t_0)\|^3}.
+\]
+
+In particolare si ha coincidenza fra il piano della circonferenza osculatrice
+\[
+	 \Pi_0=\sigma(t_0)+\mathcal L\bigl(\dot\sigma(s_0),\ddot\sigma(s_0)\bigr)
+\]
+e il piano
+\[
+	 \sigma(t_0)+\mathcal L\bigl(\sigma'(t_0),\sigma''(t_0)\bigr),
+\]
+cioè
+\[
+	 \mathcal L(\dot\sigma,\ddot\sigma)\big|_{s=s_0}
+	 =
+	 \mathcal L(\sigma',\sigma'')\big|_{t=t_0}.
+\]
+Inoltre \(\ddot\sigma\) e \(\sigma''\) stanno nello stesso semipiano di \(\Pi_0\) avente per origine la retta tangente in \(\sigma(t_0)\).
+\end{snippettheorem}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+    \draw (-1.4,0.2) -- (1.6,0.2) -- (2.9,1.55) -- (-0.1,1.55) -- cycle;
+    \fill[opacity=0.12] (-1.4,0.2) -- (1.6,0.2) -- (2.9,1.55) -- (-0.1,1.55) -- cycle;
+    \draw[smooth] (0.25,-0.35) .. controls (0.3,0.3) and (0.55,0.95) .. (1.15,1.05)
+                  .. controls (1.7,1.15) and (2.15,1.15) .. (2.5,1.4);
+    \fill (1.05,0.95) circle (1.2pt);
+    \draw[->] (1.05,0.95) -- (2.0,0.9) node[right] {\(\sigma'(t_0)\)};
+    \draw[->] (1.05,0.95) -- (0.45,1.45) node[left] {\(\ddot\sigma\)};
+    \draw[->] (1.05,0.95) -- (0.9,1.55) node[above] {\(\sigma''\)};
+\end{tikzpicture}
+\end{center}
 
 \pagebreak
 
+\subsection{Curvatura in una parametrizzazione arbitraria}
+
 Calcolo della curva di \(\omega \colon I \fromto \realnumbers^n\)
-rsipetto a parametrizzazione arbitraria.
+rispetto a parametrizzazione arbitraria.
 
 \begin{snippetproposition}{}
     \[
@@ -434,7 +1830,7 @@ Da cui
     \end{align*}
 \end{snippetproof}
 
-\section{Argomenti di curve piane}
+\section{Curve piane: inviluppi, evolute e coniche}
 
 Sappiamo che un'equazione della forma \(F(x,y) = 0\)
 con \(F \colon \Omega \fromto \realnumbers\),
@@ -1102,13 +2498,328 @@ cioè geometricamente la otteniamo ``svolgendo'' un filo inelastico arrotolato s
     Questo dimostra che l'involuta è esattamente la stessa spirale logaritmica di partenza, ruotata di \(-\pi/2\).
 \end{snippetexample}
 
-TODO 17 marzo e le cose prima.
-Teorema che dice che esiste una spirale logaritmica
-la cui evoluta coincide con sè stessa.
+\subsection{Spirali logaritmiche autoevolute}
+
+\begin{snippettheorem}{Spirali logaritmiche autoevolute}
+Esistono spirali logaritmiche del tipo
+\[
+     \sigma(t)=e^{at}(\cos t,\sin t)
+\]
+tali che la loro evoluta coincide con la curva stessa.
+\end{snippettheorem}
+
+\begin{snippetproposition}{Proprietà equiangolare}
+Per una spirale logaritmica \(\sigma(t)=e^{at}(\cos t,\sin t)\), l'angolo fra il raggio vettore \(\overrightarrow{OP}\) e la retta tangente a \(\sigma\) in \(P\) è costante.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+Si ha
+\[
+     \sigma'(t)=ae^{at}(\cos t,\sin t)+e^{at}(-\sin t,\cos t).
+\]
+Sia \(\theta(t)\) l'angolo fra \(\sigma(t)\) e \(\sigma'(t)\). Allora
+\begin{align*}
+     \cos\theta(t)
+     &= \frac{\langle \sigma(t),\sigma'(t)\rangle}{\|\sigma(t)\|\,\|\sigma'(t)\|} \\
+     &= \frac{\langle e^{at}(\cos t,\sin t),ae^{at}(\cos t,\sin t)+e^{at}(-\sin t,\cos t)\rangle}{e^{at}\,e^{at}\sqrt{a^2+1}} \\
+     &= \frac{a}{\sqrt{a^2+1}}.
+\end{align*}
+Questa quantità è costante, perciò anche l'angolo \(\theta(t)\) è costante.
+\end{snippetproof}
+
+\begin{center}
+\begin{tikzpicture}[
+    scale=2.4,
+    line cap=round,
+    line join=round,
+    >={Latex[length=2mm,width=1.4mm]}
+]
+
+% parameters of the logarithmic spiral r = a e^{b\theta}
+\def\a{0.78}
+\def\b{0.20}
+
+% chosen points on the spiral
+\def\thP{50}
+\def\thQ{-50}
+
+% constant angle between radius and tangent
+\pgfmathsetmacro{\delta}{atan(1/\b)}
+
+% radii of the two points
+\pgfmathsetmacro{\rP}{\a*exp(\b*\thP*pi/180)}
+\pgfmathsetmacro{\rQ}{\a*exp(\b*\thQ*pi/180)}
+
+% tangent directions
+\pgfmathsetmacro{\tanP}{\thP+\delta}
+\pgfmathsetmacro{\tanQ}{\thQ+\delta}
+
+% mid angles for alpha labels
+\pgfmathsetmacro{\midP}{(\thP+\tanP)/2}
+\pgfmathsetmacro{\midQ}{(\thQ+\tanQ)/2}
+
+% key points
+\coordinate (O) at (0,0);
+\coordinate (P) at ({\rP*cos(\thP)},{\rP*sin(\thP)});
+\coordinate (Q) at ({\rQ*cos(\thQ)},{\rQ*sin(\thQ)});
+
+% axes
+\draw[thick,->] (-0.70,0) -- (1.55,0);
+\draw[thick,->] (0,-1.15) -- (0,1.25);
+
+% logarithmic spiral
+\draw[cyan!85!blue, line width=1pt, smooth, samples=260, variable=\t, domain=-280:95]
+    plot ({\a*exp(\b*\t*pi/180)*cos(\t)},
+          {\a*exp(\b*\t*pi/180)*sin(\t)});
+
+% red radii
+\draw[red, line width=1pt] (O) -- (P);
+\draw[red, line width=1pt] (O) -- (Q);
+
+% black continuations of the red radii
+\draw[black, line width=0.9pt] (P) -- ++(\thP:0.52);
+\draw[black, line width=0.9pt] (Q) -- ++(\thQ:0.52);
+
+% green tangents to the spiral
+\draw[green!70!black, line width=0.9pt] (P) -- ++(\tanP:0.48);
+\draw[green!70!black, line width=0.9pt] (Q) -- ++(\tanQ:0.48);
+
+% points
+\fill (P) circle (0.85pt);
+\fill (Q) circle (0.85pt);
+
+% labels
+\node[below left=1pt] at (O) {\(O\)};
+\node[right=2pt] at (P) {\(P\)};
+
+% equal-angle markers at P
+\draw[black, line width=0.6pt]
+    (P) ++(\thP:0.12)
+    arc[start angle=\thP,end angle=\tanP,radius=0.12];
+\draw[black, line width=0.6pt]
+    (P) ++(\thP:0.17)
+    arc[start angle=\thP,end angle=\tanP,radius=0.17];
+\node at ($(P)+(\midP:0.28)$) {\(\alpha\)};
+
+% equal-angle markers at Q
+\draw[black, line width=0.6pt]
+    (Q) ++(\thQ:0.12)
+    arc[start angle=\thQ,end angle=\tanQ,radius=0.12];
+\draw[black, line width=0.6pt]
+    (Q) ++(\thQ:0.17)
+    arc[start angle=\thQ,end angle=\tanQ,radius=0.17];
+\node at ($(Q)+(\midQ:0.28)$) {\(\alpha\)};
+
+\end{tikzpicture}
+\end{center}
+
+L'angolo fra la congiungente e la retta tangente è sempre costante.
+
+\begin{snippetcorollary}{}
+Il versore tangente della spirale logaritmica si può scrivere come
+\[
+     \frac{\sigma'(t)}{\|\sigma'(t)\|}=(\cos(t+\theta),\sin(t+\theta)),
+\]
+dove \(\theta\) è l'angolo costante determinato da
+\[
+     \cos\theta=\frac{a}{\sqrt{a^2+1}}.
+\]
+\end{snippetcorollary}
+
+\begin{snippetproof}{Dimostrazione del teorema}
+Calcoliamo l'evoluta di \(\sigma\) come inviluppo delle rette normali a \(\sigma\).
+
+Se \(\sigma(t)=(x(t),y(t))\), una normale in forma cartesiana è data da
+\[
+     (X-x(t))\cos(t+\theta)+(Y-y(t))\sin(t+\theta)=0.
+\]
+Sostituendo \(x(t)=e^{at}\cos t\), \(y(t)=e^{at}\sin t\), otteniamo
+\begin{align*}
+     F(t,X,Y)
+     &= (X-e^{at}\cos t)\cos(t+\theta)+(Y-e^{at}\sin t)\sin(t+\theta) \\
+     &= X\cos(t+\theta)+Y\sin(t+\theta)-e^{at}\cos\theta.
+\end{align*}
+L'inviluppo si ricava dal sistema
+\[
+     \begin{cases}
+         F(t,X,Y)=0,\\
+         F_t(t,X,Y)=0.
+     \end{cases}
+\]
+Derivando rispetto a \(t\), si ha
+\[
+     F_t(t,X,Y)=-X\sin(t+\theta)+Y\cos(t+\theta)-ae^{at}\cos\theta.
+\]
+Quindi i punti dell'inviluppo soddisfano il sistema
+\[
+     \begin{cases}
+         X\cos(t+\theta)+Y\sin(t+\theta)=e^{at}\cos\theta,\\
+         -X\sin(t+\theta)+Y\cos(t+\theta)=ae^{at}\cos\theta.
+     \end{cases}
+\]
+Risolvendo, si ottiene ancora una spirale logaritmica:
+\[
+     \sigma_c(t)=e^{at+\ln a}\bigl(\cos(t+\tfrac{\pi}{2}),\sin(t+\tfrac{\pi}{2})\bigr).
+\]
+Ora osserviamo che
+\begin{align*}
+     \sigma_c(t)
+     &= e^{at+\ln a}\bigl(\cos(t+\tfrac{\pi}{2}),\sin(t+\tfrac{\pi}{2})\bigr) \\
+     &= e^{a(t+\frac{\pi}{2}-2n\pi)}\bigl(\cos(t+\tfrac{\pi}{2}-2n\pi),\sin(t+\tfrac{\pi}{2}-2n\pi)\bigr) \\
+     &= \sigma\bigl(t+\tfrac{\pi}{2}-2n\pi\bigr)
+\end{align*}
+se e solo se
+\[
+     \ln a = a\left(\frac{\pi}{2}-2n\pi\right).
+\]
+Per ogni \(n\geq 1\) questa equazione ammette una soluzione con \(0<a<1\). Ad esempio, per \(n=1\) si ha
+\[
+     \ln a=-\frac{3\pi}{2}a.
+\]
+Dunque esistono effettivamente spirali logaritmiche autoevolute.
+\end{snippetproof}
+
+\begin{center}
+\begin{tikzpicture}[
+    scale=2.2,
+    line cap=round,
+    line join=round,
+    >={Latex[length=2mm,width=1.4mm]}
+]
+
+% intersection approximately solving ln(a)=-(3/2)pi a
+\def\abar{0.275}
+\pgfmathsetmacro{\ybar}{ln(\abar)}
+
+% axes
+\draw[black, thick, ->] (-0.7,0) -- (2.7,0) node[right] {\(a\)};
+\draw[black, thick, ->] (0,-1.8) -- (0,1.7);
+
+% logarithm
+\draw[cyan!90!blue, line width=1pt, samples=200, smooth, domain=0.22:2.1]
+    plot (\x,{ln(\x)});
+\node[cyan!90!blue] at (2.10,1.42) {\(y=\ln(a)\)};
+
+% line y = -(3/2) pi a
+\draw[orange!90!red, line width=1pt, domain=-0.2:0.4]
+    plot (\x,{-1.5*pi*\x});
+\node[orange!90!red] at (1.40,-1.52) {\(y=-\frac{3}{2}\pi a\)};
+
+% dashed guides
+\draw[dashed] (\abar,0) -- (\abar,\ybar);
+\draw[dashed] (0,\ybar) -- (\abar,\ybar);
+
+% small ticks on x-axis
+\draw (1,0.03) -- (1,-0.03);
+\draw (\abar,0.03) -- (\abar,-0.03);
+
+% labels on axis
+\node[above right] at (0,0) {\(0\)};
+\node[above] at (\abar,0) {\(\bar a\)};
+\node[above] at (1,0) {\(1\)};
+
+\end{tikzpicture}
+\end{center}
+
+
+
+
+\begin{center}
+\begin{tikzpicture}[
+    scale=2.2,
+    line cap=round,
+    line join=round,
+    >={Latex[length=2mm,width=1.4mm]}
+]
+
+% assi
+\draw[black, thick, ->] (-1.45,0) -- (2.55,0);
+\draw[black, thick, ->] (0,-1.65) -- (0,1.80);
+
+% spirale approssimativa per n=1: r = c theta
+\def\spiralC{0.082}
+
+\draw[cyan!90!blue, line width=1pt, smooth, samples=400, variable=\ang, domain=0:1180]
+    plot ({\spiralC*(\ang*pi/180)*cos(\ang)},
+          {\spiralC*(\ang*pi/180)*sin(\ang)});
+
+% piccoli riferimenti sugli assi
+\draw[black, line width=0.45pt] (-0.98,0.03) -- (-0.98,-0.03);
+\draw[black, line width=0.45pt] (1.88,0.03) -- (1.88,-0.03);
+\draw[black, line width=0.45pt] (-0.03,-0.98) -- (0.03,-0.98);
+
+% =========================
+% punto A
+% =========================
+\def\angA{405}
+\pgfmathsetmacro{\thetaA}{\angA*pi/180}
+\pgfmathsetmacro{\radA}{\spiralC*\thetaA}
+\pgfmathsetmacro{\xA}{\radA*cos(\angA)}
+\pgfmathsetmacro{\yA}{\radA*sin(\angA)}
+\pgfmathsetmacro{\dxA}{\spiralC*(cos(\angA)-\thetaA*sin(\angA))}
+\pgfmathsetmacro{\dyA}{\spiralC*(sin(\angA)+\thetaA*cos(\angA))}
+\pgfmathsetmacro{\phiA}{atan2(\dyA,\dxA)}
+\coordinate (A) at (\xA,\yA);
+
+% =========================
+% punto B
+% =========================
+\def\angB{760}
+\pgfmathsetmacro{\thetaB}{\angB*pi/180}
+\pgfmathsetmacro{\radB}{\spiralC*\thetaB}
+\pgfmathsetmacro{\xB}{\radB*cos(\angB)}
+\pgfmathsetmacro{\yB}{\radB*sin(\angB)}
+\pgfmathsetmacro{\dxB}{\spiralC*(cos(\angB)-\thetaB*sin(\angB))}
+\pgfmathsetmacro{\dyB}{\spiralC*(sin(\angB)+\thetaB*cos(\angB))}
+\pgfmathsetmacro{\phiB}{atan2(\dyB,\dxB)}
+\coordinate (B) at (\xB,\yB);
+
+% =========================
+% punto C
+% =========================
+\def\angC{1115}
+\pgfmathsetmacro{\thetaC}{\angC*pi/180}
+\pgfmathsetmacro{\radC}{\spiralC*\thetaC}
+\pgfmathsetmacro{\xC}{\radC*cos(\angC)}
+\pgfmathsetmacro{\yC}{\radC*sin(\angC)}
+\pgfmathsetmacro{\dxC}{\spiralC*(cos(\angC)-\thetaC*sin(\angC))}
+\pgfmathsetmacro{\dyC}{\spiralC*(sin(\angC)+\thetaC*cos(\angC))}
+\pgfmathsetmacro{\phiC}{atan2(\dyC,\dxC)}
+\coordinate (C) at (\xC,\yC);
+
+% =========================
+% famiglia 1: tangenti
+% =========================
+\draw[orange!95!red, line width=0.95pt]
+    ($(A)+(\phiA+180:0.65)$) -- ($(A)+(\phiA:0.92)$);
+\draw[orange!95!red, line width=0.95pt]
+    ($(B)+(\phiB+180:0.82)$) -- ($(B)+(\phiB:1.00)$);
+\draw[orange!95!red, line width=0.95pt]
+    ($(C)+(\phiC+180:0.98)$) -- ($(C)+(\phiC:1.05)$);
+
+% =========================
+% famiglia 2: normali
+% =========================
+\draw[orange!95!red, line width=0.95pt]
+    ($(A)+(\phiA-90:0.28)$) -- ($(A)+(\phiA+90:0.56)$);
+\draw[orange!95!red, line width=0.95pt]
+    ($(B)+(\phiB-90:0.32)$) -- ($(B)+(\phiB+90:0.72)$);
+\draw[orange!95!red, line width=0.95pt]
+    ($(C)+(\phiC-90:0.36)$) -- ($(C)+(\phiC+90:0.86)$);
+
+% punti di incidenza
+\fill[orange!95!red] (A) circle (1.15pt);
+\fill[orange!95!red] (B) circle (1.15pt);
+\fill[orange!95!red] (C) circle (1.15pt);
+
+\end{tikzpicture}
+\end{center}
+
+Disegno approssimativo di una spirale autoevoluta nel caso \(n=1\).
 
 \pagebreak
 
-\section{Lezione 18/03/2026}
+\section{Curve nello spazio e formule di Frenet}
 
 \begin{snippetdefinition}{sistema di Frenet}
     Sia \(\sigma \colon I \fromto \realnumbers^3\)
@@ -1412,7 +3123,7 @@ Serve  \(\tau = 0\), cioè per curve piane \((\kappa, \tau) = (\kappa, 0)\).
     \end{enumerate}
 \end{snippetproposition}
 
-\section{Winding numbers su curve piane}
+\section{Numero di avvolgimento e curve piane}
 
 \begin{snippetdefinition}{}
     Sia \(X\) uno spazio topologico e \(\sigma \colon X \fromto S^1\)
@@ -1432,7 +3143,7 @@ Serve  \(\tau = 0\), cioè per curve piane \((\kappa, \tau) = (\kappa, 0)\).
 
 Questo è un sollevamento di \(\sigma\) ad \(\realnumbers\).
 
-\begin{snippetdefinition}{Teorema di Geometria I sollevamento di omotopie fra punti o curve a valori in \(S^1\)}
+\begin{snippetdefinition}{Sollevamento di omotopie a valori in \(S^1\)}
     Sia \(D\) un intervallo reale oppure uno spazio omeomorfo
     ad un quadrato
     di \(\realnumbers^2\)
@@ -2182,7 +3893,9 @@ di incidenza interno o esterno.
 
 \pagebreak
 
-\section{Varietà differenziali}
+\part{Varietà differenziabili}
+
+\section{Varietà differenziabili}
 
 \begin{snippetdefinition}{Secondo numerabile}
     Uno spazio topologico è secondo numerabile se ha base numerabile.
@@ -2374,7 +4087,7 @@ su \(X\).
     Per varieté di dimensione \(\leq 3\) la struttura è unica.
 \end{snippetexample}
 
-\subsection{Strutture \(\mathcal C^\infty\) su spazi noti}
+\subsection{Esempi di strutture \(\mathcal C^\infty\)}
 
 Se \(U \subseteq X\) aperto, allora \(U\)
 ha struttura \(\mathcal C^\infty\) ereditata da \(X\)
@@ -2952,7 +4665,7 @@ Sono in realtà varietà algebriche, che non abbiamo ancora definito.
 
 \pagebreak
 
-\section{Spazi tangenti a varietà differenziali}
+\section{Spazi tangenti e differenziali}
 
 \begin{snippetdefinition}{}
     Sia \(p \in X\) con \(X\) varietà differenziale.
@@ -3117,7 +4830,7 @@ Per questo lo spazio tangente \(T_{X,p}\) si definisce come l'insieme di tutte
 le derivazioni: esso raccoglie tutti i possibili modi infinitesimi di derivare
 le funzioni nel punto \(p\).
 
-\subsection{Calcolo di \(T_{\realnumbers^n, p}\)}
+\subsection{Lo spazio tangente di \(\realnumbers^n\)}
 Sia \(X\) un aperto di \(\realnumbers^n\).
 Mostriamo un isomorfismo canonico
 \[
@@ -3246,7 +4959,7 @@ e possiamo definire
     \partial_v(p) \triangleq \sum_{i=1}^n a_i \restr{\frac{\partial}{\partial x_i}}{p}
 \]
 
-\subsection{Differenziali}
+\subsection{Differenziale di una mappa liscia}
 
 \begin{snippetdefinition}{Differenziale di mappa \(\mathcal C^\infty\)}
     Sia \(F \colon X \fromto Y\)
@@ -3401,7 +5114,7 @@ e possiamo definire
     Identificando le basi canoniche con le restrizioni, otteniamo la tesi.
 \end{snippetproof}
 
-\subsection{Lezione del 15/04/2026}
+\subsection{Differenziale in coordinate locali}
 
 Work in progress.
 
@@ -3419,7 +5132,7 @@ Più in generale, con dimostrazione analoga, si prova il seguente:
     \]
 \end{snippetproposition}
 
-\subsection{Lezione del 16/04/2026}
+\subsection{Sottovarietà, immersioni ed embedding}
 
 Guardiamo ora metodi per costruire sottovarietà.
 
@@ -3959,7 +5672,7 @@ Troviamo quindi che
 \end{DispWithArrows*}
 con \(c = -b \frac{\partial a}{\partial y}\) e \(d = a \frac{\partial b}{\partial x}\).
 
-\subsection{Calcolo di spazi tangenti di sottovarietà}
+\subsection{Spazi tangenti di sottovarietà}
 
 \begin{snippetproposition}{}
     Distinguiamo vari casi:
@@ -4347,7 +6060,7 @@ e \(\mathcal B'\), che deforma l'una nell'altra senza mai farle diventare dipend
 
 Di cui ci sono due classi, in quanto o due basi sono orientate analogamente o non lo sono.
 
-\subsection{Lezione del 21/04/2026}
+\subsection{Orientabilità delle varietà}
 
 \begin{snippetdefinition}{Varietà orientabile}
     Una varietà \(X\) è detta \emph{orientabile}
@@ -4634,7 +6347,9 @@ Vediamo ora esempi di varietà orientabili.
     e \(\sigma_1\) inverte l'orientazione.
 \end{snippettheorem}
 
-\section{Tensori e wedge product}
+\part{Forme differenziali e integrazione}
+
+\section{Tensori, forme differenziali e prodotto esterno}
 
 \begin{snippetdefinition}{Prodotto tensoriale}
     Siano \(V_1, \cdots, V_n\)
@@ -5022,7 +6737,7 @@ Cioè che rispetto ad una scelta di base come sopra,
 con \(\lambda_I(x)\)
 con funzione \(\mathcal C^\infty\).
 
-\subsection{Funtorialità delle \(k\)-forme}
+\subsection{Pullback e differenziale esterno}
 
 \begin{snippetdefinition}{Pullback}
     Data \(F \colon X \fromto Y\) e \[
@@ -5232,7 +6947,7 @@ Dimostrazione per fortuna omessa.
 
 \pagebreak
 
-\section{Lezione del 28/04/2026}
+\section{Partizioni dell'unità e paracompattezza}
 
 \begin{snippetdefinition}{Partizione dell'unità}
     Dato \(X\) varietà differenziale e \(\mathcal U = \{U_\alpha\}\)
@@ -5248,7 +6963,7 @@ Dimostrazione per fortuna omessa.
             \operatorname{Supp}(f) = \overline{\left\{x \in X \suchthat f(x) \neq 0\right\}}
         \]
         e si ha \[
-            \sum_\alpha \lambda_a(x) = 1
+            \sum_\alpha \lambda_\alpha(x) = 1
         \]
         per ogni \(x \in X\).
     \end{enumerate}
@@ -5311,7 +7026,7 @@ Il nome viene preso dall'ultima condizione.
     Se \(\lambda_0\) e \(\lambda_1\) sono nulle rispettivamente su un intorno di \(1\) e \(-1\)
     allora \(\operatorname{supp}(\lambda_0) \subseteq U_0\)
     e \(\operatorname{supp}(\lambda_1) \subseteq U_1\) e per costruzione
-    \(\lambda_1, \lambda_2\) definiscono una partizione dell'unità subordinata a \(\mathcal U\).
+    \(\lambda_0, \lambda_1\) definiscono una partizione dell'unità subordinata a \(\mathcal U\).
     Le funzioni sul cerchio hanno la forma:
     \begin{center}
         \begin{tikzpicture}[x=1.7cm,y=1.7cm,line cap=round,line join=round]
@@ -5366,7 +7081,7 @@ Il nome viene preso dall'ultima condizione.
     e ricoprimento \(\mathcal U = \{U_\alpha\}\),
     esiste sempre una partizione dell'unità subordinata a \(\mathcal U\). \\
     Inoltre, si può anche costruire una partizione dell'unità \(\lambda_i\)
-    tale che \(\operatorname{supp}(\lambda_i)\) compatto, contenuto in \(U_\beta(i)\)
+    tale che \(\operatorname{supp}(\lambda_i)\) compatto, contenuto in \(U_{\beta(i)}\)
     per una scelta \(\beta(i)\) di indici.
 \end{snippettheorem}
 
@@ -5384,7 +7099,14 @@ Per dimostrazione questo teorema ci serve un lemma e definizione di topologia.
     se da ogni ricoprimento aperto ha un raffinamento localmente finito numerabile.
 \end{snippetdefinition}
 
-TODO cos'è un raffinamento?
+\begin{snippetdefinition}{Raffinamento}
+    Se \(\mathcal V = \{V_\beta\}\) e \(\mathcal U = \{U_\alpha\}\)
+    sono ricoprimenti aperti di \(X\), diciamo che \(\mathcal V\)
+    è un \emph{raffinamento} di \(\mathcal U\) se per ogni \(\beta\)
+    esiste \(\alpha(\beta)\) tale che \[
+        V_\beta \subseteq U_{\alpha(\beta)}.
+    \]
+\end{snippetdefinition}
 
 \begin{snippetproposition}{}
     Se \(X\) è uno spazio localmente compatto
@@ -5402,23 +7124,27 @@ ha un intorno aperto omeomorfo a \(\realnumbers^n\)
 e quindi in particolare anche intorni omeomorfi a \(B_\delta(0) \subseteq \realnumbers^n\)
 con la chiusa di tale bolla che è compatta.
 
-\begin{snippetproof}{TODO: Da riscrivere usando il raffinamento}
-    Sia \(X\) con le ipotesi della proposizione e sia \(\mathcal U = \{U_\alpha\}\). \\
+\begin{snippetproof}{Dimostrazione usando il raffinamento}
+    Sia \(X\) con le ipotesi della proposizione. \\
     \textbf{Passo 1:} costruiamo una famiglia numerabile di aperti \(V_i\) per \(i \geq 1\) tali che
     \(\overline {V_i} \subseteq V_{i+1}\), \(\overline {V_i}\) compatto e tale che \[
         X = \bigcup V_i
     \]
-    Possiamo supporre che \(\mathcal U = \{U_i\}\) numerabile in quanto \(X\)
-    ha base numerabile, e dunque da ogni ricoprimento possiamo estrarne uno numerabile.
-    Inoltre, possiamo raffinare \(\{U_i\}\) in modo da avere \(\overline {U_i}\) compatto
-    (per ipotesi di \(X\) localmente compatto). Poniamo \(V_1 = U_1\),
-    per ricorsione dato \(V_k = U_1 \cup \cdots \cup U_{i_k}\)
-    consideriamo \(\overline {V_k}\) compatto e un numero finito \(i_{k+1} > i_k\)
-    tale che \[
-        \overline {V_k} \subseteq U_1 \cup \cdots \cup U_{i_k+1}
+    Poiché \(X\) è localmente compatto e a base numerabile, possiamo prendere
+    una base numerabile \(\mathcal B = \{B_j\}_{j \geq 1}\)
+    costituita da aperti con \(\overline{B_j}\) compatto.
+    Poniamo \(V_1 = B_1\).
+    Per ricorsione, dato
+    \[
+        V_k = B_1 \cup \cdots \cup B_{i_k},
     \]
-    che è possibile per compattezza. Allora definiamo \[
-        V_{k+1} = U_1 \cup \cdots \cup U_{i_k+1}
+    consideriamo \(\overline {V_k}\), che è compatto, e scegliamo un numero finito
+    di aperti della base che lo ricoprono. Aumentando eventualmente gli indici,
+    troviamo \(i_{k+1} > i_k\) tale che \[
+        \overline {V_k} \subseteq B_1 \cup \cdots \cup B_{i_{k+1}}.
+    \]
+    Allora definiamo \[
+        V_{k+1} = B_1 \cup \cdots \cup B_{i_{k+1}}.
     \]
     e otteniamo quanto richiesto:
     \[
@@ -5428,42 +7154,47 @@ con la chiusa di tale bolla che è compatta.
     in quanto è successione di indicii che tende a \(+\infty\). \\
     \textbf{Passo 2:}
     una volta costruiti \(V_1 \subseteq V_2 \cdots\) come nel passo \(1\),
-    consideriamo i seguenti aperti del ricoprimento
-    supponiamo dato un ricoprimento \(\{W_\alpha\}\)
-    aperto arbitrario di \(X\) e consideriamo
+    supponiamo dato un ricoprimento \(\mathcal W = \{W_\alpha\}\)
+    aperto arbitrario di \(X\). Consideriamo
     un sottoricoprimento aperto di \(\overline {V_2}\)
     (che è compatto) finito e costituito da aperti del tipo
-    \(W_\alpha \cap V_3 \neq \emptyset\) (ricordiamo che \(\overline {V_2} \subseteq V_3\)).
+    \(W_\alpha \intersection V_3\)
+    (ricordiamo che \(\overline {V_2} \subseteq V_3\)).
     Per ogni \(i \geq 3\) consideriamo un sottoricoprimento di aperti del tipo \[
         W_\alpha \intersection \left(V_{i+1} \difference \overline{V_{i-2}}\right)
     \]
     finito che ricopre \(\overline {V_i} \difference V_{i-1}\).
-    Stiamo scegliendo un numero finito di \(W_\beta\)
-    per ogni \(V_i\) per \(i \geq 2\).
-    Tali \(W_\alpha\) scelti costituiscono un sottoricoprimento
-    localmente finito
-    del ricoprimento iniziale \(\{W_\alpha\}\).
+    Stiamo scegliendo un numero finito di aperti del tipo
+    \[
+        W_\alpha \intersection \left(V_{i+1} \difference \overline{V_{i-2}}\right)
+    \]
+    per ogni \(i \geq 2\), con la convenzione \(V_0 = \emptyset\).
+    Tali aperti costituiscono un raffinamento numerabile
+    del ricoprimento iniziale \(\{W_\alpha\}\), perché ognuno di essi
+    è contenuto in uno dei \(W_\alpha\).
+    Inoltre tale raffinamento è localmente finito.
     Infatti ogni \(x \in X\) sta in un \(V_i \difference \overline {V_{i-1}}\)
     (poniamo \(V_0 = \emptyset\)). Tale aperto \(V_i \difference \overline {V_{i-1}}\)
-    è coinvolto nelle scelte dei \(W_\beta\) che lo intersecano solo come sottoinsieme di \[
-        V_{i+1} \difference \overline {V_{i-1}}, \quad
-        V_{i+1} \difference \overline{V_{i-2}}, \quad 
-        V_{i+1} \difference \overline{V_{i-3}}
-    \]
-    Se \(W_\beta\) è fra questi scelti, ma non interseca
-    uno di quest'ultimi tre aperti, allora non può intersecare
-    \(V_i \difference \overline{V_{i-1}}\).
-    Quindi \(x \in X\) ha l'intorno \(V_i \difference \overline {V_{i-1}}\)
-    che interseca solo un numero finito dei \(W_\beta\),
-    sottoricoprimento di \(\{W_\alpha\}\).
+    può intersecare soltanto gli aperti scelti ai livelli \(i-1\), \(i\) e \(i+1\):
+    se il livello è troppo piccolo, l'aperto scelto è contenuto in \(V_{i-1}\);
+    se il livello è troppo grande, esso è contenuto fuori da \(V_i\).
+    Per ciascuno di questi tre livelli abbiamo scelto solo un numero finito
+    di aperti. Quindi \(x \in X\) ha l'intorno
+    \(V_i \difference \overline {V_{i-1}}\)
+    che interseca solo un numero finito degli aperti del raffinamento.
 \end{snippetproof}
+
+Osserviamo inoltre che, poiché nella proposizione si cerca un raffinamento
+del ricoprimento iniziale, possiamo assumere a priori che gli aperti del
+raffinamento siano contenuti nell'immagine di una carta, raffinando prima
+il ricoprimento con immagini di carte.
 
 \pagebreak
 
 \begin{snippetlemma}{}
     Esiste funzione \(\mathcal C^\infty\)
     sul \(\realnumbers^n\) tale che \(\tau \equiv 1\)
-    sull'ipercubo \([-1,1]^n\) e \(\operatorname{supp}(\tau) \subseteq [-1,1]^n\).
+    sull'ipercubo \([-1,1]^n\) e \(\operatorname{supp}(\tau) \subseteq [-2,2]^n\).
 \end{snippetlemma}
 
 \begin{snippetproof}{}
@@ -5561,7 +7292,7 @@ con la chiusa di tale bolla che è compatta.
     \]
     Questa funzione è positiva e continua.
     Da questa funzione costruiamo \[
-        g(t) = \frac{f(t)}{g(t) + f(1-t)}
+        g(t) = \frac{f(t)}{f(t) + f(1-t)}
     \]
     tale che \(g(t) \equiv 1\) per ogni \(t \geq 1\), mentre
     \(g(t) \equiv 0\) per \(t \leq 0\).
@@ -5580,66 +7311,96 @@ con la chiusa di tale bolla che è compatta.
 
 \begin{snippetproof}{Del teorema di esistenza}
     Dato \(\mathcal U = \{U_\alpha\}\)
-    ricoprimento arbitrario, possiamo assumerlo localmente finito per la proposizione precedente. % todo cite
-    Per ogni \(x \in X\), e per la costruzione della dimostrazione della proposizione, per ogni \(i = 2,3, \cdots\)
-    solo un numero finito di \(U_\alpha\) interseca \(G_i \difference \overline{G_{i-1}}\)
-    e un numero finito di essi ricopre il compatto \(\overline {G_i} \difference G_{i-1}\).
-    Per \(x \in X\) sia \(i \geq 2\) tale che
-    \(x \in G_i \difference \overline {G_{i-1}}\)
-    e sia, per ogni \(\beta\) tale che \(x \in U_\beta\),
-    \(\varphi \colon \realnumbers^n \fromto X\) una carta tale che
-    \[
-        x \in \operatorname{Im}(\varphi) \subseteq U_\beta
+    ricoprimento arbitrario, consideriamo un raffinamento localmente finito
+    numerabile \(\mathcal W = \{W_i\}_{i \in \mathbb N}\)
+    di \(\mathcal U\), come nella proposizione precedente.
+    Raffinando a priori con immagini di carte relativamente compatte,
+    possiamo assumere che, per ogni \(i\), esistano una carta
+    \(\varphi_i \colon \Omega_i \subseteq \realnumbers^n \fromto X\)
+    e un indice \(\beta(i)\) tali che \[
+        \overline{W_i} \text{ sia compatto}, \quad
+        \overline{W_i} \subseteq \operatorname{Im}(\varphi_i)
+        \subseteq U_{\beta(i)}.
     \]
-    Ovviamente c'è solo un numero finito di tali \(\beta\),
-    quindi questa carta esiste. Consideriamo una funzione \(\tau\)
-    come nel lemma % todo cite
-    dell'ipercubo, e la funzione \(\tau \circ \varphi^{-1}\)
-    (estesa a zero fuori da \(\operatorname{Im} (\varphi)\))
-    per ogni \(\beta\) tale che \(\operatorname{Im}(\varphi) \subseteq U_\beta \).
-    Scegliendo per ogni \(i \geq 2\) un numero finito di punti
-    \(x_k \in \overline {G_i} \difference G_{i-1}\)
-    tale che se \(\varphi_\ast \colon \realnumbers^n \fromto X\)
-    è carta in intorno di \(x\) come sopra, allora
-    \(\operatorname{Im}\varphi_k\) ricoprono \(\overline{G_i} \difference G_{i-1}\),
-    produciamo funzioni \(\lambda_k\) come sopra, che possiamo ordinare
-    in una successione numerabile
+    In particolare, \(\mathcal W\) è il ricoprimento che useremo per costruire
+    le funzioni, mentre \(\mathcal U\) resta il ricoprimento iniziale
+    rispetto al quale vogliamo la subordinazione.
+
+    Per ogni \(i\), il compatto
     \[
-        \lambda_1, \lambda_2, \lambda_3, \cdots,
+        \varphi_i^{-1}(\overline{W_i}) \subseteq \Omega_i
     \]
-    Poniamo infine
-    \[
-        \overline {\lambda_i} = \frac{\lambda_i}{\sum \lambda_i}
+    può essere ricoperto da un numero finito di ipercubi \(Q_{i,1}, \cdots, Q_{i,m_i}\)
+    tali che gli ipercubi concentrici di lato doppio, che indichiamo con
+    \(\widetilde{Q}_{i,j}\), siano ancora contenuti in \(\Omega_i\) e soddisfino \[
+        \varphi_i(\widetilde{Q}_{i,j}) \subseteq U_{\beta(i)}.
     \]
-    allora \(\overline{\lambda_i}\) sono partizione dell'unità
-    in quanto \(\sum \lambda_i = 1\) con supporti compatti contenuti
-    in aperti \(U_\beta\) e formanti ricoprimento localmente finito
-    (per la stesso proprietà degli \(U_\beta\)).
+    Per ogni tale ipercubo consideriamo una funzione \(\tau\)
+    come nel lemma, riscalata e traslata, che vale \(1\) su \(Q_{i,j}\)
+    ed è nulla fuori da \(\widetilde{Q}_{i,j}\).
+    Definiamo quindi una funzione su \(X\) ponendo \[
+        \lambda_{i,j}(x) =
+        \begin{cases}
+            \tau\left(\varphi_i^{-1}(x)\right) & x \in \operatorname{Im}(\varphi_i), \\
+            0 & x \notin \operatorname{Im}(\varphi_i).
+        \end{cases}
+    \]
+    Otteniamo così una famiglia numerabile di funzioni \(\lambda_{i,j}\),
+    che possiamo riordinare in una successione \[
+        \lambda_1, \lambda_2, \lambda_3, \cdots.
+    \]
+    Per costruzione, ogni \(\lambda_k\) è liscia, non-negativa,
+    ha supporto compatto e il suo supporto è contenuto in qualche
+    \(U_{\beta(k)}\) del ricoprimento iniziale. Inoltre la famiglia
+    è localmente finita, perché nasce dal raffinamento localmente finito
+    \(\mathcal W\) e per ogni \(W_i\) abbiamo scelto solo un numero finito
+    di funzioni.
+
+    Poiché gli \(W_i\) ricoprono \(X\), in ogni punto \(x \in X\)
+    almeno una delle funzioni \(\lambda_k\) è positiva.
+    Dunque la funzione \[
+        \Lambda(x) = \sum_k \lambda_k(x)
+    \]
+    è ben definita, liscia e strettamente positiva, poiché la somma è
+    localmente finita. Poniamo infine \[
+        \overline {\lambda_k} = \frac{\lambda_k}{\Lambda}.
+    \]
+    Allora \(\overline{\lambda_k}\) sono partizione dell'unità
+    in quanto \[
+        \sum_k \overline{\lambda_k}(x) = 1
+    \]
+    per ogni \(x \in X\), con supporti compatti contenuti
+    negli aperti \(U_{\beta(k)}\) del ricoprimento iniziale.
     Abbiamo provato,
     \begin{itemize}
         \item per ogni ricoprimento aperto \(U_\alpha\) esiste partizione dell'unità
-        \(\{\overline {\lambda_i}\}\) tale che
-        \(\operatorname{supp}(\overline {\lambda_i})\) compatti ed esiste \(\beta(i)\)
+        \(\{\overline {\lambda_k}\}\) tale che
+        \(\operatorname{supp}(\overline {\lambda_k})\) compatti ed esiste \(\beta(k)\)
         tale che \[
-            \operatorname{supp}(\overline {\lambda_i})
-            \subseteq U_\beta(i)
+            \operatorname{supp}(\overline {\lambda_k})
+            \subseteq U_{\beta(k)}
         \]
-        \item per ottenere la tesi del teorema, dato \(U_\beta\) consideriamo \[
-            \varphi_\beta = \sum_{\operatorname{supp}(\overline{\lambda_i}) \subseteq U_\beta} \overline{\lambda_i}
+        \item per ottenere la tesi del teorema nella forma indicizzata
+        dagli aperti del ricoprimento iniziale, dato \(U_\beta\) consideriamo \[
+            \varphi_\beta = \sum_{\beta(k)=\beta} \overline{\lambda_k}
         \]
-        con \(\varphi_\beta = 0\) se non vi sono tali funzioni. Poniamo poi
-        \[
-            \overline{\varphi_\beta} = \frac{\varphi_\beta}{\sum_\beta \varphi_\beta}
+        con \(\varphi_\beta = 0\) se non vi sono tali funzioni.
+        Anche le \(\varphi_\beta\) sono partizioni dell'unità,
+        perché \[
+            \sum_\beta \varphi_\beta
+            =
+            \sum_k \overline{\lambda_k}
+            =
+            1.
         \]
-        anche le \(\overline {\varphi_\beta}\) sono partizioni dell'unità,
-        con supporto in \(U_\beta\) per ogni \(\beta\)
-        ma non necessariamente compatti.
+        Inoltre \(\operatorname{supp}(\varphi_\beta) \subseteq U_\beta\)
+        per ogni \(\beta\), ma i supporti non sono necessariamente compatti.
     \end{itemize}
 \end{snippetproof}
 
 \pagebreak
 
-\section{Lezione del 29/04/2026}
+\section{Orientabilità e integrazione di forme differenziali}
 
 \begin{snippettheorem}{}
     Una varietà \(X\) con \(n = \dim X\) è orientabile
@@ -5762,7 +7523,7 @@ Equivalentemente
     \end{ffiproof}
 \end{snippetproof}
 
-\subsection{Integrali}
+\subsection{Integrazione di forme differenziali}
 
 Una seconda applicazione della partizione dell'unità è quella dell'integrale di una
 \(n\)-forma su una varietà \(n\)-dimensionale orientabile.
@@ -6251,7 +8012,9 @@ In particolare, \(\left(d F\right)_x\) è definito anche sul bordo \[
 Il teorema di Stokes vale anche per varietà con bordo \(C^\infty\) a tratti; ad esempio, per \(D\subset\realnumbers^2\) dominio con bordo una curva \(C^\infty\) a tratti, o anche \(C^2\) a tratti.
 Il motivo è che \(D\) e \(\partial D\) sono approssimabili con varietà \(C^\infty\) con bordo; vedi, ad esempio, la discussione del teorema della tangente di Hopf.
 
-\section{Metriche su varietà}
+\part{Geometria riemanniana}
+
+\section{Metriche riemanniane}
 
 \begin{snippetdefinition}{Metrica Riemanniana}
     Una \emph{metrica riemanniana} o \emph{pseudo-riemanniana} su una varietà differenziabile \(X\) è una scelta, per ogni \(x\in X\), di una forma bilineare simmetrica
@@ -6328,7 +8091,7 @@ definisce un cono in \(\realnumbers^4\) detto \textit{cono luce}.
 
 \pagebreak
 
-\section{Lezione 26}
+\subsection{Esistenza e costruzioni di metriche}
 
 \begin{snippettheorem}{Esistenza di metriche riemanniane}
 Ogni varietà differenziabile ammette una metrica riemanniana.
@@ -7125,7 +8888,7 @@ Le due superfici hanno dunque la stessa prima forma fondamentale nelle coordinat
 
 \pagebreak
 
-\section{Lezione 27}
+\subsection{Esempi di metriche indotte e isometrie locali}
 
 
 Nella lezione precedente abbiamo visto che il catenoide e l'elicoide sono localmente isometrici. Riprendiamo il calcolo in modo esplicito.
@@ -7283,7 +9046,7 @@ segue che \(h\) preserva il prodotto scalare sui tangenti. Quindi \(h\) è un'is
 \]
 \end{snippetproof}
 
-\subsection*{Integrazione di funzioni su varietà riemanniane}
+\subsection{Integrazione su varietà riemanniane}
 
 \begin{snippetdefinition}{Elemento di volume riemanniano}
 Sia \((X,\langle\cdot,\cdot\rangle)\) una varietà riemanniana di dimensione \(n\). In una carta
@@ -7517,7 +9280,7 @@ Quindi
     \,dx_1\cdots dx_n
 \]
 
-\subsection*{Classi speciali di mappe fra varietà riemanniane}
+\subsection{Mappe fra varietà riemanniane}
 
 \begin{snippetdefinition}{Isometrie locali, mappe conformi e mappe che preservano il volume}
 Siano \((X,\langle\cdot,\cdot\rangle_X)\) e \((Y,\langle\cdot,\cdot\rangle_Y)\) due varietà riemanniane, e sia
@@ -7686,7 +9449,7 @@ Questo tipo di distorsione è una manifestazione del fatto che non esiste una ma
 
 \pagebreak
 
-\section{Lezione 28}
+\section{Geodetiche e principio variazionale}
 
 La Lagrangiana descrive localmente il moto, assegnando
 a ogni posizione e velocità un numero che misura il "costo" istantaneo
@@ -8036,10 +9799,10 @@ Il sistema di equazioni \[
 
 \pagebreak
 
-\section{Lezione 29}
+\section{Equazioni delle geodetiche ed esempi}
 
 
-\subsection*{Richiamo: equazioni delle geodetiche}
+\subsection{Richiamo alle equazioni delle geodetiche}
 
 Abbiamo definito le geodetiche di una varietà riemanniana \((X,g)\). In coordinate locali, se
 \[
@@ -8113,7 +9876,7 @@ Dunque
 per qualche \(p,v\in\realnumbers^n\). Le geodetiche euclidee sono quindi le rette parametrizzate a velocità costante.
 \end{snippetexample}
 
-\subsection*{Simboli di Christoffel per una superficie}
+\subsection{Simboli di Christoffel per una superficie}
 
 Sia \(S\subseteq\realnumbers^3\) una superficie con metrica indotta. In una carta locale
 \[
@@ -8272,7 +10035,7 @@ Dimostrare che il catenoide e l'elicoide non sono omeomorfi.
 L'elicoide è diffeomorfo a \(\realnumbers^2\), quindi è semplicemente connesso. Il catenoide è diffeomorfo a \(\mathbb{S}^1\times\realnumbers\), quindi ha gruppo fondamentale isomorfo a \(\integernumbers\). Poiché il gruppo fondamentale è un invariante topologico, le due superfici non sono omeomorfe.
 \end{snippetsolution}
 
-\subsection*{Esistenza e unicità delle geodetiche}
+\subsection{Esistenza e unicità delle geodetiche}
 
 \begin{snippettheorem}{Esistenza e unicità locale delle geodetiche}
 Per ogni \(x\in X\) e per ogni \(v\in T_xX\), esiste un'unica geodetica
@@ -8317,7 +10080,7 @@ Un'isometria preserva la metrica e quindi preserva le equazioni geometriche che 
 Dunque \(g\circ\gamma\) è una geodetica.
 \end{snippetproof}
 
-\subsection*{Velocità costante delle geodetiche}
+\subsection{Velocità costante delle geodetiche}
 
 \begin{snippettheorem}{Le geodetiche hanno velocità costante}
 Se \(\gamma\) è una geodetica di una varietà riemanniana \((X,g)\), allora
@@ -8450,7 +10213,7 @@ costante. Pertanto
 è costante.
 \end{snippetproof}
 
-\subsection*{Funzionale energia e funzionale lunghezza}
+\subsection{Funzionale energia e funzionale lunghezza}
 
 \begin{snippetproposition}{Energia e lunghezza hanno gli stessi estremali a velocità costante}
 Consideriamo le lagrangiane
@@ -8587,7 +10350,7 @@ quindi
 Dunque \(\gamma\) minimizza l'energia. Poiché gli estremali dell'energia sono le geodetiche, segue la tesi.
 \end{snippetproof}
 
-\subsection*{Geometria sferica}
+\subsection{Geometria sferica}
 
 \begin{snippetexample}{Metrica della sfera}
 Sulla sfera unitaria
@@ -8731,10 +10494,10 @@ Se invece si restringe l'attenzione ai triangoli geodetici convessi contenuti in
 
 \pagebreak
 
-\section{Lezione 30}
+\section{Geodetiche su superfici e geometria iperbolica}
 
 
-\subsection*{Geodetiche per superfici immerse in \(\realnumbers^3\)}
+\subsection{Geodetiche per superfici immerse in \(\realnumbers^3\)}
 
 Ricordiamo che le geodetiche possono essere caratterizzate come curve critiche del funzionale energia. In coordinate locali, se
 \[
@@ -9005,7 +10768,7 @@ Il piano vettoriale
 interseca \(\mathbb{S}^2\) in una circonferenza massima. Questa circonferenza massima ammette una parametrizzazione geodetica con gli stessi dati iniziali \(p\) e \(v\). Per unicità del problema di Cauchy per le geodetiche, \(\sigma\) coincide con essa. Dunque tutte le geodetiche sono circonferenze massime.
 \end{snippetproof}
 
-\subsection*{Il piano iperbolico nel modello del disco di Poincaré}
+\subsection{Il piano iperbolico nel modello del disco di Poincaré}
 
 \begin{snippetdefinition}{Disco di Poincaré}
 Sia
@@ -9250,5 +11013,573 @@ In contrasto, sulla sfera la somma degli angoli interni di un triangolo geodetic
         \text{iperbolica} & <\pi
     \end{array}
 \]
+
+\section{Modelli del piano iperbolico}
+
+\subsection{Disco di Poincaré e semipiano superiore}
+
+\begin{snippetdefinition}{Disco di Poincaré}
+Il \emph{disco di Poincaré} è la varietà riemanniana senza bordo
+\[
+	D = \left\{z\in\complexnumbers \mid |z|<1\right\}
+\]
+con metrica
+\[
+	g_D = \frac{4|dz|^2}{\left(1-|z|^2\right)^2}.
+\]
+Qui, se scriviamo \(z=x+iy\), allora \(|dz|^2=dx^2+dy^2\) nel senso che la parte euclidea della metrica è quella usuale di \(\realnumbers^2\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Forme differenziali complesse}
+Siano \(x,y\) le coordinate su \(\realnumbers^2\). Le forme \(dx,dy\) sono la base duale di \((\partial_x,\partial_y)\). Se \(v=(\alpha,\beta)\), allora
+\[
+	dx(v)=\alpha, \qquad dy(v)=\beta.
+\]
+È utile introdurre le forme a valori complessi
+\[
+	dz = dx+i\,dy, \qquad d\bar z = dx-i\,dy.
+\]
+Quindi
+\[
+	dz(v)=\alpha+i\beta, \qquad d\bar z(v)=\alpha-i\beta.
+\]
+Identificando \(\realnumbers^2\) con \(\complexnumbers\), la forma \(dz\) è il differenziale dell'identità \(\complexnumbers\to\complexnumbers\), mentre \(d\bar z\) è il differenziale della coniugazione.
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Semipiano superiore di Siegel}
+Il \emph{semipiano superiore} è
+\[
+	H=\left\{z\in\complexnumbers \mid \Im z>0\right\}.
+\]
+Su \(H\) consideriamo la metrica
+\[
+	g_H = \frac{|dz|^2}{(\Im z)^2}.
+\]
+Se \(z=x+iy\), con \(y>0\), allora
+\[
+	g_H = \frac{dx^2+dy^2}{y^2}.
+\]
+Questa metrica è invariante per traslazioni reali \(z\mapsto z+r\), con \(r\in\realnumbers\), perché tali traslazioni non cambiano \(\Im z\) e preservano \(|dz|^2\).
+\end{snippetdefinition}
+
+\begin{tikzpicture}[scale=0.9]
+\draw[->] (-2.4,0) -- (2.4,0) node[right] {\(\Re\)};
+\draw[->] (0,-0.2) -- (0,1.9) node[above] {\(\Im\)};
+\fill[opacity=0.12] (-2.4,0) rectangle (2.4,1.9);
+\node at (1.55,1.25) {\(H\)};
+\draw[thick] (-2.4,0) -- (2.4,0);
+\node[below right] at (0,0) {\(0\)};
+\end{tikzpicture}
+
+\begin{snippetproposition}{Trasformazione di Cayley}
+La mappa
+\[
+	\varphi\colon D\longrightarrow H, \qquad
+	\varphi(z)=i\frac{1-z}{1+z}
+\]
+è un diffeomorfismo e un'isometria fra \((D,g_D)\) e \((H,g_H)\). In particolare
+\[
+	\varphi(0)=i, \qquad \varphi(1)=0, \qquad \varphi(-1)=\infty.
+\]
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+Scriviamo
+\[
+	w=\varphi(z)=i\frac{1-z}{1+z}.
+\]
+Anzitutto \(\varphi\) è invertibile, perché
+\[
+	w(1+z)=i(1-z)
+	\qquad\Longleftrightarrow\qquad
+	z=\frac{i-w}{w+i}.
+\]
+Quindi
+\[
+	\varphi^{-1}(w)=\frac{i-w}{w+i}.
+\]
+Inoltre \(\varphi(\partial D\setminus\{-1\})\subseteq\realnumbers\): infatti, se \(z=e^{i\theta}\), allora
+\[
+	\varphi(e^{i\theta})
+	=i\frac{1-e^{i\theta}}{1+e^{i\theta}}
+	=\tan\frac{\theta}{2}\in\realnumbers.
+\]
+Poiché \(D\) è connesso e \(\varphi(0)=i\in H\), segue che \(\varphi(D)=H\).
+
+Resta da controllare la metrica. Siccome \(w\) è una funzione olomorfa di \(z\), si ha
+\[
+	dw = \varphi'(z)\,dz
+	= i\frac{-(1+z)-(1-z)}{(1+z)^2}\,dz
+	= \frac{-2i}{(1+z)^2}\,dz.
+\]
+Quindi
+\[
+	|dw|^2 = \frac{4|dz|^2}{|1+z|^4}.
+\]
+Calcoliamo ora \(\Im w\). Poiché
+\begin{align*}
+	w-\bar w
+	&=i\frac{1-z}{1+z}+i\frac{1-\bar z}{1+\bar z} \\
+	&=i\frac{(1-z)(1+\bar z)+(1-\bar z)(1+z)}{|1+z|^2} \\
+	&=2i\frac{1-|z|^2}{|1+z|^2},
+\end{align*}
+segue che
+\[
+	\Im w = \frac{1-|z|^2}{|1+z|^2}.
+\]
+Pertanto
+\[
+	\varphi^*g_H
+	=\frac{|dw|^2}{(\Im w)^2}
+	=\frac{\frac{4|dz|^2}{|1+z|^4}}{\frac{(1-|z|^2)^2}{|1+z|^4}}
+	=\frac{4|dz|^2}{(1-|z|^2)^2}
+	=g_D.
+\]
+\end{snippetproof}
+
+\subsection{Gruppo delle isometrie del semipiano superiore}
+
+\begin{snippetproposition}{Azione di \(\operatorname{PSL}(2,\realnumbers)\)}
+Il gruppo
+\[
+	\operatorname{PSL}(2,\realnumbers)=\operatorname{SL}(2,\realnumbers)/\{\pm I\}
+\]
+agisce su \(H\) tramite trasformazioni
+\[
+	T_A(z)=\frac{az+b}{cz+d},
+	\qquad
+	A=\begin{pmatrix}a&b\\ c&d\end{pmatrix},
+	\qquad
+	a,b,c,d\in\realnumbers,
+	\qquad
+	ad-bc=1.
+\]
+Ogni \(T_A\) è un'isometria di \((H,g_H)\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+Poniamo
+\[
+	w=T_A(z)=\frac{az+b}{cz+d}.
+\]
+Allora
+\[
+	dw=\frac{a(cz+d)-c(az+b)}{(cz+d)^2}\,dz
+	=\frac{ad-bc}{(cz+d)^2}\,dz
+	=\frac{dz}{(cz+d)^2}.
+\]
+Dunque
+\[
+	|dw|^2=\frac{|dz|^2}{|cz+d|^4}.
+\]
+Calcoliamo l'immaginaria. Poiché \(a,b,c,d\) sono reali,
+\begin{align*}
+	w-\bar w
+	&=\frac{az+b}{cz+d}-\frac{a\bar z+b}{c\bar z+d} \\
+	&=\frac{(az+b)(c\bar z+d)-(a\bar z+b)(cz+d)}{|cz+d|^2} \\
+	&=\frac{(ad-bc)(z-\bar z)}{|cz+d|^2} \\
+	&=\frac{z-\bar z}{|cz+d|^2}.
+\end{align*}
+Quindi
+\[
+	\Im w=\frac{\Im z}{|cz+d|^2}.
+\]
+Ne segue
+\[
+	T_A^*g_H
+	=\frac{|dw|^2}{(\Im w)^2}
+	=\frac{\frac{|dz|^2}{|cz+d|^4}}{\frac{(\Im z)^2}{|cz+d|^4}}
+	=\frac{|dz|^2}{(\Im z)^2}
+	=g_H.
+\]
+\end{snippetproof}
+
+\begin{snippetdefinition}{Trasformazioni di M\"obius}
+Una trasformazione razionale della forma
+\[
+	z\longmapsto \frac{az+b}{cz+d},
+	\qquad
+	a,b,c,d\in\complexnumbers,
+	\qquad
+	ad-bc\neq 0,
+\]
+è detta \emph{trasformazione di M\"obius}. Le trasformazioni di M\"obius formano un gruppo per composizione.
+\end{snippetdefinition}
+
+\begin{snippetproposition}{M\"obius manda circonferenze in circonferenze generalizzate}
+Le trasformazioni di M\"obius mandano circonferenze generalizzate in circonferenze generalizzate. Qui per circonferenza generalizzata intendiamo una circonferenza oppure una retta, vista come circonferenza passante per il punto all'infinito.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+Il gruppo delle trasformazioni di M\"obius è generato da trasformazioni dei seguenti tipi:
+\[
+	z\mapsto az, \qquad z\mapsto z+b, \qquad z\mapsto \frac{1}{z}.
+\]
+Le prime due mandano chiaramente circonferenze generalizzate in circonferenze generalizzate: sono composizioni di rotazioni, dilatazioni e traslazioni. Basta quindi studiare l'inversione \(z\mapsto 1/z\).
+
+Sia
+\[
+	C=\left\{w\in\complexnumbers \mid |w-c|^2=r^2\right\}.
+\]
+La controimmagine di \(C\) tramite \(z\mapsto 1/z\) è data da
+\[
+	\left|\frac{1}{z}-c\right|^2=r^2.
+\]
+Moltiplicando per \(|z|^2\) otteniamo
+\[
+	1-cz-\bar c\bar z+|c|^2|z|^2=r^2|z|^2,
+\]
+ovvero
+\[
+	\left(|c|^2-r^2\right)|z|^2-cz-\bar c\bar z+1=0.
+\]
+Questa è l'equazione di una circonferenza generalizzata: se il coefficiente di \(|z|^2\) è nullo si ottiene una retta, altrimenti una circonferenza.
+\end{snippetproof}
+
+\subsection{Geodetiche del semipiano superiore}
+
+\begin{snippettheorem}{Geodetiche di \(H\)}
+Le geodetiche di \((H,g_H)\) sono tutti e soli gli archi di circonferenze perpendicolari al bordo \(\partial H=\realnumbers\), incluse le rette verticali.
+Equivalentemente, sono le circonferenze generalizzate con centro, proprio o improprio, su \(\partial H\).
+\end{snippettheorem}
+
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex,line cap=round,line join=round]
+    \fill[orange!18] (-0.3,-0.05) rectangle (7.6,2.95);
+
+    \draw[thick,->] (0,0) -- (7.8,0) node[below right] {\(\Re\)};
+
+    \draw[thick,->] (2.25,0) -- (2.25,2.5) node[above] {\(\Im\)};
+    \draw[thick,->] (3.55,0) -- (3.55,2.65) node[above right] {\(\mathbb{H}\)};
+
+    \draw[thick] (0.55,0) arc[start angle=180,end angle=0,radius=0.45];
+    \draw[thick] (4.45,0) arc[start angle=180,end angle=0,radius=1.25];
+
+    \draw[thick] (4.45,0) -- (4.45,0.18) -- (4.63,0.18) -- (4.63,0);
+
+    \draw[thick] (6.95,0) -- (6.95,0.18) -- (6.77,0.18) -- (6.77,0);
+
+    \node[anchor=west] at (8.6,1.75)
+        {metrica di \(\mathbb{H}\) : \(\dfrac{|dz|^2}{(\Im z)^2}\)};
+\end{tikzpicture}
+
+\begin{snippetproof}{}
+Per ogni punto \(p\in H\) e per ogni direzione tangente non nulla in \(p\) esiste una e una sola circonferenza generalizzata ortogonale a \(\partial H\) che passa per \(p\) e ha quella direzione tangente. È quindi sufficiente dimostrare che ogni circonferenza di questo tipo è geodetica.
+
+Inoltre ogni circonferenza ortogonale a \(\partial H\) può essere trasformata in una retta verticale tramite un elemento di \(\operatorname{PSL}(2,\realnumbers)\). Infatti, con una traslazione reale possiamo supporre che la circonferenza passi per \(0\in\partial H\). Allora essa ha equazione
+\[
+	|z-c|^2=c^2, \qquad c\in\realnumbers.
+\]
+Applicando la trasformazione \(S(z)=-1/z\), che appartiene a \(\operatorname{PSL}(2,\realnumbers)\), otteniamo una retta verticale. Infatti, se \(w=S(z)=-1/z\), cioè \(z=-1/w\), allora
+\begin{align*}
+	|z-c|^2=c^2
+	&\Longleftrightarrow z\bar z-cz-c\bar z=0 \\
+	&\Longleftrightarrow \frac{1}{|w|^2}+\frac{c}{w}+\frac{c}{\bar w}=0 \\
+	&\Longleftrightarrow 1+c(w+\bar w)=0 \\
+	&\Longleftrightarrow \Re w=-\frac{1}{2c}.
+\end{align*}
+Poiché gli elementi di \(\operatorname{PSL}(2,\realnumbers)\) sono isometrie, basta dimostrare che le rette verticali sono geodetiche.
+
+Consideriamo il segmento verticale che congiunge \(ai\) a \(bi\), con \(0<a<b\), parametrizzato da
+\[
+	\gamma(t)=it, \qquad t\in[a,b].
+\]
+La sua lunghezza è
+\[
+	L(\gamma)
+	=\integral[a][b][\frac{|\gamma'(t)|}{\Im \gamma(t)}][t]
+	=\integral[a][b][\frac{1}{t}][t]
+	=\log\frac{b}{a}.
+\]
+Ora prendiamo un segmento obliquo che congiunge \(\alpha i\) a \(\delta+\beta i\), con \(0<\alpha<\beta\), parametrizzato da
+\[
+	\sigma(t)=\frac{\delta}{\beta-\alpha}(t-\alpha)+it,
+	\qquad t\in[\alpha,\beta].
+\]
+Allora \(\Im \sigma(t)=t\) e
+\[
+	|\sigma'(t)|=\sqrt{1+\left(\frac{\delta}{\beta-\alpha}\right)^2}.
+\]
+Quindi
+\[
+	L(\sigma)
+	=\sqrt{1+\left(\frac{\delta}{\beta-\alpha}\right)^2}\,
+	\integral[\alpha][\beta][\frac{1}{t}][t]
+	\geq \log\frac{\beta}{\alpha}.
+\]
+Ogni curva si approssima con spezzate; il confronto precedente mostra che la componente orizzontale non può diminuire la lunghezza rispetto al segmento verticale. Dunque i segmenti verticali sono localmente minimizzanti, quindi geodetici. Per isometria, lo stesso vale per tutti gli archi di circonferenze ortogonali a \(\partial H\).
+\end{snippetproof}
+
+\begin{tikzpicture}[scale=1.0]
+\draw[->] (-0.4,0) -- (3.2,0) node[right] {\(\Re\)};
+\draw[->] (0,-0.2) -- (0,2.8) node[above] {\(\Im\)};
+\coordinate (P) at (0,0.7);
+\coordinate (Q) at (0,2.2);
+\coordinate (R) at (2.2,2.2);
+\draw[very thick] (P) -- (Q);
+\draw[dashed] (Q) -- (R);
+\draw[thick] (P) -- (R);
+\fill (P) circle (1.2pt) node[left] {\(\alpha i\)};
+\fill (Q) circle (1.2pt) node[left] {\(\beta i\)};
+\fill (R) circle (1.2pt) node[right] {\(\delta+\beta i\)};
+\end{tikzpicture}
+
+\begin{snippetcorollary}{Geodetiche del disco di Poincaré}
+Le geodetiche del disco di Poincaré \((D,g_D)\) sono gli archi di circonferenza perpendicolari al bordo \(\partial D\), incluse le rette passanti per l'origine, viste come circonferenze generalizzate.
+\end{snippetcorollary}
+
+\begin{snippetproof}{}
+La trasformazione di Cayley \(\varphi\colon D\to H\) è un'isometria. Dunque manda geodetiche di \(D\) in geodetiche di \(H\) e viceversa.
+
+Siccome \(\varphi\) e \(\varphi^{-1}\) sono trasformazioni di M\"obius, mandano circonferenze generalizzate in circonferenze generalizzate. Inoltre sono conformi: se \(f\) è olomorfa e \(f'(z_0)\neq 0\), allora
+\[
+	(df)_{z_0}(v)=f'(z_0)v,
+\]
+cioè il differenziale è una rotodilatazione, quindi preserva gli angoli. Perciò la perpendicolarità al bordo viene preservata.
+\end{snippetproof}
+
+\begin{snippetproposition}{Transitività sulle geodetiche di \(H\)}
+Ogni circonferenza ortogonale a \(\partial H=\realnumbers\) può essere trasformata in una qualunque altra tramite una trasformazione di M\"obius appartenente a \(\operatorname{PSL}(2,\realnumbers)\).
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+Con una traslazione reale si porta un estremo della circonferenza in \(0\). Come visto nella dimostrazione del teorema, la trasformazione \(z\mapsto -1/z\) manda tale circonferenza in una retta verticale. Infine, mediante traslazioni reali, ogni retta verticale può essere trasformata in qualunque altra retta verticale. Componendo queste trasformazioni si ottiene il risultato.
+\end{snippetproof}
+
+\subsection{Mappa esponenziale su una varietà riemanniana}
+
+\begin{snippetdefinition}{Mappa esponenziale}
+Sia \((X,\langle\,,\,\rangle)\) una varietà riemanniana e sia \(p\in X\). Per \(v\in T_pX\), indichiamo con \(\gamma_v\) la geodetica tale che
+\[
+	\gamma_v(0)=p, \qquad \dot\gamma_v(0)=v.
+\]
+La \emph{mappa esponenziale} in \(p\) è definita da
+\[
+	\exp_p(v)=\gamma_v(1),
+\]
+per tutti i vettori \(v\) per cui \(\gamma_v\) è definita almeno fino al tempo \(1\). In generale \(\exp_p\) è definita su un aperto \(\Omega_p\subseteq T_pX\) contenente \(0\).
+\end{snippetdefinition}
+
+Il fatto che \(\exp_p\) sia liscia segue dal teorema di dipendenza regolare dalle condizioni iniziali per le soluzioni dell'equazione differenziale delle geodetiche.
+
+\begin{snippetproposition}{Differenziale dell'esponenziale nell'origine}
+Il differenziale
+\[
+	(d\exp_p)_0\colon T_0(T_pX)\simeq T_pX\longrightarrow T_pX
+\]
+è l'identità.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+Per calcolare \((d\exp_p)_0(w)\), consideriamo la curva \(\sigma(t)=tw\) in \(T_pX\). Allora \(\sigma(0)=0\) e \(\sigma'(0)=w\). Dunque
+\[
+	(d\exp_p)_0(w)
+	=\left.\frac{d}{dt}\right|_{t=0}\exp_p(tw).
+\]
+Usiamo ora la proprietà di riparametrizzazione delle geodetiche:
+\[
+	\gamma_{tw}(s)=\gamma_w(ts).
+\]
+Infatti entrambe le curve hanno punto iniziale \(p\) e velocità iniziale \(tw\), quindi coincidono per unicità. In particolare
+\[
+	\exp_p(tw)=\gamma_{tw}(1)=\gamma_w(t).
+\]
+Pertanto
+\[
+	(d\exp_p)_0(w)
+	=\left.\frac{d}{dt}\right|_{t=0}\gamma_w(t)
+	=\dot\gamma_w(0)
+	=w.
+\]
+\end{snippetproof}
+
+\begin{snippetcorollary}{Diffeomorfismo locale}
+Esistono un intorno aperto \(U\subseteq T_pX\) di \(0\) e un intorno aperto \(U'\subseteq X\) di \(p\) tali che
+\[
+	\exp_p\colon U\longrightarrow U'
+\]
+è un diffeomorfismo. In particolare, ogni punto \(q\in U'\) è collegato a \(p\) da una geodetica.
+\end{snippetcorollary}
+
+\begin{snippetproof}{}
+Poiché \((d\exp_p)_0=\operatorname{Id}\), il differenziale è invertibile. Il risultato segue immediatamente dal teorema della funzione inversa.
+\end{snippetproof}
+
+\begin{snippetproposition}{Intorni geodeticamente convessi}
+Per ogni \(p\in X\) esiste un intorno aperto \(W\) di \(p\) tale che per ogni \(q,q'\in W\) esiste una geodetica contenuta in \(W\) che collega \(q\) a \(q'\).
+\end{snippetproposition}
+
+\begin{snippetproof}{Idea della dimostrazione}
+Consideriamo la mappa
+\[
+	F\colon TX\supseteq \mathcal U \longrightarrow X\times X,
+	\qquad
+	F(q,v)=\left(q,\exp_q(v)\right),
+\]
+definita in un intorno \(\mathcal U\) della sezione nulla. In coordinate locali attorno a \((p,0)\), il differenziale di \(F\) è invertibile: infatti la prima componente è \(q\), mentre il differenziale dell'esponenziale rispetto alla variabile tangente, in \(v=0\), è l'identità.
+
+Quindi \(F\) è un diffeomorfismo locale in un intorno di \((p,0)\). La sua immagine contiene un intorno di \((p,p)\) in \(X\times X\). Scegliendo \(W\) abbastanza piccolo, si ha \(W\times W\subseteq F(\mathcal U)\). Allora, dati \(q,q'\in W\), esiste \(v\in T_qX\) tale che
+\[
+	q'=\exp_q(v).
+\]
+La curva
+\[
+	t\longmapsto \exp_q(tv), \qquad t\in[0,1],
+\]
+è una geodetica che collega \(q\) a \(q'\). Restringendo ulteriormente \(W\), tale geodetica resta contenuta in \(W\).
+\end{snippetproof}
+
+\subsection{Coordinate normali e coordinate polari geodetiche}
+
+\begin{snippetdefinition}{Coordinate normali}
+Sia \(\exp_p\colon U\to X\) una carta attorno a \(p\), con \(U\subseteq T_pX\). Scegliamo una base ortonormale
+\[
+	e_1,\ldots,e_n
+\]
+di \(T_pX\) rispetto alla metrica \(\langle\,,\,\rangle_p\). Se
+\[
+	v=x_1e_1+\cdots+x_ne_n,
+\]
+allora le coordinate \((x_1,\ldots,x_n)\) sono dette \emph{coordinate normali} su \(\exp_p(U)\). In tali coordinate
+\[
+	x_1(p)=\cdots=x_n(p)=0.
+\]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Coordinate polari geodetiche}
+Identifichiamo \(T_pX\) con \(\realnumbers^n\) tramite una base ortonormale. Scriviamo
+\[
+	v=r\,u(\theta_1,\ldots,\theta_{n-1}),
+	\qquad
+	r=\|v\|_p,
+\]
+dove \(u(\theta_1,\ldots,\theta_{n-1})\) è un versore. Le coordinate
+\[
+	(r,\theta_1,\ldots,\theta_{n-1})
+\]
+sono dette \emph{coordinate polari geodetiche}. Il punto corrispondente sulla varietà è
+\[
+	q=\exp_p(v)=\exp_p\left(r\,u(\theta_1,\ldots,\theta_{n-1})\right).
+\]
+Le curve
+\[
+	r\longmapsto \exp_p(r u)
+\]
+sono geodetiche uscenti da \(p\).
+\end{snippetdefinition}
+
+\subsection{Lemma di Gauss}
+
+\begin{snippettheorem}{Lemma di Gauss}
+Sia \(U\subseteq T_pX\) un intorno dell'origine su cui \(\exp_p\) è una carta. Le geodetiche uscenti da \(p\) sono perpendicolari alle ipersuperfici
+\[
+	S_r=\left\{\exp_p(v) \mid \|v\|_p=r\right\}.
+\]
+\end{snippettheorem}
+
+In altre parole, le geodetiche radiali incontrano ortogonalmente le sfere geodetiche centrate in \(p\).
+
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex,line cap=round,line join=round]
+    \begin{scope}[shift={(0,0)}]
+        \draw[thick] (0,0) rectangle (2.7,2.2);
+
+        \draw[thick] (1.35,0) -- (1.35,2.2);
+        \draw[thick] (0,1.1) -- (2.7,1.1);
+
+        \fill[yellow!20] (1.35,1.1) circle (0.78);
+
+        \draw[blue,thick,dashed] (1.35,1.1) circle (0.78);
+
+        \fill (1.35,1.1) circle (0.03);
+        \node[below left] at (1.35,1.1) {\(0\)};
+
+        \draw[thick,->] (1.35,1.1) -- (2.03,1.78);
+        \node[right] at (1.98,1.62) {\(tv\)};
+
+        \node[above] at (2.08,2.2) {\(\|v\|_p=\mathrm{cost}\)};
+    \end{scope}
+
+    \node[below] at (1.35,-0.35) {\(T_{X,p},\langle\cdot,\cdot\rangle_p\)};
+
+    \draw[thick,->] (3.05,1.08)
+        .. controls (3.85,1.95) and (4.85,1.95) ..
+        (5.42,1.10);
+    \node at (4.40,1.95) {\(\exp_p\)};
+
+    \begin{scope}[shift={(6.45,1.1)}]
+        \draw[orange!90!black,thick,dashed] (0,0) circle (0.78);
+
+        \draw[thick]
+            (-0.73,0.08) .. controls (-0.30,0.16) and (0.25,0.14) .. (0.73,0.08);
+
+        \draw[thick]
+            (-0.16,0.76) .. controls (-0.15,0.28) and (-0.10,-0.18) .. (-0.03,-0.70);
+
+        \draw[blue,thick]
+            (-0.70,0.18) .. controls (-0.28,0.28) and (0.30,0.28) .. (0.72,0.18);
+
+        \coordinate (B) at (235:0.78);
+        \coordinate (P) at (235:0.26);
+        \coordinate (C) at (55:0.74); 
+
+        \draw[blue,thick] (B) -- (C);
+
+        \fill (P) circle (0.03);
+        \node[right] at ($(P)+(0.05,-0.02)$) {\(p\)};
+
+        \begin{scope}[shift={(B)},rotate=55]
+            \draw[blue,thick]
+                (0,0) -- (0.12,0) -- (0.12,0.12) -- (0,0.12) -- cycle;
+        \end{scope}
+    \end{scope}
+
+    \node[right] at (7.35,1.18) {\(\exp_p(tv)\) = geodetica passante per \(p\)};
+\end{tikzpicture}
+
+\begin{snippetproof}{}
+Sia
+\[
+	v(s)\colon (-\varepsilon,\varepsilon)\longrightarrow T_pX
+\]
+una curva tale che \(\|v(s)\|_p=r\) sia costante. Definiamo
+\[
+	\beta(s,t)=\exp_p\bigl(t v(s)\bigr),
+	\qquad
+	t\in[0,1].
+\]
+Per ogni \(s\), la curva \(t\mapsto\beta(s,t)\) è una geodetica uscente da \(p\). Inoltre
+\[
+	\beta(s,0)=p,
+	\qquad
+	\beta(s,1)=\exp_p(v(s))\in S_r.
+\]
+L'energia della curva \(t\mapsto\beta(s,t)\) è
+\[
+	E(s)=\integral[0][1][\left\langle \partial_t\beta(s,t),\partial_t\beta(s,t)\right\rangle][t].
+\]
+Poiché la geodetica \(t\mapsto\exp_p(t v(s))\) ha velocità iniziale \(v(s)\), e \(\|v(s)\|_p=r\) è costante, si ha
+\[
+	E(s)=r^2.
+\]
+Dunque \(E'(0)=0\).
+
+Scriviamo
+\[
+	\gamma(t)=\beta(0,t),
+	\qquad
+	J(t)=\partial_s\beta(0,t).
+\]
+La formula di prima variazione dell'energia dà
+\begin{align*}
+	E'(0)
+	&=2\integral[0][1][\left\langle \nabla_t J(t),\dot\gamma(t)\right\rangle][t] \\
+	&=2\left[\left\langle J(t),\dot\gamma(t)\right\rangle\right]_{0}^{1}
+	-2\integral[0][1][\left\langle J(t),\nabla_t\dot\gamma(t)\right\rangle][t].
+\end{align*}
+Poiché \(\gamma\) è una geodetica, \(\nabla_t\dot\gamma=0\). Inoltre \(\beta(s,0)=p\) per ogni \(s\), quindi \(J(0)=0\). Pertanto
+\[
+	0=E'(0)=2\left\langle J(1),\dot\gamma(1)\right\rangle.
+\]
+Il vettore \(J(1)\) è tangente alla sfera geodetica \(S_r\), mentre \(\dot\gamma(1)\) è tangente alla geodetica radiale. Poiché \(v(s)\) era una curva arbitraria sulla sfera \(\|v\|_p=r\), ogni direzione tangente a \(S_r\) è ortogonale alla direzione radiale. Questo conclude la dimostrazione.
+\end{snippetproof}
 
 \end{document}
