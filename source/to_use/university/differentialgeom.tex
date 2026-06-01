@@ -70,13 +70,13 @@ Quest'ultima si generalizza al \(k\)-simplesso.
     Sia \(n \geq k\).
     Consideriamo \(k + 1\) punti \(P_0, \cdots, P_k \in \realnumbers^n\)
     in posizione lineare generale, cioè
-    non appartenenti ad un sottospazio affine di dimensione minore o uguale a \(r-1\).
-    Allora il \(r\)-simplesso di tali vertici è
+    non appartenenti ad un sottospazio affine di dimensione minore o uguale a \(k-1\).
+    Allora il \(k\)-simplesso di tali vertici è
     \[
-        \Delta^n = \left\{
-            \sum_{i=0}^r \lambda_i P_i
+        \Delta^k = \left\{
+            \sum_{i=0}^k \lambda_i P_i
             \suchthat
-            \lambda_j \geq 0 \land \sum \lambda_i = 1
+            \lambda_i \geq 0 \land \sum_{i=0}^k \lambda_i = 1
         \right\}
     \] 
 \end{snippetdefinition}
@@ -115,14 +115,17 @@ Il passaggio alle coordinate affini
 \begin{align*}
     \sigma(\lambda_1, \cdots, \lambda_r)
     &= P_0 + \sum_{i=1}^r \lambda_i u_i \\
-    &= P_0 - \left( \sum_{i=1}^r \lambda_i P_0 \right) + \sum_{i=1}^r t_i(\underbrace{P_0 + \lambda_i}_{\in L})
+    &= \left(1 - \sum_{i=1}^r \lambda_i\right) P_0
+    + \sum_{i=1}^r \lambda_i(\underbrace{P_0 + u_i}_{\in L})
 \end{align*}
 Chiamando \(P_i = P_0 + u_i\) possiamo scrivere
 \[
-    \sigma(\lambda_1, \cdots, \lambda_r) = \sum \lambda_0 P_0 + \sum_{i=0}^r \lambda_i P_i
+    \sigma(\lambda_1, \cdots, \lambda_r) = \lambda_0 P_0 + \sum_{i=1}^r \lambda_i P_i
 \]
 cosicché
 \[
+    \lambda_0 = 1-\sum_{i=1}^r\lambda_i,
+    \qquad
     \sum_{i=0}^r \lambda_i = 1
 \]
 che sono tanti parametri.
@@ -141,26 +144,28 @@ che è la media aritmetica.
 \begin{snippettheorem}{Teorema di geometria euclidea}
     Il baricentro di un triangolo
     è il punto di incontro delle rette
-    mediane, e divide ciascuna mediana in due parti una lunga \(\frac13\) dell'altra.
+    mediane, e divide ciascuna mediana nel rapporto \(2:1\).
 \end{snippettheorem}
 
 Fisicamente, il motivo per cui si incontrano
 è dato dal fatto che il baricentro di un segmento è il suo punto medio.
-Il baricentro del segmento di una delle mediane è una media pesata a \(\frac23\).
+Il baricentro del segmento di una delle mediane è una media pesata a \(\frac23\)
+verso il punto medio del lato opposto.
 
 \begin{snippetproof}{}
-    Sia \(B = \frac13(P_0 + P_1 + P2)\).
+    Sia \(B = \frac13(P_0 + P_1 + P_2)\).
     Consideriamo la retta \(P_0B = \{(1-t)P_0 + tB\}\), cioè
     \[
-        P_0B = \left(1 - t + \frac{t}{3}\right)P_0 - \frac{t}{3}P_1 + \frac{t}{3}P_2
+        (1-t)P_0+tB =
+        \left(1 - \frac{2t}{3}\right)P_0 + \frac{t}{3}P_1 + \frac{t}{3}P_2
     \]
-    che sta sul lato \([P_1, P2]\) se e solo se \(1-t + t/3 = 0\),
-    cioè \(t = 1/2\). Quindi,
+    che sta sul lato \([P_1, P_2]\) se e solo se \(1-\frac{2t}{3} = 0\),
+    cioè \(t = \frac32\). Quindi,
     \begin{align*}
-        \left(1 - t + \frac{t}{3}\right)P_0 + \frac{t}{3}P_1 + \frac{t}{3}P_2
+        \left(1 - \frac{2t}{3}\right)P_0 + \frac{t}{3}P_1 + \frac{t}{3}P_2
         = \frac{1}{2}P_1 + \frac{1}{2}P_2
     \end{align*}
-    per \(t=1/2\), che è il punto medio \(M_{1,2}\) fra \(P_1\) e \(P_2\).
+    per \(t=\frac32\), che è il punto medio \(M_{1,2}\) fra \(P_1\) e \(P_2\).
     Analogamente lo stesso vale per ogni mediana \(P_i M_{j,k}\).
     Quindi le tre mediane si incontrano nel baricentro.
     Inoltre, vediamo come scrivere \(B\) come combinazione affine fra \(P_0\)
@@ -177,21 +182,21 @@ Il baricentro del segmento di una delle mediane è una media pesata a \(\frac23\
 Lo stesso teorema vale per i simplessi di dimensione superiore.
 Per il tetraedro la mediana parte dal baricentro di ogni faccia, cioè
 il baricentro del triangolo. Quindi abbiamo una sorta di successione di punti di baricentro,
-e la mediana viene spezzata in due parti con rapporto \(\frac14\).
+e il baricentro divide la mediana nel rapporto \(3:1\).
 
 \begin{snippetdefinition}{}
-    Due curve parmetrizzate \(\sigma_1 \colon I \fromto \realnumbers^n, \sigma_2 \colon J \fromto \realnumbers^n\) di classe \(\mathcal C^h, \mathcal C^k\)
+    Due curve parametrizzate \(\sigma_1 \colon I \fromto \realnumbers^n, \sigma_2 \colon J \fromto \realnumbers^n\) di classe \(\mathcal C^h, \mathcal C^k\)
     rispettivamente si dicono \emph{equivalenti}
-    se esiste un diffeomorfismo \(h \colon J \fromto I\) tale che \(\sigma_2 = \sigma_1 \circ h\).
+    se esiste un diffeomorfismo \(\eta \colon J \fromto I\) tale che \(\sigma_2 = \sigma_1 \circ \eta\).
 \end{snippetdefinition}
 
-Il diffeomorfismo è un omeomorfismo tale che \(h,h^{-1}\) siano di classe \(\mathcal C^{\max\{h,k\}}\).
-Quindi se \(h,k \geq 1\) allora \(h,h^{-1}\) sono derivabili e quindi
-\(h'(t) \neq 0\) in quanto
+Il diffeomorfismo è un omeomorfismo tale che \(\eta,\eta^{-1}\) siano di classe \(\mathcal C^{\max\{h,k\}}\).
+Quindi se \(h,k \geq 1\) allora \(\eta,\eta^{-1}\) sono derivabili e quindi
+\(\eta'(t) \neq 0\) in quanto
 \[
-    \frac{dh^{-1}}{ds} = \restr{\frac{1}{h'(t)}}{s = h(t)}
+    \frac{d\eta^{-1}}{ds} = \restr{\frac{1}{\eta'(t)}}{s = \eta(t)}
 \]
-ne segue quindi che per \(t \in J\) abbiamo \(h'(t) > 0\) o \(h'(t) < 0\),
+ne segue quindi che per \(t \in J\) abbiamo \(\eta'(t) > 0\) o \(\eta'(t) < 0\),
 cioè è monotona crescente o decrescente.
 
 \begin{snippetexample}{Tutte le parametrizzazioni lineari di una retta sono equivalenti}
@@ -243,11 +248,11 @@ In una curva liscia le derivate esistono gli estremi, quindi se a tratti, sui pu
 avere derivata destra e sinistra usando le derivate dei pezzi di curva prima o dopo rispettivamente.
 
 \begin{snippetdefinition}{}
-    Una curva liscia a tratti è detta regolare se le sue derivate destre e simistri sono non nulli.
+    Una curva liscia a tratti è detta regolare se le sue derivate destre e sinistre sono non nulle.
 \end{snippetdefinition}
 
 \begin{snippetdefinition}{Punto angoloso e cuspidi per una curva}
-    Se \(\sigma_{-}'(t) \neq \sigma_{+}'(t)\) e sono enrambi non nulli,
+    Se \(\sigma_{-}'(t) \neq \sigma_{+}'(t)\) e sono entrambi non nulli,
     allora \(\sigma(t)\) è detto:
     \begin{enumerate}
         \item punto angoloso se \(\sigma_{-}'(t), \sigma_{+}'(t)\) sono linearmente indipendenti
@@ -264,14 +269,14 @@ avere derivata destra e sinistra usando le derivate dei pezzi di curva prima o d
                 \frac{
                     \langle \sigma_{-}'(t), \sigma_{+}'(t)\rangle
                 }{
-                    ||\sigma_{-}'(t)|| \cdot ||\sigma_{-}'(t)||
+                    ||\sigma_{-}'(t)|| \cdot ||\sigma_{+}'(t)||
                 }
             \right) & \det(\sigma_{-}'(t), \sigma_{+}'(t)) > 0 \\
             -\arccos \left(
                 \frac{
                     \langle \sigma_{-}'(t), \sigma_{+}'(t)\rangle
                 }{
-                    ||\sigma_{-}'(t)|| \cdot ||\sigma_{-}'(t)||
+                    ||\sigma_{-}'(t)|| \cdot ||\sigma_{+}'(t)||
                 }
             \right) & \det(\sigma_{-}'(t), \sigma_{+}'(t)) < 0
         \end{cases}
@@ -316,7 +321,7 @@ La seconda intersezione è quella di auto intersecarsi.
     \begin{enumerate}
         \item se \(\mu\) è commensurabile con
         \(b/a\), allora la traiettoria è periodica.
-        \item se \(\mu\) non è commensurabile con \(b/s\) allora la traiettoria è densa.
+        \item se \(\mu\) non è commensurabile con \(b/a\) allora la traiettoria è densa.
     \end{enumerate}
 \end{snippetexample}
 
@@ -1476,8 +1481,8 @@ Sia \(\sigma(s)\) una curva con \(k(s_0)>0\). Allora la circonferenza \(C\) pass
 	 \Pi = \sigma(s_0)+\mathcal L\bigl(\dot\sigma(s_0),\ddot\sigma(s_0)\bigr),
 \]
 tangente a \(\sigma\) in \(\sigma(s_0)\), con centro nel semipiano
-\[
-	 \Pi^+(\dot\sigma(s_0))=\bigl\{x\in\Pi \mid \langle x,\ddot\sigma(s_0)\rangle>0\bigr\}
+    \[
+	 \Pi^+(\dot\sigma(s_0))=\bigl\{x\in\Pi \mid \langle x-\sigma(s_0),\ddot\sigma(s_0)\rangle>0\bigr\}
 \]
 e raggio
 \[
@@ -1739,7 +1744,7 @@ rispetto a parametrizzazione arbitraria.
     dove il valore assoluto indica il modulo \(\sqrt{\langle v, v \rangle}\).
 \end{snippetproposition}
 
-È facile ricavare la formual ricordando che \(\langle \ddot \sigma, \sigma'\rangle = 0\)
+È facile ricavare la formula ricordando che \(\langle \ddot \sigma, \sigma'\rangle = 0\)
 e che \(\ddot \sigma = \alpha \sigma'' + \beta \sigma'\)
 con \(\alpha\) ricavato nel modo seguente:
 nel caso particolare di \(t = as\) con \(a>0\) costante,
@@ -1764,7 +1769,7 @@ quindi
 \]
 Da cui
 \[
-    \beta = - \frac{\langle \sigma'', \sigma'\rangle}{|\sigma'|^2}
+    \beta = - \frac{\langle \sigma'', \sigma'\rangle}{|\sigma'|^4}
 \]
 
 \begin{snippetproof}{}
@@ -1883,7 +1888,7 @@ Supponiamo di avere una famiglia di curve piane
     \]
     Successivamente la condizione di tangente ci dice che
     \begin{align*}
-        0 &= \langle \nabla F(t,x(t, y(t))), \sigma'(t) \rangle \\
+        0 &= \langle \nabla_{x,y} F(t,x(t), y(t)), \sigma'(t) \rangle \\
         0 &= \frac{\partial F}{\partial x}(t, x(t), y(t))x'(t) + \frac{\partial F}{\partial y}(t, x(t), y(t))y'(t)
     \end{align*}
     cioè ortogonalità al gradiente.
@@ -1891,8 +1896,8 @@ Supponiamo di avere una famiglia di curve piane
     \begin{align*}
         0 &= \frac{d}{dt} F(t,x(t),y(t)) \\
         &= \frac{\partial F}{\partial t}(t, x(t), y(t))
-        + \frac{\partial F}{\partial x}(t, x(t), y(t))
-        + \frac{\partial F}{\partial y}(t, x(t), y(t))
+        + \frac{\partial F}{\partial x}(t, x(t), y(t))x'(t)
+        + \frac{\partial F}{\partial y}(t, x(t), y(t))y'(t)
     \end{align*}
     Quindi metendo assieme le due espressioni due termini di derivate parziale si annullano e rimane
     la condizione della tesi.
@@ -1950,7 +1955,7 @@ Supponiamo di avere una famiglia di curve piane
 \begin{snippetexample}{}{Non sempre esiste la curva di inviluppo}
     Se consideriamo il fascio di rette passanti per un punto, come l'origine, cioè date
     dall'equazione \(F(t,x,y) = y - tx\), oppure il fascio di rette parallele
-    \(F(x,x,y) = y- t\), la curva di involuzione non può esistere.
+    \(F(t,x,y) = y- t\), la curva di inviluppo non può esistere.
     I sistemi associati sono nel primo caso
     \[
         \begin{cases}
@@ -1972,7 +1977,7 @@ Supponiamo di avere una famiglia di curve piane
         \end{cases}
         \rightarrow
         \begin{cases}
-            y - t = 0
+            y - t = 0 \\
             -1 = 0
         \end{cases}
     \]
@@ -2070,12 +2075,12 @@ e la sua traiettoria è data dalla curva di involuzione della circonferenza.
     abbiamo \begin{align*}
         d(F_1, Q) + d(F_2, Q)
         &= d(F_1, Q) + d(F_2', Q) \\
-        &> d(F_1, F_2) = d(F_1, P) + d(F_2, P)
+        &> d(F_1, F_2') = d(F_1, P) + d(F_2, P)
     \end{align*}
     Notiamo che \(d(Q, F_2) = d(Q, F_2')\) poiché
-    \(Q \in b\) che è anche l'asse del segment \([F_2, F_2']\).
-    Quindi \(Q \in B\) con \(Q \neq P\) che non può appartenere,
-    quindi \(Q \intersection b = \{P\}\) e quindi deve essere tangente.la tesi segue dalla simmetria
+    \(Q \in b\) che è anche l'asse del segmento \([F_2, F_2']\).
+    Quindi ogni \(Q \in b\) con \(Q \neq P\) non può appartenere all'ellisse,
+    quindi \(E \intersection b = \{P\}\) e \(b\) deve essere tangente. La tesi segue dalla simmetria
     degli angoli sul vertice.
     \wrapfill
 \end{snippetproof}
@@ -2161,19 +2166,21 @@ che possiamo calcolare facilmente applicando Gram-Schmidt alla base
     \]
     Allora, si trova
     \[
-        \dot s_C = \frac{ds_C}{ds} = \dot\rho
+        \dot s_C = \frac{ds_C}{ds} = |\dot\rho|
     \]
     cioè \[
         \begin{cases}
-            s_C = \frac{1}{\kappa} + C \\
+            s_C = \displaystyle\int |\dot\rho(s)|\,ds \\
             \restr{
                 \frac{d\sigma_C}{ds_C}
             }{
                 s_C = s_C(s)
-            } = n(s)
+            } = \operatorname{sign}(\dot\rho(s))\,n(s)
         \end{cases}
     \]
-    con \(C\) costante.
+    dove la formula vale nei punti in cui \(\dot\rho(s)\neq 0\).
+    In particolare, se si usa un parametro d'arco orientato e \(\dot\rho>0\), allora
+    \(s_C=\rho+C=\frac1\kappa+C\) e \(\frac{d\sigma_C}{ds_C}=n\).
 \end{snippetproposition}
 
 Se la curva ha due flessi, allora la curva evoluta va verso (ad infinito) alle due rette perpendicolari
@@ -2205,13 +2212,13 @@ alla curva sui flessi.
 \end{center}
 
 \begin{snippetproof}{}
-    Calcolaimo \begin{align*}
+    Calcoliamo \begin{align*}
         \frac{d}{ds} \sigma_C(s_C(s))
         &= \restr{
             \frac{ds_C}{ds} \cdot \frac{d\sigma_C}{ds_C}
         }{
             s_C=s_C(s)
-        } = \frac{d}{d\sigma} \left(
+        } = \frac{d}{ds} \left(
             \sigma(s) + \rho(s)n(s)
         \right) \\
         &= \dot\sigma(s) + \dot\rho(s)n(s) + \rho(s)\dot n(s)
@@ -2219,7 +2226,8 @@ alla curva sui flessi.
     Osserviamo che \(\langle \dot n, n \rangle = 0\) poiché \(\langle n, n \rangle = 1\).
     Dunque \(\dot n = \lambda \dot\sigma\). Essendo \(n = \ddot\sigma / \kappa = \rho \ddot \sigma\).
     Troviamo \begin{align*}
-        0 &= \frac{d}{ds} \langle n, \sigma \dot \rangle = \langle \dot n, \sigma''\rangle + \langle n, \sigma''\rangle \\
+        0 &= \frac{d}{ds} \langle n, \dot\sigma \rangle
+        = \langle \dot n, \dot\sigma\rangle + \langle n, \ddot\sigma\rangle \\
         &= \langle \dot n, \dot\sigma \rangle + \langle n, \kappa n\rangle \\
         &= \langle \dot n, \dot\sigma \rangle + \kappa
     \end{align*}
@@ -2229,22 +2237,22 @@ alla curva sui flessi.
     \]
     Sostituendo nell'espressione iniziale otteniamo
     \begin{align*}
-        \frac{ds_C}{ds} \cdot \frac{\sigma_C}{ds_C}
-        &= \frac{\sigma_C}{ds} = \dot\sigma + \rho \dot n + \rho n \\
+        \frac{ds_C}{ds} \cdot \frac{d\sigma_C}{ds_C}
+        &= \frac{d\sigma_C}{ds} = \dot\sigma + \dot\rho n + \rho \dot n \\
         &= \cancel{\dot \sigma} - \cancel{\rho \kappa \dot \sigma} + \dot \rho n \\
         &= \dot \rho n
     \end{align*}
     Ricordiamo che \(\frac{d\sigma_C}{ds_C} = \dot\sigma_C\) vettore unitario e quindi troviamo
     \[
-        \frac{ds_C}{s}\left(\dot\sigma_C\right) = \dot\rho n \iff
+        \frac{ds_C}{ds}\left(\dot\sigma_C\right) = \dot\rho n \iff
         \begin{cases}
-            \frac{ds_c}{ds} = \dot\rho \\
-            \dot\sigma_C = n
+            \frac{ds_C}{ds} = |\dot\rho| \\
+            \dot\sigma_C = \operatorname{sign}(\dot\rho)n
         \end{cases}
     \]
-    Ciò significa \begin{align*}
+    Se si usa un parametro d'arco orientato e \(\dot\rho>0\), ciò significa \begin{align*}
         \begin{cases}
-            s_C = \rho + \cos t = \frac{1}{\kappa} + C = d(P, P_C) + C \\
+            s_C = \rho + C = \frac{1}{\kappa} + C = d(P, P_C) + C \\
             n = \dot\sigma_C
         \end{cases}
     \end{align*}
@@ -2254,8 +2262,8 @@ alla curva sui flessi.
 \pagebreak
 
 \begin{snippetnote}{Interpretazione geometrica}
-    Possiamo imporre uguale a \(0\) la costante
-    in \(s_C = \frac1\kappa + C\), cioè
+    Quando si usa il parametro d'arco orientato e \(\dot\rho>0\), possiamo imporre uguale a \(0\) la costante
+    in \(s_C = \frac1\kappa + C\), ottenendo
     \[
         s_C = \frac1\kappa = d(P, P_C)
     \]
@@ -2293,7 +2301,7 @@ cioè geometricamente la otteniamo ``svolgendo'' un filo inelastico arrotolato s
 \begin{snippetproof}{}
     Segue dalla formula
     \[
-        \sigma = \sigma_C + s_C \cdot \dot \sigma_C
+        \sigma = \sigma_C - s_C \cdot \dot \sigma_C
     \]
 \end{snippetproof}
 
@@ -2332,12 +2340,12 @@ cioè geometricamente la otteniamo ``svolgendo'' un filo inelastico arrotolato s
     \begin{align*}
         \sigma_{\text{inv}}(\theta) &= \sigma(\theta) + \theta \dot\sigma(\theta) \\
         &= (\cos\theta - \theta\sin\theta, \sin\theta + \theta\cos\theta) \\
-        d(\sigma_{\text{inv}}(\theta), 0) &= \sqrt{
+    d(\sigma_{\text{inv}}(\theta), 0) &= \sqrt{
             {(\cos\theta - \theta\sin\theta)}^2 + {(\sin\theta + \theta\cos\theta)}^2
         } \\
         &= \sqrt{1 + \theta^2} = O(\theta) % TODO bigO
     \end{align*}
-    che ha forma di spirale logaritmica.
+    che ha forma di involuta della circonferenza.
     \wrapfill
 \end{snippetexample}
 
@@ -2452,12 +2460,12 @@ cioè geometricamente la otteniamo ``svolgendo'' un filo inelastico arrotolato s
     \begin{align*}
         \tau(s(u)) &= \sigma(s(u)) - s(u) \dot\sigma(s(u)) \\
         &= (u, \cosh u) - \sinh u \left(
-            \frac{1}{\cosh u, \tanh u}
+            \frac{1}{\cosh u}, \tanh u
         \right) \\
         &= \left(
             u - \tanh u, \cosh u - \frac{
                 \cosh^2(u) - 1
-            }{\cosh^2(u)}
+            }{\cosh u}
         \right) \\
         &= \left(
             u - \tanh(u), \frac{1}{\cosh u}
@@ -2841,7 +2849,8 @@ Disegno approssimativo di una spirale autoevoluta nel caso \(n=1\).
 Siccome \(\langle \dot\sigma, \ddot\sigma \rangle = 0\),
 \(v\) ed \(n\) sono ortogonali.
 Quindi la terna \(v,n,b\) sono una base ortonormale di \(\realnumbers^3\)
-orientata positivamente. Infatti \(\det(v,n,b) = 1 > 0\) di una matrice del gruppo ortogonale speciale.
+orientata positivamente. Infatti \(\det(v,n,b) = 1\), quindi la matrice che ha colonne \(v,n,b\)
+appartiene al gruppo ortogonale speciale.
 I vettori \(\sigma(s), v, n\) generano il piano osculatore in \(\sigma(s)\)
 e \(b\) è ortogonale al piano osculatore.
 
@@ -2854,7 +2863,7 @@ e il movimento continuo preserva il determinante.
     purché biregolare.
     \begin{align*}
         v &= \frac{\sigma'(t)}{||\sigma'(t)||} \\
-        b &= \frac{\sigma' \wedge \sigma''}{\sigma' \wedge \sigma''} \\
+        b &= \frac{\sigma' \wedge \sigma''}{||\sigma' \wedge \sigma''||} \\
         n &= \frac{
             (\sigma' \wedge \sigma'') \wedge \sigma'
         }{
@@ -2870,7 +2879,7 @@ e il movimento continuo preserva il determinante.
     cioè la curvatura, e \(\tau \colon I \fromto \realnumbers\),
     cioè la torsione, tale che vale il sistema di equazioni differenziali linear \[
         \begin{cases}
-            \dot v = kn \\
+            \dot v = \kappa n \\
             \dot n = -\kappa v + \tau b\\
             \dot b = -\tau n
         \end{cases}
@@ -2880,7 +2889,7 @@ e il movimento continuo preserva il determinante.
 \begin{snippetproof}{}
     Ricaviamo solo la formula di \(\dot b\) che definisce la funzione di torsione.
     Abbiamo che \(|b|^2 = 1\), cioè \(\langle b,b\rangle = 1\) e quindi \(\langle \dot b, b \rangle =0\).
-    Quindi \(b \perp b\) sono ortogonali.
+    Quindi \(\dot b \perp b\).
     Similmente, derivando, otteniamo \(\dot b = \dot v \wedge n + v \wedge \dot n\).
     Osserviamo che \(\dot v = \ddot \sigma = \kappa n\),
     cioè \[
@@ -2888,7 +2897,7 @@ e il movimento continuo preserva il determinante.
     \]
     Quindi \(\dot b = v \wedge \dot n\) da cui segue
     \(\dot b \perp v\).
-    Ne segue anche che \(\dot b\) è perpendicolare a \(n = b \wedge v\),
+    Ne segue anche che \(\dot b\) è parallelo a \(n = b \wedge v\),
     cioè \[
         \dot b = - \tau n
     \]
@@ -2901,9 +2910,9 @@ Grazie all'esistenza di questo sistema si ottiene il seguente teorema di classif
     Siano \(\sigma_1, \sigma_2 \colon I \fromto \realnumbers^3\)
     due curve biregolari con le medesime funzioni di curvatura \(\kappa_1 = \kappa_2\) e torsione
     \(\tau_1 = \tau_2\).
-    Allora esiste \(g\) isometria di \(\realnumbers^3\)
+    Allora esiste \(g\) isometria diretta di \(\realnumbers^3\)
     tale che \(g\sigma_1 = \sigma_2\).
-    Vale anche il viceversa, cioè se le due curve sono collegate per isometria, allora
+    Vale anche il viceversa, cioè se le due curve sono collegate per isometria diretta, allora
     hanno le medesime curvature e torsioni.
 \end{snippettheorem}
 
@@ -2911,7 +2920,7 @@ Grazie all'esistenza di questo sistema si ottiene il seguente teorema di classif
     \begin{ffiproof}
         \item Se \(\sigma_2 = g \sigma_1\), cioè
         \[
-            gx = Ax + C, \quad A \in O(3), C \in \realnumbers^3
+            gx = Ax + C, \quad A \in SO(3), C \in \realnumbers^3
         \]
         Allora \[
             \dot\sigma_2 = A \cdot \dot \sigma_1, \quad \ddot \sigma_2 = A \cdot \ddot\sigma_1
@@ -2925,7 +2934,7 @@ Grazie all'esistenza di questo sistema si ottiene il seguente teorema di classif
             &= A(v_1 \wedge n_1) = Ab_1
         \end{align*}
         e quindi anche \(\dot b_2 = A\dot b_1\).
-        Siccome \(\kappa = |\ddot \sigma|\) e \(\tau = |\dot b|\)
+        Siccome \(\kappa = |\ddot \sigma|\) e \(\tau = -\langle \dot b,n\rangle\)
         troviamo che \(\kappa_1 = \kappa_2\) e \(\tau_1 = \tau_2\).
         \item Siano \(\kappa_1 = \kappa_2 = \kappa\) e
         \(\tau_1 = \tau_2 = \tau\) e assumiamo con un movimento rigido che
@@ -2938,8 +2947,8 @@ Grazie all'esistenza di questo sistema si ottiene il seguente teorema di classif
                 \dot v = \kappa n \\
                 \dot n = -\kappa v + \tau b \\
                 \dot b = - \tau n \\
-                v(t_0) = v_0
-                n(t_0) = n_0
+                v(t_0) = v_0 \\
+                n(t_0) = n_0 \\
                 b(t_0) = b_0
             \end{cases}
         \]
@@ -2952,7 +2961,7 @@ Grazie all'esistenza di questo sistema si ottiene il seguente teorema di classif
         \[
             \begin{cases}
                 \dot \sigma(t) = v(t) \\
-                v(t) = v_0                
+                \sigma(t_0) = \sigma_1(t_0)
             \end{cases}
         \]
         con \(v(t) = v_1(t) = v_2(t)\).
@@ -2964,7 +2973,7 @@ Grazie all'esistenza di questo sistema si ottiene il seguente teorema di classif
 Esistono tante curve a meno di isometria tante quante sono le copie
 di funzioni \((\kappa, \tau)\).
 
-In particoalre, per le curve piane (immerse in \(\realnumbers^3\)) è sufficiente solo la curvatura \(\kappa\)
+In particolare, per le curve piane (immerse in \(\realnumbers^3\)) è sufficiente solo la curvatura \(\kappa\)
 per classificare una curva a meno di isometria.
 Infatti \(b = b_3\) costante per una curva piana.
 Serve  \(\tau = 0\), cioè per curve piane \((\kappa, \tau) = (\kappa, 0)\).
@@ -3012,7 +3021,7 @@ Serve  \(\tau = 0\), cioè per curve piane \((\kappa, \tau) = (\kappa, 0)\).
     Otteniamo quindi la parametrizzazione per arco
     \[
         \sigma(s) = \left(
-            \cos\left(\frac{s}{\sqrt{1 + a^2}}\right), \sin\left(\frac{s}{\sqrt{1 + a^2}}\right), \frac{as}{\sqrt{1 + a^2}}t
+            \cos\left(\frac{s}{\sqrt{1 + a^2}}\right), \sin\left(\frac{s}{\sqrt{1 + a^2}}\right), \frac{as}{\sqrt{1 + a^2}}
         \right)
     \]
     Da cui il prossimo termine
@@ -3033,7 +3042,7 @@ Serve  \(\tau = 0\), cioè per curve piane \((\kappa, \tau) = (\kappa, 0)\).
             0
         \right)
     \]
-    E quindi la cuevatura è data da \(\kappa = \frac{1}{1 + a^2}\).
+    E quindi la curvatura è data da \(\kappa = \frac{1}{1 + a^2}\).
     Il secondo vettore è quindi
     \[
         n(s) = \frac{\ddot \sigma}{\kappa} = - \left(
@@ -3044,13 +3053,13 @@ Serve  \(\tau = 0\), cioè per curve piane \((\kappa, \tau) = (\kappa, 0)\).
     \]
     Per trovare il terzo vettore calcoliamo il prodotto vettoriale
     \[
-        b(s) = v(s) \wedge n(s) = - \frac{1}{\sqrt{1 + a^2}} \restr{
+        b(s) = v(s) \wedge n(s) = \frac{1}{\sqrt{1 + a^2}} \restr{
             \begin{pmatrix}
                 a \sin(t) \\
                 - a \cos(t) \\
                 1
             \end{pmatrix}
-        }{t = \frac{1}{\sqrt{1 +a^2}}}
+        }{t = \frac{s}{\sqrt{1 +a^2}}}
     \]
     Inoltre, la torsione è data da \(\tau(s) = \frac{a}{1 + a^2}\)
     che è costante come la curvatura.
@@ -3095,8 +3104,9 @@ Serve  \(\tau = 0\), cioè per curve piane \((\kappa, \tau) = (\kappa, 0)\).
         dove \(\theta\) è l'angolo fra \(v\) e \(w\).
         \item sia \(g \in O(3)\), allora
         \[
-            gv \wedge gw = g(v \wedge w)
+            gv \wedge gw = \det(g)\,g(v \wedge w)
         \]
+        In particolare, se \(g \in SO(3)\), allora \(gv \wedge gw = g(v \wedge w)\).
         \item corrisponde all'area del parallelogramma con due lati adiacenti
         i vettori \(v\) e \(w\)
         \[
@@ -3191,12 +3201,12 @@ Vogliamo quindi calcolare il winding number di una curva piana attorno ad un pun
 Cioè stiamo normalizzando la curva per centrarla su \(S^1\) e poi calcoliamo il suo winding number.
 
 \begin{snippetproposition}{}
-    Il winding number \(i(\sigma, P)\) è indipendente da
+    Il winding number \(i(\sigma, P)\)
     \begin{enumerate}
-        \item la classe di omotopia di \[
+        \item dipende solo dalla classe di omotopia di \[
             [\sigma] \in \pi_1(\realnumbers^2 \difference \{P\}) \cong \pi_1(S^1)
         \]
-        \item la posizione di \(P\) nella componente connessa di
+        \item è indipendente dalla posizione di \(P\) nella componente connessa di
         \(\realnumbers^2 \difference \operatorname{Im}(\sigma)\) a cui \(P\) appartiene.
     \end{enumerate}
 \end{snippetproposition}
@@ -3228,7 +3238,7 @@ Cioè stiamo normalizzando la curva per centrarla su \(S^1\) e poi calcoliamo il
     Se \(P(s)\) è un cammino in \(\realnumbers^2 \difference \operatorname{Im}(\sigma)\),
     allora \[
         i(\sigma, P(s)) = \frac{
-            \theta_s(b)  \theta_s(a)
+            \theta_s(b) - \theta_s(a)
         }{
             2\pi
         }
@@ -3243,7 +3253,7 @@ Cioè stiamo normalizzando la curva per centrarla su \(S^1\) e poi calcoliamo il
 Se la curva proiettata sul cerchio unitario centrato in \(P\)
 è solo un arco di circonferenza, il winding number è 0. Il converso non è necessariamente vero.
 Una curva a forma di 8 ha punti in una componente con indice \(-1\), mentre l'altra \(1\),
-e tutti i punti esterni \(1\). Infatti, il punto di intersezione non è separabile per omotopia.
+e tutti i punti esterni \(0\). Infatti, il punto di intersezione non è separabile per omotopia.
 
 \begin{radioactive}
 \begin{snippetexample}{Winding number di curve piane}
@@ -3285,7 +3295,7 @@ e tutti i punti esterni \(1\). Infatti, il punto di intersezione non è separabi
 Per una curva chiuse e semplice, è facile definire la nozione di punto esterno o interno alla curva.
 Invece, se la curva è intersecata è più difficile.
 
-\begin{snippettheorem}{Teorema di Jordan-Browner}
+\begin{snippettheorem}{Teorema della curva di Jordan}
     Sia \(\sigma \colon [a,b] \fromto \realnumbers^2\)
     una curva di Jordan chiusa.
     Allora, \(\realnumbers^2 \difference \operatorname{Im}(\sigma)\)
@@ -3308,7 +3318,7 @@ ad un punto, o uno antiorario, o nessun giro completo.
 
 \begin{snippetproposition}{}
     Sia \(P \in \realnumbers^2\) e
-    sia \(\sigma \colon [a,b] \fromto \complexnumbers\),
+    sia \(\sigma \colon [a,b] \fromto \complexnumbers\) una curva chiusa,
     scritta in forma \(\sigma(t) = \varphi_1(t) + i \varphi_2(t)\)
     con \(\varphi_i \colon [a,b] \fromto \realnumbers\).
     Allora, se \(\sigma(t) \neq P\) per tutte le \(t \in [a,b]\),
@@ -3347,7 +3357,7 @@ ad un punto, o uno antiorario, o nessun giro completo.
 \end{snippetproof}
 
 \begin{snippetcorollary}{}
-    Sia \(\sigma \colon [a,b) \fromto \realnumbers^2\)
+    Sia \(\sigma \colon [a,b] \fromto \realnumbers^2\) una curva chiusa
     tale che \(0 \notin \operatorname{Im}(\sigma)\),
     dove scriviamo
     \(\sigma(t) = (\varphi_1(t), \varphi_2(t))\). Allora,
@@ -3367,7 +3377,7 @@ ad un punto, o uno antiorario, o nessun giro completo.
     troviamo
     \begin{align*}
         \frac{\sigma'}{\sigma} &= \frac{
-            \varphi_1 + i\varphi_2'
+            \varphi_1' + i\varphi_2'
         }{
             \varphi_1 + i\varphi_2
         } = \frac{
@@ -3381,7 +3391,7 @@ ad un punto, o uno antiorario, o nessun giro completo.
             \varphi_1^2 + \varphi_2^2
         } + 
         i\frac{
-            \varphi_1\varphi_1' - \varphi_2\varphi_2'
+            \varphi_1\varphi_2' - \varphi_2\varphi_1'
         }{
             \varphi_1^2 + \varphi_2^2
         }
@@ -3870,12 +3880,12 @@ di incidenza interno o esterno.
     Sia \(\sigma \colon [a,b] \fromto \realnumbers^2\)
     la parametrizzazione per lunghezza d'arco della traiettoria della ruota posteriore, allora
     \[
-        \sigma_a(s) = \sigma(s) + l\sigma'(s)
+        \sigma_a(s) = \sigma(s) + d\sigma'(s)
     \]
     è una parametrizzazione della traiettoria della ruota anteriore.
     L'area \(A\) è racchiusa fra di essere è calcolabile con la formula di Green
     \begin{align*}
-        A &= \int_D \,\text{d}x\,\text{d}y = \frac12 \int_{\partial D} (x\,\text{d}x - y\,\text{d}y) \\
+        A &= \int_D \,\text{d}x\,\text{d}y = \frac12 \int_{\partial D} (x\,\text{d}y - y\,\text{d}x) \\
         &= \frac12 \int_{\sigma_a} (x\,\text{d}y - y\,\text{d}x)
         - \frac12 \int_\sigma (x\,\text{d}y - y\,\text{d}x)
     \end{align*}
@@ -4115,7 +4125,7 @@ con atlante \(\{(\Omega, \text{id})\}\).
     \[
         x_j = \begin{cases}
             u_j & j<i \\
-            \pm \sqrt{1 - \sum_{k=1}^n u_i^2} & j=i \\
+            \pm \sqrt{1 - \sum_{k=1}^n u_k^2} & j=i \\
             u_{j-1} & j>i
         \end{cases}
     \]
@@ -4130,7 +4140,7 @@ con atlante \(\{(\Omega, \text{id})\}\).
 \end{snippetexample}
 
 Possiamo notare che gli aperti \(U_i^\pm\) sono grafici di funzione \[
-    f(x_1, \cdots, x_{i-1}, x_{i+1}, \cdots, x_{n+1}) = \pm \sqrt{1 - \sum_{k=1}^n u_i^2}
+    f(u_1, \cdots, u_n) = \pm \sqrt{1 - \sum_{k=1}^n u_k^2}
 \]
 Abbiamo che \(U_i^\pm \subset D_n \cartesianprod \realnumbers \in \realnumbers^n \cartesianprod \realnumbers = \realnumbers^{n+1}\).
 Ciò rende \(S^n\) una sottovarietà di \(\realnumbers^{n+1}\).
@@ -4155,12 +4165,12 @@ Ciò rende \(S^n\) una sottovarietà di \(\realnumbers^{n+1}\).
     con l'ultima coordinata nulla \(x_{n+1} + t(x_{n+1}-1) = 0\). Otteniamo quindi le coordinate della proiezione.
     Si vede facilmente che \(\Pi_N \circ \varphi_i^\pm\), \(\Pi_S \circ \varphi_i^\pm\) sono mappe liscie quindi
     loro e le loro inverse sono liscie rispetto alla struttura standard di \(\realnumbers^n\) e \(S^n\).
-    Infine, \(\Pi_S^{-1} \circ \Pi_N\) si dimostra essere liscia.
+    Infine, \(\Pi_S \circ \Pi_N^{-1}\) si dimostra essere liscia.
     Dunque, \(\Pi_N^{-1} \colon \realnumbers^n \fromto S^n \difference \{N\}\)
     e \(\Pi_S^{-1} \colon \realnumbers^n \fromto S^n \difference \{S\}\)
     definisco un nuovo atlante compatibile con quello standard.
 
-    Mostriamo ora che \(\Pi_S^{-1} \circ \Pi_N\) è liscia. Abbiamo
+    Mostriamo ora che \(\Pi_S \circ \Pi_N^{-1}\) è liscia. Abbiamo
     \(\Pi_N^{-1}(y_1, \cdots, y_n) = (x_1, \cdots, x_{n+1})\) tale che
     \begin{DispWithArrows*}
         &\begin{cases}
@@ -4174,7 +4184,7 @@ Ciò rende \(S^n\) una sottovarietà di \(\realnumbers^{n+1}\).
         \right)x_{n+1} + \left(
             \sum_{i=1}^{n} y_i^2
         \right)x_{n+1}^2 + x_{n+1}^2 = 1 \Arrow{\(R^2 = \sum_{i=1}^{n} y_i^2\)} \\
-        &(1 + R^2)x_{n+1}^2 = -2R^2x_{n+1} + R^2 - 1 = 0 \\
+        &(1 + R^2)x_{n+1}^2 -2R^2x_{n+1} + R^2 - 1 = 0 \\
         &x_{n+1} = \frac{2R^2 \pm 2}{2 (1 + R^2)} = \begin{cases}
             1 \\
             \frac{R^2 - 1}{R^2 + 1}
@@ -4190,6 +4200,12 @@ Ciò rende \(S^n\) una sottovarietà di \(\realnumbers^{n+1}\).
         \Pi_S \circ \Pi_N^{-1}(y_1, \cdots, y_n) = \Pi_S\left(
             \frac{2y_1}{R^2 + 1}, \cdots, \frac{2y_n}{R^2 + 1}, \frac{R^2 - 1}{R^2 + 1}
         \right), \quad R^2 = \sum_{i=1}^{n} y_i^2
+    \]
+    cioè, sull'intersezione delle carte dove \(R\neq 0\),
+    \[
+        \Pi_S \circ \Pi_N^{-1}(y_1, \cdots, y_n)
+        =
+        \left(\frac{y_1}{R^2},\cdots,\frac{y_n}{R^2}\right).
     \]
     Quindi è liscio in quanto \(\Pi_S\) e \(\Pi_N^{-1}\) sono lisci.
 \end{snippetexample}
@@ -4217,7 +4233,7 @@ Ciò rende \(S^n\) una sottovarietà di \(\realnumbers^{n+1}\).
 
     Costruiamo le carte \(\varphi_i \colon K^n \fromto U_i \subset \mathbb P^n(K)\) definita da
     \[
-        \varphi_i(x_1, \cdots, x_{i-1}, x_{i+1}, \cdots, x_n) = (x_1, \cdots, 1 , \cdots, x_{n+1})
+        \varphi_i(u_1, \cdots, u_n) = [u_1, \cdots, u_{i-1}, 1, u_i,\cdots,u_n]
     \]
     Notiamo che questa è esattamente l'immersione di \(K^n \cong \{z=1\}\) in \(\mathbb P^n(K)\) come descritto prima.
     Avendo definito le carte, controlliamo le funzioni di transito
@@ -4225,10 +4241,10 @@ Ciò rende \(S^n\) una sottovarietà di \(\realnumbers^{n+1}\).
         \varphi_j^{-1} \circ \varphi_i(x_1, \cdots, x_{i-1}, x_{i+1}, \cdots, x_{n+1})
         &= \varphi_j^{-1}(x_1, \cdots, 1, \cdots, x_{n+1}) \\
         &= \varphi_j^{-1}\left(
-            \frac{x_1}{x_j}, \cdots, \underbrace1_j, \cdots, \underbrace{\frac1{x_j}}_i, \cdots, \frac{x_{n+1}}{x_j}
+            \frac{x_1}{x_j}, \cdots, \underbrace{1}_{j}, \cdots, \underbrace{\frac1{x_j}}_{i}, \cdots, \frac{x_{n+1}}{x_j}
         \right) \Arrow{Omitting \\ the \(1\)} \\
         &= \left(
-            \frac{x_1}{x_j}, \cdots, \underbrace{\frac1{x_j}}_i, \cdots, \frac{x_{n+1}}{x_j}
+            \frac{x_1}{x_j}, \cdots, \underbrace{\frac1{x_j}}_{i}, \cdots, \frac{x_{n+1}}{x_j}
         \right)
     \end{DispWithArrows*}
 \end{snippetexample}
@@ -4236,14 +4252,14 @@ Ciò rende \(S^n\) una sottovarietà di \(\realnumbers^{n+1}\).
 Notiamo che per \(n>1\), \(\mathbb P^n(\realnumbers), \mathbb P^n(\complexnumbers)\) non sono omeomorfe a sfere.
 
 \begin{snippetexercise}{}
-    Provare che \(\Pi_1(\mathbb P^2(\realnumbers)) \cong \mathbb Z_2\).
+    Provare che \(\pi_1(\mathbb P^2(\realnumbers)) \cong \mathbb Z_2\).
 \end{snippetexercise}
 
 \begin{snippetsolution}{}
     Hint: c'è un rivestimento 2 a 1, cioè per ogni punto dello spazio proiettivo
     ci sono due punti diamentralmente opposti sulla sfera.
     Prendiamo un cammino nella sfera che collega i due punti.
-    In \( \pi_2\) va in un cammino chiuso.
+    In \(\mathbb P^2(\realnumbers)\) va in un cammino chiuso.
     Se fosse omotopo all'identità, per il teorema di sollevamento delle omotopie,
     ci sarebbe un sollevamento, ma questo non può esistere perché sarebbe un cammino nella fibra
     fra il punto opposto e il punto di base: la fibra è sconnessa.
@@ -4254,8 +4270,8 @@ Notiamo che per \(n>1\), \(\mathbb P^n(\realnumbers), \mathbb P^n(\complexnumber
     L'altro cammino è sulla sfera che ha \(\pi_1\) banale.
 \end{snippetsolution}
 
-La mappa \(\) è continua e suriettiva e permette di mostrare che
-\(\mathbb P^n(\realnumbers)\) è comaptto, in quanto immagine di \(S^n\) compatto.
+La mappa \(S^n \to \mathbb P^n(\realnumbers)\) è continua e suriettiva e permette di mostrare che
+\(\mathbb P^n(\realnumbers)\) è compatto, in quanto immagine di \(S^n\) compatto.
 Nel caso complesso esiste una analoga mappa suriettiva \(\Pi \colon S^{2n + 1} \fromto \mathbb P^n(\complexnumbers)\)
 dove \[
     S^{2n+1} = \{
@@ -4292,7 +4308,7 @@ Infatti,
     \[
         G(r,n) \triangleq G_K(r,n) = \{
             L \subseteq K^n  \suchthat
-            L \text{ sottospazio di dimensione } n    
+            L \text{ sottospazio di dimensione } r
         \}
     \]
 \end{snippetdefinition}
@@ -4320,24 +4336,24 @@ se esiste una matrice
 tale che \((v_1', \cdots, v_r') = (v_1, \cdots, v_r)G\).
 D'altra parte \((v_1, \cdots, v_r)\)
 formano una matrice
-\(n \times z\) a coefficienti \(K\)
+\(n \times r\) a coefficienti \(K\)
 di rango \(r\)
 \[
     (v_1, \cdots, v_r) \in \operatorname{Mat}_{n \times r}(K)
 \]
 Dunque,
 \[
-    G_K(n, r)
+    G_K(r, n)
     = \{A \in \operatorname{Mat}_{n \times r}(K)
     \suchthat \operatorname{rank}(A) = r
     \} / \sim
 \]
-dove \(A \sim A'\) se e solo se \(\exists G \in \operatorname{Mat}_{n \times r}(K)\)
+dove \(A \sim A'\) se e solo se \(\exists G \in \operatorname{GL}_r(K)\)
 tale che \(A' = AG\).
 
 \begin{snippetdefinition}{Topologia per la grassmanniana}
     Definiamo la topologia
-    di \(G_K(n,r)\)
+    di \(G_K(r,n)\)
     come la topologia quoziente
     di \[
         M_r = \{
@@ -4350,7 +4366,7 @@ tale che \(A' = AG\).
     che è indotta dall'azione del gruppo
     \(\operatorname{GL}_r(K)\)
     su \(\operatorname{Mat}_{n \times r}\) cioè
-    \(GA \to AG\).
+    \(A \mapsto AG\).
 \end{snippetdefinition}
 
 Nel caso \(r=1\) cioè lo spazio proiettivo
@@ -4364,7 +4380,7 @@ cosicché
 tale che \(A' = AG\), la relazione già nota che definisce lo spazio proiettivo.
 
 \begin{snippetproposition}{}
-    \(G(n,r)\) è comaptto rispetto alla sua topologia standard.
+    \(G(r,n)\) è compatto rispetto alla sua topologia standard.
 \end{snippetproposition}
 
 \begin{snippetproof}{}
@@ -4374,8 +4390,8 @@ tale che \(A' = AG\), la relazione già nota che definisce lo spazio proiettivo.
     di \(\realnumbers^n\)
     oppure Hermitiano di \(\complexnumbers\).
     Quindi esiste restrizione della proiezione canonica.
-    \(\pi \colon M_r \fromto G(n,r)\)
-    a \(\pi \colon N_r \fromto G(n,r)\)
+    \(\pi \colon M_r \fromto G(r,n)\)
+    a \(\pi \colon N_r \fromto G(r,n)\)
     dove
     \[
         N_r = \{
@@ -4387,7 +4403,7 @@ tale che \(A' = AG\), la relazione già nota che definisce lo spazio proiettivo.
     \[
         N_r = \{
             A = (v_1, \cdots, v_r) \suchthat
-            AA^* = I   
+            A^*A = I_r
         \}
     \]
     Dunque \(N_r\) è definito da equazioni in \(\operatorname{Mat}_{n \times r}(K)\)
@@ -4396,7 +4412,7 @@ tale che \(A' = AG\), la relazione già nota che definisce lo spazio proiettivo.
     \(|v_i| = 1\),
     \(N_r\) è limitato
     in \(\operatorname{Mat}_{n \times r}(K) = K^{nr}\).
-    Quindi \(N_r\) è compatto e pure \(G_K(n,r)\).
+    Quindi \(N_r\) è compatto e pure \(G_K(r,n)\).
 \end{snippetproof}
 
 Definiamo ora l'atlante delle grassmanniane.
@@ -4784,7 +4800,7 @@ I germi di funzioni in \(p\) dipendono solo dal comportamento locale su un intor
     Una derivazione \(\delta \colon C^\infty_{X,p} \fromto \realnumbers\)
     è una funzione \(\realnumbers\)-lineare tale che
     \[
-        \delta([f]\cdot [g]) = \delta([f]) \cdot \delta(p) + f(p) \cdot \delta([g]) 
+        \delta([f]\cdot [g]) = \delta([f]) \cdot g(p) + f(p) \cdot \delta([g])
     \]
     detta regola di Leibniz.
 \end{snippetdefinition}
@@ -4808,12 +4824,10 @@ Inoltre, se \(c \in \realnumbers\)
 e \(\delta \in T_{X,p}\),
 allora \(\delta[c] = 0\).
 Infatti, \[
-    \delta([c]) = c \cdot \delta([1]) = c \delta([1] \cdot [1])
-    = c\left(
-        \delta[1] + \delta[1]
-    \right)
+    \delta([1]) = \delta([1]\cdot[1])
+    = \delta([1])+\delta([1])
 \]
-e quindi \(c \cdot \delta[1] = 0\) cioè \(\delta[c] = 0\).
+e quindi \(\delta([1])=0\). Dunque \(\delta([c])=c\,\delta([1])=0\).
 
 L'idea fondamentale è che un vettore tangente in \(p\) possa essere descritto
 non come una freccia nello spazio ambiente, ma come un operatore che misura
@@ -4869,7 +4883,7 @@ Mostriamo un isomorfismo canonico
     Possiamo scrivere
     \begin{align*}
         f(x) =& \integral[0][1][
-            \frac{d}{dt}(g(tx))
+            \frac{d}{dt}(f(tx))
         ][t] + f(0) \\
         &= \integral[0][1][
             \sum_{i=1}^n
@@ -4880,7 +4894,7 @@ Mostriamo un isomorfismo canonico
             \integral[0][1][
                 \frac{\partial f}{\partial x_i}(tx)
             ][t]
-        \right)
+        \right)x_i
     \end{align*}
     Quindi ponendo \[
         g_i(x) = \integral[0][1][\frac{\partial f(tx)}{\partial x_i}][t]
@@ -4998,7 +5012,7 @@ e possiamo definire
 
 \begin{snippetproof}{}
     Se \(h\) è definita su un intorno di \(F(p)\), allora
-    \(h \circ F\) è definita su un intorno di \(F(p)\),
+    \(h \circ F\) è definita su un intorno di \(p\),
     quindi \([h \circ F]\) è ben definita.
     Inoltre,
     \[
@@ -5016,13 +5030,13 @@ e possiamo definire
             \text{d}F
         \right)_p(\delta)([h \cdot k]) \Arrow{definition} \\
         &= \delta((h \cdot k) \circ F) = \delta((h \circ F) \cdot (k \circ F)) \Arrow{Leibniz rule} \\
-        &= \delta(h \circ F) \cdot k(f(p)) + h(f(p)) \cdot \delta(k \circ F)  \\
+        &= \delta(h \circ F) \cdot k(F(p)) + h(F(p)) \cdot \delta(k \circ F)  \\
         &= \left(
             \text{d}F
-        \right)_p(\delta([h])) \cdot k(F(p)) + h(F(p))
+        \right)_p(\delta)([h]) \cdot k(F(p)) + h(F(p))
         \left(
             \text{d}F
-        \right)_p(\delta([k]))
+        \right)_p(\delta)([k])
     \end{DispWithArrows*}
     Quindi il differenziale è chiaramente lineare, cioè
     \[
@@ -5055,7 +5069,7 @@ e possiamo definire
         \restr{\left(\text{d}F\right)}{p}
         \colon \realnumbers^n \fromto \realnumbers^m
     \]
-    coincide con il differenziale 
+    coincide con il differenziale classico, cioè con la matrice Jacobiana di \(F\) in \(p\).
 \end{snippetproposition}
 
 \begin{snippetproof}{}
@@ -5123,7 +5137,7 @@ Più in generale, con dimostrazione analoga, si prova il seguente:
 \begin{snippetproposition}{}
     Sia \(F \colon X \fromto Y\) mappa \(\mathcal C^\infty\)
     e \(\varphi \colon \Omega \fromto X\) carta con \(p \in \operatorname{im}\varphi\),
-    \(\Phi \colon \Omega' \fromto Y\) carta con \(F(p) \in \operatorname{Im}\phi\).
+    \(\Phi \colon \Omega' \fromto Y\) carta con \(F(p) \in \operatorname{Im}\Phi\).
     Allora la matrice associata ad \(\left(\text{d}F\right)_p \colon T_{X,p} \fromto T_{Y, F(p)}\)
     rispetto alle basi canoniche \(\partial_1^\varphi, \cdots, \partial_n^\varphi\)
     e \(\partial_1^\Phi, \cdots, \partial_n^\Phi\) rispettivamente, è data da
@@ -5140,7 +5154,7 @@ Guardiamo ora metodi per costruire sottovarietà.
     Sia \(F \colon X \fromto Y\) tale che
     per un dato \(Q \in Y\) si abbia che \(\forall P \in F^{-1}(\{Q\})\)
     \[
-        \left(\text{d}F\right)_p \colon T_{X,p} \fromto T_{Y, F(p)}
+        \left(\text{d}F\right)_P \colon T_{X,P} \fromto T_{Y, Q}
     \]
     è suriettivo. Allora, \(Z = F^{-1}(\{Q\})\) è una sottovarietà di \(X\)
     di dimensione \(\dim Z = \dim X - \dim Y\).
@@ -5170,7 +5184,7 @@ Guardiamo ora metodi per costruire sottovarietà.
 \end{center}
 
 \begin{snippetproof}{Cenno di dimostrazione}
-    La condizione di sottovrietà per \(F^{-1}(\{Q\}) \subseteq X\)
+    La condizione di sottovarietà per \(F^{-1}(\{Q\}) \subseteq X\)
     è una condizione ``locale'', cioè dipende da un intorno di \(P \in F^{-1}(\{Q\})\)
     in \(X\). Allora, usando una carta su \(X\) che induce un diffeomorfismo fra un intorno di
     \(P\) e \(\realnumbers^{n+m}\) con (\(n+m = \dim X, m = \dim Y\)) allora
@@ -5245,7 +5259,7 @@ Vediamo ora un criterio per produrre una carta di sottovarietà
 Guardiamo ora l'applicazione con le coordinate sferiche
 \[
     \sigma(\theta, \varphi) = \left(
-        \cos \varphi \cos\theta, \cos \varphi \sin \theta, \sin \varphi
+        \sin \varphi \cos\theta, \sin \varphi \sin \theta, \cos \varphi
     \right)
 \]
 definita come mappa \(\sigma \colon (0,2\pi) \cartesianprod (0,\pi) \fromto \realnumbers^3\).
@@ -5278,19 +5292,19 @@ Soddisfa tutte le condizioni del teorema e quindi
         \end{center}
     \end{wrapfigure}
     Abbiamo \(\sigma \colon (-1, +\infty) \fromto \realnumbers^2\).
-    Chiaramente tale mappa è initiettiva,
-    \(\left(\text{d}F\right)_t = \sigma'(t)\) iniettiva
+    Chiaramente tale mappa è iniettiva,
+    \(\left(\text{d}\sigma\right)_t = \sigma'(t)\) iniettiva
     e \(\operatorname{Im}\sigma\) non è sottovarietà.
     Abbiamo che \(\sigma\) non è omeomorfismo.
     Quindi non può essere una carta (di una sottovarietà che tra l'altro non esiste,
-    in qunato l'immagine ha ogni intorno non connesso).
+    in quanto l'immagine ha ogni intorno non connesso).
     \wrapfill
 \end{snippetexample}
 
 \begin{snippetdefinition}{Immersione}
     Una mappa \(f \colon X \fromto Y\) è detta
     \emph{immersione} se \[
-        \left(\text{d}F\right)_x \colon
+        \left(\text{d}f\right)_x \colon
         T_{X,x} \fromto T_{Y,f(x)}
     \]
     è iniettivo \(\forall x \in X\).
@@ -5299,7 +5313,7 @@ Soddisfa tutte le condizioni del teorema e quindi
 \begin{snippetdefinition}{Embedding}
     Una mappa \(f \colon X \fromto Y\) è detta
     \emph{embedding} se \(f\) induce omeomorfismo fra \(X\)
-    e \(\operatorname{im} f \subseteq Y\) e \(f\) è un'immesione.
+    e \(\operatorname{im} f \subseteq Y\) e \(f\) è un'immersione.
 \end{snippetdefinition}
 
 \begin{snippetproposition}{}
@@ -5311,13 +5325,13 @@ Soddisfa tutte le condizioni del teorema e quindi
 \begin{snippetproof}{Cenno di dimostrazione}
     Fissiamo \(x_0 \in X\) e consideriamo
     \[
-        \left(\text{d}F\right)_{x_0} \colon
+        \left(\text{d}f\right)_{x_0} \colon
         T_{X,{x_0}} \fromto T_{Y,f({x_0})}
     \]
     come una immersione lineare \(\realnumbers^n \hookrightarrow \realnumbers^N\), % todourgent incliusion
     supponiamo che \(\realnumbers^n \subseteq \realnumbers^N\) sia generata dai primi vettori della base canonica.
     Consideriamo una carta di \(Y\) tale che in \(f(x_0)\) \[
-        \operatorname{im}\left(\text{d}F\right)_{x_0} = \realnumbers^n
+        \operatorname{im}\left(\text{d}f\right)_{x_0} = \realnumbers^n
         = \mathcal L(\partial_1, \cdots, \partial_n)
     \]
     e siano \(\partial_{n+1}, \cdots, \partial_N\) gli ultimi \(N-n\)
@@ -5331,7 +5345,7 @@ Soddisfa tutte le condizioni del teorema e quindi
         \phi(x, v) \triangleq \varphi^{-1} \circ f(x) + v
     \]
     Si dimostra che il differenziale di \(\phi\) in \((x_0, 0)\)
-    è iniettivo, in quanto ha matrice della forma
+    è un isomorfismo, in quanto ha matrice della forma
     \[
         \left[
         \begin{array}{c|c}
@@ -5380,7 +5394,7 @@ Soddisfa tutte le condizioni del teorema e quindi
 Abbiamo quindi due criteri per sottovarietà:
 \begin{enumerate}
     \item controimmagini di ``valori regolari'' di mappe \(F \colon X \fromto Y\)
-    cioè \(Z = F^{-1}(\{Q\})\) tale che \(\forall P \in F^{1}(\{Q\})\)
+    cioè \(Z = F^{-1}(\{Q\})\) tale che \(\forall P \in F^{-1}(\{Q\})\)
     vale che il differenziale in \(p\) è suriettivo;
     \item immagine di embedding \(f \colon X \fromto Y\)
     omeomorfismo con \(\operatorname{Im}f\) e differenziale iniettivo
@@ -5391,9 +5405,9 @@ Abbiamo quindi due criteri per sottovarietà:
 \end{enumerate}
 
 Questi sono analoghi a quando in algebra lineare
-abbiamo sottospazi vettoraili dati da:
+abbiamo sottospazi vettoriali dati da:
 immagini di applicazioni (che possiamo sempre assumere iniettivi sostituendo quozientando il dominio con il kernel)
-e nuclei (dibra di zero) di applicazioni (che possiamo assumere suriettivi restringendo il codominio).
+e nuclei (fibra di zero) di applicazioni (che possiamo assumere suriettivi restringendo il codominio).
 Il primo caso fornisce equazioni per lo spazio, mentre il secondo fornisce un'equazione parametrica.
 
 \begin{snippetexample}{Applicazione}
@@ -5409,21 +5423,21 @@ Altre notazioni: \(Z = (F=0) = V(F) = Z(F)\).
 \begin{snippetproof}{}
     \[
         \gradient F(x) = \left(
-            \frac{\partial f}{\partial x_1}(x),
+            \frac{\partial F}{\partial x_1}(x),
             \cdots,
-            \frac{\partial f}{\partial x_n}(x)
+            \frac{\partial F}{\partial x_{n+1}}(x)
         \right)
     \]
-    è la matrice \(J(F)\), dunque matrice associata al differenzuale
+    è la matrice \(J(F)\), dunque matrice associata al differenziale
     \[
-        \left(\text{d}F\right)_x \colon \realnumbers^{n+1} = T_{\Omega, x} \fromto \realnumbers = T_{Y, F(x)}
+        \left(\text{d}F\right)_x \colon \realnumbers^{n+1} = T_{\Omega, x} \fromto \realnumbers = T_{\realnumbers, F(x)}
     \]
     Dunque \(\left(\text{d}F\right)_x\) suriettiva se e solo se \(\gradient F(x) \neq 0\)
     e si applica il primo criterio per le sottovarieté con le controimmagini di valori regolari.
 \end{snippetproof}
 
 \begin{snippetexample}{Sottoesempio}
-    Sia \(F(x) = x_1^2 + \cdots, x_{N+1}^2 - 1\)
+    Sia \(F(x) = x_1^2 + \cdots + x_{n+1}^2 - 1\)
     allora
     \[
         F^{-1}(\{0\}) = S^n \subseteq \realnumbers^{n+1}
@@ -5444,7 +5458,7 @@ Altre notazioni: \(Z = (F=0) = V(F) = Z(F)\).
     di un vettore \(\xi(x) \in T_{X,x}\), tale che se \(\varphi \colon \Omega \fromto X\)
     è una carta, allora per ogni \(z \in \Omega\) si abbia
     \[
-        \xi(\varphi(z)) = \sum_{i=1}^n A_i(z)\partial_1
+        \xi(\varphi(z)) = \sum_{i=1}^n A_i(z)\partial_i
     \]
     dove \(\partial_1, \cdots, \partial_n\) è la base canonica associata a \(\varphi\).
 \end{snippetdefinition}
@@ -5483,13 +5497,13 @@ sono funzioni continue. Da questo motivo abbiamo la condizione con le carte.
     \([f]_x \in C^\infty_{X,x}\) è il germe di \(f\) in \(x\).
     In presenza di una carta \(\varphi \colon \Omega \fromto X\), se
     \[
-        \xi_{\varphi(u)} = \sum_{i=1}^n A_i(\varphi(u))\,\partial_i\big|_u,
+        \xi_{\varphi(u)} = \sum_{i=1}^n A_i(u)\,\partial_i\big|_{\varphi(u)},
     \]
     allora si ha
     \begin{align*}
         \xi(f)(\varphi(u))
-        &= \sum_{i=1}^n A_i(\varphi(u))\,\partial_i(f \circ \varphi)(u) \\
-        &= \sum_{i=1}^n A_i(\varphi(u))
+        &= \sum_{i=1}^n A_i(u)\,\partial_i(f \circ \varphi)(u) \\
+        &= \sum_{i=1}^n A_i(u)
         \frac{\partial (f \circ \varphi)}{\partial x_i}(u).
     \end{align*}
 \end{snippetdefinition}
@@ -5512,7 +5526,7 @@ funzioni come un operatore differenziale del primo ordine.
     su \(X\), allora detta \(\partial_1, \cdots, \partial_n\)
     la base associata ad \(\varphi\) si ha
     \[
-        \text{d}f(a_1\partial_1, \cdots, a_n\partial_n)
+        \text{d}f\left(\sum_{i=1}^n a_i\partial_i\right)
         \triangleq \sum_{i=1}^n a_i \frac{\partial f(x)}{\partial x_i}
     \]
 \end{snippetdefinition}
@@ -5527,8 +5541,9 @@ con \(\text{d}x_i\) base duale di \(\frac{\partial}{\partial x_i}\).
     \[
         T_{X,x}^* \triangleq \operatorname{Hom}(T_{X,x}, \realnumbers)
     \]
-    è una \(1\)-forma differenziale \(\omega\), che è un
-    ``campo di vettori cotangenti''
+    è lo spazio duale dello spazio tangente.
+    Una \(1\)-forma differenziale \(\omega\) è un
+    ``campo di covettori'',
     cioè una scelta \(\omega_x \in T_{X,x}^*\)
     per ogni \(x \in X\) tale che in coordinatre locali
     \[
@@ -5570,7 +5585,7 @@ e una \(k\)-forma differenziale è un campo di \(k\)-forme
 puntuali, aventi epsressioni locali
 \[
     \omega = \sum_{I} \lambda_{i_1, \cdots, i_r}(x)
-    \text{d}x_{i_i} \wedge \cdots \wedge \text{d}x_{i_r}
+    \text{d}x_{i_1} \wedge \cdots \wedge \text{d}x_{i_r}
 \]
 con \(I = \{i_1, \cdots, i_r\}\)
 con \(i_1 < \cdots < i_r\), \(\lambda_I\) funzioni \(\mathcal C^\infty\).
@@ -5585,7 +5600,7 @@ con \(i_1 < \cdots < i_r\), \(\lambda_I\) funzioni \(\mathcal C^\infty\).
     Data la \(k\)-forma \[
         \omega = \sum \lambda_I \text{d}x^I
         = \sum_{I} \lambda_{i_1, \cdots, i_r}(x)
-        \text{d}x_{i_i} \wedge \cdots \wedge \text{d}x_{i_r}
+        \text{d}x_{i_1} \wedge \cdots \wedge \text{d}x_{i_r}
     \]
     si definisce il suo \emph{differenziale esterno}
     \(\text{d} \omega\) come
@@ -5691,7 +5706,7 @@ con \(c = -b \frac{\partial a}{\partial y}\) e \(d = a \frac{\partial b}{\partia
         con \(h \colon S \fromto X\) embedding. Allora
         \(\forall x \in Z\) si ha \[
             T_{Z,x} = \operatorname{Im}\left(
-                \left(\text df\right)
+                \left(\text dh\right)
             \right)_s
         \]
         per \(s = h^{-1}(x) \in S\).
@@ -5706,12 +5721,12 @@ Questi sono sempre analoghi al caso dei sotospazi vettoriali.
         \(\dim Z = \dim X - \dim Y\), e il differenziale \[
             \left(
                 \text df
-            \right)_v \colon T_{X,v} \fromto T_{Y,q}
+            \right)_x \colon T_{X,x} \fromto T_{Y,q}
         \]
         è suriettivo \(\forall x \in Z\) per definizione di valore \(q\)
         regolare per \(f\). Dunque, la dimensione
         \[
-            \dim \ker\left(\text df\right)_x = \dim T_{X,x} - \dim T_{X,q}
+            \dim \ker\left(\text df\right)_x = \dim T_{X,x} - \dim T_{Y,q}
             = \dim X - \dim Y = \dim Z
         \]
         Quindi per completare la dimostrazione è sufficientemente mostrare che
@@ -5748,15 +5763,16 @@ Questi sono sempre analoghi al caso dei sotospazi vettoriali.
 \begin{snippetcorollary}{}
     Sia \(f \colon X \fromto \realnumbers^r\)
     con \(f = (f_1, \cdots, f_r)\)
-    tale che \(0 \in \realnumbers^n\) sia valore regolare per \(f\).
+    tale che \(0 \in \realnumbers^r\) sia valore regolare per \(f\).
     Allora posto \(Z = f^{-1}(\{0\})\), per ogni \(x \in Z\)
-    si ha \(T_{Z,x}\) è il sottospazio di \(T_{X,x}\)
-    di equazioni
+    si ha che \(T_{Z,x}\) è il sottospazio di \(T_{X,x}\)
+    dato dalle equazioni
     \[
-        \left(\text df_1\right)_x
+        \left(\text df_1\right)_x(v)
         = \cdots =
-        \left(\text df_r\right)_x = 0
+        \left(\text df_r\right)_x(v) = 0
     \]
+    per \(v\in T_{X,x}\).
 \end{snippetcorollary}
 
 \begin{snippetproof}{}
@@ -5768,9 +5784,9 @@ Questi sono sempre analoghi al caso dei sotospazi vettoriali.
     Poiché \[
         \text df = (\text df_1, \cdots, \text df_r)
     \]
-    idendo identificato \(T_{\realnumbers^n, 0} = \realnumbers^n\), vediamo che
+    avendo identificato \(T_{\realnumbers^r, 0} = \realnumbers^r\), vediamo che
     \[
-        T_{Z,v} = \ker \left(\text df\right)_v
+        T_{Z,x} = \ker \left(\text df\right)_x
         = \bigcap_{i=1}^r \ker \text df_i
     \]
 \end{snippetproof}
@@ -5781,7 +5797,7 @@ Questi sono sempre analoghi al caso dei sotospazi vettoriali.
             x \in \realnumbers^{n+1} \suchthat f(x) = 0
         \right\}
     \]
-    ipersuperficie con \(\nabla f(x) \neq, \forall x \in Z\).
+    ipersuperficie con \(\nabla f(x) \neq 0, \forall x \in Z\).
     Allora, 
     \[
         T_{Z,x} = \ker \left(\text df\right)
@@ -5802,13 +5818,13 @@ Questi sono sempre analoghi al caso dei sotospazi vettoriali.
     \]
     Abbiamo inoltrare
     \[
-        v = (v_1, \cdots, v_n) = \sum e_i v_i = \sum v_i \frac{\partial}{\partial x_i}
+        v = (v_1, \cdots, v_{n+1}) = \sum e_i v_i = \sum v_i \frac{\partial}{\partial x_i}
     \]
     basi duali, dunque \begin{align*}
-        \left(\text df\right)_v(v) &=
+        \left(\text df\right)_x(v) &=
         \sum \frac{\partial f}{\partial x_i}(x) \langle \text dx_i, v \rangle \\
         &= \sum_{i,j} \frac{\partial f}{\partial x_i}(x) v_j
-        \langle \text dx_i, \frac{\partial}{\partial x_i} \rangle \\
+        \left\langle \text dx_i, \frac{\partial}{\partial x_j} \right\rangle \\
         &= \sum_{i,j} \frac{\partial f}{\partial x_i} v_j \delta_{i,j} \\
         &= \sum_i \frac{\partial f}{\partial x_i} v_i = \langle \nabla f(x), v \rangle
     \end{align*}
@@ -5832,14 +5848,14 @@ Questi sono sempre analoghi al caso dei sotospazi vettoriali.
 Vediamo ora un calcolo di spazio tangente per una varietà quoziente.
 
 \begin{snippetproposition}{}
-    Sia \(\mathbb F = \realnumbers, \complexnumbers\). Abbiamo
+    Sia \(\mathbb K = \realnumbers\) oppure \(\complexnumbers\). Abbiamo
     \[
         T_{\mathbb P^n(\mathbb K), [x]} = \frac{{\mathbb K}^{n+1}}{
             \mathcal L(x)
         }
     \]
-    per ogni \([x] \in \mathbb P^n(K)\), rappresentato da \(x \neq 0\)
-    in \(K^{n+1}\).
+    per ogni \([x] \in \mathbb P^n(\mathbb K)\), rappresentato da \(x \neq 0\)
+    in \(\mathbb K^{n+1}\).
 \end{snippetproposition}
 
 \begin{snippetproof}{}
@@ -5860,12 +5876,12 @@ Vediamo ora un calcolo di spazio tangente per una varietà quoziente.
     Quindi \(\text d\pi\) si fattorizza attraverso
     \[
         \left(\overline{\text d\pi}\right) \colon
-        \frac{K^{n+1}}{\mathcal L(x)} \fromto T_{\mathbb P^n(\mathbb K), [x]}
+        \frac{\mathbb K^{n+1}}{\mathcal L(x)} \fromto T_{\mathbb P^n(\mathbb K), [x]}
     \]
     Inoltre è ovvio che \[
         \left(
             \text d\pi
-        \right)_v \colon K^{n+1} \fromto T_{\mathbb P^n(\mathbb K), [x]}
+        \right)_x \colon \mathbb K^{n+1} \fromto T_{\mathbb P^n(\mathbb K), [x]}
     \]
     è suriettiva, vedi restrizione ai sottospazi affini
     \[
@@ -5874,17 +5890,17 @@ Vediamo ora un calcolo di spazio tangente per una varietà quoziente.
     dove \(\restr{\pi}{L_i}\) induce un diffeomorfismo sull'immagine
     (aperto standard) \[
         U_i = \{
-            (x_1, \cdots, x_{n+1}) \in \mathbb P^n(\mathbb K)
+            [x_1, \cdots, x_{n+1}] \in \mathbb P^n(\mathbb K)
             \suchthat x_i \neq 0    
         \}
     \]
     Si ha infatti \(T_{L_i, x} \subseteq T_{\mathbb K^{n+1}, x}\) e \[
-        \text d\pi \colon T_{L_i, x} \fromto T_{U_i,[x]} = T_{\mathbb P^n(\mathbb K), x}
+        \text d\pi \colon T_{L_i, x} \fromto T_{U_i,[x]} = T_{\mathbb P^n(\mathbb K), [x]}
     \]
     Mettendo assieme questi due fatti, abbiamo
     \[
         \left(\overline{\text d\pi}\right) \colon
-        \frac{K^{n+1}}{\mathcal L(x)} \fromto T_{\mathbb P^n(\mathbb K), [x]}
+        \frac{\mathbb K^{n+1}}{\mathcal L(x)} \fromto T_{\mathbb P^n(\mathbb K), [x]}
     \]
     suriettivo
     e \[
@@ -5914,15 +5930,15 @@ Vediamo ora un calcolo di spazio tangente per una varietà quoziente.
             \suchthat \langle v,x\rangle = 0
         \right\}
     \]
-    Infatti, l'equazione della sfera \(\sum_{i=1}^{n+1} x_i^2 = 0\)
+    Infatti, l'equazione della sfera \(\sum_{i=1}^{n+1} x_i^2 = 1\)
     implica che
     \[
         \nabla \left(\sum_{i=1}^{n+1} x_i^2\right)
-        = 2\sum x_i = 2x
+        = (2x_1,\cdots,2x_{n+1}) = 2x
     \]
     e quindi
     \[
-        T_{S^n, x} \intersection \mathcal L(v) = \left\{
+        T_{S^n, x} \intersection \mathcal L(x) = \left\{
             \lambda x \suchthat \langle \lambda x, x \rangle = 0
         \right\}
         = \{0\}
@@ -5930,16 +5946,16 @@ Vediamo ora un calcolo di spazio tangente per una varietà quoziente.
     Segue che
     \[
         \restr{\text d\pi}{T_{S^n, x}}
-        \colon T_{S^n, x} \fromto T^{\mathbb P^n(\realnumbers), [x]}
+        \colon T_{S^n, x} \fromto T_{\mathbb P^n(\realnumbers), [x]}
     \]
     isomorfismo, avendo \[
         \ker \left(
-            \restr{\text d\pi}{T_{S^n}}
-            = T_{S^n} \intersection \mathcal L(v) = 0
+            \restr{\text d\pi}{T_{S^n,x}}
         \right)
+        = T_{S^n,x} \intersection \mathcal L(x) = \{0\}
     \]
     e \[
-        \dim T_{S^n} = \dim T_{\mathbb P^n(\realnumbers)} = n
+        \dim T_{S^n,x} = \dim T_{\mathbb P^n(\realnumbers),[x]} = n
     \]
 \end{snippetproof}
 
@@ -6332,7 +6348,8 @@ Vediamo ora esempi di varietà orientabili.
     Stabiliamo per \(S^n\) un'orientazione, per esempio
     \(v_1, \cdots, v_n \in T_{S^n, x}\) positiva,
     \(v_1, \cdots, v_n, x\) positiva per \(\realnumbers^{n+1}\).
-    Per esercizio dimostrare che la prima mappa preserva l'orientazione mentre la seconda la inverte sempre.
+    Per esercizio dimostrare che la prima mappa ha grado \((-1)^{n+1}\), quindi preserva
+    l'orientazione se e solo se \(n\) è dispari, mentre la seconda la inverte sempre.
 \end{snippetexample}
 
 \begin{snippettheorem}{Sphere eversion problem}
@@ -6340,7 +6357,7 @@ Vediamo ora esempi di varietà orientabili.
     \(\sigma_t \colon S^2 \fromto \realnumbers^3\)
     tale che \(\sigma_t\)
     immersione per tutte le \(t\)
-    (\(d\sigma_t \colon T_{S^n, x} \fromto \realnumbers^3\) initiettiva
+    (\(d\sigma_t \colon T_{S^2, x} \fromto \realnumbers^3\) iniettiva
     per tutte le \(x \in S^2\) e tutte le \(t\))
     e tale che
     \(\sigma_0\) preserva l'orientazione
@@ -6358,20 +6375,20 @@ Vediamo ora esempi di varietà orientabili.
         \bigotimes_{i=1}^n V_i,
         \quad \bigotimes v_i
     \]
-    con le relazioni di bilinearità
+    con le relazioni di multilinearità
     \[
-        v_1 \oplus \cdots \oplus (\lambda v_i' + \mu v_i') \oplus \cdots \oplus v_n
-        = \lambda(v_1 \oplus \cdots \oplus v_n)
-        + \mu(v_1 \oplus \cdots \oplus v_i' \oplus v_n)
+        v_1 \otimes \cdots \otimes (\lambda v_i' + \mu v_i'') \otimes \cdots \otimes v_n
+        = \lambda(v_1 \otimes \cdots \otimes v_i' \otimes \cdots \otimes v_n)
+        + \mu(v_1 \otimes \cdots \otimes v_i'' \otimes \cdots \otimes v_n)
     \]
 \end{snippetdefinition}
 
 \begin{snippetproposition}{}
     Sia \(\dim V = n\) e \(e_1, \cdots, e_n\)
-    base canonica di \(V\).
-    Allora, \[
-        \dim \bigotimes_{i=1}^n V =
-        n
+    base canonica di \(V\). Allora, per ogni \(k\geq 0\),
+    \[
+        \dim V^{\otimes k} =
+        n^k
     \]
 \end{snippetproposition}
 
@@ -6381,11 +6398,11 @@ Vediamo ora esempi di varietà orientabili.
     over a field \(\mathbb F\). Then, their \emph{tensor product}
     is defined as a vector space over \(\mathbb F\) 
     \[
-        \bigotimes_{i=1}^n V_n
+        \bigotimes_{i=1}^n V_i
     \]
     such that there exists an \(n\)-linear canonical application
     \[
-        \varphi \colon \prod_{i=1}^n V_i \fromto \bigotimes_{i=1}^n V_n
+        \varphi \colon \prod_{i=1}^n V_i \fromto \bigotimes_{i=1}^n V_i
     \]
     and such that for every other vector space \(U\) over \(\mathbb F\)
     and \(n\)-linear application \[
@@ -6402,7 +6419,7 @@ Vediamo ora esempi di varietà orientabili.
 \end{snippetdefinition}
 \end{radioactive}
 
-I termini \(v_1 \oplus \cdots \oplus v_k\)
+I termini \(v_1 \otimes \cdots \otimes v_k\)
 con \(v_i \in V_i\) sono detto \emph{tensori puri}.
 
 \begin{snippetexample}{}
@@ -6411,7 +6428,7 @@ con \(v_i \in V_i\) sono detto \emph{tensori puri}.
     con \(v_1 \otimes v_2\) puro.
     Allora \(v_1 \otimes v_2 - v_2 \otimes v_1\)
     non è puro e \[
-        \dim \mathcal L(v_1, v_3)
+        \dim \mathcal L(v_1, v_2)
         = \dim \mathcal L(v_2, v_1) = 2
     \]
 \end{snippetexample}
@@ -6420,8 +6437,8 @@ Nel caso di spazi vettoriali \(V_1, \cdots, V_k = V\)
 possiamo costruire l'anello
 \[
     T(V) \triangleq \bigoplus_{k \geq 0}
-    (V \oplus \cdots \oplus V) 
-    = \bigoplus_{i=1}^n \left(
+    V^{\otimes k}
+    = \bigoplus_{k \geq 0} \left(
         V^{\otimes k}
     \right)
 \]
@@ -6432,7 +6449,7 @@ Ponendo \[
 \]
 e successivamente \[
     T^\circ(V)
-    = K \oplus V \oplus V^{\otimes 1} \oplus V^{\otimes 2} \cdots
+    = K \oplus V \oplus V^{\otimes 2} \oplus V^{\otimes 3} \cdots
 \]
 Se \(V = \mathcal L(x_1, \cdots, x_n)\)
 con \(x_i\) inderminate allora possiamo porre \[
@@ -6445,7 +6462,7 @@ anello non commutativo libero generato da
 Infatti,\[
     V^{\otimes k}
     = \left\{
-        \mathcal L(x_{i_1}, \cdots, x_{i_k})
+        \mathcal L(x_{i_1}\otimes \cdots \otimes x_{i_k})
         \suchthat
         (i_1, \cdots, i_k) \in \{1, \cdots, n\}^k
     \right\}
@@ -6531,10 +6548,10 @@ modulo \(a\).
         \pi\left(
             \alpha(v_1 \wedge \cdots \wedge v_k)
         \right) &= \pi\left(
-            \frac{1}{k!} \sum_{\sigma \in S^k}
-            (-1)^\sigma v_{\sigma(1)} \wedge \cdots \wedge v_{\sigma(k)}
+            \frac{1}{k!} \sum_{\sigma \in S_k}
+            (-1)^\sigma v_{\sigma(1)} \otimes \cdots \otimes v_{\sigma(k)}
         \right) \\
-        &= \frac{1}{k!} \sum_{\sigma \in S^k}
+        &= \frac{1}{k!} \sum_{\sigma \in S_k}
         (-1)^\sigma (-1)^\sigma v_1 \wedge \cdots \wedge v_k \\
         &= \frac{1}{k!} k! v_1 \wedge \cdots \wedge v_k
         = v_1 \wedge \cdots \wedge v_k 
@@ -6543,14 +6560,14 @@ modulo \(a\).
 
 Applicando la proposizione, in particolare ad
 \[
-    \alpha \bigwedge^n V^* \fromto V^* \otimes \cdots \otimes V^*
+    \alpha \colon \bigwedge^n V^* \fromto V^* \otimes \cdots \otimes V^*
 \]
 dove \(V^*\) è lo spazio vettoriale duale e \(n = \dim V\).
 Se \(w_1, \cdots, w_n\) è una base del duale di \(v_1, \cdots, v_n\)
 base di \(V\), allora
 \[
     \alpha(w_1 \wedge \cdots \wedge w_n)
-    = \frac{1}{n!} \sum_{\sigma \in S^n} (-1)^\sigma w_\sigma(1) \otimes \cdots \otimes w_{\sigma(n)}
+    = \frac{1}{n!} \sum_{\sigma \in S_n} (-1)^\sigma w_{\sigma(1)} \otimes \cdots \otimes w_{\sigma(n)}
 \]
 
 \begin{snippetlemma}{}
@@ -6571,7 +6588,7 @@ base di \(V\), allora
 \end{snippetproof}
 
 \begin{snippetlemma}{}
-    Sia \(\alpha(\omega_1 \wedge \cdots \omega_n)\)
+    Sia \(\alpha(\omega_1 \wedge \cdots \wedge \omega_n)\)
     definita come sopra, si annulla come forma lineare
     su \(V \otimes \cdots \otimes V\),
     su ogni elemento dell'ideale
@@ -6589,8 +6606,8 @@ base di \(V\), allora
     Abbiamo che
     \[
         \alpha(\omega_1 \wedge \cdots \wedge \omega_n)
-        = \frac{1}{n!} \sum_{\sigma \in S^n}
-        (-1)^\sigma \omega_{\sigma(1)} \wedge \cdots \wedge \omega_{\sigma(n)}
+        = \frac{1}{n!} \sum_{\sigma \in S_n}
+        (-1)^\sigma \omega_{\sigma(1)} \otimes \cdots \otimes \omega_{\sigma(n)}
     \]
     è antisimmetrica, quindi si annulla su ogni generatore
     \[
@@ -6608,7 +6625,7 @@ base di \(V\), allora
     \]
     calcolata come segue sul generatore \(v_1 \wedge \cdots \wedge v_n
     = \pi(v_1 \otimes \cdots \otimes v_n)\) \begin{align*}
-        (\omega_1 \wedge \cdots \wedge \omega_k)
+        (\omega_1 \wedge \cdots \wedge \omega_n)
         (v_1 \wedge \cdots \wedge v_n)
         &= \alpha(\omega_1 \wedge \cdots \wedge \omega_n)
         (v_1 \otimes \cdots \otimes v_n) \\
@@ -6617,7 +6634,7 @@ base di \(V\), allora
             \omega_{\sigma(1)} \otimes \cdots \otimes \omega_{\sigma(n)}
         \right)
         \left(
-            v_1 \otimes \cdots \times v_n
+            v_1 \otimes \cdots \otimes v_n
         \right) \\
         &= \frac{1}{n!} \sum_\sigma (-1)^{\sigma}
         \omega_{\sigma(1)}(v_1) \cdots \omega_{\sigma(n)}(v_n) \\
@@ -6641,26 +6658,26 @@ base di \(V\), allora
     \]
     indotta da \[
         (u_1 \wedge \cdots \wedge u_k,
-        u_{k+1} \wedge \cdots \wedge v_n) \mapsto u_1 \wedge \cdots \wedge u_n
+        u_{k+1} \wedge \cdots \wedge u_n) \mapsto u_1 \wedge \cdots \wedge u_n
     \]
     sui generatori, è un accoppiamento perfetto, cioè
     bilineare non degenere (cosa vuol dire?) e identifica \[
         \bigwedge^{n-k} V \cong \bigwedge^k V^*
     \]
-    una volta scelto isomorfismo \(\bigwedge V^n V \cong K\)
+    una volta scelto isomorfismo \(\bigwedge^n V \cong K\)
     (dipendente dalla scelta della base \(v_1 \wedge \cdots \wedge v_n\) per \(\bigwedge^n V\)).
 \end{snippetcorollary}
 
 \begin{snippetproof}{Cenno di dimostrazione}
     Usando generatori
     \(v_{i_1} \wedge \cdots \wedge v_{i_k}\)
-    e \(v_{k+1} \wedge \cdots \wedge v_{n-k}\)
+    e \(v_{j_1} \wedge \cdots \wedge v_{j_{n-k}}\)
     di \(\bigwedge^n V\) e \(\bigwedge^{n-k} V\) rispettivamente, 
     troviamo che \(v_I \wedge v_J \neq 0\)
     se e solo se \(I \union J = \{1, \cdots, n\}\)
     cioè \(I = (i_1 < \cdots < i_k)\)
-    e \(J = (j_{k+1} < \cdots < j_n)\)
-    sono tali che \(i_1, \cdots, i_j, j_{k+1}, \cdots, j_n\)
+    e \(J = (j_1 < \cdots < j_{n-k})\)
+    sono tali che \(i_1, \cdots, i_k, j_1, \cdots, j_{n-k}\)
     è permutazione di \(\{1, \cdots, n\}\).
     Quindi, \begin{align*}
         &\left\{
@@ -6680,8 +6697,8 @@ base di \(V\), allora
     \[
         \dim \bigwedge^k V = \binom{n}{k}
     \]
-    essendo \(v_{i_1} \wedge \cdots \wedge v_{i,k}\)
-    con \(i_1 < \cdots < i_n\)
+    essendo \(v_{i_1} \wedge \cdots \wedge v_{i_k}\)
+    con \(i_1 < \cdots < i_k\)
     base per \(\bigwedge^k V\).
 \end{snippetcorollary}
 
@@ -6722,12 +6739,12 @@ con \[
 \]
 
 \begin{snippetdefinition}{\(k\)-forma}
-    Per ogni \(x \in X\)
-    di una \(k\)-forma \[
+    Una \(k\)-forma su \(X\) è una scelta, per ogni \(x \in X\),
+    di una \(k\)-forma puntuale
+    \[
         \omega_x \in \bigwedge^k T_{X,x}^*
     \]
-    che vari con la classe \(\mathcal C^\infty\)
-    con \(x\).
+    che vari con classe \(\mathcal C^\infty\) rispetto a \(x\).
 \end{snippetdefinition}
 
 Cioè che rispetto ad una scelta di base come sopra,
@@ -6741,10 +6758,10 @@ con funzione \(\mathcal C^\infty\).
 
 \begin{snippetdefinition}{Pullback}
     Data \(F \colon X \fromto Y\) e \[
-        \left(\text dF\right)_x \colon T_{X,x} \fromto T_{Y,F(y)}
+        \left(\text dF\right)_x \colon T_{X,x} \fromto T_{Y,F(x)}
     \]
     il suo differenziale, allora se ne deduce \[
-        F_x^* = T_{Y, F(x)}^* \fromto T_{X,x}^*
+        F_x^* \colon T_{Y, F(x)}^* \fromto T_{X,x}^*
     \]
     con \[
         F_x^* \triangleq \left(
@@ -6757,7 +6774,7 @@ con funzione \(\mathcal C^\infty\).
     \]
     è una mappa indotta sulla \(k\)-forme puntuali così definita:
     data \[
-        \omega \in \bigwedge^k T_{Y,F(x)}, \quad
+        \omega \in \bigwedge^k T_{Y,F(x)}^*, \quad
         \omega = \omega_1 \wedge \cdots \wedge \omega_k
     \]
     con \(\omega\) fra i generatori di \(\bigwedge^k T^*\),
@@ -6770,7 +6787,7 @@ con funzione \(\mathcal C^\infty\).
         F_x^*(\omega_i) \in T_{X,x}^*
     \]
     sono definita da \[
-        F_x^*(\omega_i)(v) = \omega\left(
+        F_x^*(\omega_i)(v) = \omega_i\left(
             \left(\text dF\right)_x(v)
         \right)
     \]
@@ -6824,12 +6841,12 @@ Cioè le \(k\)-forme vanno all'indietro.
     avremmo dovuto fare qualcosa di più (qualcosa che centra con la shuffle permutation boh).
     Abiamo quindi
     \begin{align*}
-        \Phi^*(f \text dy_1 \wedge \cdots \wedge \text y_n)
+        \Phi^*(f \text dy_1 \wedge \cdots \wedge \text dy_n)
         &= \Phi^*(f) \Phi^*(\text dy_1) \wedge \cdots \wedge \Phi^*(\text dy_n) \\
         &= \left(f \circ \Phi\right)
         \Phi^*(\text dy_1) \wedge \cdots \wedge \Phi^*(\text dy_n) \\
         \Phi^*(\text dy_i)\left(\frac{\partial}{\partial x_j}\right)
-        &= \left(\text dy_i\right)\left((\text d\Phi)\left(\frac{\partial}{\partial_j}\right)\right) \\
+        &= \left(\text dy_i\right)\left((\text d\Phi)\left(\frac{\partial}{\partial x_j}\right)\right) \\
         &= \text dy_i \left(
             \sum_k \frac{\partial \Phi_k}{\partial x_j} \frac{\partial}{\partial y_k}
         \right),\quad \text dy_i, \frac{\partial}{\partial y_k} \text{ duali} \\
@@ -6858,7 +6875,7 @@ in tutti questi capitoli.
         \omega = \sum f_i \text dx_i
     \]
     allora \[
-        \text d\omega \triangleq \sum \frac{\partial f_i}{\partial x_k} \text dx_k
+        \text d\omega \triangleq \sum_{i,k} \frac{\partial f_i}{\partial x_k} \text dx_k \wedge \text dx_i
     \]
     Se invece \(\omega\) è una \(k\)-forma localmente scritta come
     \[
@@ -6866,7 +6883,7 @@ in tutti questi capitoli.
     \]
     Allora definiamo
     \[
-        \text d\omega = \sum \text f_i \wedge \text dx_{i_1}
+        \text d\omega = \sum \text d f_i \wedge \text dx_{i_1}
         \wedge \cdots \wedge \text dx_{i_k}
     \]
 \end{snippetdefinition}
@@ -6880,13 +6897,13 @@ Infatti si trova la seguente proposizione
     \[
         \left(\text df\right)(\xi) = \xi(f)
     \]
-    per ogni \(\xi\) campo vettoriale su \(x\).
+    per ogni \(\xi\) campo vettoriale su \(X\).
     Per una \(\omega\) che è una \(1\)-forma si ha
     \[
         \left(\text d\omega\right)(\xi \wedge \eta)
-        = \omega\left(
-            [\xi, \eta]
-        \right)
+        = \xi\bigl(\omega(\eta)\bigr)
+        - \eta\bigl(\omega(\xi)\bigr)
+        - \omega\left([\xi,\eta]\right)
     \]
     con il prodotto di Lie. Si estende la definizione ponendo
     \[
@@ -6897,7 +6914,7 @@ Infatti si trova la seguente proposizione
             \text d \omega_1
         \right)
         \wedge \omega_2
-        + (-1)
+        + (-1)^{\deg\omega_1}
         \omega_1 \wedge \left(\text d\omega_2\right)
     \]
 \end{snippetproposition}
@@ -7409,7 +7426,7 @@ il ricoprimento con immagini di carte.
 
 Questo significa che data la scrittura locale con coordinate locali \((x_1, \cdots, x_n)\)
 \[
-    \omega = f\text dx_1 \wedge \cdots \wedge \text d_n
+    \omega = f\text dx_1 \wedge \cdots \wedge \text dx_n
 \]
 allora \(f(x) \neq 0\) non è mai nulla la funzione.
 Equivalentemente
@@ -7428,7 +7445,7 @@ Equivalentemente
         carta, \(\Omega \subseteq \realnumbers^n\) aperto, \(x_1, \cdots, x_n\)
         di \(\realnumbers^n\), diciamo che è \emph{orientato}
         se e solo se \[
-            \omega = f\text dx_1 \wedge \cdots \wedge \text d_n
+            \omega = f\text dx_1 \wedge \cdots \wedge \text dx_n
         \]
         con \(f(x) > 0\) per ogni \(x \in X\).
         Equivalentemente
@@ -7442,18 +7459,18 @@ Equivalentemente
             &= \varphi^\ast \cancel{(\Psi^{-1})^\ast}
             \cancel{(\Psi^\ast)} \omega = \varphi^\ast(\omega)= f \circ \varphi \text dx_1 \wedge \cdots \wedge \text dx_n 
         \end{align*}
-        D'altra parte se \(\Psi^\ast = g \circ \Psi \text dy_1 \wedge \cdots \wedge \text dy_n\)
+        D'altra parte se \(\Psi^\ast\omega = g \circ \Psi \text dy_1 \wedge \cdots \wedge \text dy_n\)
         con \((y_1, \cdots, y_n) = \Psi^{-1}\), sappiamo che
         \begin{align*}
             (\Psi^{-1} \circ \varphi)^\ast (\Psi^\ast \omega)
-            &= (\Psi^{-1} \circ \varphi)^\ast (g \circ \Psi) \text dy_1 \wedge \cdots \wedge \text dy_n \\
-            &= f \circ \Psi \circ \Psi^{-1} \circ \varphi(x) \cdot \det J(\Psi^{-1} \circ \varphi)(x) \text dx_1 \wedge \cdots \wedge \text dx_n  \\
-            &= f \circ \varphi \text dx_1 \wedge \cdots \wedge \text dx_n
+            &= (\Psi^{-1} \circ \varphi)^\ast \left((g \circ \Psi) \text dy_1 \wedge \cdots \wedge \text dy_n\right) \\
+            &= (g \circ \varphi)(x) \cdot \det J(\Psi^{-1} \circ \varphi)(x) \text dx_1 \wedge \cdots \wedge \text dx_n  \\
+            &= (f \circ \varphi)(x) \text dx_1 \wedge \cdots \wedge \text dx_n
         \end{align*}
         Sapendo che \[
             \begin{cases}
-                g \circ \varphi(x) \cdot \det J(\Psi^{-1} \circ \varphi) = f \circ \varphi, \quad > 0 \\
-                g \circ \Psi > 0 \implies (g \circ \Psi) \circ (\Psi^{-1} \circ \varphi) = g \circ \varphi > 0
+                (g \circ \varphi)(x) \cdot \det J(\Psi^{-1} \circ \varphi)(x) = (f \circ \varphi)(x),\\
+                (f \circ \varphi)(x)>0,\quad (g \circ \varphi)(x)>0
             \end{cases}
         \]
         Troviamo \(\det J(\Psi^{-1} \circ \varphi) > 0\), cioè le carta
@@ -7500,7 +7517,7 @@ Equivalentemente
             }{x} \\
             \omega_j(x) &= \restr{
                 \text dx_1^{(j)} \wedge \cdots \wedge \text dx_n^{(j)}
-            }{x} = \mu \restr{\text dx_1^{(i)} \wedge \cdots \wedge \text dx_n^{(i)}}{y} = \mu\omega_i(x)
+            }{x} = \mu \restr{\text dx_1^{(i)} \wedge \cdots \wedge \text dx_n^{(i)}}{x} = \mu\omega_i(x)
         \end{align*}
         con \[
             \mu = \det\left(
@@ -7547,13 +7564,14 @@ diffeomorfismo
 (possiamo anche sostituire \(\realnumbers^n\) con un suo aperto), allora l'integrale del pullback
 \begin{align*}
     \int T^\ast \omega &= \int T^\ast (f\text dx_1 \wedge \cdots \wedge \text dx_n)
-    = \int f \circ T \det J(T) \text dy_1 \wedge \cdots \wedge dy_n \\
+    = \int f \circ T \det J(T) \text dy_1 \wedge \cdots \wedge \text dy_n \\
     &= \int f \circ T \det J(T) \text dy_1 \cdots dy_n
 \end{align*}
-Confrontando con \[
-    \int f f\text dx_1 \wedge \cdots \wedge \text dx_n
-    = f\text dx_1 \cdots \text dx_n
-    = \int f \circ T |det J(T)| \text dy_1 \wedge \cdots \wedge \text dy_n
+Confrontando con la formula di cambiamento di variabili
+\[
+    \int f\,\text dx_1 \cdots \text dx_n
+    =
+    \int f \circ T \,|\det J(T)|\, \text dy_1 \cdots \text dy_n
 \]
 Troviamo che \[
     \int T^\ast \omega = \pm \int \omega
@@ -9510,7 +9528,7 @@ Per lo meno, vogliamo che \(\gamma(t)\) sia un punto critico per il funzionale p
     con \(X\) varietà riemanniana con \(\langle\,,\,\rangle\), è un ``punto critico''
     per il funzionale \[
         \integral[a][b][
-            \restr{\langle\sigma'(t), \sigma'(t)\rangle}{\gamma(t)}
+            \restr{\langle\sigma'(t), \sigma'(t)\rangle}{\sigma(t)}
         ][t]
     \]
     definito sullo spazio delle curve \(\mathcal C^\infty\) a tratti,
@@ -9535,15 +9553,15 @@ Dobbiamo definire la nozione di punto critico di un funzionale.
     diremo che \(\sigma\) è un \emph{punto critico} per \(S\) se per ogni
     curva \(\delta \colon [a,b] \fromto \realnumbers^n\) con \(\delta(a) = 0 = \delta(b)\),
     si ha \[
-        S(\sigma + \delta) = S(\sigma) + \mathcal O(||S||^2)
+        S(\sigma + \delta) = S(\sigma) + \mathcal O(||\delta||^2)
     \]
 \end{snippetdefinition}
 
 \begin{snippetproposition}{Scrittura generale}
     In generale possiamo scrivere \[
-        S(\sigma + \delta) = S(\sigma) + L_\sigma(\delta) + \mathcal O(||S||^2)
+        S(\sigma + \delta) = S(\sigma) + L_\sigma(\delta) + \mathcal O(||\delta||^2)
     \]
-    dove \(L_\sigma(\delta)\) è funzionale lineare in \(S\), definito sullo spazio
+    dove \(L_\sigma(\delta)\) è funzionale lineare in \(\delta\), definito sullo spazio
     \[
         \{\delta \colon [a,b] \fromto \realnumbers^n \suchthat \delta(a) = 0 = \delta(b)\}
     \]
@@ -9584,14 +9602,14 @@ Dobbiamo definire la nozione di punto critico di un funzionale.
     \]
     Ricaviamo linearizzando e usando una espansione di Taylor
     \begin{DispWithArrows*}
-        S(\sigma + \delta) &= \integral[a][b][F(\sigma + \delta, \sigma' + \delta')][t]
+        S(\sigma + \delta) &= S(\sigma)
         + \integral[a][b][
             \left(
                 {\color{red} \frac{\partial F}{\partial \sigma} \cdot \delta} +
                 {\color{blue} \frac{\partial F}{\partial \sigma'} \cdot \delta'}
             \right)
         ][t]
-        + \integral[a][b][\mathcal O(||S||^2)][t] \Arrow{Integrazione \\ per parti} \\
+        + \integral[a][b][\mathcal O(||\delta||^2)][t] \Arrow{Integrazione \\ per parti} \\
         &= S(\sigma) + {\color{red} \left(
                 \integral[a][b][\frac{\partial F}{\partial \sigma} \cdot \delta][t]
             \right)
@@ -9599,7 +9617,7 @@ Dobbiamo definire la nozione di punto critico di un funzionale.
         + {\color{blue}\left[
             \frac{\partial F}{\partial \sigma'} \delta
         \right]_a^b - \integral[a][b][\frac{d}{dt} \left(\frac{\partial F}{\partial \sigma'}\right)\delta][t]
-        } + \mathcal O(||S||^2)
+        } + \mathcal O(||\delta||^2)
     \end{DispWithArrows*}
     Abbiamo usato i gradienti e il prodotto scalare \(\cdot\).
     La derivata del gradiente è fatta componente per componente.
@@ -9614,7 +9632,7 @@ Dobbiamo definire la nozione di punto critico di un funzionale.
             \left[
                 \frac{\partial F}{\partial \sigma} - \frac{d}{dt}\left(\frac{\partial F}{\partial \sigma'}\right)
             \right]\delta
-        ][t] + \mathcal O(||S||^2)
+        ][t] + \mathcal O(||\delta||^2)
     \]
 \end{snippetproof}
 
@@ -9789,7 +9807,7 @@ Il sistema di equazioni \[
 è detto \emph{sistemi di equazioni delle geodetiche} (nel dato sistema di coordinate).
 
 \begin{snippetcorollary}{}
-    La proprietà di deogetica non dipende dal sistema di coordinate, ed è invariante per isometrie (locali).
+    La proprietà di geodetica non dipende dal sistema di coordinate, ed è invariante per isometrie (locali).
 \end{snippetcorollary}
 
 \begin{snippetproof}{}
@@ -10783,7 +10801,7 @@ Sul disco \(D\) poniamo la metrica riemanniana
 \[
     ds^2
     =
-    \frac{|dz|^2}{(1-|z|^2)^2}.
+    \frac{4|dz|^2}{(1-|z|^2)^2}.
 \]
 Poiché
 \[
@@ -10797,15 +10815,15 @@ la metrica è
 \[
     ds^2
     =
-    \frac{dx^2+dy^2}{(1-x^2-y^2)^2}.
+    \frac{4(dx^2+dy^2)}{(1-x^2-y^2)^2}.
 \]
 Quindi, rispetto alle coordinate \((x,y)\), la matrice della metrica è
 \[
     g
     =
     \begin{pmatrix}
-        \dfrac{1}{(1-x^2-y^2)^2} & 0\\[1em]
-        0 & \dfrac{1}{(1-x^2-y^2)^2}
+        \dfrac{4}{(1-x^2-y^2)^2} & 0\\[1em]
+        0 & \dfrac{4}{(1-x^2-y^2)^2}
     \end{pmatrix}.
 \]
 La varietà riemanniana \((D,g)\) è detta piano iperbolico nel modello del disco di Poincaré.
@@ -10815,20 +10833,20 @@ La metrica è conforme alla metrica euclidea: è un multiplo positivo della metr
 \[
     \lambda(x,y)
     =
-    \frac{1}{1-x^2-y^2}.
+    \frac{2}{1-x^2-y^2}.
 \]
 Quindi, se \(\gamma(t)=x(t)+iy(t)\) è una curva in \(D\),
 \[
     \|\gamma'(t)\|_g
     =
-    \frac{\sqrt{x'(t)^2+y'(t)^2}}{1-x(t)^2-y(t)^2}.
+    \frac{2\sqrt{x'(t)^2+y'(t)^2}}{1-x(t)^2-y(t)^2}.
 \]
 La lunghezza iperbolica è dunque
 \[
     L_g(\gamma)
     =
     \integral[a][b][
-        \frac{\sqrt{x'(t)^2+y'(t)^2}}{1-x(t)^2-y(t)^2}
+        \frac{2\sqrt{x'(t)^2+y'(t)^2}}{1-x(t)^2-y(t)^2}
     ][t].
 \]
 
