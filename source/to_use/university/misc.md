@@ -49,7 +49,7 @@ Here is the proposition:
 - Ti sto per passare il codice LaTeX di alcuni miei appunti presi a scuola.
 Correggi vari refusi, errori di battitura e cose del genere. Se trovi errori di calcolo o di logica sistemali.
 Se ci sono dei passaggi che mancano e sono sostanziali, o pezzi sostanziali di spiegazioni che mancano, aggiungili.
-Puoi riscrivere alcune frase se non sono scritte bene. È importante che tu mantenca il mio stesso stile, sintassi
+Puoi riscrivere alcune frase se non sono scritte bene. È importante che tu mantenga il mio stesso stile, sintassi
 in LaTeX e comandi di LaTeX. Potrebbero esserci commandi che ti chiedono di fare qualcoa.
 Se qualcosa è già corretto lascialo intoccato. Non aggiungere righe vuote nel codice inutili
 se non lo faccio già io. Non troncare parti sostanziali di quello che scrivo io. Ridammi il codice corretto
