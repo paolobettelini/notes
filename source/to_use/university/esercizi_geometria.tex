@@ -858,9 +858,24 @@
 
 \pagebreak
 
-\end{document}
-
 \begin{snippetexercise}{11 - Inviluppo di una famiglia di rette}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+            \begin{tikzpicture}[scale=2]
+                \draw[->, thick] (-0.2, 0) -- (2.3, 0) node[right] {$x$};
+                \draw[->, thick] (0, -0.2) -- (0, 2.3) node[above] {$y$};
+                
+                \clip (-0.2, -0.2) rectangle (2.2, 2.2);
+
+                \foreach \t in {0.6, 1.0, 1.8, 3.0} {
+                    \draw[red, opacity=0.8, thick, shorten >=-10pt, shorten <=-10pt] (0, {1/\t}) -- ({\t}, 0);
+                }
+
+                \draw[blue, very thick, domain=0.12:2.2, samples=100] plot (\x, {1/(4*\x)});
+            \end{tikzpicture}
+            \vspace{-1cm}
+        \end{center}
+    \end{wrapfigure}
     Calcolare la curva inviluppo della famiglia di rette \(\ell_t\)
     passanti per i punti
     \[
@@ -876,68 +891,237 @@
         \qquad
         F(t,x,y)=x+t^2y-t.
     \]
-    Suggerimento: risolvere il sistema
-    \[
-        \begin{cases}
-            F(t,x,y)=0,\\
-            \partial_tF(t,x,y)=0.
-        \end{cases}
-    \]
+    \wrapfill
 \end{snippetexercise}
 
 \begin{snippetsolution}{11 - Inviluppo di una famiglia di rette}
-    \todo
+    L'inviluppo della famiglia si ottiene risolvendo il sistema
+    \[
+        \begin{cases}
+            F(t,x,y)=0,\\
+            F_t(t,x,y)=0.
+        \end{cases}
+    \]
+    Nel nostro caso
+    \[
+        F(t,x,y)=x+t^2y-t,
+    \]
+    quindi
+    \[
+        F_t(t,x,y)=2ty-1.
+    \]
+    Dobbiamo dunque risolvere
+    \[
+        \begin{cases}
+            x+t^2y-t=0,\\
+            2ty-1=0.
+        \end{cases}
+    \]
+    Dalla seconda equazione ricaviamo
+    \[
+        y=\frac{1}{2t}.
+    \]
+    Sostituendo nella prima:
+    \[
+        x+t^2\frac{1}{2t}-t=0,
+    \]
+    cioè
+    \[
+        x+\frac{t}{2}-t=0.
+    \]
+    Quindi
+    \[
+        x=\frac{t}{2}.
+    \]
+    L'inviluppo è pertanto parametrizzato da
+    \[
+        \gamma(t)=\left(\frac{t}{2},\frac{1}{2t}\right),
+        \qquad t\in\realnumbers\setminus\{0\}.
+    \]
+    Eliminando il parametro, da \(t=2x\) otteniamo
+    \[
+        y=\frac{1}{4x}.
+    \]
+    Quindi l'equazione cartesiana dell'inviluppo è \(4xy=1\).
 \end{snippetsolution}
 
+\pagebreak
+
 \begin{snippetexercise}{12 - Esistenza dell'inviluppo}
+    \begin{wrapfigure}{r}{6.25cm}
+        \begin{tikzpicture}[scale=0.8]
+            \draw (-2,0)--(0,2);
+            \draw (-1.5,0)--(0.5,2);
+            \draw (-1,0)--(1,2);
+
+            \begin{scope}[xshift=4cm]
+                \foreach \a in {0,35,70,110,145} {
+                    \draw (0,0)--({1.5*cos(\a)},{1.5*sin(\a)});
+                    \draw (0,0)--({-1.5*cos(\a)},{-1.5*sin(\a)});
+                }
+                \fill (0,0) circle (1.5pt);
+            \end{scope}
+        \end{tikzpicture}
+        \vspace{-1cm}
+    \end{wrapfigure}
     Sia
     \[
         F(t,x,y)=0
     \]
     una famiglia di rette. Dimostrare che la curva inviluppo esiste e
-    non è costante se e solo se \(F\) non esprime un fascio di rette.
-
-    \begin{tikzpicture}[scale=0.8]
-        \draw (-2,0)--(0,2);
-        \draw (-1.5,0)--(0.5,2);
-        \draw (-1,0)--(1,2);
-
-        \begin{scope}[xshift=4cm]
-            \foreach \a in {0,35,70,110,145} {
-                \draw (0,0)--({1.5*cos(\a)},{1.5*sin(\a)});
-                \draw (0,0)--({-1.5*cos(\a)},{-1.5*sin(\a)});
-            }
-            \fill (0,0) circle (1.5pt);
-        \end{scope}
-    \end{tikzpicture}
+    non è costante se e solo se \(F\) non esprime un fascio di rette. \wrapfill
 \end{snippetexercise}
 
 \begin{snippetsolution}{12 - Esistenza dell'inviluppo}
-    \todo
+    Scriviamo la famiglia di rette nella forma
+    \[
+        F(t,x,y)=a(t)x+b(t)y+c(t),
+    \]
+    con
+    \[
+        (a(t),b(t))\neq(0,0)
+    \]
+    per ogni \(t\). L'inviluppo si cerca imponendo il sistema
+    \[
+        \begin{cases}
+            F(t,x,y)=0,\\
+            F_t(t,x,y)=0.
+        \end{cases}
+    \]
+    Cioè
+    \[
+        \begin{cases}
+            a(t)x+b(t)y+c(t)=0,\\
+            a'(t)x+b'(t)y+c'(t)=0.
+        \end{cases}
+    \]
+    Consideriamo il determinante
+    \[
+        \Delta(t)=
+        \begin{vmatrix}
+            a(t) & b(t)\\
+            a'(t) & b'(t)
+        \end{vmatrix}
+        =
+        a(t)b'(t)-a'(t)b(t).
+    \]
+    Se \(\Delta(t)\neq0\), il sistema ha un'unica soluzione, data da
+    \[
+        x(t)=\frac{b(t)c'(t)-b'(t)c(t)}{\Delta(t)},
+        \qquad
+        y(t)=\frac{c(t)a'(t)-a(t)c'(t)}{\Delta(t)}.
+    \]
+    Quindi, sugli intervalli in cui \(\Delta(t)\neq0\), l'inviluppo è la curva
+    \[
+        \gamma(t)=
+        \left(
+            \frac{b(t)c'(t)-b'(t)c(t)}{\Delta(t)},
+            \frac{c(t)a'(t)-a(t)c'(t)}{\Delta(t)}
+        \right).
+    \]
+    Supponiamo ora che la famiglia sia un fascio proprio, cioè che tutte le rette passino per uno stesso punto \(P_0=(x_0,y_0)\). Allora
+    \[
+        F(t,x_0,y_0)=0
+    \]
+    per ogni \(t\). Derivando rispetto a \(t\), otteniamo anche
+    \[
+        F_t(t,x_0,y_0)=0.
+    \]
+    Quindi il sistema che definisce l'inviluppo ha sempre la soluzione costante \(P_0\). Se la soluzione è unica, l'inviluppo è proprio la curva costante \(\gamma(t)=P_0\). Dunque un fascio proprio non dà un inviluppo non costante.
+    Se invece la famiglia è un fascio improprio, cioè è formata da rette parallele, allora la direzione normale \((a(t),b(t))\) è costante a meno di moltiplicazione per uno scalare. In particolare
+    \[
+        \Delta(t)=0
+    \]
+    per ogni \(t\). Il sistema
+    \[
+        F(t,x,y)=F_t(t,x,y)=0
+    \]
+    non determina allora una curva di punti di contatto nel piano affine. Anche in questo caso non si ottiene un inviluppo non costante.
+    Viceversa, supponiamo che la famiglia non sia un fascio di rette. Allora non può accadere che \(\Delta(t)=0\) per ogni \(t\), perché in tal caso tutte le rette avrebbero la stessa direzione e formerebbero un fascio improprio. Quindi esiste un intervallo in cui
+    \[
+        \Delta(t)\neq0,
+    \]
+    e su tale intervallo il sistema \(F=F_t=0\) definisce una curva \(\gamma(t)\). Se questa curva fosse costante, diciamo
+    \[
+        \gamma(t)=P_0,
+    \]
+    allora \(P_0\) apparterrebbe a tutte le rette della famiglia, perché
+    \[
+        F(t,\gamma(t))=0.
+    \]
+    La famiglia sarebbe quindi un fascio proprio, contro l'ipotesi.
+    Pertanto, se \(F\) non esprime un fascio di rette, l'inviluppo esiste ed è non costante. Abbiamo così dimostrato che la curva inviluppo esiste ed è non costante se e solo se la famiglia non è un fascio di rette.
 \end{snippetsolution}
 
 \begin{snippetexercise}{13 - Proprietà focale delle coniche}
-    Dimostrare la proprietà focale dell'ellisse: se \(F_1\) e \(F_2\)
-    sono i fuochi di un'ellisse e \(P\) è un punto dell'ellisse, allora
-    la retta tangente in \(P\) forma angoli uguali con le rette
-    \(PF_1\) e \(PF_2\).
-
-    \begin{tikzpicture}[scale=0.9]
-        \draw[blue,thick] (0,0) ellipse (3 and 1.5);
-        \fill (-1.7,0) circle (1.5pt) node[below] {\(F_1\)};
-        \fill (1.7,0) circle (1.5pt) node[below] {\(F_2\)};
-        \coordinate (P) at (1.2,1.37);
-        \fill (P) circle (1.5pt) node[above] {\(P\)};
-        \draw (P)--(-1.7,0);
-        \draw (P)--(1.7,0);
-        \draw[thick] (-0.2,2.1)--(2.6,0.65);
-        \node at (2.4,1.15) {\(\ell_P\)};
-    \end{tikzpicture}
+    Data un'ellisse \[
+        E = \{ p \in \realnumbers^2 \suchthat d(P, F_1) + d(P, F_2) = 2a \}
+    \]
+    Dimostrare che gli angoli di incidenza di \(PF_1\) e \(PF_2\)
+    con la tangente ad \(E\) in \(P\) sono uguali.
+    Un raggio di luce partente da \(F_1\) verso \(P\)
+    è riflesso su \(F_2\), se \(E\) è sup. a specchio.
 \end{snippetexercise}
 
 \begin{snippetsolution}{13 - Proprietà focale delle coniche}
-    \todo
+
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+            \begin{tikzpicture}[scale=0.9]
+                \definecolor{anglecolor}{RGB}{255,255,200}
+                
+                \draw[thick] (0,0) ellipse (3cm and 2cm);
+                
+                \coordinate (F1) at (-2.236, 0);
+                \coordinate (F2) at (2.236, 0);
+                \coordinate (P) at (1.5, 1.732);
+                \coordinate (F2p) at (3.207, 2.523);
+                \coordinate (T1) at (4, 0.769);
+                \coordinate (T2) at (-1, 2.694);
+                
+                \fill[anglecolor] (P) -- ++(-67:0.4) arc (-67:25:0.4) -- cycle;
+                
+                \draw[->] ([shift={(-67:0.4)}]P) arc (-67:25:0.4);
+                
+                \draw (F1) -- (F2p);
+                \draw (F2) -- (P);
+                
+                \draw[red, thin] (T2) -- (T1) node[above, black] {$b$};
+                
+                \fill (F1) circle (1.5pt) node[below] {$F_1$};
+                \fill (F2) circle (1.5pt) node[below] {$F_2$};
+                \fill (P) circle (1.5pt) node[above] {$P$};
+                \fill (F2p) circle (1.5pt) node[above right] {$F_2'$};
+                
+                \node at (2.2, 1.75) {$\theta$};
+            \end{tikzpicture}
+        \end{center}
+    \end{wrapfigure}
+    Consideriamo al retta \(b\) bisettrice dell'angolo \(\theta\) fra le rette
+    \(PF_2\) e \(PF_1\). Vogliamo dimostrare che \(b\) è tangente all'ellisse in \(P\).
+    Consideriamo \(F_2'\) su \(PF_1\) con distanza
+    \[
+        d(P, F_2') = d(P, F_2)
+    \]
+    dunque
+    \[
+        d(F_1, F_2') = d(P, F_1) + d(P, F_2)
+    \]
+    Ogni altro punto \(Q \in b\) con \(Q \neq P\),
+    abbiamo \begin{align*}
+        d(F_1, Q) + d(F_2, Q)
+        &= d(F_1, Q) + d(F_2', Q) \\
+        &> d(F_1, F_2') = d(F_1, P) + d(F_2, P)
+    \end{align*}
+    Notiamo che \(d(Q, F_2) = d(Q, F_2')\) poiché
+    \(Q \in b\) che è anche l'asse del segmento \([F_2, F_2']\).
+    Quindi ogni \(Q \in b\) con \(Q \neq P\) non può appartenere all'ellisse,
+    quindi \(E \intersection b = \{P\}\) e \(b\) deve essere tangente. La tesi segue dalla simmetria
+    degli angoli sul vertice.
+    \wrapfill
 \end{snippetsolution}
+
+\end{document}
 
 \begin{snippetexercise}{14 - Catenaria e trattrice}
     Calcolare l'involuta della catenaria
