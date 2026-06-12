@@ -1121,9 +1121,23 @@
     \wrapfill
 \end{snippetsolution}
 
-\end{document}
+\pagebreak
 
 \begin{snippetexercise}{14 - Catenaria e trattrice}
+    \begin{wrapfigure}{r}{7cm}
+        \begin{tikzpicture}
+             \draw[->] (-3, 0) -- (3, 0) node[right] {$x$};
+                \draw[->] (0, -0.5) -- (0, 4) node[above] {$y$};
+                \draw[thick, blue, domain=-2:2, samples=100] plot (\x, {cosh(\x)});
+                \draw[thick, red, domain=-3:3, samples=150] plot ({\x - tanh(\x)}, {1/cosh(\x)});
+                \fill (0,1) circle (1.5pt);
+                \node[blue, left] at (-2.1, 3.8) {$\cosh(x)$};
+                \draw[dashed] (0.595, 0.425) -- (1.5, 2.352);
+                \fill (0.595, 0.425) circle (1.2pt);
+                \fill (1.5, 2.352) circle (1.2pt);
+            \end{tikzpicture}
+        \vspace{-1cm}
+    \end{wrapfigure}
     Calcolare l'involuta della catenaria
     \[
         \sigma(x)=(x,\cosh x),
@@ -1140,55 +1154,323 @@
             \frac{1}{\cosh x}
         \right).
     \]
-
-    \begin{tikzpicture}[scale=1.2]
-        \draw[->] (-2.4,0)--(3,0);
-        \draw[->] (0,-0.2)--(0,2.6);
-
-        \draw[red,thick,domain=-1.5:1.5,samples=120,smooth,variable=\u]
-        plot ({\u},{0.5*(exp(\u)+exp(-\u))});
-        \node[red] at (-1.6,2.2) {catenaria};
-
-        \draw[blue,thick,domain=0:2.4,samples=120,smooth,variable=\u]
-        plot
-        ({\u-(exp(\u)-exp(-\u))/(exp(\u)+exp(-\u))},{2/(exp(\u)+exp(-\u))});
-        \node[blue] at (2.2,0.45) {trattrice};
-
-        \fill (0,1) circle (1.5pt) node[left] {\(N\)};
-    \end{tikzpicture}
+    \wrapfill
 \end{snippetexercise}
 
 \begin{snippetsolution}{14 - Catenaria e trattrice}
-    \todo
+    Consideriamo la catenaria
+    \[
+        \sigma(x)=(x,\cosh x).
+    \]
+    Si ha
+    \[
+        \sigma'(x)=(1,\sinh x),
+    \]
+    quindi
+    \[
+        \left\|\sigma'(x)\right\|
+        =
+        \sqrt{1+\sinh^2x}
+        =
+        \cosh x.
+    \]
+    La lunghezza d'arco a partire dal punto \(N=(0,1)=\sigma(0)\) è dunque
+    \[
+        s(x)=\int_0^x \left\|\sigma'(u)\right\|\,du
+        =
+        \int_0^x \cosh u\,du
+        =
+        \sinh x.
+    \]
+    Il versore tangente alla catenaria è
+    \[
+        T(x)=\frac{\sigma'(x)}{\left\|\sigma'(x)\right\|}
+        =
+        \left(
+            \frac{1}{\cosh x},
+            \frac{\sinh x}{\cosh x}
+        \right)
+        =
+        \left(
+            \frac{1}{\cosh x},
+            \tanh x
+        \right).
+    \]
+    L'involuta della catenaria, partendo dal punto \(N=\sigma(0)\), si ottiene sottraendo alla posizione \(\sigma(x)\) il tratto di filo svolto, di lunghezza \(s(x)\), nella direzione tangente:
+    \[
+        \tau(x)=\sigma(x)-s(x)T(x).
+    \]
+    Quindi
+    \begin{align*}
+        \tau(x)
+        &=
+        (x,\cosh x)
+        -
+        \sinh x
+        \left(
+            \frac{1}{\cosh x},
+            \tanh x
+        \right)\\
+        &=
+        \left(
+            x-\frac{\sinh x}{\cosh x},
+            \cosh x-\sinh x\tanh x
+        \right)\\
+        &=
+        \left(
+            x-\tanh x,
+            \cosh x-\frac{\sinh^2x}{\cosh x}
+        \right).
+    \end{align*}
+    Poiché
+    \[
+        \cosh^2x-\sinh^2x=1,
+    \]
+    otteniamo
+    \[
+        \cosh x-\frac{\sinh^2x}{\cosh x}
+        =
+        \frac{\cosh^2x-\sinh^2x}{\cosh x}
+        =
+        \frac{1}{\cosh x}.
+    \]
+    Pertanto l'involuta della catenaria è
+    \[
+        \tau(x)=
+        \left(
+            x-\tanh x,
+            \frac{1}{\cosh x}
+        \right),
+    \]
+    che è la parametrizzazione della trattrice.
 \end{snippetsolution}
 
 \begin{snippetexercise}{15 - Giustificazione del nome trattrice}
     Dimostrare che il segmento di tangente da un punto della trattrice
     all'asse \(x\) ha lunghezza costante uguale a \(1\).
+    \begin{center}
+        \begin{tikzpicture}[scale=1.6, line cap=round, line join=round]
+            \draw[->] (-3.6,0) -- (4.8,0);
+            \draw[->] (0,-0.2) -- (0,1.45);
 
-    \begin{tikzpicture}[scale=1.15]
-        \draw[->] (-0.2,0)--(4,0) node[right] {\(x\)};
-        \draw[->] (0,-0.2)--(0,2.2) node[above] {\(y\)};
+            \draw[blue, thick, smooth, samples=250, domain=-3.6:4.2, variable=\t]
+                plot ({\t - tanh(\t)}, {1/cosh(\t)});
 
-        \draw[blue,thick,domain=0:3.2,samples=120,smooth,variable=\u]
-        plot
-        ({\u-(exp(\u)-exp(-\u))/(exp(\u)+exp(-\u))},{2/(exp(\u)+exp(-\u))});
+            \coordinate (A) at (0,1);
+            \coordinate (A0) at (0,0);
 
-        \coordinate (P) at (1.35,0.55);
-        \coordinate (Q) at (2.25,0);
+            \pgfmathsetmacro{\ta}{0.85}
+            \coordinate (B) at ({\ta - tanh(\ta)}, {1/cosh(\ta)});
+            \coordinate (B0) at (\ta,0);
 
-        \fill (P) circle (1.5pt) node[above right] {\(\tau(x)\)};
-        \fill (Q) circle (1.5pt) node[below] {\(P(x)\)};
-        \draw[red,thick] (P)--(Q);
-        \node[red] at (1.85,0.35) {\(1\)};
-    \end{tikzpicture}
+            \pgfmathsetmacro{\tb}{2.3}
+            \coordinate (C) at ({\tb - tanh(\tb)}, {1/cosh(\tb)});
+            \coordinate (C0) at (\tb,0);
+
+            \draw[red!85!black, thick] (A) -- node[midway, left] {\(1\)} (A0);
+            \draw[red!85!black, thick] (B) -- node[midway, left] {\(1\)} (B0);
+            \draw[red!85!black, thick] (C) -- node[midway, below] {\(1\)} (C0);
+
+            \draw[red!85!black, fill=white, thick] (A) circle (1.2pt);
+            \draw[red!85!black, fill=white, thick] (A0) circle (1.2pt);
+            \draw[red!85!black, fill=white, thick] (B) circle (1.2pt);
+            \draw[red!85!black, fill=white, thick] (B0) circle (1.2pt);
+            \draw[red!85!black, fill=white, thick] (C) circle (1.2pt);
+            \draw[red!85!black, fill=white, thick] (C0) circle (1.2pt);
+        \end{tikzpicture}
+    \end{center}
 \end{snippetexercise}
 
 \begin{snippetsolution}{15 - Giustificazione del nome trattrice}
-    \todo
+    Consideriamo la parametrizzazione della trattrice
+    \[
+        \tau(x)=
+        \left(
+            x-\tanh x,
+            \frac{1}{\cosh x}
+        \right).
+    \]
+    Calcoliamo la derivata:
+    \begin{align*}
+        \tau'(x)
+        &=
+        \left(
+            1-\frac{1}{\cosh^2 x},
+            -\frac{\sinh x}{\cosh^2 x}
+        \right)\\
+        &=
+        \left(
+            \frac{\sinh^2 x}{\cosh^2 x},
+            -\frac{\sinh x}{\cosh^2 x}
+        \right)\\
+        &=
+        \frac{\sinh x}{\cosh^2 x}
+        \left(
+            \sinh x,
+            -1
+        \right).
+    \end{align*}
+    Per \(x\neq0\), un vettore direttore della retta tangente è quindi
+    \[
+        v(x)=\left(\sinh x,-1\right).
+    \]
+    La retta tangente nel punto \(\tau(x)\) è
+    \[
+        \tau(x)+p\,v(x)
+        =
+        \left(
+            x-\tanh x,
+            \frac{1}{\cosh x}
+        \right)
+        +
+        p\left(\sinh x,-1\right).
+    \]
+    Cerchiamo la sua intersezione con l'asse \(x\), cioè imponiamo che la seconda coordinata sia nulla:
+    \[
+        \frac{1}{\cosh x}-p=0.
+    \]
+    Quindi
+    \[
+        p=\frac{1}{\cosh x}.
+    \]
+    Il punto di intersezione con l'asse \(x\) è dunque
+    \begin{align*}
+        P(x)
+        &=
+        \left(
+            x-\tanh x,
+            \frac{1}{\cosh x}
+        \right)
+        +
+        \frac{1}{\cosh x}
+        \left(
+            \sinh x,
+            -1
+        \right)\\
+        &=
+        \left(
+            x-\tanh x+\tanh x,
+            \frac{1}{\cosh x}-\frac{1}{\cosh x}
+        \right)\\
+        &=
+        (x,0).
+    \end{align*}
+    La lunghezza del segmento di tangente compreso tra \(\tau(x)\) e l'asse \(x\) è quindi
+    \begin{align*}
+        \left\|P(x)-\tau(x)\right\|
+        &=
+        \left\|
+        \left(
+            \tanh x,
+            -\frac{1}{\cosh x}
+        \right)
+        \right\|\\
+        &=
+        \sqrt{
+            \tanh^2x+\frac{1}{\cosh^2x}
+        }\\
+        &=
+        \sqrt{
+            \frac{\sinh^2x+1}{\cosh^2x}
+        }\\
+        &=
+        \sqrt{
+            \frac{\cosh^2x}{\cosh^2x}
+        }\\
+        &=
+        1.
+    \end{align*}
+    Per \(x=0\), la tangente si ottiene per continuità ed è la retta verticale \(x=0\), che incontra l'asse \(x\) nel punto \((0,0)\). Poiché \(\tau(0)=(0,1)\), anche in questo caso il segmento di tangente ha lunghezza \(1\).
+    Dunque il segmento di tangente da un punto della trattrice all'asse \(x\) ha lunghezza costante uguale a \(1\).
 \end{snippetsolution}
 
 \begin{snippetexercise}{16 - Proprietà equiangolare della spirale logaritmica}
+    \begin{wrapfigure}{r}{5.5cm}
+        \begin{tikzpicture}[
+            scale=2.4,
+            line cap=round,
+            line join=round,
+            >={Latex[length=2mm,width=1.4mm]}
+        ]
+
+        % parameters of the logarithmic spiral r = a e^{b\theta}
+        \def\a{0.78}
+        \def\b{0.20}
+
+        % chosen points on the spiral
+        \def\thP{50}
+        \def\thQ{-50}
+
+        % constant angle between radius and tangent
+        \pgfmathsetmacro{\delta}{atan(1/\b)}
+
+        % radii of the two points
+        \pgfmathsetmacro{\rP}{\a*exp(\b*\thP*pi/180)}
+        \pgfmathsetmacro{\rQ}{\a*exp(\b*\thQ*pi/180)}
+
+        % tangent directions
+        \pgfmathsetmacro{\tanP}{\thP+\delta}
+        \pgfmathsetmacro{\tanQ}{\thQ+\delta}
+
+        % mid angles for alpha labels
+        \pgfmathsetmacro{\midP}{(\thP+\tanP)/2}
+        \pgfmathsetmacro{\midQ}{(\thQ+\tanQ)/2}
+
+        % key points
+        \coordinate (O) at (0,0);
+        \coordinate (P) at ({\rP*cos(\thP)},{\rP*sin(\thP)});
+        \coordinate (Q) at ({\rQ*cos(\thQ)},{\rQ*sin(\thQ)});
+
+        % axes
+        \draw[thick,->] (-0.70,0) -- (1.55,0);
+        \draw[thick,->] (0,-1.15) -- (0,1.25);
+
+        % logarithmic spiral
+        \draw[cyan!85!blue, line width=1pt, smooth, samples=260, variable=\t, domain=-280:95]
+            plot ({\a*exp(\b*\t*pi/180)*cos(\t)},
+                {\a*exp(\b*\t*pi/180)*sin(\t)});
+
+        % red radii
+        \draw[red, line width=1pt] (O) -- (P);
+        \draw[red, line width=1pt] (O) -- (Q);
+
+        % black continuations of the red radii
+        \draw[black, line width=0.9pt] (P) -- ++(\thP:0.52);
+        \draw[black, line width=0.9pt] (Q) -- ++(\thQ:0.52);
+
+        % green tangents to the spiral
+        \draw[green!70!black, line width=0.9pt] (P) -- ++(\tanP:0.48);
+        \draw[green!70!black, line width=0.9pt] (Q) -- ++(\tanQ:0.48);
+
+        % points
+        \fill (P) circle (0.85pt);
+        \fill (Q) circle (0.85pt);
+
+        % labels
+        \node[below left=1pt] at (O) {\(O\)};
+        \node[right=2pt] at (P) {\(P\)};
+
+        % equal-angle markers at P
+        \draw[black, line width=0.6pt]
+            (P) ++(\thP:0.12)
+            arc[start angle=\thP,end angle=\tanP,radius=0.12];
+        \draw[black, line width=0.6pt]
+            (P) ++(\thP:0.17)
+            arc[start angle=\thP,end angle=\tanP,radius=0.17];
+        \node at ($(P)+(\midP:0.28)$) {\(\alpha\)};
+
+        % equal-angle markers at Q
+        \draw[black, line width=0.6pt]
+            (Q) ++(\thQ:0.12)
+            arc[start angle=\thQ,end angle=\tanQ,radius=0.12];
+        \draw[black, line width=0.6pt]
+            (Q) ++(\thQ:0.17)
+            arc[start angle=\thQ,end angle=\tanQ,radius=0.17];
+        \node at ($(Q)+(\midQ:0.28)$) {\(\alpha\)};
+
+        \end{tikzpicture}
+        \vspace{-1cm}
+    \end{wrapfigure}
     Sia
     \[
         \sigma(t)=e^{at}(\cos t,\sin t),
@@ -1196,28 +1478,73 @@
         a>0.
     \]
     Dimostrare che l'angolo tra il vettore \(\overrightarrow{OP}\) e la
-    retta tangente a \(\sigma\) nel punto \(P=\sigma(t)\) è costante.
-
-    \begin{tikzpicture}[scale=1.1]
-        \draw[->] (-1.6,0)--(2.1,0);
-        \draw[->] (0,-1.6)--(0,2.1);
-
-        \draw[blue,thick,domain=-4:1.1,samples=180,smooth,variable=\u]
-        plot ({exp(0.35*\u)*cos(\u r)},{exp(0.35*\u)*sin(\u r)});
-
-        \coordinate (O) at (0,0);
-        \coordinate (P) at (0.95,0.75);
-        \draw[red,thick,->] (O)--(P);
-        \draw[green!60!black,thick] (0.35,1.35)--(1.55,0.15);
-
-        \fill (O) circle (1pt) node[below left] {\(O\)};
-        \fill (P) circle (1.5pt) node[right] {\(P\)};
-        \node at (0.85,1.05) {\(\theta\)};
-    \end{tikzpicture}
+    retta tangente a \(\sigma\) nel punto \(P=\sigma(t)\) è costante. \wrapfill
 \end{snippetexercise}
 
 \begin{snippetsolution}{16 - Proprietà equiangolare della spirale logaritmica}
-    \todo
+    Calcoliamo la derivata:
+    \[
+        \sigma'(t)
+        =
+        ae^{at}(\cos t,\sin t)
+        +
+        e^{at}(-\sin t,\cos t).
+    \]
+    Sia \(\theta(t)\) l'angolo tra il vettore raggio
+    \[
+        \overrightarrow{OP}=\sigma(t)
+    \]
+    e la retta tangente a \(\sigma\) nel punto \(P=\sigma(t)\), cioè la retta di direzione \(\sigma'(t)\). Allora
+    \[
+        \cos\theta(t)
+        =
+        \frac{\langle\sigma(t),\sigma'(t)\rangle}{\left\|\sigma(t)\right\|\left\|\sigma'(t)\right\|}.
+    \]
+    Ora
+    \[
+        \left\|\sigma(t)\right\|=e^{at}
+    \]
+    e
+    \begin{align*}
+        \left\|\sigma'(t)\right\|
+        &=
+        e^{at}
+        \left\|
+            a(\cos t,\sin t)+(-\sin t,\cos t)
+        \right\|\\
+        &=
+        e^{at}\sqrt{a^2+1},
+    \end{align*}
+    perché i vettori \((\cos t,\sin t)\) e \((-\sin t,\cos t)\) sono ortonormali. Inoltre
+    \begin{align*}
+        \langle\sigma(t),\sigma'(t)\rangle
+        &=
+        \left\langle
+            e^{at}(\cos t,\sin t),
+            ae^{at}(\cos t,\sin t)+e^{at}(-\sin t,\cos t)
+        \right\rangle\\
+        &=
+        e^{2at}
+        \left(
+            a\left\|(\cos t,\sin t)\right\|^2
+            +
+            \left\langle
+                (\cos t,\sin t),
+                (-\sin t,\cos t)
+            \right\rangle
+        \right)\\
+        &=
+        ae^{2at}.
+    \end{align*}
+    Quindi
+    \[
+        \cos\theta(t)
+        =
+        \frac{ae^{2at}}{e^{at}\cdot e^{at}\sqrt{a^2+1}}
+        =
+        \frac{a}{\sqrt{a^2+1}}.
+    \]
+    Questa quantità non dipende da \(t\). Dunque anche l'angolo \(\theta(t)\) è costante lungo tutta la spirale.
 \end{snippetsolution}
 
 \begin{snippetexercise}{17 - Curvatura e torsione dell'elica circolare}
@@ -1229,7 +1556,79 @@
 \end{snippetexercise}
 
 \begin{snippetsolution}{17 - Curvatura e torsione dell'elica circolare}
-    \todo
+    Calcoliamo le derivate:
+    \[
+        \sigma'(t)=(-\sin t,\cos t,a),
+        \qquad
+        \sigma''(t)=(-\cos t,-\sin t,0),
+        \qquad
+        \sigma'''(t)=(\sin t,-\cos t,0).
+    \]
+    La velocità ha modulo
+    \[
+        \left\|\sigma'(t)\right\|
+        =
+        \sqrt{\sin^2t+\cos^2t+a^2}
+        =
+        \sqrt{1+a^2}.
+    \]
+    Inoltre
+    \[
+        \sigma'(t)\times\sigma''(t)
+        =
+        \left(
+            a\sin t,
+            -a\cos t,
+            1
+        \right),
+    \]
+    quindi
+    \[
+        \left\|\sigma'(t)\times\sigma''(t)\right\|
+        =
+        \sqrt{a^2\sin^2t+a^2\cos^2t+1}
+        =
+        \sqrt{1+a^2}.
+    \]
+    La curvatura è
+    \[
+        \kappa_\sigma(t)
+        =
+        \frac{\left\|\sigma'(t)\times\sigma''(t)\right\|}{\left\|\sigma'(t)\right\|^3}
+        =
+        \frac{\sqrt{1+a^2}}{(1+a^2)^{3/2}}
+        =
+        \frac{1}{1+a^2}.
+    \]
+    Per la torsione usiamo la formula
+    \[
+        \tau_\sigma(t)
+        =
+        \frac{\det(\sigma'(t),\sigma''(t),\sigma'''(t))}{\left\|\sigma'(t)\times\sigma''(t)\right\|^2}.
+    \]
+    Poiché
+    \[
+        \det(\sigma'(t),\sigma''(t),\sigma'''(t))
+        =
+        \left\langle
+            \sigma'(t)\times\sigma''(t),
+            \sigma'''(t)
+        \right\rangle
+        =
+        a,
+    \]
+    otteniamo
+    \[
+        \tau_\sigma(t)
+        =
+        \frac{a}{1+a^2}.
+    \]
+    Dunque curvatura e torsione sono costanti:
+    \[
+        \kappa_\sigma=\frac{1}{1+a^2},
+        \qquad
+        \tau_\sigma=\frac{a}{1+a^2}.
+    \]
 \end{snippetsolution}
 
 \begin{snippetexercise}{18 - Caratterizzazione delle eliche circolari}
@@ -1250,71 +1649,260 @@
 \end{snippetexercise}
 
 \begin{snippetsolution}{18 - Caratterizzazione delle eliche circolari}
-    \todo
+    Sia \(\gamma\) una curva parametrizzata per lunghezza d'arco tale che
+    \[
+        \kappa_\gamma(s)=\kappa_0>0,
+        \qquad
+        \tau_\gamma(s)=\tau_0\neq0.
+    \]
+    Consideriamo l'elica circolare modello
+    \[
+        \alpha(t)=(A\cos t,A\sin t,Bt),
+        \qquad A>0,\ B\neq0.
+    \]
+    Calcoliamo curvatura e torsione di \(\alpha\). Si ha
+    \[
+        \alpha'(t)=(-A\sin t,A\cos t,B),
+        \qquad
+        \alpha''(t)=(-A\cos t,-A\sin t,0),
+        \qquad
+        \alpha'''(t)=(A\sin t,-A\cos t,0).
+    \]
+    Inoltre
+    \[
+        \left\|\alpha'(t)\right\|=\sqrt{A^2+B^2}
+    \]
+    e
+    \[
+        \alpha'(t)\times\alpha''(t)
+        =
+        \left(
+            AB\sin t,
+            -AB\cos t,
+            A^2
+        \right).
+    \]
+    Quindi
+    \[
+        \left\|\alpha'(t)\times\alpha''(t)\right\|
+        =
+        A\sqrt{A^2+B^2}.
+    \]
+    Pertanto
+    \[
+        \kappa_\alpha
+        =
+        \frac{\left\|\alpha'(t)\times\alpha''(t)\right\|}{\left\|\alpha'(t)\right\|^3}
+        =
+        \frac{A}{A^2+B^2}.
+    \]
+    Per la torsione,
+    \[
+        \tau_\alpha
+        =
+        \frac{\det(\alpha'(t),\alpha''(t),\alpha'''(t))}{\left\|\alpha'(t)\times\alpha''(t)\right\|^2}.
+    \]
+    Poiché
+    \[
+        \det(\alpha'(t),\alpha''(t),\alpha'''(t))
+        =
+        \left\langle
+            \alpha'(t)\times\alpha''(t),
+            \alpha'''(t)
+        \right\rangle
+        =
+        A^2B,
+    \]
+    otteniamo
+    \[
+        \tau_\alpha
+        =
+        \frac{A^2B}{A^2(A^2+B^2)}
+        =
+        \frac{B}{A^2+B^2}.
+    \]
+    Scegliamo ora
+    \[
+        A=\frac{\kappa_0}{\kappa_0^2+\tau_0^2},
+        \qquad
+        B=\frac{\tau_0}{\kappa_0^2+\tau_0^2}.
+    \]
+    Allora
+    \[
+        A^2+B^2=\frac{1}{\kappa_0^2+\tau_0^2},
+    \]
+    e quindi
+    \[
+        \kappa_\alpha=\kappa_0,
+        \qquad
+        \tau_\alpha=\tau_0.
+    \]
+    Poiché la curvatura e la torsione non cambiano passando a una parametrizzazione per lunghezza d'arco, l'elica \(\alpha\) ha le stesse funzioni di curvatura e torsione della curva \(\gamma\).
+    Per il teorema di classificazione delle curve biregolari nello spazio, due curve con le stesse funzioni di curvatura e torsione differiscono per un'isometria diretta di \(\realnumbers^3\). Dunque esiste un'isometria diretta \(g\) tale che
+    \[
+        \gamma=g\circ\alpha
+    \]
+    a meno di traslazione del parametro. Quindi \(\gamma\) è un'elica circolare.
+    Viceversa, ogni curva del tipo
+    \[
+        \alpha(t)=(A\cos t,A\sin t,Bt),
+        \qquad A\neq0,\ B\neq0,
+    \]
+    ha curvatura e torsione costanti, date da
+    \[
+        \kappa_\alpha=\frac{|A|}{A^2+B^2},
+        \qquad
+        \tau_\alpha=\frac{B}{A^2+B^2}.
+    \]
+    In particolare \(\kappa_\alpha>0\) e \(\tau_\alpha\neq0\). Dunque le curve con curvatura costante positiva e torsione costante non nulla sono precisamente, a meno di isometrie dirette, le eliche circolari.
 \end{snippetsolution}
 
 \begin{snippetexercise}{19 - Indici di avvolgimento}
-    Determinare gli indici di avvolgimento
-    \[
-        i(\sigma,P)
-    \]
-    nelle varie componenti connesse di
-    \[
-        \realnumbers^2\setminus\operatorname{Im}(\sigma),
-    \]
-    dove \(\sigma\) è la curva regolare disegnata sotto.
-
-    \begin{tikzpicture}[scale=0.85]
-        \draw[blue,thick]
-        (-3.3,0.2)
-        .. controls (-4.0,1.4) and (-2.4,1.7) .. (-2.1,0.3)
-        .. controls (-1.8,-1.1) and (-3.5,-1.3) .. (-3.2,0.0)
-        .. controls (-2.9,1.1) and (-1.2,0.2) .. (0.0,0.45)
-        .. controls (1.0,0.7) and (1.2,1.9) .. (0.55,1.6)
-        .. controls (-0.4,1.1) and (0.1,-0.8) .. (1.3,-0.8)
-        .. controls (2.8,-0.8) and (3.4,0.25) .. (2.65,0.9)
-        .. controls (1.85,1.6) and (0.8,0.8) .. (0.0,0.45);
-
-        \draw[blue,->,thick] (-0.2,0.42)--(0.25,0.5);
-    \end{tikzpicture}
+    Determinare gli indici di avvolgimento \(i(\sigma,P)\)
+    nelle varie componenti connesse di \(\realnumbers^2\setminus\operatorname{Im}(\sigma)\),
+    dove \(\sigma\) è la curva regolare disegnata sotto. \vspace{0.25cm}
+    \begin{center}
+        \includegraphics[width=0.85\linewidth]{media/winding_path.png}
+    \end{center}
 \end{snippetexercise}
 
 \begin{snippetsolution}{19 - Indici di avvolgimento}
-    \todo
+    Banale
 \end{snippetsolution}
 
 \begin{snippetexercise}{20 - Tracce di bicicletta}
     Consideriamo una traiettoria chiusa convessa di una bicicletta di
     lunghezza \(d\), dove \(d\) è la distanza tra i punti di contatto
     delle due ruote con il terreno.
+    Dimostrare che l'area racchiusa tra le tracce delle due ruote è \(\pi d^2\).
+    \begin{center}
+        \begin{tikzpicture}[scale=0.75]
+            \fill[purple!15, even odd rule]
+            plot[domain=0:360, samples=100, smooth, variable=\t]
+                ({4*cos(\t) - 2*(4*sin(\t))/sqrt(16*sin(\t)*sin(\t) + 9*cos(\t)*cos(\t))},
+                {3*sin(\t) + 2*(3*cos(\t))/sqrt(16*sin(\t)*sin(\t) + 9*cos(\t)*cos(\t))}) -- cycle
+            plot[domain=0:360, samples=100, smooth, variable=\t]
+                ({4*cos(\t)}, {3*sin(\t)}) -- cycle;
 
-    Dimostrare che l'area racchiusa tra le tracce delle due ruote è
-    \[
-        \pi d^2.
-    \]
+            \draw[thick, blue] plot[domain=0:360, samples=100, smooth, variable=\t] ({4*cos(\t)}, {3*sin(\t)}) -- cycle;
 
-    \begin{tikzpicture}[scale=0.85]
-        \fill[orange!35,even odd rule]
-        (0,0) ellipse (3.4 and 1.55)
-        (0.2,-0.05) ellipse (2.55 and 1.0);
+            \draw[thick, red] plot[domain=0:360, samples=100, smooth, variable=\t]
+                ({4*cos(\t) - 2*(4*sin(\t))/sqrt(16*sin(\t)*sin(\t) + 9*cos(\t)*cos(\t))},
+                {3*sin(\t) + 2*(3*cos(\t))/sqrt(16*sin(\t)*sin(\t) + 9*cos(\t)*cos(\t))}) -- cycle;
 
-        \draw[blue,thick] (0,0) ellipse (3.4 and 1.55);
-        \draw[black,thick] (0.2,-0.05) ellipse (2.55 and 1.0);
-
-        \node[blue] at (1.9,-1.8) {traiettoria ruota anteriore};
-        \node at (0.3,-0.35) {traiettoria ruota posteriore};
-        \node at (-2.0,0.65) {\(A\)};
-
-        \draw[green!60!black,thick] (-2.7,-0.55)--(-2.7,0.9);
-        \node[left] at (-2.7,0.15) {\(d\)};
-    \end{tikzpicture}
-
-    Vedi suggerimento della Lezione 13.
+            \foreach \t in {0, 24, 48, 72, 96, 120, 144, 168, 192, 216, 240, 264, 288, 312, 336} {
+                \draw[->, thick, black!80]
+                    ({4*cos(\t)}, {3*sin(\t)}) --
+                    ({4*cos(\t) - 2*(4*sin(\t))/sqrt(16*sin(\t)*sin(\t) + 9*cos(\t)*cos(\t))},
+                    {3*sin(\t) + 2*(3*cos(\t))/sqrt(16*sin(\t)*sin(\t) + 9*cos(\t)*cos(\t))});
+                \fill[black] ({4*cos(\t)}, {3*sin(\t)}) circle (1.5pt);
+                \fill[black] ({4*cos(\t) - 2*(4*sin(\t))/sqrt(16*sin(\t)*sin(\t) + 9*cos(\t)*cos(\t))},
+                    {3*sin(\t) + 2*(3*cos(\t))/sqrt(16*sin(\t)*sin(\t) + 9*cos(\t)*cos(\t))}) circle (1.5pt);
+            }
+            \end{tikzpicture}
+    \end{center}
 \end{snippetexercise}
 
 \begin{snippetsolution}{20 - Tracce di bicicletta}
-    \todo
+    Sia
+    \[
+        \sigma\colon[0,L]\to\realnumbers^2
+    \]
+    una parametrizzazione per lunghezza d'arco della traccia della ruota posteriore, orientata positivamente. Scriviamo
+    \[
+        T(s)=\sigma'(s).
+    \]
+    Poiché la distanza tra le due ruote è costante e la ruota posteriore si muove sempre nella direzione della bicicletta, la traccia della ruota anteriore è
+    \[
+        \sigma_a(s)=\sigma(s)+dT(s).
+    \]
+    L'area racchiusa tra le due tracce si calcola con la formula di Green:
+    \[
+        A=\frac12\int_{\sigma_a}(x\,dy-y\,dx)-\frac12\int_{\sigma}(x\,dy-y\,dx).
+    \]
+    In forma vettoriale, indicando con \(\det(u,v)\) il determinante dei due vettori \(u,v\in\realnumbers^2\), si ha
+    \[
+        \int_{\gamma}(x\,dy-y\,dx)=\int \det(\gamma,\gamma')\,ds.
+    \]
+    Dunque
+    \begin{align*}
+        2A
+        &=
+        \int_0^L \det(\sigma_a(s),\sigma_a'(s))\,ds
+        -
+        \int_0^L \det(\sigma(s),\sigma'(s))\,ds.
+    \end{align*}
+    Ora
+    \[
+        \sigma_a'(s)=\sigma'(s)+dT'(s)=T(s)+dT'(s),
+    \]
+    quindi
+    \begin{align*}
+        \det(\sigma_a,\sigma_a')
+        &=
+        \det(\sigma+dT,T+dT')\\
+        &=
+        \det(\sigma,T)+d\det(\sigma,T')+d\det(T,T)+d^2\det(T,T')\\
+        &=
+        \det(\sigma,T)+d\det(\sigma,T')+d^2\det(T,T').
+    \end{align*}
+    Pertanto
+    \[
+        2A
+        =
+        d\int_0^L \det(\sigma,T')\,ds
+        +
+        d^2\int_0^L \det(T,T')\,ds.
+    \]
+    Osserviamo che
+    \[
+        \frac{d}{ds}\det(\sigma,T)
+        =
+        \det(\sigma',T)+\det(\sigma,T')
+        =
+        \det(T,T)+\det(\sigma,T')
+        =
+        \det(\sigma,T').
+    \]
+    Poiché \(\sigma\) è chiusa e \(T(0)=T(L)\), segue che
+    \[
+        \int_0^L \det(\sigma,T')\,ds
+        =
+        \det(\sigma(L),T(L))-\det(\sigma(0),T(0))
+        =
+        0.
+    \]
+    Rimane quindi
+    \[
+        2A=d^2\int_0^L \det(T,T')\,ds.
+    \]
+    Scriviamo
+    \[
+        T(s)=(\cos\theta(s),\sin\theta(s)).
+    \]
+    Allora
+    \[
+        T'(s)=\theta'(s)(-\sin\theta(s),\cos\theta(s)),
+    \]
+    e quindi
+    \[
+        \det(T,T')=\theta'(s).
+    \]
+    Per il teorema delle tangenti di Hopf, poiché \(\sigma\) è chiusa e convessa, il vettore tangente compie un giro completo:
+    \[
+        \int_0^L \theta'(s)\,ds=2\pi.
+    \]
+    Dunque
+    \[
+        2A=d^2\cdot 2\pi,
+    \]
+    cioè
+    \[
+        A=\pi d^2.
+    \]
 \end{snippetsolution}
+
+\end{document}
 
 \begin{snippetexercise}{21 - Spazi proiettivi I}
     Sia \(\mathbb{K}=\realnumbers\) oppure
