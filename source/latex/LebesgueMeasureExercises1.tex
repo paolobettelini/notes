@@ -1,0 +1,1363 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+\usepackage{xfrac}
+
+\begin{document}
+
+\id{lebesgue-measure-exercises1}
+\genpage
+
+\section{Exercises}
+
+\begin{snippetexercise}{lebesgue-measure-ex-1}{}
+    Evaluate the Lebesgue measure of the following subset of \(\realnumbers\)
+    \[
+        \bigcup_{n=1}^\infty \left[
+            n-\frac{1}{3^n}, n + \frac{1}{2^{n-1}}
+        \right]
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{lebesgue-measure-ex-1-sol}{}
+    Let \[
+        \Phi_n = \left[
+            n-\frac{1}{3^n}, n + \frac{1}{2^{n-1}}
+        \right]
+    \]
+    We have the measure of a single internal
+    \[
+        \mu(\Phi_n) = \left(n + \frac{1|}{2^{n-1}}\right)
+        - \left(n-\frac{1}{3^n}\right) = \frac{1}{2^{n-1}} + \frac{1}{3^n}
+    \]
+    We will now study whether the intervals are disjoint.
+    \begin{enumerate}
+        \item \emph{Upper bound of \(\Phi_n\):} \[ U_n = n + \frac{1}{2^{n-1}} \]
+        \item \emph{Lower bound of \(\Phi_n\):} \[ N_n = (n + 1) - \frac{1}{3^{n+1}} \]
+    \end{enumerate}
+    An overlap occurs if \(U_n > L_{n+1}\):
+    \begin{align*}
+        n + \frac{1}{2^{n-1}} &> (n + 1) - \frac{1}{3^{n+1}}  \\
+        \frac{1}{2^{n-1}} + \frac{1}{3^{n+1}} &> 1
+    \end{align*}
+    We have the following first cases:
+    \begin{itemize}
+        \item For \(n=1\), we have \(\frac{1}{2^0} + \frac{1}{3^2} = \frac{10}{9} > 1\) (Overlap);
+        \item For \(n=2\), we have \(\frac{1}{2^1} + \frac{1}{3^3} = \frac12 + \frac{1}{27} < 1\) (No overlap);
+    \end{itemize}
+    Since the terms in the inequality are strictly decreasing as \(n\) increases, there are no overlap for \(n \geq 2\).
+    Thus, only \(\Phi_1\) and \(\Phi_2\) intersect. We have
+    \begin{align*}
+        \Phi_1 &= \left[1 - \frac13, 1 + \frac11\right] = \left[\frac23, 2\right] \\
+        \Phi_2 &= \left[2 - \frac19, 2 + \frac12\right] = \left[\frac{17}{9}, \frac{5}{2}\right]
+    \end{align*}
+    and their intersection
+    \[
+        \Phi_1 \intersection \Phi_2 = \left[\frac{17}{9}, 2\right],
+        \quad \mu(\Phi_1 \intersection \Phi_2) = 2 - \frac{17}{9} = \frac19
+    \]
+    Finally, the Lebesgue measure is given by
+    \begin{align*}
+        \mu\left(
+            \bigcup_{n=1}^\infty \left[
+                n-\frac{1}{3^n}, n + \frac{1}{2^{n-1}}
+            \right]
+        \right) &= \left(
+            \sum_{n=1}^\infty \mu(\Phi_n)
+        \right) - \mu(\Phi_1 \intersection \Phi_2) \\
+        &= \left(
+            \sum_{n=1}^\infty \frac{1}{2^{n-1}}
+        \right) + \left(
+            \sum_{n=1}^\infty \frac{1}{3^n}
+        \right) - \frac19 \\
+        &= \left(
+            \sum_{n=0}^\infty \frac{1}{2^{n}}
+        \right) + \left(
+            \sum_{n=0}^\infty \frac{1}{3^n}
+        \right) -\frac{1}{3^0} - \frac19 \\
+        &= \frac{1}{1-\frac12} + \frac{1}{1-\frac13} - 1 - \frac19 = \frac{43}{18}
+    \end{align*}
+\end{snippetsolution}
+
+\begin{snippetexercise}{lebesgue-measure-ex-2}{}
+    Let \[
+        F(x,y) = x^2 + \arctan y + ye^x
+    \]
+    Show that the equation \(F(x,y) = 0\) implicitly defines one and only one
+    \function \(y = \varphi(x)\), with \(x\in\realnumbers\). Sketch the graph of the function
+    \(\varphi\) and determine whether \(\varphi \in \mathcal L^1(\realnumbers^+)\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{lebesgue-measure-ex-2-sol}{}
+    Fix \(x\in\realnumbers\) and consider
+    \[
+        f_x(y) = F(x,y) = x^2 + \arctan y + ye^x.
+    \]
+    Then \(f_x\) is continuous and
+    \[
+        f_x'(y) = \frac{1}{1+y^2} + e^x > 0
+    \]
+    for every \(y\in\realnumbers\). Hence \(f_x\) is strictly increasing. Moreover,
+    \[
+        \lim_{y\to -\infty} f_x(y) = -\infty,
+        \qquad
+        \lim_{y\to +\infty} f_x(y) = +\infty.
+    \]
+    By the intermediate value theorem, for every \(x\in\realnumbers\) there exists
+    a unique \(y=\varphi(x)\) such that \(F(x,\varphi(x))=0\).
+
+    Since
+    \[
+        \partial_y F(x,y)
+        =
+        \frac{1}{1+y^2} + e^x
+        >0,
+    \]
+    the implicit function theorem implies that the function \(\varphi\) is of class
+    \(C^1\) on \(\realnumbers\). Its derivative is
+    \[
+        \varphi'(x)
+        =
+        -\frac{\partial_x F(x,\varphi(x))}{\partial_y F(x,\varphi(x))}
+        =
+        -\frac{2x+\varphi(x)e^x}{\frac{1}{1+\varphi(x)^2}+e^x}.
+    \]
+
+    We now describe the graph. Since
+    \[
+        F(x,0)=x^2\geq 0,
+    \]
+    and \(f_x\) is strictly increasing, we have \(\varphi(x)\leq 0\) for every
+    \(x\in\realnumbers\). Moreover, \(\varphi(x)=0\) if and only if \(x=0\).
+    Thus the graph lies below the \(x\)-axis and touches it only at the origin.
+
+    For \(x<0\), since \(\varphi(x)<0\), we have
+    \[
+        2x+\varphi(x)e^x <0,
+    \]
+    and therefore \(\varphi'(x)>0\). Hence \(\varphi\) is increasing on
+    \((-\infty,0)\). Also,
+    \[
+        \varphi(0)=0.
+    \]
+    For \(x>0\), the function initially decreases from \(0\), and for large \(x\)
+    it tends back to \(0\) from below. Indeed, writing \(\varphi(x)=-u(x)\), with
+    \(u(x)\geq 0\), the equation becomes
+    \[
+        u(x)e^x+\arctan(u(x))=x^2.
+    \]
+    Hence
+    \[
+        0\leq u(x)e^x\leq x^2,
+    \]
+    so
+    \[
+        0\leq u(x)\leq x^2e^{-x}.
+    \]
+    Therefore
+    \[
+        \varphi(x)\to 0^-
+        \qquad\text{as }x\to+\infty.
+    \]
+    On the other hand, as \(x\to-\infty\), one has \(\varphi(x)\to-\infty\).
+    Thus the graph comes from \(-\infty\), increases up to the point \((0,0)\),
+    then goes below the \(x\)-axis and eventually approaches \(0\) from below.
+
+    Finally, we check whether \(\varphi\in\mathcal L^1(\realnumbers^+)\). For
+    \(x\geq 0\), let again \(u(x)=-\varphi(x)\geq 0\). From
+    \[
+        u(x)e^x+\arctan(u(x))=x^2
+    \]
+    we get
+    \[
+        0\leq |\varphi(x)|=u(x)\leq x^2e^{-x}.
+    \]
+    Since
+    \[
+        \int_0^{+\infty} x^2e^{-x}\,dx <+\infty,
+    \]
+    by comparison we conclude that
+    \[
+        \varphi\in \mathcal L^1(\realnumbers^+).
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{lebesgue-measure-ex-3}{}
+    Consider the \sequence of real \function[functions] of real variables
+    \[
+        f_n(x) = \frac{1}{
+            (1 + x^2 + n^2) |\sin(x^2)|^{\sfrac1n}
+        }, \quad n = 3, 4, \cdots
+    \]
+    \begin{enumerate}
+        \item Show that \(f_n \in \mathcal L^1(\realnumbers)\) for \(n\geq 3\);
+        \item Compute \[ \lim_n \int_{\realnumbers} f_n \,d\mu \]
+        \item Show that \[ \sum_{n=3}^\infty f_n \notin \mathcal L^1(\realnumbers) \]
+        \item Determine whether \[
+            \sum_{n=3}^\infty f_n \cdot \chi_n \in \mathcal L^1(\realnumbers)
+        \]
+        where \(\chi_n = \chi_{(n^2, +\infty)}\).
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{lebesgue-measure-ex-3-sol}{}
+    Let
+    \[
+        Z = \{x\in\realnumbers \suchthat \sin(x^2)=0\}
+        =
+        \{0\}\union\{\pm\sqrt{k\pi}\suchthat k=1,2,\ldots\}.
+    \]
+    This set is countable, hence negligible. Therefore the values of \(f_n\) on
+    \(Z\) are irrelevant for \(\mathcal L^1\)-questions.
+
+    Since \(f_n\) is even, by the change of variables \(t=x^2\) we get
+    \[
+        \int_{\realnumbers} f_n\,d\mu
+        =
+        \int_0^{+\infty}
+        \frac{1}{
+            \sqrt t(1+t+n^2)|\sin t|^{\sfrac1n}
+        }\,dt.
+    \]
+    For \(n\geq 3\), we have \(\sfrac1n<1\). Hence
+    \[
+        |\sin t|^{-\sfrac1n}\in \mathcal L^1(0,\pi).
+    \]
+    Near \(t=0\), since \(\sin t\sim t\), the integrand behaves like
+    \[
+        t^{-\sfrac12-\sfrac1n},
+    \]
+    which is integrable because
+    \[
+        \frac12+\frac1n < 1.
+    \]
+    On the intervals \([k\pi,(k+1)\pi]\), with \(k\geq 1\), we have
+    \[
+        \frac{1}{\sqrt t(1+t+n^2)}
+        \leq
+        \frac{C}{k^{\sfrac32}},
+    \]
+    and
+    \[
+        \int_{k\pi}^{(k+1)\pi}|\sin t|^{-\sfrac1n}\,dt
+        =
+        \int_0^\pi(\sin s)^{-\sfrac1n}\,ds
+        <+\infty.
+    \]
+    Since
+    \[
+        \sum_{k=1}^{+\infty}\frac{1}{k^{\sfrac32}}<+\infty,
+    \]
+    it follows that
+    \[
+        f_n\in\mathcal L^1(\realnumbers)
+    \]
+    for every \(n\geq 3\).
+
+    We now compute the limit of the integrals. For almost every \(x\),
+    \[
+        f_n(x)\to 0,
+    \]
+    because \(|\sin(x^2)|^{\sfrac1n}\to 1\) and
+    \[
+        1+x^2+n^2\to+\infty.
+    \]
+    Moreover, since \(0<|\sin(x^2)|\leq 1\) outside \(Z\), for every \(n\geq 3\)
+    we have
+    \[
+        |\sin(x^2)|^{-\sfrac1n}
+        \leq
+        |\sin(x^2)|^{-\sfrac13}.
+    \]
+    Therefore
+    \[
+        0\leq f_n(x)
+        \leq
+        \frac{1}{
+            (1+x^2)|\sin(x^2)|^{\sfrac13}
+        }
+        =: g(x).
+    \]
+    By the same argument used above, \(g\in\mathcal L^1(\realnumbers)\). Hence,
+    by the dominated convergence theorem,
+    \[
+        \lim_{n\to\infty}\int_{\realnumbers} f_n\,d\mu
+        =
+        \int_{\realnumbers}\lim_{n\to\infty} f_n\,d\mu
+        =
+        0.
+    \]
+
+    Next, since \(0<|\sin(x^2)|^{\sfrac1n}\leq 1\) almost everywhere, we have
+    \[
+        f_n(x)
+        \geq
+        \frac{1}{1+x^2+n^2}
+    \]
+    almost everywhere. Thus
+    \[
+        \int_{\realnumbers} f_n\,d\mu
+        \geq
+        \int_{\realnumbers}\frac{1}{1+x^2+n^2}\,d\mu(x)
+        =
+        \frac{\pi}{\sqrt{1+n^2}}.
+    \]
+    Since
+    \[
+        \sum_{n=3}^{+\infty}\frac{1}{\sqrt{1+n^2}}
+        =
+        +\infty,
+    \]
+    the monotone convergence theorem gives
+    \[
+        \int_{\realnumbers}\sum_{n=3}^{+\infty} f_n\,d\mu
+        =
+        \sum_{n=3}^{+\infty}\int_{\realnumbers} f_n\,d\mu
+        =
+        +\infty.
+    \]
+    Therefore
+    \[
+        \sum_{n=3}^{+\infty} f_n\notin\mathcal L^1(\realnumbers).
+    \]
+
+    Finally, consider
+    \[
+        \sum_{n=3}^{+\infty} f_n\chi_n,
+        \qquad
+        \chi_n=\chi_{(n^2,+\infty)}.
+    \]
+    For \(x\leq 9\), all the terms vanish. For \(x>9\),
+    \[
+        \sum_{n=3}^{+\infty}\chi_n(x)
+        =
+        \#\{n\geq 3\suchthat n^2<x\}
+        \leq
+        \sqrt x.
+    \]
+    Hence
+    \[
+        0\leq
+        \sum_{n=3}^{+\infty} f_n(x)\chi_n(x)
+        \leq
+        \frac{\sqrt x}{
+            (1+x^2)|\sin(x^2)|^{\sfrac13}
+        }\chi_{(9,+\infty)}(x).
+    \]
+    It remains to prove that the right-hand side is integrable. Using again the
+    change of variables \(t=x^2\),
+    \[
+        \int_9^{+\infty}
+        \frac{\sqrt x}{
+            (1+x^2)|\sin(x^2)|^{\sfrac13}
+        }\,dx
+        =
+        \frac12
+        \int_{81}^{+\infty}
+        \frac{t^{-\sfrac14}}{
+            (1+t)|\sin t|^{\sfrac13}
+        }\,dt.
+    \]
+    On each interval \([k\pi,(k+1)\pi]\), the factor
+    \[
+        \frac{t^{-\sfrac14}}{1+t}
+    \]
+    is bounded by \(Ck^{-\sfrac54}\), while
+    \[
+        \int_{k\pi}^{(k+1)\pi}|\sin t|^{-\sfrac13}\,dt
+        =
+        \int_0^\pi(\sin s)^{-\sfrac13}\,ds
+        <+\infty.
+    \]
+    Since
+    \[
+        \sum_{k=1}^{+\infty}\frac{1}{k^{\sfrac54}}<+\infty,
+    \]
+    the comparison test gives
+    \[
+        \sum_{n=3}^{+\infty} f_n\chi_n
+        \in
+        \mathcal L^1(\realnumbers).
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{lebesgue-measure-ex-4}{}
+    Determine the natural domain and discuss the continuity of the function \[
+        F(y) = \integral[0][+\infty][\frac{\ln x}{x^2 + y}][x]
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{lebesgue-measure-ex-4-sol}{}
+    We study
+    \[
+        F(y)=\integral[0][+\infty][\frac{\ln x}{x^2+y}][x].
+    \]
+
+    First, let \(y>0\). Then the denominator never vanishes, and the only
+    possible problems are at \(0\) and \(+\infty\). Near \(0\),
+    \[
+        \frac{\ln x}{x^2+y}\sim \frac{\ln x}{y},
+    \]
+    which is integrable on \((0,1)\). Near \(+\infty\),
+    \[
+        \frac{\ln x}{x^2+y}\sim \frac{\ln x}{x^2},
+    \]
+    which is integrable on \((1,+\infty)\). Hence \(F(y)\) is well-defined for
+    every \(y>0\).
+
+    If \(y=0\), then
+    \[
+        \frac{\ln x}{x^2+y}=\frac{\ln x}{x^2},
+    \]
+    which is not integrable near \(0\). Thus \(y=0\) does not belong to the
+    domain.
+
+    Let now \(y<0\). Then \(x^2+y=0\) at \(x=\sqrt{-y}\). In general this gives
+    a non-integrable singularity. The only exceptional case is when
+    \[
+        \sqrt{-y}=1,
+        \qquad\text{i.e.}\qquad
+        y=-1.
+    \]
+    Indeed, for \(y=-1\),
+    \[
+        \frac{\ln x}{x^2-1}
+    \]
+    has a removable singularity at \(x=1\), because
+    \[
+        \lim_{x\to 1}\frac{\ln x}{x^2-1}
+        =
+        \lim_{x\to 1}\frac{\sfrac1x}{2x}
+        =
+        \frac12.
+    \]
+    Therefore the function is integrable also for \(y=-1\).
+
+    If \(y<0\) and \(y\neq -1\), then \(x=\sqrt{-y}\neq 1\), so
+    \[
+        \ln(\sqrt{-y})\neq 0.
+    \]
+    Hence the integrand has a genuine simple pole at \(x=\sqrt{-y}\), and it is
+    not Lebesgue integrable. Therefore the natural domain is
+    \[
+        \text{Dom}(F)=\{-1\}\union(0,+\infty).
+    \]
+
+    We now discuss continuity. On \((0,+\infty)\) we can compute \(F\)
+    explicitly. Let \(y>0\) and set \(x=\sqrt y\,t\). Then
+    \[
+        F(y)
+        =
+        \frac{1}{\sqrt y}
+        \integral[0][+\infty][
+            \frac{\ln(\sqrt y\,t)}{1+t^2}
+        ][t].
+    \]
+    Thus
+    \[
+        F(y)
+        =
+        \frac{1}{\sqrt y}
+        \left(
+            \ln(\sqrt y)\integral[0][+\infty][\frac{1}{1+t^2}][t]
+            +
+            \integral[0][+\infty][\frac{\ln t}{1+t^2}][t]
+        \right).
+    \]
+    Since, by the change of variables \(t=\sfrac1u\),
+    \[
+        \integral[0][+\infty][\frac{\ln t}{1+t^2}][t]=0,
+    \]
+    we obtain
+    \[
+        F(y)
+        =
+        \frac{1}{\sqrt y}\ln(\sqrt y)\frac{\pi}{2}
+        =
+        \frac{\pi\ln y}{4\sqrt y}.
+    \]
+    Hence \(F\) is continuous on \((0,+\infty)\).
+
+    The point \(y=-1\) is isolated in the natural domain
+    \[
+        \{-1\}\union(0,+\infty),
+    \]
+    and therefore \(F\) is continuous at \(y=-1\) with respect to its natural
+    domain.
+
+    Consequently, \(F\) is continuous on its natural domain
+    \[
+        \{-1\}\union(0,+\infty).
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{lebesgue-measure-ex-5}{}
+    Let \[
+        f(x) = \sum_{n=1}^\infty \frac{\ln x}{n(nx^2 + 1)}
+    \]
+    Determine where \(f \in \mathcal L^1(\realnumbers^+)\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{lebesgue-measure-ex-5-sol}{}
+    For \(x>0\), define
+    \[
+        S(x)=\sum_{n=1}^\infty \frac{1}{n(nx^2+1)}.
+    \]
+    Then
+    \[
+        f(x)=\ln x\, S(x).
+    \]
+    Since all the terms defining \(S(x)\) are non-negative, the series is
+    well-defined for every \(x>0\). Moreover,
+    \[
+        0\leq \frac{1}{n(nx^2+1)}
+        \leq
+        \frac{1}{n^2x^2},
+    \]
+    and therefore the series converges for every \(x>0\).
+
+    We prove that \(f\in\mathcal L^1(\realnumbers^+)\). Since the sign of
+    \(\ln x\) is fixed on \((0,1)\) and on \((1,+\infty)\), Tonelli's theorem
+    can be applied separately on these two intervals.
+
+    On \((0,1)\), we have
+    \[
+        |f(x)|
+        =
+        -\ln x\sum_{n=1}^\infty \frac{1}{n(nx^2+1)}.
+    \]
+    Hence, by Tonelli's theorem,
+    \[
+        \integral[0][1][|f(x)|][x]
+        =
+        \sum_{n=1}^\infty
+        \frac1n
+        \integral[0][1][\frac{-\ln x}{nx^2+1}][x].
+    \]
+    Since \(nx^2+1\geq 1\),
+    \[
+        \frac1n
+        \integral[0][1][\frac{-\ln x}{nx^2+1}][x]
+        \leq
+        \frac1n
+        \integral[0][1][-\ln x][x]
+        =
+        \frac1n.
+    \]
+    This estimate alone is not summable, so we split the interval according to
+    the size of \(nx^2\). A more precise bound is obtained by writing
+    \[
+        \frac{1}{nx^2+1}
+        \leq
+        \min\left\{1,\frac{1}{nx^2}\right\}.
+    \]
+    Thus
+    \[
+        \sum_{n=1}^\infty \frac{1}{n(nx^2+1)}
+        \leq
+        \sum_{n\leq x^{-2}}\frac1n
+        +
+        \frac{1}{x^2}\sum_{n>x^{-2}}\frac1{n^2}.
+    \]
+    For \(0<x<1\),
+    \[
+        \sum_{n\leq x^{-2}}\frac1n
+        \leq C(1+|\ln x|)
+    \]
+    and
+    \[
+        \frac{1}{x^2}\sum_{n>x^{-2}}\frac1{n^2}
+        \leq C.
+    \]
+    Therefore
+    \[
+        S(x)\leq C(1+|\ln x|)
+    \]
+    for \(0<x<1\). Hence
+    \[
+        |f(x)|
+        \leq
+        C|\ln x|(1+|\ln x|)
+    \]
+    on \((0,1)\). Since
+    \[
+        \integral[0][1][|\ln x|^2][x]<+\infty,
+    \]
+    it follows that
+    \[
+        f\in\mathcal L^1(0,1).
+    \]
+
+    On \((1,+\infty)\), we have \(nx^2+1\geq nx^2\), and therefore
+    \[
+        S(x)
+        =
+        \sum_{n=1}^\infty \frac{1}{n(nx^2+1)}
+        \leq
+        \frac1{x^2}\sum_{n=1}^\infty \frac1{n^2}.
+    \]
+    Hence
+    \[
+        |f(x)|
+        \leq
+        \frac{C\ln x}{x^2}.
+    \]
+    Since
+    \[
+        \integral[1][+\infty][\frac{\ln x}{x^2}][x]<+\infty,
+    \]
+    we obtain
+    \[
+        f\in\mathcal L^1(1,+\infty).
+    \]
+
+    Combining the two estimates,
+    \[
+        \integral[0][+\infty][|f(x)|][x]<+\infty.
+    \]
+    Therefore
+    \[
+        f\in\mathcal L^1(\realnumbers^+).
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{lebesgue-measure-ex-6}{}
+    Compute \[
+        F(x) = \integral[0][+\infty][e^{- \left(t - \frac{x}{t}\right)^2}][t]
+    \]
+    for \(x \geq 0\). \\
+    \emph{Hint:} show that \(F\) is constant for \(x \geq 0\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{lebesgue-measure-ex-6-sol}{}
+    First, for \(x=0\),
+    \[
+        F(0)
+        =
+        \integral[0][+\infty][e^{-t^2}][t]
+        =
+        \frac{\sqrt\pi}{2}.
+    \]
+
+    Let now \(x>0\). Consider the change of variables
+    \[
+        u=t-\frac{x}{t}.
+    \]
+    The map
+    \[
+        t\mapsto t-\frac{x}{t}
+    \]
+    is strictly increasing on \((0,+\infty)\), because
+    \[
+        \frac{d}{dt}\left(t-\frac{x}{t}\right)
+        =
+        1+\frac{x}{t^2}>0.
+    \]
+    Moreover,
+    \[
+        \lim_{t\to 0^+}\left(t-\frac{x}{t}\right)=-\infty,
+        \qquad
+        \lim_{t\to+\infty}\left(t-\frac{x}{t}\right)=+\infty.
+    \]
+    Thus it is a \(C^1\)-diffeomorphism from \((0,+\infty)\) onto
+    \(\realnumbers\).
+
+    Solving
+    \[
+        u=t-\frac{x}{t}
+    \]
+    with respect to \(t\), we get
+    \[
+        t=\frac{u+\sqrt{u^2+4x}}{2}.
+    \]
+    Hence
+    \[
+        \frac{dt}{du}
+        =
+        \frac12\left(
+            1+\frac{u}{\sqrt{u^2+4x}}
+        \right).
+    \]
+    Therefore
+    \[
+        F(x)
+        =
+        \integral[-\infty][+\infty][
+            e^{-u^2}
+            \frac12\left(
+                1+\frac{u}{\sqrt{u^2+4x}}
+            \right)
+        ][u].
+    \]
+    Splitting the integral,
+    \[
+        F(x)
+        =
+        \frac12\integral[-\infty][+\infty][e^{-u^2}][u]
+        +
+        \frac12\integral[-\infty][+\infty][
+            e^{-u^2}\frac{u}{\sqrt{u^2+4x}}
+        ][u].
+    \]
+    The second integrand is odd, hence its integral over \(\realnumbers\) is
+    zero. Consequently,
+    \[
+        F(x)
+        =
+        \frac12\integral[-\infty][+\infty][e^{-u^2}][u]
+        =
+        \frac{\sqrt\pi}{2}.
+    \]
+    Therefore \(F\) is constant on \([0,+\infty)\), and
+    \[
+        F(x)=\frac{\sqrt\pi}{2}\qquad\forall x\geq 0
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{lebesgue-measure-ex-7}{}
+    Determine for which values of the real parameter \(a\) the \function \[
+        f_a(x) = \frac{
+            x \log(1 + x^a)
+        }{
+            \sqrt[3]{\log(1-\cos x)}
+        }
+    \]
+    is in \(\mathcal L^1((0,+\infty))\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{lebesgue-measure-ex-7-sol}{}
+    We study the absolute integrability of
+    \[
+        f_a(x)
+        =
+        \frac{x\log(1+x^a)}
+        {\sqrt[3]{\log(1-\cos x)}}
+    \]
+    on \((0,+\infty)\). Since \(x>0\), the quantity \(x^a\) is well-defined
+    for every \(a\in\realnumbers\).
+
+    Set
+    \[
+        h(x)=\frac{1}{|\log(1-\cos x)|^{\sfrac13}}.
+    \]
+    The possible singularities of \(h\) occur when
+    \[
+        \log(1-\cos x)=0,
+    \]
+    namely when \(\cos x=0\). If \(x_0=\frac\pi2+k\pi\), then
+    \[
+        \log(1-\cos x)\sim C(x-x_0),
+    \]
+    with \(C\neq 0\), and therefore
+    \[
+        h(x)\sim \frac{C}{|x-x_0|^{\sfrac13}},
+    \]
+    which is locally integrable. At the points \(x=2k\pi\), instead,
+    \[
+        \log(1-\cos x)\sim 2\log|x-2k\pi|,
+    \]
+    and \(h\) is again locally integrable. Hence
+    \[
+        h\in \mathcal L^1_{\text{loc}}((0,+\infty)).
+    \]
+
+    Near \(0\), since
+    \[
+        1-\cos x\sim \frac{x^2}{2},
+    \]
+    we have
+    \[
+        |\log(1-\cos x)|\sim 2|\log x|.
+    \]
+    Hence
+    \[
+        |f_a(x)|
+        \sim
+        \frac{x\log(1+x^a)}{|\log x|^{\sfrac13}}
+        \qquad\text{as }x\to 0^+.
+    \]
+    If \(a\geq 0\), then
+    \[
+        \log(1+x^a)=O(1),
+    \]
+    and therefore
+    \[
+        |f_a(x)|\leq Cx|\log x|^{-\sfrac13},
+    \]
+    which is integrable near \(0\). If \(a<0\), then \(x^a\to+\infty\), so
+    \[
+        \log(1+x^a)\sim \log(x^a)=a\log x=|a||\log x|.
+    \]
+    Thus
+    \[
+        |f_a(x)|
+        \sim
+        Cx|\log x|^{\sfrac23},
+    \]
+    which is also integrable near \(0\). Therefore there is no restriction on
+    \(a\) coming from the origin.
+
+    It remains to study the behavior at \(+\infty\). The function \(h\) is
+    \(2\pi\)-periodic and belongs to \(\mathcal L^1(0,2\pi)\). Moreover it is
+    not identically zero, so there exists a subinterval \(I\subset(0,2\pi)\) and
+    a constant \(c>0\) such that
+    \[
+        h(x)\geq c
+        \qquad\text{for }x\in I.
+    \]
+    Thus integrability at infinity is equivalent to the integrability of the
+    slowly varying factor
+    \[
+        x\log(1+x^a).
+    \]
+
+    If \(a>0\), then, as \(x\to+\infty\),
+    \[
+        \log(1+x^a)\sim a\log x,
+    \]
+    so
+    \[
+        |f_a(x)|
+    \]
+    behaves, along each period, like \(x\log x\,h(x)\). Since \(h\) has positive
+    integral on one period, this is not integrable at infinity.
+
+    If \(a=0\), then
+    \[
+        \log(1+x^a)=\log 2,
+    \]
+    and the tail behaves like \(x h(x)\), which is not integrable.
+
+    If \(a<0\), then \(x^a\to0\), and
+    \[
+        \log(1+x^a)\sim x^a.
+    \]
+    Hence
+    \[
+        |f_a(x)|
+        \sim
+        x^{a+1}h(x)
+        \qquad\text{as }x\to+\infty.
+    \]
+    Since \(h\) is non-negative, \(2\pi\)-periodic and integrable on one period,
+    this is integrable at infinity if and only if
+    \[
+        \int^\infty x^{a+1}\,dx<+\infty,
+    \]
+    that is,
+    \[
+        a+1<-1.
+    \]
+    Therefore
+    \[
+        a<-2.
+    \]
+
+    Consequently,
+    \[
+        f_a\in\mathcal L^1((0,+\infty))
+        \quad\Longleftrightarrow\quad
+        a<-2.
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{lebesgue-measure-ex-8}{}
+    Discuss the pointwise and uniform convergence of the \sequence of \function[functions]
+    \[
+        f_n(x) = \begin{cases}
+            \arctan \left[
+                \frac{e^{-x}}{(x-n)^2}
+            \right] & x \neq n \\
+            \frac\pi2 & x = n
+        \end{cases}
+    \]
+    on intervals of the form \((0,a)\) with \(a>0\) fixed and in \((0,+\infty)\).
+    Verify that the \sequence \(\{f_n\}\) converges in \(\mathcal L^1((0,+\infty))\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{lebesgue-measure-ex-8-sol}{}
+    For every fixed \(x\in(0,+\infty)\), we have \(x\neq n\) for all
+    sufficiently large \(n\). Therefore
+    \[
+        f_n(x)
+        =
+        \arctan\left(
+            \frac{e^{-x}}{(x-n)^2}
+        \right)
+        \to 0.
+    \]
+    Hence \(f_n\to 0\) pointwise on \((0,+\infty)\).
+
+    Let \(a>0\) be fixed. If \(n>a\), then \(x\neq n\) for every
+    \(x\in(0,a)\), and
+    \[
+        0\leq f_n(x)
+        =
+        \arctan\left(
+            \frac{e^{-x}}{(x-n)^2}
+        \right)
+        \leq
+        \arctan\left(
+            \frac{1}{(n-a)^2}
+        \right).
+    \]
+    Since
+    \[
+        \arctan\left(
+            \frac{1}{(n-a)^2}
+        \right)
+        \to 0,
+    \]
+    it follows that \(f_n\to 0\) uniformly on every interval \((0,a)\).
+
+    On the other hand, the convergence is not uniform on \((0,+\infty)\). Indeed,
+    for every \(n\),
+    \[
+        f_n(n)=\frac\pi2.
+    \]
+    Hence
+    \[
+        \sup_{x\in(0,+\infty)} |f_n(x)|
+        =
+        \frac\pi2,
+    \]
+    and therefore the supremum does not tend to \(0\).
+
+    We now prove convergence in \(\mathcal L^1((0,+\infty))\). Since the
+    point \(x=n\) is negligible, we can ignore the prescribed value \(f_n(n)\).
+    Set
+    \[
+        I_n=\integral[0][+\infty][f_n(x)][x].
+    \]
+    We split the integral into two parts:
+    \[
+        I_n
+        =
+        \integral[0][\sfrac n2][f_n(x)][x]
+        +
+        \integral[\sfrac n2][+\infty][f_n(x)][x].
+    \]
+
+    On \((0,\sfrac n2)\), we have \(|x-n|\geq \sfrac n2\), and using
+    \(\arctan u\leq u\) for \(u\geq 0\), we get
+    \[
+        f_n(x)
+        \leq
+        \frac{e^{-x}}{(x-n)^2}
+        \leq
+        \frac{4e^{-x}}{n^2}.
+    \]
+    Thus
+    \[
+        \integral[0][\sfrac n2][f_n(x)][x]
+        \leq
+        \frac4{n^2}\integral[0][+\infty][e^{-x}][x]
+        =
+        \frac4{n^2}.
+    \]
+
+    On \((\sfrac n2,+\infty)\), choose
+    \[
+        \delta_n=e^{-\sfrac n4}.
+    \]
+    Then
+    \[
+        \integral[n-\delta_n][n+\delta_n][f_n(x)][x]
+        \leq
+        \pi\delta_n.
+    \]
+    On the remaining part of \((\sfrac n2,+\infty)\), namely where
+    \(|x-n|>\delta_n\), we again use \(\arctan u\leq u\). Since
+    \(x\geq \sfrac n2\), we have \(e^{-x}\leq e^{-\sfrac n2}\), and therefore
+    \[
+        f_n(x)
+        \leq
+        \frac{e^{-\sfrac n2}}{(x-n)^2}.
+    \]
+    Hence
+    \[
+        \integral[\sfrac n2][n-\delta_n][f_n(x)][x]
+        +
+        \integral[n+\delta_n][+\infty][f_n(x)][x]
+        \leq
+        e^{-\sfrac n2}
+        \left(
+            \integral[\sfrac n2][n-\delta_n][\frac1{(x-n)^2}][x]
+            +
+            \integral[n+\delta_n][+\infty][\frac1{(x-n)^2}][x]
+        \right).
+    \]
+    The last factor is bounded by
+    \[
+        \frac{2}{\delta_n}.
+    \]
+    Therefore
+    \[
+        \integral[\sfrac n2][n-\delta_n][f_n(x)][x]
+        +
+        \integral[n+\delta_n][+\infty][f_n(x)][x]
+        \leq
+        2e^{-\sfrac n2}e^{\sfrac n4}
+        =
+        2e^{-\sfrac n4}.
+    \]
+
+    Combining the estimates,
+    \[
+        I_n
+        \leq
+        \frac4{n^2}
+        +
+        \pi e^{-\sfrac n4}
+        +
+        2e^{-\sfrac n4}.
+    \]
+    Hence
+    \[
+        I_n\to 0.
+    \]
+    Since \(f_n\geq 0\), this means that
+    \[
+        \norm{f_n}_{\mathcal L^1((0,+\infty))}
+        =
+        \integral[0][+\infty][|f_n(x)|][x]
+        \to 0.
+    \]
+    Therefore
+    \[
+        f_n\to 0
+        \quad\text{in }\mathcal L^1((0,+\infty)).
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{lebesgue-measure-ex-9}{}
+    Compute \[
+        \lim_n \integral[0][n][
+            \left(1 - \frac xn\right)^n e^{\sfrac x2}
+        ][x]
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{lebesgue-measure-ex-9-sol}{}
+    Define
+    \[
+        f_n(x)
+        =
+        \left(1-\frac xn\right)^n e^{\sfrac x2}\chi_{[0,n]}(x),
+        \qquad x\geq 0.
+    \]
+    Then the required integral is
+    \[
+        \integral[0][n][
+            \left(1-\frac xn\right)^n e^{\sfrac x2}
+        ][x]
+        =
+        \integral[0][+\infty][f_n(x)][x].
+    \]
+
+    For every fixed \(x\geq 0\), if \(n>x\), then
+    \[
+        \left(1-\frac xn\right)^n \to e^{-x}.
+    \]
+    Hence
+    \[
+        f_n(x)\to e^{-x}e^{\sfrac x2}=e^{-\sfrac x2}.
+    \]
+
+    Moreover, for \(0\leq x\leq n\), using
+    \[
+        \log(1-t)\leq -t
+        \qquad\text{for }t\in[0,1],
+    \]
+    we get
+    \[
+        \left(1-\frac xn\right)^n
+        \leq e^{-x}.
+    \]
+    Therefore
+    \[
+        0\leq f_n(x)
+        \leq
+        e^{-x}e^{\sfrac x2}
+        =
+        e^{-\sfrac x2}.
+    \]
+    Since
+    \[
+        e^{-\sfrac x2}\in\mathcal L^1((0,+\infty)),
+    \]
+    by the dominated convergence theorem,
+    \[
+        \lim_{n\to\infty}
+        \integral[0][n][
+            \left(1-\frac xn\right)^n e^{\sfrac x2}
+        ][x]
+        =
+        \integral[0][+\infty][e^{-\sfrac x2}][x]
+        =
+        2.
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{lebesgue-measure-ex-10}{}
+    Let \(F \colon (-1, +\infty) \fromto \realnumbers\) defined by
+    \[
+        F(x) = \begin{cases}
+            \integral[0][x][\frac{\ln(1 + \frac tx)}{1 + t^3}][t] & x \neq 0 \\
+            0 & x = 0
+        \end{cases}
+    \]
+    Show that \(F\) is differentiable everywhere and compute \(F'(0)\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{lebesgue-measure-ex-10-sol}{}
+    For \(x\neq 0\), we use the change of variables
+    \[
+        t=xs.
+    \]
+    Since \(t\) goes from \(0\) to \(x\), the variable \(s\) goes from \(0\) to
+    \(1\), both when \(x>0\) and when \(x<0\). Hence
+    \[
+        F(x)
+        =
+        x\integral[0][1][
+            \frac{\ln(1+s)}{1+x^3s^3}
+        ][s],
+        \qquad x\neq 0.
+    \]
+    This formula is meaningful for every \(x\in(-1,+\infty)\), because
+    \[
+        1+x^3s^3>0
+        \qquad
+        \text{for }s\in[0,1].
+    \]
+
+    Define
+    \[
+        G(x)=\integral[0][1][
+            \frac{\ln(1+s)}{1+x^3s^3}
+        ][s].
+    \]
+    Then
+    \[
+        F(x)=xG(x)
+    \]
+    for \(x\neq0\), and also \(F(0)=0=0\cdot G(0)\). Thus
+    \[
+        F(x)=xG(x)
+        \qquad
+        \text{for every }x\in(-1,+\infty).
+    \]
+
+    We show that \(G\) is differentiable on \((-1,+\infty)\). For fixed
+    \(s\in[0,1]\), the function
+    \[
+        x\mapsto \frac{\ln(1+s)}{1+x^3s^3}
+    \]
+    is differentiable, with derivative
+    \[
+        -\frac{3x^2s^3\ln(1+s)}{(1+x^3s^3)^2}.
+    \]
+    Let \(x_0\in(-1,+\infty)\). On a small compact interval
+    \(K\subset(-1,+\infty)\) containing \(x_0\), there exists \(c>0\) such that
+    \[
+        1+x^3s^3\geq c
+        \qquad
+        \forall x\in K,\ \forall s\in[0,1].
+    \]
+    Hence
+    \[
+        \left|
+            \frac{3x^2s^3\ln(1+s)}{(1+x^3s^3)^2}
+        \right|
+        \leq
+        C\ln(1+s),
+    \]
+    and \(\ln(1+s)\in\mathcal L^1(0,1)\). Therefore, by differentiation under
+    the integral sign,
+    \[
+        G'(x)
+        =
+        \integral[0][1][
+            -\frac{3x^2s^3\ln(1+s)}{(1+x^3s^3)^2}
+        ][s].
+    \]
+    Consequently \(G\) is differentiable on \((-1,+\infty)\), and since
+    \[
+        F(x)=xG(x),
+    \]
+    \(F\) is differentiable everywhere on \((-1,+\infty)\).
+
+    Finally,
+    \[
+        F'(0)
+        =
+        G(0)
+        =
+        \integral[0][1][\ln(1+s)][s].
+    \]
+    Computing the last integral,
+    \[
+        \integral[0][1][\ln(1+s)][s]
+        =
+        \integral[1][2][\ln u][u]
+        =
+        \left[u\ln u-u\right]_1^2
+        =
+        2\ln2-1.
+    \]
+    Therefore
+    \[
+        F'(0)=2\ln2-1
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{lebesgue-measure-ex-11}{}
+    Sketch the graph of the \function \[
+        F(x) = \integral[0][+\infty][
+            \frac{e^{-x \sqrt t}}{1 + t^2}
+        ][t]
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{lebesgue-measure-ex-11-sol}{}
+    We consider
+    \[
+        F(x)=\integral[0][+\infty][
+            \frac{e^{-x\sqrt t}}{1+t^2}
+        ][t].
+    \]
+    The integral is finite for every \(x\geq 0\). Indeed, if \(x\geq 0\), then
+    \[
+        0\leq \frac{e^{-x\sqrt t}}{1+t^2}\leq \frac{1}{1+t^2},
+    \]
+    and
+    \[
+        \integral[0][+\infty][\frac{1}{1+t^2}][t]<+\infty.
+    \]
+    Thus \(F\) is well-defined on \([0,+\infty)\). If \(x<0\), the integrand
+    behaves like
+    \[
+        \frac{e^{|x|\sqrt t}}{t^2}
+    \]
+    as \(t\to+\infty\), and the integral diverges. Hence the natural domain is
+    \[
+        [0,+\infty).
+    \]
+
+    First,
+    \[
+        F(0)
+        =
+        \integral[0][+\infty][\frac{1}{1+t^2}][t]
+        =
+        \frac\pi2.
+    \]
+    Moreover, for every \(t>0\),
+    \[
+        \frac{e^{-x\sqrt t}}{1+t^2}\to 0
+        \qquad\text{as }x\to+\infty,
+    \]
+    and the integrand is dominated by \(\frac{1}{1+t^2}\in\mathcal L^1(0,+\infty)\).
+    Therefore, by the dominated convergence theorem,
+    \[
+        \lim_{x\to+\infty}F(x)=0.
+    \]
+
+    We now study monotonicity and convexity. Let \(x>0\). Differentiating under
+    the integral sign is justified on every compact interval
+    \([\varepsilon,+\infty)\subset(0,+\infty)\), because the derivatives are
+    dominated by integrable functions of the form
+    \[
+        C t^{\sfrac k2} e^{-\varepsilon\sqrt t}.
+    \]
+    Hence
+    \[
+        F'(x)
+        =
+        -\integral[0][+\infty][
+            \frac{\sqrt t\, e^{-x\sqrt t}}{1+t^2}
+        ][t]
+        <0,
+    \]
+    and
+    \[
+        F''(x)
+        =
+        \integral[0][+\infty][
+            \frac{t\, e^{-x\sqrt t}}{1+t^2}
+        ][t]
+        >0.
+    \]
+    Therefore \(F\) is strictly decreasing and strictly convex on
+    \((0,+\infty)\).
+
+    The right derivative at the origin exists and is
+    \[
+        F'_+(0)
+        =
+        -\integral[0][+\infty][
+            \frac{\sqrt t}{1+t^2}
+        ][t].
+    \]
+    Using the standard formula
+    \[
+        \integral[0][+\infty][\frac{t^{\alpha-1}}{1+t^\beta}][t]
+        =
+        \frac{\pi}{\beta\sin\left(\frac{\pi\alpha}{\beta}\right)},
+        \qquad 0<\alpha<\beta,
+    \]
+    with \(\alpha=\frac32\) and \(\beta=2\), we get
+    \[
+        \integral[0][+\infty][
+            \frac{\sqrt t}{1+t^2}
+        ][t]
+        =
+        \frac{\pi}{\sqrt2}.
+    \]
+    Hence
+    \[
+        F'_+(0)=-\frac{\pi}{\sqrt2}.
+    \]
+
+    Finally, using the change of variables \(t=s^2\), we obtain
+    \[
+        F(x)
+        =
+        2\integral[0][+\infty][
+            \frac{s e^{-xs}}{1+s^4}
+        ][s].
+    \]
+    This representation shows that, as \(x\to+\infty\), the main contribution
+    comes from \(s=0\), where \(\frac{1}{1+s^4}\sim 1\). Therefore
+    \[
+        F(x)\sim 2\integral[0][+\infty][s e^{-xs}][s]
+        =
+        \frac{2}{x^2}.
+    \]
+
+    Thus the graph starts from
+    \[
+        F(0)=\frac\pi2,
+    \]
+    with right slope
+    \[
+        -\frac{\pi}{\sqrt2},
+    \]
+    then decreases strictly, remains convex, and approaches the horizontal
+    asymptote \(y=0\) as \(x\to+\infty\).
+\end{snippetsolution}
+
+\begin{snippetexercise}{lebesgue-measure-ex-12}{}
+    Compute \[
+        \lim_n \integral[0][1][
+            (1 + nx^2)(1 + x^2)^{-n}
+        ][x]
+    \]
+\end{snippetexercise}
+
+\end{document}
