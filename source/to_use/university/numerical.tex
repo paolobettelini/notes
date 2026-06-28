@@ -7333,4 +7333,2729 @@ con matrici quadrate di dimensioni compatibili.
     Dunque anche il metodo di Gauss-Seidel converge.
 \end{snippetsolution}
 
+\pagebreak
+
+\section{Esami}
+
+\begin{snippetexercise}{Matrici a blocchi, localizzazione spettrale e metodi iterativi}
+    Siano date le seguenti matrici:
+    \[
+        \Delta_1=
+        \begin{pmatrix}
+            2 & i & 0 & 0\\
+            -i & 2 & i & 0\\
+            0 & -i & 2 & i\\
+            0 & 0 & -i & 4
+        \end{pmatrix},
+        \qquad
+        \Delta_2=
+        \begin{pmatrix}
+            25 & 1\\
+            1 & -25
+        \end{pmatrix},
+        \qquad
+        \Delta_3=
+        \begin{pmatrix}
+            2 & 1 & 1 & 1\\
+            1 & 2 & 1 & 1\\
+            1 & 1 & 2 & 1\\
+            1 & 1 & 1 & 2
+        \end{pmatrix},
+    \]
+    \[
+        F_{12}=
+        \begin{pmatrix}
+            1 & -1\\
+            -1 & 1\\
+            1 & -1\\
+            5 & 5
+        \end{pmatrix},
+        \qquad
+        F_{13}=
+        \begin{pmatrix}
+            1 & 2 & 3 & 4\\
+            1 & 2 & 3 & 4\\
+            1 & 2 & 3 & 4\\
+            i & i & i & i
+        \end{pmatrix},
+        \qquad
+        F_{23}=F_{12}^T,
+        \qquad
+        i^2=-1.
+    \]
+    Si consideri la matrice a blocchi
+    \[
+        A=
+        \begin{pmatrix}
+            \Delta_1 & F_{12} & F_{13}\\
+            0 & \Delta_2 & F_{23}\\
+            0 & 0 & \Delta_3
+        \end{pmatrix}.
+    \]
+
+    Si richiede di:
+    \begin{enumerate}
+        \item localizzare lo spettro della matrice \(A\) nel modo migliore possibile;
+        \item studiare l'invertibilità, la forte non singolarità e le predominanze diagonali forti e deboli della matrice \(A\);
+        \item studiare la convergenza del metodo di Gauss-Seidel per la matrice \(A\);
+        \item studiare la convergenza del metodo di Jacobi per la matrice \(A\).
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{Soluzione}
+    La matrice \(A\) è triangolare superiore a blocchi. Pertanto il suo spettro è dato dall'unione degli spettri dei blocchi diagonali:
+    \[
+        \sigma(A)=\sigma(\Delta_1)\cup\sigma(\Delta_2)\cup\sigma(\Delta_3).
+    \]
+    Per localizzare lo spettro è quindi conveniente applicare il teorema di Gershgorin ai singoli blocchi diagonali, evitando di introdurre i blocchi fuori diagonale \(F_{12},F_{13},F_{23}\), che allargherebbero inutilmente i dischi.
+
+    \subsection*{Localizzazione dello spettro}
+
+    Consideriamo innanzitutto
+    \[
+        \Delta_1=
+        \begin{pmatrix}
+            2 & i & 0 & 0\\
+            -i & 2 & i & 0\\
+            0 & -i & 2 & i\\
+            0 & 0 & -i & 4
+        \end{pmatrix}.
+    \]
+    I dischi di Gershgorin per righe sono
+    \[
+        G(2,1),\qquad G(2,2),\qquad G(2,2),\qquad G(4,1).
+    \]
+    Poiché \(\Delta_1\) è hermitiana, i suoi autovalori sono reali. Intersecando quindi i dischi con l'asse reale si ottiene
+    \[
+        [1,3],\qquad [0,4],\qquad [0,4],\qquad [3,5].
+    \]
+    Tali intervalli sono collegati, quindi Gershgorin non permette una separazione più fine. Otteniamo
+    \[
+        \sigma(\Delta_1)\subset [0,5].
+    \]
+
+    Per il blocco
+    \[
+        \Delta_2=
+        \begin{pmatrix}
+            25 & 1\\
+            1 & -25
+        \end{pmatrix}
+    \]
+    i dischi di Gershgorin sono
+    \[
+        G(25,1),
+        \qquad
+        G(-25,1).
+    \]
+    Essendo \(\Delta_2\) simmetrica reale, i suoi autovalori sono reali, quindi
+    \[
+        \sigma(\Delta_2)\subset [24,26]\cup[-26,-24].
+    \]
+    I due intervalli sono disgiunti; dunque, per il secondo teorema di Gershgorin, c'è esattamente un autovalore in ciascuno di essi.
+
+    Infine, per
+    \[
+        \Delta_3=
+        \begin{pmatrix}
+            2 & 1 & 1 & 1\\
+            1 & 2 & 1 & 1\\
+            1 & 1 & 2 & 1\\
+            1 & 1 & 1 & 2
+        \end{pmatrix},
+    \]
+    ogni riga fornisce il disco
+    \[
+        G(2,3).
+    \]
+    Poiché anche \(\Delta_3\) è simmetrica reale, si ottiene
+    \[
+        \sigma(\Delta_3)\subset [-1,5].
+    \]
+
+    Combinando le tre localizzazioni:
+    \[
+        \sigma(A)\subset [-26,-24]\cup[-1,5]\cup[24,26].
+    \]
+    Più precisamente, un autovalore appartiene a \([-26,-24]\), un autovalore appartiene a \([24,26]\), mentre gli altri otto appartengono a \([-1,5]\).
+
+    \subsection*{Invertibilità e forte non singolarità}
+
+    Essendo \(A\) triangolare superiore a blocchi, si ha
+    \[
+        \det(A)=\det(\Delta_1)\det(\Delta_2)\det(\Delta_3).
+    \]
+
+    Calcoliamo i determinanti dei blocchi diagonali.
+
+    Per \(\Delta_1\), essendo tridiagonale, usiamo la ricorrenza sui determinanti principali di testa. Si ottiene
+    \[
+        d_1=2,\qquad d_2=3,\qquad d_3=4,\qquad d_4=13.
+    \]
+    Dunque
+    \[
+        \det(\Delta_1)=13.
+    \]
+
+    Per \(\Delta_2\),
+    \[
+        \det(\Delta_2)=25(-25)-1=-626.
+    \]
+
+    Infine, osserviamo che
+    \[
+        \Delta_3=I_4+\mathbf{1}\mathbf{1}^T,
+    \]
+    dove \(\mathbf{1}=(1,1,1,1)^T\). Quindi
+    \[
+        \det(\Delta_3)=5.
+    \]
+    Pertanto
+    \[
+        \det(A)=13\cdot(-626)\cdot 5=-40690\neq 0.
+    \]
+    Quindi
+    \[
+        A \text{ è invertibile.}
+    \]
+
+    Studiamo ora la forte non singolarità, intesa come non annullamento di tutti i minori principali di testa. I determinanti principali di testa dei blocchi diagonali sono:
+    \[
+        \Delta_1:\qquad 2,\ 3,\ 4,\ 13,
+    \]
+    \[
+        \Delta_2:\qquad 25,\ -626,
+    \]
+    \[
+        \Delta_3:\qquad 2,\ 3,\ 4,\ 5.
+    \]
+    Poiché \(A\) è triangolare superiore a blocchi, ogni minore principale di testa di \(A\) è prodotto dei corrispondenti minori principali di testa dei blocchi diagonali. Sono quindi tutti non nulli. Ne segue che
+    \[
+        A \text{ è fortemente non singolare.}
+    \]
+
+    \subsection*{Predominanza diagonale}
+
+    I moduli degli elementi diagonali di \(A\) sono
+    \[
+        2,\ 2,\ 2,\ 4,\ 25,\ 25,\ 2,\ 2,\ 2,\ 2.
+    \]
+
+    Le somme dei moduli degli elementi fuori diagonale per righe sono
+    \[
+        13,\ 14,\ 14,\ 15,\ 9,\ 9,\ 3,\ 3,\ 3,\ 3.
+    \]
+    Già la prima riga viola la condizione di predominanza diagonale debole per righe, infatti
+    \[
+        2<13.
+    \]
+    Quindi \(A\) non è diagonalmente dominante, nemmeno debolmente, per righe.
+
+    Le somme dei moduli degli elementi fuori diagonale per colonne sono
+    \[
+        1,\ 2,\ 2,\ 1,\ 9,\ 9,\ 9,\ 12,\ 15,\ 26.
+    \]
+    Anche per colonne la condizione di predominanza diagonale debole non è soddisfatta. Ad esempio, nella settima colonna si ha
+    \[
+        2<9.
+    \]
+    Pertanto \(A\) non è diagonalmente dominante, nemmeno debolmente, per colonne.
+
+    In conclusione,
+    \[
+        A \text{ non è diagonalmente dominante né fortemente né debolmente, né per righe né per colonne.}
+    \]
+
+    \subsection*{Convergenza del metodo di Gauss-Seidel}
+
+    Scriviamo
+    \[
+        A=D+L+U,
+    \]
+    dove \(D\) è la diagonale, \(L\) la parte strettamente inferiore e \(U\) la parte strettamente superiore. La matrice di iterazione di Gauss-Seidel è
+    \[
+        T_{GS}=-(D+L)^{-1}U.
+    \]
+
+    Poiché \(A\) è triangolare superiore a blocchi, anche \(T_{GS}\) è triangolare superiore a blocchi:
+    \[
+        T_{GS}(A)=
+        \begin{pmatrix}
+            T_{GS}(\Delta_1) & * & *\\
+            0 & T_{GS}(\Delta_2) & *\\
+            0 & 0 & T_{GS}(\Delta_3)
+        \end{pmatrix}.
+    \]
+    Di conseguenza
+    \[
+        \rho(T_{GS}(A))
+        =
+        \max\left\{
+            \rho(T_{GS}(\Delta_1)),
+            \rho(T_{GS}(\Delta_2)),
+            \rho(T_{GS}(\Delta_3))
+        \right\}.
+    \]
+
+    Per \(\Delta_1\), abbiamo già calcolato i minori principali di testa:
+    \[
+        2,\ 3,\ 4,\ 13.
+    \]
+    Sono tutti positivi e \(\Delta_1\) è hermitiana; quindi \(\Delta_1\) è definita positiva. Il metodo di Gauss-Seidel converge per matrici hermitiane definite positive, dunque converge per \(\Delta_1\).
+
+    Per \(\Delta_2\), calcoliamo direttamente la matrice di iterazione. Si ha
+    \[
+        T_{GS}(\Delta_2)=
+        \begin{pmatrix}
+            0 & -\frac{1}{25}\\
+            0 & -\frac{1}{625}
+        \end{pmatrix}.
+    \]
+    Quindi
+    \[
+        \rho(T_{GS}(\Delta_2))=\frac{1}{625}<1.
+    \]
+
+    Infine,
+    \[
+        \Delta_3=I_4+\mathbf{1}\mathbf{1}^T.
+    \]
+    Per ogni \(x\neq 0\),
+    \[
+        x^T\Delta_3x
+        =
+        \|x\|^2+(\mathbf{1}^Tx)^2>0.
+    \]
+    Quindi \(\Delta_3\) è definita positiva, e anche per \(\Delta_3\) il metodo di Gauss-Seidel converge.
+
+    Pertanto
+    \[
+        \rho(T_{GS}(A))<1.
+    \]
+    Concludiamo che
+    \[
+        \text{il metodo di Gauss-Seidel converge per la matrice } A.
+    \]
+
+    \subsection*{Convergenza del metodo di Jacobi}
+
+    La matrice di iterazione di Jacobi è
+    \[
+        T_J=-D^{-1}(L+U).
+    \]
+    Anche in questo caso, poiché \(A\) è triangolare superiore a blocchi,
+    \[
+        T_J(A)=
+        \begin{pmatrix}
+            T_J(\Delta_1) & * & *\\
+            0 & T_J(\Delta_2) & *\\
+            0 & 0 & T_J(\Delta_3)
+        \end{pmatrix}.
+    \]
+    Quindi è sufficiente studiare i blocchi diagonali.
+
+    Per il blocco \(\Delta_3\), la diagonale è \(D=2I\). Pertanto
+    \[
+        T_J(\Delta_3)
+        =
+        -\frac{1}{2}
+        \begin{pmatrix}
+            0 & 1 & 1 & 1\\
+            1 & 0 & 1 & 1\\
+            1 & 1 & 0 & 1\\
+            1 & 1 & 1 & 0
+        \end{pmatrix}.
+    \]
+    Prendendo il vettore
+    \[
+        \mathbf{1}=(1,1,1,1)^T,
+    \]
+    si ha
+    \[
+        T_J(\Delta_3)\mathbf{1}
+        =
+        -\frac{1}{2}
+        \begin{pmatrix}
+            3\\
+            3\\
+            3\\
+            3
+        \end{pmatrix}
+        =
+        -\frac{3}{2}\mathbf{1}.
+    \]
+    Dunque \(-\frac{3}{2}\) è autovalore di \(T_J(\Delta_3)\), e quindi anche di \(T_J(A)\). Ne segue che
+    \[
+        \rho(T_J(A))\geq \frac{3}{2}>1.
+    \]
+    Pertanto
+    \[
+        \text{il metodo di Jacobi non converge per la matrice } A.
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{Perturbazioni immaginarie di una matrice a blocchi}
+    Fissato \(\alpha\in\mathbb{R}\) e data \(A\) come nell'esercizio precedente, siano \(B(\alpha)\) e \(C(\alpha)\) le matrici definite da
+    \[
+        B(\alpha)=\alpha i I_{10}+A,
+        \qquad
+        C(\alpha)=\alpha i D+A,
+    \]
+    dove \(I_{10}\) è la matrice identità di dimensione \(10\) e
+    \[
+        D=\operatorname{diag}(d_j)_{1\leq j\leq 10},
+        \qquad
+        d_1,d_2,\dots,d_{10}>0.
+    \]
+
+    Si richiede di:
+    \begin{enumerate}
+        \item dimostrare che, per ogni \(\alpha\in\mathbb{R}\), le matrici \(B(\alpha)\) e \(C(\alpha)\) sono sempre invertibili;
+        \item stabilire se \(C(\alpha)\) è sempre invertibile anche nel caso in cui \(d_1,\dots,d_{10}\in\mathbb{R}\).
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{Soluzione}
+    Poiché \(A\) è triangolare superiore a blocchi, anche \(B(\alpha)\) e \(C(\alpha)\) sono triangolari superiori a blocchi.
+
+    Poniamo
+    \[
+        D_1=\operatorname{diag}(d_1,d_2,d_3,d_4),
+        \qquad
+        D_2=\operatorname{diag}(d_5,d_6),
+        \qquad
+        D_3=\operatorname{diag}(d_7,d_8,d_9,d_{10}).
+    \]
+    Allora
+    \[
+        B(\alpha)=
+        \begin{pmatrix}
+            \Delta_1+i\alpha I_4 & F_{12} & F_{13}\\
+            0 & \Delta_2+i\alpha I_2 & F_{23}\\
+            0 & 0 & \Delta_3+i\alpha I_4
+        \end{pmatrix},
+    \]
+    mentre
+    \[
+        C(\alpha)=
+        \begin{pmatrix}
+            \Delta_1+i\alpha D_1 & F_{12} & F_{13}\\
+            0 & \Delta_2+i\alpha D_2 & F_{23}\\
+            0 & 0 & \Delta_3+i\alpha D_3
+        \end{pmatrix}.
+    \]
+    Di conseguenza, per studiare l'invertibilità, è sufficiente studiare l'invertibilità dei blocchi diagonali.
+
+    \subsection*{Invertibilità di \(B(\alpha)\)}
+
+    Consideriamo un generico blocco diagonale
+    \[
+        \Delta_k+i\alpha I.
+    \]
+    Dall'esercizio precedente sappiamo che \(\Delta_1,\Delta_2,\Delta_3\) sono hermitiane e invertibili.
+
+    Se \(\alpha=0\), allora
+    \[
+        \Delta_k+i\alpha I=\Delta_k,
+    \]
+    che è invertibile.
+
+    Sia ora \(\alpha\neq 0\). Supponiamo per assurdo che esista \(x\neq 0\) tale che
+    \[
+        (\Delta_k+i\alpha I)x=0.
+    \]
+    Moltiplicando a sinistra per \(x^*\), otteniamo
+    \[
+        x^*\Delta_kx+i\alpha x^*x=0.
+    \]
+    Poiché \(\Delta_k\) è hermitiana,
+    \[
+        x^*\Delta_kx\in\mathbb{R}.
+    \]
+    Inoltre
+    \[
+        x^*x=\|x\|^2>0.
+    \]
+    Prendendo la parte immaginaria si ottiene
+    \[
+        \alpha \|x\|^2=0,
+    \]
+    che è impossibile, perché \(\alpha\neq 0\) e \(x\neq 0\).
+
+    Quindi ogni blocco \(\Delta_k+i\alpha I\) è invertibile. Poiché \(B(\alpha)\) è triangolare superiore a blocchi con blocchi diagonali invertibili, segue che
+    \[
+        B(\alpha) \text{ è invertibile per ogni } \alpha\in\mathbb{R}.
+    \]
+
+    \subsection*{Invertibilità di \(C(\alpha)\) con \(d_j>0\)}
+
+    Consideriamo ora un generico blocco
+    \[
+        \Delta_k+i\alpha D_k.
+    \]
+    Se \(\alpha=0\), il blocco coincide con \(\Delta_k\), quindi è invertibile.
+
+    Sia dunque \(\alpha\neq 0\). Poiché \(d_j>0\) per ogni \(j\), ogni matrice \(D_k\) è diagonale definita positiva.
+
+    Supponiamo per assurdo che esista \(x\neq 0\) tale che
+    \[
+        (\Delta_k+i\alpha D_k)x=0.
+    \]
+    Moltiplicando a sinistra per \(x^*\), otteniamo
+    \[
+        x^*\Delta_kx+i\alpha x^*D_kx=0.
+    \]
+    Il termine \(x^*\Delta_kx\) è reale, perché \(\Delta_k\) è hermitiana. Inoltre
+    \[
+        x^*D_kx>0
+    \]
+    per ogni \(x\neq 0\), perché \(D_k\) è definita positiva.
+
+    Prendendo la parte immaginaria si ottiene
+    \[
+        \alpha x^*D_kx=0,
+    \]
+    che è impossibile, perché \(\alpha\neq 0\) e \(x^*D_kx>0\).
+
+    Quindi ogni blocco diagonale di \(C(\alpha)\) è invertibile. Essendo \(C(\alpha)\) triangolare superiore a blocchi, segue che
+    \[
+        C(\alpha) \text{ è invertibile per ogni } \alpha\in\mathbb{R}.
+    \]
+
+    \subsection*{Caso \(d_1,\dots,d_{10}\in\mathbb{R}\)}
+
+    Supponiamo ora che i coefficienti \(d_j\) siano reali, ma non necessariamente positivi.
+
+    I blocchi diagonali di \(C(\alpha)\) sono ancora
+    \[
+        \Delta_1+i\alpha D_1,
+        \qquad
+        \Delta_2+i\alpha D_2,
+        \qquad
+        \Delta_3+i\alpha D_3.
+    \]
+
+    Dall'esercizio precedente sappiamo che \(\Delta_1\) e \(\Delta_3\) sono hermitiane definite positive.
+
+    Infatti, per \(\Delta_1\), i minori principali di testa sono
+    \[
+        2,\ 3,\ 4,\ 13>0,
+    \]
+    quindi, per il criterio di Sylvester, \(\Delta_1\) è definita positiva.
+
+    Inoltre
+    \[
+        \Delta_3=I_4+\mathbf{1}\mathbf{1}^T,
+    \]
+    dove \(\mathbf{1}=(1,1,1,1)^T\). Pertanto, per ogni \(x\neq 0\),
+    \[
+        x^*\Delta_3x
+        =
+        \|x\|^2+\left|\mathbf{1}^Tx\right|^2>0.
+    \]
+    Quindi anche \(\Delta_3\) è definita positiva.
+
+    Consideriamo \(k=1\) oppure \(k=3\). Se
+    \[
+        (\Delta_k+i\alpha D_k)x=0,
+    \]
+    moltiplicando a sinistra per \(x^*\) otteniamo
+    \[
+        x^*\Delta_kx+i\alpha x^*D_kx=0.
+    \]
+    Poiché \(D_k\) è diagonale reale,
+    \[
+        x^*D_kx\in\mathbb{R}.
+    \]
+    Prendendo la parte reale si ottiene
+    \[
+        x^*\Delta_kx=0.
+    \]
+    Ma \(\Delta_k\) è definita positiva, dunque necessariamente
+    \[
+        x=0.
+    \]
+    Quindi i blocchi
+    \[
+        \Delta_1+i\alpha D_1
+        \qquad\text{e}\qquad
+        \Delta_3+i\alpha D_3
+    \]
+    sono sempre invertibili anche se i \(d_j\) sono soltanto reali.
+
+    Resta da studiare il blocco centrale:
+    \[
+        \Delta_2+i\alpha D_2
+        =
+        \begin{pmatrix}
+            25+i\alpha d_5 & 1\\
+            1 & -25+i\alpha d_6
+        \end{pmatrix}.
+    \]
+    Calcoliamo il determinante:
+    \[
+        \det(\Delta_2+i\alpha D_2)
+        =
+        (25+i\alpha d_5)(-25+i\alpha d_6)-1.
+    \]
+    Sviluppando:
+    \[
+        \det(\Delta_2+i\alpha D_2)
+        =
+        -626-\alpha^2 d_5d_6+25i\alpha(d_6-d_5).
+    \]
+
+    Supponiamo che tale determinante sia nullo. Allora devono annullarsi sia la parte reale sia la parte immaginaria.
+
+    Dalla parte immaginaria otteniamo
+    \[
+        25\alpha(d_6-d_5)=0.
+    \]
+    Se \(\alpha=0\), allora
+    \[
+        \det(\Delta_2)=-626\neq 0.
+    \]
+    Quindi deve essere \(\alpha\neq 0\), e perciò
+    \[
+        d_6=d_5.
+    \]
+    Ponendo
+    \[
+        d_5=d_6=d,
+    \]
+    la parte reale diventa
+    \[
+        -626-\alpha^2 d^2,
+    \]
+    che è sempre strettamente negativa. Quindi non può annullarsi.
+
+    Pertanto
+    \[
+        \det(\Delta_2+i\alpha D_2)\neq 0
+    \]
+    per ogni \(\alpha\in\mathbb{R}\) e per ogni \(d_5,d_6\in\mathbb{R}\).
+
+    Concludiamo che anche nel caso \(d_1,\dots,d_{10}\in\mathbb{R}\) tutti i blocchi diagonali sono invertibili. Dunque
+    \[
+        C(\alpha) \text{ è sempre invertibile per ogni } \alpha\in\mathbb{R}.
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{Matrice tridiagonale complessa ed eliminazione gaussiana}
+    Sia \(X\in M_n(\mathbb{C})\) tridiagonale con
+    \[
+        X_{jj}=2i^j,
+        \qquad
+        i^2=-1,
+    \]
+    e
+    \[
+        X_{jk}=X_{kj}=1
+        \qquad
+        \text{se } |j-k|=1,
+    \]
+    per \(j,k=1,\dots,n\).
+
+    Si richiede di:
+    \begin{enumerate}
+        \item dimostrare che \(X\) è fortemente nonsingolare;
+        \item discutere, nel modo più preciso possibile, il costo computazionale del metodo di eliminazione gaussiana senza pivoting applicato al sistema lineare
+            \[
+                Xy=b,
+                \qquad
+                b\in\mathbb{C}^n.
+            \]
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{Soluzione}
+    La matrice \(X\) è tridiagonale, con elementi diagonali
+    \[
+        X_{jj}=2i^j
+    \]
+    e con elementi sopradiagonali e sottodiagonali uguali a \(1\).
+
+    Osserviamo innanzitutto che
+    \[
+        |X_{jj}|=|2i^j|=2
+    \]
+    per ogni \(j=1,\dots,n\).
+
+    \subsection*{Forte nonsingolarità}
+
+    Studiamo una generica sottomatrice principale di \(X\). Poiché \(X\) è tridiagonale, scegliendo un sottoinsieme di indici non necessariamente consecutivi, la corrispondente sottomatrice principale si decompone, a meno di una permutazione simultanea di righe e colonne, in somma diretta di blocchi tridiagonali associati a insiemi di indici consecutivi.
+
+    È quindi sufficiente studiare un generico blocco principale \(T\) relativo a indici consecutivi.
+
+    Per ogni riga di \(T\), l'elemento diagonale ha modulo
+    \[
+        |t_{jj}|=2.
+    \]
+    La somma dei moduli degli elementi fuori diagonale è invece
+    \[
+        \sum_{k\neq j}|t_{jk}|
+        =
+        \begin{cases}
+            1, & \text{se } j \text{ è un estremo del blocco},\\
+            2, & \text{se } j \text{ è interno al blocco}.
+        \end{cases}
+    \]
+    Dunque \(T\) è diagonalmente dominante per righe.
+
+    Se il blocco ha dimensione \(1\), allora
+    \[
+        T=(2i^j),
+    \]
+    che è certamente nonsingolare.
+
+    Se invece il blocco ha dimensione almeno \(2\), allora \(T\) è irriducibile, perché è tridiagonale con sottodiagonale e sopradiagonale non nulle. Inoltre le righe estreme sono strettamente diagonalmente dominanti, poiché
+    \[
+        2>1.
+    \]
+    Quindi \(T\) è irriducibilmente diagonalmente dominante.
+
+    Per il teorema di Levy-Desplanques nella forma irriducibile, \(T\) è nonsingolare.
+
+    Pertanto ogni blocco principale è nonsingolare e quindi ogni sottomatrice principale di \(X\) è nonsingolare. In particolare tutti i minori principali di testa sono non nulli. Concludiamo che
+    \[
+        X \text{ è fortemente nonsingolare.}
+    \]
+
+    \subsection*{Eliminazione gaussiana senza pivoting}
+
+    Poiché \(X\) è fortemente nonsingolare, l'eliminazione gaussiana senza pivoting è ben definita: tutti i pivot sono non nulli.
+
+    Inoltre \(X\) è tridiagonale. L'eliminazione gaussiana senza pivoting non produce fill-in, quindi si ottiene una fattorizzazione
+    \[
+        X=LU,
+    \]
+    dove \(L\) è bidiagonale inferiore unitaria e \(U\) è bidiagonale superiore.
+
+    Indichiamo con \(p_j\) i pivot. Il primo pivot è
+    \[
+        p_1=2i.
+    \]
+    Poiché gli elementi sottodiagonali e sopradiagonali sono tutti uguali a \(1\), per \(j=1,\dots,n-1\) si ha
+    \[
+        m_j=\frac{1}{p_j},
+    \]
+    e
+    \[
+        p_{j+1}=2i^{j+1}-m_j.
+    \]
+    Qui \(m_j\) è il moltiplicatore dell'eliminazione gaussiana.
+
+    Applicando l'eliminazione anche al termine noto, poniamo
+    \[
+        \beta_1=b_1.
+    \]
+    Per \(j=1,\dots,n-1\), si ottiene
+    \[
+        \beta_{j+1}=b_{j+1}-m_j\beta_j.
+    \]
+
+    Una volta completata la fase di eliminazione, si risolve il sistema triangolare superiore mediante sostituzione all'indietro. Si ha
+    \[
+        y_n=\frac{\beta_n}{p_n},
+    \]
+    e, per \(j=n-1,\dots,1\),
+    \[
+        y_j=\frac{\beta_j-y_{j+1}}{p_j}.
+    \]
+
+    Quindi l'algoritmo ha costo lineare in \(n\). Più precisamente, sfruttando la struttura tridiagonale e il fatto che gli elementi fuori diagonale valgono \(1\), abbiamo:
+
+    \[
+        n-1
+    \]
+    divisioni complesse per calcolare i moltiplicatori \(m_j\);
+
+    \[
+        n-1
+    \]
+    sottrazioni complesse per aggiornare i pivot \(p_j\);
+
+    \[
+        n-1
+    \]
+    moltiplicazioni complesse e
+    \[
+        n-1
+    \]
+    sottrazioni complesse per aggiornare il termine noto;
+
+    \[
+        n
+    \]
+    divisioni complesse e
+    \[
+        n-1
+    \]
+    sottrazioni complesse per la sostituzione all'indietro.
+
+    In totale, per risolvere il sistema \(Xy=b\), servono
+    \[
+        2n-1
+    \]
+    divisioni complesse,
+    \[
+        n-1
+    \]
+    moltiplicazioni complesse,
+    e
+    \[
+        3n-3
+    \]
+    somme o sottrazioni complesse.
+
+    Pertanto il costo computazionale complessivo è
+    \[
+        O(n).
+    \]
+
+    Anche la memoria richiesta è lineare:
+    \[
+        O(n),
+    \]
+    oppure \(O(1)\) memoria aggiuntiva se gli aggiornamenti vengono effettuati in-place.
+\end{snippetsolution}
+
+\begin{snippetexercise}{Matrice a blocchi dipendente da un parametro}
+    Dati \(\alpha\in\mathbb{R}\), \(m,n\in\mathbb{N}\), con \(\alpha>0\), \(m\geq 2\), \(n\geq 100\), si consideri
+    \[
+        A(\alpha)\in M_{n+m}(\mathbb{R})
+    \]
+    definita da
+    \[
+        A(\alpha):=
+        \begin{pmatrix}
+            B & O\\
+            D(\alpha) & C(\alpha)
+        \end{pmatrix},
+    \]
+    dove
+    \[
+        B\in M_n(\mathbb{R}),
+        \qquad
+        D(\alpha)\in\mathbb{R}^{m\times n},
+        \qquad
+        C(\alpha)\in M_m(\mathbb{R}),
+    \]
+    con
+    \[
+        B_{j,k}:=
+        \begin{cases}
+            1+\dfrac{j}{n^2}, & \text{se } j=k,\\[6pt]
+            \dfrac{\sqrt{jk}}{n^2}, & \text{se } j\neq k,
+        \end{cases}
+    \]
+    \[
+        C_{j,k}(\alpha):=
+        \begin{cases}
+            2, & \text{se } j=k,\\[4pt]
+            \dfrac{1}{\alpha}, & \text{se } j-k=1,\\[6pt]
+            \alpha, & \text{se } j-k=-1,\\[4pt]
+            0, & \text{altrimenti},
+        \end{cases}
+    \]
+    e
+    \[
+        D_{j,k}(\alpha):=\alpha j+\alpha^2 k.
+    \]
+
+    Si richiede di:
+    \begin{enumerate}
+        \item localizzare lo spettro di \(B\) e di \(C(\alpha)\), e localizzare lo spettro di \(A(\alpha)\);
+        \item dimostrare la forte nonsingolarità di \(A(\alpha)\) per ogni \(\alpha>0\), \(m\geq 2\), \(n\geq 100\);
+        \item per \(m=2\), calcolare esplicitamente
+            \[
+                f(\alpha)=\det(A(\alpha))
+            \]
+            e studiare la funzione \(f(\alpha)\).
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{Soluzione}
+    La matrice \(A(\alpha)\) è triangolare inferiore a blocchi, infatti
+    \[
+        A(\alpha)=
+        \begin{pmatrix}
+            B & O\\
+            D(\alpha) & C(\alpha)
+        \end{pmatrix}.
+    \]
+    Pertanto lo spettro di \(A(\alpha)\) è dato dall'unione degli spettri dei blocchi diagonali:
+    \[
+        \sigma(A(\alpha))=\sigma(B)\cup\sigma(C(\alpha)).
+    \]
+    Il blocco \(D(\alpha)\) non influenza né lo spettro né il determinante.
+
+    \subsection*{Localizzazione dello spettro di \(B\)}
+
+    La matrice \(B\) è simmetrica reale, quindi i suoi autovalori sono reali.
+
+    Applichiamo il teorema di Gershgorin per righe. Per la riga \(j\)-esima il centro è
+    \[
+        c_j=1+\frac{j}{n^2},
+    \]
+    mentre il raggio è
+    \[
+        r_j
+        =
+        \sum_{\substack{k=1\\ k\neq j}}^n
+        \frac{\sqrt{jk}}{n^2}.
+    \]
+    Ponendo
+    \[
+        S_n=\sum_{k=1}^n \sqrt{k},
+    \]
+    si ottiene
+    \[
+        r_j
+        =
+        \frac{\sqrt{j}}{n^2}\left(S_n-\sqrt{j}\right).
+    \]
+    Dunque gli intervalli di Gershgorin sono
+    \[
+        I_j=
+        \left[
+            1+\frac{j}{n^2}
+            -
+            \frac{\sqrt{j}}{n^2}\left(S_n-\sqrt{j}\right),
+            \,
+            1+\frac{j}{n^2}
+            +
+            \frac{\sqrt{j}}{n^2}\left(S_n-\sqrt{j}\right)
+        \right].
+    \]
+    Equivalentemente,
+    \[
+        I_j=
+        \left[
+            1+\frac{2j-\sqrt{j}S_n}{n^2},
+            \,
+            1+\frac{\sqrt{j}S_n}{n^2}
+        \right].
+    \]
+    Quindi
+    \[
+        \sigma(B)\subset \bigcup_{j=1}^n I_j.
+    \]
+
+    Poiché
+    \[
+        S_n< n\sqrt{n},
+    \]
+    si ha, per ogni \(j=1,\dots,n\),
+    \[
+        1+\frac{2j-\sqrt{j}S_n}{n^2}>0,
+    \]
+    e inoltre
+    \[
+        1+\frac{\sqrt{j}S_n}{n^2}<2.
+    \]
+    Pertanto
+    \[
+        \sigma(B)\subset (0,2).
+    \]
+
+    Quindi una localizzazione tramite Gershgorin è
+    \[
+        \boxed{
+            \sigma(B)\subset \bigcup_{j=1}^n
+            \left[
+                1+\frac{2j-\sqrt{j}S_n}{n^2},
+                \,
+                1+\frac{\sqrt{j}S_n}{n^2}
+            \right]
+            \subset (0,2).
+        }
+    \]
+
+    \subsection*{Localizzazione dello spettro di \(C(\alpha)\)}
+
+    La matrice \(C(\alpha)\) è tridiagonale, con diagonale principale uguale a \(2\), sopradiagonale uguale ad \(\alpha\) e sottodiagonale uguale a \(\frac{1}{\alpha}\).
+
+    Osserviamo che \(C(\alpha)\) è simile alla matrice simmetrica tridiagonale
+    \[
+        T_m=
+        \begin{pmatrix}
+            2 & 1 & 0 & \cdots & 0\\
+            1 & 2 & 1 & \ddots & \vdots\\
+            0 & 1 & 2 & \ddots & 0\\
+            \vdots & \ddots & \ddots & \ddots & 1\\
+            0 & \cdots & 0 & 1 & 2
+        \end{pmatrix}.
+    \]
+    Infatti, prendendo
+    \[
+        P=\operatorname{diag}(1,\alpha^{-1},\alpha^{-2},\dots,\alpha^{-(m-1)}),
+    \]
+    si ha
+    \[
+        C(\alpha)=PT_mP^{-1}.
+    \]
+    Quindi
+    \[
+        \sigma(C(\alpha))=\sigma(T_m).
+    \]
+
+    Applichiamo Gershgorin a \(T_m\). Le righe estreme hanno centro \(2\) e raggio \(1\), mentre le righe interne hanno centro \(2\) e raggio \(2\). Dunque
+    \[
+        \sigma(C(\alpha))\subset [0,4].
+    \]
+    Più precisamente, se \(m=2\), ci sono solo le righe estreme e quindi
+    \[
+        \sigma(C(\alpha))\subset [1,3].
+    \]
+    Se invece \(m\geq 3\), otteniamo
+    \[
+        \sigma(C(\alpha))\subset [0,4].
+    \]
+
+    In conclusione,
+    \[
+        \boxed{
+            \sigma(C(\alpha))\subset
+            \begin{cases}
+                [1,3], & \text{se } m=2,\\[2pt]
+                [0,4], & \text{se } m\geq 3.
+            \end{cases}
+        }
+    \]
+
+    \subsection*{Localizzazione dello spettro di \(A(\alpha)\)}
+
+    Poiché
+    \[
+        \sigma(A(\alpha))=\sigma(B)\cup\sigma(C(\alpha)),
+    \]
+    dalle localizzazioni precedenti segue
+    \[
+        \sigma(A(\alpha))
+        \subset
+        (0,2)\cup[0,4].
+    \]
+    Quindi
+    \[
+        \boxed{
+            \sigma(A(\alpha))\subset [0,4].
+        }
+    \]
+
+    Più precisamente,
+    \[
+        \boxed{
+            \sigma(A(\alpha))
+            \subset
+            \left(\bigcup_{j=1}^n
+                \left[
+                    1+\frac{2j-\sqrt{j}S_n}{n^2},
+                    \,
+                    1+\frac{\sqrt{j}S_n}{n^2}
+            \right]\right)
+            \cup
+            \begin{cases}
+                [1,3], & \text{se } m=2,\\[2pt]
+                [0,4], & \text{se } m\geq 3.
+            \end{cases}
+        }
+    \]
+
+    \subsection*{Forte nonsingolarità di \(A(\alpha)\)}
+
+    Studiamo i minori principali di testa.
+
+    Per \(q\leq n\), il minore principale di testa di ordine \(q\) coincide con il blocco principale di testa \(B_q\) di \(B\). Osserviamo che
+    \[
+        B_q=I_q+\frac{1}{n^2}v_qv_q^T,
+    \]
+    dove
+    \[
+        v_q=(1,\sqrt{2},\dots,\sqrt{q})^T.
+    \]
+    Per ogni \(x\neq 0\),
+    \[
+        x^TB_qx
+        =
+        \|x\|^2+\frac{1}{n^2}(v_q^Tx)^2>0.
+    \]
+    Quindi \(B_q\) è definita positiva, e in particolare
+    \[
+        \det(B_q)\neq 0.
+    \]
+
+    Ora consideriamo un minore principale di testa di ordine \(n+r\), con \(1\leq r\leq m\). Esso ha forma
+    \[
+        \begin{pmatrix}
+            B & O\\
+            D_r(\alpha) & C_r(\alpha)
+        \end{pmatrix},
+    \]
+    dove \(C_r(\alpha)\) è il blocco principale di testa di ordine \(r\) di \(C(\alpha)\). Essendo questa matrice triangolare a blocchi,
+    \[
+        \det
+        \begin{pmatrix}
+            B & O\\
+            D_r(\alpha) & C_r(\alpha)
+        \end{pmatrix}
+        =
+        \det(B)\det(C_r(\alpha)).
+    \]
+    Abbiamo già visto che \(B\) è definita positiva, quindi
+    \[
+        \det(B)\neq 0.
+    \]
+
+    Resta da studiare \(\det(C_r(\alpha))\). Poniamo
+    \[
+        \delta_r=\det(C_r(\alpha)).
+    \]
+    Poiché \(C_r(\alpha)\) è tridiagonale, si ha
+    \[
+        \delta_0=1,
+        \qquad
+        \delta_1=2.
+    \]
+    Per \(r\geq 2\),
+    \[
+        \delta_r
+        =
+        2\delta_{r-1}
+        -
+        \alpha\frac{1}{\alpha}\delta_{r-2}.
+    \]
+    Quindi
+    \[
+        \delta_r=2\delta_{r-1}-\delta_{r-2}.
+    \]
+    Da questa ricorrenza segue per induzione che
+    \[
+        \delta_r=r+1.
+    \]
+    Infatti
+    \[
+        \delta_1=2,
+        \qquad
+        \delta_2=3,
+        \qquad
+        \delta_3=4,
+    \]
+    e il passo induttivo dà
+    \[
+        \delta_r=2r-(r-1)=r+1.
+    \]
+    Pertanto
+    \[
+        \det(C_r(\alpha))=r+1\neq 0.
+    \]
+
+    Tutti i minori principali di testa di \(A(\alpha)\) sono dunque non nulli. Concludiamo che
+    \[
+        \boxed{
+            A(\alpha) \text{ è fortemente nonsingolare per ogni } \alpha>0,\ m\geq 2,\ n\geq 100.
+        }
+    \]
+
+    \subsection*{Caso \(m=2\): calcolo e studio di \(f(\alpha)\)}
+
+    Per \(m=2\),
+    \[
+        C(\alpha)=
+        \begin{pmatrix}
+            2 & \alpha\\[2pt]
+            \dfrac{1}{\alpha} & 2
+        \end{pmatrix}.
+    \]
+    Poiché \(A(\alpha)\) è triangolare a blocchi,
+    \[
+        \det(A(\alpha))=\det(B)\det(C(\alpha)).
+    \]
+
+    Calcoliamo \(\det(B)\). Si ha
+    \[
+        B=I_n+\frac{1}{n^2}vv^T,
+    \]
+    dove
+    \[
+        v=(1,\sqrt{2},\dots,\sqrt{n})^T.
+    \]
+    Per il lemma del determinante,
+    \[
+        \det(B)=1+\frac{1}{n^2}v^Tv.
+    \]
+    Ora
+    \[
+        v^Tv=\sum_{j=1}^n j=\frac{n(n+1)}{2}.
+    \]
+    Quindi
+    \[
+        \det(B)
+        =
+        1+\frac{1}{n^2}\frac{n(n+1)}{2}
+        =
+        1+\frac{n+1}{2n}
+        =
+        \frac{3n+1}{2n}.
+    \]
+
+    Inoltre
+    \[
+        \det(C(\alpha))
+        =
+        4-\alpha\frac{1}{\alpha}
+        =
+        3.
+    \]
+    Pertanto
+    \[
+        f(\alpha)=\det(A(\alpha))
+        =
+        \frac{3n+1}{2n}\cdot 3.
+    \]
+    Cioè
+    \[
+        \boxed{
+            f(\alpha)=\frac{3(3n+1)}{2n}.
+        }
+    \]
+
+    La funzione \(f\) è costante rispetto ad \(\alpha\). In particolare,
+    \[
+        f'(\alpha)=0
+    \]
+    per ogni \(\alpha>0\), e
+    \[
+        f(\alpha)>0.
+    \]
+    Quindi \(f\) non ha zeri, non cambia segno ed è costante su tutto l'intervallo
+    \[
+        (0,+\infty).
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{Matrice diagonale più rango uno e matrice a blocchi}
+    Siano \(\alpha\in\mathbb{R}\), \(n>100\), e siano
+    \[
+        b_j=1-\frac{1}{(j+1)^2},
+        \qquad
+        a_j=\frac{1}{2}\left(b_j+\frac{1}{b_j}\right),
+        \qquad
+        j=1,\dots,n-2.
+    \]
+    Si consideri la matrice \(Q\in M_{n-2}(\mathbb{R})\) definita da
+    \[
+        Q=
+        \begin{pmatrix}
+            a_1 & 1 & \cdots & 1\\
+            1 & a_2 & \cdots & 1\\
+            \vdots & \vdots & \ddots & \vdots\\
+            1 & 1 & \cdots & a_{n-2}
+        \end{pmatrix}.
+    \]
+
+    Si consideri inoltre la matrice \(P_\alpha\in M_n(\mathbb{R})\) definita da
+    \[
+        P_\alpha=
+        \begin{pmatrix}
+            1 & 0 & \cdots & 0 & 1\\
+            0 & & & & 0\\
+            \vdots & & Q & & \vdots\\
+            0 & & & & 0\\
+            1 & 0 & \cdots & 0 & \alpha
+        \end{pmatrix}.
+    \]
+
+    Si richiede di:
+    \begin{enumerate}
+        \item dimostrare che \(Q\) è definita positiva;
+        \item dare condizioni necessarie e sufficienti su \(\alpha\in\mathbb{R}\) affinché \(P_\alpha\) sia definita positiva;
+        \item descrivere due algoritmi di costo computazionale lineare in \(n\) per il calcolo di \(x\in\mathbb{C}^{n-2}\), soluzione di
+            \[
+                Qx=b,
+            \]
+            e di \(y\in\mathbb{C}^n\), soluzione di
+            \[
+                P_\alpha y=c,
+            \]
+            con \(b\in\mathbb{C}^{n-2}\) e \(c\in\mathbb{C}^n\).
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{Soluzione}
+    Poniamo
+    \[
+        N=n-2.
+    \]
+    Allora \(Q\in M_N(\mathbb{R})\). Per \(j=1,\dots,N\), si ha
+    \[
+        b_j=1-\frac{1}{(j+1)^2}
+        =
+        \frac{j(j+2)}{(j+1)^2}>0.
+    \]
+    Inoltre
+    \[
+        a_j=\frac{1}{2}\left(b_j+\frac{1}{b_j}\right).
+    \]
+
+    \subsection*{Definita positività di \(Q\)}
+
+    Poiché \(Q\) ha tutti gli elementi fuori diagonale uguali a \(1\), possiamo scriverla come
+    \[
+        Q=\mathbf{1}\mathbf{1}^T+D,
+    \]
+    dove
+    \[
+        \mathbf{1}=(1,\dots,1)^T\in\mathbb{R}^N
+    \]
+    e
+    \[
+        D=\operatorname{diag}(d_1,\dots,d_N),
+        \qquad
+        d_j=a_j-1.
+    \]
+    Calcoliamo \(d_j\). Si ha
+    \[
+        d_j
+        =
+        \frac{1}{2}\left(b_j+\frac{1}{b_j}\right)-1
+        =
+        \frac{b_j^2+1-2b_j}{2b_j}
+        =
+        \frac{(b_j-1)^2}{2b_j}.
+    \]
+    Poiché
+    \[
+        b_j=1-\frac{1}{(j+1)^2},
+    \]
+    segue che
+    \[
+        b_j-1=-\frac{1}{(j+1)^2}.
+    \]
+    Quindi
+    \[
+        d_j
+        =
+        \frac{1}{2b_j(j+1)^4}.
+    \]
+    Usando
+    \[
+        b_j=\frac{j(j+2)}{(j+1)^2},
+    \]
+    otteniamo
+    \[
+        d_j
+        =
+        \frac{1}{2j(j+1)^2(j+2)}.
+    \]
+    In particolare
+    \[
+        d_j>0
+        \qquad
+        \forall j=1,\dots,N.
+    \]
+
+    Dunque \(D\) è diagonale definita positiva.
+
+    Per ogni \(x\in\mathbb{C}^N\), \(x\neq 0\), si ha
+    \[
+        x^*Qx
+        =
+        x^*\mathbf{1}\mathbf{1}^Tx+x^*Dx.
+    \]
+    Poiché \(Q\) è reale simmetrica, possiamo scrivere
+    \[
+        x^*Qx
+        =
+        \left|\sum_{j=1}^N x_j\right|^2
+        +
+        \sum_{j=1}^N d_j |x_j|^2.
+    \]
+    Il primo termine è non negativo, mentre il secondo è strettamente positivo per \(x\neq 0\), perché \(d_j>0\) per ogni \(j\). Quindi
+    \[
+        x^*Qx>0
+        \qquad
+        \forall x\neq 0.
+    \]
+    Pertanto
+    \[
+        \boxed{
+            Q \text{ è definita positiva}.
+        }
+    \]
+
+    \subsection*{Definita positività di \(P_\alpha\)}
+
+    La matrice \(P_\alpha\) ha la forma
+    \[
+        P_\alpha=
+        \begin{pmatrix}
+            1 & 0 & \cdots & 0 & 1\\
+            0 & & & & 0\\
+            \vdots & & Q & & \vdots\\
+            0 & & & & 0\\
+            1 & 0 & \cdots & 0 & \alpha
+        \end{pmatrix}.
+    \]
+    Mediante una permutazione simultanea di righe e colonne, possiamo portare la prima e l'ultima coordinata vicine. La definita positività è preservata da permutazioni ortogonali, quindi \(P_\alpha\) è congruente a
+    \[
+        \begin{pmatrix}
+            1 & 1 & 0\\
+            1 & \alpha & 0\\
+            0 & 0 & Q
+        \end{pmatrix}.
+    \]
+    Poiché \(Q\) è definita positiva, \(P_\alpha\) è definita positiva se e solo se è definita positiva la matrice
+    \[
+        S_\alpha=
+        \begin{pmatrix}
+            1 & 1\\
+            1 & \alpha
+        \end{pmatrix}.
+    \]
+    Per il criterio di Sylvester,
+    \[
+        S_\alpha>0
+        \Longleftrightarrow
+        1>0
+        \quad\text{e}\quad
+        \det(S_\alpha)>0.
+    \]
+    Ora
+    \[
+        \det(S_\alpha)=\alpha-1.
+    \]
+    Pertanto
+    \[
+        S_\alpha>0
+        \Longleftrightarrow
+        \alpha>1.
+    \]
+    Concludiamo che
+    \[
+        \boxed{
+            P_\alpha \text{ è definita positiva se e solo se } \alpha>1.
+        }
+    \]
+
+    Se \(\alpha=1\), il blocco \(S_\alpha\) è semidefinito positivo ma singolare. Se \(\alpha<1\), il blocco \(S_\alpha\) è indefinito.
+
+    \subsection*{Algoritmo lineare per risolvere \(Qx=b\)}
+
+    Usiamo la struttura
+    \[
+        Q=D+\mathbf{1}\mathbf{1}^T,
+    \]
+    dove
+    \[
+        D=\operatorname{diag}(d_1,\dots,d_N),
+        \qquad
+        d_j=\frac{1}{2j(j+1)^2(j+2)}.
+    \]
+    Indichiamo il termine noto con \(\beta\in\mathbb{C}^N\), per non confonderlo con i coefficienti \(b_j\). Vogliamo risolvere
+    \[
+        Qx=\beta.
+    \]
+    L'equazione diventa
+    \[
+        Dx+\mathbf{1}(\mathbf{1}^Tx)=\beta.
+    \]
+    Poniamo
+    \[
+        \sigma=\mathbf{1}^Tx=\sum_{j=1}^N x_j.
+    \]
+    Allora, componente per componente,
+    \[
+        d_jx_j+\sigma=\beta_j.
+    \]
+    Quindi
+    \[
+        x_j=\frac{\beta_j-\sigma}{d_j}.
+    \]
+    Sommando rispetto a \(j\), otteniamo
+    \[
+        \sigma
+        =
+        \sum_{j=1}^N \frac{\beta_j-\sigma}{d_j}
+        =
+        \sum_{j=1}^N \frac{\beta_j}{d_j}
+        -
+        \sigma\sum_{j=1}^N \frac{1}{d_j}.
+    \]
+    Pertanto
+    \[
+        \sigma
+        =
+        \frac{
+            \displaystyle\sum_{j=1}^N \frac{\beta_j}{d_j}
+        }{
+            \displaystyle 1+\sum_{j=1}^N \frac{1}{d_j}
+        }.
+    \]
+
+    Equivalentemente, ponendo
+    \[
+        w_j=\frac{1}{d_j}=2j(j+1)^2(j+2),
+    \]
+    si calcolano
+    \[
+        T=\sum_{j=1}^N w_j,
+        \qquad
+        S=\sum_{j=1}^N w_j\beta_j.
+    \]
+    Poi
+    \[
+        \sigma=\frac{S}{1+T}.
+    \]
+    Infine
+    \[
+        x_j=w_j(\beta_j-\sigma),
+        \qquad
+        j=1,\dots,N.
+    \]
+
+    L'algoritmo richiede solamente un numero costante di operazioni per ogni indice \(j\). Dunque il costo computazionale è
+    \[
+        \boxed{
+            O(n).
+        }
+    \]
+
+    \subsection*{Algoritmo lineare per risolvere \(P_\alpha y=c\)}
+
+    Scriviamo
+    \[
+        y=(y_1,z,y_n),
+        \qquad
+        z\in\mathbb{C}^{n-2},
+    \]
+    e
+    \[
+        c=(c_1,\gamma,c_n),
+        \qquad
+        \gamma\in\mathbb{C}^{n-2}.
+    \]
+    Il sistema
+    \[
+        P_\alpha y=c
+    \]
+    è equivalente a
+    \[
+        \begin{cases}
+            y_1+y_n=c_1,\\
+            Qz=\gamma,\\
+            y_1+\alpha y_n=c_n.
+        \end{cases}
+    \]
+
+    Il sistema centrale
+    \[
+        Qz=\gamma
+    \]
+    si risolve in costo \(O(n)\) con l'algoritmo precedente.
+
+    Resta il sistema \(2\times 2\)
+    \[
+        \begin{pmatrix}
+            1 & 1\\
+            1 & \alpha
+        \end{pmatrix}
+        \begin{pmatrix}
+            y_1\\
+            y_n
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            c_1\\
+            c_n
+        \end{pmatrix}.
+    \]
+    Se
+    \[
+        \alpha\neq 1,
+    \]
+    la soluzione è
+    \[
+        y_n=\frac{c_n-c_1}{\alpha-1},
+    \]
+    e quindi
+    \[
+        y_1=c_1-y_n
+        =
+        \frac{\alpha c_1-c_n}{\alpha-1}.
+    \]
+    Dunque, per \(\alpha\neq 1\), l'algoritmo è:
+    \[
+        z=Q^{-1}\gamma,
+    \]
+    calcolato con l'algoritmo lineare precedente, e poi
+    \[
+        y_1=\frac{\alpha c_1-c_n}{\alpha-1},
+        \qquad
+        y_n=\frac{c_n-c_1}{\alpha-1}.
+    \]
+    Il costo totale resta
+    \[
+        \boxed{
+            O(n).
+        }
+    \]
+
+    Nel caso \(\alpha=1\), il sistema \(2\times 2\) diventa
+    \[
+        y_1+y_n=c_1,
+        \qquad
+        y_1+y_n=c_n.
+    \]
+    Quindi:
+    \[
+        \alpha=1:
+        \begin{cases}
+            \text{nessuna soluzione se } c_1\neq c_n,\\
+            \text{infinite soluzioni se } c_1=c_n.
+        \end{cases}
+    \]
+    In particolare,
+    \[
+        \boxed{
+            P_\alpha \text{ è invertibile se e solo se } \alpha\neq 1.
+        }
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{Matrice costruita per blocchi di righe}
+    Sia \(n>100\) divisibile per \(3\) e siano
+    \[
+        X,Y,Z\in \mathbb{C}^{\frac{n}{3}\times n}.
+    \]
+    Si supponga che
+    \[
+        X_{j,k}=0
+        \qquad
+        \text{per } k>j,\quad k=2,\dots,\frac{n}{3},
+    \]
+    \[
+        Y_{j,k}=0
+        \qquad
+        \text{per } j,k=1,\dots,\frac{n}{3},
+    \]
+    e
+    \[
+        Y_{j,k}=0
+        \qquad
+        \text{per } k>j+\frac{n}{3},\quad k=\frac{n}{3}+2,\dots,\frac{2n}{3},
+    \]
+    \[
+        Z_{j,k}=0
+        \qquad
+        \text{per } j=1,\dots,\frac{n}{3},\quad k=1,\dots,\frac{2n}{3},
+    \]
+    e
+    \[
+        Z_{j,k}=0
+        \qquad
+        \text{per } k<j+\frac{2n}{3},\quad k=\frac{2n}{3}+1,\dots,n-1.
+    \]
+    Sia
+    \[
+        A=
+        \begin{pmatrix}
+            X\\
+            Y\\
+            Z
+        \end{pmatrix}
+        \in M_n(\mathbb{C}).
+    \]
+
+    Si richiede di:
+    \begin{enumerate}
+        \item dare condizioni necessarie e sufficienti per l'invertibilità di \(A\);
+        \item sotto le condizioni precedenti, esibire un algoritmo per la soluzione di un sistema lineare
+            \[
+                Ax=b
+            \]
+            di costo \(O(n^2)\) operazioni aritmetiche.
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{Soluzione}
+    Poniamo
+    \[
+        m=\frac{n}{3}.
+    \]
+    Allora
+    \[
+        X,Y,Z\in \mathbb{C}^{m\times n}.
+    \]
+    Partizioniamo le colonne in tre blocchi di ampiezza \(m\). Scriviamo
+    \[
+        X=
+        \begin{pmatrix}
+            X_1 & X_2 & X_3
+        \end{pmatrix},
+        \qquad
+        Y=
+        \begin{pmatrix}
+            Y_1 & Y_2 & Y_3
+        \end{pmatrix},
+        \qquad
+        Z=
+        \begin{pmatrix}
+            Z_1 & Z_2 & Z_3
+        \end{pmatrix},
+    \]
+    dove
+    \[
+        X_i,Y_i,Z_i\in M_m(\mathbb{C}).
+    \]
+
+    Dalle ipotesi della traccia segue che:
+    \[
+        X_1 \text{ è triangolare inferiore},
+    \]
+    \[
+        Y_1=0,
+        \qquad
+        Y_2 \text{ è triangolare inferiore},
+    \]
+    \[
+        Z_1=0,
+        \qquad
+        Z_2=0,
+        \qquad
+        Z_3 \text{ è triangolare superiore}.
+    \]
+    Quindi \(A\) ha la forma a blocchi
+    \[
+        A=
+        \begin{pmatrix}
+            X_1 & X_2 & X_3\\
+            0 & Y_2 & Y_3\\
+            0 & 0 & Z_3
+        \end{pmatrix}.
+    \]
+
+    \subsection*{Condizioni necessarie e sufficienti per l'invertibilità}
+
+    La matrice \(A\) è triangolare superiore a blocchi. Pertanto
+    \[
+        \det(A)=\det(X_1)\det(Y_2)\det(Z_3).
+    \]
+    Ne segue che
+    \[
+        A \text{ è invertibile}
+    \]
+    se e solo se i tre blocchi diagonali
+    \[
+        X_1,
+        \qquad
+        Y_2,
+        \qquad
+        Z_3
+    \]
+    sono invertibili.
+
+    Ora, \(X_1\) e \(Y_2\) sono triangolari inferiori, mentre \(Z_3\) è triangolare superiore. Ciascuno di questi blocchi è quindi invertibile se e solo se tutti i suoi elementi diagonali sono non nulli.
+
+    Pertanto
+    \[
+        A \text{ è invertibile}
+    \]
+    se e solo se
+    \[
+        X_{j,j}\neq 0,
+        \qquad j=1,\dots,m,
+    \]
+    \[
+        Y_{j,m+j}\neq 0,
+        \qquad j=1,\dots,m,
+    \]
+    e
+    \[
+        Z_{j,2m+j}\neq 0,
+        \qquad j=1,\dots,m.
+    \]
+    In conclusione,
+    \[
+        \boxed{
+            A \text{ è invertibile}
+            \Longleftrightarrow
+            \begin{cases}
+                X_{j,j}\neq 0,\\
+                Y_{j,m+j}\neq 0,\\
+                Z_{j,2m+j}\neq 0,
+            \end{cases}
+            \quad
+            j=1,\dots,m.
+        }
+    \]
+
+    \subsection*{Algoritmo di costo \(O(n^2)\) per risolvere \(Ax=b\)}
+
+    Supponiamo ora verificate le condizioni precedenti, quindi \(A\) è invertibile.
+
+    Scriviamo
+    \[
+        x=
+        \begin{pmatrix}
+            x_1\\
+            x_2\\
+            x_3
+        \end{pmatrix},
+        \qquad
+        b=
+        \begin{pmatrix}
+            b_1\\
+            b_2\\
+            b_3
+        \end{pmatrix},
+    \]
+    con
+    \[
+        x_1,x_2,x_3\in \mathbb{C}^m,
+        \qquad
+        b_1,b_2,b_3\in \mathbb{C}^m.
+    \]
+    Il sistema
+    \[
+        Ax=b
+    \]
+    diventa
+    \[
+        \begin{cases}
+            X_1x_1+X_2x_2+X_3x_3=b_1,\\
+            Y_2x_2+Y_3x_3=b_2,\\
+            Z_3x_3=b_3.
+        \end{cases}
+    \]
+
+    Poiché \(A\) è triangolare superiore a blocchi, il sistema si risolve per sostituzione all'indietro a blocchi.
+
+    \subsubsection*{Primo passo}
+
+    Si risolve
+    \[
+        Z_3x_3=b_3.
+    \]
+    Il blocco \(Z_3\) è triangolare superiore e invertibile, quindi si usa sostituzione all'indietro.
+
+    Il costo è
+    \[
+        O(m^2).
+    \]
+
+    \subsubsection*{Secondo passo}
+
+    Si calcola
+    \[
+        \widetilde b_2=b_2-Y_3x_3.
+    \]
+    Il prodotto \(Y_3x_3\) costa
+    \[
+        O(m^2).
+    \]
+    Poi si risolve
+    \[
+        Y_2x_2=\widetilde b_2.
+    \]
+    Il blocco \(Y_2\) è triangolare inferiore e invertibile, quindi si usa sostituzione in avanti.
+
+    Il costo complessivo del secondo passo è
+    \[
+        O(m^2).
+    \]
+
+    \subsubsection*{Terzo passo}
+
+    Si calcola
+    \[
+        \widetilde b_1=b_1-X_2x_2-X_3x_3.
+    \]
+    I due prodotti matrice-vettore costano complessivamente
+    \[
+        O(m^2).
+    \]
+    Poi si risolve
+    \[
+        X_1x_1=\widetilde b_1.
+    \]
+    Il blocco \(X_1\) è triangolare inferiore e invertibile, quindi si usa sostituzione in avanti.
+
+    Il costo complessivo del terzo passo è
+    \[
+        O(m^2).
+    \]
+
+    Poiché
+    \[
+        m=\frac{n}{3},
+    \]
+    si ha
+    \[
+        O(m^2)=O(n^2).
+    \]
+    Quindi l'algoritmo totale ha costo
+    \[
+        \boxed{
+            O(n^2)
+        }
+    \]
+    operazioni aritmetiche.
+
+    Riassumendo, l'algoritmo è:
+    \[
+        \boxed{
+            \begin{aligned}
+                &\text{1. Risolvi } Z_3x_3=b_3;\\
+                &\text{2. Risolvi } Y_2x_2=b_2-Y_3x_3;\\
+                &\text{3. Risolvi } X_1x_1=b_1-X_2x_2-X_3x_3.
+            \end{aligned}
+        }
+    \]
+    Questo algoritmo sfrutta la struttura triangolare a blocchi di \(A\) e le strutture triangolari dei blocchi diagonali.
+\end{snippetsolution}
+
+\begin{snippetexercise}{Matrice bandata dipendente da un parametro}
+    Sia \(t>2\) e sia \(m\geq 100\). Si consideri la matrice
+    \[
+        A_m(t)\in \mathbb{C}^{m\times m}
+    \]
+    definita da
+    \[
+        A_m(t)=
+        \begin{pmatrix}
+            3 & t & t^2 & & & 0\\
+            t^{-1} & 3 & t & t^2 & & \\
+            & t^{-1} & 3 & \ddots & \ddots & \\
+            & & \ddots & \ddots & t & t^2\\
+            & & & t^{-1} & 3 & t\\
+            0 & & & & t^{-1} & 3
+        \end{pmatrix},
+    \]
+    dove gli elementi omessi si intendono nulli.
+
+    Si richiede di:
+    \begin{enumerate}
+        \item dimostrare che \(A_m(t)\) è invertibile per ogni \(t>2\) e per ogni \(m\geq 100\);
+        \item trovare un valore \(\gamma>0\) tale che
+            \[
+                |\lambda|>\gamma
+            \]
+            per ogni autovalore \(\lambda\) di \(A_m(t)\);
+        \item per \(t=11\), motivare l'applicabilità dell'algoritmo di eliminazione gaussiana senza pivoting e determinarne il costo computazionale.
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{Soluzione}
+    Poniamo
+    \[
+        A=A_m(t).
+    \]
+    La matrice \(A\) è bandata, con diagonale principale uguale a \(3\), sottodiagonale uguale a \(t^{-1}\), prima sopradiagonale uguale a \(t\) e seconda sopradiagonale uguale a \(t^2\).
+
+    \subsection*{Invertibilità di \(A_m(t)\)}
+
+    L'idea è usare una similitudine diagonale per trasformare \(A\) in una matrice strettamente diagonalmente dominante.
+
+    Poniamo
+    \[
+        \rho=\frac{1}{2t}
+    \]
+    e consideriamo la matrice diagonale
+    \[
+        S=\operatorname{diag}(1,\rho,\rho^2,\dots,\rho^{m-1}).
+    \]
+    Definiamo
+    \[
+        \widetilde A=S^{-1}AS.
+    \]
+    Poiché \(\widetilde A\) è simile ad \(A\), le due matrici hanno lo stesso spettro. In particolare, \(A\) è invertibile se e solo se \(\widetilde A\) è invertibile.
+
+    Calcoliamo gli elementi non nulli di \(\widetilde A\). Per la diagonale principale si ha
+    \[
+        \widetilde a_{j,j}=3.
+    \]
+    Per la sottodiagonale:
+    \[
+        \widetilde a_{j,j-1}
+        =
+        t^{-1}\frac{\rho^{j-2}}{\rho^{j-1}}
+        =
+        t^{-1}\rho^{-1}.
+    \]
+    Poiché
+    \[
+        \rho^{-1}=2t,
+    \]
+    segue che
+    \[
+        \widetilde a_{j,j-1}=2.
+    \]
+    Per la prima sopradiagonale:
+    \[
+        \widetilde a_{j,j+1}
+        =
+        t\frac{\rho^j}{\rho^{j-1}}
+        =
+        t\rho
+        =
+        \frac12.
+    \]
+    Per la seconda sopradiagonale:
+    \[
+        \widetilde a_{j,j+2}
+        =
+        t^2\frac{\rho^{j+1}}{\rho^{j-1}}
+        =
+        t^2\rho^2
+        =
+        \frac14.
+    \]
+
+    Quindi ogni riga interna di \(\widetilde A\) ha somma dei moduli degli elementi fuori diagonale al più
+    \[
+        2+\frac12+\frac14=\frac{11}{4}.
+    \]
+    Le righe di bordo hanno somma ancora minore.
+
+    Poiché
+    \[
+        |\widetilde a_{j,j}|=3
+    \]
+    e
+    \[
+        3>\frac{11}{4},
+    \]
+    la matrice \(\widetilde A\) è strettamente diagonalmente dominante per righe.
+
+    Per il teorema di Levy-Desplanques, \(\widetilde A\) è invertibile. Essendo \(A\) simile a \(\widetilde A\), anche \(A\) è invertibile.
+
+    Pertanto
+    \[
+        \boxed{
+            A_m(t)\text{ è invertibile per ogni }t>2\text{ e per ogni }m\geq 100.
+        }
+    \]
+
+    \subsection*{Stima dal basso degli autovalori}
+
+    Poiché \(A\) e \(\widetilde A\) sono simili, hanno gli stessi autovalori.
+
+    Applichiamo il teorema di Gershgorin a \(\widetilde A\). Tutti i dischi hanno centro \(3\) e raggio al più
+    \[
+        \frac{11}{4}.
+    \]
+    Quindi, per ogni autovalore \(\lambda\), si ha
+    \[
+        |\lambda-3|\leq \frac{11}{4}.
+    \]
+    Da questa inclusione segue
+    \[
+        |\lambda|
+        \geq
+        3-\frac{11}{4}
+        =
+        \frac14.
+    \]
+
+    Mostriamo ora che la disuguaglianza è stretta. Supponiamo per assurdo che esista un autovalore \(\lambda\) tale che
+    \[
+        |\lambda|\leq \frac14.
+    \]
+    Allora la matrice
+    \[
+        \widetilde A-\lambda I
+    \]
+    ha diagonale
+    \[
+        3-\lambda.
+    \]
+    Inoltre
+    \[
+        |3-\lambda|
+        \geq
+        3-|\lambda|
+        \geq
+        \frac{11}{4}.
+    \]
+    La somma dei moduli degli elementi fuori diagonale è al più \(\frac{11}{4}\), quindi \(\widetilde A-\lambda I\) è diagonalmente dominante per righe.
+
+    Inoltre \(\widetilde A-\lambda I\) è irriducibile, perché la sottodiagonale e la sopradiagonale sono non nulle. Almeno una riga è strettamente diagonalmente dominante, ad esempio una riga di bordo. Quindi \(\widetilde A-\lambda I\) è irriducibilmente diagonalmente dominante.
+
+    Per il teorema di Levy-Desplanques nella forma irriducibile, \(\widetilde A-\lambda I\) è invertibile. Questo è assurdo, perché \(\lambda\) è un autovalore di \(\widetilde A\).
+
+    Pertanto
+    \[
+        |\lambda|>\frac14
+    \]
+    per ogni autovalore \(\lambda\) di \(A_m(t)\). Possiamo quindi prendere
+    \[
+        \boxed{
+            \gamma=\frac14.
+        }
+    \]
+
+    \subsection*{Caso \(t=11\): eliminazione gaussiana senza pivoting}
+
+    Consideriamo ora
+    \[
+        A_m(11).
+    \]
+    L'eliminazione gaussiana senza pivoting è applicabile se e solo se tutti i pivot sono non nulli, cioè se tutti i minori principali di testa sono non nulli.
+
+    Ogni minore principale di testa di \(A_m(11)\) è ancora una matrice dello stesso tipo, con dimensione più piccola. Applicando la stessa similitudine diagonale usata prima, con
+    \[
+        \rho=\frac{1}{22},
+    \]
+    si ottiene una matrice strettamente diagonalmente dominante per righe. Quindi ogni minore principale di testa è invertibile.
+
+    Pertanto tutti i pivot sono non nulli e l'eliminazione gaussiana senza pivoting è applicabile.
+
+    Inoltre \(A_m(11)\) è una matrice bandata con ampiezza inferiore \(1\) e ampiezza superiore \(2\). Durante l'eliminazione senza pivoting non si genera fill-in fuori banda. Infatti si ottiene una fattorizzazione
+    \[
+        A_m(11)=LU,
+    \]
+    dove \(L\) è bidiagonale inferiore unitaria e \(U\) ha diagonale principale, prima sopradiagonale e seconda sopradiagonale eventualmente non nulle.
+
+    A ogni passo dell'eliminazione si calcola un solo moltiplicatore e si aggiornano al più due elementi della riga successiva. Quindi il costo della fattorizzazione è lineare in \(m\).
+
+    Più precisamente, la fattorizzazione richiede:
+    \[
+        m-1
+    \]
+    divisioni per i moltiplicatori, e al più
+    \[
+        2m-3
+    \]
+    moltiplicazioni e
+    \[
+        2m-3
+    \]
+    sottrazioni per gli aggiornamenti.
+
+    Dunque il costo della fattorizzazione è
+    \[
+        \boxed{
+            O(m).
+        }
+    \]
+
+    Se si vuole anche risolvere un sistema lineare
+    \[
+        A_m(11)x=b,
+    \]
+    le sostituzioni in avanti e all'indietro hanno anch'esse costo lineare. Quindi il costo complessivo resta
+    \[
+        \boxed{
+            O(m).
+        }
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{Cerchi di Gershgorin e definita positività}
+    Sia \(t\in(0,1]\) e sia \(m\geq 100\). Si consideri la matrice
+    \[
+        B_m(t)=D_m+tR_m,
+    \]
+    dove \(D_m\) è diagonale e \(R_m\) è tale che
+    \[
+        (R_m)_{ii}=0
+        \qquad
+        \forall i=1,\dots,m.
+    \]
+
+    Si richiede di:
+    \begin{enumerate}
+        \item stabilire se è possibile trovare \(D_m\) e \(R_m\) tali che \(B_m(1)\) abbia cerchi di Gershgorin la cui unione contiene \(0_{\mathbb C}\) nella parte interna, e, al variare di \(t\), \(B_m(t)\) abbia cerchi di Gershgorin la cui unione non contiene \(0_{\mathbb C}\);
+        \item discutere l'invertibilità di \(B_m(1)\) assumendo la proprietà individuata al punto precedente;
+        \item dimostrare che \(B_m(t)\) non può essere definita positiva per nessun \(t\in(0,1]\), assumendo la proprietà individuata al punto 1.
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{Soluzione}
+    Indichiamo con \(J_m\) la matrice \(m\times m\) con tutti gli elementi uguali a \(1\). Consideriamo la scelta
+    \[
+        D_m=-I_m,
+        \qquad
+        R_m=J_m-I_m.
+    \]
+    Allora \(D_m\) è diagonale e \(R_m\) ha diagonale nulla, infatti
+    \[
+        (R_m)_{ii}=0
+        \qquad
+        \forall i=1,\dots,m.
+    \]
+    Con questa scelta si ha
+    \[
+        B_m(t)=D_m+tR_m=-I_m+t(J_m-I_m).
+    \]
+
+    \subsection*{Cerchi di Gershgorin}
+
+    Per ogni riga di \(B_m(t)\), l'elemento diagonale è
+    \[
+        (B_m(t))_{ii}=-1.
+    \]
+    Quindi il centro del disco di Gershgorin è
+    \[
+        c_i=-1.
+    \]
+    Gli elementi fuori diagonale sono tutti uguali a \(t\), dunque il raggio è
+    \[
+        r_i(t)=\sum_{j\neq i}|(B_m(t))_{ij}|=t(m-1).
+    \]
+    Pertanto tutti i cerchi di Gershgorin coincidono:
+    \[
+        G_t=\left\{z\in\mathbb{C}:\ |z+1|\leq t(m-1)\right\}.
+    \]
+
+    Per \(t=1\) si ha
+    \[
+        G_1=\left\{z\in\mathbb{C}:\ |z+1|\leq m-1\right\}.
+    \]
+    Poiché \(m\geq 100\), si ha
+    \[
+        m-1>1.
+    \]
+    Dunque
+    \[
+        0\in \operatorname{int}(G_1).
+    \]
+
+    D'altra parte, se
+    \[
+        0<t<\frac{1}{m-1},
+    \]
+    allora
+    \[
+        t(m-1)<1.
+    \]
+    Quindi
+    \[
+        0\notin G_t.
+    \]
+
+    Pertanto è possibile trovare \(D_m\) e \(R_m\) tali che \(B_m(1)\) abbia unione dei cerchi di Gershgorin contenente \(0_{\mathbb C}\) nella parte interna, mentre per opportuni valori di \(t\in(0,1)\) l'unione dei cerchi di Gershgorin di \(B_m(t)\) non contiene \(0_{\mathbb C}\).
+
+    Più precisamente, con la scelta precedente:
+    \[
+        0\notin \bigcup_i G_i(B_m(t))
+        \qquad
+        \Longleftrightarrow
+        \qquad
+        0<t<\frac{1}{m-1}.
+    \]
+
+    Se invece la richiesta fosse interpretata come
+    \[
+        0\notin \bigcup_i G_i(B_m(t))
+        \qquad
+        \forall t\in(0,1),
+    \]
+    allora ciò sarebbe impossibile. Infatti, se per \(t=1\) si ha \(0\) nella parte interna dell'unione dei cerchi, allora per continuità dei raggi rispetto a \(t\), \(0\) resta contenuto nell'unione dei cerchi anche per \(t<1\) sufficientemente vicino a \(1\).
+
+    \subsection*{Invertibilità di \(B_m(1)\)}
+
+    Con la scelta fatta,
+    \[
+        B_m(1)=-I_m+(J_m-I_m)=J_m-2I_m.
+    \]
+    Ricordiamo che gli autovalori di \(J_m\) sono:
+    \[
+        m
+    \]
+    con autovettore
+    \[
+        \mathbf{1}=(1,\dots,1)^T,
+    \]
+    e
+    \[
+        0
+    \]
+    con molteplicità \(m-1\), sul sottospazio ortogonale a \(\mathbf{1}\).
+
+    Di conseguenza, gli autovalori di
+    \[
+        B_m(1)=J_m-2I_m
+    \]
+    sono
+    \[
+        m-2
+    \]
+    e
+    \[
+        -2
+    \]
+    con molteplicità \(m-1\).
+
+    Poiché
+    \[
+        m\geq 100,
+    \]
+    si ha
+    \[
+        m-2\neq 0,
+    \]
+    e chiaramente
+    \[
+        -2\neq 0.
+    \]
+    Pertanto
+    \[
+        \boxed{
+            B_m(1)\text{ è invertibile}.
+        }
+    \]
+
+    Questo mostra che il fatto che \(0_{\mathbb C}\) appartenga alla parte interna dell'unione dei cerchi di Gershgorin non implica la singolarità della matrice. Il teorema di Gershgorin fornisce una localizzazione dello spettro, non una caratterizzazione esatta dello spettro.
+
+    \subsection*{Non definita positività di \(B_m(t)\)}
+
+    Con la scelta precedente,
+    \[
+        B_m(t)=-I_m+t(J_m-I_m).
+    \]
+    Gli elementi diagonali sono
+    \[
+        (B_m(t))_{ii}=-1
+        \qquad
+        \forall i=1,\dots,m.
+    \]
+
+    Se una matrice hermitiana fosse definita positiva, allora dovrebbe valere
+    \[
+        e_i^*B_m(t)e_i>0
+    \]
+    per ogni vettore della base canonica \(e_i\). Tuttavia
+    \[
+        e_i^*B_m(t)e_i=(B_m(t))_{ii}=-1<0.
+    \]
+    Quindi \(B_m(t)\) non può essere definita positiva.
+
+    Pertanto
+    \[
+        \boxed{
+            B_m(t)\text{ non è definita positiva per nessun }t\in(0,1].
+        }
+    \]
+    In particolare,
+    \[
+        B_m(t)\text{ non è definita positiva per nessun }t\in(0,1).
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{Localizzazione spettrale e metodo delle potenze}
+    Sia data la matrice
+    \[
+        A\in M_4(\mathbb{C})
+    \]
+    definita da
+    \[
+        A=
+        \begin{pmatrix}
+            7 & 2 & 2 & 2\\
+            0 & -1 & 0 & \frac{1}{2}\\
+            0 & 0 & 1 & \frac{i}{2}\\
+            1 & 0 & -1 & -i
+        \end{pmatrix},
+        \qquad
+        i^2=-1.
+    \]
+
+    Si richiede di:
+    \begin{enumerate}
+        \item localizzare lo spettro di \(A\) nel modo più preciso possibile;
+        \item in base alle informazioni spettrali ottenute, concludere se il metodo delle potenze converge.
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{Soluzione}
+    Vogliamo localizzare lo spettro di \(A\) usando il teorema di Gershgorin.
+
+    \subsection*{Localizzazione dello spettro}
+
+    Applicando Gershgorin per righe, otteniamo i dischi
+    \[
+        G_1=\{z\in\mathbb{C}: |z-7|\leq 6\},
+    \]
+    \[
+        G_2=\left\{z\in\mathbb{C}: |z+1|\leq \frac{1}{2}\right\},
+    \]
+    \[
+        G_3=\left\{z\in\mathbb{C}: |z-1|\leq \frac{1}{2}\right\},
+    \]
+    \[
+        G_4=\{z\in\mathbb{C}: |z+i|\leq 2\}.
+    \]
+    Questi dischi non separano bene lo spettro, perché formano un'unica componente connessa. Conviene quindi applicare Gershgorin per colonne.
+
+    I dischi di Gershgorin per colonne sono:
+    \[
+        \Gamma_1=\{z\in\mathbb{C}: |z-7|\leq 1\},
+    \]
+    \[
+        \Gamma_2=\{z\in\mathbb{C}: |z+1|\leq 2\},
+    \]
+    \[
+        \Gamma_3=\{z\in\mathbb{C}: |z-1|\leq 3\},
+    \]
+    \[
+        \Gamma_4=\{z\in\mathbb{C}: |z+i|\leq 3\}.
+    \]
+
+    Osserviamo che il disco
+    \[
+        \Gamma_1=\{z\in\mathbb{C}: |z-7|\leq 1\}
+    \]
+    è disgiunto dagli altri tre. Infatti:
+    \[
+        |7-(-1)|=8>1+2,
+    \]
+    \[
+        |7-1|=6>1+3,
+    \]
+    e
+    \[
+        |7-(-i)|=|7+i|=\sqrt{50}>1+3.
+    \]
+
+    Quindi \(\Gamma_1\) è una componente connessa separata dell'unione dei dischi di Gershgorin. Per il secondo teorema di Gershgorin, in \(\Gamma_1\) cade esattamente un autovalore, contato con molteplicità algebrica. Dunque esiste un autovalore \(\lambda_1\) tale che
+    \[
+        \lambda_1\in \Gamma_1,
+    \]
+    cioè
+    \[
+        |\lambda_1-7|\leq 1.
+    \]
+    In particolare,
+    \[
+        |\lambda_1|\geq 7-1=6.
+    \]
+
+    Gli altri tre autovalori appartengono a
+    \[
+        \Gamma_2\cup \Gamma_3\cup \Gamma_4.
+    \]
+    Inoltre
+    \[
+        \Gamma_2\subset \{z\in\mathbb{C}: |z|\leq 3\},
+    \]
+    \[
+        \Gamma_3\subset \{z\in\mathbb{C}: |z|\leq 4\},
+    \]
+    e
+    \[
+        \Gamma_4\subset \{z\in\mathbb{C}: |z|\leq 4\}.
+    \]
+    Pertanto, se \(\lambda\neq \lambda_1\) è un altro autovalore di \(A\), allora
+    \[
+        |\lambda|\leq 4.
+    \]
+
+    Abbiamo quindi ottenuto la localizzazione
+    \[
+        \boxed{
+            \sigma(A)\subset
+            \{z\in\mathbb{C}: |z-7|\leq 1\}
+            \cup
+            \{z\in\mathbb{C}: |z+1|\leq 2\}
+            \cup
+            \{z\in\mathbb{C}: |z-1|\leq 3\}
+            \cup
+            \{z\in\mathbb{C}: |z+i|\leq 3\}.
+        }
+    \]
+    Più precisamente:
+    \[
+        \boxed{
+            \text{un autovalore appartiene a } \{z\in\mathbb{C}: |z-7|\leq 1\},
+        }
+    \]
+    mentre
+    \[
+        \boxed{
+            \text{gli altri tre appartengono a }
+            \{z\in\mathbb{C}: |z+1|\leq 2\}
+            \cup
+            \{z\in\mathbb{C}: |z-1|\leq 3\}
+            \cup
+            \{z\in\mathbb{C}: |z+i|\leq 3\}.
+        }
+    \]
+
+    In particolare,
+    \[
+        |\lambda_1|\geq 6,
+    \]
+    mentre, per ogni altro autovalore \(\lambda\),
+    \[
+        |\lambda|\leq 4.
+    \]
+    Dunque \(\lambda_1\) è un autovalore dominante.
+
+    \subsection*{Convergenza del metodo delle potenze}
+
+    Dal punto precedente sappiamo che esiste un autovalore \(\lambda_1\) tale che
+    \[
+        |\lambda_1|\geq 6,
+    \]
+    mentre tutti gli altri autovalori soddisfano
+    \[
+        |\lambda|\leq 4.
+    \]
+    Quindi
+    \[
+        |\lambda_1|>|\lambda|
+    \]
+    per ogni altro autovalore \(\lambda\).
+
+    Inoltre, poiché il disco \(\Gamma_1\) contiene esattamente un autovalore contato con molteplicità algebrica, \(\lambda_1\) è semplice.
+
+    Pertanto la matrice \(A\) ha un unico autovalore dominante, semplice e separato dagli altri in modulo. Ne segue che il metodo delle potenze converge alla direzione dell'autovettore associato a \(\lambda_1\), per ogni vettore iniziale con componente non nulla lungo tale autovettore dominante.
+
+    Quindi
+    \[
+        \boxed{
+            \text{il metodo delle potenze converge, salvo scelte iniziali eccezionali.}
+        }
+    \]
+
+    Più precisamente, il rapporto di convergenza è al più
+    \[
+        \frac{4}{6}=\frac{2}{3}.
+    \]
+    Quindi la convergenza è almeno dell'ordine
+    \[
+        \boxed{
+            \left(\frac{2}{3}\right)^k.
+        }
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{Raggio spettrale e norme matriciali}
+    Si denoti con \(\rho(A)\) il raggio spettrale di una matrice quadrata \(A\), e con \(\|A\|_1\) la norma matriciale indotta dalla norma vettoriale \(\|\cdot\|_1\).
+
+    Dire se le seguenti affermazioni sono vere o false, giustificando le risposte:
+    \begin{enumerate}
+        \item \(\rho(A)<1\) e \(\rho(B)<1\) implica che \(\rho(AB)<1\);
+        \item \(\rho(A)\geq 1\) e \(\rho(B)\geq 1\) implica che \(\rho(AB)\geq 1\);
+        \item \(\|A\|_1<1\) e \(\|B\|_1<1\) implica che \(\rho(AB)<1\);
+        \item \(\|A\|_2\geq 1\) e \(\|B\|_2\geq 1\) implica che \(\rho(AB)\geq 1\).
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{Soluzione}
+    \subsection*{Prima affermazione}
+
+    L'affermazione
+    \[
+        \rho(A)<1,\qquad \rho(B)<1
+        \Longrightarrow
+        \rho(AB)<1
+    \]
+    è falsa.
+
+    Infatti, consideriamo
+    \[
+        A=
+        \begin{pmatrix}
+            0 & 2\\
+            0 & 0
+        \end{pmatrix},
+        \qquad
+        B=
+        \begin{pmatrix}
+            0 & 0\\
+            2 & 0
+        \end{pmatrix}.
+    \]
+    Le matrici \(A\) e \(B\) sono nilpotenti, quindi
+    \[
+        \rho(A)=0,
+        \qquad
+        \rho(B)=0.
+    \]
+    In particolare,
+    \[
+        \rho(A)<1,
+        \qquad
+        \rho(B)<1.
+    \]
+    Tuttavia
+    \[
+        AB=
+        \begin{pmatrix}
+            4 & 0\\
+            0 & 0
+        \end{pmatrix}.
+    \]
+    Dunque
+    \[
+        \rho(AB)=4>1.
+    \]
+    Quindi la prima affermazione è
+    \[
+        \boxed{\text{falsa}.}
+    \]
+
+    \subsection*{Seconda affermazione}
+
+    L'affermazione
+    \[
+        \rho(A)\geq 1,\qquad \rho(B)\geq 1
+        \Longrightarrow
+        \rho(AB)\geq 1
+    \]
+    è falsa.
+
+    Consideriamo
+    \[
+        A=
+        \begin{pmatrix}
+            1 & 0\\
+            0 & 0
+        \end{pmatrix},
+        \qquad
+        B=
+        \begin{pmatrix}
+            0 & 0\\
+            0 & 1
+        \end{pmatrix}.
+    \]
+    Allora
+    \[
+        \rho(A)=1,
+        \qquad
+        \rho(B)=1.
+    \]
+    Però
+    \[
+        AB=
+        \begin{pmatrix}
+            0 & 0\\
+            0 & 0
+        \end{pmatrix}.
+    \]
+    Quindi
+    \[
+        \rho(AB)=0<1.
+    \]
+    Pertanto la seconda affermazione è
+    \[
+        \boxed{\text{falsa}.}
+    \]
+
+    \subsection*{Terza affermazione}
+
+    L'affermazione
+    \[
+        \|A\|_1<1,\qquad \|B\|_1<1
+        \Longrightarrow
+        \rho(AB)<1
+    \]
+    è vera.
+
+    Infatti, per ogni norma matriciale indotta vale
+    \[
+        \rho(M)\leq \|M\|
+    \]
+    per ogni matrice quadrata \(M\). Inoltre la norma indotta è submoltiplicativa, quindi
+    \[
+        \|AB\|_1\leq \|A\|_1\|B\|_1.
+    \]
+    Pertanto
+    \[
+        \rho(AB)
+        \leq
+        \|AB\|_1
+        \leq
+        \|A\|_1\|B\|_1.
+    \]
+    Poiché
+    \[
+        \|A\|_1<1
+        \qquad
+        \text{e}
+        \qquad
+        \|B\|_1<1,
+    \]
+    si ha
+    \[
+        \|A\|_1\|B\|_1<1.
+    \]
+    Quindi
+    \[
+        \rho(AB)<1.
+    \]
+    La terza affermazione è dunque
+    \[
+        \boxed{\text{vera}.}
+    \]
+
+    \subsection*{Quarta affermazione}
+
+    L'affermazione
+    \[
+        \|A\|_2\geq 1,
+        \qquad
+        \|B\|_2\geq 1
+        \Longrightarrow
+        \rho(AB)\geq 1
+    \]
+    è falsa.
+
+    Usiamo lo stesso controesempio del secondo punto:
+    \[
+        A=
+        \begin{pmatrix}
+            1 & 0\\
+            0 & 0
+        \end{pmatrix},
+        \qquad
+        B=
+        \begin{pmatrix}
+            0 & 0\\
+            0 & 1
+        \end{pmatrix}.
+    \]
+    Entrambe sono matrici diagonali, quindi
+    \[
+        \|A\|_2=1,
+        \qquad
+        \|B\|_2=1.
+    \]
+    In particolare,
+    \[
+        \|A\|_2\geq 1,
+        \qquad
+        \|B\|_2\geq 1.
+    \]
+    Tuttavia
+    \[
+        AB=0,
+    \]
+    quindi
+    \[
+        \rho(AB)=0<1.
+    \]
+    Pertanto la quarta affermazione è
+    \[
+        \boxed{\text{falsa}.}
+    \]
+
+    Riassumendo:
+    \[
+        \boxed{
+            \begin{array}{c|c}
+                \text{Affermazione} & \text{Risposta}\\
+                \hline
+                1 & \text{Falsa}\\
+                2 & \text{Falsa}\\
+                3 & \text{Vera}\\
+                4 & \text{Falsa}
+            \end{array}
+        }
+    \]
+\end{snippetsolution}
+
 \end{document}
