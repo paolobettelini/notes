@@ -1542,7 +1542,7 @@ più veloce rispetto a quello di Jacobi.
             per \(l\neq n\).
     \end{enumerate}
     Chiamiamo \(k_l = |I_l|\).
-    Allora, \(S_i\) contiene esattamente \(k_i\) autovalori.
+    Allora, \(s_i\) contiene esattamente \(k_i\) autovalori.
 \end{snippettheorem}
 
 \begin{snippetproof}{Teorema di Gershgorin I}
@@ -6016,7 +6016,7 @@ La matrice
 \section{Esercizi e problemi svolti}
 
 \begin{snippetexercise}{}
-    Sia \(\alpha \geq 1\) reale e consideriamo la matrice
+    Sia \(n \geq 2\), sia \(\alpha \geq 1\) reale e consideriamo la matrice
     \[
         A_n(\alpha) =
         \begin{pmatrix}
@@ -6036,24 +6036,74 @@ La matrice
             1 & 1 & \alpha & \cdots & -1 \\
             \vdots & \vdots & \ddots & \ddots & -1 \\
             1 & 1 & \cdots & 1 & \alpha
-        \end{pmatrix}
+        \end{pmatrix}.
     \]
     \begin{enumerate}
-        \item Si consideri nella maniera più precisa possibile lo spettro di \(A_n\)
-            e \(B_n\).
-        \item In particolari, si studi per quale \(\alpha\)
+        \item Si determini nella maniera più precisa possibile lo spettro di \(A_n(\alpha)\)
+            e di \(B_n(\alpha)\).
+        \item In particolare, si studi per quali valori di \(\alpha\)
             le matrici risultano invertibili.
-            sono invertibili?
         \item Indicato con \(e_1\) il primo vettore
-            della base canonica, è vero che \(A_n^{(2)} + e_1e_1^T\) è definita positiva?
-        \item È vero che \(A_n^{(1)} + e_1e_1^T\) è semidefinita positiva?
+            della base canonica, è vero che \(A_n(2) + e_1e_1^T\) è definita positiva?
+        \item È vero che \(A_n(1) + e_1e_1^T\) è semidefinita positiva?
     \end{enumerate}
 \end{snippetexercise}
 
 \begin{snippetsolution}{}
-    Cominciamo notando che \(A_n^*(\alpha) = A_n^T(\alpha) = A_n(\alpha)\)
-    quindi è Hermitiana e il suo spettro è reale.
-    Possiamo notare che \(X_n + \alpha I_n = B_n(\alpha)\)
+    Cominciamo notando che \(A_n^*(\alpha) = A_n^T(\alpha) = A_n(\alpha)\),
+    quindi \(A_n(\alpha)\) è Hermitiana e il suo spettro è reale.
+
+    Scriviamo
+    \[
+        A_n(\alpha) = (\alpha - 1)I_n + J_n,
+    \]
+    dove
+    \[
+        J_n =
+        \begin{pmatrix}
+            1 & 1 & \cdots & 1 \\
+            1 & 1 & \cdots & 1 \\
+            \vdots & \vdots & \ddots & \vdots \\
+            1 & 1 & \cdots & 1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            1 \\ 1 \\ \vdots \\ 1
+        \end{pmatrix}
+        \begin{pmatrix}
+            1 & 1 & \cdots & 1
+        \end{pmatrix}.
+    \]
+    La matrice \(J_n\) ha rango \(1\). Inoltre,
+    \[
+        J_n
+        \begin{pmatrix}
+            1 \\ 1 \\ \vdots \\ 1
+        \end{pmatrix}
+        =
+        n
+        \begin{pmatrix}
+            1 \\ 1 \\ \vdots \\ 1
+        \end{pmatrix},
+    \]
+    mentre \(J_nx = 0\) per ogni vettore \(x\) tale che la somma delle sue componenti sia nulla.
+    Quindi
+    \[
+        \sigma(A_n(\alpha)) = \{\alpha+n-1, \alpha-1\},
+    \]
+    dove \(\alpha+n-1\) ha molteplicità \(1\), mentre \(\alpha-1\)
+    ha molteplicità \(n-1\).
+
+    In particolare, \(A_n(\alpha)\) è invertibile se e solo se
+    \[
+        \alpha > 1.
+    \]
+    Per \(\alpha = 1\), infatti, la matrice \(A_n(1)\) è singolare.
+
+    Consideriamo ora \(B_n(\alpha)\). Possiamo notare che
+    \[
+        B_n(\alpha) = \alpha I_n + X_n,
+    \]
     dove
     \[
         X_n =
@@ -6062,57 +6112,80 @@ La matrice
             1 & 0 & \cdots & -1 \\
             \vdots & \vdots & \ddots & \vdots \\
             1 & 1 & \cdots & 0
-        \end{pmatrix}
+        \end{pmatrix}.
     \]
-    % TODO definire pure Y_n e scrivere meglio
-    Moltiplicando \(iX_n = Y_n\) diventa hermitiana \(Y_n^*  = Y_n\).
-    In generale se moltiplichiamo una matrice per qualcosa, pure i suoi valori vengono moltiplicati per tale quantità.
-    Quindi \(Y_n x = \lambda x\) con \(\lambda \in \realnumbers\)
-    ci porta a dire che \(X_n\) può avere solo autovalori immaginari puri.
-    Se \(X_n v = \lambda v\),
-    allora
-    \begin{align*}
-        (\alpha I + X_n)v &= \alpha v + X_n v = (\alpha + \lambda)v
-    \end{align*}
-    quindi gli autovalori di \(B_n(\alpha)\)
-    sono della forma \(\alpha + i\beta\) con \(\beta \in \realnumbers\).
-    Per struttura degli autovalori, siccome non toccano mai lo zero, sono tutte invertibili.
-    Consideriamo il caso \(\alpha = 1\). In tal caso la matrice \(A_n\) è singolare,
-    quindi non è invertibile. Consideriamo \(\alpha > 1\).
-    Abbiamo
-    \begin{align*}
-        A_n(\alpha) &= (\alpha - 1)I_n +
-        \begin{pmatrix}
-            1 & 1 & \cdots & 1 \\
-            1 & 1 & \cdots & 1 \\
-            \vdots & \vdots & \ddots & \vdots \\
-            1 & 1 & \cdots & 1
-        \end{pmatrix} \\
-        &=  (\alpha - 1) I_n +
-        \begin{pmatrix}
-            1 \\ 1 \\ \vdots \\ 1
-        \end{pmatrix}
-        \begin{pmatrix}
-            1 & 1 & \cdots & 1
-        \end{pmatrix}
-        = (\alpha -1)I_n + e_1e_1^T
-    \end{align*}
-    Il primo termine è definito positivo,
-    mentre il secondo è la matrice di uni che ha rango \(1\),
-    quindi la si può scrivere come prodotto di colonna per riga.
-    Vogliamo verificare che la forma quadratica sia definita positiva,
-    cioè studiamo \(x^* A_n(\alpha)x\). Sappiamo che
-    \begin{align*}
-        x^*A_n(\alpha)x &= \underbrace{x(\alpha - 1)I_n x}_{> 0} + xe_1e_1^T x \\
-        &= \underbrace{x(\alpha - 1)I_n x}_{> 0} + (e_1^T x)^2
-    \end{align*}
-    e quindi abbiamo un termine positivo psommato ad una quantità non-negativa.
-    Scomponiamo ora invece l'altra matrice come
-    \begin{align*}
-        B_n(\alpha) = \alpha I_n + V_n
-    \end{align*}
-    dove abbiamo già verificato che \((iV_n)^* = i V_n = -i V_n\),
-    quindi otteniamo che \(V_n\) è anti-Hermitiana, cioè \(V_n^* = -V_n\).
+    La matrice \(X_n\) è antisimmetrica reale, cioè
+    \[
+        X_n^T = -X_n.
+    \]
+    Definiamo
+    \[
+        Y_n = iX_n.
+    \]
+    Allora
+    \[
+        Y_n^* = (iX_n)^* = -iX_n^T = -i(-X_n) = iX_n = Y_n.
+    \]
+    Quindi \(Y_n\) è Hermitiana e i suoi autovalori sono reali.
+
+    Se \(Y_nx = \lambda x\), con \(\lambda \in \realnumbers\), allora
+    \[
+        iX_nx = \lambda x,
+    \]
+    cioè
+    \[
+        X_nx = -i\lambda x.
+    \]
+    Quindi gli autovalori di \(X_n\) sono immaginari puri.
+
+    Se \(X_nv = \mu v\), allora
+    \[
+        B_n(\alpha)v = (\alpha I_n + X_n)v = \alpha v + \mu v = (\alpha+\mu)v.
+    \]
+    Dunque
+    \[
+        \sigma(B_n(\alpha)) = \alpha + \sigma(X_n).
+    \]
+    Poiché gli autovalori di \(X_n\) sono immaginari puri, gli autovalori di
+    \(B_n(\alpha)\) sono della forma
+    \[
+        \alpha + i\beta,
+        \qquad \beta \in \realnumbers.
+    \]
+    Siccome \(\alpha \geq 1\), questi autovalori non possono mai essere nulli.
+    Quindi \(B_n(\alpha)\) è invertibile per ogni \(\alpha \geq 1\).
+
+    Consideriamo ora \(A_n(2) + e_1e_1^T\). Poiché
+    \[
+        A_n(2) = I_n + J_n,
+    \]
+    abbiamo, per ogni \(x \neq 0\),
+    \[
+        x^*A_n(2)x = x^*x + x^*J_nx > 0.
+    \]
+    Inoltre
+    \[
+        x^*e_1e_1^Tx = |e_1^Tx|^2 \geq 0.
+    \]
+    Quindi
+    \[
+        x^*\left(A_n(2) + e_1e_1^T\right)x > 0
+    \]
+    per ogni \(x \neq 0\), e dunque \(A_n(2) + e_1e_1^T\) è definita positiva.
+
+    Infine, \(A_n(1) = J_n\). Per ogni \(x\),
+    \[
+        x^*J_nx \geq 0
+    \]
+    e
+    \[
+        x^*e_1e_1^Tx = |e_1^Tx|^2 \geq 0.
+    \]
+    Quindi
+    \[
+        x^*\left(A_n(1) + e_1e_1^T\right)x \geq 0
+    \]
+    per ogni \(x\), e dunque \(A_n(1) + e_1e_1^T\) è semidefinita positiva.
 \end{snippetsolution}
 
 \begin{snippetdefinition}{Matrice di Vandermonde generalizzata}
@@ -6145,57 +6218,236 @@ La matrice
 \end{snippetsolution}
 
 \begin{snippetexercise}{}
-    Sia \(n\) grande.
+    Sia \(n \geq 2\).
     Siano dati \(2n\) numeri positivi \(x_j, y_j\)
     per \(j \in \{1, \cdots, n\}\) tali che
     \[
-        x_jy_j > \frac12, \quad \forall j \in \{1, \cdots, n\}
+        x_jy_j > \frac12, \quad \forall j \in \{1, \cdots, n\}.
     \]
     Siano \(v_1, \cdots, v_n \in \realnumbers^2\)
-    con \(v_j =
-        \begin{pmatrix}x_j \\ y_j
-    \end{pmatrix}\)
-    e \(j \in \{1, \cdots, n\}\) e si consideri \(A \in \matrices_n(\realnumbers)\) tale che
+    con
     \[
-        A_{j,k} = 1, \quad j\neq k, k,j \in \{1, \cdots, n\}, \quad A_{j,j} = ||v_j||_2
+        v_j =
+        \begin{pmatrix}
+            x_j \\ y_j
+        \end{pmatrix},
+        \qquad j \in \{1, \cdots, n\},
+    \]
+    e si consideri \(A \in \matrices_n(\realnumbers)\) tale che
+    \[
+        A_{j,k} = 1, \quad j\neq k,
+        \qquad
+        A_{j,j} = \|v_j\|_2.
     \]
     Sia \(B \in \matrices_n(\realnumbers)\)
-    la matrice tridiagonale simmetrica con \(B_{j,j} = 2\)
-    per \(j \in \{1, \cdots, n\}\) e \(B_{j,j\pm 1} = 1\)
-    per \(j \in \{1, \cdots, n-1\}\).
+    la matrice tridiagonale simmetrica con
+    \[
+        B_{j,j} = 2,
+        \qquad
+        B_{j,j+1} = B_{j+1,j} = 1,
+        \qquad j \in \{1, \cdots, n-1\}.
+    \]
     Si consideri \(C \in \matrices_{2n}(\realnumbers)\)
-    data da \[
+    data da
+    \[
         C =
         \begin{pmatrix}
             A & A^2 - x_1A \\
             0 & B
-        \end{pmatrix}
+        \end{pmatrix}.
     \]
     \begin{enumerate}
         \item Si dimostri che \(A,B,C\) sono invertibili.
         \item Si localizzi lo spettro di \(C\) nel modo migliore possibile.
-        \item Si dimostri che la fattorizzazione \(LU\) di \(C\) esiste unica ovvero \(C\)
-            fortemente non singolare.
+        \item Si dimostri che la fattorizzazione \(LU\) di \(C\) esiste unica,
+            ovvero che \(C\) è fortemente non singolare.
         \item Si dimostri la convergenza del metodo di Gauss-Seidel applicato ad un sistema \(Cx=b\) con \(b \in \realnumbers^{2n}\).
         \item Si dimostri che \(f(A), f(B), f(C)\) sono invertibili con \(f(x) = 1 - x + x^{31}\).
-            È vero che tutti gli autovalori \(f(C)\) sono positivi?
+            È vero che tutti gli autovalori di \(f(C)\) sono positivi?
     \end{enumerate}
 \end{snippetexercise}
 
 \begin{snippetsolution}{}
     \begin{enumerate}
-        \item TODO
-        \item TODO
-        \item TODO
-        \item La matrice non è Hermitiana ed è difficile definire se è a predominanza diagonale, probabilmente no.
-            Nessuno dei teoremi di condizioni sufficienti ci aiuta.
-            Abbiamo il metodo di Gauss-Seidel \(Z u = w\).
-            Scegliamo lo splitting \(M\) la parte inferiore di \(Z\) e \(-N\) la parte superiore stretta.
-            Consideriamo \(C\). Allora la sua parte triangolare inferiore, è composta da due blocchi di \(0\) (alto a destra e basso a sinistra)
-            e due blocchi con rispettivamente le parti triangolari inferiori di \(A\) e \(B\).
-            Invece, la triangolare superiore stretta di \(C\) ha diagonale tutta nulla, il blocco in basso a sinistra nullo,
-            il primo e quarto blocco contenenti la parte triangolare superiore stretta di \(A\) e \(B\) rispettivamente,
-            e il secondo blocco pieno di elementi.
+        \item Per ogni \(j\), usando \(x_j,y_j>0\) e \(x_jy_j > 1/2\), abbiamo
+            \[
+                \|v_j\|_2
+                =
+                \sqrt{x_j^2+y_j^2}
+                \geq
+                \sqrt{2x_jy_j}
+                >
+                1.
+            \]
+            Quindi possiamo scrivere
+            \[
+                A = D + J,
+            \]
+            dove
+            \[
+                D =
+                \operatorname{diag}(\|v_1\|_2-1,\ldots,\|v_n\|_2-1)
+            \]
+            è diagonale definita positiva, mentre
+            \[
+                J =
+                \begin{pmatrix}
+                    1 & \cdots & 1 \\
+                    \vdots & \ddots & \vdots \\
+                    1 & \cdots & 1
+                \end{pmatrix}.
+            \]
+            Per ogni \(z \in \realnumbers^n\), \(z \neq 0\), si ha
+            \[
+                z^TAz
+                =
+                z^TDz + z^TJz
+                =
+                \sum_{j=1}^n(\|v_j\|_2-1)z_j^2
+                +
+                \left(\sum_{j=1}^n z_j\right)^2
+                >
+                0.
+            \]
+            Quindi \(A\) è definita positiva, e in particolare è invertibile.
+
+            Studiamo ora \(B\). Per ogni \(z \in \realnumbers^n\) si ha
+            \[
+                z^TBz
+                =
+                2\sum_{j=1}^n z_j^2
+                +
+                2\sum_{j=1}^{n-1} z_jz_{j+1}.
+            \]
+            Riscriviamo questa quantità come
+            \[
+                z^TBz
+                =
+                z_1^2 + z_n^2
+                +
+                \sum_{j=1}^{n-1}(z_j+z_{j+1})^2.
+            \]
+            Questa quantità è sempre non negativa. Inoltre, se è nulla, allora
+            \(z_1 = z_n = 0\) e \(z_j+z_{j+1}=0\) per ogni \(j\), da cui segue
+            \(z=0\). Quindi \(B\) è definita positiva, e in particolare è invertibile.
+
+            Infine, \(C\) è triangolare a blocchi:
+            \[
+                C =
+                \begin{pmatrix}
+                    A & A^2 - x_1A \\
+                    0 & B
+                \end{pmatrix}.
+            \]
+            Dunque
+            \[
+                \det(C) = \det(A)\det(B).
+            \]
+            Siccome \(A\) e \(B\) sono invertibili, anche \(C\) è invertibile.
+
+        \item Siccome \(C\) è triangolare a blocchi, il suo spettro è l'unione degli spettri
+            dei blocchi diagonali:
+            \[
+                \sigma(C) = \sigma(A) \union \sigma(B).
+            \]
+            Localizziamo quindi separatamente \(\sigma(A)\) e \(\sigma(B)\).
+
+            Per \(A\), usando il teorema di Gershgorin, ogni autovalore appartiene
+            ad almeno uno degli intervalli
+            \[
+                \left[
+                    \|v_j\|_2-(n-1),
+                    \|v_j\|_2+(n-1)
+                \right],
+                \qquad j=1,\ldots,n.
+            \]
+            Inoltre \(A\) è definita positiva, quindi tutti i suoi autovalori sono positivi.
+            Dunque
+            \[
+                \sigma(A)
+                \subset
+                (0,+\infty)
+                \cap
+                \bigcup_{j=1}^n
+                \left[
+                    \|v_j\|_2-(n-1),
+                    \|v_j\|_2+(n-1)
+                \right].
+            \]
+
+            Per \(B\), sempre per Gershgorin, la prima e l'ultima riga danno
+            l'intervallo \([1,3]\), mentre le righe interne danno l'intervallo
+            \([0,4]\). Quindi \(\sigma(B) \subset [0,4]\).
+            Siccome \(B\) è definita positiva, possiamo migliorare a
+            \(\sigma(B) \subset (0,4]\).
+
+            In conclusione,
+            \[
+                \sigma(C)
+                \subset
+                \left(
+                    (0,+\infty)
+                    \cap
+                    \bigcup_{j=1}^n
+                    \left[
+                        \|v_j\|_2-(n-1),
+                        \|v_j\|_2+(n-1)
+                    \right]
+                \right)
+                \union
+                (0,4].
+            \]
+
+        \item Per mostrare che la fattorizzazione \(LU\) di \(C\) esiste ed è unica,
+            basta mostrare che \(C\) è fortemente non singolare, cioè che tutti
+            i suoi minori principali iniziali sono non nulli.
+
+            Consideriamo prima i minori principali iniziali di ordine \(k \leq n\).
+            Questi sono esattamente i minori principali iniziali di \(A\).
+            Ma ogni sottomatrice principale iniziale di \(A\) ha ancora la forma
+            \[
+                D_k + J_k,
+            \]
+            dove \(D_k\) è diagonale definita positiva e \(J_k\) è semidefinita positiva.
+            Quindi ogni sottomatrice principale iniziale di \(A\) è definita positiva,
+            e dunque ha determinante non nullo.
+
+            Consideriamo ora i minori principali iniziali di ordine \(n+k\),
+            con \(k \in \{1,\ldots,n\}\). La corrispondente sottomatrice principale
+            iniziale di \(C\) ha la forma
+            \[
+                \begin{pmatrix}
+                    A & \ast \\
+                    0 & B_k
+                \end{pmatrix},
+            \]
+            dove \(B_k\) è la sottomatrice principale iniziale di ordine \(k\) di \(B\).
+            Anche \(B_k\) è definita positiva, con lo stesso ragionamento usato per \(B\).
+            Pertanto
+            \[
+                \det
+                \begin{pmatrix}
+                    A & \ast \\
+                    0 & B_k
+                \end{pmatrix}
+                =
+                \det(A)\det(B_k)
+                \neq 0.
+            \]
+            Quindi tutti i minori principali iniziali di \(C\) sono non nulli.
+            Di conseguenza \(C\) è fortemente non singolare e la fattorizzazione
+            \(LU\) esiste ed è unica.
+
+        \item La matrice \(C\) non è simmetrica, quindi non possiamo concludere direttamente
+            usando i teoremi per matrici definite positive. Tuttavia, \(C\) ha una struttura
+            triangolare a blocchi.
+
+            Consideriamo lo splitting del metodo di Gauss-Seidel
+            \[
+                C = M - N,
+            \]
+            dove \(M\) è la parte triangolare inferiore di \(C\), diagonale inclusa,
+            e \(-N\) è la parte triangolare superiore stretta. Abbiamo quindi
             \[
                 M=
                 \begin{pmatrix}
@@ -6209,40 +6461,76 @@ La matrice
                     0 & -\operatorname{triu}(B,1)
                 \end{pmatrix}.
             \]
-            Quindi il prodotto è composto come
+            La matrice di iterazione di Gauss-Seidel è
             \[
+                P_{\text{GS}}(C)=M^{-1}N.
+            \]
+            Per la struttura a blocchi, si ottiene una matrice del tipo
+            \[
+                P_{\text{GS}}(C)
+                =
                 \begin{pmatrix}
                     P_{\text{GS}}(A) & \ast \\
                     0 & P_{\text{GS}}(B)
-                \end{pmatrix}
+                \end{pmatrix}.
             \]
-            Abbiamo che
+            Quindi
             \[
-                \sigma(P_{\text{GS}}(C)) = \sigma(P_{\text{GS}}(A)) \union \sigma(P_{\text{GS}}(B))
+                \sigma(P_{\text{GS}}(C))
+                =
+                \sigma(P_{\text{GS}}(A))
+                \union
+                \sigma(P_{\text{GS}}(B)).
             \]
-            Questo è dato dal fatto che il determinante della matrice a blocchi è il determinante di \(A\)
-            per quello di \(B\), quindi il polinomio caratteristico è il prodotto dei due polinomi carateristici.
-            Sapendo che sono entrambe definite positive
+            Infatti il polinomio caratteristico di una matrice triangolare a blocchi
+            è il prodotto dei polinomi caratteristici dei blocchi diagonali.
+
+            Siccome \(A\) e \(B\) sono simmetriche definite positive, il metodo di
+            Gauss-Seidel converge per entrambe. Dunque
             \[
-                \rho(P_{\text{GS}}(C)) = \max\{\rho(P_{\text{GS}}(A)), \rho(P_{\text{GS}}(B))\} < 1
+                \rho(P_{\text{GS}}(A))<1,
+                \qquad
+                \rho(P_{\text{GS}}(B))<1.
             \]
-            Quindi vale la tesi.
-        \item Abbiamo la scomposizione di Jordan \(X = TJT^{-1}\)
+            Ne segue che
             \[
-                f(X) = I - X + X^3 = T(i- J + J^{31})T^{-1}
+                \rho(P_{\text{GS}}(C))
+                =
+                \max\{\rho(P_{\text{GS}}(A)), \rho(P_{\text{GS}}(B))\}
+                <1.
             \]
-            Il polinomio sulla matrice diventa il polinomio sui blocchi di Jordan.
-            Quando facciamo le potenze, sulle diagonali rimangono le potenze degli autovalori mentre
-            fuori comincia a salire la triangolare superiore.
-            Quindi gli autovalori di \(\sigma(f(X)) = f(\sigma(X))\).
-            Studiamo la funzione notando che su \([0,+\infty)\)
-            è strettamente positiva, e quindi le matrici sono ancora invertibili.
+            Quindi il metodo di Gauss-Seidel applicato a \(Cx=b\) converge.
+
+        \item Sia \(f(x)=1-x+x^{31}\).
+            Se \(X\) è una matrice e \(X=TJT^{-1}\) è una sua forma di Jordan, allora
+            \[
+                f(X)=T f(J)T^{-1}.
+            \]
+            In particolare gli autovalori di \(f(X)\) sono gli elementi
+            \(f(\lambda)\), con \(\lambda \in \sigma(X)\).
+
+            Studiamo quindi \(f\) su \([0,+\infty)\). Se \(0 \leq x \leq 1\), allora
+            \(f(x)=1-x+x^{31} > 0\). Se invece \(x \geq 1\), allora \(x^{31} \geq x\),
+            quindi \(f(x)=1-x+x^{31} \geq 1 >0\). Dunque
+            \[
+                f(x)>0
+                \qquad
+                \forall x \geq 0.
+            \]
+
+            Abbiamo visto che tutti gli autovalori di \(A\), \(B\) e \(C\)
+            sono reali positivi. Quindi, per ogni autovalore \(\lambda\) di
+            \(A\), \(B\) o \(C\), abbiamo \(f(\lambda)>0\).
+            In particolare \(0\) non è autovalore di \(f(A)\), \(f(B)\) o \(f(C)\).
+            Quindi \(f(A)\), \(f(B)\) e \(f(C)\) sono invertibili.
+
+            Inoltre, tutti gli autovalori di \(f(C)\) sono positivi.
     \end{enumerate}
 \end{snippetsolution}
 
 \begin{snippetexercise}{}
     Sia \(A \in \matrices_n(\realnumbers)\)
-    con \(n\) pari, \(a,b, c>0\) e \(a>b\). Definiamo
+    con \(n\) pari, \(a,b,c>0\) e \(a>b\). Definiamo
     \[
         \left(A\right)_{j,k} =
         \begin{cases}
@@ -6252,9 +6540,9 @@ La matrice
         \end{cases}
     \]
     \begin{enumerate}
-        \item Caratterizzare lo spettro nel modo migliroe possibile;
+        \item Caratterizzare lo spettro nel modo migliore possibile;
         \item Dimostrare che il metodo di Gauss-Seidel è convergente
-            se applicato ad un sistema lineare \(Ax = b\).
+            se applicato ad un sistema lineare \(Ax = d\), con \(d \in \realnumbers^n\).
     \end{enumerate}
 \end{snippetexercise}
 
@@ -6274,70 +6562,80 @@ La matrice
         &= cI_n + b \underbrace{
             \begin{pmatrix}
                 0 & 1   & 0   & 1   & 0   & \cdots & 1 \\
-                1   & 0 & 1   & 0   & 1   & \cdots & 0 \\
-                0   & 1   & 0 & 1   & 0   & \cdots & 1 \\
-                1   & 0   & 1   & 0 & 1   & \cdots & 0 \\
-                0   & 1   & 0   & 1   & 0 & \cdots & 1 \\
+                1 & 0   & 1   & 0   & 1   & \cdots & 0 \\
+                0 & 1   & 0   & 1   & 0   & \cdots & 1 \\
+                1 & 0   & 1   & 0   & 1   & \cdots & 0 \\
+                0 & 1   & 0   & 1   & 0   & \cdots & 1 \\
                 \vdots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
-                1   & 0   & 1   & 0   & 1   & \cdots & 0
+                1 & 0   & 1   & 0   & 1   & \cdots & 0
         \end{pmatrix}}_{E}
         + a \underbrace{
             \begin{pmatrix}
-                1   & 0   & 1   & 0   & \cdots & 1 & 0 \\
+                1 & 0   & 1   & 0   & \cdots & 1 & 0 \\
                 0 & 1   & 0   & 1   & \cdots & 0 & 1 \\
-                1   & 0 & 1   & 0   & \cdots & 1 & 0 \\
-                0   & 1   & 0 & 1   & \cdots & 0 & 1 \\
-                1   & 0   & 1   & 0 & \cdots & 1 & 0 \\
+                1 & 0   & 1   & 0   & \cdots & 1 & 0 \\
+                0 & 1   & 0   & 1   & \cdots & 0 & 1 \\
+                1 & 0   & 1   & 0   & \cdots & 1 & 0 \\
                 \vdots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
-                0   & 1   & 0   & 1   & \cdots & 0 & 1
-        \end{pmatrix}}_{F}
+                0 & 1   & 0   & 1   & \cdots & 0 & 1
+        \end{pmatrix}}_{F}.
     \end{align*}
-    Sicuramente un generico autovalore
+    Siccome \(A = cI_n + bE + aF\), gli autovalori di \(A\) sono della forma
     \[
-        \lambda(A) = c + \lambda(bF + aE)
+        \lambda(A) = c + \lambda(bE+aF).
     \]
-    (Perché e quando si può fare?).
-    Notiamo che \(F\) ed \(E\) hanno solamente due righe uguali, quindi il logo
-    rango è \(\leq 2\), ma le due righe sono chiaramente indipendenti
-    quindi il rango è precisamente \(2\). Abbiamo quindi che \(\operatorname{rank} (bF) = \operatorname{rank} (aE) = 2\).
-    Quindi la matrice completa ha al massimo rango \(4\). Quindi,
-    \(A\) ha autovalore \(c\) con molteplicità almeno \(n-4\), mentre gli altri \(4\)
-    autovalori dobbiamo ancora trovarli.
-    La matrice è reale e simmetrica e Hermitiana quindi diagonalizzabile,
-    quindi le molteplicità algebrichde e geometriche coincidono.
-    Siano
+    Questo vale perché stiamo sommando un multiplo dell'identità, che commuta
+    con ogni matrice e trasla lo spettro.
+
+    Notiamo che \(F\) ed \(E\) hanno solamente due righe distinte, quindi il loro
+    rango è al più \(2\). Siano
     \[
         f =
         \begin{pmatrix}
-            0 \\ 1 \\ 0 \\ \vdots \\ 1
+            1 \\ 0 \\ 1 \\ \vdots \\ 0
         \end{pmatrix} \in \{0,1\}^n,
+        \qquad
         g =
         \begin{pmatrix}
             0 \\ 1 \\ 0 \\ \vdots \\ 1
-        \end{pmatrix}\in \{0,1\}^n
+        \end{pmatrix}\in \{0,1\}^n.
     \]
-    da cui trovimo \(E = gg^T + ff^T\) e \(F = gf^T + fg^T\).
-    Allora, la matrice
+    Allora \(f\) è il vettore che seleziona gli indici dispari, mentre \(g\)
+    seleziona gli indici pari. Da questo troviamo
+    \[
+        E = fg^T + gf^T,
+        \qquad
+        F = ff^T + gg^T.
+    \]
+    Allora
     \begin{align*}
-        bF + aE &= b\left(gf^T + fg^T\right)
-        + a\left(gg^T + ff^T\right) \\
-        &= g\left(
-            bf^T + ag^T
-        \right) + f\left(
-            bg^T + af^T
-        \right)
+        bE + aF
+        &=
+        b\left(fg^T + gf^T\right)
+        + a\left(ff^T + gg^T\right) \\
+        &=
+        f\left(ag^0 + af^T + bg^T\right)
+        + g\left(af^0 + bf^T + ag^T\right).
     \end{align*}
-    Ma da questa decomposizione deduciamo che il rango di
-    \(bF + aE\) è precisamente \(\leq 2\), in quanto possiamo generare tutto come combinazione di due vettori.
-    In realtà è precisamente \(2\) perché possiamo trovare
-    un minore di testa principale il cui rango è al massimo due
-    (cioè il primo minore di testa principale \(2\times 2\))
-    quindi \(\operatorname{rank}(bF + aE)=2\).
-    Quindi, \(A\) ha autovalore \(c\) con molteplicità almeno \(n-2\), e altri \(2\)
+    Più semplicemente,
+    \[
+        bE+aF
+        =
+        f\left(af^T+bg^T\right)
+        +
+        g\left(bf^T+ag^T\right).
+    \]
+    Da questa decomposizione deduciamo che il rango di \(bE+aF\) è al più \(2\),
+    in quanto possiamo generare tutto come combinazione di due vettori.
+
+    In realtà il rango è precisamente \(2\), perché \(a>b>0\). Infatti i due
+    autovalori non nulli che troveremo sono positivi. Quindi \(A\) ha autovalore
+    \(c\) con molteplicità almeno \(n-2\), e restano da trovare altri \(2\)
     autovalori.
+
     Adesso scriviamo
     \begin{align*}
-        bF+aE &=
+        bE+aF &=
         \left[
             \begin{array}{c|c}
                 &  \\
@@ -6347,19 +6645,19 @@ La matrice
         \right]
         \left[
             \begin{array}{c}
-                bg^T+af^T \\ \hline
+                af^T+bg^T \\ \hline
                 bf^T+ag^T
             \end{array}
-        \right]
+        \right].
     \end{align*}
     Questa scomposizione funziona più in generale.
     Applicando il teorema di commutazione dello spettro per moltiplicazione di matrici,
-    invertiamo l'ordine e calcoliamo gli autovalori
-    della matrice risultante, che sono i due autovalori non banali rimanenti. Abbiamo quindi
+    invertiamo l'ordine e calcoliamo gli autovalori della matrice risultante,
+    che sono i due autovalori non banali rimanenti. Abbiamo quindi
     \begin{DispWithArrows*}
         \left[
             \begin{array}{c}
-                bg^T+af^T \\ \hline
+                af^T+bg^T \\ \hline
                 bf^T+ag^T
             \end{array}
         \right]
@@ -6372,22 +6670,36 @@ La matrice
         \right]
         &=
         \begin{pmatrix}
-            a||f||_2^2 & b||g||_2^2 \\
-            b||f||_2^2 & a||g||_2^2
+            a\|f\|_2^2 & b\|g\|_2^2 \\
+            b\|f\|_2^2 & a\|g\|_2^2
         \end{pmatrix} \Arrow{\(n\) è pari} \\
         &= \frac n2
         \begin{pmatrix}
             a & b \\ b & a
-        \end{pmatrix}
+        \end{pmatrix}.
     \end{DispWithArrows*}
-    Quindi gli autovalori di \(A\) sono \(c\)
-    con molteplicità \(n-2\), e \(c + \frac n2(a\pm b)\) con molteplicità \(1\).
-    È diagonalizzabile in quanto \(a > b\), quindi il metodo di Gauss-Seidel converge.
+    Gli autovalori di questa matrice sono
+    \[
+        \frac n2(a+b),
+        \qquad
+        \frac n2(a-b).
+    \]
+    Quindi gli autovalori di \(A\) sono \(c\), con molteplicità \(n-2\), e
+    \[
+        c + \frac n2(a+b),
+        \qquad
+        c + \frac n2(a-b),
+    \]
+    entrambi con molteplicità \(1\).
+
+    Poiché \(c>0\) e \(a>b\), tutti gli autovalori di \(A\) sono positivi.
+    Inoltre \(A\) è reale simmetrica, quindi è definita positiva. Di conseguenza,
+    il metodo di Gauss-Seidel applicato al sistema \(Ax=d\) converge.
 \end{snippetsolution}
 
 \pagebreak
 
-Formula generale dal complemento di Schur. Se \(E\) è invertibile allora
+Formula generale del complemento di Schur. Se \(E\) è invertibile, allora
 \[
     \begin{pmatrix}
         E & F \\
@@ -6407,7 +6719,7 @@ Formula generale dal complemento di Schur. Se \(E\) è invertibile allora
         0 & I
     \end{pmatrix}
 \]
-con matrici quadrate.
+con matrici quadrate di dimensioni compatibili.
 
 \begin{snippetexercise}{Spettro, soluzione veloce e convergenza per una matrice a blocchi}
     Sia
@@ -6420,17 +6732,17 @@ con matrici quadrate.
     \]
     una matrice a blocchi, con \(m_1, m_2 \in \naturalnumbers^+\), \(m_1, m_2 \geq 2\),
     \(n=m_1+m_2\), così da definire
-    \(B_1 \in \matrices_{m_1}(\realnumbers)\)
-    e \(B_2 \in \matrices_{m_2}(\realnumbers)\), e
+    \(B_1 \in \matrices_{m_1}(\realnumbers)\),
+    \(B_2 \in \matrices_{m_2}(\realnumbers)\), e
     \(C \in \matrices_{m_1 \times m_2}(\realnumbers)\) tale che
     \[
-        (C)_{i,j} = 1 + i, \quad 1 \leq i \leq m_1, \quad 1 \leq j \leq m_2
+        (C)_{i,j} = 1 + i, \quad 1 \leq i \leq m_1, \quad 1 \leq j \leq m_2.
     \]
     Le matrici hanno forma
     \[
         B_1 =
         \begin{pmatrix}
-            3 & - 1 & & & \\
+            3 & -1 & & & \\
             -1 & 3 & -1 & & \\
             & -1 & \ddots & \ddots & \\
             & & \ddots & \ddots & -1 \\
@@ -6461,18 +6773,23 @@ con matrici quadrate.
 
 \begin{snippetsolution}{}
     \begin{enumerate}
-        \item Dalla forma della matrice sappiamo che \[
-                \sigma(A) = \sigma(B_1) \union \sigma(B_2)
+        \item Dalla forma della matrice sappiamo che
+            \[
+                \sigma(A) = \sigma(B_1) \union \sigma(B_2).
             \]
             Lo si vede usando la forma triangolare a blocchi.
             Studiamo quindi separatamente questi spettri. I dischi di Gershgorin di \(B_1\) sono
             \begin{align*}
-                D_1 = D_{m_1} &= \{ z \in \complexnumbers \suchthat |z-3| \leq 1\} = [2,4] \\
-                D_i &= \{ z \in \complexnumbers \suchthat |z-3| \leq 2\} = [1,5], \quad 1 < i < m_1 \\
+                D_1 = D_{m_1} &= \{ z \in \complexnumbers \suchthat |z-3| \leq 1\}, \\
+                D_i &= \{ z \in \complexnumbers \suchthat |z-3| \leq 2\},
+                \quad 1 < i < m_1.
             \end{align*}
-            siccome la matrice è simmetrica, quindi gli autovalori sono reali.
-            Allora abbiamo che \(\sigma(B_1) \subseteq [1,5]\).
-            La matrice \(B_1\) è irriducibile in quanto il suo grafo associato è fortemente connesso (esempio con \(m_1 = 6\)):
+            Siccome la matrice è simmetrica, gli autovalori sono reali.
+            Quindi possiamo leggere i dischi come intervalli reali, e otteniamo
+            \(\sigma(B_1) \subseteq [1,5]\).
+
+            La matrice \(B_1\) è irriducibile, in quanto il suo grafo associato è fortemente connesso
+            (esempio con \(m_1 = 6\)):
             \begin{center}
                 \begin{tikzpicture}[>=stealth, node distance=2cm]
                     \node[circle, draw, thick, minimum size=8mm] (1) at (0,0) {1};
@@ -6492,22 +6809,29 @@ con matrici quadrate.
                     }
                 \end{tikzpicture}
             \end{center}
-            Per il terzo teorema di Gershgorin, se un autovalore fosse \(1\) o \(5\)
+            Per il terzo teorema di Gershgorin, se un autovalore fosse \(1\) o \(5\),
             dovrebbe stare sul bordo di tutti i dischi, ma \(1,5 \notin D_1 = D_{m_1}\).
             Quindi \(\sigma(B_1) \subseteq (1,5)\). In realtà, essendo \(B_1\) tridiagonale di Toeplitz,
             \[
-                \sigma(B_1) = \left\{3 - 2\cos\left(\frac{k\pi}{m_1+1}\right) \suchthat k=1,\cdots,m_1\right\}.
+                \sigma(B_1) =
+                \left\{
+                    3 - 2\cos\left(\frac{k\pi}{m_1+1}\right)
+                    \suchthat k=1,\cdots,m_1
+                \right\}.
             \]
+
             Studiamo ora lo spettro di \(B_2\).
-            Studiamo lo spettro di \(\tilde B = D B_2 D^{-1}\) con \(D\) diagonale invertibile, che tanto non cambia.
-            Costruiamo la matrice \(D\) come
+            Studiamo lo spettro di \(\tilde B = DB_2D^{-1}\), con \(D\) diagonale invertibile,
+            dato che matrici simili hanno lo stesso spettro. Costruiamo la matrice \(D\) come
             \[
                 D = \operatorname{diag}(d_1, \cdots, d_{m_2})
             \]
-            con \[
-                d_1 = 1, \quad \frac{d_{j+1}}{d_j} = \sqrt{
-                    \frac{\alpha_j}{\delta_j}
-                }
+            con
+            \[
+                d_1 = 1, \quad
+                \frac{d_{j+1}}{d_j}
+                =
+                \sqrt{\frac{\alpha_j}{\delta_j}}.
             \]
             Eseguendo il prodotto troviamo
             \[
@@ -6526,30 +6850,46 @@ con matrici quadrate.
                     & \gamma_2 & \ddots & \ddots & \\
                     & & \ddots & 2 & \gamma_{m_2-1} \\
                     & & & \gamma_{m_2-1} & 12
-                \end{pmatrix}
+                \end{pmatrix},
             \]
-            dove \(\gamma_j = \sqrt{\alpha_j\delta_j}\). Abbiamo precisamente scelto i valori \(d_j\) per forzare una matrice Hermitiana.
+            dove \(\gamma_j = \sqrt{\alpha_j\delta_j}\).
+            Abbiamo precisamente scelto i valori \(d_j\) per ottenere una matrice simmetrica.
+
             Calcoliamo ora i dischi di Gershgorin di questa matrice:
             \begin{align*}
-                D_1 &= \left[2 - \gamma_1, 2 + \gamma_1\right] \\
-                D_i &= \left[2 - (\gamma_{i-1} + \gamma_i), 2 + (\gamma_{i-1} + \gamma_i)\right], \quad 1 < i < m_2 \\
-                D_{m_2} &= \left[12 - \gamma_{m_2 - 1}, 12 + \gamma_{m_2 - 1}\right]
+                D_1 &= \left[2 - \gamma_1, 2 + \gamma_1\right], \\
+                D_i &= \left[2 - (\gamma_{i-1} + \gamma_i), 2 + (\gamma_{i-1} + \gamma_i)\right],
+                \quad 1 < i < m_2, \\
+                D_{m_2} &= \left[12 - \gamma_{m_2 - 1}, 12 + \gamma_{m_2 - 1}\right].
             \end{align*}
             I primi \(m_2-1\) dischi stanno tutti vicino a \(2\), mentre l'ultimo sta vicino a \(12\).
-            Diamo un bound \[
-                \frac1{10} \left(1 + \frac{1}{9+j}\right) \leq
-                \alpha_j \delta_j \leq \frac15 \left(1 + \frac{1}{9+j}\right)
-                \leq \frac{11}{50}
+
+            Diamo un bound:
+            \[
+                \frac1{10} \left(1 + \frac{1}{9+j}\right)
+                \leq
+                \alpha_j \delta_j
+                \leq
+                \frac15 \left(1 + \frac{1}{9+j}\right)
+                \leq
+                \frac{11}{50}.
             \]
-            Vogliamo anche stimare la somma \[
+            Vogliamo anche stimare la somma:
+            \[
                 \sqrt{\alpha_{i-1}\delta_{i-1}} + \sqrt{\alpha_i \delta_i}
-                \leq \sqrt{
+                \leq
+                \sqrt{
                     \frac{i + 9}{i + 8}\frac15
-                } + \sqrt{
+                }
+                +
+                \sqrt{
                     \frac{i + 10}{i + 9}\frac15
-                } \leq \sqrt{\frac{11}{50}} + \sqrt{\frac{12}{55}}
+                }
+                \leq
+                \sqrt{\frac{11}{50}} + \sqrt{\frac{12}{55}},
             \]
-            dove il massimo si ottiene per \(i=2\). Quindi, \[
+            dove il massimo si ottiene per \(i=2\). Quindi
+            \[
                 \sigma(B_2) = \sigma(\tilde B) \subseteq
                 \left[
                     2 - \left(\sqrt{\frac{11}{50}} + \sqrt{\frac{12}{55}}\right),
@@ -6561,84 +6901,117 @@ con matrici quadrate.
                     12 + \sqrt{\frac{11}{50}}
                 \right].
             \]
-            Il raggio più grande del secondo termine avviene per \(m_2 = 2\), così otteniamo una stima globale
-            per qualsiasi grandezza, cioè raggio \(\sqrt{\sfrac{11}{50}}\).
-            Questo può essere usato per controllare che l'ultimo cerchio sia isolato rispetto agli altri, cosa che è.
-            Per il secondo teorema di Gershgorin, il primo intervallo contiene \(m_2-1\) autovalori di \(B_2\)
-            e il secondo intervallo contiene un unico autovalore. Inoltre, per il terzo teorema di Gershgorin,
-            siccome \(\tilde B\) è irriducibile, questo autovalore non può stare sul bordo del disco isolato.
-        \item Per il secondo teorema di Gershgorin, c'è un unico autovalore \(\lambda_\ast\) di \(B_2\) vicino a \(12\).
-            Inoltre,
+            Il primo intervallo è contenuto in \((1,3)\), mentre il secondo è isolato
+            rispetto al primo. Per il secondo teorema di Gershgorin, il primo intervallo
+            contiene \(m_2-1\) autovalori di \(B_2\), mentre il secondo intervallo
+            contiene un unico autovalore. Inoltre, per il terzo teorema di Gershgorin,
+            siccome \(\tilde B\) è irriducibile, questo autovalore non può stare sul bordo
+            del disco isolato.
+
+        \item Per il secondo teorema di Gershgorin, c'è un unico autovalore
+            \(\lambda_\ast\) di \(B_2\) vicino a \(12\). Inoltre
             \[
-                \lambda_\ast \geq 12 - \sqrt{\frac{11}{50}} > 5
+                \lambda_\ast \geq 12 - \sqrt{\frac{11}{50}} > 5,
             \]
-            mentre gli autovalori di \(B_1\) stanno in \((1,5)\) e gli altri autovalori di \(B_2\) stanno
-            nell'intervallo centrato in \(2\), che è contenuto in \((1,3)\). Quindi \(\rho(A)=\lambda_\ast\),
+            mentre gli autovalori di \(B_1\) stanno in \((1,5)\) e gli altri autovalori
+            di \(B_2\) stanno nell'intervallo centrato in \(2\), che è contenuto in \((1,3)\).
+            Quindi
+            \[
+                \rho(A)=\lambda_\ast,
+            \]
             e questo autovalore è unico.
+
         \item \(A\) è invertibile in quanto \(0 \notin \sigma(A)\).
-        \item Siccome la matrice è a blocchi possiamo scrivere
+
+        \item Siccome la matrice è a blocchi, possiamo scrivere
             \[
                 \begin{pmatrix}
                     B_1 & C \\ 0 & B_2
                 \end{pmatrix}
                 \begin{pmatrix}
                     Z \\ Y
-                \end{pmatrix} =
+                \end{pmatrix}
+                =
                 \begin{pmatrix}
                     b_1 \\ b_2
-                \end{pmatrix}
+                \end{pmatrix}.
             \]
-            dove \(
-                \begin{pmatrix}Z \\ Y
-            \end{pmatrix}\) è un vettore a blocchi, quindi
-            \(B_1 Z + CY = b_1\) e \(B_2 Y = b_2\). Dobbiamo quindi risolvere prima
-            \(B_2 Y = b_2\), e poi \(B_1 Z = b_1 - CY\).
-            Possiamo adoperare l'algoritmo di Thomas, cioè l'eliminazione di Gauss specializzata alle matrici tridiagonali,
-            e poi risolvere con sostituzione all'indietro.
-            Per una matrice tridiagonale \(r \times r\), la parte di eliminazione costa \(5(r-1)\) operazioni,
-            mentre la sostituzione all'indietro costa \(1+3(r-1)\), quindi in totale \(8r - 7\) operazioni.
-            Per \(CY\) non conviene costruire \(C\): siccome \(C_{i,j}=1+i\),
+            Quindi
+            \[
+                B_1Z + CY = b_1,
+                \qquad
+                B_2Y = b_2.
+            \]
+            Dobbiamo quindi risolvere prima \(B_2Y = b_2\), e poi
+            \[
+                B_1Z = b_1 - CY.
+            \]
+            Possiamo adoperare l'algoritmo di Thomas, cioè l'eliminazione di Gauss
+            specializzata alle matrici tridiagonali, e poi risolvere con sostituzione
+            all'indietro.
+
+            Per una matrice tridiagonale \(r \times r\), la parte di eliminazione costa
+            \(5(r-1)\) operazioni, mentre la sostituzione all'indietro costa
+            \(1+3(r-1)\), quindi in totale \(8r - 7\) operazioni.
+
+            Per \(CY\) non conviene costruire \(C\): siccome \(C_{i,j}=1+i\), si ha
             \[
                 (CY)_i = (1+i)\sum_{j=1}^{m_2}Y_j.
             \]
-            Calcoliamo quindi \(s=\sum_{j=1}^{m_2}Y_j\) in \(m_2-1\) somme e poi \(b_1-CY\) in \(2m_1\) operazioni.
-            Il costo totale è quindi \[
+            Calcoliamo quindi \(s=\sum_{j=1}^{m_2}Y_j\) in \(m_2-1\) somme e poi
+            \(b_1-CY\) in \(2m_1\) operazioni.
+            Il costo totale è quindi
+            \[
                 (8m_2 - 7) + (m_2 - 1 + 2m_1) + (8m_1 - 7)
-                = 10m_1 + 9m_2 - 15
+                =
+                10m_1 + 9m_2 - 15,
             \]
             cioè \(\mathcal{O}(m_1+m_2)\).
-        \item Sia \(A=M-N\) con \[
+
+        \item Sia \(A=M-N\) con
+            \[
                 M =
                 \begin{pmatrix}
-                    B_1 & 0 \\ 0 & B_2
-                \end{pmatrix}, \quad
+                    B_1 & 0 \\
+                    0 & B_2
+                \end{pmatrix},
+                \qquad
                 N =
                 \begin{pmatrix}
-                    0 & -C \\ 0 & 0
-                \end{pmatrix}
+                    0 & -C \\
+                    0 & 0
+                \end{pmatrix}.
             \]
             Il metodo iterativo converge se
             \[
                 \lim_{k \to +\infty} {(M^{-1} N)}^k = 0.
             \]
-            Abbiamo \[
+            Abbiamo
+            \[
                 M^{-1} =
                 \begin{pmatrix}
-                    B_1^{-1} & \\
-                    & B_2^{-1}
-                \end{pmatrix}, \quad
+                    B_1^{-1} & 0 \\
+                    0 & B_2^{-1}
+                \end{pmatrix},
+                \qquad
                 M^{-1}N =
                 \begin{pmatrix}
-                    B_1^{-1} & 0 \\ 0 & B_2^{-1}
+                    B_1^{-1} & 0 \\
+                    0 & B_2^{-1}
                 \end{pmatrix}
                 \begin{pmatrix}
-                    0 & -C \\ 0 & 0
-                \end{pmatrix} =
+                    0 & -C \\
+                    0 & 0
+                \end{pmatrix}
+                =
                 \begin{pmatrix}
-                    0 & -B_1^{-1}C \\ 0 & 0
-                \end{pmatrix} = P
+                    0 & -B_1^{-1}C \\
+                    0 & 0
+                \end{pmatrix}
+                = P.
             \]
-            Viene calcolato il quadrato della matrice di iterazione \(P\) per verificare dopo quanti passi il metodo converge esattamente,
+            Calcoliamo il quadrato della matrice di iterazione \(P\) per verificare
+            dopo quanti passi il metodo converge esattamente:
             \[
                 P^2 =
                 \begin{pmatrix}
@@ -6648,13 +7021,15 @@ con matrici quadrate.
                 \begin{pmatrix}
                     0 & -B_1^{-1}C \\
                     0 & 0
-                \end{pmatrix}=
+                \end{pmatrix}
+                =
                 \begin{pmatrix}
                     0 & 0 \\
                     0 & 0
-                \end{pmatrix}
+                \end{pmatrix}.
             \]
-            Quindi \(P\) è nilpotente, \(\rho(P)=0\), e il metodo converge. Siccome \(P \neq 0\), il \(k\) minimo è \(k=2\).
+            Quindi \(P\) è nilpotente, \(\rho(P)=0\), e il metodo converge.
+            Siccome \(P \neq 0\), il \(k\) minimo è \(k=2\).
     \end{enumerate}
 \end{snippetsolution}
 
@@ -6668,7 +7043,7 @@ con matrici quadrate.
             \vdots & & \ddots & \\
             -\delta & 0 & & 2
         \end{pmatrix}
-        \in \realnumbers^{n\times n},
+        \in \matrices_n(\realnumbers),
         \qquad
         \frac{2}{n-1}<\delta<\frac{4}{n-1}.
     \]
@@ -6737,14 +7112,14 @@ con matrici quadrate.
             \vdots & \vdots \\
             1 & 0
         \end{pmatrix}
-        \in\realnumbers^{n\times 2},
+        \in\matrices_{n\times 2}(\realnumbers),
         \qquad
         F=
         \begin{pmatrix}
             -\delta & 0 & \cdots & 0 \\
             0 & -1 & \cdots & -1
         \end{pmatrix}
-        \in\realnumbers^{2\times n}.
+        \in\matrices_{2\times n}(\realnumbers).
     \]
     Infatti \(EF\) è la matrice con prima riga
     \[
@@ -6922,14 +7297,7 @@ con matrici quadrate.
         =
         \frac{1}{2}\sqrt{(n-1)\delta}.
     \]
-    Poiché
-    \[
-        \delta<\frac{4}{n-1},
-    \]
-    segue che
-    \[
-        \rho(P_J)<1.
-    \]
+    Poiché \(\delta<\frac{4}{n-1}\), segue che \(\rho(P_J)<1\).
     Dunque il metodo di Jacobi converge.
 
     Per Gauss-Seidel, dalla forma delle equazioni, l'errore soddisfa
@@ -6944,12 +7312,13 @@ con matrici quadrate.
         \frac{\delta}{4}\sum_{j=2}^{n}e_j^{(k)},
         \qquad i=2,\ldots,n.
     \end{align*}
-    Da qui si vede che la matrice di iterazione di Gauss-Seidel ha come unico
-    autovalore eventualmente non nullo
+    Quindi, dopo un passo, l'errore appartiene al sottospazio generato da \(e_1\)
+    e da \(w=(0,1,\ldots,1)^T\). Su tale sottospazio, la matrice di iterazione
+    di Gauss-Seidel ha autovalori \(0\) e
     \[
         \frac{(n-1)\delta}{4}.
     \]
-    Quindi
+    Di conseguenza
     \[
         \rho(P_{GS})
         =
