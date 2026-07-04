@@ -1,0 +1,117 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{graph-eulerian-walks}
+\genpage
+
+\section{Eulerian walks}
+
+\begin{snippetdefinition}{eulerian-circuit-definition}{Eulerian circuit}
+    Let \(G\) be a finite connected \graph.
+    An \emph{Eulerian circuit} of \(G\) is a closed \walk, that is, a walk
+    whose origin and terminal vertex coincide, that traverses every edge of
+    \(G\) exactly once.
+    Vertices are allowed to repeat.
+\end{snippetdefinition}
+
+\begin{snippet}{konigsberg-eulerian-interpretation}
+    The Königsberg bridges problem asks whether the graph associated with the
+    bridges admits an Eulerian circuit.
+\end{snippet}
+
+\begin{snippettheorem}{graph-eulerian-circuit-theorem}{Euler's theorem for Eulerian circuits}
+    Let \(G\) be a finite connected \graph. Then \(G\) admits an Eulerian
+    circuit \ifandonlyif every vertex of \(G\) has even degree.
+\end{snippettheorem}
+
+\begin{snippetproof}{graph-eulerian-circuit-theorem-proof}{graph-eulerian-circuit-theorem}{Euler's theorem for Eulerian circuits}
+    \begin{iffproof}
+        \item Suppose that \(G\) admits an Eulerian circuit
+        \[
+            v_0,e_1,v_1,e_2,\ldots,e_n,v_n,
+            \qquad v_n=v_0.
+        \]
+        Every time the walk passes through a vertex, it uses one edge to enter
+        and one edge to leave. Thus the edges incident with each vertex are
+        paired. The initial vertex satisfies the same condition: one edge is
+        used to leave it at the beginning and one edge is used to enter it at
+        the end. Hence every vertex has even degree.
+
+        \item Suppose that every vertex of \(G\) has even degree.
+        Start at any vertex \(v_0\) and traverse edges that have not yet been
+        used, choosing an available unused edge at each step. Since \(G\) is
+        finite, the process eventually stops.
+
+        It can stop only at \(v_0\). Indeed, if it arrived at a vertex
+        different from \(v_0\), it would have used one edge to enter that
+        vertex. Since the degree is even, the used incident edges at that
+        vertex can be paired as entries and exits, so at least one unused
+        incident edge would remain available. Therefore the walk cannot get
+        stuck away from \(v_0\).
+
+        We have constructed a closed circuit \(C\). If \(C\) contains every
+        edge of \(G\), then \(C\) is Eulerian. Otherwise, because \(G\) is
+        connected, some vertex of \(C\) is incident with an unused edge.
+        Starting from that vertex and using only unused edges, the same
+        argument constructs another closed circuit. Insert this new circuit
+        into \(C\), obtaining a longer closed circuit.
+
+        Since \(G\) is finite, repeating this process eventually produces a
+        closed walk containing every edge exactly once. This is an Eulerian
+        circuit.
+    \end{iffproof}
+\end{snippetproof}
+
+\begin{snippetcorollary}{konigsberg-no-eulerian-circuit-corollary}{Königsberg bridges}
+    The graph of the Königsberg bridges does not admit an Eulerian circuit.
+\end{snippetcorollary}
+
+\begin{snippetproof}{konigsberg-no-eulerian-circuit-proof}{konigsberg-no-eulerian-circuit-corollary}{Königsberg bridges}
+    In the graph of the Königsberg bridges, the four regions have degrees
+    \[
+        3,\ 3,\ 3,\ 5.
+    \]
+    All four degrees are odd. By
+    \snippetref[graph-eulerian-circuit-theorem][Euler's theorem for Eulerian circuits],
+    no Eulerian circuit exists.
+\end{snippetproof}
+
+\begin{snippetdefinition}{open-eulerian-trail-definition}{Open Eulerian trail}
+    Let \(G\) be a finite connected \graph.
+    An \emph{open Eulerian trail} of \(G\) is a \walk that traverses every edge
+    of \(G\) exactly once and whose origin and terminal vertex are distinct.
+\end{snippetdefinition}
+
+\begin{snippettheorem}{open-eulerian-trail-theorem}{Open Eulerian trail criterion}
+    Let \(G\) be a finite connected \graph.
+    There exists an open Eulerian trail in \(G\) \ifandonlyif \(G\) has exactly
+    two vertices of odd degree.
+    In that case, the two vertices of odd degree are necessarily the origin and
+    terminal vertex of the trail.
+\end{snippettheorem}
+
+\begin{snippetproof}{open-eulerian-trail-theorem-proof}{open-eulerian-trail-theorem}{Open Eulerian trail criterion}
+    Suppose that an open Eulerian trail exists from \(u\) to \(v\), with
+    \(u\neq v\). Every intermediate vertex is entered and left the same number
+    of times, so it has even degree. The vertex \(u\) has one more exit than
+    entrance, and \(v\) has one more entrance than exit. Hence \(u\) and \(v\)
+    have odd degree, and every other vertex has even degree.
+
+    Conversely, suppose that \(G\) has exactly two vertices of odd degree,
+    say \(u\) and \(v\). Add a new edge \(e\) joining \(u\) and \(v\). In the
+    new graph, every vertex has even degree. By
+    \snippetref[graph-eulerian-circuit-theorem][Euler's theorem for Eulerian circuits],
+    the new graph admits an Eulerian circuit. Removing the added edge \(e\)
+    from that circuit leaves a walk using every original edge exactly once,
+    with origin \(u\) and terminal vertex \(v\). Thus \(G\) admits an open
+    Eulerian trail.
+\end{snippetproof}
+
+\end{document}
