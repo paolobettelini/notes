@@ -76,10 +76,14 @@ async fn main() {
     let mut imported_courses_count = 0;
     let mut imported_universes_count = 0;
 
-    if args.git {
+    if args.pull || args.diff {
         // Query git
 
-        let files = git::git_pull_and_get_files(&notes_path);
+        let files = if args.pull {
+            git::git_pull_and_get_files(&notes_path)
+        } else {
+            git::git_diff_and_get_files(&notes_path)
+        };
 
         compile_generic_files(
             &data_path,
@@ -179,19 +183,19 @@ async fn main() {
     }
 
     log::info!("=== [STATS] ===");
-    if args.git || search_latex {
+    if args.pull || args.diff || search_latex {
         log::info!("Processed PDFs: {}", processed_pdfs_count);
     }
-    if args.git || search_snippets || search_latex {
+    if args.pull || args.diff || search_snippets || search_latex {
         log::info!("Imported snippets: {}", imported_snippets_count);
     }
-    if args.git || search_pages || search_latex {
+    if args.pull || args.diff || search_pages || search_latex {
         log::info!("Imported pages: {}", imported_pages_count);
     }
-    if args.git || search_courses {
+    if args.pull || args.diff || search_courses {
         log::info!("Imported courses: {}", imported_courses_count);
     }
-    if args.git || search_universes {
+    if args.pull || args.diff || search_universes {
         log::info!("Imported universe: {}", imported_universes_count);
     }
 }

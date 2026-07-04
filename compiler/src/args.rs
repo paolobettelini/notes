@@ -16,9 +16,13 @@ pub struct App {
     #[arg(long)]
     pub snippets: bool,
 
-    /// Compile current git status files last pull
+    /// Execute git pull and compile changes
     #[arg(long = "pull", short = 'p')]
-    pub git: bool,
+    pub pull: bool,
+
+    /// Compile local git changes
+    #[arg(long = "diff", short = 'd')]
+    pub diff: bool,
 
     /// Check only latex folder
     #[arg(long)]
@@ -48,7 +52,7 @@ pub struct App {
 
 impl App {
     pub fn validate(&self) {
-        // regex, ignore_case, git are all mutually exclusive
+        // regex, ignore_case, pull and diff are all mutually exclusive
         if self.regex && self.ignore_case {
             let mut cmd = App::command();
 
@@ -57,20 +61,44 @@ impl App {
                 "Cannot use 'ignore_case' flag if 'regex' flag is set",
             )
             .exit();
-        } else if self.ignore_case && self.git {
+        } else if self.ignore_case && self.pull {
             let mut cmd = App::command();
 
             cmd.error(
                 ErrorKind::ArgumentConflict,
-                "Cannot use 'ignore_case' flag if 'git' flag is set",
+                "Cannot use 'ignore_case' flag if 'pull' flag is set",
             )
             .exit();
-        } else if self.git && self.regex {
+        } else if self.pull && self.regex {
             let mut cmd = App::command();
 
             cmd.error(
                 ErrorKind::ArgumentConflict,
-                "Cannot use 'git' flag if 'regex' flag is set",
+                "Cannot use 'pull' flag if 'regex' flag is set",
+            )
+            .exit();
+        } else if self.ignore_case && self.diff {
+            let mut cmd = App::command();
+
+            cmd.error(
+                ErrorKind::ArgumentConflict,
+                "Cannot use 'ignore_case' flag if 'diff' flag is set",
+            )
+            .exit();
+        } else if self.diff && self.regex {
+            let mut cmd = App::command();
+
+            cmd.error(
+                ErrorKind::ArgumentConflict,
+                "Cannot use 'diff' flag if 'regex' flag is set",
+            )
+            .exit();
+        } else if self.pull && self.diff {
+            let mut cmd = App::command();
+
+            cmd.error(
+                ErrorKind::ArgumentConflict,
+                "Cannot use 'pull' flag if 'diff' flag is set",
             )
             .exit();
         }

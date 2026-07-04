@@ -77,6 +77,63 @@ pub fn git_pull_and_get_files(notes_path: &PathBuf) -> Vec<PathBuf> {
     result
 }
 
+pub fn git_diff_and_get_files(notes_path: &PathBuf) -> Vec<PathBuf> {
+    let output = Command::new("git")
+        .current_dir(notes_path)
+        .arg("status")
+        .arg("--porcelain")
+        .arg("--untracked-files=all")
+        .output()
+        .expect("failed to execute `git status --porcelain --untracked-files=all`");
+
+    if !output.status.success() {
+        log::error!("Command `git status --porcelain --untracked-files=all` was unsuccessful");
+        log::error!("{}", String::from_utf8_lossy(&output.stderr));
+        std::process::exit(1);
+    }
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+
+    stdout
+        .lines()
+        .filter_map(parse_status_entry)
+        .map(|filename| notes_path.join(filename))
+        .collect()
+}
+
+fn parse_status_entry(entry: &str) -> Option<&str> {
+    if entry.len() < 4 {
+        return None;
+    }
+
+    let status = &entry[..2];
+    let filename = &entry[3..];
+
+    if !is_compilable_status(status) {
+        return None;
+    }
+
+    Some(
+        filename
+            .rsplit_once(" -> ")
+            .map_or(filename, |(_, new_filename)| new_filename),
+    )
+}
+
+fn is_compilable_status(status: &str) -> bool {
+    if status == "??" {
+        return true;
+    }
+
+    if status.contains('D') {
+        return false;
+    }
+
+    status
+        .chars()
+        .any(|status_char| matches!(status_char, 'A' | 'M' | 'R' | 'C' | 'T'))
+}
+
 /*
 pub fn git_pull_and_get_files(notes_path: &PathBuf) -> Vec<PathBuf> {
     // Log the git pull execution
