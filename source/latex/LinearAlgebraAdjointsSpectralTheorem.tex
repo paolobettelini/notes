@@ -1,0 +1,866 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{linearalgebra-adjoints-spectral-theorem}
+\genpage
+
+\section{Riesz representation}
+
+\begin{snippet}{riesz-vector-functional-map}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be an \innerproductspace over
+    \(\mathbb{F}\in\{\realnumbers,\complexnumbers\}\). For every \(u\in V\),
+    the map
+    \[
+        \rho_u\colon V\fromto\mathbb{F},
+        \qquad
+        \rho_u(v)=\langle v,u\rangle
+    \]
+    is a \linearfunctional because the \innerproduct is linear in the first
+    variable.
+\end{snippet}
+
+\begin{snippettheorem}{riesz-representation-theorem}{Riesz representation theorem}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be a finite-dimensional
+    \innerproductspace over
+    \(\mathbb{F}\in\{\realnumbers,\complexnumbers\}\), and let
+    \(\rho\in V^\ast\) be a \linearfunctional. There exists a unique
+    \(u\in V\) such that
+    \[
+        \rho(v)=\langle v,u\rangle
+    \]
+    for every \(v\in V\).
+\end{snippettheorem}
+
+\begin{snippetproof}{riesz-representation-theorem-proof}{riesz-representation-theorem}{Riesz representation theorem}
+    Let
+    \[
+        \mathcal{B}=\{e_1,\ldots,e_n\}
+    \]
+    be an \orthonormalbasis of \(V\). Define
+    \[
+        u=
+        \overline{\rho(e_1)}e_1+\cdots+\overline{\rho(e_n)}e_n.
+    \]
+    If \(v\in V\), then by the \parsevalidentity,
+    \[
+        v=\langle v,e_1\rangle e_1+\cdots+\langle v,e_n\rangle e_n.
+    \]
+    Since \(\rho\) is linear,
+    \[
+        \rho(v)=
+        \langle v,e_1\rangle\rho(e_1)
+        +\cdots+
+        \langle v,e_n\rangle\rho(e_n).
+    \]
+    On the other hand, using conjugate-linearity in the second variable,
+    \[
+        \langle v,u\rangle
+        =
+        \rho(e_1)\langle v,e_1\rangle
+        +\cdots+
+        \rho(e_n)\langle v,e_n\rangle.
+    \]
+    Hence \(\rho(v)=\langle v,u\rangle\) for every \(v\in V\).
+
+    For uniqueness, suppose that \(u_1,u_2\in V\) both represent \(\rho\).
+    Then
+    \[
+        \langle v,u_1-u_2\rangle=0
+    \]
+    for every \(v\in V\). Taking \(v=u_1-u_2\) gives
+    \[
+        \langle u_1-u_2,u_1-u_2\rangle=0.
+    \]
+    By definiteness of the \innerproduct, \(u_1-u_2=0\), so \(u_1=u_2\).
+\end{snippetproof}
+
+\section{Adjoint maps}
+
+\begin{snippetdefinition}{adjoint-map-definition}{Adjoint map}
+    Let \((V,\langle\cdot,\cdot\rangle_V)\) and
+    \((W,\langle\cdot,\cdot\rangle_W)\) be finite-dimensional
+    \innerproductspace[inner product spaces] over the same
+    \field \(\mathbb{F}\in\{\realnumbers,\complexnumbers\}\), and let
+    \(f\in\setoflineartransformations(V,W)\). The \emph{adjoint} of \(f\)
+    is the unique map
+    \[
+        f^\ast\colon W\fromto V
+    \]
+    such that
+    \[
+        \langle v,f^\ast(w)\rangle_V
+        =
+        \langle f(v),w\rangle_W
+    \]
+    for every \(v\in V\) and every \(w\in W\).
+\end{snippetdefinition}
+
+\begin{snippetproof}{adjoint-map-definition-proof}{adjoint-map-definition}{Adjoint map}
+    For each fixed \(w\in W\), the map
+    \[
+        V\fromto\mathbb{F},
+        \qquad
+        v\mapsto \langle f(v),w\rangle_W
+    \]
+    is a \linearfunctional on \(V\). By the \rieszrepresentation, there is
+    a unique vector \(f^\ast(w)\in V\) such that
+    \[
+        \langle v,f^\ast(w)\rangle_V=\langle f(v),w\rangle_W
+    \]
+    for every \(v\in V\). This defines the adjoint map.
+\end{snippetproof}
+
+\begin{snippetproposition}{adjoint-map-linearity}{The adjoint is linear}
+    Let \((V,\langle\cdot,\cdot\rangle_V)\) and
+    \((W,\langle\cdot,\cdot\rangle_W)\) be finite-dimensional
+    \innerproductspace[inner product spaces] over the same
+    \field \(\mathbb{F}\in\{\realnumbers,\complexnumbers\}\), and let
+    \(f\in\setoflineartransformations(V,W)\). Then
+    \[
+        f^\ast\in\setoflineartransformations(W,V).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{adjoint-map-linearity-proof}{adjoint-map-linearity}{The adjoint is linear}
+    Let \(w_1,w_2\in W\). For every \(v\in V\),
+    \[
+        \langle v,f^\ast(w_1+w_2)\rangle_V
+        =
+        \langle f(v),w_1+w_2\rangle_W
+        =
+        \langle v,f^\ast(w_1)+f^\ast(w_2)\rangle_V.
+    \]
+    By uniqueness in the \rieszrepresentation,
+    \[
+        f^\ast(w_1+w_2)=f^\ast(w_1)+f^\ast(w_2).
+    \]
+    If \(\lambda\in\mathbb{F}\) and \(w\in W\), then for every \(v\in V\),
+    \[
+        \langle v,f^\ast(\lambda w)\rangle_V
+        =
+        \langle f(v),\lambda w\rangle_W
+        =
+        \overline{\lambda}\langle f(v),w\rangle_W
+        =
+        \langle v,\lambda f^\ast(w)\rangle_V.
+    \]
+    Again by uniqueness,
+    \[
+        f^\ast(\lambda w)=\lambda f^\ast(w).
+    \]
+    Thus \(f^\ast\) is linear.
+\end{snippetproof}
+
+\begin{snippetexample}{adjoint-euclidean-map-example}{Adjoint of a map between Euclidean spaces}
+    Let
+    \[
+        f\colon\realnumbers^3\fromto\realnumbers^2,
+        \qquad
+        f(x,y,z)=(y+3z,2x),
+    \]
+    and use the canonical \innerproduct[inner products]. The \adjointmap of
+    \(f\) is
+    \[
+        f^\ast\colon\realnumbers^2\fromto\realnumbers^3,
+        \qquad
+        f^\ast(s,t)=(2t,s,3s).
+    \]
+    Indeed, for every \((x,y,z)\in\realnumbers^3\) and
+    \((s,t)\in\realnumbers^2\),
+    \[
+        \langle f(x,y,z),(s,t)\rangle
+        =
+        (y+3z)s+2xt
+        =
+        \langle (x,y,z),(2t,s,3s)\rangle.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{rank-one-map-adjoint-example}{Adjoint of a rank-one map}
+    Let \((V,\langle\cdot,\cdot\rangle_V)\) and
+    \((W,\langle\cdot,\cdot\rangle_W)\) be finite-dimensional
+    \innerproductspace[inner product spaces] over
+    \(\mathbb{F}\in\{\realnumbers,\complexnumbers\}\). Fix \(x\in V\) and
+    \(w\in W\), and define
+    \[
+        f\colon V\fromto W,
+        \qquad
+        f(v)=\langle v,x\rangle_V\,w.
+    \]
+    Then
+    \[
+        f^\ast(y)=\langle y,w\rangle_W\,x.
+    \]
+    Indeed, for every \(v\in V\) and \(y\in W\),
+    \[
+        \langle f(v),y\rangle_W
+        =
+        \langle v,x\rangle_V\langle w,y\rangle_W
+        =
+        \langle v,\langle y,w\rangle_W x\rangle_V.
+    \]
+\end{snippetexample}
+
+\begin{snippetproposition}{adjoint-formal-properties}{Formal properties of the adjoint}
+    Let \(V,W,U\) be finite-dimensional \innerproductspace[inner product
+    spaces] over \(\mathbb{F}\in\{\realnumbers,\complexnumbers\}\). If
+    \(f,g\in\setoflineartransformations(V,W)\),
+    \(h\in\setoflineartransformations(W,U)\), and
+    \(\lambda\in\mathbb{F}\), then:
+    \begin{enumerate}
+        \item \((f+g)^\ast=f^\ast+g^\ast\);
+        \item \((\lambda f)^\ast=\overline{\lambda}f^\ast\);
+        \item \((f^\ast)^\ast=f\);
+        \item \((\identityfunc_V)^\ast=\identityfunc_V\);
+        \item \((h\circ f)^\ast=f^\ast\circ h^\ast\).
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{adjoint-formal-properties-proof}{adjoint-formal-properties}{Formal properties of the adjoint}
+    The first two identities follow from the defining property and uniqueness
+    of the \adjointmap:
+    \[
+        \langle v,(f+g)^\ast(w)\rangle
+        =
+        \langle (f+g)(v),w\rangle
+        =
+        \langle v,f^\ast(w)+g^\ast(w)\rangle
+    \]
+    and
+    \[
+        \langle v,(\lambda f)^\ast(w)\rangle
+        =
+        \lambda\langle f(v),w\rangle
+        =
+        \langle v,\overline{\lambda}f^\ast(w)\rangle.
+    \]
+    For the double adjoint, for every \(v\in V\) and \(w\in W\),
+    \[
+        \langle w,f(v)\rangle_W
+        =
+        \overline{\langle f(v),w\rangle_W}
+        =
+        \overline{\langle v,f^\ast(w)\rangle_V}
+        =
+        \langle f^\ast(w),v\rangle_V.
+    \]
+    Thus \((f^\ast)^\ast=f\). The identity map satisfies
+    \[
+        \langle v,\identityfunc_V(w)\rangle
+        =
+        \langle \identityfunc_V(v),w\rangle,
+    \]
+    so \((\identityfunc_V)^\ast=\identityfunc_V\).
+
+    Finally, for \(v\in V\) and \(u\in U\),
+    \[
+        \langle v,(h\circ f)^\ast(u)\rangle_V
+        =
+        \langle h(f(v)),u\rangle_U
+        =
+        \langle v,f^\ast(h^\ast(u))\rangle_V.
+    \]
+    Hence \((h\circ f)^\ast=f^\ast\circ h^\ast\).
+\end{snippetproof}
+
+\section{Matrix of the adjoint}
+
+\includesnpt{matrix-conjugate-transpose-definition}
+
+\begin{snippetproposition}{adjoint-matrix-orthonormal-bases}{Matrix of the adjoint in orthonormal bases}
+    Let \((V,\langle\cdot,\cdot\rangle_V)\) and
+    \((W,\langle\cdot,\cdot\rangle_W)\) be finite-dimensional
+    \innerproductspace[inner product spaces] over
+    \(\mathbb{F}\in\{\realnumbers,\complexnumbers\}\). Let
+    \(\mathcal{B}=\{e_1,\ldots,e_n\}\) be an \orthonormalbasis of \(V\),
+    and let \(\mathcal{C}=\{w_1,\ldots,w_m\}\) be an
+    \orthonormalbasis of \(W\). If
+    \(f\in\setoflineartransformations(V,W)\), then
+    \[
+        M(f^\ast,\mathcal{C},\mathcal{B})
+        =
+        M(f,\mathcal{B},\mathcal{C})^\conjtrans.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{adjoint-matrix-orthonormal-bases-proof}{adjoint-matrix-orthonormal-bases}{Matrix of the adjoint in orthonormal bases}
+    Put
+    \[
+        A=M(f,\mathcal{B},\mathcal{C})=(a_{jk}),
+        \qquad
+        B=M(f^\ast,\mathcal{C},\mathcal{B})=(b_{kj}).
+    \]
+    Since \(\mathcal{C}\) is an \orthonormalbasis, the \(j\)-th coordinate
+    of \(f(e_k)\) is
+    \[
+        a_{jk}=\langle f(e_k),w_j\rangle_W.
+    \]
+    Since \(\mathcal{B}\) is an \orthonormalbasis, the \(k\)-th coordinate
+    of \(f^\ast(w_j)\) is
+    \[
+        b_{kj}=\langle f^\ast(w_j),e_k\rangle_V.
+    \]
+    By the definition of \adjointmap,
+    \[
+        \langle e_k,f^\ast(w_j)\rangle_V
+        =
+        \langle f(e_k),w_j\rangle_W.
+    \]
+    Therefore
+    \[
+        b_{kj}
+        =
+        \overline{\langle e_k,f^\ast(w_j)\rangle_V}
+        =
+        \overline{\langle f(e_k),w_j\rangle_W}
+        =
+        \overline{a_{jk}}.
+    \]
+    Hence \(B=A^\conjtrans\).
+\end{snippetproof}
+
+\section{Self-adjoint endomorphisms}
+
+\begin{snippetdefinition}{self-adjoint-endomorphism-definition}{Self-adjoint endomorphism}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be a finite-dimensional
+    \innerproductspace, and let
+    \(f\in\setoflineartransformations(V,V)\). The endomorphism \(f\) is
+    \emph{self-adjoint} if
+    \[
+        f^\ast=f.
+    \]
+    Equivalently,
+    \[
+        \langle f(u),v\rangle=\langle u,f(v)\rangle
+    \]
+    for every \(u,v\in V\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{self-adjoint-matrix-characterization}{Matrices of self-adjoint endomorphisms}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be a finite-dimensional
+    \innerproductspace over
+    \(\mathbb{F}\in\{\realnumbers,\complexnumbers\}\), let
+    \(f\in\setoflineartransformations(V,V)\), and let \(\mathcal{B}\) be an
+    \orthonormalbasis of \(V\). Then \(f\) is \selfadjoint if and only if
+    \[
+        M(f,\mathcal{B},\mathcal{B})^\conjtrans
+        =
+        M(f,\mathcal{B},\mathcal{B}).
+    \]
+    In the real case, this means that the matrix is a \symmetricmatrix. In
+    the complex case, this means that the matrix is \hermitianmatrix[Hermitian].
+\end{snippetproposition}
+
+\begin{snippetproof}{self-adjoint-matrix-characterization-proof}{self-adjoint-matrix-characterization}{Matrices of self-adjoint endomorphisms}
+    Since \(\mathcal{B}\) is an \orthonormalbasis,
+    \[
+        M(f^\ast,\mathcal{B},\mathcal{B})
+        =
+        M(f,\mathcal{B},\mathcal{B})^\conjtrans.
+    \]
+    Therefore
+    \[
+        f=f^\ast
+        \Longleftrightarrow
+        M(f,\mathcal{B},\mathcal{B})
+        =
+        M(f,\mathcal{B},\mathcal{B})^\conjtrans.
+    \]
+    If \(\mathbb{F}=\realnumbers\), the conjugate transpose is the
+    transpose. If \(\mathbb{F}=\complexnumbers\), the condition is exactly
+    the \hermitianmatrix[Hermitian] condition.
+\end{snippetproof}
+
+\begin{snippetnote}{self-adjoint-matrix-needs-orthonormal-basis}{Self-adjoint matrices require orthonormal bases}
+    Let \(\realnumbers^2\) have the canonical \innerproduct, and let
+    \[
+        f(x,y)=(x,2y).
+    \]
+    Then \(f\) is \selfadjoint, because its matrix in the canonical
+    \orthonormalbasis is
+    \[
+        \begin{pmatrix}
+            1 & 0\\
+            0 & 2
+        \end{pmatrix}.
+    \]
+    However, with respect to the non-orthonormal \basis
+    \[
+        \mathcal{B}=\{(1,1),(1,2)\},
+    \]
+    the associated matrix is
+    \[
+        M(f,\mathcal{B},\mathcal{B})
+        =
+        \begin{pmatrix}
+            0 & -2\\
+            1 & 3
+        \end{pmatrix},
+    \]
+    which is not \symmetricmatrix[symmetric].
+\end{snippetnote}
+
+\section{Normal endomorphisms}
+
+\begin{snippetdefinition}{normal-endomorphism-definition}{Normal endomorphism}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be a finite-dimensional
+    \innerproductspace, and let
+    \(f\in\setoflineartransformations(V,V)\). The endomorphism \(f\) is
+    \emph{normal} if
+    \[
+        \|f(v)\|=\|f^\ast(v)\|
+    \]
+    for every \(v\in V\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{self-adjoint-endomorphisms-are-normal}{Self-adjoint endomorphisms are normal}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be a finite-dimensional
+    \innerproductspace. Every \selfadjoint endomorphism of \(V\) is a
+    \normalendomorphism.
+\end{snippetproposition}
+
+\begin{snippetproof}{self-adjoint-endomorphisms-are-normal-proof}{self-adjoint-endomorphisms-are-normal}{Self-adjoint endomorphisms are normal}
+    If \(f=f^\ast\), then
+    \[
+        \|f(v)\|=\|f^\ast(v)\|
+    \]
+    for every \(v\in V\). Hence \(f\) is a \normalendomorphism.
+\end{snippetproof}
+
+\begin{snippetproposition}{normal-endomorphism-characterizations}{Characterizations of normal endomorphisms}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be a finite-dimensional
+    \innerproductspace over
+    \(\mathbb{F}\in\{\realnumbers,\complexnumbers\}\), and let
+    \(f\in\setoflineartransformations(V,V)\). The following are equivalent:
+    \begin{enumerate}
+        \item \(f\) is a \normalendomorphism;
+        \item \(\langle f(v),f(w)\rangle=\langle f^\ast(v),f^\ast(w)\rangle\) for every \(v,w\in V\);
+        \item \(f\circ f^\ast=f^\ast\circ f\).
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{normal-endomorphism-characterizations-proof}{normal-endomorphism-characterizations}{Characterizations of normal endomorphisms}
+    The implication \(2\Rightarrow1\) follows by taking \(w=v\).
+
+    Suppose \(1\) holds. If \(\mathbb{F}=\realnumbers\), use the real
+    polarization identity
+    \[
+        \langle x,y\rangle
+        =
+        \frac{\|x+y\|^2-\|x-y\|^2}{4}.
+    \]
+    If \(\mathbb{F}=\complexnumbers\), use the complex polarization identity
+    \[
+        \langle x,y\rangle
+        =
+        \frac{\|x+y\|^2-\|x-y\|^2}{4}
+        +
+        \frac{\mathrm{i}\|x+\mathrm{i}y\|^2-\mathrm{i}\|x-\mathrm{i}y\|^2}{4}.
+    \]
+    Since normality gives \(\|f(z)\|=\|f^\ast(z)\|\) for every \(z\in V\),
+    applying the appropriate polarization identity gives
+    \[
+        \langle f(v),f(w)\rangle
+        =
+        \langle f^\ast(v),f^\ast(w)\rangle.
+    \]
+    Thus \(1\Rightarrow2\).
+
+    For every \(v,w\in V\),
+    \[
+        \langle f(v),f(w)\rangle
+        =
+        \langle v,(f^\ast\circ f)(w)\rangle
+    \]
+    and
+    \[
+        \langle f^\ast(v),f^\ast(w)\rangle
+        =
+        \langle v,(f\circ f^\ast)(w)\rangle.
+    \]
+    Hence condition \(2\) holds if and only if
+    \[
+        \langle v,(f^\ast\circ f)(w)-(f\circ f^\ast)(w)\rangle=0
+    \]
+    for every \(v,w\in V\), which by definiteness is equivalent to
+    \[
+        f^\ast\circ f=f\circ f^\ast.
+    \]
+\end{snippetproof}
+
+\begin{snippetexample}{normal-not-self-adjoint-example}{A normal endomorphism that is not self-adjoint}
+    Let \(A\in\matrices_{2\times2}(\complexnumbers)\) be
+    \[
+        A=
+        \begin{pmatrix}
+            1 & \mathrm{i}\\
+            1 & 1
+        \end{pmatrix}.
+    \]
+    Then
+    \[
+        A^\conjtrans=
+        \begin{pmatrix}
+            1 & 1\\
+            -\mathrm{i} & 1
+        \end{pmatrix}.
+    \]
+    Since \(A\neq A^\conjtrans\), the endomorphism \(L_A\) of
+    \(\complexnumbers^2\) is not \selfadjoint. However,
+    \[
+        AA^\conjtrans
+        =
+        \begin{pmatrix}
+            2 & 1+\mathrm{i}\\
+            1-\mathrm{i} & 2
+        \end{pmatrix}
+        =
+        A^\conjtrans A.
+    \]
+    Hence \(L_A\) is a \normalendomorphism.
+\end{snippetexample}
+
+\begin{snippetlemma}{normal-eigenvectors-of-adjoint}{Eigenvectors of a normal endomorphism and its adjoint}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be a finite-dimensional
+    \innerproductspace over
+    \(\mathbb{F}\in\{\realnumbers,\complexnumbers\}\), and let
+    \(f\in\setoflineartransformations(V,V)\) be a \normalendomorphism. Then, for every
+    \(\lambda\in\mathbb{F}\) and every \(v\in V\),
+    \[
+        f(v)=\lambda v
+        \qquad
+        \Longleftrightarrow
+        \qquad
+        f^\ast(v)=\overline{\lambda}v.
+    \]
+\end{snippetlemma}
+
+\begin{snippetproof}{normal-eigenvectors-of-adjoint-proof}{normal-eigenvectors-of-adjoint}{Eigenvectors of a normal endomorphism and its adjoint}
+    By the commutation characterization of normality, the endomorphism
+    \[
+        f-\lambda\identityfunc_V
+    \]
+    is a \normalendomorphism. Its adjoint is
+    \[
+        f^\ast-\overline{\lambda}\identityfunc_V.
+    \]
+    Hence, for every \(v\in V\),
+    \[
+        \|(f-\lambda\identityfunc_V)(v)\|
+        =
+        \|(f^\ast-\overline{\lambda}\identityfunc_V)(v)\|.
+    \]
+    The first norm is zero if and only if the second norm is zero. This is
+    exactly the claimed equivalence.
+\end{snippetproof}
+
+\begin{snippetlemma}{normal-eigenvectors-distinct-eigenvalues-orthogonal}{Eigenvectors for distinct eigenvalues of a normal endomorphism are orthogonal}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be a finite-dimensional
+    \innerproductspace over
+    \(\mathbb{F}\in\{\realnumbers,\complexnumbers\}\), and let
+    \(f\in\setoflineartransformations(V,V)\) be a \normalendomorphism. If
+    \(v\in V_\lambda\), \(w\in V_\mu\), and \(\lambda\neq\mu\), then
+    \[
+        v\perp w.
+    \]
+\end{snippetlemma}
+
+\begin{snippetproof}{normal-eigenvectors-distinct-eigenvalues-orthogonal-proof}{normal-eigenvectors-distinct-eigenvalues-orthogonal}{Eigenvectors for distinct eigenvalues of a normal endomorphism are orthogonal}
+    Since \(w\in V_\mu\), the previous lemma gives
+    \[
+        f^\ast(w)=\overline{\mu}w.
+    \]
+    Therefore
+    \[
+        \lambda\langle v,w\rangle
+        =
+        \langle f(v),w\rangle
+        =
+        \langle v,f^\ast(w)\rangle
+        =
+        \langle v,\overline{\mu}w\rangle
+        =
+        \mu\langle v,w\rangle.
+    \]
+    Since \(\lambda\neq\mu\), it follows that \(\langle v,w\rangle=0\).
+\end{snippetproof}
+
+\section{Self-adjoint eigenvalues}
+
+\begin{snippetlemma}{complex-self-adjoint-eigenvalues-real}{Eigenvalues of complex self-adjoint endomorphisms}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be a finite-dimensional complex
+    \innerproductspace, and let \(f\in\setoflineartransformations(V,V)\) be
+    \selfadjoint. Every \eigenvalue of \(f\) is real.
+\end{snippetlemma}
+
+\begin{snippetproof}{complex-self-adjoint-eigenvalues-real-proof}{complex-self-adjoint-eigenvalues-real}{Eigenvalues of complex self-adjoint endomorphisms}
+    Let \(\lambda\in\complexnumbers\) be an \eigenvalue of \(f\), and let
+    \(v\neq0\) satisfy \(f(v)=\lambda v\). Since \(f=f^\ast\),
+    \[
+        \lambda\|v\|^2
+        =
+        \langle f(v),v\rangle
+        =
+        \langle v,f(v)\rangle
+        =
+        \overline{\lambda}\|v\|^2.
+    \]
+    Since \(v\neq0\), \(\|v\|^2\neq0\), and therefore
+    \(\lambda=\overline{\lambda}\). Thus \(\lambda\in\realnumbers\).
+\end{snippetproof}
+
+\begin{snippetlemma}{real-self-adjoint-characteristic-roots-real}{Complex roots of a real self-adjoint characteristic polynomial}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be a finite-dimensional real
+    \innerproductspace, and let \(f\in\setoflineartransformations(V,V)\) be
+    \selfadjoint. Every complex root of the \characteristicpolynomial of
+    \(f\) is real.
+\end{snippetlemma}
+
+\begin{snippetproof}{real-self-adjoint-characteristic-roots-real-proof}{real-self-adjoint-characteristic-roots-real}{Complex roots of a real self-adjoint characteristic polynomial}
+    Let \(\mathcal{B}\) be an \orthonormalbasis of \(V\), and put
+    \[
+        A=M(f,\mathcal{B},\mathcal{B})\in\matrices_{n\times n}(\realnumbers).
+    \]
+    Since \(f\) is \selfadjoint, \(A^\transpose=A\). Regard \(A\) as a
+    complex matrix. Then \(A^\conjtrans=A\), so the induced endomorphism
+    \(L_A\) of \(\complexnumbers^n\) is complex self-adjoint. By the complex
+    case, all complex roots of its characteristic polynomial are real. This
+    is the same polynomial as the characteristic polynomial of \(f\).
+\end{snippetproof}
+
+\section{Spectral theorem}
+
+\begin{snippettheorem}{abstract-spectral-theorem}{Abstract spectral theorem}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be a finite-dimensional
+    \innerproductspace over
+    \(\mathbb{F}\in\{\realnumbers,\complexnumbers\}\), and let
+    \(f\in\setoflineartransformations(V,V)\). Then \(V\) has an
+    \orthonormalbasis of \eigenvector[eigenvectors] of \(f\) if and only if
+    \begin{enumerate}
+        \item \(f\) is a \normalendomorphism;
+        \item the \characteristicpolynomial of \(f\) splits completely in \(\mathbb{F}[t]\).
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{abstract-spectral-theorem-proof}{abstract-spectral-theorem}{Abstract spectral theorem}
+    Suppose that
+    \[
+        \mathcal{B}=\{e_1,\ldots,e_n\}
+    \]
+    is an \orthonormalbasis of \eigenvector[eigenvectors] of \(f\), with
+    \(f(e_i)=\lambda_i e_i\). Then
+    \[
+        p_f(t)=(t-\lambda_1)\cdots(t-\lambda_n)
+    \]
+    splits in \(\mathbb{F}[t]\). Also, by the \parsevalidentity, every
+    \(v\in V\) satisfies
+    \[
+        v=\langle v,e_1\rangle e_1+\cdots+\langle v,e_n\rangle e_n.
+    \]
+    Since \(f^\ast(e_i)=\overline{\lambda_i}e_i\),
+    \[
+        \|f(v)\|^2
+        =
+        \sum_{i=1}^{n}|\lambda_i|^2|\langle v,e_i\rangle|^2
+        =
+        \|f^\ast(v)\|^2.
+    \]
+    Hence \(f\) is a \normalendomorphism.
+
+    Conversely, suppose that \(f\) is a \normalendomorphism and that \(p_f(t)\) splits in
+    \(\mathbb{F}[t]\). We prove the statement by induction on
+    \(n=\lineardim V\). If \(n=1\), any normalized nonzero vector is an
+    \orthonormalbasis of eigenvectors.
+
+    Let \(n>1\). Since \(p_f(t)\) splits, \(f\) has an eigenvalue
+    \(\lambda\in\mathbb{F}\). Choose a normalized eigenvector \(v\) with
+    \(f(v)=\lambda v\), and put
+    \[
+        W=\linearspan(v)^\perp
+        =
+        \{w\in V\suchthat \langle w,v\rangle=0\}.
+    \]
+    Then
+    \[
+        V=\linearspan(v)\oplus W
+    \]
+    and \(\lineardim W=n-1\). If \(w\in W\), then by normality
+    \(f^\ast(v)=\overline{\lambda}v\), so
+    \[
+        \langle f(w),v\rangle
+        =
+        \langle w,f^\ast(v)\rangle
+        =
+        \lambda\langle w,v\rangle
+        =
+        0.
+    \]
+    Thus \(W\) is stable under \(f\). A similar computation using
+    \(f(v)=\lambda v\) shows that \(W\) is stable under \(f^\ast\). Hence
+    the adjoint of \(f_{\mid W}\) is \(f^\ast_{\mid W}\), and
+    \(f_{\mid W}\) is a \normalendomorphism.
+
+    With respect to the decomposition
+    \(V=\linearspan(v)\oplus W\), the characteristic polynomial factors as
+    \[
+        p_f(t)=(t-\lambda)p_{f_{\mid W}}(t).
+    \]
+    Therefore \(p_{f_{\mid W}}(t)\) also splits in \(\mathbb{F}[t]\). By the
+    induction hypothesis, \(W\) has an \orthonormalbasis
+    \(\{v_2,\ldots,v_n\}\) of eigenvectors of \(f_{\mid W}\). Then
+    \[
+        \{v,v_2,\ldots,v_n\}
+    \]
+    is an \orthonormalbasis of \(V\) consisting of eigenvectors of \(f\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{complex-spectral-theorem}{Complex spectral theorem}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be a finite-dimensional complex
+    \innerproductspace, and let \(f\in\setoflineartransformations(V,V)\).
+    Then \(V\) has an \orthonormalbasis of \eigenvector[eigenvectors] of
+    \(f\) if and only if \(f\) is a \normalendomorphism.
+\end{snippetcorollary}
+
+\begin{snippetproof}{complex-spectral-theorem-proof}{complex-spectral-theorem}{Complex spectral theorem}
+    By the fundamental theorem of algebra, every complex characteristic
+    polynomial splits in \(\complexnumbers[t]\). The result follows from
+    the abstract \spectraltheorem.
+\end{snippetproof}
+
+\begin{snippetcorollary}{real-self-adjoint-spectral-theorem}{Real spectral theorem for self-adjoint endomorphisms}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be a finite-dimensional real
+    \innerproductspace, and let \(f\in\setoflineartransformations(V,V)\).
+    Then \(V\) has an \orthonormalbasis of \eigenvector[eigenvectors] of
+    \(f\) if and only if \(f\) is \selfadjoint.
+\end{snippetcorollary}
+
+\begin{snippetproof}{real-self-adjoint-spectral-theorem-proof}{real-self-adjoint-spectral-theorem}{Real spectral theorem for self-adjoint endomorphisms}
+    If \(V\) has an \orthonormalbasis of eigenvectors of \(f\), then the
+    associated matrix of \(f\) in that basis is a real diagonal matrix, hence
+    a \symmetricmatrix. Since the basis is \orthonormalbasis[orthonormal], \(f\) is \selfadjoint.
+
+    Conversely, if \(f\) is \selfadjoint, then \(f\) is a \normalendomorphism. Moreover,
+    every complex root of \(p_f(t)\) is real, so \(p_f(t)\) splits in
+    \(\realnumbers[t]\). The abstract \spectraltheorem gives an
+    \orthonormalbasis of eigenvectors.
+\end{snippetproof}
+
+\section{Matrix spectral theorems}
+
+\begin{snippetdefinition}{orthogonal-matrix-definition}{Orthogonal matrix}
+    A real square \matrix \(P\in\matrices_{n\times n}(\realnumbers)\) is
+    \emph{orthogonal} if
+    \[
+        P^\transpose P=\identmatrix{n}.
+    \]
+    Equivalently, \(P^{-1}=P^\transpose\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{unitary-matrix-definition}{Unitary matrix}
+    A complex square \matrix \(U\in\matrices_{n\times n}(\complexnumbers)\)
+    is \emph{unitary} if
+    \[
+        U^\conjtrans U=\identmatrix{n}.
+    \]
+    Equivalently, \(U^{-1}=U^\conjtrans\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{normal-matrix-definition}{Normal matrix}
+    A complex square \matrix \(A\in\matrices_{n\times n}(\complexnumbers)\)
+    is \emph{normal} if
+    \[
+        AA^\conjtrans=A^\conjtrans A.
+    \]
+\end{snippetdefinition}
+
+\begin{snippettheorem}{real-symmetric-matrix-spectral-theorem}{Real spectral theorem for symmetric matrices}
+    Let \(A\in\matrices_{n\times n}(\realnumbers)\). Then \(A\) is a
+    \symmetricmatrix if and only if there exist an \orthogonalmatrix
+    \(P\in\matrices_{n\times n}(\realnumbers)\) and a real diagonal matrix
+    \(D\in\matrices_{n\times n}(\realnumbers)\) such that
+    \[
+        P^\transpose AP=D.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{real-symmetric-matrix-spectral-theorem-proof}{real-symmetric-matrix-spectral-theorem}{Real spectral theorem for symmetric matrices}
+    Let \(L_A\colon\realnumbers^n\fromto\realnumbers^n\) be the
+    endomorphism \(L_A(x)=Ax\), with the canonical \innerproduct. The
+    canonical basis is an \orthonormalbasis, and \(L_A\) is \selfadjoint if
+    and only if \(A^\transpose=A\). By the real spectral theorem for
+    self-adjoint endomorphisms, this is equivalent to the existence of an
+    \orthonormalbasis of eigenvectors. Placing those eigenvectors as the
+    columns of \(P\) gives an \orthogonalmatrix and a diagonal matrix \(D\)
+    satisfying
+    \[
+        P^\transpose AP=D.
+    \]
+    Conversely, if such \(P\) and \(D\) exist, then
+    \[
+        A=PDP^\transpose,
+    \]
+    so \(A^\transpose=PD^\transpose P^\transpose=PDP^\transpose=A\).
+\end{snippetproof}
+
+\begin{snippettheorem}{complex-hermitian-matrix-spectral-theorem}{Complex spectral theorem for Hermitian matrices}
+    Let \(A\in\matrices_{n\times n}(\complexnumbers)\). Then \(A\) is
+    \hermitianmatrix[Hermitian] if and only if there exist a \unitarymatrix
+    \(U\in\matrices_{n\times n}(\complexnumbers)\) and a real diagonal
+    matrix \(D\in\matrices_{n\times n}(\realnumbers)\) such that
+    \[
+        U^\conjtrans AU=D.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{complex-hermitian-matrix-spectral-theorem-proof}{complex-hermitian-matrix-spectral-theorem}{Complex spectral theorem for Hermitian matrices}
+    Let \(L_A\colon\complexnumbers^n\fromto\complexnumbers^n\) be
+    \(L_A(x)=Ax\), with the canonical \innerproduct. Then \(L_A\) is
+    \selfadjoint if and only if \(A^\conjtrans=A\), that is, if and only if
+    \(A\) is \hermitianmatrix[Hermitian]. A complex \selfadjoint endomorphism is a \normalendomorphism, so by
+    the complex \spectraltheorem it has an \orthonormalbasis of
+    eigenvectors. Its eigenvalues are real. Placing the eigenvectors as the
+    columns of \(U\) gives a \unitarymatrix and a real diagonal matrix \(D\)
+    such that
+    \[
+        U^\conjtrans AU=D.
+    \]
+    Conversely, if such \(U\) and real diagonal \(D\) exist, then
+    \[
+        A=UDU^\conjtrans,
+    \]
+    so
+    \[
+        A^\conjtrans=UD^\conjtrans U^\conjtrans=UDU^\conjtrans=A.
+    \]
+\end{snippetproof}
+
+\begin{snippetcorollary}{complex-normal-matrix-spectral-theorem}{Complex spectral theorem for normal matrices}
+    Let \(A\in\matrices_{n\times n}(\complexnumbers)\). Then \(A\) is a
+    \normalmatrix if and only if there exist a \unitarymatrix
+    \(U\in\matrices_{n\times n}(\complexnumbers)\) and a complex diagonal
+    matrix \(D\in\matrices_{n\times n}(\complexnumbers)\) such that
+    \[
+        U^\conjtrans AU=D.
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{complex-normal-matrix-spectral-theorem-proof}{complex-normal-matrix-spectral-theorem}{Complex spectral theorem for normal matrices}
+    The matrix \(A\) is a \normalmatrix exactly when the endomorphism
+    \(L_A\colon\complexnumbers^n\fromto\complexnumbers^n\) is a \normalendomorphism. By
+    the complex \spectraltheorem, this is equivalent to the existence of an
+    \orthonormalbasis of eigenvectors of \(L_A\). Placing those eigenvectors
+    as the columns of \(U\) gives a \unitarymatrix and a diagonal matrix
+    \(D\) satisfying
+    \[
+        U^\conjtrans AU=D.
+    \]
+\end{snippetproof}
+
+\end{document}

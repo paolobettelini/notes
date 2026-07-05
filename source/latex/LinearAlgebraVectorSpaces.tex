@@ -2,10 +2,6 @@
 
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{tikz}
-\usepackage{graphicx}
-\usepackage{pgfplots}
-\usepackage{amsmath}
 \usepackage{stellar}
 \usepackage{definitions}
 \usepackage{bettelini}
@@ -19,503 +15,145 @@
 
 \includesnpt{vector-space-definition}
 
-\begin{snippetproposition}{field-is-vector-space-with-itself}{}
-    Let \(\mathbb{F}\) be a \field. Then, \(\mathbb{F}\) is a
-    \vectorspace over \(\mathbb{F}\).
+\section{Examples}
+
+\begin{snippetproposition}{field-is-vector-space-with-itself}{A field as a vector space over itself}
+    Let \(\mathbb{F}\) be a \field. Then \(\mathbb{F}\), with its \field
+    addition as vector addition and its \field multiplication as scalar
+    multiplication, is a \vectorspace over \(\mathbb{F}\).
 \end{snippetproposition}
 
-\begin{snippetproposition}{field-cartesian-prod-vector-space}{}
-    Let \(\mathbb{F}\) be a \field. Then, \({\mathbb{F}}^n\) is a
-    \vectorspace over \(\mathbb{F}\).
-\end{snippetproposition}
-
-\begin{snippetdefinition}{linear-subspace-definition}{Linear subspace}
-    Let \(V\) be a \vectorspace over \(\mathbb{F}\). A \set \(U \subseteq V\)
-    is a \emph{linear subspace} of \(V\) if \(U\) is a \vectorspace over \(\mathbb{F}\)
-    with the operations of \(V\).
-\end{snippetdefinition}
-
-\begin{snippettheorem}{linear-subspace-criterion-theorem}{}
-    Let \(V\) be a \vectorspace over \(\mathbb{F}\).
-    A \set \(U \subseteq V\) is a linear subspace \ifandonlyif
-    \begin{enumerate}
-        \item \(0_V \in U\);
-        \item \(u,v \in U \implies u+v \in U\);
-        \item \(\lambda \in \mathbb{F}, u\in U \implies \lambda \cdot u \in U\).
-    \end{enumerate}
-\end{snippettheorem}
-
-\begin{snippetproof}{linear-subspace-criterion-theorem-proof}{linear-subspace-criterion-theorem}{}
-    \begin{iffproof}
-        \item If \(U\) is a linear subspace, then the properties are satisfied by definition.
-        \item By the listed properties, we have:
-        \begin{enumerate}
-            \item the additive identity of \(V\) is in \(U\);
-            \item addition is closed and well-defined in \(U\);
-            \item scalar multiplication is closed and well-defined in \(U\).
-        \end{enumerate}
-        Given \(u\in U\), \(-1 \cdot u = -u\) is the inverse, which is closed \(-u \in U\).
-        The operations of addition, product and scalar multiplication work in \(V\), so they also work in \(U\),
-        and by the properties they are also closed in \(U\).
-    \end{iffproof}
-\end{snippetproof}
-
-\begin{snippetproposition}{linear-subspace-intersection}{Linear subspaces intersection}
-    Let \(V\) be a \vectorspace and \(U, W\) be linear subspaces of \(V\).
-    Then, \(U \intersection W\) is a linear subspace of \(V\), \(U\) and \(W\).
-\end{snippetproposition}
-
-\begin{snippetproof}{linear-subspace-intersection-proof}{linear-subspace-intersection}{Linear subspaces intersection}
-    Let \(\mathbb{F}\) be the \field over which \(V\) is defined.
-    \begin{enumerate}
-        \item the additive identity \(0_V \in U \intersection W\);
-        \item given \(u,w \in U \intersection W\), then \(u + w \in U\) but also
-        \(u + w \in W\), meaning \(u + v \in U \intersection W\);
-        \item given \(u \in U \intersection W\) and \(\lambda \in \mathbb{F}\),
-        then \(\lambda u \in U\) but also \(\lambda u \in W\), meaning
-        \(\lambda u \in U \intersection W\).
-    \end{enumerate}
-\end{snippetproof}
-
-\plain{The same does not work for the union, so we want to construct the smallest linear subspace
-containing two subspaces.}
-
-\begin{snippetdefinition}{vector-space-sum-definition}{Vector space sum}
-    Let \(U_1, U_2, \cdots, U_n\) be linear subspaces of
-    a \vectorspace \(V\). Then, their \emph{sum}
-    is given by
+\begin{snippetproposition}{field-cartesian-prod-vector-space}{The fundamental model \(F^n\)}
+    Let \(\mathbb{F}\) be a \field and let \(n\in\naturalnumbers\). The
+    \set
     \[
-        U_1 + U_2 + \cdots + U_n \triangleq \{
-            u_1 + u_2 + \cdots + u_n \suchthat u_1\in U_1, u_2\in U_2, \cdots, u_n\in U_n    
-        \}
+        \mathbb{F}^n
+        =
+        \{(x_1,\ldots,x_n)\suchthat x_i\in\mathbb{F}\}
     \]
-\end{snippetdefinition}
-
-\begin{snippetproposition}{vector-space-sum-is-smallest-vector-space}{}
-    Let \(U_1, U_2, \cdots, U_n\) be linear subspaces of
-    a \vectorspace \(V\). Then, \(U_1 + U_2 + \cdots + U_n\)
-    is the smallest \vectorspace containing each \(U_i\).
-\end{snippetproposition}
-
-\begin{snippetproof}{vector-space-sum-is-smallest-vector-space-proof}{vector-space-sum-is-smallest-vector-space}{}
-    We first show that the sum is a linear subspace:
-    \begin{enumerate}
-        \item since \(U_i\) is a linear subspace, \(0_V \in U_i\).
-        Thus,
-        \[
-            0_V = 0_V \in U_1 + 0_V \in U_2 + \cdots + 0_V \in U_n
-        \]
-        \item given \(u,v \in U_1 + U_2 + \cdots + U_n\), we have
-        \(u=u_1 + u_2 + \cdots + u_n\) and \(v=v_1 + v_2 + \cdots + v_n\). Together we have
-        \begin{align*}
-            u + v = (u_1 + v_1) + (u_2 + v_2) + \cdots + (u_n + v_n)
-        \end{align*}
-        and since \(u_i + v_i \in U_i\), \(u+v \in U_1 + U_2 + \cdots + U_n\).
-        \item \(u \in U_1 + U_2 + \cdots + U_n \iff u = u_1 + \cdots + u_n\).
-        Let \(\lambda \in \mathbb{F}\). Then,
-        \begin{align*}
-            \lambda u = \lambda (u_1 + \cdots + u_n) = \lambda u_1 + \cdots \lambda u_n \in
-            U_1 + U_2 + \cdots + U_n
-        \end{align*}
-    \end{enumerate}
-    We now need to prove that such construction is the smallest \vectorspace containing \(U_1, U_2, \cdots, U_n\).
-    Let \(W\) be a \vectorspace containing \(U_1, U_2, \cdots, U_n\),
-    meaning that \(U_i \subseteq W\) for every \(i\).
-    Since \(W\) is closed under addition and scalar multiplication,
-    we have that \(u_1 + u_2 + \cdots + u_n \in W\) for every \(u_i \in U_i\).
-    Thus, every \vectorspace containing \(U_1, U_2, \cdots, U_n\)
-    contains \(U_1 + U_2 + \cdots + U_n\).
-    Since \(U_1 + U_2 + \cdots + U_n\) is a \vectorspace containing \(U_1, U_2, \cdots, U_n\),
-    it is the smallest \vectorspace containing \(U_1, U_2, \cdots, U_n\).
-\end{snippetproof}
-
-\plain{Linear subspaces can never be disjoint. However, something close can happen.
-Note that elements of the sum do not have a unique representation, and can be obtained
-by adding different terms. We want to restrict ourselves to the case where the sum is uniquely represented.}
-
-\begin{snippetdefinition}{vector-space-direct-sum-definition}{Vector space direct sum}
-    Let \(U_1, U_2, \cdots, U_n\) be linear subsets of a \vectorspace \(V\)
-    over a \field \(\mathbb{F}\). Then, the sum \(U_1 + U_2 + \cdots + U_n\)
-    is said to be a \emph{direct sum} if every element cannot be written as the sum of different elements.
+    is a \vectorspace over \(\mathbb{F}\) with componentwise addition
     \[
-        U_1 \oplus U_2 \oplus \cdots \oplus U_n
+        (x_1,\ldots,x_n)+(y_1,\ldots,y_n)
+        =
+        (x_1+y_1,\ldots,x_n+y_n)
     \]
-\end{snippetdefinition}
-
-\begin{snippetproposition}{vector-space-direct-sum-identity}{}
-    Let \(U_1, U_2, \cdots, U_n\) be linear subsets of a \vectorspace \(V\)
-    over a \field \(\mathbb{F}\). Then, the sum \(U_1 + U_2 + \cdots + U_n\)
-    is a direct sum \ifandonlyif \(0_V\) cannot be written as the sum of different terms.
-\end{snippetproposition}
-
-\begin{snippetproof}{vector-space-direct-sum-identity-proof}{vector-space-direct-sum-identity}{}
-    \begin{iffproof}
-        \item Given by the definition of direct sum.
-        \item Let \(v \in V\) and consider the representations \(v = v_1 + \cdots v_n\)
-        and \(v = w_1 + \cdots + w_n\). We want to show that \(w_i = v_i\) for every \(i\).
-        \begin{align*}
-            v_1 + \cdots v_n - w_1 - \cdots w_n &= 0_V \\
-            (v_1 - w_1) + \cdots + (v_n - w_n) &= 0_V
-        \end{align*}
-        But since \(0_V\) can only be written as
-        \(0_V = 0_V + \cdots + 0_V\), we must have \(v_i - w_i = 0_V\),
-        meaning \(v_i = w_i\).
-    \end{iffproof}
-\end{snippetproof}
-
-\begin{snippetproposition}{vector-space-sum-is-direct-iff-intersection-is-trivial}{}
-    Let \(U, W\) be linear subspaces of a \vectorspace \(V\).
-    Then, \(U + W\) is a direct sum \ifandonlyif \(U \intersection W = \{0_V\}\).
-\end{snippetproposition}
-
-\begin{snippetproof}{vector-space-sum-is-direct-iff-intersection-is-trivial-proof}{vector-space-sum-is-direct-iff-intersection-is-trivial}{}
-    \begin{iffproof}
-        \item Let \(v \in U \intersection W\). Consider the representation \(0 = v + (-v)\)
-        where \(v\in U\) and \(-v \in W\). Since the sum is direct, \(v = -v\) meaning \(v = 0_V\).
-        \item We need to show that the only representation of \(0_V\) is the trivial one.
-        Assume that \(0 = u + w\) for some \(u\in U\) and \(w\in W\).
-        Since \(u=-w\), and \(u\in U\land -w \in W\), we must have that \(u, w \in U \intersection W\),
-        and since \(U \intersection W = \{0_V\}\), \(u = w = 0_V\). 
-    \end{iffproof}
-\end{snippetproof}
-
-\includesnpt{linear-combination-definition}
-
-\includesnpt{span-definition}
-
-\begin{snippetproposition}{span-is-linear-subspace}{Span is linear subspace}
-    Let \(V\) be a \vectorspace over a \field \(K\) and \(S\) a \set of \vector[vectors] in \(V\).
-    Then, \(\linearspan(S)\) is the smallest linear subspace of \(V\) containing
-    every element of \(S\).
-\end{snippetproposition}
-
-\begin{snippetproof}{span-is-linear-subspace-proof}{span-is-linear-subspace}{Span is linear subspace}
-    \begin{enumerate}
-        \item If \(S = \emptyset\), then \(0_V \in \linearspan(S)\). Otherwise,
-        we can construct \(0_V\) as a linear combination where the scalars are \(0\).
-        \item Let \(u = a_1v_1 + \cdots + a_nv_n\) and \(w = b_1v_1 + \cdots + b_nv_n\)
-        with \(v_i \in S\) such that \(u, w \in \linearspan(S)\). Then,
-        \begin{align*}
-            u+w &= a_1v_1 + \cdots + a_nv_n + b_1v_1 + \cdots + b_nv_n \\
-            &= (a_1 + b_1)v_1 + \cdots + (a_n + b_n)v_n \in \linearspan(S)
-        \end{align*}
-        \item Let \(u = a_1v_1 + \cdots + a_nv_n\). We have
-        \begin{align*}
-            \lambda u &= \lambda(a_1v_1 + \cdots + a_nv_n) \\
-            &= (\lambda a_1)v_1 + \cdots + (\lambda a_n)v_n \in \linearspan(S)
-        \end{align*}
-    \end{enumerate}
-\end{snippetproof}
-
-% TODO: linear subspaces are closed under linear combination
-
-\includesnpt{linear-independence-definition}
-
-\begin{snippetdefinition}{vector-space-generating-set}{Generating set}
-    Let \(A=(V, F, +, \cdot)\) be a \vectorspace.
-    A \textit{generating set} \(\mathcal{S}\) is a
-    \set of \vector[vectors] \(S\subseteq V\) such that \[ \linearspan(S) = V \]
-\end{snippetdefinition}
-
-\begin{snippetdefinition}{basis-definition}{Basis}
-    Let \(A=(V, F, +, \cdot)\) be a \vectorspace.
-    A \textit{basis} \(\mathcal{B}\) is a finite \linearlyindependent
-    generating set of \(V\).
-\end{snippetdefinition}
-
-\plain{The basis cannot be redundant.}
-
-\begin{snippetdefinition}{finite-vector-space-definition}{Finite vector space}
-    A \vectorspace is said to be \emph{finite} if there exist
-    a finite \basis for it.
-\end{snippetdefinition}
-
-\begin{snippetlemma}{linearly-dependent-set-reduction}{}
-    Let \(A=(V, F, +, \cdot)\) be a \vectorspace
-    and consider a linearly dependent \set \(S=\{V_1, V_2, \cdots, V_n\}\).
-    Then, there exist a \(j\) such that
-    \begin{enumerate}
-        \item \(V_j \in \linearspan(S \difference V_j)\);
-        \item \(\linearspan(S \difference V_j) = \linearspan(S)\).
-    \end{enumerate}
-\end{snippetlemma}
-
-\begin{snippetproof}{linearly-dependent-set-reduction-proof}{linearly-dependent-set-reduction}{}
-    \begin{enumerate}
-        \item We know there there exist scalars \(a_1, a_2, \cdots, a_n\) where \((a_1, a_2, \cdots, a_n) \neq (0, 0, \cdots, 0)\)
-        such that \[
-            \sum_{i=1}^n a_i \vec{v}_i = 0
-        \]
-        Let \(j\) be the greatest index such that \(a_j \neq 0\).
-        Then,
-        \[
-            \vec{v}_j = \sum_{i=1}^n \frac{-a_i}{a_j} \vec{v}_i
-        \]
-        which means that \(\vec{v}_j \in \linearspan(S)\).
-        \item Clearly, \(\linearspan(S \difference V_j) \subseteq \linearspan(S)\).
-        We want to show the other inclusion.
-        Let \(\vec{u} \in \linearspan(S)\)
-        \begin{align*}
-            \vec{u} &= \sum_{i=1}^n b_i \vec{v}_i \\
-            &= \sum_{i \neq j}^n b_i \vec{v}_i
-            + b_j \sum_{i \neq j}^n \frac{-a_i}{a_j} \vec{v}_i \\
-            &= \sum_{i \neq j}^n \left(b_i - b_j \frac{a_i}{a_j} \right) \vec{v}_i.
-        \end{align*}
-        Since all terms involve only elements of \(S \difference \{V_j\}\), we conclude that 
-        \(\vec{u} \in \linearspan(S \difference \{V_j\})\).
-    \end{enumerate}
-\end{snippetproof}
-
-\begin{snippettheorem}{vector-space-generative-set-cardinality-inequality}{}
-    Let \(A=(V, F, +, \cdot)\) be a \vectorspace.
-    Then, if \(A\) is a \linearlyindependent \set and \(B\) is a generator set of \(V\),
+    and componentwise scalar multiplication
     \[
-        |A| \leq |B|
-    \]
-\end{snippettheorem}
-
-\begin{snippetproof}{vector-space-generative-set-cardinality-inequality-proof}{vector-space-generative-set-cardinality-inequality}{}
-    Let \(A = \{v_1, v_2, \cdots, v_n\}\)
-    and \(B = \{w_1, w_2, \cdots, w_n\}\).
-    We iterate the following process:
-    add a vector \(\vec{v}_j\) to \(B\), which produces a linearly dependent set.
-    By \snippetref[linearly-dependent-set-reduction][this lemma]
-    one of the vectors of this collection is in the span of the other vectors,
-    remove such vector from \(B\). Eventually, we will repreat this process for every vector of \(A\),
-    meaning that at the beginning there are at least many elements in \(A\)
-    as there are in \(B\).
-\end{snippetproof}
-
-\begin{snippetcorollary}{finite-vector-space-subspace-is-finite}{}
-    Let \(V\) be a finitely dimensional \vectorspace. Then,
-    a linear subspace of \(V\) is finite.
-\end{snippetcorollary}
-
-\begin{snippetproof}{finite-vector-space-subspace-is-finite-proof}{finite-vector-space-subspace-is-finite}{}
-    Let \(U\) be a linear subspace of \(V\).
-    If \(U={0_V}\) we are done. Otherwise, there exist \(u_1 \in U\) that is not null.
-    We can keep adding vectors to \(U\) that are not in the span of the previous ones,
-    this is always a linearly independent set.
-    This collection cannot have more elements than a generating set, thus it is finite. 
-\end{snippetproof}
-
-\begin{snippetproposition}{vector-space-basis-criterion}{}
-    Let \(A=(V, F, +, \cdot)\) be a \vectorspace.
-    A \set \(\mathcal{B} = \{v_1, v_2, \cdots, v_n\}\)
-    of vectors in \(V\) is a \basis \ifandonlyif
-    for every \(v\in V\), \(v\) can be written uniquely as a linear combination of the vectors
-    in \(\mathcal{B}\).
-\end{snippetproposition}
-
-\begin{snippetproof}{vector-space-basis-criterion-proof}{vector-space-basis-criterion}{}
-    \begin{iffproof}
-        \item Since \(\mathcal{B}\) generates \(V\),
-        let \[
-            v = \sum_{i=1}^n \alpha_i v_i
-        \]
-        or
-        \[
-            v = \sum_{i=1}^n \beta_i v_i
-        \]
-        for some \(\alpha_i,\beta_i \in F\).
-        But then,
-        \begin{align*}
-            \sum_{i=1}^n (\alpha_i - \beta_i) v_i = 0 \implies \alpha_i = \beta_i
-        \end{align*}
-        since \(\mathcal{B}\) is linearly independent.
-        \item Since every element can be written as a linear combination,
-        \[
-            \linearspan(\mathcal{B}) = V
-        \]
-        Assume there exist \(\alpha_i \in F\) such that
-        \[
-            0 = \sum_{i=1}^n \alpha_i v_i
-        \]
-        since \[
-            0 = \sum_{i=1}^n 0 \cdot v_i
-        \]
-        by the uniqueness of the linear combination we conclude that
-        \(\alpha_i = 0\), meaning that \(\mathcal{B}\) is linearly independent.
-    \end{iffproof}
-\end{snippetproof}
-
-\begin{snippetproposition}{vector-space-generating-set-reduction}{Generating set reduction}
-    Let \(A=(V, F, +, \cdot)\) be a \vectorspace.
-    Every generating set of \(V\) can be reduced to a \basis of the \vectorspace.
-\end{snippetproposition}
-
-\begin{snippetproof}{vector-space-generating-set-reduction-proof}{vector-space-generating-set-reduction}{Generating set reduction}
-    Let \(S = \{v_1, v_2, \cdots, v_n\}\) be such a generating set of \(V\).
-    We want to iteratively remove an element until \(S\) is a \basis.
-    \begin{itemize}
-        \item \emph{step zero} if \(v_1 = 0\), we remove \(v_1\) from \(S\).
-        \item \emph{step j} if \(v_j = \linearspan(S \difference v_j)\), we remove \(v_j\) from \(S\).
-    \end{itemize}
-    After \(n\) steps we have a linearly independent set which generates \(V\).
-\end{snippetproof}
-
-\begin{snippetcorollary}{every-finite-vector-space-has-basis}{}
-    A \vectorspace \(A=(V, F, +, \cdot)\) has a \basis.
-\end{snippetcorollary}
-
-\begin{snippetproof}{every-finite-vector-space-has-basis-proof}{every-finite-vector-space-has-basis}{}
-    The \set \(V\) is a generator set of \(V\). This \set can be reduced into a \basis.
-\end{snippetproof}
-
-\begin{snippetproposition}{linearly-independent-set-basis-expansion}{}
-    Let \(A=(V, F, +, \cdot)\) be a finitely dimensional \vectorspace.
-    Every \set of vectors that is linearly independent
-    in a \vectorspace can be expanded into a \basis.
-\end{snippetproposition}
-
-\begin{snippetproof}{linearly-independent-set-basis-expansion-proof}{linearly-independent-set-basis-expansion}{}
-    Let \(\mathcal{B} = \{w_1, w_2, \cdots, w_n\}\) be a \basis of \(A\)
-    and let \(U = \{u_1, u_2, \cdots, u_m\}\) be a \set of linearly independent vectors.
-    Consider the \set \(U \union \mathcal{B}\) and apply a reduction until it is a \basis. 
-\end{snippetproof}
-
-\begin{snippetdefinition}{linear-subspace-complement-definition}{Linear subspace complement}
-    Let \(V\) be a finitely dimensional \vectorspace and \(W\) a linear subspace of \(V\).
-    Then, a \emph{complement} of \(W\) in \(V\) is a linear subspace
-    \(U\) of \(V\) such that \(V = W \oplus U\).
-\end{snippetdefinition}
-
-\begin{snippetproposition}{linear-subspace-complement-existance}{}
-    Let \(V\) be a finitely dimensional \vectorspace and \(W\) a linear subspace of \(V\).
-    Then, \(W\) has a complement.
-\end{snippetproposition}
-
-\begin{snippetproof}{linear-subspace-complement-existance-proof}{linear-subspace-complement-existance}{}
-    We know that \(V\) and \(W\) are both finitely dimensional
-    and \(W\) admits a \basis \(\mathcal{B}\) and \(V\) admits a \basis
-    \[
-        \mathcal{L} = \mathcal{B} \union U, \quad U = \bigcup_i \{u_i\}
-    \]
-    We want to show that \(W+U=V\) and \(W \intersection U = \{0\}\).
-    Let \(v\in V\). \(\mathcal{L}\) generates \(V\) since it is a \basis
-    \[
-        v = \sum_{i=1}^n \alpha_i w_i \in W + U
-    \]
-    Let now \(v \in U \intersection W\), meaning
-    \begin{align*}
-        v &= \sum_{i=1}^n \alpha_i u_i = \sum_{i=1}^n \beta_i w_i \\
-        0 &= \sum_{i=1}^n \alpha_i u_i + \sum_{i=1}^m (-\beta_i)w_i
-    \end{align*}
-    for some \(\alpha_i, \beta_i \in \mathbb{F}\).
-    But \(\mathcal{L}\) is linearly independent, meaning \(\alpha, \beta = 0\)
-    and \(v=0\).
-\end{snippetproof}
-
-\begin{snippetproposition}{basis-have-same-cardinality}{Basis have same cardinality}
-    Let \(V\) be a finitely dimensional \vectorspace and \(\mathcal{B}_1, \mathcal{B}_2\) be two \basis
-    of \(V\). Then, \(\cardinality{\mathcal{B}_1} = \cardinality{\mathcal{B}_2}\).
-\end{snippetproposition}
-
-\begin{snippetproof}{basis-have-same-cardinality-proof}{basis-have-same-cardinality}{Basis have same cardinality}
-    Since \(\mathcal{B}_1\) is linearly independent and \(\mathcal{B}_2\)
-    generates the \vectorspace, \(\cardinality{\mathcal{B}_1} \leq \cardinality{\mathcal{B}_2}\).
-    Likewise, \(\cardinality{\mathcal{B}_1} \geq \cardinality{\mathcal{B}_2}\) meaning that they are equal.
-\end{snippetproof}
-
-\begin{snippetdefinition}{vector-space-dimension-definition}{Vector space dimension}
-    Let \(V\) be a \vectorspace. Then, its \emph{dimension} is defined as
-    \[
-        \text{dim}(V) \triangleq \cardinality{\mathcal{B}}
-    \]
-    where \(\mathcal{B}\) is a \basis.
-\end{snippetdefinition}
-
-\begin{snippetproposition}{linear-subspace-has-lower-dimension}{}
-    Let \(V\) be a \vectorspace and \(U\) a linear subspace of \(V\).
-    Then,
-    \[
-        \lineardim(U) \leq \lineardim(V)
+        \lambda(x_1,\ldots,x_n)
+        =
+        (\lambda x_1,\ldots,\lambda x_n).
     \]
 \end{snippetproposition}
 
-\begin{snippetproof}{linear-subspace-has-lower-dimension-proof}{linear-subspace-has-lower-dimension}{}
-    A \basis of \(U\) is linearly independent on \(V\), a \basis of \(V\) generates \(V\),
-    meaning that a \basis of \(U\) has at most as many elements as a \basis of \(V\).
-\end{snippetproof}
-
-\begin{snippetproposition}{linearly-independent-set-of-dim-is-basis}{}
-    Let \(V\) be a finitely dimensional \vectorspace where \(\lineardim(V) = n\).
-    Then, if \(\{v_1, v_2, \cdots, v_n\}\) is \linearlyindependent,
-    it is also a \basis.
-\end{snippetproposition}
-
-\begin{snippetproof}{linearly-independent-set-of-dim-is-basis-proof}{linearly-independent-set-of-dim-is-basis}{}
-    Since \(\{v_1, v_2, \cdots, v_n\}\) is \linearlyindependent, it can be expanded into a \basis.
-    However, since the size of every \basis is \(n\), such a collection is already a \basis.
-\end{snippetproof}
-
-\begin{snippetproposition}{generating-set-of-dim-is-basis}{}
-    Let \(V\) be a finitely dimensional \vectorspace and let \(\lineardim(V) = n\).
-    Then, if \(\{v_1, v_2, \cdots, v_n\}\) is a generating set of \(V\), it is also a \basis of \(V\).
-\end{snippetproposition}
-
-\begin{snippetproof}{generating-set-of-dim-is-basis-proof}{generating-set-of-dim-is-basis}{}
-    Since \(\{v_1, v_2, \cdots, v_n\}\) is a generating set, we can reduce it into a \basis.
-    However, since the size of every \basis is \(n\), such a collection is already a \basis.
-\end{snippetproof}
-
-\begin{snippettheorem}{grassman-formula-theorem}{Grassman Formula}
-    Let \(V\) be a finitely dimensional \vectorspace
-    and let \(W, U\) be linear subspaces of \(V\). Then,
+\begin{snippetproof}{field-cartesian-prod-vector-space-proof}{field-cartesian-prod-vector-space}{The fundamental model \(F^n\)}
+    The \vectorspace axioms follow componentwise from the corresponding \field
+    identities in \(\mathbb{F}\). For example,
     \[
-        \lineardim(W + U)
-        = \lineardim(W) + \lineardim(U) - \lineardim(U \intersection W)
+        (x_1,\ldots,x_n)+(y_1,\ldots,y_n)
+        =
+        (y_1,\ldots,y_n)+(x_1,\ldots,x_n)
     \]
-\end{snippettheorem}
-
-\begin{snippetproof}{grassman-formula-theorem-proof}{grassman-formula-theorem}{}
-    We first note that \(U, W \in U + W\) and \(U \intersection W \in U, W\).
-    In particular, \(U \intersection W\) is the smallest.
-    Let \(\mathcal{B}_1 = \{v_1, v_2, \cdots, v_n\}\) be a \basis for \(U \intersection W\),
-    meaning that \(\lineardim(U \intersection W) = n\). We note that \(\mathcal{B}_1\) is \linearlyindependent
-    in \(U\), meaning that it can be expanded into a \basis for \(U\)
+    follows from commutativity of addition in \(\mathbb{F}\). The zero \vector
+    is
     \[
-        \mathcal{B}_U = \mathcal{B}_1
-        \union \bigcup_i^j u_i
+        0=(0,\ldots,0),
     \]
-    meaning that \(\lineardim(U) = n + j\).
-    Likewise, we can do the same for \(W\)
+    and the additive inverse of \(x=(x_1,\ldots,x_n)\) is
     \[
-        \mathcal{B}_W = \mathcal{B}_1
-        \union \bigcup_i^k w_i
+        -x=(-x_1,\ldots,-x_n).
     \]
-    meaning that \(\lineardim(W) = n + k\).
-    We want to show that \(\mathcal{B} = \mathcal{B}_U + \mathcal{B}_W\) is a \basis
-    for \(U + W\).
-    We note that \(\mathcal{B}\) generates \(U + W\). Let \(u+w \in U+ W\)
-    \begin{align*}
-        u &= \sum_i^n \alpha_i v_i
-        + \sum_i^j \beta_i u_i \\
-        w &= \sum_i^n \gamma_i v_i
-        + \sum_i^k \delta_i w_i \\
-        u+v &= \sum_i^n (\alpha_i + \gamma_i) v_i
-        + \sum_i^j \beta u_i
-        + \sum_i^k \delta_i w_i
-    \end{align*}
-    We now need to show that it is \linearlyindependent.
-    Suppose
-    \begin{align*}
-        \sum_{i=1}^n \alpha_i v_i
-        + \sum_{i=1}^j \beta_i u_i
-        + \sum_{i=1}^k \delta_i w_i &= 0 \\
-        \underbrace{\sum_{i=1}^n \alpha_i v_i
-        + \sum_{i=1}^j \beta_i u_i}_{\in U}
-        + \underbrace{\sum_{i=1}^k \delta_i w_i}_{\in W} &= 0
-    \end{align*}
-    so both sides lie in \(U \intersection W = \linearspan(\mathcal{B}_1)\).
-    We know that \(\{v_i, u_i\}\) and \(\{v_i, w_i\}\) are linearly independent in \(U\) and \(W\) respectively,
-    meaning that \(\alpha_i = 0, \beta_i = 0\) and \(\delta_i = 0\) for every \(i\).
-    Since \(\mathcal{B}\) is a \basis,
-    \begin{align*}
-        \lineardim(U + W) &= n + j + k \\
-        &= n + j + n + j - n \\
-        &= \lineardim(W) + \lineardim(U) - \lineardim(U \intersection W)
-    \end{align*}
 \end{snippetproof}
+
+\begin{snippetexample}{empty-set-not-vector-space-example}{The empty \set}
+    The empty \set \(\emptyset\) is not a \vectorspace over any \field,
+    because every \vectorspace must contain an additive identity.
+\end{snippetexample}
+
+\begin{snippetexample}{zero-vector-space-example}{The zero vector space}
+    Let \(\mathbb{F}\) be a \field. The \set
+    \[
+        V=\{0\}
+    \]
+    is a \vectorspace over \(\mathbb{F}\) with operations
+    \[
+        0+0=0,
+        \qquad
+        \lambda0=0
+        \quad
+        \text{for every } \lambda\in\mathbb{F}.
+    \]
+    It is called the \emph{zero vector space}.
+\end{snippetexample}
+
+\begin{snippetexample}{sequence-vector-space-example}{Sequence space}
+    Let \(\mathbb{F}\) be a \field. The \set
+    \[
+        \mathbb{F}^{\naturalnumbers}
+        =
+        \left\{
+            \{x_n\}_{n\in\naturalnumbers}
+            \suchthat
+            x_n\in\mathbb{F}
+        \right\}
+    \]
+    of all sequences with values in \(\mathbb{F}\) is a \vectorspace over
+    \(\mathbb{F}\) with operations
+    \[
+        \{x_n\}+\{y_n\}=\{x_n+y_n\},
+        \qquad
+        \lambda\{x_n\}=\{\lambda x_n\}.
+    \]
+    The zero \vector is the constantly zero sequence.
+\end{snippetexample}
+
+\begin{snippetexample}{function-vector-space-example}{Function space}
+    Let \(A\neq\emptyset\) be a \set and let \(\mathbb{F}\) be a \field. The
+    \set
+    \[
+        \mathbb{F}^A
+        =
+        \{f\colon A\fromto\mathbb{F}\}
+    \]
+    of all \function[functions] from \(A\) to \(\mathbb{F}\) is a \vectorspace over
+    \(\mathbb{F}\) with pointwise operations
+    \[
+        (f+g)(a)=f(a)+g(a),
+        \qquad
+        (\lambda f)(a)=\lambda f(a).
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{polynomial-vector-space-example}{Polynomial space}
+    Let \(\mathbb{F}\) be a \field. The \set \(\mathbb{F}[x]\) of
+    \polynomial[polynomials] with coefficients in \(\mathbb{F}\) is a \vectorspace over
+    \(\mathbb{F}\). Addition is polynomial addition, and scalar
+    multiplication is multiplication of every coefficient by the \vsscalar.
+    The zero \vector is the zero \polynomial.
+\end{snippetexample}
+
+\begin{snippetexample}{matrix-vector-space-example}{Matrix space}
+    Let \(\mathbb{F}\) be a \field and let \(m,n\in\naturalnumbers\). The
+    \set
+    \[
+        \matrices_{m\times n}(\mathbb{F})
+    \]
+    of \(m\times n\) \matrix[matrices] with entries in \(\mathbb{F}\) is a \vectorspace
+    over \(\mathbb{F}\), with componentwise addition and scalar
+    multiplication:
+    \[
+        (A+B)_{ij}=A_{ij}+B_{ij},
+        \qquad
+        (\lambda A)_{ij}=\lambda A_{ij}.
+    \]
+\end{snippetexample}
+
+\begin{snippet}{complex-vector-spaces-as-real-vector-spaces}
+    Since \(\realnumbers\subseteq\complexnumbers\), every complex \vectorspace
+    can also be viewed as a real \vectorspace by restricting scalar
+    multiplication from complex scalars to real scalars. For example,
+    \(\complexnumbers\) is generated by \(1\) as a complex \vectorspace, but
+    it needs \(1\) and \(\mathrm{i}\) as generators when viewed as a real
+    \vectorspace.
+\end{snippet}
 
 \end{document}

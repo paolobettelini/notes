@@ -1,0 +1,486 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\title{Stellar}
+\id{linearalgebra-associated-matrices}
+\genpage
+
+\section{Matrix-associated maps}
+
+\begin{snippetdefinition}{matrix-associated-linear-map-definition}{Linear map associated to a matrix}
+    Let \(\mathbb{F}\) be a \field, and let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\). The
+    \emph{linear map associated to \(A\)} is the \function
+    \[
+        L_A\colon \mathbb{F}^n\fromto\mathbb{F}^m,
+        \qquad
+        L_A(x)=Ax.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{matrix-associated-linear-map-is-linear}{The associated map is linear}
+    Let \(\mathbb{F}\) be a \field, let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\), and let
+    \(L_A\colon \mathbb{F}^n\fromto\mathbb{F}^m\) be defined by
+    \(L_A(x)=Ax\). Then
+    \[
+        L_A\in\setoflineartransformations(\mathbb{F}^n,\mathbb{F}^m).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{matrix-associated-linear-map-is-linear-proof}{matrix-associated-linear-map-is-linear}{The associated map is linear}
+    For every \(x,y\in\mathbb{F}^n\),
+    \[
+        L_A(x+y)=A(x+y)=Ax+Ay=L_A(x)+L_A(y).
+    \]
+    For every \(\lambda\in\mathbb{F}\) and every \(x\in\mathbb{F}^n\),
+    \[
+        L_A(\lambda x)=A(\lambda x)=\lambda Ax=\lambda L_A(x).
+    \]
+    Thus \(L_A\) is linear.
+\end{snippetproof}
+
+\begin{snippetproposition}{matrix-associated-map-composition}{Composition and matrix multiplication}
+    Let \(\mathbb{F}\) be a \field, let
+    \[
+        A\in\matrices_{m\times n}(\mathbb{F}),
+        \qquad
+        B\in\matrices_{n\times p}(\mathbb{F}).
+    \]
+    Then
+    \[
+        L_{AB}=L_A\circ L_B.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{matrix-associated-map-composition-proof}{matrix-associated-map-composition}{Composition and matrix multiplication}
+    Both sides are \function[functions] from \(\mathbb{F}^p\) to
+    \(\mathbb{F}^m\). For every \(x\in\mathbb{F}^p\),
+    \[
+        (L_A\circ L_B)(x)=L_A(Bx)=A(Bx)=(AB)x=L_{AB}(x),
+    \]
+    where associativity of \matrix multiplication is used.
+\end{snippetproof}
+
+\section{Kernel and image}
+
+\begin{snippetproposition}{matrix-associated-kernel-and-image}{Kernel and image of the associated map}
+    Let \(\mathbb{F}\) be a \field, let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\), and let
+    \(L_A\colon \mathbb{F}^n\fromto\mathbb{F}^m\) be defined by
+    \(L_A(x)=Ax\). Then
+    \[
+        \ltkernel L_A
+        =
+        \{x\in\mathbb{F}^n\suchthat Ax=0\},
+    \]
+    and
+    \[
+        \ltimage L_A=\columnspace(A).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{matrix-associated-kernel-and-image-proof}{matrix-associated-kernel-and-image}{Kernel and image of the associated map}
+    By definition,
+    \[
+        x\in\ltkernel L_A
+        \Longleftrightarrow
+        L_A(x)=0
+        \Longleftrightarrow
+        Ax=0.
+    \]
+    For the image, let \(A^1,\ldots,A^n\) be the columns of \(A\). If
+    \(x=(x_1,\ldots,x_n)^t\), then
+    \[
+        L_A(x)=Ax=x_1A^1+\cdots+x_nA^n.
+    \]
+    Therefore the values of \(L_A\) are exactly the
+    \linearcombination[linear combinations] of the columns of \(A\), so
+    \[
+        \ltimage L_A=\linearspan(A^1,\ldots,A^n)=\columnspace(A).
+    \]
+\end{snippetproof}
+
+\begin{snippetcorollary}{matrix-associated-rank-nullity}{Rank-nullity for a matrix-associated map}
+    Let \(\mathbb{F}\) be a \field, and let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\). Then
+    \[
+        n=
+        \lineardim\{x\in\mathbb{F}^n\suchthat Ax=0\}
+        +
+        \mrank A.
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{matrix-associated-rank-nullity-proof}{matrix-associated-rank-nullity}{Rank-nullity for a matrix-associated map}
+    Apply rank-nullity to
+    \(L_A\colon\mathbb{F}^n\fromto\mathbb{F}^m\). By the previous
+    proposition, \(\ltkernel L_A=\{x\in\mathbb{F}^n\suchthat Ax=0\}\), and
+    \(\ltrank L_A=\mrank A\).
+\end{snippetproof}
+
+\section{Matrices of linear maps}
+
+\begin{snippetdefinition}{linear-map-associated-matrix-definition}{Matrix associated to a linear map}
+    Let \(V\) and \(W\) be finite-dimensional \vectorspace[vector spaces] over
+    a \field \(\mathbb{F}\). Let
+    \[
+        \mathcal{B}=\{v_1,\ldots,v_n\}
+    \]
+    be a \basis of \(V\), let
+    \[
+        \mathcal{C}=\{w_1,\ldots,w_m\}
+    \]
+    be a \basis of \(W\), and let
+    \(f\in\setoflineartransformations(V,W)\). For each
+    \(j\in\{1,\ldots,n\}\), write
+    \[
+        f(v_j)=a_{1j}w_1+\cdots+a_{mj}w_m.
+    \]
+    The \emph{matrix associated to \(f\) with respect to
+    \(\mathcal{B}\) and \(\mathcal{C}\)} is
+    \[
+        M(f,\mathcal{B},\mathcal{C})=(a_{ij})
+        \in\matrices_{m\times n}(\mathbb{F}).
+    \]
+    Its \(j\)-th column is the coordinate column
+    \[
+        [f(v_j)]_{\mathcal{C}}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippet}{associated-matrix-column-interpretation}
+    The columns of \(M(f,\mathcal{B},\mathcal{C})\) are the values of \(f\)
+    on the \basis of the domain, expressed in the \basis of the codomain.
+    This is the same principle as for a \matrix \(A\): the columns of \(A\)
+    are the images of the canonical \basis vectors under \(L_A\).
+\end{snippet}
+
+\begin{snippetproposition}{associated-matrix-linearity}{Linearity of the associated matrix construction}
+    Let \(V\) and \(W\) be finite-dimensional \vectorspace[vector spaces] over
+    a \field \(\mathbb{F}\), with \basis[bases] \(\mathcal{B}\) and
+    \(\mathcal{C}\). If
+    \[
+        f,g\in\setoflineartransformations(V,W),
+        \qquad
+        \lambda\in\mathbb{F},
+    \]
+    then
+    \[
+        M(f+g,\mathcal{B},\mathcal{C})
+        =
+        M(f,\mathcal{B},\mathcal{C})
+        +
+        M(g,\mathcal{B},\mathcal{C}),
+    \]
+    and
+    \[
+        M(\lambda f,\mathcal{B},\mathcal{C})
+        =
+        \lambda M(f,\mathcal{B},\mathcal{C}).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{associated-matrix-linearity-proof}{associated-matrix-linearity}{Linearity of the associated matrix construction}
+    Let
+    \[
+        M(f,\mathcal{B},\mathcal{C})=(a_{ij}),
+        \qquad
+        M(g,\mathcal{B},\mathcal{C})=(b_{ij}).
+    \]
+    Then
+    \[
+        f(v_j)=\sum_{i=1}^m a_{ij}w_i,
+        \qquad
+        g(v_j)=\sum_{i=1}^m b_{ij}w_i.
+    \]
+    Hence
+    \[
+        (f+g)(v_j)
+        =
+        \sum_{i=1}^m(a_{ij}+b_{ij})w_i,
+    \]
+    so the \(j\)-th column of \(M(f+g,\mathcal{B},\mathcal{C})\) is the sum
+    of the \(j\)-th columns of the two associated \matrix[matrices]. The scalar
+    identity follows similarly from
+    \[
+        (\lambda f)(v_j)=\sum_{i=1}^m(\lambda a_{ij})w_i.
+    \]
+\end{snippetproof}
+
+\begin{snippettheorem}{linear-maps-matrices-isomorphism}{Linear maps and matrices}
+    Let \(V\) and \(W\) be finite-dimensional \vectorspace[vector spaces] over
+    a \field \(\mathbb{F}\), with
+    \[
+        \lineardim V=n,
+        \qquad
+        \lineardim W=m.
+    \]
+    Fix \basis[bases] \(\mathcal{B}\) of \(V\) and \(\mathcal{C}\) of \(W\). The map
+    \[
+        \mathcal{M}_{\mathcal{B},\mathcal{C}}\colon
+        \setoflineartransformations(V,W)
+        \fromto
+        \matrices_{m\times n}(\mathbb{F}),
+        \qquad
+        f\mapsto M(f,\mathcal{B},\mathcal{C}),
+    \]
+    is a \linearisomorphism.
+\end{snippettheorem}
+
+\begin{snippetproof}{linear-maps-matrices-isomorphism-proof}{linear-maps-matrices-isomorphism}{Linear maps and matrices}
+    The previous proposition shows that
+    \(\mathcal{M}_{\mathcal{B},\mathcal{C}}\) is linear.
+
+    If \(M(f,\mathcal{B},\mathcal{C})=0\), then \(f(v_j)=0_W\) for every
+    \basis vector \(v_j\) of \(V\). Since a \lineartransformation is
+    determined by its values on a \basis, \(f=0\). Hence
+    \(\mathcal{M}_{\mathcal{B},\mathcal{C}}\) is \injective.
+
+    To prove surjectivity, let
+    \(A=(a_{ij})\in\matrices_{m\times n}(\mathbb{F})\). Define values on the
+    \basis \(\mathcal{B}\) by
+    \[
+        f(v_j)=a_{1j}w_1+\cdots+a_{mj}w_m.
+    \]
+    By linear extension from a \basis, there exists a unique
+    \lineartransformation \(f\colon V\fromto W\) with these values. By
+    construction,
+    \[
+        M(f,\mathcal{B},\mathcal{C})=A.
+    \]
+    Therefore \(\mathcal{M}_{\mathcal{B},\mathcal{C}}\) is \surjective and
+    hence a \linearisomorphism.
+\end{snippetproof}
+
+\begin{snippetcorollary}{linear-transformations-space-dimension}{Dimension of the space of linear maps}
+    Let \(V\) and \(W\) be finite-dimensional \vectorspace[vector spaces] over
+    a \field \(\mathbb{F}\), with
+    \[
+        \lineardim V=n,
+        \qquad
+        \lineardim W=m.
+    \]
+    Then
+    \[
+        \lineardim\setoflineartransformations(V,W)=mn.
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{linear-transformations-space-dimension-proof}{linear-transformations-space-dimension}{Dimension of the space of linear maps}
+    For any choice of \basis[bases] \(\mathcal{B}\) of \(V\) and \(\mathcal{C}\) of
+    \(W\),
+    \[
+        \setoflineartransformations(V,W)
+        \simeq
+        \matrices_{m\times n}(\mathbb{F}).
+    \]
+    The latter \vectorspace has dimension \(mn\).
+\end{snippetproof}
+
+\section{Composition}
+
+\begin{snippettheorem}{associated-matrix-composition-theorem}{Matrix of a composition}
+    Let \(U,V,W\) be finite-dimensional \vectorspace[vector spaces] over a
+    \field \(\mathbb{F}\). Let
+    \[
+        f\in\setoflineartransformations(U,V),
+        \qquad
+        g\in\setoflineartransformations(V,W).
+    \]
+    If \(\mathcal{B}\), \(\mathcal{C}\), and \(\mathcal{D}\) are \basis[bases] of
+    \(U\), \(V\), and \(W\), respectively, then
+    \[
+        M(g\circ f,\mathcal{B},\mathcal{D})
+        =
+        M(g,\mathcal{C},\mathcal{D})\,
+        M(f,\mathcal{B},\mathcal{C}).
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{associated-matrix-composition-theorem-proof}{associated-matrix-composition-theorem}{Matrix of a composition}
+    Write
+    \[
+        \mathcal{B}=\{u_1,\ldots,u_n\},
+        \qquad
+        \mathcal{C}=\{v_1,\ldots,v_h\},
+        \qquad
+        \mathcal{D}=\{w_1,\ldots,w_m\}.
+    \]
+    Let
+    \[
+        M(f,\mathcal{B},\mathcal{C})=(a_{ij}),
+        \qquad
+        M(g,\mathcal{C},\mathcal{D})=(b_{\ell i}).
+    \]
+    Then
+    \[
+        f(u_j)=\sum_{i=1}^{h}a_{ij}v_i,
+        \qquad
+        g(v_i)=\sum_{\ell=1}^{m}b_{\ell i}w_\ell.
+    \]
+    Therefore
+    \begin{align*}
+        (g\circ f)(u_j)
+        &=
+        g\left(\sum_{i=1}^{h}a_{ij}v_i\right)\\
+        &=
+        \sum_{\ell=1}^{m}
+        \left(\sum_{i=1}^{h}b_{\ell i}a_{ij}\right)w_\ell.
+    \end{align*}
+    The coefficient of \(w_\ell\) in this expression is the
+    \((\ell,j)\)-entry of the product
+    \(M(g,\mathcal{C},\mathcal{D})M(f,\mathcal{B},\mathcal{C})\).
+\end{snippetproof}
+
+\section{Endomorphisms}
+
+\begin{snippetproposition}{endomorphisms-square-matrices-algebra-isomorphism}{Endomorphisms and square matrices}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), with \(\lineardim V=n\). If \(\mathcal{B}\) is a
+    \basis of \(V\), then
+    \[
+        \operatorname{End}(V)\fromto\matrices_{n\times n}(\mathbb{F}),
+        \qquad
+        f\mapsto M(f,\mathcal{B},\mathcal{B}),
+    \]
+    is an isomorphism of \(\mathbb{F}\)-\algebra[algebras].
+\end{snippetproposition}
+
+\begin{snippetproof}{endomorphisms-square-matrices-algebra-isomorphism-proof}{endomorphisms-square-matrices-algebra-isomorphism}{Endomorphisms and square matrices}
+    It is a \linearisomorphism by the linear maps and matrices theorem. It
+    preserves products because, by the composition formula,
+    \[
+        M(g\circ f,\mathcal{B},\mathcal{B})
+        =
+        M(g,\mathcal{B},\mathcal{B})M(f,\mathcal{B},\mathcal{B}).
+    \]
+    It also sends \(\identityfunc_V\) to the identity \matrix
+    \(\identmatrix{n}\). Thus it is an isomorphism of
+    \(\mathbb{F}\)-\algebra[algebras].
+\end{snippetproof}
+
+\section{Rank}
+
+\begin{snippettheorem}{linear-map-associated-matrix-rank-theorem}{Rank and associated matrix}
+    Let \(V\) and \(W\) be finite-dimensional \vectorspace[vector spaces] over
+    a \field \(\mathbb{F}\), let
+    \(f\in\setoflineartransformations(V,W)\), and choose \basis[bases]
+    \(\mathcal{B}\) of \(V\) and \(\mathcal{C}\) of \(W\). Then
+    \[
+        \ltrank f=\mrank M(f,\mathcal{B},\mathcal{C}).
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{linear-map-associated-matrix-rank-theorem-proof}{linear-map-associated-matrix-rank-theorem}{Rank and associated matrix}
+    Let
+    \[
+        \mathcal{B}=\{v_1,\ldots,v_n\},
+        \qquad
+        A=M(f,\mathcal{B},\mathcal{C}).
+    \]
+    Let
+    \[
+        \Phi_{\mathcal{C}}\colon W\fromto\mathbb{F}^m
+    \]
+    be the coordinate \linearisomorphism with respect to the \basis
+    \(\mathcal{C}\). By definition of the associated \matrix, the \(j\)-th
+    column \(A^j\) of \(A\) is
+    \[
+        A^j=\Phi_{\mathcal{C}}(f(v_j)).
+    \]
+    Since
+    \[
+        \ltimage f=\linearspan(f(v_1),\ldots,f(v_n)),
+    \]
+    applying the isomorphism \(\Phi_{\mathcal{C}}\) gives
+    \[
+        \Phi_{\mathcal{C}}(\ltimage f)=\linearspan(A^1,\ldots,A^n)
+        =
+        \columnspace(A).
+    \]
+    Isomorphisms preserve dimension, so
+    \[
+        \ltrank f=\lineardim\ltimage f=\lineardim\columnspace(A)=\mrank A.
+    \]
+\end{snippetproof}
+
+\section{Dimensional consequences}
+
+\begin{snippetexample}{more-equations-than-unknowns-map-example}{More equations than unknowns}
+    Let \(A\in\matrices_{3\times2}(\realnumbers)\). Then
+    \[
+        L_A\colon\realnumbers^2\fromto\realnumbers^3.
+    \]
+    This \lineartransformation cannot be \surjective. Indeed, rank-nullity
+    gives
+    \[
+        \lineardim\ltimage L_A\leq 2,
+    \]
+    while \(\lineardim\realnumbers^3=3\). Hence there exists
+    \(b\in\realnumbers^3\) such that the system
+    \[
+        Ax=b
+    \]
+    has no solution.
+\end{snippetexample}
+
+\begin{snippetexample}{more-unknowns-than-equations-map-example}{More unknowns than equations}
+    Let \(A\in\matrices_{2\times3}(\realnumbers)\). Then
+    \[
+        L_A\colon\realnumbers^3\fromto\realnumbers^2.
+    \]
+    This \lineartransformation cannot be \injective. Indeed,
+    \[
+        3=\lineardim\ltkernel L_A+\lineardim\ltimage L_A,
+    \]
+    and
+    \[
+        \lineardim\ltimage L_A\leq 2.
+    \]
+    Hence \(\lineardim\ltkernel L_A\geq 1\), so
+    \[
+        \ltkernel L_A\neq\{0\}.
+    \]
+    In terms of linear systems, the homogeneous system
+    \[
+        Ax=0
+    \]
+    has nonzero solutions.
+\end{snippetexample}
+
+\begin{snippetexample}{injective-not-surjective-dimensional-example}{Injective but not surjective by dimension}
+    Consider
+    \[
+        f\colon\realnumbers^2\fromto\realnumbers^3,
+        \qquad
+        f(x,y)=(3x+2y,\ x-y,\ 2x+7y).
+    \]
+    The kernel is given by the system
+    \[
+        \begin{cases}
+            3x+2y=0,\\
+            x-y=0,\\
+            2x+7y=0.
+        \end{cases}
+    \]
+    From \(x-y=0\), we get \(x=y\). Substituting into
+    \(3x+2y=0\) gives \(5x=0\), so \(x=y=0\). Hence \(f\) is
+    \injective. However,
+    \[
+        \ltimage f
+        =
+        \linearspan\bigl((3,1,2),(2,-1,7)\bigr),
+    \]
+    so \(\lineardim\ltimage f\leq2\), and \(f\) is not \surjective onto
+    \(\realnumbers^3\).
+\end{snippetexample}
+
+\end{document}

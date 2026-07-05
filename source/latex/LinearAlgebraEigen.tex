@@ -8,56 +8,164 @@
 
 \begin{document}
 
+\title{Stellar}
 \id{eigen-values-and-vectors}
 \genpage
 
 \section{Eigenvalues and eigenvectors}
 
 \begin{snippetdefinition}{eigenvalues-eigenvectors-definition}{Eigenvalues and eigenvectors}
-    The \textit{eigenvectors} \(\vec{v}\) and \textit{eigenvalues} \(\lambda\) of a matrix \(M\)
-    are values such that
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\), and let
+    \(f\in\operatorname{End}(V)\). A scalar \(\lambda\in\mathbb{F}\) is an
+    \emph{eigenvalue} of \(f\) if there exists a nonzero \vector
+    \(v\in V\) such that
     \[
-        M\vec{v} = \lambda \vec{v}
+        f(v)=\lambda v.
     \]
-    for \(\vec{v}\neq \vec{0}\).
+    Such a \vector \(v\) is called an \emph{eigenvector} of \(f\)
+    associated with the eigenvalue \(\lambda\).
+
+    If \(A\in\matrices_{n\times n}(\mathbb{F})\), then an
+    \eigenvalue of \(A\) means an eigenvalue of the associated
+    endomorphism
+    \[
+        L_A\colon\mathbb{F}^n\fromto\mathbb{F}^n,
+        \qquad
+        L_A(x)=Ax.
+    \]
 \end{snippetdefinition}
 
-\plain{The null vectors are excluded as they are always a trivial solution.}
+\begin{snippet}{zero-vector-not-eigenvector}
+    The zero \vector is excluded from the definition of \eigenvector because
+    it satisfies
+    \[
+        f(0)=\lambda 0
+    \]
+    for every scalar \(\lambda\), and therefore carries no information about
+    the endomorphism.
+\end{snippet}
+
+\begin{snippetdefinition}{eigenspace-definition}{Eigenspace}
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\), let
+    \(f\in\operatorname{End}(V)\), and let \(\lambda\in\mathbb{F}\). The
+    \emph{eigenspace} of \(f\) associated with \(\lambda\) is
+    \[
+        V_\lambda
+        =
+        \{v\in V\suchthat f(v)=\lambda v\}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{eigenspace-kernel-characterization}{Eigenspace as a kernel}
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\), let
+    \(f\in\operatorname{End}(V)\), and let \(\lambda\in\mathbb{F}\). Then
+    \[
+        V_\lambda=\ltkernel(\lambda\identityfunc_V-f).
+    \]
+    In particular, \(V_\lambda\) is a \vectorspace, and \(\lambda\) is an
+    \eigenvalue of \(f\) if and only if
+    \[
+        V_\lambda\neq\{0\}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{eigenspace-kernel-characterization-proof}{eigenspace-kernel-characterization}{Eigenspace as a kernel}
+    For every \(v\in V\),
+    \[
+        v\in V_\lambda
+        \Longleftrightarrow
+        f(v)=\lambda v
+        \Longleftrightarrow
+        (\lambda\identityfunc_V-f)(v)=0.
+    \]
+    Hence \(V_\lambda=\ltkernel(\lambda\identityfunc_V-f)\). Kernels of
+    \lineartransformation[linear transformations] are \vectorspace[vector spaces].
+    Since \eigenvector[eigenvectors] are required to be nonzero, \(\lambda\) is an
+    \eigenvalue exactly when this kernel contains a nonzero vector.
+\end{snippetproof}
+
+\section{Matrices}
 
 \begin{snippettheorem}{computing-eigenvectors-and-eigenvalues-theorem}{Computing eigenvectors and eigenvalues}
-    Let \(M\) be a \matrix of size \(n\).
-    The \eigenvalue[eigenvalues] of \(M\) can be found by computing the values \(\lambda\) for which
-    \[ \det(M-\lambda \identmatrix{n}) = 0 \]
-    Given an \eigenvalue \(\lambda\), its corresponding \eigenvector[eigenvectors] are
-    obtained by solving the equation
-    \[ (M - \lambda \identmatrix{n})\vec{v} = \vec{0} \]
+    Let \(\mathbb{F}\) be a \field, and let
+    \(A\in\matrices_{n\times n}(\mathbb{F})\). A scalar
+    \(\lambda\in\mathbb{F}\) is an \eigenvalue of \(A\) if and only if
+    \[
+        \det(\lambda\identmatrix{n}-A)=0.
+    \]
+    For such a \(\lambda\), the associated \eigenvector[eigenvectors] are
+    the nonzero solutions of
+    \[
+        (\lambda\identmatrix{n}-A)v=0.
+    \]
 \end{snippettheorem}
 
 \begin{snippetproof}{computing-eigenvectors-and-eigenvalues-proof}{computing-eigenvectors-and-eigenvalues-theorem}{Computing eigenvectors and eigenvalues}
-    Let \(M\) be a \matrix of size \(n\).
-    We start with
+    A scalar \(\lambda\) is an \eigenvalue of \(A\) if and only if there is
+    a nonzero \(v\in\mathbb{F}^n\) such that
     \[
-        M\vec{v} = \lambda \vec{v}
+        Av=\lambda v.
     \]
-    On the left-hand side, we can replace the scalar multiplier \(\lambda\) with
-    a scaled identity matrix
-    \begin{align*}
-        M\vec{v} &= \lambda \identmatrix{n} \vec{v} \\
-        M\vec{v} - \lambda \identmatrix{n} \vec{v} &= \vec{0} \\
-        (M - \lambda \identmatrix{n})\vec{v} &= \vec{0}
-    \end{align*}
-    Since \(\vec{v} \neq \vec{0}\), the equation is only satisfied
-    when \(M - \lambda \identmatrix{n}\) squishes the space into a low dimension. That is,
-    \[ \det(M-\lambda \identmatrix{n}) = 0 \]
-    Given a \(\lambda\) solution, we can plug it back into
-    \[ (M - \lambda \identmatrix{n})\vec{v} = \vec{0} \] to find the values for \(\vec{v}\).
+    This is equivalent to
+    \[
+        (\lambda\identmatrix{n}-A)v=0.
+    \]
+    Thus \(\lambda\) is an eigenvalue if and only if the homogeneous system
+    \[
+        (\lambda\identmatrix{n}-A)v=0
+    \]
+    has a nonzero solution. For a square \matrix, this happens if and only if
+    \[
+        \det(\lambda\identmatrix{n}-A)=0.
+    \]
 \end{snippetproof}
 
-\begin{snippetdefinition}{spectral-radius-definition}{Spectral radius}
-    Let \(A \in \matrices_{n\times n}(F)\) and \(\sigma\) be the \set of \eigenvalue[eigenvalues] of \(A\).
-    The \emph{spectral radius} of \(A\) is defined as
+\begin{snippetexample}{first-eigenvalue-computation-example}{A first eigenvalue computation}
+    Let
     \[
-        \rho(A) \triangleq \max_{\lambda\in\sigma} |\lambda|
+        B=
+        \begin{pmatrix}
+            2 & 6\\
+            1 & 3
+        \end{pmatrix}
+        \in\matrices_{2\times2}(\realnumbers).
+    \]
+    The eigenvalue equation is
+    \[
+        \det(\lambda\identmatrix{2}-B)=0.
+    \]
+    Since
+    \[
+        \det
+        \begin{pmatrix}
+            \lambda-2 & -6\\
+            -1 & \lambda-3
+        \end{pmatrix}
+        =
+        \lambda^2-5\lambda
+        =
+        \lambda(\lambda-5),
+    \]
+    the \eigenvalue[eigenvalues] are \(0\) and \(5\).
+
+    For \(\lambda=0\), the \eigenspace is
+    \[
+        \linearspan((-3,1)).
+    \]
+    For \(\lambda=5\), the \eigenspace is
+    \[
+        \linearspan((2,1)).
+    \]
+    The \eigenvector[eigenvectors] \((-3,1)\) and \((2,1)\) are
+    \linearlyindependent, so they form a \basis of \(\realnumbers^2\).
+\end{snippetexample}
+
+\begin{snippetdefinition}{spectral-radius-definition}{Spectral radius}
+    Let \(A\in\matrices_{n\times n}(\complexnumbers)\), and let
+    \(\lambda_1,\ldots,\lambda_r\) be the distinct \eigenvalue[eigenvalues] of \(A\). The
+    \emph{spectral radius} of \(A\) is
+    \[
+        \rho(A)=\max\{|\lambda_1|,\ldots,|\lambda_r|\}.
     \]
 \end{snippetdefinition}
 

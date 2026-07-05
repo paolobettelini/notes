@@ -1,0 +1,199 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{linearalgebra-euclidean-affine-spaces}
+\genpage
+
+\section{Euclidean affine spaces}
+
+\begin{snippetdefinition}{euclidean-affine-space-definition}{Euclidean affine space}
+    A \emph{Euclidean affine space} is a real \affinespace
+    \(\mathcal{A}\) whose direction \vectorspace \(V\) is endowed with an
+    \innerproduct
+    \[
+        \langle\cdot,\cdot\rangle.
+    \]
+\end{snippetdefinition}
+
+\begin{snippet}{euclidean-affine-space-intuition}
+    The \innerproduct is not placed on the points of \(\mathcal{A}\), but on
+    its direction \vectorspace. This is enough to measure lengths of vectors
+    \(\vec{pq}\), and therefore distances between points \(p,q\in
+    \mathcal{A}\), without choosing an origin.
+\end{snippet}
+
+\begin{snippetdefinition}{affine-euclidean-distance-definition}{Affine Euclidean distance}
+    Let \(\mathcal{A}\) be a \euclideanaffinespace with direction
+    \innerproductspace \(V\). The \emph{Euclidean distance} between
+    \(p,q\in\mathcal{A}\) is
+    \[
+        d(p,q)=\|\vec{pq}\|.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{affine-euclidean-distance-is-metric}{The affine Euclidean distance is a metric}
+    Let \(\mathcal{A}\) be a \euclideanaffinespace. The function
+    \[
+        d\colon\mathcal{A}\cartesianprod\mathcal{A}\fromto\realnumbers,
+        \qquad
+        d(p,q)=\|\vec{pq}\|
+    \]
+    is a distance function on \(\mathcal{A}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{affine-euclidean-distance-is-metric-proof}{affine-euclidean-distance-is-metric}{The affine Euclidean distance is a metric}
+    For every \(p,q\in\mathcal{A}\),
+    \[
+        d(p,q)=\|\vec{pq}\|\geq 0.
+    \]
+    Also,
+    \[
+        d(p,q)=0
+        \Longleftrightarrow
+        \|\vec{pq}\|=0
+        \Longleftrightarrow
+        \vec{pq}=0
+        \Longleftrightarrow
+        p=q.
+    \]
+    Symmetry follows from
+    \[
+        d(q,p)=\|\vec{qp}\|=\|-\vec{pq}\|=\|\vec{pq}\|=d(p,q).
+    \]
+    Finally, by the Chasles relation and the triangle inequality for the
+    norm,
+    \[
+        d(p,r)
+        =
+        \|\vec{pr}\|
+        =
+        \|\vec{pq}+\vec{qr}\|
+        \leq
+        \|\vec{pq}\|+\|\vec{qr}\|
+        =
+        d(p,q)+d(q,r).
+    \]
+\end{snippetproof}
+
+\section{Affine isometries}
+
+\begin{snippetdefinition}{affine-isometry-definition}{Affine isometry}
+    Let \(\mathcal{A}\) and \(\mathcal{B}\) be
+    \euclideanaffinespace[Euclidean affine spaces]. An \affinemap
+    \[
+        \varphi\colon\mathcal{A}\fromto\mathcal{B}
+    \]
+    is an \emph{affine isometry} if it preserves distances:
+    \[
+        d(\varphi(p),\varphi(q))=d(p,q)
+    \]
+    for every \(p,q\in\mathcal{A}\).
+\end{snippetdefinition}
+
+\begin{snippettheorem}{affine-isometry-linear-part-criterion}{Criterion through the linear part}
+    Let \(\mathcal{A}\) and \(\mathcal{B}\) be
+    \euclideanaffinespace[Euclidean affine spaces], with direction
+    \innerproductspace[inner product spaces] \(V\) and \(W\). Let
+    \[
+        \varphi\colon\mathcal{A}\fromto\mathcal{B}
+    \]
+    be an \affinemap. Then \(\varphi\) is an \affineisometry if and only if
+    its \associatedlinearmap
+    \[
+        \vec{\varphi}\colon V\fromto W
+    \]
+    is a \linearisometry, equivalently
+    \[
+        \|\vec{\varphi}(v)\|=\|v\|
+    \]
+    for every \(v\in V\).
+\end{snippettheorem}
+
+\begin{snippetproof}{affine-isometry-linear-part-criterion-proof}{affine-isometry-linear-part-criterion}{Criterion through the linear part}
+    For every \(p,q\in\mathcal{A}\),
+    \[
+        \vec{\varphi(p)\varphi(q)}
+        =
+        \vec{\varphi}(\vec{pq}).
+    \]
+    Hence
+    \[
+        d(\varphi(p),\varphi(q))
+        =
+        \|\vec{\varphi(p)\varphi(q)}\|
+        =
+        \|\vec{\varphi}(\vec{pq})\|.
+    \]
+    Since
+    \[
+        d(p,q)=\|\vec{pq}\|,
+    \]
+    the map \(\varphi\) preserves distances if and only if
+    \[
+        \|\vec{\varphi}(\vec{pq})\|=\|\vec{pq}\|
+    \]
+    for every \(p,q\in\mathcal{A}\). Every \(v\in V\) can be written as
+    \(v=\vec{pq}\) for suitable \(p,q\in\mathcal{A}\), so this condition is
+    equivalent to
+    \[
+        \|\vec{\varphi}(v)\|=\|v\|
+    \]
+    for every \(v\in V\). By the characterization of
+    \linearisometry[linear isometries], this is equivalent to
+    \(\vec{\varphi}\) being a \linearisometry.
+\end{snippetproof}
+
+\begin{snippetcorollary}{canonical-affine-isometries-coordinate-criterion}{Affine isometries in canonical coordinates}
+    In the canonical \euclideanaffinespace
+    \[
+        \mathbb{A}^n(\realnumbers),
+    \]
+    an \affinemap
+    \[
+        \varphi(x)=Ax+b
+    \]
+    is an \affineisometry if and only if \(A\) is an
+    \orthogonalmatrix, equivalently
+    \[
+        A^\transpose A=\identmatrix{n}.
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{canonical-affine-isometries-coordinate-criterion-proof}{canonical-affine-isometries-coordinate-criterion}{Affine isometries in canonical coordinates}
+    The \associatedlinearmap of \(\varphi(x)=Ax+b\) is
+    \[
+        x\mapsto Ax.
+    \]
+    By the linear part criterion, \(\varphi\) is an \affineisometry if and
+    only if this linear map is a \linearisometry of \(\realnumbers^n\). By
+    the matrix criterion for \linearisometry[linear isometries], this is
+    equivalent to
+    \[
+        A^\transpose A=\identmatrix{n}.
+    \]
+\end{snippetproof}
+
+\begin{snippetcorollary}{translations-are-affine-isometries}{Translations are affine isometries}
+    Let \(\mathcal{A}\) be a \euclideanaffinespace. Every
+    \translationmap
+    \[
+        t_u\colon\mathcal{A}\fromto\mathcal{A}
+    \]
+    is an \affineisometry.
+\end{snippetcorollary}
+
+\begin{snippetproof}{translations-are-affine-isometries-proof}{translations-are-affine-isometries}{Translations are affine isometries}
+    The \associatedlinearmap of a \translationmap is
+    \(\identityfunc_V\). Since \(\identityfunc_V\) is a \linearisometry, the
+    linear part criterion implies that the translation is an
+    \affineisometry.
+\end{snippetproof}
+
+\end{document}

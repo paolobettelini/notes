@@ -1,0 +1,552 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\title{Stellar}
+\id{linearalgebra-kernel-image}
+\genpage
+
+\section{Kernel}
+
+\begin{snippetdefinition}{linear-transformation-kernel-definition}{Kernel of a linear transformation}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\), and let
+    \(f\in\setoflineartransformations(V,W)\). The \emph{kernel} of \(f\) is
+    the \set
+    \[
+        \ltkernel f
+        =
+        \{v\in V\suchthat f(v)=0_W\}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexample}{linear-transformation-basic-kernels-example}{Basic kernels}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\). If
+    \[
+        0\colon V\fromto W
+    \]
+    is the zero \lineartransformation, then
+    \[
+        \ltkernel 0=V.
+    \]
+    If
+    \[
+        \identityfunc_V\colon V\fromto V
+    \]
+    is the identity \lineartransformation, then
+    \[
+        \ltkernel \identityfunc_V=\{0_V\}.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{complex-linear-map-kernel-example}{A kernel in \(\mathbb{C}^3\)}
+    Consider the \lineartransformation
+    \[
+        f\colon \complexnumbers^3\fromto\complexnumbers,
+        \qquad
+        f(z_1,z_2,z_3)=z_1+\mathrm{i}z_2+2\mathrm{i}z_3.
+    \]
+    Then
+    \[
+        \ltkernel f
+        =
+        \{(z_1,z_2,z_3)\in\complexnumbers^3
+        \suchthat
+        z_1+\mathrm{i}z_2+2\mathrm{i}z_3=0\}.
+    \]
+    The equation gives
+    \[
+        z_1=-\mathrm{i}z_2-2\mathrm{i}z_3,
+    \]
+    so
+    \[
+        \ltkernel f
+        =
+        \linearspan\bigl((-\mathrm{i},1,0),(-2\mathrm{i},0,1)\bigr).
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{polynomial-derivative-kernel-example}{The kernel of the derivative}
+    Let
+    \[
+        D\colon \realnumbers[x]\fromto\realnumbers[x],
+        \qquad
+        D(p)=p',
+    \]
+    be the derivative \lineartransformation. Then
+    \[
+        \ltkernel D
+        =
+        \{p\in\realnumbers[x]\suchthat p'=0\}
+    \]
+    is the \set of constant \polynomial[polynomials].
+\end{snippetexample}
+
+\begin{snippetexample}{backward-shift-kernel-example}{Kernel of the backward shift}
+    Let \(V=\mathbb{F}^{\naturalnumbers}\), and let
+    \[
+        b_s\colon V\fromto V,
+        \qquad
+        b_s(x_1,x_2,x_3,\ldots)=(x_2,x_3,x_4,\ldots).
+    \]
+    Then
+    \[
+        \ltkernel b_s
+        =
+        \{(x_1,0,0,\ldots)\suchthat x_1\in\mathbb{F}\}
+        =
+        \linearspan\bigl((1,0,0,\ldots)\bigr).
+    \]
+\end{snippetexample}
+
+\begin{snippetproposition}{kernel-of-linear-transformation-is-subspace}{The kernel is a subspace}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\), and let
+    \(f\in\setoflineartransformations(V,W)\). Then \(\ltkernel f\) is a
+    linear subspace of \(V\).
+\end{snippetproposition}
+
+\begin{snippetproof}{kernel-of-linear-transformation-is-subspace-proof}{kernel-of-linear-transformation-is-subspace}{The kernel is a subspace}
+    Since \(f(0_V)=0_W\), we have \(0_V\in\ltkernel f\).
+
+    If \(u,v\in\ltkernel f\), then \(f(u)=0_W\) and \(f(v)=0_W\). By
+    linearity,
+    \[
+        f(u+v)=f(u)+f(v)=0_W+0_W=0_W,
+    \]
+    so \(u+v\in\ltkernel f\).
+
+    If \(\lambda\in\mathbb{F}\) and \(v\in\ltkernel f\), then
+    \[
+        f(\lambda v)=\lambda f(v)=\lambda 0_W=0_W,
+    \]
+    so \(\lambda v\in\ltkernel f\). By the linear subspace criterion,
+    \(\ltkernel f\) is a linear subspace of \(V\).
+\end{snippetproof}
+
+\begin{snippetproposition}{linear-transformation-injective-kernel-criterion}{Injectivity and kernel}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\), and let
+    \(f\in\setoflineartransformations(V,W)\). Then \(f\) is
+    \injective if and only if
+    \[
+        \ltkernel f=\{0_V\}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{linear-transformation-injective-kernel-criterion-proof}{linear-transformation-injective-kernel-criterion}{Injectivity and kernel}
+    \begin{iffproof}
+        \item Suppose that \(f\) is \injective. Since \(f(0_V)=0_W\), the
+        zero \vector belongs to \(\ltkernel f\). If \(v\in\ltkernel f\), then
+        \(f(v)=0_W=f(0_V)\). Injectivity gives \(v=0_V\). Hence
+        \(\ltkernel f=\{0_V\}\).
+
+        \item Suppose that \(\ltkernel f=\{0_V\}\). Let \(u,v\in V\) and
+        assume \(f(u)=f(v)\). Then
+        \[
+            f(u-v)=f(u)-f(v)=0_W,
+        \]
+        so \(u-v\in\ltkernel f\). Hence \(u-v=0_V\), and therefore
+        \(u=v\). Thus \(f\) is \injective.
+    \end{iffproof}
+\end{snippetproof}
+
+\section{Image}
+
+\begin{snippetdefinition}{linear-transformation-image-definition}{Image of a linear transformation}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\), and let
+    \(f\in\setoflineartransformations(V,W)\). The \emph{image} of \(f\) is
+    the \set
+    \[
+        \ltimage f
+        =
+        \{w\in W\suchthat \exists v\in V,\ f(v)=w\}.
+    \]
+    Equivalently,
+    \[
+        \ltimage f=f(V).
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexample}{linear-transformation-basic-images-example}{Basic images}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\). If \(0\colon V\fromto W\) is the zero
+    \lineartransformation, then
+    \[
+        \ltimage 0=\{0_W\}.
+    \]
+    If \(\identityfunc_V\colon V\fromto V\) is the identity
+    \lineartransformation, then
+    \[
+        \ltimage \identityfunc_V=V.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{r2-r3-linear-map-image-example}{An image in \(\mathbb{R}^3\)}
+    Consider the \lineartransformation
+    \[
+        f\colon \realnumbers^2\fromto\realnumbers^3,
+        \qquad
+        f(x,y)=(2x,5y,x+y).
+    \]
+    Since
+    \[
+        f(x,y)=x(2,0,1)+y(0,5,1),
+    \]
+    we have
+    \[
+        \ltimage f
+        =
+        \linearspan\bigl((2,0,1),(0,5,1)\bigr)
+        \subseteq\realnumbers^3.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{derivative-image-example}{The image of the derivative}
+    Let
+    \[
+        D\colon \realnumbers[x]\fromto\realnumbers[x],
+        \qquad
+        D(p)=p',
+    \]
+    be the derivative \lineartransformation. Then
+    \[
+        \ltimage D=\realnumbers[x],
+    \]
+    because every real \polynomial has a polynomial primitive.
+\end{snippetexample}
+
+\begin{snippetproposition}{linear-transformation-image-is-subspace}{The image is a subspace}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\), and let
+    \(f\in\setoflineartransformations(V,W)\). Then \(\ltimage f\) is a
+    linear subspace of \(W\).
+\end{snippetproposition}
+
+\begin{snippetproof}{linear-transformation-image-is-subspace-proof}{linear-transformation-image-is-subspace}{The image is a subspace}
+    Since \(f(0_V)=0_W\), we have \(0_W\in\ltimage f\).
+
+    Let \(w_1,w_2\in\ltimage f\). Then there exist \(v_1,v_2\in V\) such
+    that \(w_1=f(v_1)\) and \(w_2=f(v_2)\). By linearity,
+    \[
+        w_1+w_2=f(v_1)+f(v_2)=f(v_1+v_2),
+    \]
+    so \(w_1+w_2\in\ltimage f\).
+
+    If \(\lambda\in\mathbb{F}\) and \(w\in\ltimage f\), choose
+    \(v\in V\) with \(w=f(v)\). Then
+    \[
+        \lambda w=\lambda f(v)=f(\lambda v),
+    \]
+    so \(\lambda w\in\ltimage f\). By the linear subspace criterion,
+    \(\ltimage f\) is a linear subspace of \(W\).
+\end{snippetproof}
+
+\begin{snippetproposition}{linear-transformation-surjective-image-criterion}{Surjectivity and image}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\), and let
+    \(f\in\setoflineartransformations(V,W)\). Then \(f\) is
+    \surjective if and only if
+    \[
+        \ltimage f=W.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{linear-transformation-surjective-image-criterion-proof}{linear-transformation-surjective-image-criterion}{Surjectivity and image}
+    The \function \(f\) is \surjective precisely when every \(w\in W\) is
+    equal to \(f(v)\) for at least one \(v\in V\). This is exactly the
+    assertion that every \(w\in W\) belongs to \(\ltimage f\), namely
+    \(\ltimage f=W\).
+\end{snippetproof}
+
+\section{Invertibility}
+
+\begin{snippetdefinition}{invertible-linear-transformation-definition}{Invertible linear transformation}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\). A \lineartransformation
+    \(f\in\setoflineartransformations(V,W)\) is \emph{invertible} if there
+    exists \(g\in\setoflineartransformations(W,V)\) such that
+    \[
+        g\circ f=\identityfunc_V
+        \qquad
+        \text{and}
+        \qquad
+        f\circ g=\identityfunc_W.
+    \]
+    In that case \(g\) is called the inverse of \(f\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{linear-transformation-inverse-uniqueness}{Uniqueness of the inverse}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\). If
+    \(f\in\setoflineartransformations(V,W)\) is invertible, then its inverse
+    is unique.
+\end{snippetproposition}
+
+\begin{snippetproof}{linear-transformation-inverse-uniqueness-proof}{linear-transformation-inverse-uniqueness}{Uniqueness of the inverse}
+    Let \(g_1,g_2\in\setoflineartransformations(W,V)\) be inverses of \(f\).
+    Then
+    \[
+        g_1\circ f=\identityfunc_V,
+        \qquad
+        f\circ g_2=\identityfunc_W.
+    \]
+    Hence
+    \[
+        g_1
+        =
+        g_1\circ\identityfunc_W
+        =
+        g_1\circ(f\circ g_2)
+        =
+        (g_1\circ f)\circ g_2
+        =
+        \identityfunc_V\circ g_2
+        =
+        g_2.
+    \]
+\end{snippetproof}
+
+\begin{snippettheorem}{linear-transformation-invertible-iff-bijective}{Invertibility criterion}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\), and let
+    \(f\in\setoflineartransformations(V,W)\). Then \(f\) is invertible if and
+    only if \(f\) is both \injective and \surjective.
+\end{snippettheorem}
+
+\begin{snippetproof}{linear-transformation-invertible-iff-bijective-proof}{linear-transformation-invertible-iff-bijective}{Invertibility criterion}
+    \begin{iffproof}
+        \item Suppose that \(f\) is invertible, and let \(f^\inversefunction\)
+        be its inverse. If \(f(v_1)=f(v_2)\), then applying
+        \(f^\inversefunction\) gives \(v_1=v_2\), so \(f\) is \injective.
+        If \(w\in W\), then
+        \[
+            w=(f\circ f^\inversefunction)(w)=f(f^\inversefunction(w)),
+        \]
+        so \(w\in\ltimage f\). Hence \(f\) is \surjective.
+
+        \item Suppose that \(f\) is \injective and \surjective. For each
+        \(w\in W\), there is a unique \(v\in V\) such that \(f(v)=w\). Define
+        \(g\colon W\fromto V\) by assigning to \(w\) this unique \(v\).
+        Then \(f\circ g=\identityfunc_W\) and \(g\circ f=\identityfunc_V\).
+
+        It remains to show that \(g\) is linear. Let \(w_1,w_2\in W\). Since
+        \[
+            f(g(w_1+w_2))=w_1+w_2
+        \]
+        and
+        \[
+            f(g(w_1)+g(w_2))=f(g(w_1))+f(g(w_2))=w_1+w_2,
+        \]
+        injectivity of \(f\) gives
+        \[
+            g(w_1+w_2)=g(w_1)+g(w_2).
+        \]
+        Similarly, for \(\lambda\in\mathbb{F}\),
+        \[
+            f(g(\lambda w))=\lambda w
+            =
+            f(\lambda g(w)),
+        \]
+        so \(g(\lambda w)=\lambda g(w)\). Therefore \(g\) is linear, and
+        \(f\) is invertible.
+    \end{iffproof}
+\end{snippetproof}
+
+\begin{snippetexample}{multiplication-by-x-squared-not-invertible-example}{Multiplication by \(x^2\)}
+    The \lineartransformation
+    \[
+        M_{x^2}\colon \realnumbers[x]\fromto\realnumbers[x],
+        \qquad
+        M_{x^2}(p)=x^2p,
+    \]
+    is \injective because \(x^2p=0\) implies \(p=0\). It is not
+    \surjective because, for instance,
+    \[
+        x-1\notin\ltimage M_{x^2}.
+    \]
+    Hence \(M_{x^2}\) is not invertible.
+\end{snippetexample}
+
+\begin{snippetexample}{backward-shift-not-invertible-example}{The backward shift is not invertible}
+    Let \(V=\mathbb{F}^{\naturalnumbers}\), and let
+    \[
+        b_s(x_1,x_2,x_3,\ldots)=(x_2,x_3,x_4,\ldots).
+    \]
+    This \lineartransformation \(b_s\colon V\fromto V\) is \surjective,
+    since
+    \[
+        (y_1,y_2,y_3,\ldots)=b_s(0,y_1,y_2,y_3,\ldots).
+    \]
+    It is not \injective because
+    \[
+        \ltkernel b_s=\linearspan\bigl((1,0,0,\ldots)\bigr)\neq\{0\}.
+    \]
+    Hence \(b_s\) is not invertible.
+\end{snippetexample}
+
+\section{Isomorphisms}
+
+\begin{snippetdefinition}{linear-isomorphism-definition}{Linear isomorphism}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over the same \field
+    \(\mathbb{F}\). A \emph{linear isomorphism} from \(V\) to \(W\) is an
+    invertible \lineartransformation
+    \[
+        f\colon V\fromto W.
+    \]
+    If there exists a \linearisomorphism from \(V\) to \(W\), then \(V\) and
+    \(W\) are called isomorphic, and one writes
+    \[
+        V\simeq W.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexample}{basis-coordinate-isomorphism-example}{Coordinates give an isomorphism}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), and let
+    \[
+        \mathcal{B}=\{v_1,\ldots,v_n\}
+    \]
+    be a \basis of \(V\). The coordinate \lineartransformation
+    \[
+        \Phi_{\mathcal{B}}\colon V\fromto\mathbb{F}^n
+    \]
+    defined by
+    \[
+        \Phi_{\mathcal{B}}(a_1v_1+\cdots+a_nv_n)=(a_1,\ldots,a_n)
+    \]
+    is a \linearisomorphism. It is \injective because only the zero
+    \vector has all coordinates equal to \(0\), and it is \surjective because
+    each \((a_1,\ldots,a_n)\in\mathbb{F}^n\) is the coordinate vector of
+    \(a_1v_1+\cdots+a_nv_n\).
+\end{snippetexample}
+
+\begin{snippettheorem}{finite-dimensional-vector-spaces-classification}{Classification of finite-dimensional vector spaces}
+    Let \(V\) and \(W\) be finite-dimensional \vectorspace[vector spaces] over
+    the same \field \(\mathbb{F}\). Then
+    \[
+        V\simeq W
+        \qquad\Longleftrightarrow\qquad
+        \lineardim V=\lineardim W.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{finite-dimensional-vector-spaces-classification-proof}{finite-dimensional-vector-spaces-classification}{Classification of finite-dimensional vector spaces}
+    \begin{iffproof}
+        \item Suppose \(f\colon V\fromto W\) is a \linearisomorphism. Since
+        \(V\) is finite-dimensional, let
+        \[
+            \mathcal{B}=\{v_1,\ldots,v_n\}
+        \]
+        be a \basis of \(V\). We show that
+        \[
+            f(\mathcal{B})=\{f(v_1),\ldots,f(v_n)\}
+        \]
+        is a \basis of \(W\).
+
+        If
+        \[
+            \lambda_1f(v_1)+\cdots+\lambda_nf(v_n)=0_W,
+        \]
+        then
+        \[
+            f(\lambda_1v_1+\cdots+\lambda_nv_n)=0_W=f(0_V).
+        \]
+        Since \(f\) is \injective,
+        \[
+            \lambda_1v_1+\cdots+\lambda_nv_n=0_V.
+        \]
+        The \basis \(\mathcal{B}\) is \linearlyindependent, so all
+        coefficients vanish. Thus \(f(\mathcal{B})\) is
+        \linearlyindependent.
+
+        If \(w\in W\), then \(w=f(v)\) for some \(v\in V\). Writing
+        \(v=a_1v_1+\cdots+a_nv_n\), linearity gives
+        \[
+            w=a_1f(v_1)+\cdots+a_nf(v_n).
+        \]
+        Thus \(f(\mathcal{B})\) generates \(W\). Therefore
+        \(f(\mathcal{B})\) is a \basis of \(W\), so
+        \(\lineardim W=n=\lineardim V\).
+
+        \item Suppose \(\lineardim V=\lineardim W=n\). Let
+        \[
+            \mathcal{B}=\{v_1,\ldots,v_n\},
+            \qquad
+            \mathcal{C}=\{w_1,\ldots,w_n\}
+        \]
+        be \basis[bases] of \(V\) and \(W\). By the linear extension theorem,
+        there is a unique \lineartransformation \(f\colon V\fromto W\) such
+        that \(f(v_i)=w_i\) for every \(i\). Its inverse is the unique
+        \lineartransformation \(g\colon W\fromto V\) with \(g(w_i)=v_i\) for
+        every \(i\). Therefore \(V\simeq W\).
+    \end{iffproof}
+\end{snippetproof}
+
+\begin{snippettheorem}{finite-dimensional-injectivity-surjectivity-equivalence}{Injectivity, surjectivity and dimension}
+    Let \(V\) and \(W\) be finite-dimensional \vectorspace[vector spaces] over
+    a \field \(\mathbb{F}\), and assume
+    \[
+        \lineardim V=\lineardim W.
+    \]
+    For \(f\in\setoflineartransformations(V,W)\), the following are
+    equivalent:
+    \begin{enumerate}
+        \item \(f\) is invertible;
+        \item \(f\) is \injective;
+        \item \(f\) is \surjective.
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{finite-dimensional-injectivity-surjectivity-equivalence-proof}{finite-dimensional-injectivity-surjectivity-equivalence}{Injectivity, surjectivity and dimension}
+    An invertible \lineartransformation is \injective and \surjective.
+    Conversely, a \lineartransformation that is both \injective and
+    \surjective is invertible.
+
+    It remains to show that injectivity and surjectivity imply one another
+    under the dimension hypothesis. Put
+    \(\lineardim V=\lineardim W=n\), and let
+    \[
+        \mathcal{B}=\{v_1,\ldots,v_n\}
+    \]
+    be a \basis of \(V\).
+
+    If \(f\) is \injective, then
+    \[
+        f(\mathcal{B})=\{f(v_1),\ldots,f(v_n)\}
+    \]
+    is \linearlyindependent in \(W\). Indeed, if
+    \[
+        \lambda_1f(v_1)+\cdots+\lambda_nf(v_n)=0_W,
+    \]
+    then injectivity forces
+    \[
+        \lambda_1v_1+\cdots+\lambda_nv_n=0_V,
+    \]
+    so all \(\lambda_i\) vanish. Since \(W\) has dimension \(n\), the
+    independent collection \(f(\mathcal{B})\) is a \basis of \(W\). Hence
+    \(\ltimage f=W\), so \(f\) is \surjective.
+
+    If \(f\) is \surjective, then \(f(\mathcal{B})\) generates \(W\). It has
+    \(n\) vectors in an \(n\)-dimensional \vectorspace, so it is a \basis of
+    \(W\). If \(v\in\ltkernel f\), write
+    \[
+        v=\lambda_1v_1+\cdots+\lambda_nv_n.
+    \]
+    Then
+    \[
+        0_W=f(v)=\lambda_1f(v_1)+\cdots+\lambda_nf(v_n).
+    \]
+    Since \(f(\mathcal{B})\) is a \basis of \(W\), all \(\lambda_i\) vanish,
+    so \(v=0_V\). Hence \(\ltkernel f=\{0_V\}\), and \(f\) is \injective.
+\end{snippetproof}
+
+\end{document}

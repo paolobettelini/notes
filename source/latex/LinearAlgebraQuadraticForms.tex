@@ -1,0 +1,1060 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{linearalgebra-quadratic-forms}
+\genpage
+
+\section{Quadratic forms}
+
+\begin{snippetdefinition}{symmetric-bilinear-form-definition}{Symmetric bilinear form}
+    Let \(V\) be a real \vectorspace. A \bilinearmap
+    \[
+        B\colon V\cartesianprod V\fromto\realnumbers
+    \]
+    is a \emph{symmetric bilinear form} if
+    \[
+        B(u,v)=B(v,u)
+    \]
+    for every \(u,v\in V\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{quadratic-form-definition}{Quadratic form}
+    Let \(V\) be a real \vectorspace. A \emph{quadratic form} on \(V\) is a
+    \function
+    \[
+        Q\colon V\fromto\realnumbers
+    \]
+    such that:
+    \begin{enumerate}
+        \item \(Q(\lambda v)=\lambda^2Q(v)\) for every \(v\in V\) and
+            every \(\lambda\in\realnumbers\);
+        \item the map
+            \[
+                B_Q\colon V\cartesianprod V\fromto\realnumbers,
+                \qquad
+                B_Q(u,v)=\frac{Q(u+v)-Q(u)-Q(v)}{2}
+            \]
+            is bilinear.
+    \end{enumerate}
+    The bilinear map \(B_Q\) is called the
+    \emph{associated bilinear form} of \(Q\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{associated-bilinear-form-is-symmetric}{The associated bilinear form is symmetric}
+    Let \(V\) be a real \vectorspace, and let \(Q\colon V\fromto\realnumbers\)
+    be a \quadraticform with \associatedbilinearform \(B_Q\). Then \(B_Q\) is
+    a \symmetricbilinearform.
+\end{snippetproposition}
+
+\begin{snippetproof}{associated-bilinear-form-is-symmetric-proof}{associated-bilinear-form-is-symmetric}{The associated bilinear form is symmetric}
+    For every \(u,v\in V\),
+    \[
+        B_Q(u,v)
+        =
+        \frac{Q(u+v)-Q(u)-Q(v)}{2}
+        =
+        \frac{Q(v+u)-Q(v)-Q(u)}{2}
+        =
+        B_Q(v,u).
+    \]
+\end{snippetproof}
+
+\begin{snippetexample}{inner-product-square-norm-quadratic-form}{Squared norm as a quadratic form}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be a real \innerproductspace. The
+    map
+    \[
+        Q\colon V\fromto\realnumbers,
+        \qquad
+        Q(v)=\|v\|^2
+    \]
+    is a \quadraticform. Its \associatedbilinearform is the
+    \innerproduct:
+    \[
+        B_Q(u,v)=\langle u,v\rangle.
+    \]
+    Indeed,
+    \[
+        Q(\lambda v)=\|\lambda v\|^2=\lambda^2\|v\|^2=\lambda^2Q(v),
+    \]
+    and
+    \[
+        \frac{\|u+v\|^2-\|u\|^2-\|v\|^2}{2}
+        =
+        \langle u,v\rangle.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{spacetime-type-quadratic-form-example}{A spacetime-type quadratic form}
+    Fix \(c\in\realnumbers\). The map
+    \[
+        Q\colon\realnumbers^4\fromto\realnumbers,
+        \qquad
+        Q(x,y,z,t)=c^2t^2-x^2-y^2-z^2
+    \]
+    is a \quadraticform. Its \associatedbilinearform is
+    \[
+        B_Q\bigl((x,y,z,t),(x',y',z',t')\bigr)
+        =
+        c^2tt'-xx'-yy'-zz'.
+    \]
+    This form takes positive, negative, and zero values on nonzero vectors.
+\end{snippetexample}
+
+\begin{snippetexample}{polynomial-evaluation-quadratic-form-example}{Quadratic form from polynomial evaluations}
+    Let \(V=\mathcal{P}_3(\realnumbers)\). The map
+    \[
+        Q\colon V\fromto\realnumbers,
+        \qquad
+        Q(p)=p(0)^2+p(1)^2+p(2)^2
+    \]
+    is a \quadraticform. Its \associatedbilinearform is
+    \[
+        B_Q(p,q)=p(0)q(0)+p(1)q(1)+p(2)q(2).
+    \]
+    However, \(Q\) is not \positivedefiniteform[positive definite], because
+    the nonzero polynomial
+    \[
+        p(x)=x(x-1)(x-2)
+    \]
+    satisfies \(Q(p)=0\).
+\end{snippetexample}
+
+\begin{snippetexample}{symmetric-matrix-quadratic-form-example}{Quadratic form associated to a symmetric matrix}
+    Let \(S\in\matrices_{n\times n}(\realnumbers)\) be a
+    \symmetricmatrix. Define
+    \[
+        Q_S\colon\realnumbers^n\fromto\realnumbers,
+        \qquad
+        Q_S(x)=x^\transpose Sx.
+    \]
+    Then \(Q_S\) is a \quadraticform. Its \associatedbilinearform is
+    \[
+        B_{Q_S}(x,y)=x^\transpose Sy.
+    \]
+\end{snippetexample}
+
+\begin{snippetproof}{symmetric-matrix-quadratic-form-example-proof}{symmetric-matrix-quadratic-form-example}{Quadratic form associated to a symmetric matrix}
+    Since \(S\) is symmetric,
+    \[
+        Q_S(x+y)-Q_S(x)-Q_S(y)
+        =
+        x^\transpose Sy+y^\transpose Sx
+        =
+        2x^\transpose Sy.
+    \]
+    Hence
+    \[
+        B_{Q_S}(x,y)
+        =
+        \frac{Q_S(x+y)-Q_S(x)-Q_S(y)}{2}
+        =
+        x^\transpose Sy.
+    \]
+\end{snippetproof}
+
+\begin{snippetexample}{trace-square-quadratic-form-example}{Trace of the square}
+    On \(\matrices_{n\times n}(\realnumbers)\), define
+    \[
+        Q(A)=\trace(A^2).
+    \]
+    Then \(Q\) is a \quadraticform. Its \associatedbilinearform is
+    \[
+        B_Q(A,C)=\trace(AC).
+    \]
+    Indeed,
+    \[
+        Q(A+C)-Q(A)-Q(C)
+        =
+        \trace(AC+CA)
+        =
+        2\trace(AC).
+    \]
+\end{snippetexample}
+
+\section{Sign}
+
+\begin{snippetdefinition}{quadratic-form-sign-definition}{Sign of a quadratic form}
+    Let \(V\) be a real \vectorspace, and let
+    \(Q\colon V\fromto\realnumbers\) be a \quadraticform.
+    \begin{enumerate}
+        \item \(Q\) is \emph{positive definite} if \(Q(v)>0\) for every
+            nonzero \(v\in V\).
+        \item \(Q\) is \emph{positive semidefinite} if \(Q(v)\geq 0\) for
+            every \(v\in V\), and there exists a nonzero \(v\in V\) such
+            that \(Q(v)=0\).
+        \item \(Q\) is \emph{indefinite} if there exist \(v,w\in V\) such
+            that \(Q(v)<0<Q(w)\).
+        \item \(Q\) is \emph{negative semidefinite} if \(Q(v)\leq 0\) for
+            every \(v\in V\), and there exists a nonzero \(v\in V\) such
+            that \(Q(v)=0\).
+        \item \(Q\) is \emph{negative definite} if \(Q(v)<0\) for every
+            nonzero \(v\in V\).
+    \end{enumerate}
+\end{snippetdefinition}
+
+\begin{snippetexample}{quadratic-form-sign-examples}{Signs of the previous examples}
+    The \quadraticform \(Q(v)=\|v\|^2\) associated to a real
+    \innerproduct is \positivedefiniteform[positive definite].
+
+    The \quadraticform
+    \[
+        Q(x,y,z,t)=c^2t^2-x^2-y^2-z^2
+    \]
+    is \indefiniteform[indefinite].
+
+    The \quadraticform
+    \[
+        Q(p)=p(0)^2+p(1)^2+p(2)^2
+    \]
+    on \(\mathcal{P}_3(\realnumbers)\) is
+    \positivesemidefiniteform[positive semidefinite].
+
+    The \quadraticform \(Q(A)=\trace(A^2)\) on
+    \(\matrices_{n\times n}(\realnumbers)\) is
+    \indefiniteform[indefinite] when \(n\geq 2\). For example, on
+    \(\matrices_{2\times 2}(\realnumbers)\),
+    \[
+        Q(\identmatrix{2})=2>0,
+    \]
+    while, for
+    \[
+        R=
+        \begin{pmatrix}
+            0 & -1\\
+            1 & 0
+        \end{pmatrix},
+    \]
+    we have \(R^2=-\identmatrix{2}\), and therefore \(Q(R)=-2<0\).
+\end{snippetexample}
+
+\section{Bilinear correspondence}
+
+\begin{snippetproposition}{quadratic-form-bilinear-correspondence}{Quadratic forms and symmetric bilinear forms}
+    Let \(V\) be a real \vectorspace. If \(Q\colon V\fromto\realnumbers\) is
+    a \quadraticform and \(B_Q\) is its \associatedbilinearform, then
+    \[
+        Q(v)=B_Q(v,v)
+    \]
+    for every \(v\in V\).
+
+    Conversely, if \(B\colon V\cartesianprod V\fromto\realnumbers\) is a
+    \symmetricbilinearform, then
+    \[
+        Q_B(v)=B(v,v)
+    \]
+    defines a \quadraticform on \(V\), and the
+    \associatedbilinearform of \(Q_B\) is \(B\).
+\end{snippetproposition}
+
+\begin{snippetproof}{quadratic-form-bilinear-correspondence-proof}{quadratic-form-bilinear-correspondence}{Quadratic forms and symmetric bilinear forms}
+    If \(Q\) is a \quadraticform, then
+    \[
+        B_Q(v,v)
+        =
+        \frac{Q(2v)-Q(v)-Q(v)}{2}
+        =
+        \frac{4Q(v)-2Q(v)}{2}
+        =
+        Q(v).
+    \]
+
+    Conversely, let \(B\) be a \symmetricbilinearform and define
+    \(Q_B(v)=B(v,v)\). Then
+    \[
+        Q_B(\lambda v)
+        =
+        B(\lambda v,\lambda v)
+        =
+        \lambda^2B(v,v)
+        =
+        \lambda^2Q_B(v).
+    \]
+    The \associatedbilinearform of \(Q_B\) is
+    \[
+        \widetilde{B}(u,v)
+        =
+        \frac{Q_B(u+v)-Q_B(u)-Q_B(v)}{2}.
+    \]
+    Since \(B\) is bilinear and symmetric,
+    \[
+        \widetilde{B}(u,v)
+        =
+        \frac{B(u,v)+B(v,u)}{2}
+        =
+        B(u,v).
+    \]
+    Hence \(\widetilde{B}=B\).
+\end{snippetproof}
+
+\section{Associated matrix}
+
+\begin{snippetdefinition}{quadratic-form-associated-matrix-definition}{Matrix associated to a quadratic form}
+    Let \(V\) be a finite-dimensional real \vectorspace, let
+    \(Q\colon V\fromto\realnumbers\) be a \quadraticform, and let \(B_Q\) be
+    the \associatedbilinearform of \(Q\). If
+    \[
+        \mathcal{B}=\{v_1,\ldots,v_n\}
+    \]
+    is a \basis of \(V\), the \emph{matrix associated to \(Q\) with respect
+    to \(\mathcal{B}\)} is
+    \[
+        S_{\mathcal{B}}(Q)=(s_{ij})\in\matrices_{n\times n}(\realnumbers),
+        \qquad
+        s_{ij}=B_Q(v_i,v_j).
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{quadratic-form-associated-matrix-is-symmetric}{Associated matrices of real quadratic forms are symmetric}
+    Let \(V\) be a finite-dimensional real \vectorspace, let
+    \(Q\colon V\fromto\realnumbers\) be a \quadraticform, and let
+    \(\mathcal{B}\) be a \basis of \(V\). Then the
+    \quadraticformmatrix of \(Q\) with respect to \(\mathcal{B}\) is a
+    \symmetricmatrix.
+\end{snippetproposition}
+
+\begin{snippetproof}{quadratic-form-associated-matrix-is-symmetric-proof}{quadratic-form-associated-matrix-is-symmetric}{Associated matrices of real quadratic forms are symmetric}
+    If \(S_{\mathcal{B}}(Q)=(s_{ij})\), then
+    \[
+        s_{ij}=B_Q(v_i,v_j)=B_Q(v_j,v_i)=s_{ji}
+    \]
+    for every \(i,j\). Therefore
+    \[
+        S_{\mathcal{B}}(Q)^\transpose=S_{\mathcal{B}}(Q).
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{quadratic-form-coordinate-formula}{Coordinate formula for a quadratic form}
+    Let \(V\) be a finite-dimensional real \vectorspace, let
+    \(Q\colon V\fromto\realnumbers\) be a \quadraticform, let
+    \(\mathcal{B}=\{v_1,\ldots,v_n\}\) be a \basis of \(V\), and let
+    \(S_{\mathcal{B}}(Q)\) be the \quadraticformmatrix of \(Q\). If
+    \[
+        v=x_1v_1+\cdots+x_nv_n
+    \]
+    and
+    \[
+        [v]_{\mathcal{B}}=
+        \begin{pmatrix}
+            x_1\\
+            \vdots\\
+            x_n
+        \end{pmatrix},
+    \]
+    then
+    \[
+        Q(v)
+        =
+        [v]_{\mathcal{B}}^\transpose
+        S_{\mathcal{B}}(Q)
+        [v]_{\mathcal{B}}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{quadratic-form-coordinate-formula-proof}{quadratic-form-coordinate-formula}{Coordinate formula for a quadratic form}
+    Since \(Q(v)=B_Q(v,v)\) and \(B_Q\) is bilinear,
+    \[
+        Q(v)
+        =
+        B_Q\left(\sum_{i=1}^n x_iv_i,\sum_{j=1}^n x_jv_j\right)
+        =
+        \sum_{i,j=1}^n x_ix_jB_Q(v_i,v_j).
+    \]
+    This is exactly the \matrix product
+    \[
+        [v]_{\mathcal{B}}^\transpose
+        S_{\mathcal{B}}(Q)
+        [v]_{\mathcal{B}}.
+    \]
+\end{snippetproof}
+
+\section{Congruence}
+
+\includesnpt{similar-matrices-definition}
+\includesnpt{congruent-matrices-definition}
+
+\begin{snippetnote}{similarity-and-congruence-are-different}{Similarity and congruence are different}
+    \similarmatrices[Similarity] and \congruentmatrices[congruence] are
+    different relations. The identity \matrix is similar only to itself,
+    because
+    \[
+        P^{-1}\identmatrix{n}P=\identmatrix{n}
+    \]
+    for every invertible \(P\in\matrices_{n\times n}(\realnumbers)\).
+
+    On the other hand, many \matrix[matrices] different from \(\identmatrix{n}\) are
+    congruent to \(\identmatrix{n}\). For example, if
+    \[
+        P=
+        \begin{pmatrix}
+            2 & 0\\
+            0 & 3
+        \end{pmatrix},
+    \]
+    then
+    \[
+        P^\transpose\identmatrix{2}P
+        =
+        \begin{pmatrix}
+            4 & 0\\
+            0 & 9
+        \end{pmatrix}.
+    \]
+\end{snippetnote}
+
+\begin{snippetdefinition}{congruent-quadratic-forms-definition}{Congruent quadratic forms}
+    Let \(V\) be a finite-dimensional real \vectorspace. Two
+    \quadraticform[quadratic forms]
+    \[
+        Q,Q'\colon V\fromto\realnumbers
+    \]
+    are \emph{congruent} if there exist two \basis[bases]
+    \(\mathcal{B}\) and \(\mathcal{B}'\) of \(V\) such that the
+    \quadraticformmatrix[associated matrices]
+    \[
+        S_{\mathcal{B}}(Q),
+        \qquad
+        S_{\mathcal{B}'}(Q')
+    \]
+    are \congruentmatrices.
+\end{snippetdefinition}
+
+\begin{snippet}{quadratic-forms-congruence-goals}
+    Congruence is the natural relation for studying real
+    \quadraticform[quadratic forms]: changing coordinates changes the
+    associated \matrix by congruence. The main goals are to determine the
+    \quadraticformsign of a \quadraticform and to classify
+    \quadraticform[quadratic forms] up to congruence.
+\end{snippet}
+
+\section{Diagonalization}
+
+\begin{snippetproposition}{quadratic-form-diagonal-form}{Diagonal form of a real quadratic form}
+    Let \(V\) be a finite-dimensional real \vectorspace, and let
+    \(Q\colon V\fromto\realnumbers\) be a \quadraticform. There exists a
+    \basis
+    \[
+        \mathcal{E}=\{e_1,\ldots,e_n\}
+    \]
+    of \(V\) such that, for every
+    \[
+        v=a_1e_1+\cdots+a_ne_n,
+    \]
+    one has
+    \[
+        Q(v)=\lambda_1a_1^2+\cdots+\lambda_na_n^2,
+    \]
+    where \(\lambda_1,\ldots,\lambda_n\) are the
+    \eigenvalue[eigenvalues] of a \quadraticformmatrix of \(Q\).
+\end{snippetproposition}
+
+\begin{snippetproof}{quadratic-form-diagonal-form-proof}{quadratic-form-diagonal-form}{Diagonal form of a real quadratic form}
+    Let \(\mathcal{B}\) be a \basis of \(V\), and let
+    \(S=S_{\mathcal{B}}(Q)\). The \matrix \(S\) is symmetric. By the real
+    \spectraltheorem, there exists an \orthogonalmatrix \(P\) such that
+    \[
+        P^\transpose SP=D,
+    \]
+    where \(D=\operatorname{diag}(\lambda_1,\ldots,\lambda_n)\).
+
+    Interpret \(P\) as a change-of-basis \matrix. In the resulting
+    \basis \(\mathcal{E}\), the \quadraticformmatrix of \(Q\) is \(D\).
+    Therefore, if
+    \[
+        [v]_{\mathcal{E}}=
+        \begin{pmatrix}
+            a_1\\
+            \vdots\\
+            a_n
+        \end{pmatrix},
+    \]
+    then
+    \[
+        Q(v)
+        =
+        [v]_{\mathcal{E}}^\transpose
+        D
+        [v]_{\mathcal{E}}
+        =
+        \lambda_1a_1^2+\cdots+\lambda_na_n^2.
+    \]
+\end{snippetproof}
+
+\begin{snippettheorem}{sylvester-normal-form}{Sylvester normal form}
+    Let \(V\) be a finite-dimensional real \vectorspace, and let
+    \(Q\colon V\fromto\realnumbers\) be a \quadraticform. There exists a
+    \basis of \(V\) in which
+    \[
+        Q(x_1,\ldots,x_n)
+        =
+        x_1^2+\cdots+x_p^2
+        -
+        x_{p+1}^2-\cdots-x_{p+q}^2,
+    \]
+    where \(p,q\geq 0\). The remaining coordinates, if any, have
+    coefficient \(0\). Equivalently, in a suitable \basis, the
+    \quadraticformmatrix of \(Q\) is
+    \[
+        \begin{pmatrix}
+            \identmatrix{p} & 0 & 0\\
+            0 & -\identmatrix{q} & 0\\
+            0 & 0 & 0
+        \end{pmatrix}.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{sylvester-normal-form-proof}{sylvester-normal-form}{Sylvester normal form}
+    By the diagonal form proposition, there is a \basis in which
+    \[
+        Q(x_1,\ldots,x_n)=\lambda_1x_1^2+\cdots+\lambda_nx_n^2.
+    \]
+    Reorder the \basis so that
+    \[
+        \lambda_1,\ldots,\lambda_p>0,
+        \qquad
+        \lambda_{p+1},\ldots,\lambda_{p+q}<0,
+    \]
+    and
+    \[
+        \lambda_{p+q+1}=\cdots=\lambda_n=0.
+    \]
+    For each positive \(\lambda_i\), replace \(e_i\) by
+    \(e_i/\sqrt{\lambda_i}\). For each negative \(\lambda_i\), replace
+    \(e_i\) by \(e_i/\sqrt{-\lambda_i}\). The positive coefficients become
+    \(1\), the negative coefficients become \(-1\), and the zero
+    coefficients remain zero.
+\end{snippetproof}
+
+\section{Sylvester theorem}
+
+\begin{snippetdefinition}{positive-negative-subspaces-definition}{Positive and negative subspaces}
+    Let \(V\) be a real \vectorspace, and let
+    \(Q\colon V\fromto\realnumbers\) be a \quadraticform. A subspace
+    \(U\subseteq V\) is \emph{positive for \(Q\)} if the restriction
+    \(Q|_U\) is \positivedefiniteform[positive definite], that is,
+    \[
+        Q(u)>0
+    \]
+    for every nonzero \(u\in U\). It is \emph{negative for \(Q\)} if
+    \(Q|_U\) is \negativedefiniteform[negative definite], that is,
+    \[
+        Q(u)<0
+    \]
+    for every nonzero \(u\in U\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{quadratic-form-maximal-positive-negative-dimensions}{Maximal positive and negative dimensions}
+    Let \(V\) be a finite-dimensional real \vectorspace, and let
+    \(Q\colon V\fromto\realnumbers\) be a \quadraticform. Define
+    \[
+        m_+(Q)
+        =
+        \max\{\lineardim U \suchthat U\subseteq V,\ Q|_U
+        \text{ is positive definite}\},
+    \]
+    and
+    \[
+        m_-(Q)
+        =
+        \max\{\lineardim U \suchthat U\subseteq V,\ Q|_U
+        \text{ is negative definite}\}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippettheorem}{sylvester-law-of-inertia}{Sylvester's law of inertia}
+    Let \(V\) be a finite-dimensional real \vectorspace, and let
+    \(Q\colon V\fromto\realnumbers\) be a \quadraticform. Suppose that, in
+    some \basis, \(Q\) is represented by the diagonal \matrix
+    \[
+        \operatorname{diag}(\lambda_1,\ldots,\lambda_n).
+    \]
+    Let
+    \[
+        p=\#\{i \suchthat \lambda_i>0\},
+        \qquad
+        q=\#\{i \suchthat \lambda_i<0\},
+        \qquad
+        r=\#\{i \suchthat \lambda_i=0\}.
+    \]
+    Then \(p,q,r\) do not depend on the chosen \basis. Equivalently, two
+    congruent real \symmetricmatrix[symmetric matrices] have the same numbers
+    of positive, negative, and zero \eigenvalue[eigenvalues].
+\end{snippettheorem}
+
+\begin{snippetproof}{sylvester-law-of-inertia-proof}{sylvester-law-of-inertia}{Sylvester's law of inertia}
+    We prove that the number \(p\) of positive coefficients is intrinsic.
+    The proof for \(q\) is the same applied to \(-Q\), and then
+    \(r=n-p-q\).
+
+    Work in a diagonal \basis and reorder it so that
+    \[
+        Q(x_1,\ldots,x_n)
+        =
+        \lambda_1x_1^2+\cdots+\lambda_nx_n^2,
+    \]
+    with
+    \[
+        \lambda_1,\ldots,\lambda_p>0,
+        \qquad
+        \lambda_{p+1},\ldots,\lambda_n\leq 0.
+    \]
+    Let
+    \[
+        U_+
+        =
+        \{(x_1,\ldots,x_n) \suchthat x_{p+1}=\cdots=x_n=0\}.
+    \]
+    Then \(\lineardim U_+=p\), and \(Q\) is positive definite on \(U_+\).
+    Hence \(m_+(Q)\geq p\).
+
+    Conversely, let \(U\subseteq V\) be a subspace with \(\lineardim U>p\).
+    Consider
+    \[
+        \pi_+\colon U\fromto\realnumbers^p,
+        \qquad
+        \pi_+(x_1,\ldots,x_n)=(x_1,\ldots,x_p).
+    \]
+    Since \(\lineardim U>p=\lineardim\realnumbers^p\), the map \(\pi_+\)
+    is not injective. Hence there exists a nonzero \(u\in U\) such that
+    \(\pi_+(u)=0\). Thus
+    \[
+        u=(0,\ldots,0,x_{p+1},\ldots,x_n),
+    \]
+    and
+    \[
+        Q(u)
+        =
+        \lambda_{p+1}x_{p+1}^2+\cdots+\lambda_nx_n^2
+        \leq 0.
+    \]
+    Therefore \(Q\) is not positive definite on \(U\). Every positive
+    subspace has dimension at most \(p\), so \(m_+(Q)\leq p\).
+
+    Hence \(m_+(Q)=p\). Since \(m_+(Q)\) is defined intrinsically from
+    \(Q\), the number \(p\) is independent of the diagonal \basis. Applying
+    the same argument to \(-Q\) proves the invariance of \(q\), and then
+    \(r=n-p-q\) is invariant as well.
+\end{snippetproof}
+
+\begin{snippetcorollary}{quadratic-forms-congruence-classification}{Classification by congruence}
+    Every finite-dimensional real \quadraticform is congruent to a unique
+    form of the type
+    \[
+        x_1^2+\cdots+x_p^2
+        -
+        x_{p+1}^2-\cdots-x_{p+q}^2,
+    \]
+    up to reordering coordinates. Equivalently, every real
+    \symmetricmatrix is congruent to a unique \matrix of the form
+    \[
+        \begin{pmatrix}
+            \identmatrix{p} & 0 & 0\\
+            0 & -\identmatrix{q} & 0\\
+            0 & 0 & 0_{r\times r}
+        \end{pmatrix},
+    \]
+    where \(p,q,r\) are determined by the \quadraticform.
+\end{snippetcorollary}
+
+\begin{snippetproof}{quadratic-forms-congruence-classification-proof}{quadratic-forms-congruence-classification}{Classification by congruence}
+    Existence follows from the \sylvesternormalform. Uniqueness follows from
+    the \sylvesterlaw: \(p\) is the maximal dimension of a positive
+    subspace, \(q\) is the maximal dimension of a negative subspace, and
+    \(r=n-p-q\).
+\end{snippetproof}
+
+\begin{snippetdefinition}{inertia-indices-definition}{Indices of inertia}
+    Let \(V\) be a finite-dimensional real \vectorspace, and let
+    \(Q\colon V\fromto\realnumbers\) be a \quadraticform. If the
+    \sylvesternormalform of \(Q\) is
+    \[
+        x_1^2+\cdots+x_p^2
+        -
+        x_{p+1}^2-\cdots-x_{p+q}^2,
+    \]
+    with \(r\) remaining zero coefficients, then the triple
+    \[
+        (p,q,r)
+    \]
+    is called the \emph{signature} or the \emph{indices of inertia} of
+    \(Q\). The number \(p\) is the positive index, \(q\) is the negative
+    index, and \(r\) is the null index.
+\end{snippetdefinition}
+
+\section{Matrix representations}
+
+\begin{snippetexample}{polynomial-quadratic-form-associated-matrix-example}{Quadratic form on polynomials}
+    Let \(V=\mathcal{P}_2(\realnumbers)\), and define
+    \[
+        Q\colon V\fromto\realnumbers,
+        \qquad
+        Q(p)=p(0)p(1)+p(-1)p(2).
+    \]
+    The \associatedbilinearform of \(Q\) is
+    \[
+        B_Q(p,q)
+        =
+        \frac{
+            p(0)q(1)+q(0)p(1)+p(-1)q(2)+p(2)q(-1)
+        }{2}.
+    \]
+    With respect to the \basis
+    \[
+        \mathcal{B}=\{1,x,x^2\},
+    \]
+    the \quadraticformmatrix of \(Q\) is
+    \[
+        S_{\mathcal{B}}(Q)
+        =
+        \begin{pmatrix}
+            2 & 1 & 3\\
+            1 & -2 & -1\\
+            3 & -1 & 4
+        \end{pmatrix}.
+    \]
+\end{snippetexample}
+
+\begin{snippetproof}{polynomial-quadratic-form-associated-matrix-example-proof}{polynomial-quadratic-form-associated-matrix-example}{Quadratic form on polynomials}
+    If \(\mathcal{B}=\{v_1,v_2,v_3\}=\{1,x,x^2\}\), then
+    \[
+        S_{\mathcal{B}}(Q)=(B_Q(v_i,v_j))_{ij}.
+    \]
+    For instance,
+    \[
+        B_Q(1,1)=\frac{1+1+1+1}{2}=2,
+    \]
+    and
+    \[
+        B_Q(x^2,x)=\frac{-4+2}{2}=-1.
+    \]
+    Computing all entries gives the displayed symmetric \matrix.
+\end{snippetproof}
+
+\begin{snippetproposition}{quadratic-form-matrix-change-of-basis}{Change of basis for associated matrices}
+    Let \(V\) be a finite-dimensional real \vectorspace, let
+    \(Q\colon V\fromto\realnumbers\) be a \quadraticform, and let
+    \(\mathcal{B}\) and \(\mathcal{E}\) be \basis[bases] of \(V\). If
+    \[
+        A=M(\identityfunc_V,\mathcal{E},\mathcal{B}),
+    \]
+    then
+    \[
+        S_{\mathcal{E}}(Q)
+        =
+        A^\transpose S_{\mathcal{B}}(Q)A.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{quadratic-form-matrix-change-of-basis-proof}{quadratic-form-matrix-change-of-basis}{Change of basis for associated matrices}
+    The \matrix \(A\) transforms coordinates from \(\mathcal{E}\) to
+    \(\mathcal{B}\):
+    \[
+        [v]_{\mathcal{B}}=A[v]_{\mathcal{E}}.
+    \]
+    Therefore
+    \begin{align*}
+        Q(v)
+        &=
+        [v]_{\mathcal{B}}^\transpose
+        S_{\mathcal{B}}(Q)
+        [v]_{\mathcal{B}}\\
+        &=
+        (A[v]_{\mathcal{E}})^\transpose
+        S_{\mathcal{B}}(Q)
+        (A[v]_{\mathcal{E}})\\
+        &=
+        [v]_{\mathcal{E}}^\transpose
+        A^\transpose S_{\mathcal{B}}(Q)A
+        [v]_{\mathcal{E}}.
+    \end{align*}
+    By uniqueness of the \quadraticformmatrix in the \basis
+    \(\mathcal{E}\), we get
+    \[
+        S_{\mathcal{E}}(Q)=A^\transpose S_{\mathcal{B}}(Q)A.
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{congruence-quadratic-form-interpretation}{Interpretation of congruence}
+    Let \(B,C\in\matrices_{n\times n}(\realnumbers)\) be
+    \symmetricmatrix[symmetric matrices]. Then \(B\) and \(C\) are
+    \congruentmatrices if and only if they represent the same
+    \quadraticform on \(\realnumbers^n\) with respect to two different
+    \basis[bases].
+\end{snippetproposition}
+
+\begin{snippetproof}{congruence-quadratic-form-interpretation-proof}{congruence-quadratic-form-interpretation}{Interpretation of congruence}
+    If \(B\) and \(C\) represent the same \quadraticform \(Q\) in two
+    different \basis[bases], the change-of-basis formula gives an invertible
+    \matrix \(A\) such that
+    \[
+        C=A^\transpose BA.
+    \]
+    Hence \(B\) and \(C\) are \congruentmatrices.
+
+    Conversely, suppose that \(C=A^\transpose BA\) for an invertible
+    \matrix \(A\). Consider
+    \[
+        Q_B(x)=x^\transpose Bx
+    \]
+    with respect to the canonical \basis of \(\realnumbers^n\). If the
+    columns of \(A\) are used as a new \basis, then the
+    \quadraticformmatrix of \(Q_B\) in that new \basis is
+    \[
+        A^\transpose BA=C.
+    \]
+\end{snippetproof}
+
+\begin{snippetexample}{xy-quadratic-form-congruence-example}{The quadratic form 2xy}
+    Consider
+    \[
+        Q\colon\realnumbers^2\fromto\realnumbers,
+        \qquad
+        Q(x,y)=2xy.
+    \]
+    Its \associatedbilinearform is
+    \[
+        B_Q((x,y),(z,w))=xw+yz.
+    \]
+    In the canonical \basis, its \quadraticformmatrix is
+    \[
+        \begin{pmatrix}
+            0 & 1\\
+            1 & 0
+        \end{pmatrix}.
+    \]
+    With respect to the \basis
+    \[
+        \mathcal{B}
+        =
+        \left\{
+            \left(\frac{1}{2},\frac{1}{2}\right),
+            \left(\frac{1}{2},-\frac{1}{2}\right)
+        \right\},
+    \]
+    the \quadraticformmatrix is
+    \[
+        \begin{pmatrix}
+            1 & 0\\
+            0 & -1
+        \end{pmatrix}.
+    \]
+    With respect to the \basis
+    \[
+        \mathcal{C}=\{(1,1),(1,-1)\},
+    \]
+    the \quadraticformmatrix is
+    \[
+        \begin{pmatrix}
+            2 & 0\\
+            0 & -2
+        \end{pmatrix}.
+    \]
+    These \matrix[matrices] are different, but they are all congruent because they
+    represent the same \quadraticform in different \basis[bases].
+\end{snippetexample}
+
+\begin{snippetnote}{positive-diagonal-matrices-congruent-to-identity}{Positive diagonal matrices are congruent to the identity}
+    Let
+    \[
+        D=
+        \begin{pmatrix}
+            \lambda_1 & & 0\\
+            & \ddots & \\
+            0 & & \lambda_n
+        \end{pmatrix},
+        \qquad
+        \lambda_i>0.
+    \]
+    Then \(D\) is congruent to \(\identmatrix{n}\). Indeed, with
+    \[
+        P=
+        \begin{pmatrix}
+            \sqrt{\lambda_1} & & 0\\
+            & \ddots & \\
+            0 & & \sqrt{\lambda_n}
+        \end{pmatrix},
+    \]
+    one has
+    \[
+        P^\transpose\identmatrix{n}P=D.
+    \]
+\end{snippetnote}
+
+\section{Eigenvalue criterion}
+
+\begin{snippetproposition}{quadratic-form-sign-eigenvalue-criterion}{Sign criterion through eigenvalues}
+    Let \(V\) be a finite-dimensional real \vectorspace, let
+    \(Q\colon V\fromto\realnumbers\) be a \quadraticform, and let \(S\) be
+    any \quadraticformmatrix of \(Q\). Then:
+    \begin{enumerate}
+        \item \(Q\) is \positivedefiniteform[positive definite] if and only
+            if every \eigenvalue of \(S\) is positive;
+        \item \(Q\) is \positivesemidefiniteform[positive semidefinite] if
+            and only if every \eigenvalue of \(S\) is non-negative and at
+            least one is zero;
+        \item \(Q\) is \negativedefiniteform[negative definite] if and only
+            if every \eigenvalue of \(S\) is negative;
+        \item \(Q\) is \negativesemidefiniteform[negative semidefinite] if
+            and only if every \eigenvalue of \(S\) is non-positive and at
+            least one is zero;
+        \item \(Q\) is \indefiniteform[indefinite] if and only if \(S\) has
+            at least one positive \eigenvalue and at least one negative
+            \eigenvalue.
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{quadratic-form-sign-eigenvalue-criterion-proof}{quadratic-form-sign-eigenvalue-criterion}{Sign criterion through eigenvalues}
+    By the diagonal form proposition, there is a \basis in which
+    \[
+        Q(x_1,\ldots,x_n)
+        =
+        \lambda_1x_1^2+\cdots+\lambda_nx_n^2,
+    \]
+    where \(\lambda_1,\ldots,\lambda_n\) are the \eigenvalue[eigenvalues]
+    of \(S\).
+    The sign of \(Q\) is therefore read from the signs of the coefficients
+    \(\lambda_i\). For example, if every \(\lambda_i>0\), then every
+    nonzero vector has \(Q(v)>0\). Conversely, if some \(\lambda_i\leq 0\),
+    the corresponding \basis vector gives a nonzero \(v\) with
+    \(Q(v)\leq 0\). The other cases are analogous.
+\end{snippetproof}
+
+\section{Exercises}
+
+\begin{snippetexercise}{quadratic-form-parameter-congruence-exercise}{Congruence of two parameter-dependent quadratic forms}
+    Consider the \quadraticform[quadratic forms]
+    \[
+        Q,Q_k\colon\realnumbers^3\fromto\realnumbers
+    \]
+    defined by
+    \[
+        Q(x,y,z)=5x^2-y^2+z^2+4xy+6xz
+    \]
+    and
+    \[
+        Q_k(x,y,z)=2(xy+kyz-kxz).
+    \]
+    Determine the values of \(k\in\realnumbers\) for which \(Q\) and
+    \(Q_k\) are \congruentquadraticforms.
+\end{snippetexercise}
+
+\begin{snippetsolution}{quadratic-form-parameter-congruence-solution}{Congruence of two parameter-dependent quadratic forms}
+    The \quadraticformmatrix of \(Q\) in the canonical \basis is
+    \[
+        S=
+        \begin{pmatrix}
+            5 & 2 & 3\\
+            2 & -1 & 0\\
+            3 & 0 & 1
+        \end{pmatrix},
+    \]
+    because the mixed terms are split symmetrically:
+    \(4xy=2\cdot 2xy\) and \(6xz=2\cdot 3xz\). Its
+    \characteristicpolynomial is
+    \[
+        p_S(t)=\det(t\identmatrix{3}-S)=t(t-7)(t+2).
+    \]
+    Thus the \signature of \(Q\) is \((1,1,1)\).
+
+    The \quadraticformmatrix of \(Q_k\) in the canonical \basis is
+    \[
+        T_k=
+        \begin{pmatrix}
+            0 & 1 & -k\\
+            1 & 0 & k\\
+            -k & k & 0
+        \end{pmatrix}.
+    \]
+    Its \characteristicpolynomial is
+    \[
+        p_{T_k}(t)=\det(t\identmatrix{3}-T_k)=(t-1)(t^2+t-2k^2).
+    \]
+    For \(Q_k\) to have the same \signature as \(Q\), the \matrix \(T_k\)
+    must have a zero \eigenvalue. This happens if and only if
+    \(p_{T_k}(0)=0\), namely
+    \[
+        2k^2=0.
+    \]
+    Hence \(k=0\).
+
+    If \(k=0\), then
+    \[
+        p_{T_0}(t)=t(t-1)(t+1),
+    \]
+    so the \signature is \((1,1,1)\). If \(k\neq 0\), then \(0\) is not an
+    \eigenvalue and \(t^2+t-2k^2\) has one positive root and one negative
+    root. Together with the \eigenvalue \(1\), this gives \signature
+    \((2,1,0)\). By \sylvesterlaw,
+    \[
+        Q \text{ and } Q_k \text{ are congruent}
+        \qquad\Longleftrightarrow\qquad
+        k=0.
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{symmetric-bilinear-form-inner-product-exercise}{A symmetric bilinear form on R3}
+    Consider the bilinear form
+    \[
+        \langle\cdot,\cdot\rangle
+        \colon\realnumbers^3\cartesianprod\realnumbers^3\fromto\realnumbers
+    \]
+    defined by
+    \begin{align*}
+        \langle (x_1,x_2,x_3),(y_1,y_2,y_3)\rangle
+        &=
+        x_1y_1+3x_2y_2+4x_3y_3\\
+        &\quad
+        +x_1y_2+x_2y_1-2x_2y_3-2x_3y_2.
+    \end{align*}
+    Decide whether it is linear in both variables, symmetric, and positive
+    definite.
+\end{snippetexercise}
+
+\begin{snippetsolution}{symmetric-bilinear-form-inner-product-solution}{A symmetric bilinear form on R3}
+    The map is linear in each variable because it is a sum of bilinear terms
+    \(x_iy_j\). Its \matrix in the canonical \basis is
+    \[
+        A=
+        \begin{pmatrix}
+            1 & 1 & 0\\
+            1 & 3 & -2\\
+            0 & -2 & 4
+        \end{pmatrix},
+    \]
+    which is symmetric. Hence the form is a \symmetricbilinearform.
+
+    The associated \quadraticform is
+    \[
+        Q(x_1,x_2,x_3)
+        =
+        x_1^2+3x_2^2+4x_3^2+2x_1x_2-4x_2x_3.
+    \]
+    The \characteristicpolynomial of \(A\) is
+    \[
+        p_A(t)
+        =
+        \det(t\identmatrix{3}-A)
+        =
+        (t-2)(t^2-6t+2).
+    \]
+    The \eigenvalue[eigenvalues] are
+    \[
+        2,
+        \qquad
+        3+\sqrt{7},
+        \qquad
+        3-\sqrt{7}.
+    \]
+    They are all positive. By the eigenvalue criterion, \(Q\) is
+    \positivedefiniteform[positive definite]. Therefore
+    \(\langle\cdot,\cdot\rangle\) is an \innerproduct on
+    \(\realnumbers^3\).
+\end{snippetsolution}
+
+\end{document}

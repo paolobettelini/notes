@@ -4,176 +4,406 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{bettelini}
 
 \begin{document}
 
 \id{linear-algebra-ranks}
 \genpage
 
-\section{Ranks}
+\section{Rank and nullity}
 
-\begin{snippetdefinition}{column-space-definition}{Column space}
-    Let \(A\) be a \matrix. The \textit{column space} (or \emph{range} or \emph{image}) of \(A\),
-    denoted \(\mathcal{C}(A)\), is the
-    image of the \lineartransformation defined as left-multiplication by \(A\).
-\end{snippetdefinition}
-
-\plain{This is the span of the columns of the matrix.}
-
-\begin{snippetdefinition}{row-space-definition}{Row space}
-    Let \(A\) be a \matrix. The \textit{row space} of \(A\),
-    denoted \(\mathcal{R}(A)\), is the
-    image of the \lineartransformation defined as right-multiplication by \(A\).
-\end{snippetdefinition}
-
-\plain{This is the span of the rows of the matrix.}
-
-\begin{snippetdefinition}{matrix-rank-definition}{Matrix rank}
-    The \emph{rank} of a \matrix \(M\) is the \lineardimtext of its column space.
+\begin{snippetdefinition}{linear-transformation-nullity-definition}{Nullity}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\), let \(V\) be finite-dimensional, and let
+    \(f\in\setoflineartransformations(V,W)\). The \emph{nullity} of \(f\) is
+    \[
+        \operatorname{null}(f)=\lineardim\ltkernel f.
+    \]
 \end{snippetdefinition}
 
 \begin{snippetdefinition}{linear-transformation-rank-definition}{Linear transformation rank}
-    Let \(f \in \setoflineartransformations\). Then, the \emph{rank} of
-    \(f\) is defined as
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\), and let \(f\in\setoflineartransformations(V,W)\). The
+    \emph{rank} of \(f\) is
     \[
-        \text{rank} f \triangleq \lineardim \image f
+        \ltrank f=\lineardim\ltimage f,
     \]
+    whenever \(\ltimage f\) is finite-dimensional.
 \end{snippetdefinition}
-
-\begin{snippet}{matrix-rank-expl}
-    A rank of \(n\) means that every vector after the transformation of \(M\)
-    is projected in the \(n\)-dimension.
-\end{snippet}
-
-\begin{snippetdefinition}{matrix-full-rank-definition}{Matrix full rank}
-    A matrix is \textit{full rank} if its rank is equal to the number of its columns, meaning
-    the dimension does not change.
-\end{snippetdefinition}
-
-\begin{snippet}{full-rank-expl}
-    A matrix is full rank if \(\vec{v}=\vec{0}\) is the only vector such that \(M\vec{v}=\vec{0}\).
-    
-    Note that non-square matrices may still be full rank even if the vectors end up in a lower dimension.
-    If there is no loss of information the matrix is still full rank.
-    If \(M\) has dimensions \(m \times n\), then it is full rank if \(\text{Rank}(M)=\min(n,m)\).
-\end{snippet}
-
-\plain{The rank of a matrix and the rank of its associated linear transformation are actually the same.}
-
-\begin{snippetproposition}{linear-transformation-matrix-rank-coincide}{}
-    Let \(A \in \matrices_{m \times n}(\mathbb{F})\) where \(\mathbb{F}\) is a \field
-    and let \(L_A \colon \mathbb{F}^n \fromto \mathbb{F}^n\) be a \lineartransformation defined as
-    \(L_A(x) = Ax\). Then,
-    \[
-        \mrank A = \ltrank f
-    \]
-\end{snippetproposition}
-
-\begin{snippetproof}{linear-transformation-matrix-rank-coincide-proof}{linear-transformation-matrix-rank-coincide}{}
-    Applying \(L_a(e_i) = A^i\) on the \(i\)-th vector of the canonical \basis gives the \(i\)-th column of the matrix.
-    Since \(\{e_1, \cdots, e_n\}\) is a \basis of \(\mathbb{F}^n\)
-    the vectors \(\{L_A(e_1), \cdots, L_A(e_n)\}\) form a generating set of \(\image L_A\).
-    But then, the rank of \(A\)
-    \[
-        \mrank A = \lineardim \linearspan (A^1, \cdots, A^n)
-        = \lineardim \linearspan (L_A(e_1), \cdots, L_A(e_n)) = \ltrank L_A
-    \]
-\end{snippetproof}
 
 \begin{snippettheorem}{rank-nullity-theorem}{Rank-nullity theorem}
-    Let \(V, W\) be finite dimensional \vectorspace[vector spaces]
-    and let \(f \in \setoflineartransformations(V, W)\). Then,
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\), let \(V\) be finite-dimensional, and let
+    \(f\in\setoflineartransformations(V,W)\). Then \(\ltimage f\) is
+    finite-dimensional and
     \[
-        \lineardim V = \lineardim \grpker f + \ltrank f
+        \lineardim V=\lineardim\ltkernel f+\ltrank f.
     \]
 \end{snippettheorem}
 
 \begin{snippetproof}{rank-nullity-theorem-proof}{rank-nullity-theorem}{Rank-nullity theorem}
-    Since \(\grpker f\) is a linear subspace of \(V\), it is also of finite dimension and let
-    \(m = \lineardim \grpker f\). Let \(\{v_1, v_2, \cdots, v_m\}\)
-    be a \basis for \(\grpker f\). We can expand such a \set into a \basis for \(V\), namely
-    \(\{v_1, v_2, \cdots, v_m, u_1, u_2, \cdots, u_n\}\) meaning that \(\lineardim V = n+m\).
-    We now need to show that \(\lineardim \image f = n\).
-    Let \(w\in \image f\), meaning \(w = f(v)\) for some \(v\in V\).
-    Thus, there exist \(\alpha_i, \beta_j \in \mathbb{F}\) such that
-    \begin{align*}
-        v &= \sum_{i=1}^m \alpha_i v_i + \sum_{j=1}^n \beta_i u_i  \\
-        w = f(v) &= \sum_{i=1}^m \alpha_i f(v_i) + \sum_{i=1}^n \beta_i f(u_i) \\
-        &= 0 + \sum_{i=1}^n \beta_i f(u_i) \in \linearspan \{f(u_1), f(u_2), \cdots, f(u_n)\}
-    \end{align*}
-    In particular, \(\{f(u_1), f(u_2), \cdots, f(u_n)\}\) is a generating set of \(\image f\)
-    (which is thus finite dimensional). We now need to show that \(\{f(u_1), f(u_2), \cdots, f(u_n)\}\)
-    is \linearlyindependent. Consider some \(r_i \in \mathbb{F}\) such that
-    \begin{align*}
-        0_W &= \sum_{i=1}^n r_i f(v_i) \\
-        &= f \left( \sum_{i=1}^n r_i v_i \right) \\
-        &\implies \sum_{i=1}^n r_i v_i \in \grpker f
-    \end{align*}
-    But since \(\{v_1, \cdots, v_m, u_1, \cdots, u_n\}\) is a \basis of \(V\),
-    and the kernel is generated by \(\{v_1, \cdots, v_m\}\),
-    any element of the kernel must be a \linearcombination of the \(v_i\)'s.
-    Therefore,
+    Since \(\ltkernel f\) is a linear subspace of the finite-dimensional
+    \vectorspace \(V\), it is finite-dimensional. Let
     \[
-        \sum_{j=1}^n r_j u_j = \sum_{i=1}^m s_i v_i
+        \{u_1,\ldots,u_m\}
     \]
-    for some \(s_i \in \mathbb{F}\). Rearranging gives
+    be a \basis of \(\ltkernel f\). Extend this \basis to a \basis of \(V\):
     \[
-        \sum_{i=1}^m (-s_i) v_i + \sum_{j=1}^n r_j u_j = 0
+        \{u_1,\ldots,u_m,v_1,\ldots,v_n\}.
     \]
-    which is a linear combination of basis vectors equal to zero. By \linearlyindependent[linear independence],
-    all coefficients must vanish, so in particular \(r_j = 0\) for all \(j = 1, \ldots, n\).
-    Hence \(\{f(u_1), \cdots, f(u_n)\}\) is \linearlyindependent.
+    Then
+    \[
+        \lineardim V=m+n,
+        \qquad
+        \lineardim\ltkernel f=m.
+    \]
 
-    Therefore, \(\{f(u_1), \cdots, f(u_n)\}\) is a \basis of \(\image f\),
-    so \(\lineardim \image f = n\). Since \(\lineardim V = n + m\) and \(m = \lineardim \grpker f\),
-    it follows that
+    We show that
     \[
-        \lineardim V = \lineardim \grpker f + \lineardim \image f
+        \{f(v_1),\ldots,f(v_n)\}
     \]
-    as desired.
+    is a \basis of \(\ltimage f\). Let \(w\in\ltimage f\). Then
+    \(w=f(v)\) for some \(v\in V\). Since the displayed collection is a
+    \basis of \(V\), there exist scalars
+    \(\alpha_1,\ldots,\alpha_m,\beta_1,\ldots,\beta_n\in\mathbb{F}\) such
+    that
+    \[
+        v=
+        \alpha_1u_1+\cdots+\alpha_mu_m
+        +
+        \beta_1v_1+\cdots+\beta_nv_n.
+    \]
+    Applying \(f\) gives
+    \[
+        w
+        =
+        \beta_1f(v_1)+\cdots+\beta_nf(v_n),
+    \]
+    because \(f(u_i)=0_W\) for every \(i\). Thus
+    \(\{f(v_1),\ldots,f(v_n)\}\) generates \(\ltimage f\).
+
+    To prove linear independence, assume
+    \[
+        \gamma_1f(v_1)+\cdots+\gamma_nf(v_n)=0_W.
+    \]
+    By linearity,
+    \[
+        f(\gamma_1v_1+\cdots+\gamma_nv_n)=0_W,
+    \]
+    so
+    \[
+        \gamma_1v_1+\cdots+\gamma_nv_n\in\ltkernel f.
+    \]
+    Since \(u_1,\ldots,u_m\) form a \basis of the kernel, there are
+    \(\delta_1,\ldots,\delta_m\in\mathbb{F}\) such that
+    \[
+        \gamma_1v_1+\cdots+\gamma_nv_n
+        =
+        \delta_1u_1+\cdots+\delta_mu_m.
+    \]
+    Moving all terms to one side gives a linear relation among the \basis
+    vectors \(u_1,\ldots,u_m,v_1,\ldots,v_n\), so all coefficients vanish.
+    In particular \(\gamma_1=\cdots=\gamma_n=0\). Hence
+    \(\{f(v_1),\ldots,f(v_n)\}\) is \linearlyindependent.
+
+    Therefore \(\{f(v_1),\ldots,f(v_n)\}\) is a \basis of \(\ltimage f\), so
+    \[
+        \ltrank f=\lineardim\ltimage f=n.
+    \]
+    Since \(\lineardim V=m+n\), the result follows.
 \end{snippetproof}
 
-\section{Equivalence of rank by row and column space}
-
-\begin{snippetlemma}{rank-colum-row-inclusion-lemma}{}
-    Let \(A \in \matrices_{m \times n}(\mathbb{F})\) and \(B \in \matrices_{n \times p}(\mathbb{F})\)
-    where \(\mathbb{F}\) is a \field. Then,
+\begin{snippetexample}{rank-nullity-no-surjection-r3-r5-example}{No surjection from \(\mathbb{R}^3\) to \(\mathbb{R}^5\)}
+    There is no \surjective \lineartransformation
+    \(f\colon\realnumbers^3\fromto\realnumbers^5\). If such a
+    \lineartransformation existed, then rank-nullity would give
     \[
-        \columnspace(AB) \subseteq \columnspace(A)
+        3=\lineardim\ltkernel f+\lineardim\ltimage f.
+    \]
+    Hence \(\lineardim\ltimage f\leq 3\), contradicting
+    \(\ltimage f=\realnumbers^5\).
+\end{snippetexample}
+
+\section{Matrix rank}
+
+\begin{snippetdefinition}{column-space-definition}{Column space}
+    Let \(\mathbb{F}\) be a \field, and let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\). Write the columns of \(A\) as
+    \[
+        A^1,\ldots,A^n\in\mathbb{F}^m.
+    \]
+    The \emph{column space} of \(A\) is
+    \[
+        \columnspace(A)=\linearspan(A^1,\ldots,A^n)\subseteq\mathbb{F}^m.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{row-space-definition}{Row space}
+    Let \(\mathbb{F}\) be a \field, and let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\). Write the rows of \(A\) as
+    \[
+        A_1,\ldots,A_m\in\mathbb{F}^n.
+    \]
+    The \emph{row space} of \(A\) is
+    \[
+        \rowspace(A)=\linearspan(A_1,\ldots,A_m)\subseteq\mathbb{F}^n.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{matrix-rank-definition}{Matrix rank}
+    Let \(\mathbb{F}\) be a \field, and let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\). The \emph{rank} of \(A\) is
+    \[
+        \mrank A=\lineardim\columnspace(A).
+    \]
+\end{snippetdefinition}
+
+\begin{snippet}{matrix-rank-expl}
+    The rank of a \matrix is the number of independent output directions of
+    the associated \lineartransformation. Equivalently, it is the
+    \lineardimtext of the subspace generated by the columns.
+\end{snippet}
+
+\begin{snippetdefinition}{matrix-full-rank-definition}{Full rank matrix}
+    Let \(\mathbb{F}\) be a \field, and let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\). The \matrix \(A\) has
+    \emph{full rank} if
+    \[
+        \mrank A=\min(m,n).
+    \]
+\end{snippetdefinition}
+
+\begin{snippet}{full-rank-expl}
+    If \(A\in\matrices_{m\times n}(\mathbb{F})\), the associated
+    \lineartransformation \(L_A\colon\mathbb{F}^n\fromto\mathbb{F}^m\) has no
+    loss of information exactly when its kernel is trivial. When \(m\geq n\),
+    this is the same as \(\mrank A=n\). When \(m\leq n\), full rank means that
+    \(L_A\) reaches all of \(\mathbb{F}^m\), namely \(\mrank A=m\).
+\end{snippet}
+
+\begin{snippetproposition}{linear-transformation-matrix-rank-coincide}{Matrix rank and linear transformation rank}
+    Let \(\mathbb{F}\) be a \field, let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\), and let
+    \[
+        L_A\colon\mathbb{F}^n\fromto\mathbb{F}^m,
+        \qquad
+        L_A(x)=Ax.
+    \]
+    Then
+    \[
+        \mrank A=\ltrank L_A.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{linear-transformation-matrix-rank-coincide-proof}{linear-transformation-matrix-rank-coincide}{Matrix rank and linear transformation rank}
+    Let \(e_1,\ldots,e_n\) be the canonical \basis of \(\mathbb{F}^n\), and
+    let \(A^j\) be the \(j\)-th column of \(A\). Then
+    \[
+        L_A(e_j)=Ae_j=A^j.
+    \]
+    Since the canonical \basis generates \(\mathbb{F}^n\), the image of
+    \(L_A\) is generated by the images of the canonical \basis vectors:
+    \[
+        \ltimage L_A
+        =
+        \linearspan(L_A(e_1),\ldots,L_A(e_n))
+        =
+        \linearspan(A^1,\ldots,A^n)
+        =
+        \columnspace(A).
+    \]
+    Taking dimensions gives \(\ltrank L_A=\mrank A\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{matrix-rank-nullity-corollary}{Matrix rank-nullity}
+    Let \(\mathbb{F}\) be a \field, and let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\). Then
+    \[
+        n=\lineardim\{x\in\mathbb{F}^n\suchthat Ax=0\}+\mrank A.
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{matrix-rank-nullity-corollary-proof}{matrix-rank-nullity-corollary}{Matrix rank-nullity}
+    Apply rank-nullity to
+    \(L_A\colon\mathbb{F}^n\fromto\mathbb{F}^m\), \(L_A(x)=Ax\). Its kernel
+    is
+    \[
+        \ltkernel L_A=\{x\in\mathbb{F}^n\suchthat Ax=0\},
+    \]
+    and its rank is \(\mrank A\).
+\end{snippetproof}
+
+\section{Row and column rank}
+
+\begin{snippetlemma}{rank-colum-row-inclusion-lemma}{Column and row inclusions under multiplication}
+    Let \(\mathbb{F}\) be a \field, let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\), and let
+    \(B\in\matrices_{n\times p}(\mathbb{F})\). Then
+    \[
+        \columnspace(AB)\subseteq\columnspace(A)
     \]
     and
     \[
-        \rowspace(AB) \subseteq \rowspace(B)
+        \rowspace(AB)\subseteq\rowspace(B).
     \]
 \end{snippetlemma}
 
-\begin{snippetproof}{rank-colum-row-inclusion-lemma-proof}{rank-colum-row-inclusion-lemma}{}
-    \begin{align*}
-        \columnspace(AB)_j = \begin{pmatrix}
-            \sum_{k=1}^n a_{1,k} b_{e,j} \\
-            \cdots \\
-            \sum_{k=1}^n a_{m,k} b_{e,j}
-        \end{pmatrix}
-        = \sum_{k=1}^n b_{e,j} A_j
-    \end{align*}
-    where \(M_j\) is the \(j\)-th column of \(M\).
-    This means that the \linearspantext of the columns of \(AB\) is contained in the \linearspantext of the columns of \(A\).
-    The same argument applies to the rows of \(AB\) and \(B\).
+\begin{snippetproof}{rank-colum-row-inclusion-lemma-proof}{rank-colum-row-inclusion-lemma}{Column and row inclusions under multiplication}
+    The \(j\)-th column of \(AB\) is
+    \[
+        (AB)^j=A\,B^j,
+    \]
+    where \(B^j\in\mathbb{F}^n\) is the \(j\)-th column of \(B\). If
+    \(B^j=(b_{1j},\ldots,b_{nj})^t\), then
+    \[
+        (AB)^j=b_{1j}A^1+\cdots+b_{nj}A^n.
+    \]
+    Thus every column of \(AB\) belongs to \(\columnspace(A)\), so
+    \(\columnspace(AB)\subseteq\columnspace(A)\).
+
+    The \(i\)-th row of \(AB\) is
+    \[
+        (AB)_i=A_iB.
+    \]
+    If \(A_i=(a_{i1},\ldots,a_{in})\), then
+    \[
+        (AB)_i=a_{i1}B_1+\cdots+a_{in}B_n.
+    \]
+    Hence every row of \(AB\) belongs to \(\rowspace(B)\), so
+    \(\rowspace(AB)\subseteq\rowspace(B)\).
 \end{snippetproof}
 
 \begin{snippettheorem}{row-column-rank-equivalence-theorem}{Row and column rank equivalence}
-    Let \(A \in \matrices_{m \times n}(\mathbb{F})\) and \(B \in \matrices_{n \times p}(\mathbb{F})\)
-    where \(\mathbb{F}\) is a \field. Then,
+    Let \(\mathbb{F}\) be a \field, and let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\). Then
     \[
-        \lineardim \columnspace A = \lineardim \rowspace A
+        \lineardim\columnspace(A)=\lineardim\rowspace(A).
     \]
 \end{snippettheorem}
 
 \begin{snippetproof}{row-column-rank-equivalence-theorem-proof}{row-column-rank-equivalence-theorem}{Row and column rank equivalence}
-    \todo
-    %Let \(h = \lineardim \rowspace A\) and \(h = \lineardim \columnspace A\).
-    %We will show that \(h \leq n\). Consider \(\columnspace A^\transpose = \rowspace A\) and
-    %\(\rowspace A^\transpose = \columnspace A\).
+    Let \(R\) be a row echelon form of \(A\), obtained from \(A\) by
+    elementary row operations. Then \(R=EA\) for some invertible
+    \matrix \(E\in\matrices_{m\times m}(\mathbb{F})\).
+
+    Elementary row operations preserve the row space: each new row is a
+    \linearcombination of old rows, and each operation is reversible. Hence
+    \[
+        \lineardim\rowspace(A)=\lineardim\rowspace(R).
+    \]
+    Since \(R=EA\), every column of \(R\) is obtained by applying the
+    invertible \lineartransformation \(L_E\) to the corresponding column of
+    \(A\). Therefore \(L_E\) gives a \linearisomorphism
+    \[
+        \columnspace(A)\simeq\columnspace(R),
+    \]
+    and
+    \[
+        \lineardim\columnspace(A)=\lineardim\columnspace(R).
+    \]
+
+    Let \(r\) be the number of nonzero rows of \(R\). In row echelon form,
+    the nonzero rows are \linearlyindependent, so
+    \[
+        \lineardim\rowspace(R)=r.
+    \]
+    The pivot columns of \(R\) are also \linearlyindependent, and there are
+    exactly \(r\) of them. Since all columns of \(R\) lie in the
+    \(r\)-dimensional coordinate subspace determined by the nonzero rows,
+    those pivot columns generate \(\columnspace(R)\). Hence
+    \[
+        \lineardim\columnspace(R)=r.
+    \]
+    Combining the equalities gives
+    \[
+        \lineardim\columnspace(A)=\lineardim\rowspace(A).
+    \]
 \end{snippetproof}
+
+\begin{snippetproposition}{matrix-rank-row-space-characterization}{Rank through the row space}
+    Let \(\mathbb{F}\) be a \field, and let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\). Then
+    \[
+        \mrank A=\lineardim\rowspace(A).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{matrix-rank-row-space-characterization-proof}{matrix-rank-row-space-characterization}{Rank through the row space}
+    By definition, \(\mrank A=\lineardim\columnspace(A)\). The row-column
+    rank equivalence theorem gives
+    \[
+        \lineardim\columnspace(A)=\lineardim\rowspace(A).
+    \]
+\end{snippetproof}
+
+\section{Computing rank}
+
+\begin{snippetproposition}{matrix-rank-from-row-echelon-form}{Rank from row echelon form}
+    Let \(\mathbb{F}\) be a \field, and let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\). If \(R\) is a row echelon
+    form of \(A\), then
+    \[
+        \mrank A
+        =
+        \text{number of pivots of }R
+        =
+        \text{number of nonzero rows of }R.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{matrix-rank-from-row-echelon-form-proof}{matrix-rank-from-row-echelon-form}{Rank from row echelon form}
+    In the proof of row-column rank equivalence, row operations preserve the
+    dimensions of row and column spaces. In row echelon form, the number of
+    nonzero rows equals the number of pivot columns, and both are equal to the
+    row and column rank. Hence the rank of \(A\) is the number of pivots in
+    \(R\).
+\end{snippetproof}
+
+\begin{snippetexample}{matrix-rank-elimination-example}{Computing rank by elimination}
+    Let
+    \[
+        A=
+        \begin{pmatrix}
+            3 & -8 & 1 & -2\\
+            5 & 0 & -1 & 6\\
+            1 & -1 & 1 & 0
+        \end{pmatrix}.
+    \]
+    Swapping the first and third rows gives
+    \[
+        \begin{pmatrix}
+            1 & -1 & 1 & 0\\
+            5 & 0 & -1 & 6\\
+            3 & -8 & 1 & -2
+        \end{pmatrix}.
+    \]
+    Applying
+    \[
+        R_2\leftarrow R_2-5R_1,
+        \qquad
+        R_3\leftarrow R_3-3R_1,
+    \]
+    gives
+    \[
+        \begin{pmatrix}
+            1 & -1 & 1 & 0\\
+            0 & 5 & -6 & 6\\
+            0 & -5 & -2 & -2
+        \end{pmatrix}.
+    \]
+    Finally, applying \(R_3\leftarrow R_3+R_2\) gives
+    \[
+        \begin{pmatrix}
+            1 & -1 & 1 & 0\\
+            0 & 5 & -6 & 6\\
+            0 & 0 & -8 & 4
+        \end{pmatrix}.
+    \]
+    The row echelon form has three pivots, so
+    \[
+        \mrank A=3.
+    \]
+\end{snippetexample}
 
 \end{document}

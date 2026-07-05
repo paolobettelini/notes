@@ -1,0 +1,342 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\title{Stellar}
+\id{linearalgebra-characteristic-polynomial}
+\genpage
+
+\section{Trace}
+
+\begin{snippetdefinition}{matrix-trace-definition}{Trace of a matrix}
+    Let \(\mathbb{F}\) be a \field, and let
+    \(A=(a_{ij})\in\matrices_{n\times n}(\mathbb{F})\). The
+    \emph{trace} of \(A\) is
+    \[
+        \operatorname{tr}(A)=\sum_{i=1}^{n}a_{ii}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{trace-cyclic-property}{Cyclic property of the trace}
+    Let \(\mathbb{F}\) be a \field. If
+    \(A,B\in\matrices_{n\times n}(\mathbb{F})\), then
+    \[
+        \operatorname{tr}(AB)=\operatorname{tr}(BA).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{trace-cyclic-property-proof}{trace-cyclic-property}{Cyclic property of the trace}
+    If \(A=(a_{ij})\) and \(B=(b_{ij})\), then
+    \[
+        \operatorname{tr}(AB)
+        =
+        \sum_{i=1}^{n}\sum_{j=1}^{n}a_{ij}b_{ji}.
+    \]
+    Reindexing the same finite sum gives
+    \[
+        \sum_{i=1}^{n}\sum_{j=1}^{n}a_{ij}b_{ji}
+        =
+        \sum_{j=1}^{n}\sum_{i=1}^{n}b_{ji}a_{ij}
+        =
+        \operatorname{tr}(BA).
+    \]
+\end{snippetproof}
+
+\begin{snippetcorollary}{similar-matrices-have-same-trace}{Similar matrices have the same trace}
+    Let \(\mathbb{F}\) be a \field. If
+    \(B,C\in\matrices_{n\times n}(\mathbb{F})\) are similar, then
+    \[
+        \operatorname{tr}(B)=\operatorname{tr}(C).
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{similar-matrices-have-same-trace-proof}{similar-matrices-have-same-trace}{Similar matrices have the same trace}
+    Since \(B\) and \(C\) are similar, there exists an invertible
+    \(A\in\operatorname{GL}(n,\mathbb{F})\) such that
+    \[
+        B=A^{-1}CA.
+    \]
+    By the cyclic property,
+    \[
+        \operatorname{tr}(B)
+        =
+        \operatorname{tr}(A^{-1}CA)
+        =
+        \operatorname{tr}(CAA^{-1})
+        =
+        \operatorname{tr}(C).
+    \]
+\end{snippetproof}
+
+\begin{snippetdefinition}{endomorphism-trace-definition}{Trace of an endomorphism}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), and let \(f\in\operatorname{End}(V)\). The
+    \emph{trace of \(f\)} is
+    \[
+        \operatorname{tr}(f)=\operatorname{tr}\bigl(M(f,\mathcal{B},\mathcal{B})\bigr),
+    \]
+    where \(\mathcal{B}\) is any \basis of \(V\).
+\end{snippetdefinition}
+
+\begin{snippetproof}{endomorphism-trace-definition-proof}{endomorphism-trace-definition}{Trace of an endomorphism}
+    If \(\mathcal{B}\) and \(\mathcal{E}\) are two \basis[bases] of \(V\),
+    then the associated \matrix[matrices] \(M(f,\mathcal{B},\mathcal{B})\) and
+    \(M(f,\mathcal{E},\mathcal{E})\) are similar. \similarmatrices[Similar matrices] have the
+    same trace, so the definition does not depend on the choice of
+    \(\mathcal{B}\).
+\end{snippetproof}
+
+\section{Characteristic polynomial}
+
+\begin{snippetdefinition}{matrix-characteristic-polynomial-definition}{Characteristic polynomial of a matrix}
+    Let \(\mathbb{F}\) be a \field, and let
+    \(A\in\matrices_{n\times n}(\mathbb{F})\). The
+    \emph{characteristic polynomial} of \(A\) is
+    \[
+        p_A(t)=\det(t\identmatrix{n}-A)\in\mathbb{F}[t].
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{characteristic-polynomial-definition}{Characteristic polynomial of an endomorphism}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), with \(\lineardim V=n\), and let
+    \(f\in\operatorname{End}(V)\). The \emph{characteristic polynomial} of
+    \(f\) is
+    \[
+        p_f(t)=\det(t\identmatrix{n}-M(f,\mathcal{B},\mathcal{B})),
+    \]
+    where \(\mathcal{B}\) is any \basis of \(V\).
+\end{snippetdefinition}
+
+\begin{snippetproof}{characteristic-polynomial-definition-proof}{characteristic-polynomial-definition}{Characteristic polynomial of an endomorphism}
+    If \(\mathcal{B}\) and \(\mathcal{E}\) are two \basis[bases] of \(V\),
+    then
+    \[
+        M(f,\mathcal{E},\mathcal{E})
+        =
+        P^{-1}M(f,\mathcal{B},\mathcal{B})P
+    \]
+    for some invertible \matrix \(P\). Hence
+    \[
+        t\identmatrix{n}-M(f,\mathcal{E},\mathcal{E})
+        =
+        P^{-1}
+        \bigl(t\identmatrix{n}-M(f,\mathcal{B},\mathcal{B})\bigr)
+        P.
+    \]
+    \similarmatrices[Similar matrices] have the same determinant, so the \polynomial is
+    independent of the chosen \basis.
+\end{snippetproof}
+
+\begin{snippetproposition}{characteristic-polynomial-properties}{Basic properties of the characteristic polynomial}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), with \(\lineardim V=n\), and let
+    \(f\in\operatorname{End}(V)\). Then:
+    \begin{enumerate}
+        \item \(p_f(t)\) is a monic \polynomial of degree \(n\);
+        \item the coefficient of \(t^{n-1}\) is \(-\operatorname{tr}(f)\);
+        \item \(p_f(0)=(-1)^n\det(f)\);
+        \item \(\lambda\in\mathbb{F}\) is an \eigenvalue of \(f\) if and only if \(p_f(\lambda)=0\).
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{characteristic-polynomial-properties-proof}{characteristic-polynomial-properties}{Basic properties of the characteristic polynomial}
+    Choose a \basis \(\mathcal{B}\) of \(V\), and put
+    \[
+        A=M(f,\mathcal{B},\mathcal{B})=(a_{ij}).
+    \]
+    Then
+    \[
+        p_f(t)=\det(t\identmatrix{n}-A).
+    \]
+    In the matrix \(t\identmatrix{n}-A\), the diagonal entries are
+    \(t-a_{11},\ldots,t-a_{nn}\). The term of degree \(n\) is obtained by
+    choosing \(t\) from every diagonal entry, so \(p_f(t)\) is monic of
+    degree \(n\).
+
+    The coefficient of \(t^{n-1}\) is obtained by choosing one constant
+    diagonal term and \(t\) from all remaining diagonal terms. Hence it is
+    \[
+        -(a_{11}+\cdots+a_{nn})
+        =
+        -\operatorname{tr}(A)
+        =
+        -\operatorname{tr}(f).
+    \]
+    Moreover,
+    \[
+        p_f(0)=\det(-A)=(-1)^n\det(A)=(-1)^n\det(f).
+    \]
+
+    Finally,
+    \[
+        p_f(\lambda)=0
+        \Longleftrightarrow
+        \det(\lambda\identmatrix{n}-A)=0.
+    \]
+    This is equivalent to the existence of a nonzero vector in
+    \[
+        \ltkernel(\lambda\identityfunc_V-f),
+    \]
+    which is equivalent to \(\lambda\) being an \eigenvalue of \(f\).
+\end{snippetproof}
+
+\section{Polynomial roots}
+
+\begin{snippettheorem}{polynomial-division-over-field-theorem}{Polynomial division over a field}
+    Let \(\mathbb{F}\) be a \field, and let
+    \(u,v\in\mathbb{F}[t]\), with \(v\neq0\). There exist unique
+    \polynomial[polynomials] \(q,r\in\mathbb{F}[t]\) such that
+    \[
+        u=vq+r
+    \]
+    and either \(r=0\) or
+    \[
+        \polynomialdeg r<\polynomialdeg v.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{polynomial-division-over-field-theorem-proof}{polynomial-division-over-field-theorem}{Polynomial division over a field}
+    For uniqueness, suppose
+    \[
+        u=vq+r=vq'+r',
+    \]
+    with \(r,r'\) either zero or of degree smaller than \(\polynomialdeg v\).
+    Then
+    \[
+        v(q-q')=r'-r.
+    \]
+    If \(q\neq q'\), the left-hand side has degree at least
+    \(\polynomialdeg v\), while the right-hand side has degree smaller than
+    \(\polynomialdeg v\), a contradiction. Hence \(q=q'\), and then
+    \(r=r'\).
+
+    For existence, if \(\polynomialdeg u<\polynomialdeg v\), take
+    \(q=0\) and \(r=u\). Otherwise, subtract from \(u\) a suitable multiple
+    of \(v\) that cancels the highest-degree term of \(u\). Repeating this
+    process strictly lowers the degree at each step, so after finitely many
+    steps one obtains a remainder \(r\) of degree smaller than
+    \(\polynomialdeg v\), or \(r=0\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{polynomial-root-linear-factor-corollary}{Roots and linear factors}
+    Let \(\mathbb{F}\) be a \field, let \(p\in\mathbb{F}[t]\), and let
+    \(\lambda\in\mathbb{F}\). Then
+    \[
+        p(\lambda)=0
+        \iff
+        (t-\lambda)\text{ divides }p(t).
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{polynomial-root-linear-factor-corollary-proof}{polynomial-root-linear-factor-corollary}{Roots and linear factors}
+    Divide \(p\) by \(t-\lambda\). There exist
+    \(q,r\in\mathbb{F}[t]\) such that
+    \[
+        p(t)=(t-\lambda)q(t)+r(t),
+    \]
+    where \(r\) is constant. Evaluating at \(t=\lambda\) gives
+    \[
+        p(\lambda)=r.
+    \]
+    Hence \(p(\lambda)=0\) if and only if \(r=0\), which is equivalent to
+    divisibility by \(t-\lambda\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{polynomial-distinct-roots-bound}{Number of roots of a polynomial}
+    Let \(\mathbb{F}\) be a \field. A nonzero \polynomial
+    \(p\in\mathbb{F}[t]\) of degree \(n\) has at most \(n\) distinct roots
+    in \(\mathbb{F}\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{polynomial-distinct-roots-bound-proof}{polynomial-distinct-roots-bound}{Number of roots of a polynomial}
+    Each distinct root \(\lambda\) gives a distinct linear factor
+    \(t-\lambda\). Removing one such factor lowers the degree by \(1\).
+    Thus a nonzero \polynomial of degree \(n\) cannot have more than \(n\)
+    distinct roots.
+\end{snippetproof}
+
+\includesnpt{fundamental-theorem-of-algebra}
+
+\begin{snippetcorollary}{complex-polynomial-factorization-corollary}{Factorization over \(\mathbb{C}\)}
+    Every nonzero \polynomial \(p\in\complexnumbers[t]\) of degree \(n\) can
+    be written as
+    \[
+        p(t)=c(t-\lambda_1)\cdots(t-\lambda_n),
+    \]
+    where \(c\in\complexnumbers\setminus\{0\}\) and
+    \(\lambda_1,\ldots,\lambda_n\in\complexnumbers\), with roots repeated
+    according to multiplicity.
+\end{snippetcorollary}
+
+\begin{snippetproof}{complex-polynomial-factorization-corollary-proof}{complex-polynomial-factorization-corollary}{Factorization over \(\mathbb{C}\)}
+    This follows from the fundamental theorem of algebra by repeatedly
+    factoring out a linear factor corresponding to a root.
+\end{snippetproof}
+
+\begin{snippetproposition}{real-polynomial-factorization-proposition}{Factorization over \(\mathbb{R}\)}
+    Every nonzero \polynomial \(p\in\realnumbers[t]\) can be written as
+    \[
+        p(t)=
+        a(t-\lambda_1)\cdots(t-\lambda_h)q_1(t)\cdots q_r(t),
+    \]
+    where \(a\in\realnumbers\setminus\{0\}\),
+    \(\lambda_1,\ldots,\lambda_h\in\realnumbers\), and every \(q_i\) is a
+    monic quadratic \polynomial in \(\realnumbers[t]\) with no real roots.
+\end{snippetproposition}
+
+\begin{snippetproof}{real-polynomial-factorization-proposition-proof}{real-polynomial-factorization-proposition}{Factorization over \(\mathbb{R}\)}
+    Regard \(p\) as a complex polynomial. By the complex factorization
+    theorem, it splits into linear factors over \(\complexnumbers\). Since
+    the coefficients of \(p\) are real, every non-real root \(z\) occurs
+    together with its complex conjugate \(\overline{z}\). Pairing conjugate
+    roots gives factors
+    \[
+        (t-z)(t-\overline{z})
+        =
+        t^2-2\operatorname{Re}(z)t+|z|^2,
+    \]
+    which have real coefficients and no real roots. The remaining roots are
+    real and give the linear factors.
+\end{snippetproof}
+
+\begin{snippetexample}{real-polynomial-factorization-example}{A real factorization}
+    In \(\realnumbers[t]\),
+    \[
+        t^4+1
+        =
+        (t^2+\sqrt{2}t+1)(t^2-\sqrt{2}t+1).
+    \]
+    Both quadratic factors have no real roots.
+\end{snippetexample}
+
+\begin{snippetexample}{rational-polynomials-without-roots-example}{Polynomials without rational roots}
+    For every \(k\geq1\), the \polynomial
+    \[
+        t^{2k}-2
+    \]
+    has no root in \(\rationalnumbers\). Indeed, a rational root would be a
+    rational number \(q\) such that
+    \[
+        q^{2k}=2,
+    \]
+    which is impossible. Indeed, if \(q=a/b\) with \(a,b\in\integers\),
+    \(b\neq0\), and \(\gcd(a,b)=1\), then
+    \[
+        a^{2k}=2b^{2k}.
+    \]
+    Thus \(a\) is even. Writing \(a=2c\), one gets
+    \[
+        2^{2k}c^{2k}=2b^{2k},
+    \]
+    so \(b^{2k}\) is even, and hence \(b\) is even. This contradicts
+    \(\gcd(a,b)=1\).
+\end{snippetexample}
+
+\end{document}

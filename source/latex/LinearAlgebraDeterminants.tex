@@ -1,133 +1,723 @@
 \documentclass[preview]{standalone}
 
-\usepackage{amsmath,stackengine}
+\usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
-
-\stackMath{}
+\usepackage{bettelini}
 
 \begin{document}
 
+\title{Stellar}
 \id{determinants}
 \genpage
 
-\section{Determinants}
+\section{Axiomatic characterization}
 
 \begin{snippetdefinition}{determinant-definition}{Determinant}
-    The \textit{determinant} of a square \snippetref[matrix-definition][matrix] \(M\),
-    denoted \(\origdet(M)\),
-    is a scalar which represents the factor by which the area of any shape (or volume and so on) changes
-    after the linear transformation representes by the matrix is applied.
-    If the transformation inverts the orientation of the space, the determinant is negative.
+    Let \(\mathbb{F}\) be a \field, and let \(n\geq 1\). The
+    \emph{determinant} is the unique \function
+    \[
+        \origdet\colon\matrices_{n\times n}(\mathbb{F})\fromto\mathbb{F}
+    \]
+    satisfying the following properties:
+    \begin{enumerate}
+        \item it is linear in each row, while the other rows are fixed;
+        \item it is zero on every \matrix with two equal rows;
+        \item \(\det(\identmatrix{n})=1\).
+    \end{enumerate}
+    If \(A\in\matrices_{n\times n}(\mathbb{F})\), the scalar
+    \(\det(A)\) is called the \determinant of \(A\).
 \end{snippetdefinition}
 
-\begin{snippetdefinition}{matrix-minor-definition}{Matrix minor}
-    Let \(M\) be a square matrix.
-    The \textit{minor} of the entry in the \(i\)th row and \(j\)th column
-    is the determinant of the submatrix formed by deleting the \(i\)th row and \(j\)th column.
+\begin{snippet}{determinant-row-linearity}
+    Let \(d\colon\matrices_{n\times n}(\mathbb{F})\fromto\mathbb{F}\) be a
+    \function that is linear in each row. This means that, if all rows except
+    the \(i\)-th one are fixed, then
     \[
-        \text{minor of }b=
-        \stackinset{c}{}{c}{1\baselineskip}{\rule{4.25\baselineskip}{0.5pt}}{
-        \stackinset{c}{0\baselineskip}{c}{}{\rule{0.5pt}{3.5\baselineskip}}{
-        \begin{vmatrix}
-            a & b & c \\
-            d & e & f \\
-            g & h & i
-        \end{vmatrix}}}
+        d
+        \begin{pmatrix}
+            R_1\\
+            \vdots\\
+            \lambda R+\mu S\\
+            \vdots\\
+            R_n
+        \end{pmatrix}
         =
-        \begin{vmatrix}
-            d & f \\
-            g & i
-        \end{vmatrix}
+        \lambda
+        d
+        \begin{pmatrix}
+            R_1\\
+            \vdots\\
+            R\\
+            \vdots\\
+            R_n
+        \end{pmatrix}
+        +
+        \mu
+        d
+        \begin{pmatrix}
+            R_1\\
+            \vdots\\
+            S\\
+            \vdots\\
+            R_n
+        \end{pmatrix}.
     \]
-\end{snippetdefinition}
+\end{snippet}
 
-\begin{snippettheorem}{laplace-expansion-theorem}{Laplace expansion}
-    The Laplace expansion is a formula that allows us to express the determinant of
-    a matrix as a linear combination of the minors.
+\begin{snippetproposition}{row-swap-determinant-sign}{Swapping rows changes the sign}
+    Let \(\mathbb{F}\) be a \field. Let
+    \(d\colon\matrices_{n\times n}(\mathbb{F})\fromto\mathbb{F}\) be linear
+    in each row and zero on every \matrix with two equal rows. If \(B\) is
+    obtained from \(A\in\matrices_{n\times n}(\mathbb{F})\) by swapping two
+    rows, then
     \[
-        \det(A)=\sum_{j=1}^{n}{(-1)}^{i+j}A_{ij}\det(\text{minor of }A_{ij})
+        d(B)=-d(A).
     \]
-
-    where \(i\) is any row.
-
-    Instead of expanding the series along a row we could expand it along any column,
-    the result is always the same.
-\end{snippettheorem}
-
-\begin{snippetexample}{laplace-expansion-2x2-example}{Determinant of \(2\times2\) matrix}
-    Given a \(2 \times 2\) matrix \(A\)
-    \[
-        A=
-        \begin{bmatrix}
-            a & b \\
-            c & d
-        \end{bmatrix}
-    \]
-    its determinant is given by
-    \[
-        \det(A)=
-        \begin{vmatrix}
-            a & b \\
-            c & d
-        \end{vmatrix}
-        \equiv ad-bc
-    \]
-    \phantom{}
-\end{snippetexample}
-
-\begin{snippetexample}{laplace-expansion-3x3-example}{Determinant of \(3\times3\) matrix}
-    Given a \(3 \times 3\) matrix \(A\)
-    \[
-        A=
-        \begin{bmatrix}
-            a & b & c \\
-            d & e & f \\
-            g & h & i
-        \end{bmatrix}
-    \]
-    its determinant is given by
-    \[
-        \det(A)=
-        \begin{vmatrix}
-            a & b & c \\
-            d & e & f \\
-            g & h & i
-        \end{vmatrix}
-        =
-        a \begin{vmatrix}
-            e & f \\
-            h & i
-        \end{vmatrix}
-        -b \begin{vmatrix}
-            d & f \\
-            g & i
-        \end{vmatrix}
-        +c \begin{vmatrix}
-            d & e \\
-            g & h
-        \end{vmatrix}
-    \]
-    \phantom{}
-\end{snippetexample}
-
-\begin{snippetproposition}{determinant-properties}{Properties of the determinant}
-    Let \(A\) and \(B\) be two square \matrix[matrices] of the same size.
-    The determinant has some properties, for instance
-
-    \begin{align*}
-        \det(A^\transpose)&=\det(A) \\
-        \det(AB)&=\det(A)\det(B)
-    \end{align*}
 \end{snippetproposition}
 
-\begin{snippetdefinition}{cofactor-matrix-definition}{Cofactor matrix}
-    Let \(A\) be a \(n \times n\) \matrix. Then,
-    the \emph{cofactor matrix of \(A\)} is defined as the matrix
+\begin{snippetproof}{row-swap-determinant-sign-proof}{row-swap-determinant-sign}{Swapping rows changes the sign}
+    Suppose that the rows being swapped are \(R_i\) and \(R_j\), with
+    \(i\neq j\). Replace both of these rows by \(R_i+R_j\). The resulting
+    \matrix has two equal rows, so its value under \(d\) is zero:
     \[
-        C_{i,j} = {(-1)}^{i+j} \det (\text{minor of } A_{i,j})
+        0=d(\ldots,R_i+R_j,\ldots,R_i+R_j,\ldots).
+    \]
+    Expanding by linearity in the two rows gives
+    \[
+        0=
+        d(\ldots,R_i,\ldots,R_i,\ldots)
+        +d(\ldots,R_i,\ldots,R_j,\ldots)
+    \]
+    \[
+        \qquad
+        +d(\ldots,R_j,\ldots,R_i,\ldots)
+        +d(\ldots,R_j,\ldots,R_j,\ldots).
+    \]
+    The first and last terms vanish because they have two equal rows. Hence
+    \[
+        d(\ldots,R_i,\ldots,R_j,\ldots)
+        +
+        d(\ldots,R_j,\ldots,R_i,\ldots)
+        =
+        0,
+    \]
+    which is the desired identity.
+\end{snippetproof}
+
+\begin{snippetproposition}{determinant-pivots-proposition}{Determinant and pivots}
+    Let \(\mathbb{F}\) be a \field, and let
+    \(A\in\matrices_{n\times n}(\mathbb{F})\). Suppose that Gaussian
+    elimination transforms \(A\) into an upper triangular \matrix with
+    diagonal pivots
+    \[
+        p_1,\ldots,p_n,
+    \]
+    using \(\sigma\) row swaps and row replacements
+    \(R_i\leftarrow R_i+\lambda R_j\). Then
+    \[
+        \det(A)=(-1)^\sigma p_1\cdots p_n.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{determinant-pivots-proposition-proof}{determinant-pivots-proposition}{Determinant and pivots}
+    A row replacement \(R_i\leftarrow R_i+\lambda R_j\), with \(i\neq j\),
+    does not change the determinant. Indeed, by linearity in the \(i\)-th row,
+    \[
+        \det(\ldots,R_i+\lambda R_j,\ldots)
+        =
+        \det(\ldots,R_i,\ldots)
+        +
+        \lambda\det(\ldots,R_j,\ldots),
+    \]
+    and the second determinant has two equal rows, so it is zero.
+
+    Each row swap changes the sign of the determinant. If the final upper
+    triangular \matrix is
+    \[
+        U=
+        \begin{pmatrix}
+            p_1 & * & \cdots & *\\
+            0 & p_2 & \cdots & *\\
+            \vdots & \vdots & \ddots & \vdots\\
+            0 & 0 & \cdots & p_n
+        \end{pmatrix},
+    \]
+    then multilinearity in the rows gives
+    \[
+        \det(U)=p_1\cdots p_n\det(\identmatrix{n})=p_1\cdots p_n.
+    \]
+    Taking the \(\sigma\) row swaps into account gives
+    \[
+        \det(A)=(-1)^\sigma p_1\cdots p_n.
+    \]
+\end{snippetproof}
+
+\begin{snippetcorollary}{determinant-uniqueness-corollary}{Uniqueness of the determinant}
+    Let \(\mathbb{F}\) be a \field. There is at most one \function
+    \[
+        d\colon\matrices_{n\times n}(\mathbb{F})\fromto\mathbb{F}
+    \]
+    that is linear in each row, is zero on every \matrix with two equal rows,
+    and satisfies \(d(\identmatrix{n})=1\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{determinant-uniqueness-corollary-proof}{determinant-uniqueness-corollary}{Uniqueness of the determinant}
+    If such a \function exists, then the previous proposition determines its
+    value on every \matrix \(A\) from the pivots obtained by Gaussian
+    elimination:
+    \[
+        d(A)=(-1)^\sigma p_1\cdots p_n.
+    \]
+    Therefore two \function[functions] with these properties agree on every
+    \matrix.
+\end{snippetproof}
+
+\section{Minors and Laplace expansion}
+
+\begin{snippetdefinition}{matrix-minor-definition}{Matrix minor}
+    Let \(A=(a_{ij})\in\matrices_{n\times n}(\mathbb{F})\), with \(n\geq2\).
+    For \(1\leq i,j\leq n\), the \emph{\((i,j)\)-minor matrix} of \(A\) is
+    the \matrix \(A_{ij}\in\matrices_{(n-1)\times(n-1)}(\mathbb{F})\)
+    obtained by deleting the \(i\)-th row and the \(j\)-th column of \(A\).
+    The scalar \(\det(A_{ij})\) is the corresponding \emph{minor
+    determinant}.
+\end{snippetdefinition}
+
+\begin{snippetexample}{matrix-minor-example}{Matrix minors}
+    Let
+    \[
+        A=
+        \begin{pmatrix}
+            1 & 2 & 9\\
+            0 & 2 & 4\\
+            4 & 3 & 7
+        \end{pmatrix}.
+    \]
+    Then
+    \[
+        A_{11}
+        =
+        \begin{pmatrix}
+            2 & 4\\
+            3 & 7
+        \end{pmatrix},
+        \qquad
+        A_{32}
+        =
+        \begin{pmatrix}
+            1 & 9\\
+            0 & 4
+        \end{pmatrix}.
+    \]
+\end{snippetexample}
+
+\begin{snippettheorem}{laplace-expansion-theorem}{Laplace expansion}
+    Let \(A=(a_{ij})\in\matrices_{n\times n}(\mathbb{F})\), with \(n\geq2\).
+    For every column \(j\),
+    \[
+        \det(A)
+        =
+        \sum_{i=1}^{n}
+        (-1)^{i+j}a_{ij}\det(A_{ij}).
+    \]
+    For every row \(i\),
+    \[
+        \det(A)
+        =
+        \sum_{j=1}^{n}
+        (-1)^{i+j}a_{ij}\det(A_{ij}).
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{laplace-expansion-theorem-proof}{laplace-expansion-theorem}{Laplace expansion}
+    Fix a column \(j\), and define
+    \[
+        d(A)=
+        \sum_{i=1}^{n}
+        (-1)^{i+j}a_{ij}\det(A_{ij}).
+    \]
+    The \function \(d\) is linear in each row, is zero when two rows are
+    equal, and satisfies \(d(\identmatrix{n})=1\). By uniqueness of the
+    \determinant, \(d(A)=\det(A)\). The proof for a fixed row is analogous,
+    using linearity in each column, or equivalently applying the column result
+    to \(A^\transpose\).
+\end{snippetproof}
+
+\begin{snippetexample}{laplace-expansion-2x2-example}{Determinant of a \(2\times2\) matrix}
+    Let
+    \[
+        A=
+        \begin{pmatrix}
+            a & b\\
+            c & d
+        \end{pmatrix}
+        \in\matrices_{2\times2}(\mathbb{F}).
+    \]
+    Expanding along the first column gives
+    \[
+        \det(A)=a\,d-c\,b=ad-bc.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{laplace-expansion-3x3-example}{Determinant of a \(3\times3\) matrix}
+    Let
+    \[
+        A=
+        \begin{pmatrix}
+            a & b & c\\
+            d & e & f\\
+            g & h & i
+        \end{pmatrix}
+        \in\matrices_{3\times3}(\mathbb{F}).
+    \]
+    Expanding along the first row gives
+    \[
+        \det(A)
+        =
+        a\det
+        \begin{pmatrix}
+            e & f\\
+            h & i
+        \end{pmatrix}
+        -
+        b\det
+        \begin{pmatrix}
+            d & f\\
+            g & i
+        \end{pmatrix}
+        +
+        c\det
+        \begin{pmatrix}
+            d & e\\
+            g & h
+        \end{pmatrix}.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{laplace-expansion-column-example}{Expansion along a column}
+    Let
+    \[
+        A=
+        \begin{pmatrix}
+            1 & 4 & 0\\
+            2 & 5 & 1\\
+            3 & 6 & 0
+        \end{pmatrix}.
+    \]
+    Expanding along the third column, the only nonzero entry is \(a_{23}=1\).
+    Hence
+    \[
+        \det(A)
+        =
+        (-1)^{2+3}
+        \det
+        \begin{pmatrix}
+            1 & 4\\
+            3 & 6
+        \end{pmatrix}
+        =
+        -(6-12)=6.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{sparse-row-column-laplace-example}{Choosing a sparse row or column}
+    Let \(A=(a_{ij})\in\matrices_{n\times n}(\mathbb{F})\). If row \(i\)
+    or column \(j\) contains many zero entries, then Laplace expansion along
+    that row or column has fewer nonzero terms. In particular, if \(a_{ij}\)
+    is the only nonzero entry in column \(j\), then
+    \[
+        \det(A)=(-1)^{i+j}a_{ij}\det(A_{ij}).
+    \]
+\end{snippetexample}
+
+\begin{snippetdefinition}{cofactor-matrix-definition}{Cofactor matrix}
+    Let \(A=(a_{ij})\in\matrices_{n\times n}(\mathbb{F})\), with \(n\geq2\).
+    The \emph{cofactor matrix} of \(A\) is the \matrix
+    \(C=(C_{ij})\in\matrices_{n\times n}(\mathbb{F})\) defined by
+    \[
+        C_{ij}=(-1)^{i+j}\det(A_{ij}).
     \]
 \end{snippetdefinition}
+
+\section{Properties}
+
+\begin{snippetproposition}{determinant-transpose-proposition}{Determinant of the transpose}
+    Let \(\mathbb{F}\) be a \field, and let
+    \(A\in\matrices_{n\times n}(\mathbb{F})\). Then
+    \[
+        \det(A^\transpose)=\det(A).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{determinant-transpose-proposition-proof}{determinant-transpose-proposition}{Determinant of the transpose}
+    The proof is by induction on \(n\). For \(n=1\), the statement is
+    immediate. Assume it holds for \((n-1)\times(n-1)\) \matrix[matrices]. Expanding
+    \(\det(A^\transpose)\) along the first column gives
+    \[
+        \det(A^\transpose)
+        =
+        \sum_{i=1}^{n}
+        (-1)^{i+1}a_{1i}\det((A_{1i})^\transpose).
+    \]
+    By the induction hypothesis,
+    \[
+        \det((A_{1i})^\transpose)=\det(A_{1i}).
+    \]
+    Therefore
+    \[
+        \det(A^\transpose)
+        =
+        \sum_{i=1}^{n}
+        (-1)^{1+i}a_{1i}\det(A_{1i}),
+    \]
+    which is the Laplace expansion of \(\det(A)\) along the first row.
+\end{snippetproof}
+
+\begin{snippetproposition}{determinant-properties}{Properties of the determinant}
+    Let \(\mathbb{F}\) be a \field, and let
+    \(A,B\in\matrices_{n\times n}(\mathbb{F})\). Then
+    \[
+        \det(A^\transpose)=\det(A),
+        \qquad
+        \det(AB)=\det(A)\det(B).
+    \]
+    If \(A\) is invertible, then
+    \[
+        \det(A^{-1})=\det(A)^{-1}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{determinant-properties-proof}{determinant-properties}{Properties of the determinant}
+    The transpose identity is the previous proposition.
+
+    For the product identity, fix \(A\) and consider
+    \[
+        d(B)=\det(AB).
+    \]
+    The columns of \(AB\) are \(A\) applied to the columns of \(B\), so \(d\)
+    is linear in each column of \(B\) and vanishes when two columns of \(B\)
+    are equal. Since the \determinant is also characterized by the same
+    properties with respect to columns,
+    \[
+        d(B)=d(\identmatrix{n})\det(B)=\det(A)\det(B).
+    \]
+    If \(A\) is invertible, apply the product identity to
+    \(AA^{-1}=\identmatrix{n}\):
+    \[
+        1=\det(\identmatrix{n})=\det(A)\det(A^{-1}).
+    \]
+\end{snippetproof}
+
+\begin{snippetexample}{determinant-non-additivity-example}{The determinant is not additive}
+    Let \(n\geq2\), and work in
+    \(\matrices_{n\times n}(\realnumbers)\). If
+    \(A=B=\identmatrix{n}\), then
+    \[
+        \det(A)=1,
+        \qquad
+        \det(B)=1,
+    \]
+    but
+    \[
+        \det(A+B)=\det(2\identmatrix{n})=2^n.
+    \]
+    Hence, in general,
+    \[
+        \det(A+B)\neq\det(A)+\det(B).
+    \]
+\end{snippetexample}
+
+\section{Rank and independence}
+
+\begin{snippetproposition}{determinant-rank-equivalence}{Determinant and rank}
+    Let \(\mathbb{F}\) be a \field, and let
+    \(A\in\matrices_{n\times n}(\mathbb{F})\). Then
+    \[
+        \det(A)\neq0
+        \ifandonlyif
+        \mrank A=n.
+    \]
+    Equivalently,
+    \[
+        \det(A)=0
+        \ifandonlyif
+        \mrank A<n.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{determinant-rank-equivalence-proof}{determinant-rank-equivalence}{Determinant and rank}
+    Reduce \(A\) by Gaussian elimination. If \(\mrank A=n\), elimination
+    produces \(n\) nonzero pivots \(p_1,\ldots,p_n\), so
+    \[
+        \det(A)=(-1)^\sigma p_1\cdots p_n\neq0.
+    \]
+    If \(\mrank A<n\), elimination produces fewer than \(n\) pivots. The
+    resulting echelon \matrix has a zero row, so the product of its diagonal
+    pivots is zero. Hence \(\det(A)=0\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{determinant-linear-independence-criterion}{Determinant criterion for linear independence}
+    Let \(v_1,\ldots,v_n\in\mathbb{F}^n\). The vectors
+    \(v_1,\ldots,v_n\) are \linearlyindependent if and only if
+    \[
+        \det
+        \begin{pmatrix}
+            \vert & & \vert\\
+            v_1 & \cdots & v_n\\
+            \vert & & \vert
+        \end{pmatrix}
+        \neq0.
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{determinant-linear-independence-criterion-proof}{determinant-linear-independence-criterion}{Determinant criterion for linear independence}
+    The vectors \(v_1,\ldots,v_n\) are \linearlyindependent if and only if
+    the \matrix having them as columns has rank \(n\). By the previous
+    proposition, this is equivalent to the \determinant being nonzero.
+\end{snippetproof}
+
+\begin{snippetdefinition}{square-submatrix-definition}{Square submatrix}
+    Let \(A\in\matrices_{m\times n}(\mathbb{F})\). A
+    \emph{square submatrix of order \(k\)} of \(A\) is a \(k\times k\)
+    \matrix obtained by choosing \(k\) rows and \(k\) columns of \(A\), then
+    keeping the entries at their intersections.
+\end{snippetdefinition}
+
+\begin{snippettheorem}{rank-by-minors-theorem}{Rank by minors}
+    Let \(A\in\matrices_{m\times n}(\mathbb{F})\). The rank of \(A\) is the
+    largest integer \(r\) such that \(A\) has a \squaresubmatrix of order
+    \(r\) with nonzero determinant.
+\end{snippettheorem}
+
+\begin{snippetproof}{rank-by-minors-theorem-proof}{rank-by-minors-theorem}{Rank by minors}
+    It is enough to prove that, for every
+    \(k\leq\min\{m,n\}\),
+    \[
+        \mrank A\geq k
+    \]
+    if and only if \(A\) contains a \squaresubmatrix of order \(k\) with
+    nonzero determinant.
+
+    If \(A\) has a \(k\times k\) \squaresubmatrix \(A'\) with
+    \(\det(A')\neq0\), then \(A'\) has rank \(k\). Since \(A'\) is obtained
+    by selecting rows and columns of \(A\), the rank of \(A\) is at least
+    \(k\).
+
+    Conversely, suppose \(\mrank A\geq k\). Then \(A\) has \(k\)
+    \linearlyindependent rows. Move them to the first \(k\) positions by row
+    swaps, and let \(B\) be the resulting \(k\times n\) \matrix made from
+    those rows. Since row rank equals column rank, \(B\) has \(k\)
+    \linearlyindependent columns. Selecting these columns gives a
+    \(k\times k\) \squaresubmatrix with rank \(k\), hence with nonzero
+    determinant.
+\end{snippetproof}
+
+\begin{snippetexample}{rank-by-minors-example}{Computing rank with minors}
+    Let
+    \[
+        A=
+        \begin{pmatrix}
+            1 & -1 & 0 & -2\\
+            2 & -1 & 1 & -1\\
+            3 & 1 & 4 & 6
+        \end{pmatrix}.
+    \]
+    The \(2\times2\) \squaresubmatrix
+    \[
+        \begin{pmatrix}
+            1 & -1\\
+            2 & -1
+        \end{pmatrix}
+    \]
+    has determinant \(1\), so \(\mrank A\geq2\).
+
+    The four \(3\times3\) submatrices obtained by choosing three of the four
+    columns have determinants
+    \[
+        0,\qquad 0,\qquad 0,\qquad 0.
+    \]
+    Therefore no \(3\times3\) \squaresubmatrix has nonzero determinant, and
+    the rank-by-minors theorem gives
+    \[
+        \mrank A=2.
+    \]
+\end{snippetexample}
+
+\section{Cramer's rule}
+
+\begin{snippettheorem}{cramer-rule-theorem}{Cramer's rule}
+    Let \(\mathbb{F}\) be a \field, let
+    \(A\in\matrices_{n\times n}(\mathbb{F})\), and let
+    \(b\in\mathbb{F}^n\). Suppose that
+    \[
+        \det(A)\neq0.
+    \]
+    For each \(i\in\{1,\ldots,n\}\), let \(A_i(b)\) be the \matrix obtained
+    from \(A\) by replacing its \(i\)-th column with \(b\). Then the linear
+    system
+    \[
+        Ax=b
+    \]
+    has the unique solution \(x=(x_1,\ldots,x_n)^t\), where
+    \[
+        x_i=\frac{\det(A_i(b))}{\det(A)}
+    \]
+    for every \(i\in\{1,\ldots,n\}\).
+\end{snippettheorem}
+
+\begin{snippetproof}{cramer-rule-theorem-proof}{cramer-rule-theorem}{Cramer's rule}
+    Since \(\det(A)\neq0\), the \matrix \(A\) has full rank and the system
+    has a unique solution \(x\). Fix \(i\), and let \(X_i\) be the \matrix
+    obtained from \(\identmatrix{n}\) by replacing its \(i\)-th column with
+    \(x\). Then \(AX_i\) has all the columns of \(A\), except for the
+    \(i\)-th column, which is \(Ax=b\). Hence
+    \[
+        AX_i=A_i(b).
+    \]
+    By the product formula for determinants,
+    \[
+        \det(A_i(b))=\det(AX_i)=\det(A)\det(X_i).
+    \]
+    Expanding \(\det(X_i)\) along its \(i\)-th column gives
+    \[
+        \det(X_i)=x_i.
+    \]
+    Since \(\det(A)\neq0\),
+    \[
+        x_i=\frac{\det(A_i(b))}{\det(A)}.
+    \]
+\end{snippetproof}
+
+\begin{snippetexample}{cramer-rule-system-example}{Solving a system with Cramer's rule}
+    Consider the system
+    \[
+        \begin{cases}
+            x_1+2x_3=1,\\
+            -x_1+3x_2+x_3=0,\\
+            2x_1+7x_3=1.
+        \end{cases}
+    \]
+    Its coefficient \matrix and constant vector are
+    \[
+        A=
+        \begin{pmatrix}
+            1 & 0 & 2\\
+            -1 & 3 & 1\\
+            2 & 0 & 7
+        \end{pmatrix},
+        \qquad
+        b=
+        \begin{pmatrix}
+            1\\
+            0\\
+            1
+        \end{pmatrix}.
+    \]
+    Expanding \(\det(A)\) along the second column gives
+    \[
+        \det(A)=3
+        \det
+        \begin{pmatrix}
+            1 & 2\\
+            2 & 7
+        \end{pmatrix}
+        =
+        9.
+    \]
+    The Cramer \matrix[matrices] satisfy
+    \[
+        \det(A_1(b))=15,
+        \qquad
+        \det(A_2(b))=6,
+        \qquad
+        \det(A_3(b))=-3.
+    \]
+    Therefore
+    \[
+        x_1=\frac{15}{9}=\frac{5}{3},
+        \qquad
+        x_2=\frac{6}{9}=\frac{2}{3},
+        \qquad
+        x_3=-\frac{3}{9}=-\frac{1}{3}.
+    \]
+\end{snippetexample}
+
+\section{Endomorphisms}
+
+\begin{snippetproposition}{endomorphism-determinant-basis-independence}{Basis independence of the determinant}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), let \(f\in\operatorname{End}(V)\), and let
+    \(\mathcal{B}\) and \(\mathcal{E}\) be two \basis[bases] of \(V\). Then
+    \[
+        \det M(f,\mathcal{B},\mathcal{B})
+        =
+        \det M(f,\mathcal{E},\mathcal{E}).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{endomorphism-determinant-basis-independence-proof}{endomorphism-determinant-basis-independence}{Basis independence of the determinant}
+    By the change-of-basis formula, there exists an invertible \matrix
+    \(P\in\operatorname{GL}(n,\mathbb{F})\) such that
+    \[
+        M(f,\mathcal{E},\mathcal{E})
+        =
+        P^{-1}M(f,\mathcal{B},\mathcal{B})P.
+    \]
+    Therefore, using the product formula for determinants,
+    \[
+        \det M(f,\mathcal{E},\mathcal{E})
+        =
+        \det(P^{-1})
+        \det M(f,\mathcal{B},\mathcal{B})
+        \det(P).
+    \]
+    Since \(\det(P^{-1})=\det(P)^{-1}\), this equals
+    \[
+        \det M(f,\mathcal{B},\mathcal{B}).
+    \]
+\end{snippetproof}
+
+\begin{snippetdefinition}{endomorphism-determinant-definition}{Determinant of an endomorphism}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), and let \(f\in\operatorname{End}(V)\). The
+    \emph{determinant of \(f\)} is
+    \[
+        \det(f)=\det M(f,\mathcal{B},\mathcal{B}),
+    \]
+    where \(\mathcal{B}\) is any \basis of \(V\).
+\end{snippetdefinition}
+
+\begin{snippetexample}{polynomial-endomorphism-determinant-example}{An endomorphism of \(\mathcal{P}_2(\mathbb{R})\)}
+    Let
+    \[
+        f\in\operatorname{End}(\mathcal{P}_2(\realnumbers)),
+        \qquad
+        f(p)=(xp(x))'.
+    \]
+    With respect to the \basis
+    \[
+        \mathcal{B}=\{1,x,x^2\},
+    \]
+    one has
+    \[
+        f(1)=1,\qquad f(x)=2x,\qquad f(x^2)=3x^2.
+    \]
+    Therefore
+    \[
+        M(f,\mathcal{B},\mathcal{B})
+        =
+        \begin{pmatrix}
+            1 & 0 & 0\\
+            0 & 2 & 0\\
+            0 & 0 & 3
+        \end{pmatrix},
+    \]
+    and
+    \[
+        \det(f)=6.
+    \]
+\end{snippetexample}
 
 \end{document}

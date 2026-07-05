@@ -1,0 +1,429 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{linearalgebra-gaussian-elimination}
+\genpage
+
+\section{Equivalent systems}
+
+\begin{snippetdefinition}{linear-system-reduction-definition}{Reduction of a linear system}
+    Let \(S\) be a linear system. A \emph{reduction} of \(S\) is a
+    transformation of \(S\) into an equivalent linear system that is simpler
+    to solve.
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{equivalent-linear-systems-definition}{Equivalent linear systems}
+    Two linear systems in the same unknowns are \emph{equivalent} if they have
+    the same solution \set.
+\end{snippetdefinition}
+
+\begin{snippetlemma}{linear-equation-addition-operation}{Adding a multiple of one equation to another}
+    Let \(S\) be a linear system over a \field \(\mathbb{F}\), and let
+    \(E_i\) and \(E_j\) be two equations of \(S\), with \(i\neq j\).
+    If \(\lambda\in\mathbb{F}\), then replacing \(E_i\) by
+    \[
+        E_i+\lambda E_j
+    \]
+    produces a linear system equivalent to \(S\).
+\end{snippetlemma}
+
+\begin{snippetproof}{linear-equation-addition-operation-proof}{linear-equation-addition-operation}{Adding a multiple of one equation to another}
+    Let \(\overline{x}\) be a solution of \(S\). Then
+    \(\overline{x}\) satisfies both \(E_i\) and \(E_j\). If
+    \[
+        E_i:\quad a_{i1}x_1+\cdots+a_{in}x_n=b_i
+    \]
+    and
+    \[
+        E_j:\quad a_{j1}x_1+\cdots+a_{jn}x_n=b_j,
+    \]
+    then the new equation is
+    \[
+        (a_{i1}+\lambda a_{j1})x_1+\cdots
+        +(a_{in}+\lambda a_{jn})x_n
+        =
+        b_i+\lambda b_j.
+    \]
+    Substituting \(\overline{x}\) gives \(b_i+\lambda b_j\), so
+    \(\overline{x}\) also satisfies the new equation.
+
+    Conversely, the operation is reversible: from
+    \(E_i'=E_i+\lambda E_j\) one recovers \(E_i=E_i'-\lambda E_j\). Hence
+    the solution \set is unchanged.
+\end{snippetproof}
+
+\begin{snippetlemma}{linear-equation-swap-operation}{Swapping equations}
+    Let \(S\) be a linear system. Swapping two equations of \(S\) produces a
+    linear system equivalent to \(S\).
+\end{snippetlemma}
+
+\begin{snippetproof}{linear-equation-swap-operation-proof}{linear-equation-swap-operation}{Swapping equations}
+    Swapping two equations changes only the order in which the conditions are
+    written. A tuple of unknowns satisfies all equations before the swap if and
+    only if it satisfies all equations after the swap.
+\end{snippetproof}
+
+\section{Gaussian elimination}
+
+\begin{snippetdefinition}{gaussian-elimination-pivot-definition}{Pivot}
+    During Gaussian elimination, a \emph{pivot} is a nonzero coefficient used
+    to eliminate the entries below it in the same column.
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{forward-elimination-definition}{Forward elimination}
+    Let \(S\) be a linear system. \emph{Forward elimination} is the phase of
+    Gaussian elimination in which pivots are used to eliminate unknowns from
+    later equations. In the nonsingular square case, this phase transforms the
+    system into a triangular system.
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{back-substitution-definition}{Back substitution}
+    Let \(S\) be a triangular linear system. \emph{Back substitution} is the
+    process of solving \(S\) starting from the last equation and then moving
+    upward through the preceding equations.
+\end{snippetdefinition}
+
+\begin{snippetexample}{gaussian-elimination-first-example}{Gaussian elimination}
+    Consider the linear system
+    \[
+        \begin{cases}
+            2u+v+w=5,\\
+            4u-6v=-2,\\
+            -2u+7v+2w=9.
+        \end{cases}
+    \]
+    Subtracting \(2\) times the first equation from the second, and adding
+    the first equation to the third, gives the equivalent system
+    \[
+        \begin{cases}
+            2u+v+w=5,\\
+            -8v-2w=-12,\\
+            8v+3w=14.
+        \end{cases}
+    \]
+    Adding the second equation to the third gives
+    \[
+        \begin{cases}
+            2u+v+w=5,\\
+            -8v-2w=-12,\\
+            w=2.
+        \end{cases}
+    \]
+    Back substitution gives
+    \[
+        w=2,
+        \qquad
+        v=1,
+        \qquad
+        u=1.
+    \]
+    Hence the unique solution is
+    \[
+        (u,v,w)=(1,1,2).
+    \]
+\end{snippetexample}
+
+\begin{snippet}{gaussian-elimination-matrix-form}
+    The system in the previous example has augmented \matrix
+    \[
+        \left[
+            \begin{array}{ccc|c}
+                2 & 1 & 1 & 5\\
+                4 & -6 & 0 & -2\\
+                -2 & 7 & 2 & 9
+            \end{array}
+        \right].
+    \]
+    The row operations
+    \[
+        R_2\leftarrow R_2-2R_1,
+        \qquad
+        R_3\leftarrow R_3+R_1
+    \]
+    give
+    \[
+        \left[
+            \begin{array}{ccc|c}
+                2 & 1 & 1 & 5\\
+                0 & -8 & -2 & -12\\
+                0 & 8 & 3 & 14
+            \end{array}
+        \right].
+    \]
+    Then
+    \[
+        R_3\leftarrow R_3+R_2
+    \]
+    gives
+    \[
+        \left[
+            \begin{array}{ccc|c}
+                2 & 1 & 1 & 5\\
+                0 & -8 & -2 & -12\\
+                0 & 0 & 1 & 2
+            \end{array}
+        \right].
+    \]
+    The pivots are \(2\), \(-8\), and \(1\).
+\end{snippet}
+
+\begin{snippetproposition}{gaussian-elimination-square-nonsingular-method}{Gaussian elimination for nonsingular square systems}
+    Let \(S\) be a square linear system with \(n\) equations and \(n\)
+    unknowns over a \field \(\mathbb{F}\). If forward elimination produces
+    \(n\) pivots, then \(S\) has a unique solution, obtained by back
+    substitution.
+\end{snippetproposition}
+
+\begin{snippetproof}{gaussian-elimination-square-nonsingular-method-proof}{gaussian-elimination-square-nonsingular-method}{Gaussian elimination for nonsingular square systems}
+    Forward elimination uses reversible elementary equation operations, so the
+    solution \set is unchanged. If \(n\) pivots are produced, the resulting
+    system is triangular with a nonzero coefficient in each pivot position.
+    The last equation determines the last unknown uniquely. Substituting this
+    value into the previous equation determines the previous unknown uniquely.
+    Continuing upward determines all unknowns uniquely.
+\end{snippetproof}
+
+\section{Singular cases}
+
+\begin{snippetexample}{gaussian-elimination-inconsistent-zero-row-example}{Inconsistent zero row}
+    Consider the system
+    \[
+        \begin{cases}
+            2x-4y=7,\\
+            x-2y=5.
+        \end{cases}
+    \]
+    Its augmented \matrix is
+    \[
+        \left[
+            \begin{array}{cc|c}
+                2 & -4 & 7\\
+                1 & -2 & 5
+            \end{array}
+        \right].
+    \]
+    After the operation
+    \[
+        R_2\leftarrow R_2-\frac{1}{2}R_1,
+    \]
+    one obtains
+    \[
+        \left[
+            \begin{array}{cc|c}
+                2 & -4 & 7\\
+                0 & 0 & \frac{3}{2}
+            \end{array}
+        \right].
+    \]
+    The second row represents \(0=\frac{3}{2}\), which is impossible.
+    Therefore the system has no solutions.
+\end{snippetexample}
+
+\begin{snippetexample}{gaussian-elimination-free-variable-example}{Free variable after elimination}
+    Consider the system
+    \[
+        \begin{cases}
+            2x-4y=6,\\
+            x-2y=3.
+        \end{cases}
+    \]
+    After the row operation
+    \[
+        R_2\leftarrow R_2-\frac{1}{2}R_1
+    \]
+    the augmented \matrix becomes
+    \[
+        \left[
+            \begin{array}{cc|c}
+                2 & -4 & 6\\
+                0 & 0 & 0
+            \end{array}
+        \right].
+    \]
+    The second row represents the identity \(0=0\). The system is equivalent
+    to \(x-2y=3\). If \(y=t\in\realnumbers\), then \(x=3+2t\). Thus the
+    solution \set is
+    \[
+        \{(3+2t,t)\suchthat t\in\realnumbers\}.
+    \]
+\end{snippetexample}
+
+\begin{snippetnote}{gaussian-elimination-zero-pivot-note}{Zero pivots}
+    In a square linear system, the failure to produce a pivot in every column
+    does not by itself decide whether the system has solutions. The augmented
+    column determines whether the system is inconsistent or has free
+    variables.
+\end{snippetnote}
+
+\begin{snippetexample}{gaussian-elimination-row-swap-example}{Using a row swap}
+    Consider a system whose augmented \matrix becomes
+    \[
+        \left[
+            \begin{array}{ccc|c}
+                1 & 1 & 1 & b_1\\
+                0 & 0 & 3 & b_2-2b_1\\
+                0 & 2 & 4 & b_3-4b_1
+            \end{array}
+        \right]
+    \]
+    during elimination. The entry in the second column of the second row is
+    zero, but swapping the second and third rows gives
+    \[
+        \left[
+            \begin{array}{ccc|c}
+                1 & 1 & 1 & b_1\\
+                0 & 2 & 4 & b_3-4b_1\\
+                0 & 0 & 3 & b_2-2b_1
+            \end{array}
+        \right].
+    \]
+    This \matrix has three pivots \(1\), \(2\), and \(3\). Hence the
+    corresponding square system has a unique solution for every choice of
+    \(b_1,b_2,b_3\).
+\end{snippetexample}
+
+\begin{snippetexample}{gaussian-elimination-singular-square-system-example}{A singular square system}
+    Consider the square system
+    \[
+        \begin{cases}
+            u+v+w=b_1,\\
+            2u+2v+5w=b_2,\\
+            4u+4v+8w=b_3.
+        \end{cases}
+    \]
+    After eliminating the first column one obtains
+    \[
+        \left[
+            \begin{array}{ccc|c}
+                1 & 1 & 1 & b_1\\
+                0 & 0 & 3 & b_2-2b_1\\
+                0 & 0 & 4 & b_3-4b_1
+            \end{array}
+        \right].
+    \]
+    No pivot can be produced in the second column. Depending on the values of
+    \(b_1,b_2,b_3\), the system may have infinitely many solutions or no
+    solutions.
+\end{snippetexample}
+
+\begin{snippetexample}{gaussian-elimination-singular-infinite-solutions-example}{Infinite solutions in a singular case}
+    In the singular system
+    \[
+        \begin{cases}
+            u+v+w=b_1,\\
+            2u+2v+5w=b_2,\\
+            4u+4v+8w=b_3,
+        \end{cases}
+    \]
+    take \(b_1=0\), \(b_2=3\), and \(b_3=4\). The reduced system is
+    \[
+        \begin{cases}
+            u+v+w=0,\\
+            3w=3,\\
+            4w=4.
+        \end{cases}
+    \]
+    Hence \(w=1\) and \(u+v+1=0\). If \(v=t\in\realnumbers\), then
+    \(u=-1-t\), and the solution \set is
+    \[
+        \{(-1-t,t,1)\suchthat t\in\realnumbers\}.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{gaussian-elimination-singular-no-solutions-example}{No solutions in a singular case}
+    In the singular system
+    \[
+        \begin{cases}
+            u+v+w=b_1,\\
+            2u+2v+5w=b_2,\\
+            4u+4v+8w=b_3,
+        \end{cases}
+    \]
+    take \(b_1=0\), \(b_2=4\), and \(b_3=3\). The last two reduced equations
+    become
+    \[
+        3w=4,
+        \qquad
+        4w=3.
+    \]
+    These equations are incompatible, so the system has no solutions.
+\end{snippetexample}
+
+\section{Complete example}
+
+\begin{snippetexample}{gaussian-elimination-four-unknowns-example}{Gaussian elimination in four unknowns}
+    Consider the system
+    \[
+        \begin{cases}
+            w+2x-y+z=6,\\
+            -w+x+2y-z=3,\\
+            2w-x+2y+2z=14,\\
+            w+x-y+2z=8.
+        \end{cases}
+    \]
+    Its augmented \matrix is
+    \[
+        \left[
+            \begin{array}{rrrr|r}
+                1 & 2 & -1 & 1 & 6\\
+                -1 & 1 & 2 & -1 & 3\\
+                2 & -1 & 2 & 2 & 14\\
+                1 & 1 & -1 & 2 & 8
+            \end{array}
+        \right].
+    \]
+    After the operations
+    \[
+        R_2\leftarrow R_2+R_1,
+        \quad
+        R_3\leftarrow R_3-2R_1,
+        \quad
+        R_4\leftarrow R_4-R_1,
+    \]
+    one gets
+    \[
+        \left[
+            \begin{array}{rrrr|r}
+                1 & 2 & -1 & 1 & 6\\
+                0 & 3 & 1 & 0 & 9\\
+                0 & -5 & 4 & 0 & 2\\
+                0 & -1 & 0 & 1 & 2
+            \end{array}
+        \right].
+    \]
+    Eliminating entries below the pivot \(3\), and then eliminating the last
+    entry below the third pivot, gives
+    \[
+        \left[
+            \begin{array}{rrrr|r}
+                1 & 2 & -1 & 1 & 6\\
+                0 & 3 & 1 & 0 & 9\\
+                0 & 0 & \frac{17}{3} & 0 & 17\\
+                0 & 0 & 0 & 1 & 4
+            \end{array}
+        \right].
+    \]
+    Back substitution gives
+    \[
+        z=4,
+        \qquad
+        y=3,
+        \qquad
+        x=2,
+        \qquad
+        w=1.
+    \]
+    Therefore the solution is
+    \[
+        (w,x,y,z)=(1,2,3,4).
+    \]
+\end{snippetexample}
+
+\end{document}

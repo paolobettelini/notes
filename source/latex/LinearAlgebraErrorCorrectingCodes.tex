@@ -1,0 +1,547 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\title{Stellar}
+\id{linearalgebra-error-correcting-codes}
+\genpage
+
+\section{Error correction}
+
+\begin{snippet}{error-correcting-codes-motivation}
+    Suppose Alice wants to send a message to Bob. During transmission, some
+    digits or bits may be changed. Bob would like to do two things:
+    \[
+        \begin{array}{ll}
+            1. & \text{detect that an error occurred},\\
+            2. & \text{correct the received message when possible}.
+        \end{array}
+    \]
+\end{snippet}
+
+\begin{snippetdefinition}{error-detecting-correcting-code-definition}{Error-detecting and error-correcting codes}
+    An \emph{error-detecting code} is an encoding rule that allows the
+    receiver to decide, for some received messages, that an error occurred.
+    An \emph{error-correcting code} is an encoding rule that also allows the
+    receiver to reconstruct the original message for some prescribed error
+    patterns.
+\end{snippetdefinition}
+
+\section{Check digits}
+
+\begin{snippetdefinition}{check-digit-procedure-definition}{A check digit procedure}
+    Let
+    \[
+        C=C_{16}C_{15}\cdots C_2C_1
+    \]
+    be a string of \(16\) decimal digits, where \(C_1\) is the rightmost
+    digit. Define
+    \[
+        p\colon\{0,1,\ldots,9\}\fromto\{0,1,\ldots,9\}
+    \]
+    by
+    \[
+        \begin{array}{c|cccccccccc}
+            n & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9\\
+            \hline
+            p(n) & 0 & 2 & 4 & 6 & 8 & 1 & 3 & 5 & 7 & 9.
+        \end{array}
+    \]
+    Equivalently, \(p(0)=0\), \(p(9)=9\), and for \(1\leq k\leq8\),
+    \(p(k)\) is the remainder of \(2k\) modulo \(9\).
+
+    Define
+    \[
+        S=C_1+p(C_2)+C_3+p(C_4)+\cdots+C_{15}+p(C_{16}).
+    \]
+    The string \(C\) passes the check if
+    \[
+        S\equiv 0\pmod{10}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexample}{check-digit-procedure-example}{A failed check digit}
+    Consider
+    \[
+        C=1234\,5678\,9012\,3456.
+    \]
+    The check digit procedure gives
+    \[
+        S=64.
+    \]
+    Since
+    \[
+        64\not\equiv0\pmod{10},
+    \]
+    the string is detected as invalid.
+\end{snippetexample}
+
+\begin{snippet}{check-digits-limitations}
+    Check digits are useful for detecting simple transcription errors, but
+    they do not generally identify which digit should be changed. To correct
+    errors systematically, it is natural to encode binary messages using
+    linear algebra over a finite \field.
+\end{snippet}
+
+\section{Binary messages}
+
+\begin{snippet}{binary-messages-explanation}
+    Digital messages are represented by strings of bits, namely strings whose
+    entries are \(0\) or \(1\). Text, images, videos and numbers can all be
+    encoded into binary strings.
+\end{snippet}
+
+\begin{snippetexample}{integer-binary-expansion-37-example}{Binary expansion of \(37\)}
+    Repeated division by \(2\) gives
+    \[
+        \begin{array}{rcl}
+            37 &=& 2\cdot18+1,\\
+            18 &=& 2\cdot9+0,\\
+            9 &=& 2\cdot4+1,\\
+            4 &=& 2\cdot2+0,\\
+            2 &=& 2\cdot1+0,\\
+            1 &=& 2\cdot0+1.
+        \end{array}
+    \]
+    Reading the remainders from bottom to top,
+    \[
+        (37)_{10}=(100101)_2.
+    \]
+    Indeed,
+    \[
+        37=1\cdot2^5+0\cdot2^4+0\cdot2^3+1\cdot2^2+0\cdot2+1.
+    \]
+\end{snippetexample}
+
+\begin{snippetdefinition}{binary-field-f2-definition}{The field \(\mathbb{F}_2\)}
+    The \emph{binary field} is the \set
+    \[
+        \fieldtwo=\{0,1\}
+    \]
+    with addition and multiplication modulo \(2\). Addition is determined by
+    \[
+        0+0=0,
+        \qquad
+        0+1=1,
+        \qquad
+        1+0=1,
+        \qquad
+        1+1=0,
+    \]
+    and multiplication is determined by
+    \[
+        0\cdot0=0,
+        \qquad
+        0\cdot1=0,
+        \qquad
+        1\cdot0=0,
+        \qquad
+        1\cdot1=1.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{binary-field-f2-is-field}{\(\mathbb{F}_2\) is a field}
+    The \set \(\fieldtwo=\{0,1\}\), with addition and multiplication modulo
+    \(2\), is a \field.
+\end{snippetproposition}
+
+\begin{snippetproof}{binary-field-f2-is-field-proof}{binary-field-f2-is-field}{\(\mathbb{F}_2\) is a field}
+    The operations are ordinary integer addition and multiplication, reduced
+    modulo \(2\). The additive identity is \(0\), and the multiplicative
+    identity is \(1\). Since
+    \[
+        1+1=0,
+    \]
+    the element \(1\) is its own additive inverse. The only nonzero element is
+    \(1\), and it has multiplicative inverse \(1\). Associativity,
+    commutativity and distributivity are inherited from the integers modulo
+    \(2\).
+\end{snippetproof}
+
+\section{Matrices over the binary field}
+
+\begin{snippetdefinition}{binary-field-matrix-definition}{Matrices over \(\mathbb{F}_2\)}
+    A \matrix over \(\fieldtwo\) is a \matrix whose entries belong to
+    \(\fieldtwo=\{0,1\}\). If
+    \[
+        A\in\matrices_{m\times n}(\fieldtwo),
+        \qquad
+        B\in\matrices_{n\times p}(\fieldtwo),
+    \]
+    their product is defined by the usual formula
+    \[
+        (AB)_{ij}=\sum_{k=1}^{n}a_{ik}b_{kj},
+    \]
+    with all sums and products computed in \(\fieldtwo\).
+\end{snippetdefinition}
+
+\begin{snippetexample}{binary-field-matrix-addition-example}{Matrix addition over \(\mathbb{F}_2\)}
+    In \(\fieldtwo\), one has \(1+1=0\). Hence
+    \[
+        \begin{pmatrix}
+            1 & 0 & 1\\
+            0 & 1 & 0\\
+            0 & 0 & 1
+        \end{pmatrix}
+        +
+        \begin{pmatrix}
+            1 & 1 & 0\\
+            0 & 0 & 1\\
+            1 & 0 & 1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            0 & 1 & 1\\
+            0 & 1 & 1\\
+            1 & 0 & 0
+        \end{pmatrix}.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{binary-field-matrix-vector-product-example}{Matrix-vector product over \(\mathbb{F}_2\)}
+    Let
+    \[
+        A=
+        \begin{pmatrix}
+            0 & 0 & 1 & 0\\
+            0 & 0 & 0 & 1\\
+            1 & 1 & 0 & 0
+        \end{pmatrix}
+        \in\matrices_{3\times4}(\fieldtwo)
+    \]
+    and
+    \[
+        v=
+        \begin{pmatrix}
+            1\\
+            1\\
+            0\\
+            1
+        \end{pmatrix}
+        \in\fieldtwo^4.
+    \]
+    Then
+    \[
+        Av=
+        \begin{pmatrix}
+            0\\
+            1\\
+            0
+        \end{pmatrix}.
+    \]
+    Indeed, if \(A^j\) is the \(j\)-th column of \(A\), then
+    \[
+        Av=1A^1+1A^2+0A^3+1A^4.
+    \]
+    Since \(A^1=A^2=(0,0,1)^t\) and \(A^4=(0,1,0)^t\), the sum over
+    \(\fieldtwo\) is
+    \[
+        (0,0,1)^t+(0,0,1)^t+(0,1,0)^t=(0,1,0)^t.
+    \]
+\end{snippetexample}
+
+\section{Redundancy}
+
+\begin{snippet}{redundancy-error-correction-idea}
+    The basic idea behind error correction is to add redundancy to the
+    transmitted message. A naive method would be to repeat a bit several
+    times and decode by majority vote. For example, if Alice sends a bit five
+    times and Bob receives
+    \[
+        01000,
+    \]
+    he may decide that the intended bit was \(0\). This corrects some errors,
+    but it is inefficient: only one bit of information is transmitted in five
+    positions, so the rate is \(1/5\).
+\end{snippet}
+
+\section{The Hamming code}
+
+\begin{snippetdefinition}{hamming-7-4-parity-check-matrix-definition}{Parity-check matrix of the Hamming code}
+    The Hamming \((7,4)\) code over \(\fieldtwo\) uses the parity-check
+    \matrix
+    \[
+        H=
+        \begin{pmatrix}
+            1 & 0 & 1 & 0 & 1 & 0 & 1\\
+            0 & 1 & 1 & 0 & 0 & 1 & 1\\
+            0 & 0 & 0 & 1 & 1 & 1 & 1
+        \end{pmatrix}
+        \in\matrices_{3\times7}(\fieldtwo).
+    \]
+    The \(i\)-th column of \(H\) is the binary representation of \(i\):
+    \[
+        \begin{array}{c|c}
+            i & \text{\(i\)-th column of \(H\)}\\
+            \hline
+            1 & (1,0,0)^t\\
+            2 & (0,1,0)^t\\
+            3 & (1,1,0)^t\\
+            4 & (0,0,1)^t\\
+            5 & (1,0,1)^t\\
+            6 & (0,1,1)^t\\
+            7 & (1,1,1)^t.
+        \end{array}
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{hamming-7-4-codeword-definition}{Codewords of the Hamming code}
+    Let \(H\in\matrices_{3\times7}(\fieldtwo)\) be the parity-check \matrix
+    of the Hamming \((7,4)\) code. A \emph{codeword} is a vector
+    \[
+        c\in\fieldtwo^7
+    \]
+    such that
+    \[
+        Hc=0.
+    \]
+    Equivalently, the \set of codewords is
+    \[
+        \{c\in\fieldtwo^7\suchthat Hc=0\}
+        =
+        \ltkernel L_H,
+    \]
+    where \(L_H\colon\fieldtwo^7\fromto\fieldtwo^3\) is the associated
+    \lineartransformation \(L_H(c)=Hc\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{hamming-7-4-encoding-definition}{Encoding in the Hamming \((7,4)\) code}
+    In the Hamming \((7,4)\) code, the information message
+    \[
+        (a,b,c,d)\in\fieldtwo^4
+    \]
+    is encoded as the codeword
+    \[
+        C=
+        \begin{pmatrix}
+            a+b+d\\
+            a+c+d\\
+            a\\
+            b+c+d\\
+            b\\
+            c\\
+            d
+        \end{pmatrix}
+        \in\fieldtwo^7.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproof}{hamming-7-4-encoding-definition-proof}{hamming-7-4-encoding-definition}{Encoding in the Hamming \((7,4)\) code}
+    Put
+    \[
+        C=
+        \begin{pmatrix}
+            x\\
+            y\\
+            a\\
+            z\\
+            b\\
+            c\\
+            d
+        \end{pmatrix}.
+    \]
+    The bits \(a,b,c,d\) are information bits, and \(x,y,z\) are redundancy
+    bits chosen so that \(HC=0\). Multiplying by \(H\) gives
+    \[
+        HC=
+        \begin{pmatrix}
+            x+a+b+d\\
+            y+a+c+d\\
+            z+b+c+d
+        \end{pmatrix}.
+    \]
+    Thus \(HC=0\) is equivalent to
+    \[
+        x+a+b+d=0,
+        \qquad
+        y+a+c+d=0,
+        \qquad
+        z+b+c+d=0.
+    \]
+    In \(\fieldtwo\), subtraction is the same as addition. Hence
+    \[
+        x=a+b+d,
+        \qquad
+        y=a+c+d,
+        \qquad
+        z=b+c+d,
+    \]
+    giving the displayed encoding formula.
+\end{snippetproof}
+
+\begin{snippet}{hamming-7-4-rate}
+    The Hamming \((7,4)\) code transmits \(4\) information bits using \(7\)
+    total bits. Its rate is
+    \[
+        \frac{\text{number of information bits}}{\text{number of transmitted bits}}
+        =
+        \frac{4}{7}.
+    \]
+\end{snippet}
+
+\section{Syndrome decoding}
+
+\begin{snippetdefinition}{hamming-syndrome-definition}{Syndrome}
+    Let \(H\in\matrices_{3\times7}(\fieldtwo)\) be the parity-check \matrix
+    of the Hamming \((7,4)\) code. For a received vector
+    \[
+        r\in\fieldtwo^7,
+    \]
+    the \emph{syndrome} of \(r\) is
+    \[
+        s=Hr\in\fieldtwo^3.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexample}{hamming-7-4-zero-syndrome-decoding-example}{Zero syndrome}
+    Let \(H\in\matrices_{3\times7}(\fieldtwo)\) be the parity-check \matrix
+    of the Hamming \((7,4)\) code. If Bob receives
+    \[
+        r=
+        \begin{pmatrix}
+            x\\
+            y\\
+            a\\
+            z\\
+            b\\
+            c\\
+            d
+        \end{pmatrix}
+        \in\fieldtwo^7
+    \]
+    and \(Hr=0\), then \(r\) is a codeword. Under the assumption that at most
+    one error occurred, Bob detects no error and decodes by removing the
+    redundancy positions \(1,2,4\). The decoded message is
+    \[
+        (a,b,c,d),
+    \]
+    read from positions \(3,5,6,7\).
+\end{snippetexample}
+
+\begin{snippetproposition}{hamming-7-4-one-error-correction}{Correction of one error}
+    Let \(H\in\matrices_{3\times7}(\fieldtwo)\) be the parity-check \matrix
+    of the Hamming \((7,4)\) code. If a received word
+    \(r\in\fieldtwo^7\) differs from a codeword by at most one coordinate,
+    then the syndrome
+    \[
+        s=Hr
+    \]
+    identifies and corrects the error:
+    \[
+        s=0
+        \Longrightarrow
+        \text{no error is detected},
+    \]
+    while if \(s\neq0\), then \(s\) is a column of \(H\), and the error is
+    in the corresponding position.
+\end{snippetproposition}
+
+\begin{snippetproof}{hamming-7-4-one-error-correction-proof}{hamming-7-4-one-error-correction}{Correction of one error}
+    If \(r=C\), where \(C\) is a codeword, then
+    \[
+        Hr=HC=0.
+    \]
+    Suppose instead that there is exactly one error in position \(i\). Then
+    \[
+        r=C+e_i,
+    \]
+    where \(e_i\) is the \(i\)-th canonical vector of \(\fieldtwo^7\). Since
+    \(C\) is a codeword,
+    \[
+        Hr=H(C+e_i)=HC+He_i=He_i.
+    \]
+    The vector \(He_i\) is the \(i\)-th column of \(H\). The columns of \(H\)
+    are all nonzero and distinct, so the syndrome determines \(i\)
+    uniquely. Correcting the error means changing the bit in position \(i\).
+\end{snippetproof}
+
+\begin{snippetexample}{hamming-7-4-seventh-position-correction-example}{Correcting the seventh position}
+    Let \(H\in\matrices_{3\times7}(\fieldtwo)\) be the parity-check \matrix
+    of the Hamming \((7,4)\) code. Suppose Bob receives \(r\in\fieldtwo^7\)
+    and computes
+    \[
+        Hr=
+        \begin{pmatrix}
+            1\\
+            1\\
+            1
+        \end{pmatrix}.
+    \]
+    This is the seventh column of \(H\). Therefore Bob corrects the received
+    word by changing the seventh entry. After correction, he removes positions
+    \(1,2,4\) and reads the information bits in positions \(3,5,6,7\).
+\end{snippetexample}
+
+\section{Limits of the code}
+
+\begin{snippetexample}{hamming-7-4-multiple-error-limitation-example}{Two errors}
+    Let \(H\in\matrices_{3\times7}(\fieldtwo)\) be the parity-check \matrix
+    of the Hamming \((7,4)\) code. Suppose the correct codeword is \(C\), but
+    two errors occur in positions \(i\) and \(j\), with \(i\neq j\). Then the
+    received word is
+    \[
+        r=C+e_i+e_j.
+    \]
+    Its syndrome is
+    \[
+        Hr=HC+He_i+He_j=He_i+He_j.
+    \]
+    Since computations are in \(\fieldtwo\), the sum of two columns of \(H\)
+    can coincide with another column of \(H\). Bob may then interpret the
+    syndrome as a single error in the wrong position.
+\end{snippetexample}
+
+\begin{snippetproposition}{hamming-7-4-multiple-error-probability}{Probability of at most one error}
+    Suppose that each transmitted bit is changed independently with
+    probability \(p\). In a block of \(7\) bits, the probability of no errors
+    is
+    \[
+        (1-p)^7,
+    \]
+    the probability of exactly one error is
+    \[
+        7p(1-p)^6,
+    \]
+    and the probability of at most one error is
+    \[
+        (1-p)^7+7p(1-p)^6.
+    \]
+    Therefore the probability of two or more errors is
+    \[
+        1-\bigl((1-p)^7+7p(1-p)^6\bigr).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{hamming-7-4-multiple-error-probability-proof}{hamming-7-4-multiple-error-probability}{Probability of at most one error}
+    No errors occur exactly when all \(7\) bits are transmitted correctly,
+    which has probability \((1-p)^7\). Exactly one error can occur in any one
+    of the \(7\) positions. For a fixed position, the probability is
+    \(p(1-p)^6\), so the total probability of exactly one error is
+    \(7p(1-p)^6\). These two events are disjoint, so their probabilities add.
+    The event of two or more errors is the complement of the event of at most
+    one error.
+\end{snippetproof}
+
+\begin{snippetexample}{hamming-7-4-multiple-error-probability-example}{A one percent bit error rate}
+    If each bit is changed independently with probability
+    \[
+        p=0.01,
+    \]
+    then
+    \[
+        (1-p)^7+7p(1-p)^6\simeq0.998.
+    \]
+    Thus the probability of two or more errors in one block is approximately
+    \[
+        1-0.998=0.002,
+    \]
+    namely about \(0.2\%\).
+\end{snippetexample}
+
+\end{document}

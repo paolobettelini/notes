@@ -2,8 +2,10 @@
 
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{tikz}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{bettelini}
 
 \begin{document}
 
@@ -12,196 +14,337 @@
 
 \section{Affine spaces}
 
-\plain{We want to be able to describe geometric spaces where points,
-rather than vectors, are the fundamental objects, allowing us to formalize
-translations and work in settings where there is no natural origin.}
+\begin{snippet}{affine-spaces-motivation}
+    Vector subspaces have a distinguished origin. Affine geometry separates
+    \affinepoint[points] from \vector[vectors] so that lines and planes not
+    passing through an origin can be treated intrinsically.
+\end{snippet}
 
 \begin{snippetdefinition}{affine-space-definition}{Affine space}
-    An \emph{affine space} on a \field \(\mathbb{F}\) is a \set
-    \(A\) such that there exist 
-    \begin{enumerate}
-        \item a \vectorspace \(V\) over \(\mathbb{F}\);
-        \item a \function \(\vec{pq}\colon A \cartesianprod A \to V\)
-    \end{enumerate}
+    An \emph{affine space} over a \field \(\mathbb{F}\) is a \set
+    \(\mathcal{A}\) together with a \vectorspace \(V\) over
+    \(\mathbb{F}\) and a \function
+    \[
+        \vec{\phantom{pq}}\colon
+        \mathcal{A}\cartesianprod\mathcal{A}\fromto V,
+        \qquad
+        (p,q)\mapsto\vec{pq},
+    \]
     such that
     \begin{enumerate}
-        \item \(\forall p \in A\) fixed, the map \(A \to V\) given by \(q \mapsto \vec{pq}\) is \bijective;
-        \item \emph{Chasles relation:} \(\forall p, q, r \in A\), \(\vec{pq} = \vec{pr} + \vec{rq}\).
+        \item for every fixed \(p\in\mathcal{A}\), the map
+        \[
+            \mathcal{A}\fromto V,
+            \qquad
+            q\mapsto\vec{pq}
+        \]
+        is a \bijective[bijection];
+        \item for every \(p,q,r\in\mathcal{A}\), the Chasles relation holds:
+        \[
+            \vec{pq}=\vec{pr}+\vec{rq}.
+        \]
     \end{enumerate}
-    The elements of \(A\) are called \emph{points} and \(V\) is called the \emph{direction space} or 
-    \emph{associated space} of \(A\).
+    The elements of \(\mathcal{A}\) are called \emph{points}. The
+    \vectorspace \(V\) is called the \emph{direction space}, or the
+    \emph{associated vector space}, of \(\mathcal{A}\).
 \end{snippetdefinition}
 
 \begin{snippetdefinition}{affine-space-dimensiona-definition}{Affine space dimension}
-    Let \(A\) be an \affinespace over a \field \(\mathbb{F}\) with associated \vectorspace \(V\).
-    Then, the \emph{dimension} of \(A\) is defined as the dimension of \(V\) over \(\mathbb{F}\).
+    Let \(\mathcal{A}\) be an \affinespace over a \field
+    \(\mathbb{F}\), with associated \vectorspace \(V\). If \(V\) is
+    finite-dimensional, the \emph{dimension} of \(\mathcal{A}\) is
+    \[
+        \lineardim_{\mathbb{F}}(\mathcal{A})
+        \triangleq
+        \lineardim_{\mathbb{F}}(V).
+    \]
+    By convention, the empty \affinespace has dimension \(-\infty\).
 \end{snippetdefinition}
 
-\begin{snippetproposition}{vector-space-canonincal-affine-form}{Canonincal affine form}
-    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\).
-    Then, the \set \(A = V\) is an \affinespace over \(\mathbb{F}\) with associated \vectorspace \(V\) and the map
+\begin{snippetexample}{empty-affine-space-example}{The empty affine space}
+    The empty \set \(\emptyset\) is an \affinespace. The conditions in the
+    definition are vacuous, because there are no \affinepoint[points] on
+    which to test them. By convention,
     \[
-        \vec{pq} = q - p
+        \lineardim(\emptyset)=-\infty.
+    \]
+\end{snippetexample}
+
+\section{Fundamental examples}
+
+\begin{snippetproposition}{vector-space-canonincal-affine-form}{Canonical affine form}
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\). Then
+    \(V\) has a canonical \affinespace structure over \(\mathbb{F}\), with
+    associated \vectorspace \(V\), defined by
+    \[
+        \vec{pq}=q-p
+        \qquad
+        p,q\in V.
     \]
 \end{snippetproposition}
 
 \begin{snippetproof}{vector-space-canonincal-affine-form-proof}{vector-space-canonincal-affine-form}{Canonical affine form}
-    \begin{enumerate}
-        \item Let \(p\) be fixed. The map \(q \mapsto q - p\) is a \bijective[bijection] since it is a linear map with inverse \(q \mapsto q + p\).
-        \item \emph{Chasles relation:} Let \(p, q, r \in A\). Then,
-        \begin{align*}
-            \vec{pq} = -p + q = r-p+q-r = \vec{pr} + \vec{rq}
-        \end{align*}
-    \end{enumerate}
+    Fix \(p\in V\). The map
+    \[
+        V\fromto V,
+        \qquad
+        q\mapsto q-p
+    \]
+    is a \bijective[bijection], with inverse \(v\mapsto p+v\).
+    Moreover, for every \(p,q,r\in V\),
+    \[
+        \vec{pr}+\vec{rq}
+        =
+        (r-p)+(q-r)
+        =
+        q-p
+        =
+        \vec{pq}.
+    \]
+    Thus the Chasles relation holds.
 \end{snippetproof}
 
-\begin{snippetdefinition}{canonincal-nth-dimensional-affine-space-definition}{Canonincal nth-dimensional affine space}
-    Let \(V=\mathbb{F}^n\) be a \vectorspace over a \field \(\mathbb{F}\).
-    Then, the \snippetref[vector-space-canonincal-affine-form][canonincal] \affinespace is denoted
+\begin{snippetdefinition}{canonincal-nth-dimensional-affine-space-definition}{Canonical affine space}
+    Let \(V=\mathbb{F}^n\) be the coordinate \vectorspace over a
+    \field \(\mathbb{F}\). The canonical \affinespace associated with
+    \(V\) is denoted
     \[
-        \mathbb{A}^n(\mathbb{F})
+        \mathbb{A}^n(\mathbb{F}).
     \]
 \end{snippetdefinition}
 
-\begin{snippetproposition}{linear-system-solutions-affine-space}{}
-    Let \(A \in \matrices_{m \times n}(\mathbb{F})\)
-    and \(b \in \mathbb{F}^m\).
-    The \emph{solution set} of the linear system \(Ax = b\) is the \set
+\begin{snippetexample}{translated-linear-subspace-affine-space-example}{Translated linear subspaces}
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\), let
+    \(U\subseteq V\) be a linear subspace, and let \(v\in V\). Then
     \[
-        \text{Sol}(Ax = b) = \{x \in \mathbb{F}^n \mid Ax = b\}
+        v+U=\{v+u\suchthat u\in U\}
     \]
-    is an \affinespace over \(\mathbb{F}\) with associated \vectorspace
-    \(\grpker A\) where
+    is an \affinespace with associated \vectorspace \(U\). For
+    \(u_1,u_2\in U\), define
     \[
-        \vec{x_1x_2} = x_2 - x_1
+        \vec{(v+u_1)(v+u_2)}=u_2-u_1.
+    \]
+    This satisfies the affine-space axioms because they reduce to the
+    corresponding identities in \(U\).
+\end{snippetexample}
+
+\begin{snippetexample}{affine-line-r2-example}{An affine line in \(\mathbb{R}^2\)}
+    Let
+    \[
+        V=\realnumbers^2,
+        \qquad
+        U=\linearspan((2,3)),
+        \qquad
+        v=(1,0).
+    \]
+    Then
+    \[
+        v+U
+        =
+        \{(1,0)+\lambda(2,3)\suchthat\lambda\in\realnumbers\}.
+    \]
+    Thus every \affinepoint of \(v+U\) has the form
+    \[
+        (x,y)=(1+2\lambda,3\lambda).
+    \]
+    Eliminating \(\lambda\), one obtains
+    \[
+        y=\frac{3}{2}x-\frac{3}{2}.
+    \]
+    This is an affine line with direction \(U\).
+    \[
+        \begin{tikzpicture}[scale=0.85]
+            \draw[->] (-0.5,0) -- (4.2,0) node[right] {\(x\)};
+            \draw[->] (0,-1.2) -- (0,3.2) node[above] {\(y\)};
+            \draw (-0.2,-1.8) -- (3.5,3.75);
+            \draw[->] (1,0) -- (3,3) node[midway, right] {\((2,3)\)};
+            \fill (1,0) circle (1.4pt) node[below right] {\((1,0)\)};
+            \node at (3.1,2.1) {\(v+U\)};
+        \end{tikzpicture}
+    \]
+\end{snippetexample}
+
+\section{Linear systems}
+
+\begin{snippetproposition}{linear-system-solutions-affine-space}{Solutions of a linear system}
+    Let \(\mathbb{F}\) be a \field, let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\), and let
+    \(b\in\mathbb{F}^m\). Let
+    \[
+        S_b=\{x\in\mathbb{F}^n\suchthat Ax=b\}.
+    \]
+    If \(S_b\neq\emptyset\), then \(S_b\) is an \affinespace with
+    associated \vectorspace
+    \[
+        \ker A=\{x\in\mathbb{F}^n\suchthat Ax=0\},
+    \]
+    and
+    \[
+        \vec{x_1x_2}=x_2-x_1.
     \]
 \end{snippetproposition}
 
-\begin{snippetproof}{linear-system-solutions-affine-space-proof}{linear-system-solutions-affine-space}{}
-    We have
+\begin{snippetproof}{linear-system-solutions-affine-space-proof}{linear-system-solutions-affine-space}{Solutions of a linear system}
+    Let \(x_1,x_2\in S_b\). Then
     \[
-        A(x_2 - x_1) = Ax_2 - Ax_1 = b - b = 0 \in \grpker A
+        A(x_2-x_1)=Ax_2-Ax_1=b-b=0,
     \]
-    and
-    \begin{enumerate}
-        \item Let \(x_1\) be fixed. The map \(x_2 \mapsto x_2 - x_1\) is a \bijective[bijection] since it is a linear map with inverse \(x_2 \mapsto x_2 + x_1\).
-        \item \emph{Chasles relation:} Let \(x_1, x_2, x_3 \in A\). Then,
-        \begin{align*}
-            \vec{x_1x_2} = -x_1 + x_2 = -x_1 + x_3 - x_3 + x_2 = \vec{x_1x_3} + \vec{x_3x_2}
-        \end{align*}
-    \end{enumerate}
+    so \(x_2-x_1\in\ker A\).
+
+    Fix \(\overline{x}\in S_b\). The map
+    \[
+        S_b\fromto\ker A,
+        \qquad
+        y\mapsto y-\overline{x}
+    \]
+    is injective. It is also surjective: if \(u\in\ker A\), then
+    \(y=\overline{x}+u\) satisfies
+    \[
+        Ay=A\overline{x}+Au=b+0=b,
+    \]
+    so \(y\in S_b\) and \(y-\overline{x}=u\). Hence the map is a
+    \bijective[bijection].
+
+    Finally, for \(x_1,x_2,x_3\in S_b\),
+    \[
+        \vec{x_1x_3}
+        =
+        x_3-x_1
+        =
+        (x_2-x_1)+(x_3-x_2)
+        =
+        \vec{x_1x_2}+\vec{x_2x_3}.
+    \]
+    This is the Chasles relation.
 \end{snippetproof}
+
+\begin{snippetcorollary}{linear-system-solution-particular-plus-kernel}{Particular solution plus homogeneous solutions}
+    Let \(\mathbb{F}\) be a \field, let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\), let
+    \(b\in\mathbb{F}^m\), and suppose that
+    \(S_b=\{x\in\mathbb{F}^n\suchthat Ax=b\}\) is nonempty. If
+    \(\overline{x}\in S_b\), then
+    \[
+        S_b=\overline{x}+\ker A.
+    \]
+    Thus every solution of \(Ax=b\) is the sum of one particular solution
+    and one solution of the associated homogeneous system \(Ax=0\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{linear-system-solution-particular-plus-kernel-proof}{linear-system-solution-particular-plus-kernel}{Particular solution plus homogeneous solutions}
+    If \(x\in S_b\), then
+    \[
+        A(x-\overline{x})=Ax-A\overline{x}=b-b=0,
+    \]
+    so \(x-\overline{x}\in\ker A\), and \(x=\overline{x}+u\) for some
+    \(u\in\ker A\). Conversely, if \(u\in\ker A\), then
+    \[
+        A(\overline{x}+u)=A\overline{x}+Au=b.
+    \]
+    Hence \(\overline{x}+u\in S_b\).
+\end{snippetproof}
+
+\section{Consequences}
 
 \begin{snippetproposition}{affine-spaces-properties}{Properties of affine spaces}
-    Let \(A\) be an \affinespace over a \field \(\mathbb{F}\) with associated \vectorspace \(V\).
-    Then,
-    \begin{enumerate}
-        \item \(\forall p \in A, \vec{pp} = 0\);
-        \item \(\forall p,q \in A, \vec{pq} = -\vec{qp}\);
-        \item \(\forall p,p',q',q \in A, \vec{pp'} = \vec{qq'} \iff \vec{pq} = \vec{p'q'}\);
-    \end{enumerate}
-\end{snippetproposition}
-
-%%%%%%
-
-\begin{snippetproof}{affine-spaces-properties-proof}{affine-spaces-properties}{Properties of affine spaces}
-    \begin{enumerate}
-        \item Let \(p \in A\). Then, \(\vec{pp} = \vec{pp} + \vec{pp}\).
-        \item Let \(p,q \in A\). Then, \(\vec{pp} = \vec{qp} + \vec{qp}\).
-        \item Let \(p,p',q',q \in A\). Then,
-        \begin{align*}
-            0 = \vec{pp'} + \vec{q'q} = \vec{pq} + \vec{qp'} + \vec{q'p'} + \vec{p'q} = \vec{pq} + \vec{q'p'}
-        \end{align*}
-    \end{enumerate}
-\end{snippetproof}
-
-\begin{snippetdefinition}{affine-independence-definition}{Affine independence}
-    Let \(A\) be an \affinespace over a \field \(\mathbb{F}\).
-    Then, a \set of \affinepoint[points] \(p_0, \ldots, p_k \in A\) is said to be
-    \emph{affinely independent} if
+    Let \(\mathcal{A}\) be an \affinespace with associated
+    \vectorspace \(V\). Then, for every
+    \(p,q,p',q'\in\mathcal{A}\),
     \[
-        \lineardim \linearspan(\{\vec{p_0p_1}, \ldots, \vec{p_0p_k}\}) = k
-    \]
-\end{snippetdefinition}
-
-\begin{snippetdefinition}{affine-frame-definition}{Affine frame}
-    Let \(A\) be an \affinespace over a \field \(\mathbb{F}\) with associated \vectorspace \(V\).
-    An \emph{affine frame} of \(A\) is a tuple \((p, \{v_1, \cdots, v_n\})\)
-    where
-    \begin{enumerate}
-        \item \(p \in A\) is a \emph{reference point} called the \emph{origin of the frame};
-        \item \(\{v_1, \cdots, v_2\}\) is a \basis of \(V\).
-    \end{enumerate}
-\end{snippetdefinition}
-
-\plain{We can thuse have coordinates in affine spaces given a frame.}
-
-\begin{snippetdefinition}{parallel-affine-spaces-definition}{Parallel affine spaces}
-    Let \(A\) and \(B\) be \affinespace over a \field \(\mathbb{F}\) with associated \vectorspace \(V\).
-    Then, \(A\) and \(B\) are said to be \emph{parallel} if they have the same direction
-    \[
-        A \,||\, B
-    \]
-\end{snippetdefinition}
-
-\plain{Note that using this definition, we cannot have, for instance, a plane being parallel to a line.}
-
-\begin{snippetproposition}{parallel-affine-spaces-either-disjoint-or-same}{}
-    Let \(A\) and \(B\) be \affinespace over a \field \(\mathbb{F}\) with associated \vectorspace \(V\).
-    Then, \(A\) and \(B\) are either \disjoint or the same.
-    \begin{align*}
-        A \intersection B = \emptyset \lxor A = B
-    \end{align*}
-\end{snippetproposition}
-
-\begin{snippetproof}{parallel-affine-spaces-either-disjoint-or-same-proof}{parallel-affine-spaces-either-disjoint-or-same}{}
-    If they are not \disjoint, there exist \(p\in A \intersection B\).
-    Then, we have
-    \[
-        A = \{\vec{pa} \suchthat a \in A \}, \quad
-        B = \{\vec{pb} \suchthat b \in B \}
-    \]
-    but since they are parallel, given \(\vec{pa} \in A\) we have \(\vec{pa} \in B\) meaning
-    \(a\in W\) and likewise given \(\vec{pb} \in B\) we have \(\vec{pb} \in A\) meaning \(b\in W\).
-    Thus, \(A = B\).
-\end{snippetproof}
-
-\begin{snippetproposition}{affine-spaces-fifth-postulate}{}
-    Let \(A\) be an \affinespace over a \field \(\mathbb{F}\) with associated \vectorspace \(V\).
-    Then, the \emph{fifth postulate} of Euclid holds in \(A\)
-\end{snippetproposition}
-
-\begin{snippetproof}{affine-spaces-fifth-postulate-proof}{affine-spaces-fifth-postulate}{}
-    \todo
-\end{snippetproof}
-
-\begin{snippettheorem}{talete-theorem}{Talete's theorem}
-    Let \(A\) be an \affinespace over a \field \(\mathbb{F}\) with associated \vectorspace \(V\).
-    Let \(l, l', l''\) be parallel lines in \(A\) and let \(r_1, r_2\) be lines that are not parallel to \(l\).
-    Also let
-    \[
-        p_i = r_i \intersection l, \quad
-        p'_i = r_i \intersection l', \quad
-        p''_i = r_i \intersection l''
-    \]
-    Then, given \(k_1, k_2 \in \mathbb{F}\) such that \(\vec{p_ip_i''} = k_i\vec{p_ip_i'}\) it follows
-    \[
-        k_1 = k_2
-    \]
-\end{snippettheorem}
-
-\begin{snippetproof}{talete-theorem-proof}{talete-theorem}{}
-    If \(r_1 = r_2\) we are done. Otherwise,
-    by swapping \(l\) with \(l'\) or \(l''\) we can assume \(p_1 \neq p_2\).
-    Let \(v = \vec{p_1p_2} \neq 0\). By the Chasles relation, we have
-    \[
-        \vec{p_2p_2'} = \vec{p_2p_1} + \vec{p_1p_1'} + \vec{p_1'p_2'}
+        \vec{pp}=0,
+        \qquad
+        \vec{qp}=-\vec{pq},
     \]
     and
     \[
-        \vec{p_2p_2'} - \vec{p_1p_1'} = \vec{p_2p_1} + \vec{p_1'p_2'} = \alpha v
+        \vec{pp'}=\vec{qq'}
+        \ifandonlyif
+        \vec{pq}=\vec{p'q'}.
     \]
-    since \(l \,||\, l''\). Likewise for \(\beta v\).
+\end{snippetproposition}
+
+\begin{snippetproof}{affine-spaces-properties-proof}{affine-spaces-properties}{Properties of affine spaces}
+    By the Chasles relation,
+    \[
+        \vec{pp}=\vec{pp}+\vec{pp}.
+    \]
+    Adding the opposite of \(\vec{pp}\) gives \(\vec{pp}=0\). Therefore
+    \[
+        0=\vec{pp}=\vec{pq}+\vec{qp},
+    \]
+    so \(\vec{qp}=-\vec{pq}\).
+
+    Finally, by Chasles,
+    \[
+        \vec{pp'}=\vec{pq}+\vec{qp'},
+        \qquad
+        \vec{qq'}=\vec{qp'}+\vec{p'q'}.
+    \]
+    Hence \(\vec{pp'}=\vec{qq'}\) if and only if
+    \(\vec{pq}=\vec{p'q'}\).
 \end{snippetproof}
+
+\begin{snippet}{affine-parallelogram-rule}
+    In an \affinespace, four \affinepoint[points] \(p,p',q,q'\) form a
+    parallelogram when
+    \[
+        \vec{pp'}=\vec{qq'}
+        \qquad
+        \text{and}
+        \qquad
+        \vec{pq}=\vec{p'q'}.
+    \]
+    The previous proposition shows that either equality implies the other.
+    \[
+        \begin{tikzpicture}[scale=0.8]
+            \coordinate (P) at (0,0);
+            \coordinate (Pp) at (2.3,0.7);
+            \coordinate (Q) at (0.8,2);
+            \coordinate (Qp) at (3.1,2.7);
+            \draw (P) -- (Pp) -- (Qp) -- (Q) -- cycle;
+            \draw[->] (P) -- (Pp) node[midway, below] {\(\vec{pp'}\)};
+            \draw[->] (Q) -- (Qp) node[midway, above] {\(\vec{qq'}\)};
+            \draw[->] (P) -- (Q) node[midway, left] {\(\vec{pq}\)};
+            \draw[->] (Pp) -- (Qp) node[midway, right] {\(\vec{p'q'}\)};
+            \fill (P) circle (1.2pt) node[below left] {\(p\)};
+            \fill (Pp) circle (1.2pt) node[below right] {\(p'\)};
+            \fill (Q) circle (1.2pt) node[above left] {\(q\)};
+            \fill (Qp) circle (1.2pt) node[above right] {\(q'\)};
+        \end{tikzpicture}
+    \]
+\end{snippet}
+
+\begin{snippetproposition}{affine-space-origin-vector-space}{Choosing an origin}
+    Let \(\mathcal{A}\) be an \affinespace over a \field
+    \(\mathbb{F}\), with associated \vectorspace \(V\). If
+    \(o\in\mathcal{A}\), then the choice of \(o\) transports the
+    \vectorspace structure of \(V\) to \(\mathcal{A}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{affine-space-origin-vector-space-proof}{affine-space-origin-vector-space}{Choosing an origin}
+    Since \(\mathcal{A}\) is an \affinespace, the map
+    \[
+        \mathcal{A}\fromto V,
+        \qquad
+        p\mapsto\vec{op}
+    \]
+    is a \bijective[bijection]. Use this \bijective[bijection] to transport
+    the operations of \(V\) to \(\mathcal{A}\): define \(p+q=r\) if
+    \[
+        \vec{or}=\vec{op}+\vec{oq},
+    \]
+    and define \(\lambda p=s\) if
+    \[
+        \vec{os}=\lambda\vec{op}.
+    \]
+    With these operations, \(\mathcal{A}\) is a \vectorspace whose zero
+    vector is the chosen \affinepoint \(o\).
+\end{snippetproof}
+
+\begin{snippetnote}{affine-space-origin-warning}{The origin is not intrinsic}
+    The \vectorspace structure obtained from an \affinespace depends on the
+    chosen origin. Changing the origin changes addition and scalar
+    multiplication between \affinepoint[points].
+\end{snippetnote}
 
 \end{document}

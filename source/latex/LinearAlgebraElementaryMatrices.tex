@@ -1,0 +1,582 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{linearalgebra-elementary-matrices}
+\genpage
+
+\section{Elementary matrices}
+
+\includesnpt{linearalgebra-elementary-row-operations}
+
+\begin{snippetdefinition}{elementary-lambda-matrix-definition}{Elementary matrix}
+    Let \(\mathbb{F}\) be a \field, let \(n\in\naturalnumbers\), let
+    \(1\leq i,j\leq n\) with \(i\neq j\), and let
+    \(\lambda\in\mathbb{F}\). The \emph{elementary matrix}
+    \(E_{ij}(\lambda)\in\matrices_n(\mathbb{F})\) is the \matrix that
+    coincides with \(I_n\) except possibly in the \((i,j)\)-entry, where
+    its value is \(\lambda\). Equivalently,
+    \[
+        \left(E_{ij}(\lambda)\right)_{ab}
+        =
+        \kronecker_{ab}
+        +
+        \lambda\kronecker_{ia}\kronecker_{bj}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexample}{elementary-matrix-3-by-3-example}{An elementary matrix}
+    Let \(\mathbb{F}\) be a \field and let \(\lambda\in\mathbb{F}\). In
+    \(\matrices_{3\times3}(\mathbb{F})\),
+    \[
+        E_{23}(\lambda)
+        =
+        \begin{pmatrix}
+            1 & 0 & 0\\
+            0 & 1 & \lambda\\
+            0 & 0 & 1
+        \end{pmatrix}.
+    \]
+\end{snippetexample}
+
+\begin{snippetproposition}{elementary-matrix-row-operation}{Elementary matrices and row addition}
+    Let \(\mathbb{F}\) be a \field, let
+    \(A\in\matrices_{n\times m}(\mathbb{F})\), let
+    \(b\in\mathbb{F}^n\), let \(i\neq j\), and let
+    \(\lambda\in\mathbb{F}\). The row operation
+    \[
+        R_i\leftarrow R_i-\lambda R_j
+    \]
+    on the linear system \(Ax=b\) is obtained by left multiplying both sides
+    by \(E_{ij}(-\lambda)\):
+    \[
+        E_{ij}(-\lambda)Ax=E_{ij}(-\lambda)b.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{elementary-matrix-row-operation-proof}{elementary-matrix-row-operation}{Elementary matrices and row addition}
+    Let \(R_k(A)\) denote the \(k\)-th row of \(A\). In the product
+    \(E_{ij}(-\lambda)A\), every row except the \(i\)-th row is unchanged,
+    while the \(i\)-th row is
+    \[
+        R_i(A)-\lambda R_j(A).
+    \]
+    Indeed, the only off-diagonal nonzero entry of \(E_{ij}(-\lambda)\) is
+    \(-\lambda\) in position \((i,j)\). Therefore left multiplication by
+    \(E_{ij}(-\lambda)\) performs exactly
+    \(R_i\leftarrow R_i-\lambda R_j\) on \(A\). The same computation applied
+    to the column vector \(b\) replaces \(b_i\) by \(b_i-\lambda b_j\) and
+    leaves every other component unchanged. Hence the transformed system is
+    \(E_{ij}(-\lambda)Ax=E_{ij}(-\lambda)b\).
+\end{snippetproof}
+
+\begin{snippetnote}{row-operations-as-left-multiplication-note}{Row operations as left multiplication}
+    Row operations on a linear system correspond to left multiplication of
+    both the coefficient \matrix and the constant vector by suitable
+    elementary \matrix[matrices].
+\end{snippetnote}
+
+\begin{snippetexample}{elementary-matrix-five-by-five-example}{A row operation matrix}
+    In \(\matrices_{5\times5}(\realnumbers)\),
+    \[
+        E_{45}(-7)
+        =
+        \begin{pmatrix}
+            1 & 0 & 0 & 0 & 0\\
+            0 & 1 & 0 & 0 & 0\\
+            0 & 0 & 1 & 0 & 0\\
+            0 & 0 & 0 & 1 & -7\\
+            0 & 0 & 0 & 0 & 1
+        \end{pmatrix}.
+    \]
+    Left multiplication by \(E_{45}(-7)\) performs the row operation
+    \[
+        R_4\leftarrow R_4-7R_5.
+    \]
+\end{snippetexample}
+
+\begin{snippetproposition}{elementary-matrix-triangularity}{Triangular elementary matrices}
+    Let \(\mathbb{F}\) be a \field, let \(n\in\naturalnumbers\), let
+    \(1\leq i,j\leq n\) with \(i\neq j\), and let
+    \(\lambda\in\mathbb{F}\). If \(i>j\), then \(E_{ij}(\lambda)\) is lower
+    triangular. If \(i<j\), then \(E_{ij}(\lambda)\) is upper triangular.
+\end{snippetproposition}
+
+\begin{snippetproof}{elementary-matrix-triangularity-proof}{elementary-matrix-triangularity}{Triangular elementary matrices}
+    The \matrix \(E_{ij}(\lambda)\) has the same entries as \(I_n\) except
+    possibly in position \((i,j)\). If \(i>j\), then this exceptional entry
+    lies below the main diagonal, so every entry above the main diagonal is
+    zero and the \matrix is lower triangular. If \(i<j\), then the exceptional
+    entry lies above the main diagonal, so every entry below the main diagonal
+    is zero and the \matrix is upper triangular.
+\end{snippetproof}
+
+\section{Gaussian elimination in matrix form}
+
+\begin{snippet}{first-elimination-step-matrix-form}
+    Let \(\mathbb{F}\) be a \field, and let
+    \[
+        A=
+        \begin{pmatrix}
+            a_{11} & a_{12} & \cdots & a_{1n}\\
+            a_{21} & a_{22} & \cdots & a_{2n}\\
+            \vdots & \vdots & \ddots & \vdots\\
+            a_{n1} & a_{n2} & \cdots & a_{nn}
+        \end{pmatrix}
+        \in\matrices_n(\mathbb{F}).
+    \]
+    If \(a_{11}\neq0\), the first pivot is \(a_{11}\). Eliminating the
+    entries below it is obtained by the operations
+    \[
+        R_i\leftarrow R_i-\frac{a_{i1}}{a_{11}}R_1,
+        \qquad
+        i=2,\ldots,n.
+    \]
+    In \matrix form this first elimination step is
+    \[
+        E_{n1}\left(-\frac{a_{n1}}{a_{11}}\right)
+        \cdots
+        E_{31}\left(-\frac{a_{31}}{a_{11}}\right)
+        E_{21}\left(-\frac{a_{21}}{a_{11}}\right)A,
+    \]
+    and it has the form
+    \[
+        \begin{pmatrix}
+            a_{11} & a_{12} & \cdots & a_{1n}\\
+            0 & a'_{22} & \cdots & a'_{2n}\\
+            \vdots & \vdots & \ddots & \vdots\\
+            0 & a'_{n2} & \cdots & a'_{nn}
+        \end{pmatrix}.
+    \]
+\end{snippet}
+
+\begin{snippetproposition}{triangular-matrix-product-proposition}{Product of triangular matrices}
+    Let \(\mathbb{F}\) be a \field. The product of two upper triangular
+    \matrix[matrices] in \(\matrices_n(\mathbb{F})\) is upper triangular. The product
+    of two lower triangular \matrix[matrices] in \(\matrices_n(\mathbb{F})\) is lower
+    triangular.
+\end{snippetproposition}
+
+\begin{snippetproof}{triangular-matrix-product-proposition-proof}{triangular-matrix-product-proposition}{Product of triangular matrices}
+    Let \(A=(a_{ij})\) and \(B=(b_{ij})\) be lower triangular \matrix[matrices] in
+    \(\matrices_n(\mathbb{F})\). We show that \(AB\) is lower triangular.
+    If \(i<j\), then
+    \[
+        (AB)_{ij}=\sum_{k=1}^n a_{ik}b_{kj}.
+    \]
+    For each index \(k\), either \(k>i\), in which case \(a_{ik}=0\), or
+    \(k\leq i<j\), in which case \(b_{kj}=0\). Hence every term in the sum
+    is zero, so \((AB)_{ij}=0\). Thus \(AB\) is lower triangular. The proof
+    for upper triangular \matrix[matrices] is analogous.
+\end{snippetproof}
+
+\begin{snippet}{gaussian-elimination-elementary-matrix-product}
+    Let \(\mathbb{F}\) be a \field and let \(A\in\matrices_n(\mathbb{F})\).
+    Gaussian elimination is a finite sequence of left multiplications by
+    elementary \matrix[matrices]. If no row swaps are required and all pivots are
+    nonzero, then
+    \[
+        \widetilde{E}_{n-1}\cdots\widetilde{E}_1A=U,
+    \]
+    where \(U\) is upper triangular and the \matrix[matrices]
+    \(\widetilde{E}_k\) are lower triangular elementary \matrix[matrices]. If row
+    swaps occur, elementary permutation \matrix[matrices] also appear:
+    \[
+        E_rP_r\cdots E_1P_1A=U.
+    \]
+\end{snippet}
+
+\section{Invertibility}
+
+\includesnpt{linearalgebra-matrix-inverse-definition}
+\includesnpt{linearalgebra-invertible-matrix-definition}
+\includesnpt{linearalgebra-uniqueness-of-matrix-inverse}
+\includesnpt{linearalgebra-uniqueness-of-matrix-inverse-proof}
+
+\begin{snippetproposition}{elementary-matrix-inverse}{Inverse of an elementary matrix}
+    Let \(\mathbb{F}\) be a \field, let \(n\in\naturalnumbers\), let
+    \(1\leq i,j\leq n\) with \(i\neq j\), and let
+    \(\lambda\in\mathbb{F}\). The elementary \matrix \(E_{ij}(\lambda)\) is
+    invertible and
+    \[
+        E_{ij}(\lambda)^{-1}=E_{ij}(-\lambda).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{elementary-matrix-inverse-proof}{elementary-matrix-inverse}{Inverse of an elementary matrix}
+    Left multiplication by \(E_{ij}(\lambda)\) performs the row operation
+    \[
+        R_i\leftarrow R_i+\lambda R_j.
+    \]
+    The inverse row operation is
+    \[
+        R_i\leftarrow R_i-\lambda R_j,
+    \]
+    which is left multiplication by \(E_{ij}(-\lambda)\). Hence
+    \[
+        E_{ij}(-\lambda)E_{ij}(\lambda)=I_n
+        \qquad\text{and}\qquad
+        E_{ij}(\lambda)E_{ij}(-\lambda)=I_n.
+    \]
+    Therefore \(E_{ij}(\lambda)^{-1}=E_{ij}(-\lambda)\).
+\end{snippetproof}
+
+\includesnpt{linearalgebra-product-rule-of-inverse-matrices}
+\includesnpt{linearalgebra-product-rule-of-inverse-matrices-proof}
+\includesnpt{linearalgebra-involution-rule-for-matrix-inverse}
+\includesnpt{linearalgebra-involution-rule-for-matrix-inverse-proof}
+
+\begin{snippetexample}{sum-of-invertible-matrices-warning}{A sum of invertible matrices need not be invertible}
+    Let \(n\in\naturalnumbers\). The \matrix[matrices] \(I_n\) and \(-I_n\) are
+    invertible, but
+    \[
+        I_n+(-I_n)=0,
+    \]
+    and the zero \matrix is not invertible.
+\end{snippetexample}
+
+\section{LU factorization}
+
+\begin{snippettheorem}{lu-decomposition-theorem}{LU decomposition}
+    Let \(\mathbb{F}\) be a \field and let
+    \(A\in\matrices_n(\mathbb{F})\). Suppose that Gaussian elimination on
+    \(A\) requires no row swaps and that all pivots are nonzero. Then
+    \[
+        A=LU,
+    \]
+    where \(L\in\matrices_n(\mathbb{F})\) is lower triangular with all
+    diagonal entries equal to \(1\), and \(U\in\matrices_n(\mathbb{F})\) is
+    upper triangular with the pivots of the elimination on its diagonal.
+\end{snippettheorem}
+
+\begin{snippetproof}{lu-decomposition-theorem-proof}{lu-decomposition-theorem}{LU decomposition}
+    Since no row swaps are required, Gaussian elimination is obtained by left
+    multiplying \(A\) by lower triangular elementary \matrix[matrices]
+    \[
+        \widetilde{E}_1,\ldots,\widetilde{E}_{n-1}
+    \]
+    with diagonal entries equal to \(1\). Thus
+    \[
+        \widetilde{E}_{n-1}\cdots\widetilde{E}_1A=U,
+    \]
+    where \(U\) is upper triangular and has the pivots on its diagonal. Each
+    elementary \matrix is invertible, so
+    \[
+        A=(\widetilde{E}_{n-1}\cdots\widetilde{E}_1)^{-1}U.
+    \]
+    Put
+    \[
+        L=(\widetilde{E}_{n-1}\cdots\widetilde{E}_1)^{-1}.
+    \]
+    The inverse of each \(\widetilde{E}_k\) is again lower triangular with
+    diagonal entries equal to \(1\), and products of lower triangular
+    \matrix[matrices] are lower triangular. Hence \(L\) is lower triangular with all
+    diagonal entries equal to \(1\), and \(A=LU\).
+\end{snippetproof}
+
+\begin{snippetproposition}{lu-decomposition-solving-systems}{Solving a system with LU decomposition}
+    Let \(\mathbb{F}\) be a \field, let \(A\in\matrices_n(\mathbb{F})\), and
+    let \(b\in\mathbb{F}^n\). If \(A=LU\), where \(L\) is lower triangular
+    and \(U\) is upper triangular, then solving
+    \[
+        Ax=b
+    \]
+    is equivalent to solving the two triangular systems
+    \[
+        Ly=b,
+        \qquad
+        Ux=y.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{lu-decomposition-solving-systems-proof}{lu-decomposition-solving-systems}{Solving a system with LU decomposition}
+    Since \(A=LU\), the equation \(Ax=b\) is
+    \[
+        LUx=b.
+    \]
+    Put \(y=Ux\). Then \(LUx=b\) becomes \(Ly=b\). Conversely, if
+    \(Ly=b\) and \(Ux=y\), then \(LUx=Ly=b\), so \(x\) solves \(Ax=b\).
+\end{snippetproof}
+
+\begin{snippetexample}{lu-factorization-example}{LU factorization}
+    Consider
+    \[
+        A=
+        \begin{pmatrix}
+            1 & 4 & -2\\
+            1 & -1 & 1\\
+            4 & 0 & 2
+        \end{pmatrix},
+        \qquad
+        b=
+        \begin{pmatrix}
+            -1\\
+            -2\\
+            -7
+        \end{pmatrix}.
+    \]
+    The row operations
+    \[
+        R_2\leftarrow R_2-R_1,
+        \qquad
+        R_3\leftarrow R_3-4R_1
+    \]
+    give
+    \[
+        E_{31}(-4)E_{21}(-1)A
+        =
+        \begin{pmatrix}
+            1 & 4 & -2\\
+            0 & -5 & 3\\
+            0 & -16 & 10
+        \end{pmatrix}.
+    \]
+    Then
+    \[
+        R_3\leftarrow R_3-\frac{16}{5}R_2
+    \]
+    gives
+    \[
+        U=
+        E_{32}\left(-\frac{16}{5}\right)E_{31}(-4)E_{21}(-1)A
+        =
+        \begin{pmatrix}
+            1 & 4 & -2\\
+            0 & -5 & 3\\
+            0 & 0 & \frac{2}{5}
+        \end{pmatrix}.
+    \]
+    Therefore
+    \[
+        L=
+        \begin{pmatrix}
+            1 & 0 & 0\\
+            1 & 1 & 0\\
+            4 & \frac{16}{5} & 1
+        \end{pmatrix},
+        \qquad
+        A=LU.
+    \]
+    Solving \(Ly=b\) gives
+    \[
+        y=
+        \begin{pmatrix}
+            -1\\
+            -1\\
+            \frac{1}{5}
+        \end{pmatrix}.
+    \]
+    Solving \(Ux=y\) gives
+    \[
+        x=
+        \begin{pmatrix}
+            -2\\
+            \frac{1}{2}\\
+            \frac{1}{2}
+        \end{pmatrix}.
+    \]
+\end{snippetexample}
+
+\section{Permutation matrices}
+
+\begin{snippetdefinition}{elementary-permutation-matrix-definition}{Elementary permutation matrix}
+    Let \(\mathbb{F}\) be a \field, let \(n\in\naturalnumbers\), and let
+    \(1\leq i,j\leq n\) with \(i\neq j\). The \emph{elementary permutation
+    \matrix} \(P_{ij}\in\matrices_n(\mathbb{F})\) is the \matrix obtained from
+    \(I_n\) by swapping the \(i\)-th row with the \(j\)-th row.
+\end{snippetdefinition}
+
+\begin{snippetexample}{elementary-permutation-matrix-example}{An elementary permutation matrix}
+    In \(\matrices_{4\times4}(\mathbb{F})\), the elementary permutation
+    \matrix that swaps the second and fourth rows is
+    \[
+        P_{24}
+        =
+        \begin{pmatrix}
+            1 & 0 & 0 & 0\\
+            0 & 0 & 0 & 1\\
+            0 & 0 & 1 & 0\\
+            0 & 1 & 0 & 0
+        \end{pmatrix}.
+    \]
+\end{snippetexample}
+
+\begin{snippetproposition}{elementary-permutation-matrix-row-swap}{Effect of an elementary permutation matrix}
+    Let \(\mathbb{F}\) be a \field, let \(A\in\matrices_{n\times m}(\mathbb{F})\),
+    and let \(1\leq i,j\leq n\) with \(i\neq j\). Left multiplication by
+    \(P_{ij}\) swaps the \(i\)-th and \(j\)-th rows of \(A\).
+\end{snippetproposition}
+
+\begin{snippetproof}{elementary-permutation-matrix-row-swap-proof}{elementary-permutation-matrix-row-swap}{Effect of an elementary permutation matrix}
+    The identity \matrix satisfies \(I_nA=A\). The \matrix \(P_{ij}\) is
+    obtained from \(I_n\) by swapping rows \(i\) and \(j\). Therefore
+    \(P_{ij}A\) is obtained from \(I_nA=A\) by the same row swap.
+\end{snippetproof}
+
+\begin{snippetproposition}{elementary-permutation-matrix-inverse}{Inverse of an elementary permutation matrix}
+    Let \(\mathbb{F}\) be a \field, let \(n\in\naturalnumbers\), and let
+    \(1\leq i,j\leq n\) with \(i\neq j\). The elementary permutation \matrix
+    \(P_{ij}\in\matrices_n(\mathbb{F})\) is invertible and
+    \[
+        P_{ij}^{-1}=P_{ij}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{elementary-permutation-matrix-inverse-proof}{elementary-permutation-matrix-inverse}{Inverse of an elementary permutation matrix}
+    Swapping two rows twice returns every row to its original position. Hence
+    left multiplication by \(P_{ij}P_{ij}\) has the same effect as left
+    multiplication by \(I_n\). Therefore
+    \[
+        P_{ij}P_{ij}=I_n,
+    \]
+    and \(P_{ij}^{-1}=P_{ij}\).
+\end{snippetproof}
+
+\section{Gauss-Jordan method}
+
+\begin{snippetproposition}{gauss-jordan-inverse-method}{Computing inverses with Gauss-Jordan}
+    Let \(\mathbb{F}\) be a \field and let
+    \(A\in\matrices_n(\mathbb{F})\). If a finite sequence of elementary row
+    operations transforms \(A\) into \(I_n\), then applying the same
+    operations to the augmented \matrix
+    \[
+        [A\mid I_n]
+    \]
+    gives
+    \[
+        [I_n\mid A^{-1}].
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{gauss-jordan-inverse-method-proof}{gauss-jordan-inverse-method}{Computing inverses with Gauss-Jordan}
+    Let \(M\) be the product of the elementary \matrix[matrices] corresponding to the
+    row operations. The hypothesis says that
+    \[
+        MA=I_n.
+    \]
+    Since elementary \matrix[matrices] are invertible, \(M\) is invertible. The
+    equality \(MA=I_n\) implies that \(M=A^{-1}\). Applying the same row
+    operations to \([A\mid I_n]\) left multiplies both blocks by \(M\), giving
+    \[
+        [MA\mid MI_n]=[I_n\mid M]=[I_n\mid A^{-1}].
+    \]
+\end{snippetproof}
+
+\begin{snippetexample}{gauss-jordan-inverse-example}{Computing an inverse with Gauss-Jordan}
+    Let
+    \[
+        A=
+        \begin{pmatrix}
+            1 & 4 & -2\\
+            1 & -1 & 1\\
+            4 & 0 & 2
+        \end{pmatrix}.
+    \]
+    Starting from
+    \[
+        \left[
+            \begin{array}{ccc|ccc}
+                1 & 4 & -2 & 1 & 0 & 0\\
+                1 & -1 & 1 & 0 & 1 & 0\\
+                4 & 0 & 2 & 0 & 0 & 1
+            \end{array}
+        \right],
+    \]
+    perform
+    \[
+        R_2\leftarrow R_2-R_1,
+        \qquad
+        R_3\leftarrow R_3-4R_1,
+        \qquad
+        R_3\leftarrow R_3-\frac{16}{5}R_2.
+    \]
+    This gives
+    \[
+        \left[
+            \begin{array}{ccc|ccc}
+                1 & 4 & -2 & 1 & 0 & 0\\
+                0 & -5 & 3 & -1 & 1 & 0\\
+                0 & 0 & \frac{2}{5} & -\frac{4}{5} & -\frac{16}{5} & 1
+            \end{array}
+        \right].
+    \]
+    Normalize the second and third pivots:
+    \[
+        R_2\leftarrow -\frac{1}{5}R_2,
+        \qquad
+        R_3\leftarrow \frac{5}{2}R_3.
+    \]
+    Then eliminate above the pivots by
+    \[
+        R_2\leftarrow R_2+\frac{3}{5}R_3,
+        \qquad
+        R_1\leftarrow R_1+2R_3,
+        \qquad
+        R_1\leftarrow R_1-4R_2.
+    \]
+    The result is
+    \[
+        \left[
+            \begin{array}{ccc|ccc}
+                1 & 0 & 0 & 1 & 4 & -1\\
+                0 & 1 & 0 & -1 & -5 & \frac{3}{2}\\
+                0 & 0 & 1 & -2 & -8 & \frac{5}{2}
+            \end{array}
+        \right].
+    \]
+    Hence
+    \[
+        A^{-1}
+        =
+        \begin{pmatrix}
+            1 & 4 & -1\\
+            -1 & -5 & \frac{3}{2}\\
+            -2 & -8 & \frac{5}{2}
+        \end{pmatrix}.
+    \]
+\end{snippetexample}
+
+\section{Nonsingularity}
+
+\begin{snippetdefinition}{nonsingular-matrix-definition}{Nonsingular matrix}
+    Let \(\mathbb{F}\) be a \field and let \(A\in\matrices_n(\mathbb{F})\).
+    The \matrix \(A\) is \emph{nonsingular} if, for every
+    \(b\in\mathbb{F}^n\), the linear system
+    \[
+        Ax=b
+    \]
+    has a unique solution.
+\end{snippetdefinition}
+
+\begin{snippettheorem}{nonsingular-matrix-invertible-theorem}{Nonsingularity and invertibility}
+    Let \(\mathbb{F}\) be a \field and let \(A\in\matrices_n(\mathbb{F})\).
+    Then \(A\) is nonsingular \ifandonlyif \(A\) is invertible.
+\end{snippettheorem}
+
+\begin{snippetproof}{nonsingular-matrix-invertible-theorem-proof}{nonsingular-matrix-invertible-theorem}{Nonsingularity and invertibility}
+    Suppose first that \(A\) is invertible. For every \(b\in\mathbb{F}^n\),
+    the vector
+    \[
+        x=A^{-1}b
+    \]
+    satisfies \(Ax=b\). If \(y\) is another solution, then
+    \[
+        y=A^{-1}Ay=A^{-1}b=x,
+    \]
+    so the solution is unique. Hence \(A\) is nonsingular.
+
+    Conversely, suppose that \(A\) is nonsingular. Then Gaussian elimination
+    produces a pivot in every column: if a pivot column were missing, the
+    homogeneous system \(Ax=0\) would have a free variable and hence more than
+    one solution. Continuing with Gauss-Jordan row operations transforms
+    \(A\) into \(I_n\). By the Gauss-Jordan inverse method, these operations
+    construct \(A^{-1}\). Hence \(A\) is invertible.
+\end{snippetproof}
+
+\end{document}

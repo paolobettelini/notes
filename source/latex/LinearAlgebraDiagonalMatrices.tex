@@ -8,165 +8,353 @@
 
 \begin{document}
 
+\title{Stellar}
 \id{diagonal-matrices}
 \genpage
 
-\section{Diagonal matrices}
+\section{Diagonalization}
 
-\begin{snippettheorem}{first-diagonalizable-matrix-criterion-theorem}{First diagonalizable matrix criterion}
-    \todo
-    % sia V F-spazio vettoriale di dimensione n e sia f un endomorfismo
-    % se il polinomio caratteristico di f ha n radidi distinte allora f
-    % è diagonalizzabile
-\end{snippettheorem}
+\begin{snippetdefinition}{diagonalizable-matrix-definition}{Diagonalizable matrix}
+    Let \(\mathbb{F}\) be a \field, and let
+    \(A\in\matrices_{n\times n}(\mathbb{F})\). The \matrix \(A\) is
+    \emph{diagonalizable} over \(\mathbb{F}\) if there exists
+    \(P\in\operatorname{GL}(n,\mathbb{F})\) such that
+    \[
+        P^{-1}AP
+    \]
+    is a diagonal \matrix.
+\end{snippetdefinition}
 
-\begin{snippetproof}{first-diagonalizable-matrix-criterion-theorem-proof}{first-diagonalizable-matrix-criterion-theorem}{First diagonalizable matrix criterion}
-    Let \(\lambda_1, \lambda_2, \cdots, \lambda_n \in \mathbb{F}\) be the
-    roots of \(p_f(t)\). Then, they are \eigenvalue[eigenvalues] of \(f\).
-    There exist \(n\) non-null \vector[vectors] \(v_1, v_2, \cdots, v_n\)
-    such that \(f(v_i) = \lambda v_i\). We want to show that the \eigenvector[eigenvectors]
-    are \linearlyindependent, so that they form a \basis for \(V\), meaning
-    that \(f\) is diagonalizable. %TODOURGENT
-    To show that, we proceed by \principleofinduction[induction]:
-    \begin{enumerate}
-        \item the first \vector,
-        \(v_1\), is not null and thus \(\{v_1\}\) is obviously \linearlyindependent.
-        \item assume that \(\{v_1, v_2, \cdots, v_k\}\) is \linearlyindependent. We need to show that
-        \(v_{k+1} \notin \linearspan\{\{v_1, v_2, \cdots, v_k\}\}\).
-        If that were not to be the case, we would have scalars \(\alpha_1, \cdots, \alpha_k\)
-        \[
-            v_{k+1} = \sum_{i=1}^k \alpha_i v_i
-        \]
-        By applying those values to \(f\) we get
-        \begin{align*}
-            \lambda_{k+1} v_{k+1} &= f(v_{k+1}) = \sum_{i=1}^k \alpha_i f(v_i) \\
-            &= \sum_{i=1}^k \alpha_i \lambda_i = v_i \\
-            0 &= \sum_{i=1}^k \alpha_i(\lambda_i - \lambda_{k+1})
-        \end{align*}
-        by \linearlyindependent[linear independence],
-        \[
-            \alpha_i(\lambda_i - \lambda_{k+1}) = 0
-        \]
-        but since \(\lambda_i\) are all distinct and non-null, it must be
-        \(\alpha_i = 0\), which would mean that \(v_{k+1} = 0\) \lightning.
-    \end{enumerate}
+\begin{snippetdefinition}{diagonalizable-endomorphism-definition}{Diagonalizable endomorphism}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), and let \(f\in\operatorname{End}(V)\). The endomorphism
+    \(f\) is \emph{diagonalizable} if there exists a \basis
+    \[
+        \mathcal{B}=\{v_1,\ldots,v_n\}
+    \]
+    of \(V\) such that
+    \[
+        M(f,\mathcal{B},\mathcal{B})
+    \]
+    is diagonal. Equivalently, there exist scalars
+    \(\lambda_1,\ldots,\lambda_n\in\mathbb{F}\) such that
+    \[
+        f(v_i)=\lambda_i v_i
+    \]
+    for every \(i\in\{1,\ldots,n\}\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{diagonalizable-iff-eigenbasis}{Diagonalization and eigenbases}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), and let \(f\in\operatorname{End}(V)\). Then \(f\) is
+    \diagonalizable if and only if \(V\) has a \basis consisting of
+    \eigenvector[eigenvectors] of \(f\).
+\end{snippetproposition}
+
+\begin{snippetproof}{diagonalizable-iff-eigenbasis-proof}{diagonalizable-iff-eigenbasis}{Diagonalization and eigenbases}
+    If \(M(f,\mathcal{B},\mathcal{B})\) is diagonal and
+    \(\mathcal{B}=\{v_1,\ldots,v_n\}\), then each column of the associated
+    \matrix has a single diagonal entry. Hence
+    \[
+        f(v_i)=\lambda_i v_i
+    \]
+    for every \(i\), so every vector of \(\mathcal{B}\) is an eigenvector.
+
+    Conversely, if \(\mathcal{B}=\{v_1,\ldots,v_n\}\) is a \basis of
+    \eigenvector[eigenvectors] and \(f(v_i)=\lambda_i v_i\), then the associated \matrix of
+    \(f\) in the \basis \(\mathcal{B}\) is
+    \[
+        \begin{pmatrix}
+            \lambda_1 & 0 & \cdots & 0\\
+            0 & \lambda_2 & \cdots & 0\\
+            \vdots & \vdots & \ddots & \vdots\\
+            0 & 0 & \cdots & \lambda_n
+        \end{pmatrix}.
+    \]
 \end{snippetproof}
 
-% TODOURGENTE, magari da questa dimostrazione estrarre come lemma il fatto che
-% autovettori relativi ad autovalori distinti formano un insieme linearmente indipendente.
+\section{Distinct eigenvalues}
 
-% per esempio le omotetia non sodisfano il criterio ma sono diagonalizzabili
+\begin{snippetproposition}{distinct-eigenvalues-eigenvectors-independent}{Eigenvectors for distinct eigenvalues are independent}
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\), and let
+    \(f\in\operatorname{End}(V)\). If
+    \(v_1,\ldots,v_r\) are \eigenvector[eigenvectors] of \(f\) associated
+    with pairwise distinct eigenvalues \(\lambda_1,\ldots,\lambda_r\), then
+    \[
+        \{v_1,\ldots,v_r\}
+    \]
+    is \linearlyindependent.
+\end{snippetproposition}
 
-% non ammette autovalori => non è diagonalizzabile
+\begin{snippetproof}{distinct-eigenvalues-eigenvectors-independent-proof}{distinct-eigenvalues-eigenvectors-independent}{Eigenvectors for distinct eigenvalues are independent}
+    The proof is by induction on \(r\). For \(r=1\), the statement follows
+    because \eigenvector[eigenvectors] are nonzero.
 
-\begin{snippetdefinition}{matrix-geometric-multiplicity-definition}{Geometric multiplicity}
-    \todo
-\end{snippetdefinition}
+    Suppose \(v_1,\ldots,v_k\) are \linearlyindependent. If
+    \(v_{k+1}\in\linearspan(v_1,\ldots,v_k)\), then
+    \[
+        v_{k+1}=a_1v_1+\cdots+a_kv_k.
+    \]
+    Applying \(f\) gives
+    \[
+        \lambda_{k+1}v_{k+1}
+        =
+        a_1\lambda_1v_1+\cdots+a_k\lambda_kv_k.
+    \]
+    Substituting the expression for \(v_{k+1}\), one obtains
+    \[
+        a_1(\lambda_1-\lambda_{k+1})v_1+\cdots+
+        a_k(\lambda_k-\lambda_{k+1})v_k=0.
+    \]
+    By the linear independence of \(v_1,\ldots,v_k\),
+    \[
+        a_i(\lambda_i-\lambda_{k+1})=0
+    \]
+    for every \(i\). Since the \eigenvalue[eigenvalues] are pairwise distinct, all
+    coefficients \(a_i\) vanish, so \(v_{k+1}=0\), a contradiction. Hence
+    \(v_{k+1}\notin\linearspan(v_1,\ldots,v_k)\), and the induction
+    continues.
+\end{snippetproof}
+
+\begin{snippettheorem}{first-diagonalizable-matrix-criterion-theorem}{First diagonalizability criterion}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), with \(\lineardim V=n\), and let
+    \(f\in\operatorname{End}(V)\). If the \characteristicpolynomial
+    \(p_f(t)\) has \(n\) distinct roots in \(\mathbb{F}\), then \(f\) is
+    \diagonalizable.
+\end{snippettheorem}
+
+\begin{snippetproof}{first-diagonalizable-matrix-criterion-theorem-proof}{first-diagonalizable-matrix-criterion-theorem}{First diagonalizability criterion}
+    Let \(\lambda_1,\ldots,\lambda_n\in\mathbb{F}\) be the distinct roots of
+    \(p_f(t)\). The roots of the characteristic \polynomial are exactly the
+    \eigenvalue[eigenvalues] of \(f\), so for each \(i\) there exists a
+    nonzero eigenvector \(v_i\) such that
+    \[
+        f(v_i)=\lambda_i v_i.
+    \]
+    \eigenvector[Eigenvectors] associated with distinct \eigenvalue[eigenvalues] are
+    \linearlyindependent, so
+    \[
+        \{v_1,\ldots,v_n\}
+    \]
+    is a \linearlyindependent family of \(n=\lineardim V\) vectors. Hence it
+    is a \basis of \(V\) consisting of \eigenvector[eigenvectors] of \(f\), and therefore
+    \(f\) is \diagonalizable.
+\end{snippetproof}
+
+\begin{snippetexample}{homothety-diagonalizable-example}{The first criterion is not necessary}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), and let
+    \[
+        f=\lambda\identityfunc_V.
+    \]
+    Then \(f\) is \diagonalizable in every \basis of \(V\), because every
+    nonzero \vector of \(V\) is an \eigenvector associated with \(\lambda\).
+    However, if \(\lineardim V>1\), the characteristic \polynomial of \(f\)
+    does not have \(\lineardim V\) distinct roots.
+\end{snippetexample}
+
+\begin{snippetexample}{diagonalizable-over-r-not-q-example}{Diagonalizable over \(\mathbb{R}\), not over \(\mathbb{Q}\)}
+    Consider
+    \[
+        f\colon\rationalnumbers^2\fromto\rationalnumbers^2,
+        \qquad
+        f(x,y)=(2y,3x).
+    \]
+    In the canonical \basis, the associated \matrix is
+    \[
+        A=
+        \begin{pmatrix}
+            0 & 2\\
+            3 & 0
+        \end{pmatrix},
+    \]
+    and
+    \[
+        p_A(t)=\det(t\identmatrix{2}-A)=t^2-6.
+    \]
+    This \polynomial has no roots in \(\rationalnumbers\), so \(f\) is not
+    \diagonalizable over \(\rationalnumbers\).
+
+    If the same formula is considered over \(\realnumbers^2\), then
+    \[
+        t^2-6=(t-\sqrt{6})(t+\sqrt{6}),
+    \]
+    and the two roots are distinct. Hence the corresponding real
+    endomorphism is \diagonalizable over \(\realnumbers\).
+\end{snippetexample}
+
+\begin{snippetexample}{quarter-turn-not-diagonalizable-over-real-example}{A rotation not diagonalizable over \(\mathbb{R}\)}
+    Let \(A\in\matrices_{2\times2}(\realnumbers)\) be the matrix of the
+    counterclockwise rotation by \(\frac{\pi}{2}\):
+    \[
+        A=
+        \begin{pmatrix}
+            0 & -1\\
+            1 & 0
+        \end{pmatrix}.
+    \]
+    Its characteristic \polynomial is
+    \[
+        p_A(t)=\det(t\identmatrix{2}-A)=t^2+1.
+    \]
+    This \polynomial has no real roots, so \(A\) has no real
+    \eigenvector[eigenvectors] and is not \diagonalizable over
+    \(\realnumbers\). Over \(\complexnumbers\),
+    however,
+    \[
+        t^2+1=(t-i)(t+i),
+    \]
+    so the same \matrix is \diagonalizable over \(\complexnumbers\).
+\end{snippetexample}
+
+\section{Multiplicities}
+
+\includesnpt{polynomial-root-multiplicity-definition}
 
 \begin{snippetdefinition}{matrix-algebraic-multiplicity-definition}{Algebraic multiplicity}
-    \todo
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), let \(f\in\operatorname{End}(V)\), and let
+    \(\lambda\in\mathbb{F}\) be an \eigenvalue of \(f\). The
+    \emph{algebraic multiplicity} of \(\lambda\), denoted
+    \(\mu_a(\lambda)\), is the multiplicity of \(\lambda\) as a root of the
+    characteristic \polynomial \(p_f(t)\).
 \end{snippetdefinition}
 
-% nel caso del primo criterio sono ambo uguali a 1, altrimenti sono diversi fra loro
+\begin{snippetdefinition}{matrix-geometric-multiplicity-definition}{Geometric multiplicity}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), let \(f\in\operatorname{End}(V)\), and let
+    \(\lambda\in\mathbb{F}\) be an \eigenvalue of \(f\). The
+    \emph{geometric multiplicity} of \(\lambda\), denoted
+    \(\mu_g(\lambda)\), is
+    \[
+        \mu_g(\lambda)=\lineardim V_\lambda,
+    \]
+    where \(V_\lambda\) is the \eigenspace of \(f\) associated with
+    \(\lambda\).
+\end{snippetdefinition}
 
-\begin{snippetlemma}{geometric-multiplicity-leq-algebraic-multiplicity}{}
-    \todo % se lambda è un autovalore di f allora \mu_g(\lambda) \leq \mu_a(\lambda)
+\begin{snippetlemma}{geometric-multiplicity-leq-algebraic-multiplicity}{Geometric multiplicity is bounded by algebraic multiplicity}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), let \(f\in\operatorname{End}(V)\), and let
+    \(\lambda\in\mathbb{F}\) be an \eigenvalue of \(f\). Then
+    \[
+        \mu_g(\lambda)\leq\mu_a(\lambda).
+    \]
 \end{snippetlemma}
 
-\begin{snippetproof}{geometric-multiplicity-leq-algebraic-multiplicity-proof}{geometric-multiplicity-leq-algebraic-multiplicity}{}
-    By definition, \(\mu_g(\lambda) \geq 1\). Let
-    \(\mu_g(\lambda) = k\) and consider a \basis \(\{v_1, v_2, \cdots, v_k\}\)
-    for \(V_\lambda = \grpker (\lambda\identmatrix{n} - f)\) where \(n = \lineardim V\).
-    We want to expand this \basis into a \basis \(\mathcal{B} = \{v_1, v_2, \cdots, v_n\}\)
-    of \(V\). We have the form
+\begin{snippetproof}{geometric-multiplicity-leq-algebraic-multiplicity-proof}{geometric-multiplicity-leq-algebraic-multiplicity}{Geometric multiplicity is bounded by algebraic multiplicity}
+    Put
     \[
-        \mathcal{M}(f,\mathcal{B}) =
-        \left[\,
-        \begin{array}{@{}c|c@{}}
-            \lambda I_{k} & A' \\ \hline
-            0              & A''
-            \end{array}
-        \,\right].
+        k=\mu_g(\lambda)=\lineardim V_\lambda.
     \]
-    so that
+    Choose a \basis \(\{v_1,\ldots,v_k\}\) of \(V_\lambda\), and complete
+    it to a \basis
     \[
-        p_f(t) = \det (\lambda \identmatrix{n} - f)
-        = \det(\lambda \identmatrix{n} - \mathcal{M}(f,\mathcal{B}))
+        \mathcal{B}=\{v_1,\ldots,v_k,v_{k+1},\ldots,v_n\}
     \]
-    which is a block \matrix and has form
+    of \(V\). Since \(v_1,\ldots,v_k\) are \eigenvector[eigenvectors] associated with
+    \(\lambda\), the associated \matrix has block form
     \[
-        \det \left[
-            \begin{array}{c|c}
-              (t - \lambda)\identmatrix{k} & -A' \\ \hline
-              0 & t\identmatrix{n-k} - A''
-            \end{array}
-            \right]
-            = (t - \lambda)^k \det(t\identmatrix{n-k} - A'')
-            = (t - \lambda)^k p_{A''}(t)
+        M(f,\mathcal{B},\mathcal{B})
+        =
+        \begin{pmatrix}
+            \lambda\identmatrix{k} & A'\\
+            0 & A''
+        \end{pmatrix}.
     \]
-    meaning that \(\mu_a(\lambda) \geq \mu_g(\lambda)\).
+    Therefore
+    \[
+        t\identmatrix{n}-M(f,\mathcal{B},\mathcal{B})
+        =
+        \begin{pmatrix}
+            (t-\lambda)\identmatrix{k} & -A'\\
+            0 & t\identmatrix{n-k}-A''
+        \end{pmatrix}.
+    \]
+    Taking determinants gives
+    \[
+        p_f(t)
+        =
+        (t-\lambda)^k\det(t\identmatrix{n-k}-A'').
+    \]
+    Hence \((t-\lambda)^k\) divides \(p_f(t)\), so the algebraic
+    multiplicity of \(\lambda\) is at least \(k=\mu_g(\lambda)\).
 \end{snippetproof}
 
-\begin{snippettheorem}{second-diagonalizable-matrix-criterion-theorem}{Second diagonalizable matrix criterion}
-    % todo
-    % f è diagonalizzabile se e solo se
-    % i) tutti gli autovalori di f sono in f
-    % ii) per tutti gli autovalori, le due molteplictità coincidono.
+\section{Second criterion}
+
+\begin{snippettheorem}{second-diagonalizable-matrix-criterion-theorem}{Second diagonalizability criterion}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), and let \(f\in\operatorname{End}(V)\). Then \(f\) is
+    \diagonalizable if and only if both of the following conditions hold:
+    \begin{enumerate}
+        \item \(p_f(t)\) splits completely into linear factors in \(\mathbb{F}[t]\);
+        \item \(\mu_g(\lambda)=\mu_a(\lambda)\) for every \eigenvalue \(\lambda\) of \(f\).
+    \end{enumerate}
 \end{snippettheorem}
 
-\begin{snippetproof}{second-diagonalizable-matrix-criterion-theorem-proof}{second-diagonalizable-matrix-criterion-theorem}{First diagonalizable matrix criterion}
-    \begin{iffproof}
-        \item We can find a \basis \(\mathcal{B}\) for \(V\) such that
-        \(\mathcal{f, \mathcal{B}}\) is diagonal, and \(\mathcal{B}\)
-        is formed by \eigenvector[eigenvectors] of \(f\).
-        Let \(\lambda_1, \lambda_2, \cdots, \lambda_r\) be the \eigenvalue[eigenvalues]
-        that are distinct and let \(\mu_i = \mu_g(\lambda_i)\).
-        \[
-            \mathcal{M}(f, \mathcal{B})
-            = \text{diag}(
-                \underbrace{\lambda_1, \cdots, \lambda_1}_{\mu_1 \text{ times}},
-                \underbrace{\lambda_2, \cdots, \lambda_2}_{\mu_2 \text{ times}},
-                \cdots,
-                \underbrace{\lambda_r, \cdots, \lambda_r}_{\mu_r \text{ times}},
-            )
-        \]
-        Obviously, \(\lambda_i \in \mathbb{F}\).
-        \begin{align*}
-            p_f(t) = \det(t\identmatrix{n} - \mathcal{M}(t, \mathcal{B}))
-            = \prod_{i=1}^r {(t-\lambda_i)}^{\mu_i}
-        \end{align*}
-        but since \(\lambda_j\) are distinct, we have that \(\mu_i = \mu_a(\lambda_i)\).
-        \item Let \(\lambda_1, \lambda_2, \cdots, \lambda_r \in \mathbb{F}\)
-        be the \eigenvalue[eigenvalues] of \(f\).
-        Let \(\{v_1^i, \cdots, v_{\mu_i}^i\}\) be a \basis of \(V_{\lambda_i}\)
-        where \(\mu_i = \mu_g(\lambda_i)\).
-        We now have
-        \begin{align*}
-            \sum_{i=1}^r \mu_g(\lambda_i)
-            = \sum_{i=1}^r \mu_a(\lambda_i) = n
-        \end{align*}
-        since all the roots are in \(\mathbb{F}\).
-        Since the \eigenvector[eigenvectors] relative to the distinct \eigenvalue[eigenvalues]
-        are \linearlyindependent,
-        \[
-            \mathcal{B} = \{
-                v_1^1, \cdots, V_{\mu_1}^1,
-                v_1^2, \cdots, V_{\mu_2}^2,
-                \cdots,
-                v_1^r, \cdots, V_{\mu_r}^r
-            \}
-        \]
-        is a \basis for \(V\).
-        \[
-            \mathcal{M}(f, \mathcal{B}) = \text{diag}(
-                \underbrace{\lambda_1, \cdots, \lambda_1}_{\mu_1 \text{ times}},
-                \underbrace{\lambda_2, \cdots, \lambda_2}_{\mu_2 \text{ times}},
-                \cdots,
-                \underbrace{\lambda_r, \cdots, \lambda_r}_{\mu_r \text{ times}},
-            )
-        \]
-        meaning that \(f\) is diagonalizable.
-    \end{iffproof}
+\begin{snippetproof}{second-diagonalizable-matrix-criterion-theorem-proof}{second-diagonalizable-matrix-criterion-theorem}{Second diagonalizability criterion}
+    Suppose first that \(f\) is \diagonalizable. Then \(V\) has a \basis of
+    \eigenvector[eigenvectors]. Group this \basis according to the distinct
+    \eigenvalue[eigenvalues]
+    \(\lambda_1,\ldots,\lambda_r\). In that basis,
+    \[
+        M(f,\mathcal{B},\mathcal{B})
+        =
+        \operatorname{diag}(
+            \lambda_1,\ldots,\lambda_1,
+            \lambda_2,\ldots,\lambda_2,
+            \ldots,
+            \lambda_r,\ldots,\lambda_r
+        ).
+    \]
+    Therefore the characteristic \polynomial splits as
+    \[
+        p_f(t)=
+        (t-\lambda_1)^{m_1}\cdots(t-\lambda_r)^{m_r},
+    \]
+    where \(m_i\) is the number of \basis vectors associated with
+    \(\lambda_i\). The \eigenspace \(V_{\lambda_i}\) is generated by exactly
+    those \basis vectors, so
+    \[
+        \mu_g(\lambda_i)=m_i=\mu_a(\lambda_i)
+    \]
+    for every \(i\).
+
+    Conversely, suppose that \(p_f(t)\) splits completely and that
+    \(\mu_g(\lambda)=\mu_a(\lambda)\) for every \eigenvalue \(\lambda\). Let
+    \(\lambda_1,\ldots,\lambda_r\) be the distinct \eigenvalue[eigenvalues].
+    Since the characteristic \polynomial splits completely,
+    \[
+        \mu_a(\lambda_1)+\cdots+\mu_a(\lambda_r)=\lineardim V.
+    \]
+    By hypothesis,
+    \[
+        \mu_g(\lambda_1)+\cdots+\mu_g(\lambda_r)=\lineardim V.
+    \]
+    For each \(i\), choose a \basis \(\mathcal{B}_i\) of the \eigenspace
+    \(V_{\lambda_i}\). The union
+    \[
+        \mathcal{B}_1\union\cdots\union\mathcal{B}_r
+    \]
+    contains \(\lineardim V\) vectors. \eigenvector[Eigenvectors] associated with distinct
+    \eigenvalue[eigenvalues] are \linearlyindependent, so this union is a
+    \basis of \(V\). It is a \basis of \eigenvector[eigenvectors], and
+    therefore \(f\) is \diagonalizable.
 \end{snippetproof}
+
+\begin{snippetproposition}{diagonalizability-procedure}{Procedure for diagonalizability}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), and let \(f\in\operatorname{End}(V)\). To decide whether
+    \(f\) is \diagonalizable, one may proceed as follows:
+    \begin{enumerate}
+        \item compute the characteristic \polynomial \(p_f(t)\);
+        \item if \(p_f(t)\) does not split completely in \(\mathbb{F}[t]\), then \(f\) is not \diagonalizable;
+        \item if \(p_f(t)\) has \(\lineardim V\) distinct roots in \(\mathbb{F}\), then \(f\) is \diagonalizable;
+        \item otherwise, compare \(\mu_a(\lambda)\) and \(\mu_g(\lambda)\) for each \eigenvalue \(\lambda\);
+        \item \(f\) is \diagonalizable if and only if \(\mu_a(\lambda)=\mu_g(\lambda)\) for every \eigenvalue \(\lambda\).
+    \end{enumerate}
+\end{snippetproposition}
 
 \end{document}

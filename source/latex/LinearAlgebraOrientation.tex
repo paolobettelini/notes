@@ -1,0 +1,233 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\title{Stellar}
+\id{linearalgebra-orientation}
+\genpage
+
+\section{Euclidean orientation}
+
+\begin{snippet}{determinant-area-orientation-r2}
+    Let \(v_1,v_2\in\realnumbers^2\), and let
+    \[
+        A=
+        \begin{pmatrix}
+            \vert & \vert\\
+            v_1 & v_2\\
+            \vert & \vert
+        \end{pmatrix}.
+    \]
+    Then \(|\det(A)|\) is the area of the parallelogram spanned by
+    \(v_1\) and \(v_2\). Moreover, the sign of \(\det(A)\) distinguishes the
+    two possible orientations of the plane: positive \determinant means that
+    the ordered pair \((v_1,v_2)\) has the same \orientation as the canonical
+    ordered \basis, while negative \determinant means that it has the opposite
+    \orientation.
+\end{snippet}
+
+\begin{snippetexample}{rotation-preserves-orientation-example}{Rotations preserve orientation}
+    The \matrix of the rotation of angle \(\theta\) in the canonical
+    \basis of \(\realnumbers^2\) is
+    \[
+        R_\theta=
+        \begin{pmatrix}
+            \cos\theta & -\sin\theta\\
+            \sin\theta & \cos\theta
+        \end{pmatrix}.
+    \]
+    Its determinant is
+    \[
+        \det(R_\theta)
+        =
+        \cos^2\theta+\sin^2\theta
+        =
+        1.
+    \]
+    Therefore rotations preserve \orientation.
+\end{snippetexample}
+
+\begin{snippetexample}{reflection-reverses-orientation-example}{A reflection reverses orientation}
+    The reflection of \(\realnumbers^2\) across the vertical axis sends
+    \[
+        (1,0)\mapsto(-1,0),
+        \qquad
+        (0,1)\mapsto(0,1).
+    \]
+    Its \matrix in the canonical \basis is
+    \[
+        S=
+        \begin{pmatrix}
+            -1 & 0\\
+            0 & 1
+        \end{pmatrix}.
+    \]
+    Since
+    \[
+        \det(S)=-1,
+    \]
+    this reflection reverses \orientation.
+\end{snippetexample}
+
+\section{Automorphisms}
+
+\begin{snippetdefinition}{linear-automorphism-definition}{Linear automorphism}
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\). A
+    \emph{linear automorphism} of \(V\) is an invertible
+    \lineartransformation
+    \[
+        f\colon V\fromto V.
+    \]
+    The \set of all \linearautomorphism[linear automorphisms] of \(V\) is denoted
+    \[
+        \operatorname{Aut}(V).
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{orientation-preserving-automorphism-definition}{Orientation-preserving automorphism}
+    Let \(V\) be a finite-dimensional real \vectorspace, and let
+    \(f\in\operatorname{Aut}(V)\). The \linearautomorphism \(f\) is
+    \emph{orientation-preserving} if
+    \[
+        \det(f)>0.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{orientation-reversing-automorphism-definition}{Orientation-reversing automorphism}
+    Let \(V\) be a finite-dimensional real \vectorspace, and let
+    \(f\in\operatorname{Aut}(V)\). The \linearautomorphism \(f\) is
+    \emph{orientation-reversing} if
+    \[
+        \det(f)<0.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{automorphism-orientation-sign-dichotomy}{Automorphisms either preserve or reverse orientation}
+    Let \(V\) be a finite-dimensional real \vectorspace, and let
+    \(f\in\operatorname{Aut}(V)\). Then \(f\) is either
+    \orientationpreserving or \orientationreversing.
+\end{snippetproposition}
+
+\begin{snippetproof}{automorphism-orientation-sign-dichotomy-proof}{automorphism-orientation-sign-dichotomy}{Automorphisms either preserve or reverse orientation}
+    Since \(f\) is invertible, the associated \matrix of \(f\) in any
+    \basis is invertible. Hence
+    \[
+        \det(f)\neq0.
+    \]
+    Over \(\realnumbers\), every nonzero scalar is either positive or
+    negative, so either \(\det(f)>0\) or \(\det(f)<0\).
+\end{snippetproof}
+
+\section{Orientations of vector spaces}
+
+\begin{snippetdefinition}{same-orientation-bases-definition}{Bases with the same orientation}
+    Let \(V\) be a finite-dimensional real \vectorspace, and let
+    \(\mathcal{B}\) and \(\mathcal{E}\) be two \basis[bases] of \(V\).
+    They have the \emph{same orientation} if
+    \[
+        \det\bigl(M(\identityfunc_V,\mathcal{B},\mathcal{E})\bigr)>0.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{same-orientation-bases-equivalence}{Same orientation is an equivalence relation}
+    Let \(V\) be a finite-dimensional real \vectorspace. The relation
+    ``having the same orientation'' is an equivalence relation on the \set of
+    all ordered \basis[bases] of \(V\).
+\end{snippetproposition}
+
+\begin{snippetproof}{same-orientation-bases-equivalence-proof}{same-orientation-bases-equivalence}{Same orientation is an equivalence relation}
+    The relation is reflexive because
+    \[
+        M(\identityfunc_V,\mathcal{B},\mathcal{B})=\identmatrix{n},
+    \]
+    and \(\det(\identmatrix{n})=1>0\).
+
+    It is symmetric because
+    \[
+        M(\identityfunc_V,\mathcal{E},\mathcal{B})
+        =
+        M(\identityfunc_V,\mathcal{B},\mathcal{E})^{-1}.
+    \]
+    If the \determinant of a \matrix is positive, then the \determinant of
+    its inverse is also positive.
+
+    It is transitive because
+    \[
+        M(\identityfunc_V,\mathcal{B},\mathcal{D})
+        =
+        M(\identityfunc_V,\mathcal{E},\mathcal{D})
+        M(\identityfunc_V,\mathcal{B},\mathcal{E}).
+    \]
+    If \(\mathcal{B}\) has the same orientation as \(\mathcal{E}\), and
+    \(\mathcal{E}\) has the same orientation as \(\mathcal{D}\), then both
+    determinants on the right are positive. Their product is positive, so
+    \(\mathcal{B}\) has the same orientation as \(\mathcal{D}\).
+\end{snippetproof}
+
+\begin{snippetproposition}{ordered-bases-have-two-orientation-classes}{There are two orientation classes}
+    Let \(V\) be a finite-dimensional real \vectorspace with
+    \[
+        \lineardim V=n\geq1.
+    \]
+    The relation of having the same orientation partitions the ordered
+    \basis[bases] of \(V\) into exactly two equivalence classes.
+\end{snippetproposition}
+
+\begin{snippetproof}{ordered-bases-have-two-orientation-classes-proof}{ordered-bases-have-two-orientation-classes}{There are two orientation classes}
+    Let
+    \[
+        \mathcal{B}=\{v_1,\ldots,v_n\}
+    \]
+    be an ordered \basis of \(V\), and put
+    \[
+        \mathcal{C}=\{-v_1,v_2,\ldots,v_n\}.
+    \]
+    The change-of-basis \matrix from \(\mathcal{B}\) to \(\mathcal{C}\) has
+    determinant \(-1\), so \(\mathcal{B}\) and \(\mathcal{C}\) do not have
+    the same orientation.
+
+    If \(\mathcal{E}\) is any ordered \basis of \(V\), then
+    \[
+        \det\bigl(M(\identityfunc_V,\mathcal{B},\mathcal{E})\bigr)
+    \]
+    is nonzero. If it is positive, then \(\mathcal{E}\) is in the class of
+    \(\mathcal{B}\). If it is negative, then
+    \[
+        \det\bigl(M(\identityfunc_V,\mathcal{C},\mathcal{E})\bigr)>0,
+    \]
+    so \(\mathcal{E}\) is in the class of \(\mathcal{C}\). Hence there are
+    exactly two classes.
+\end{snippetproof}
+
+\begin{snippetdefinition}{vector-space-orientation-definition}{Orientation of a real vector space}
+    Let \(V\) be a finite-dimensional real \vectorspace. An
+    \emph{orientation} of \(V\) is a choice of one of the two equivalence
+    classes of ordered \basis[bases] determined by the same-orientation
+    relation.
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{canonical-orientation-definition}{Canonical orientation of \(\mathbb{R}^n\)}
+    The \emph{canonical orientation} of \(\realnumbers^n\) is the
+    \orientation represented by the canonical ordered \basis
+    \[
+        \{e_1,\ldots,e_n\}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexample}{r3-canonical-orientation-example}{Orientation in \(\mathbb{R}^3\)}
+    In \(\realnumbers^3\), the canonical \orientation is represented by the
+    ordered \basis
+    \[
+        \{e_1,e_2,e_3\}.
+    \]
+    Replacing exactly one vector of this ordered \basis by its negative gives
+    an ordered \basis with the opposite orientation.
+\end{snippetexample}
+
+\end{document}

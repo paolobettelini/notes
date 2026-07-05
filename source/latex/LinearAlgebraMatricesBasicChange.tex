@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{bettelini}
 
 \begin{document}
 
@@ -12,27 +13,282 @@
 
 \section{Change of basis}
 
+\begin{snippetdefinition}{change-of-basis-matrix-definition}{Change-of-basis matrix}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), and let \(\mathcal{B}\) and \(\mathcal{C}\) be two
+    \basis[bases] of \(V\). The \emph{change-of-basis matrix from
+    \(\mathcal{B}\) to \(\mathcal{C}\)} is
+    \[
+        M(\identityfunc_V,\mathcal{B},\mathcal{C}),
+    \]
+    the \associatedmatrix of the identity map
+    \[
+        \identityfunc_V\colon V\fromto V
+    \]
+    with domain basis \(\mathcal{B}\) and codomain basis \(\mathcal{C}\).
+\end{snippetdefinition}
+
 \begin{snippettheorem}{change-of-basis-theorem}{Change of basis}
-    Given a \basis \(\mathcal{B}_1\) and \(\mathcal{B}_2\),
-    there exists a \matrix \(M\) such that \(M\vec{v}\) translates
-    the vector from \(\mathcal{B}_1\) to \(\mathcal{B}_2\).
-    
-    The \matrix \(M\) is formed by the columns of \(\mathcal{B}_1\) but written in
-    \(\mathcal{B}_2\).
-    
-    The operation \(M^{-1}\vec{v}\) translates
-    the vector from \(\mathcal{B}_2\) to \(\mathcal{B}_1\).
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), and let
+    \[
+        \mathcal{B}=\{v_1,\ldots,v_n\},
+        \qquad
+        \mathcal{C}
+    \]
+    be two \basis[bases] of \(V\). If
+    \[
+        P_{\mathcal{C}\leftarrow\mathcal{B}}
+        =
+        M(\identityfunc_V,\mathcal{B},\mathcal{C}),
+    \]
+    then for every \(v\in V\),
+    \[
+        [v]_{\mathcal{C}}
+        =
+        P_{\mathcal{C}\leftarrow\mathcal{B}}\,[v]_{\mathcal{B}}.
+    \]
+    The \(j\)-th column of \(P_{\mathcal{C}\leftarrow\mathcal{B}}\) is
+    \[
+        [v_j]_{\mathcal{C}}.
+    \]
 \end{snippettheorem}
 
-\begin{snippetproposition}{change-of-basis-linear-transformation}{Change of basis of a linear transformation}
-    If \(T_1\) is a transformation in \(\mathcal{B}_1\), we can find another
-    transformation \(T_2\) that is similar to \(T_1\) but works for the \basis \(\mathcal{B}_2\).
-    
-    Instead of computng \(T_1\vec{v}\), we first multiply \(\vec{v}\) by the
-    change of basis matrix \(M\), then apply \(T_1\) and finally apply the inverse change of basis matrix \(M^{-1}\).
+\begin{snippetproof}{change-of-basis-theorem-proof}{change-of-basis-theorem}{Change of basis}
+    Write
     \[
-        T_2 = M^{-1}T_1M
+        [v]_{\mathcal{B}}=
+        \begin{pmatrix}
+            a_1\\
+            \vdots\\
+            a_n
+        \end{pmatrix},
+        \qquad
+        v=a_1v_1+\cdots+a_nv_n.
+    \]
+    By definition of associated \matrix, the \(j\)-th column of
+    \(P_{\mathcal{C}\leftarrow\mathcal{B}}\) is
+    \[
+        [\identityfunc_V(v_j)]_{\mathcal{C}}=[v_j]_{\mathcal{C}}.
+    \]
+    Therefore
+    \[
+        P_{\mathcal{C}\leftarrow\mathcal{B}}\,[v]_{\mathcal{B}}
+        =
+        a_1[v_1]_{\mathcal{C}}+\cdots+a_n[v_n]_{\mathcal{C}}
+        =
+        [v]_{\mathcal{C}}.
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{change-of-basis-matrix-inverse}{Inverse of a change-of-basis matrix}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), and let \(\mathcal{B}\) and \(\mathcal{C}\) be two
+    \basis[bases] of \(V\). Then
+    \[
+        M(\identityfunc_V,\mathcal{B},\mathcal{C})
+    \]
+    is invertible, and
+    \[
+        M(\identityfunc_V,\mathcal{B},\mathcal{C})^{-1}
+        =
+        M(\identityfunc_V,\mathcal{C},\mathcal{B}).
     \]
 \end{snippetproposition}
+
+\begin{snippetproof}{change-of-basis-matrix-inverse-proof}{change-of-basis-matrix-inverse}{Inverse of a change-of-basis matrix}
+    The compositions
+    \[
+        (V,\mathcal{B})
+        \xrightarrow{\identityfunc_V}
+        (V,\mathcal{C})
+        \xrightarrow{\identityfunc_V}
+        (V,\mathcal{B})
+    \]
+    and
+    \[
+        (V,\mathcal{C})
+        \xrightarrow{\identityfunc_V}
+        (V,\mathcal{B})
+        \xrightarrow{\identityfunc_V}
+        (V,\mathcal{C})
+    \]
+    are both the identity. Applying the matrix formula for composition gives
+    \[
+        M(\identityfunc_V,\mathcal{C},\mathcal{B})
+        M(\identityfunc_V,\mathcal{B},\mathcal{C})
+        =
+        \identmatrix{n},
+    \]
+    and
+    \[
+        M(\identityfunc_V,\mathcal{B},\mathcal{C})
+        M(\identityfunc_V,\mathcal{C},\mathcal{B})
+        =
+        \identmatrix{n}.
+    \]
+    Hence the two \matrix[matrices] are inverses.
+\end{snippetproof}
+
+\begin{snippetexample}{change-of-basis-r2-example}{Change of basis in \(\mathbb{R}^2\)}
+    Consider the \basis[bases] of \(\realnumbers^2\)
+    \[
+        \mathcal{B}=\{(4,2),(5,3)\},
+        \qquad
+        \mathcal{C}=\{(1,0),(0,1)\}.
+    \]
+    Then
+    \[
+        M(\identityfunc_{\realnumbers^2},\mathcal{B},\mathcal{C})
+        =
+        \begin{pmatrix}
+            4 & 5\\
+            2 & 3
+        \end{pmatrix},
+    \]
+    because the columns are the coordinates of the vectors of
+    \(\mathcal{B}\) in the canonical \basis \(\mathcal{C}\). Its inverse is
+    \[
+        M(\identityfunc_{\realnumbers^2},\mathcal{C},\mathcal{B})
+        =
+        \begin{pmatrix}
+            3/2 & -5/2\\
+            -1 & 2
+        \end{pmatrix}.
+    \]
+\end{snippetexample}
+
+\section{Linear maps}
+
+\begin{snippetproposition}{change-of-basis-linear-transformation}{Change of basis of a linear transformation}
+    Let \(V\) and \(W\) be finite-dimensional \vectorspace[vector spaces] over
+    a \field \(\mathbb{F}\), and let
+    \(f\in\setoflineartransformations(V,W)\). Let
+    \[
+        \mathcal{B},\mathcal{P}
+    \]
+    be \basis[bases] of \(V\), and let
+    \[
+        \mathcal{C},\mathcal{E}
+    \]
+    be \basis[bases] of \(W\). Put
+    \[
+        A=M(\identityfunc_V,\mathcal{B},\mathcal{P}),
+        \qquad
+        C=M(\identityfunc_W,\mathcal{E},\mathcal{C}).
+    \]
+    Then
+    \[
+        M(f,\mathcal{B},\mathcal{C})
+        =
+        C\,M(f,\mathcal{P},\mathcal{E})\,A.
+    \]
+    Equivalently,
+    \[
+        M(f,\mathcal{P},\mathcal{E})
+        =
+        C^{-1}M(f,\mathcal{B},\mathcal{C})A^{-1}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{change-of-basis-linear-transformation-proof}{change-of-basis-linear-transformation}{Change of basis of a linear transformation}
+    Consider the same \lineartransformation \(f\) as the middle arrow in
+    \[
+        (V,\mathcal{B})
+        \xrightarrow{\identityfunc_V}
+        (V,\mathcal{P})
+        \xrightarrow{f}
+        (W,\mathcal{E})
+        \xrightarrow{\identityfunc_W}
+        (W,\mathcal{C}).
+    \]
+    The composition of the three maps is \(f\), viewed with domain basis
+    \(\mathcal{B}\) and codomain basis \(\mathcal{C}\). Applying the
+    associated-matrix formula for composition gives
+    \[
+        M(f,\mathcal{B},\mathcal{C})
+        =
+        M(\identityfunc_W,\mathcal{E},\mathcal{C})
+        M(f,\mathcal{P},\mathcal{E})
+        M(\identityfunc_V,\mathcal{B},\mathcal{P}).
+    \]
+    This is the first formula. The second follows by multiplying on the left
+    by \(C^{-1}\) and on the right by \(A^{-1}\).
+\end{snippetproof}
+
+\section{Similar matrices}
+
+\begin{snippetdefinition}{general-linear-group-definition}{General linear group}
+    Let \(\mathbb{F}\) be a \field. The \emph{general linear group} of degree
+    \(n\) over \(\mathbb{F}\) is
+    \[
+        \operatorname{GL}(n,\mathbb{F})
+        =
+        \{A\in\matrices_{n\times n}(\mathbb{F})\suchthat A
+        \text{ is invertible}\}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{general-linear-group-is-group}{The general linear group is a group}
+    Let \(\mathbb{F}\) be a \field. With \matrix multiplication,
+    \[
+        \operatorname{GL}(n,\mathbb{F})
+    \]
+    is a \group.
+\end{snippetproposition}
+
+\begin{snippetproof}{general-linear-group-is-group-proof}{general-linear-group-is-group}{The general linear group is a group}
+    The product of invertible \matrix[matrices] is invertible, and
+    \[
+        (AB)^{-1}=B^{-1}A^{-1}.
+    \]
+    Thus multiplication is internal. Matrix multiplication is associative,
+    the identity element is \(\identmatrix{n}\), and the inverse of
+    \(A\in\operatorname{GL}(n,\mathbb{F})\) is its inverse \matrix
+    \(A^{-1}\).
+\end{snippetproof}
+
+\begin{snippetdefinition}{similar-matrices-definition}{Similar matrices}
+    Let \(\mathbb{F}\) be a \field. Two \matrix[matrices]
+    \[
+        B,C\in\matrices_{n\times n}(\mathbb{F})
+    \]
+    are \emph{similar} if there exists
+    \(A\in\operatorname{GL}(n,\mathbb{F})\) such that
+    \[
+        B=A^{-1}CA.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{same-endomorphism-matrices-are-similar}{Matrices of the same endomorphism are similar}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), let \(f\in\operatorname{End}(V)\), and let
+    \(\mathcal{B}\) and \(\mathcal{P}\) be two \basis[bases] of \(V\). Put
+    \[
+        A=M(\identityfunc_V,\mathcal{P},\mathcal{B}).
+    \]
+    Then
+    \[
+        M(f,\mathcal{P},\mathcal{P})
+        =
+        A^{-1}M(f,\mathcal{B},\mathcal{B})A.
+    \]
+    In particular, the \matrix[matrices] associated to the same endomorphism
+    with respect to different \basis[bases] are \similarmatrices.
+\end{snippetproposition}
+
+\begin{snippetproof}{same-endomorphism-matrices-are-similar-proof}{same-endomorphism-matrices-are-similar}{Matrices of the same endomorphism are similar}
+    The \matrix \(A=M(\identityfunc_V,\mathcal{P},\mathcal{B})\) sends
+    \(\mathcal{P}\)-coordinates to \(\mathcal{B}\)-coordinates. To compute
+    the \matrix of \(f\) in the \basis \(\mathcal{P}\), first change
+    \(\mathcal{P}\)-coordinates to \(\mathcal{B}\)-coordinates, then apply
+    \(M(f,\mathcal{B},\mathcal{B})\), and finally change back to
+    \(\mathcal{P}\)-coordinates. The change back is \(A^{-1}\). Hence
+    \[
+        M(f,\mathcal{P},\mathcal{P})
+        =
+        A^{-1}M(f,\mathcal{B},\mathcal{B})A.
+    \]
+\end{snippetproof}
 
 \end{document}

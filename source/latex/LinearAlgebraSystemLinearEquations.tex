@@ -11,72 +11,417 @@
 \id{matrices-systems-of-linear-equations}
 \genpage
 
-\section{Elementary row operations}
+\section{Linear systems}
 
-\includesnpt{linearalgebra-elementary-row-operations}
-
-\plain{We can construct matrices such when multiplied an elementary row addition operation is performed.}
-
-\begin{snippetdefinition}{elementary-lambda-matrix-definition}{Elementary \(\lambda\) matrix}
-    Let \(n\in\naturalnumbers\) and \(1 \leq i,j \leq n\) such that \(i \neq j\).
-    The \emph{elementary matrix} \(E_{i,j}(\lambda)\) is the \(n\times n\) \matrix defined as
+\begin{snippetdefinition}{linear-system-definition}{Linear system}
+    Let \(\mathbb{F}\) be a \field. A \emph{linear system} of \(m\)
+    equations in \(n\) unknowns \(x_1,\ldots,x_n\) over \(\mathbb{F}\) is a
+    system of the form
     \[
-        \left(E_{i,j}(\lambda)\right)_{a,b} \triangleq \kronecker_{a,b} + \lambda \kronecker_{i,a} \kronecker_{b,j}
+        \begin{cases}
+            a_{11}x_1+a_{12}x_2+\cdots+a_{1n}x_n=b_1,\\
+            a_{21}x_1+a_{22}x_2+\cdots+a_{2n}x_n=b_2,\\
+            \qquad\vdots\\
+            a_{m1}x_1+a_{m2}x_2+\cdots+a_{mn}x_n=b_m.
+        \end{cases}
     \]
+    The elements \(a_{ij}\in\mathbb{F}\) are called the
+    \emph{coefficients}, and \(b_1,\ldots,b_m\in\mathbb{F}\) are called the
+    \emph{constant terms}.
 \end{snippetdefinition}
 
-\begin{snippetproposition}{elementary-matrix-row-operation}{}
-    Let \(A\) be an \(n\times m\) \matrix. Then, the product \(E_{i,j}(\lambda)A\) is the \matrix obtained by
-    adding \(\lambda\) times the \(j\)-th row of \(A\) to the \(i\)-th row, which is the
-    \snippetref[linearalgebra-elementary-row-operations][elementary row addition operation].
+\begin{snippetexample}{linear-system-example}{A linear system}
+    The system
+    \[
+        \begin{cases}
+            3x-7y+2z=23,\\
+            2x+3z=18
+        \end{cases}
+    \]
+    is a linear system of \(2\) equations in \(3\) unknowns.
+\end{snippetexample}
+
+\begin{snippetexample}{nonlinear-system-example}{A nonlinear system}
+    The system
+    \[
+        \begin{cases}
+            x-e^x+\cos y=14,\\
+            \arctan z-y=23
+        \end{cases}
+    \]
+    is not a linear system because nonlinear \function[functions] of the unknowns occur.
+\end{snippetexample}
+
+\section{Small systems}
+
+\begin{snippetproposition}{linear-equation-one-unknown-solutions}{One linear equation in one unknown}
+    Let \(a,b\in\realnumbers\). The equation
+    \[
+        ax=b
+    \]
+    has:
+    \[
+        \begin{cases}
+            \text{the unique solution } x=\frac{b}{a} & \text{if } a\neq 0,\\[6pt]
+            \text{every } x\in\realnumbers \text{ as a solution} &
+            \text{if } a=0 \text{ and } b=0,\\[4pt]
+            \text{no solutions} & \text{if } a=0 \text{ and } b\neq 0.
+        \end{cases}
+    \]
 \end{snippetproposition}
 
-\begin{snippetproof}{elementary-matrix-row-operation-proof}{elementary-matrix-row-operation}{}
-    Let \(A\) have rows rows \(a_1, a_2, \dots, a_n\), written as:
+\begin{snippetexample}{linear-equation-one-unknown-examples}{One unknown examples}
+    The system
     \[
-        A =
-        \begin{bmatrix}
-        a_1 \\ a_2 \\ \vdots \\ a_n
-        \end{bmatrix}.
+        \begin{cases}
+            3x=7,\\
+            6x=14
+        \end{cases}
     \]
-    Ccompute the matrix product \(E_{i,j}(\lambda) A\).
-    Since \(E_{i,j}(\lambda) = I_n + \lambda e_{i,j}\), we expand:
+    has the unique solution \(x=\frac{7}{3}\), because the second equation is
+    twice the first one. The system
     \[
-        E_{i,j}(\lambda) A = (I_n + \lambda e_{i,j}) A = I_n A + \lambda e_{i,j} A.
+        \begin{cases}
+            3x=7,\\
+            3x=8
+        \end{cases}
     \]
-    Since \(I_n A = A\), it remains to compute \(e_{i,j} A\).
-    By the definition of \(e_{i,j}\), this matrix has only one nonzero row: it picks row \(j\) of \(A\)
-    and places it in row \(i\), with all other rows being zero. Thus, we get:
-    \[
-        e_{i,j} A =
-        \begin{bmatrix}
-        0 \\ \vdots \\ 0 \\ a_j \\ 0 \\ \vdots \\ 0
-        \end{bmatrix},
-    \]
-    where \(a_j\) appears in row \(i\), and all other rows are zero.
-    Multiplying by \(\lambda\) gives:
-    \[
-        \lambda e_{i,j} A =
-        \begin{bmatrix}
-        0 \\ \vdots \\ 0 \\ \lambda a_j \\ 0 \\ \vdots \\ 0
-        \end{bmatrix}.
-    \]
-    Adding this to \(A\), we see that only row \(i\) is modified:
-    \[
-        E_{i,j}(\lambda) A =
-        \begin{bmatrix}
-        a_1 \\ \vdots \\ a_{i-1} \\ a_i + \lambda a_j \\ a_{i+1} \\ \vdots \\ a_n
-        \end{bmatrix}.
-    \]
-    Thus, row \(i\) is updated as \(a_i + \lambda a_j\), while all other rows remain unchanged.
-\end{snippetproof}
+    has no solutions, because \(3x\) cannot be equal to both \(7\) and \(8\).
+\end{snippetexample}
 
-\plain{We can also create a matrix to perform an elementary row swap}
+\begin{snippetexample}{one-equation-two-unknowns-example}{One equation in two unknowns}
+    Consider the equation
+    \[
+        3x+5y=7.
+    \]
+    If \(y=t\in\realnumbers\), then
+    \[
+        x=\frac{7-5t}{3}.
+    \]
+    Hence the solution \set is
+    \[
+        \left\{\left(\frac{7-5t}{3},t\right)\suchthat
+        t\in\realnumbers\right\}.
+    \]
+    Equivalently, the solutions form the line
+    \[
+        y=-\frac{3}{5}x+\frac{7}{5}.
+    \]
+\end{snippetexample}
 
-\begin{snippetdefinition}{elementary-permutation-matrix-definition}{Elementary-permutation-matrix}
-    The \emph{elementary permutation matrix} \(P_{i,j}\) is defined as the
-    identity \(I_n\) but with rows \(i\) and \(j\) swapped.
+\begin{snippetexample}{two-equations-two-unknowns-example}{Two equations in two unknowns}
+    Consider the system
+    \[
+        \begin{cases}
+            3x+2y=5,\\
+            -x+y=2.
+        \end{cases}
+    \]
+    From the second equation, \(y=x+2\). Substituting into the first equation
+    gives
+    \[
+        3x+2(x+2)=5,
+    \]
+    hence \(5x=1\) and \(x=\frac{1}{5}\). Therefore
+    \[
+        y=x+2=\frac{11}{5},
+    \]
+    so the unique solution is
+    \[
+        \left(\frac{1}{5},\frac{11}{5}\right).
+    \]
+\end{snippetexample}
+
+\begin{snippet}{two-by-two-linear-system-geometric-cases}
+    A linear equation in two unknowns represents a line in the Cartesian
+    plane. Therefore a linear system of two equations in two unknowns amounts
+    to studying the intersection of two lines. The two lines may be:
+    \[
+        \begin{array}{rcl}
+            \text{intersecting} &\Longrightarrow& \text{one solution},\\
+            \text{coincident} &\Longrightarrow& \text{infinitely many solutions},\\
+            \text{parallel and distinct} &\Longrightarrow& \text{no solutions}.
+        \end{array}
+    \]
+\end{snippet}
+
+\begin{snippettheorem}{two-by-two-cramer-rule-theorem}{Cramer's rule for \(2\times2\) systems}
+    Let \(a,b,c,\alpha,\beta,\delta\in\realnumbers\), and consider the system
+    \[
+        \begin{cases}
+            ax+by=c,\\
+            \alpha x+\beta y=\delta.
+        \end{cases}
+    \]
+    If
+    \[
+        \Delta=a\beta-\alpha b\neq 0,
+    \]
+    then the system has the unique solution
+    \[
+        x=\frac{c\beta-\delta b}{a\beta-\alpha b},
+        \qquad
+        y=\frac{a\delta-\alpha c}{a\beta-\alpha b}.
+    \]
+\end{snippettheorem}
+
+\begin{snippetnote}{two-by-two-cramer-zero-determinant-note}{When the determinant is zero}
+    In a \(2\times2\) linear system, if
+    \[
+        \Delta=a\beta-\alpha b=0,
+    \]
+    then Cramer's rule cannot be applied. Depending on the constant terms,
+    the system may have infinitely many solutions or no solutions.
+\end{snippetnote}
+
+\begin{snippetexercise}{two-by-two-row-dependence-exercise}{Linear dependence of the rows}
+    Let \(a,b,\alpha,\beta\in\realnumbers\). Prove that
+    \[
+        a\beta-\alpha b=0
+    \]
+    if and only if there exist \(u,v\in\realnumbers\), not both zero, such
+    that
+    \[
+        u(a,b)+v(\alpha,\beta)=(0,0).
+    \]
+\end{snippetexercise}
+
+\begin{snippetsolution}{two-by-two-row-dependence-solution}{Linear dependence of the rows}
+    Suppose first that there exist \(u,v\in\realnumbers\), not both zero, such
+    that
+    \[
+        u(a,b)+v(\alpha,\beta)=(0,0).
+    \]
+    If \(v\neq 0\), then
+    \[
+        (\alpha,\beta)=-\frac{u}{v}(a,b),
+    \]
+    so \((a,b)\) and \((\alpha,\beta)\) are proportional, and
+    \(a\beta-\alpha b=0\). If \(v=0\), then \(u\neq 0\), so
+    \(u(a,b)=(0,0)\), hence \((a,b)=(0,0)\), and again
+    \(a\beta-\alpha b=0\).
+
+    Conversely, assume \(a\beta-\alpha b=0\). If \(a\neq 0\), choose
+    \(u=-\alpha\) and \(v=a\). Then
+    \[
+        u(a,b)+v(\alpha,\beta)
+        =
+        -\alpha(a,b)+a(\alpha,\beta)
+        =
+        (0,a\beta-\alpha b)
+        =
+        (0,0),
+    \]
+    and \(u,v\) are not both zero. If \(a=0\) and \(b\neq0\), then
+    \(a\beta-\alpha b=0\) implies \(\alpha=0\), and choosing
+    \(u=-\beta\), \(v=b\) gives the result. If \((a,b)=(0,0)\), choose
+    \(u=1\), \(v=0\).
+\end{snippetsolution}
+
+\section{Rows and columns}
+
+\begin{snippet}{linear-system-row-column-interpretation}
+    A linear system can be interpreted in two complementary ways:
+    \[
+        \begin{array}{c|c|c}
+            & \text{Row interpretation} & \text{Column interpretation}\\
+            \hline
+            \text{Equations}
+            &
+            \text{intersections of lines or hyperplanes}
+            &
+            \text{linear combinations of coefficient columns}\\
+            \hline
+            \text{Solving}
+            &
+            \text{find the common intersection}
+            &
+            \text{find coefficients giving the constant vector}
+        \end{array}
+    \]
+\end{snippet}
+
+\begin{snippetexample}{linear-system-row-column-unique-solution-example}{Unique solution in row and column form}
+    Consider the system
+    \[
+        \begin{cases}
+            2x-y=1,\\
+            x+y=5.
+        \end{cases}
+    \]
+    In row form, one looks for the intersection of the lines
+    \(2x-y=1\) and \(x+y=5\). In column form, the system is
+    \[
+        x
+        \begin{pmatrix}
+            2\\
+            1
+        \end{pmatrix}
+        +
+        y
+        \begin{pmatrix}
+            -1\\
+            1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            1\\
+            5
+        \end{pmatrix}.
+    \]
+    The solution is \(x=2\), \(y=3\), since
+    \[
+        2
+        \begin{pmatrix}
+            2\\
+            1
+        \end{pmatrix}
+        +
+        3
+        \begin{pmatrix}
+            -1\\
+            1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            1\\
+            5
+        \end{pmatrix}.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{linear-system-row-column-infinite-solutions-example}{Infinitely many solutions in column form}
+    The system
+    \[
+        \begin{cases}
+            x+y=2,\\
+            2x+2y=4
+        \end{cases}
+    \]
+    can be written as
+    \[
+        x
+        \begin{pmatrix}
+            1\\
+            2
+        \end{pmatrix}
+        +
+        y
+        \begin{pmatrix}
+            1\\
+            2
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            2\\
+            4
+        \end{pmatrix}.
+    \]
+    Since the two coefficient columns are equal, this is equivalent to
+    \[
+        (x+y)
+        \begin{pmatrix}
+            1\\
+            2
+        \end{pmatrix}
+        =
+        2
+        \begin{pmatrix}
+            1\\
+            2
+        \end{pmatrix}.
+    \]
+    Thus every pair \((x,y)\) with \(x+y=2\) is a solution.
+\end{snippetexample}
+
+\begin{snippetexample}{linear-system-row-column-no-solutions-example}{No solution in column form}
+    The system
+    \[
+        \begin{cases}
+            x+y=2,\\
+            x+y=3
+        \end{cases}
+    \]
+    can be written as
+    \[
+        (x+y)
+        \begin{pmatrix}
+            1\\
+            1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            2\\
+            3
+        \end{pmatrix}.
+    \]
+    The vector on the left always has equal coordinates, whereas the vector
+    on the right does not. Hence the system has no solutions.
+\end{snippetexample}
+
+\section{Matrix notation}
+
+\begin{snippetdefinition}{linear-system-matrix-form-definition}{Matrix form of a linear system}
+    Let \(\mathbb{F}\) be a \field. A linear system of \(m\) equations in
+    \(n\) unknowns can be written as
+    \[
+        Ax=b,
+    \]
+    where
+    \[
+        A=(a_{ij})\in\matrices_{m\times n}(\mathbb{F})
+    \]
+    is the coefficient \matrix,
+    \[
+        x=
+        \begin{pmatrix}
+            x_1\\
+            \vdots\\
+            x_n
+        \end{pmatrix}
+    \]
+    is the column vector of unknowns, and
+    \[
+        b=
+        \begin{pmatrix}
+            b_1\\
+            \vdots\\
+            b_m
+        \end{pmatrix}
+    \]
+    is the column vector of constant terms.
 \end{snippetdefinition}
+
+\begin{snippetexample}{linear-system-matrix-form-example}{A system in matrix form}
+    Let
+    \[
+        A=
+        \begin{pmatrix}
+            1 & 2 & 3\\
+            5 & 4 & 6
+        \end{pmatrix},
+        \qquad
+        x=
+        \begin{pmatrix}
+            x_1\\
+            x_2\\
+            x_3
+        \end{pmatrix},
+        \qquad
+        b=
+        \begin{pmatrix}
+            1\\
+            0
+        \end{pmatrix}.
+    \]
+    The \matrix equation \(Ax=b\) is the system
+    \[
+        \begin{cases}
+            x_1+2x_2+3x_3=1,\\
+            5x_1+4x_2+6x_3=0.
+        \end{cases}
+    \]
+\end{snippetexample}
 
 \section{Systems of linear equations}
 
@@ -104,10 +449,10 @@
         a_{n, 1}x + a_{n, 2}y + \cdots + a_{n, m}z &= b_n
     \end{align*}
 
-    Can be represented by a matrix multiplication \(M\vec{x}=\vec{d}\)
+    Can be represented by a \matrix multiplication \(M\vec{x}=\vec{d}\)
 
     \[
-        \begin{bmatrix} 
+        \begin{bmatrix}
             a_{1, 1} && a_{1, 2} && \cdots && a_{1, m} \\
             a_{2, 1} && a_{2, 2} && \cdots && a_{2, m} \\
             \vdots && \vdots && \ddots && \vdots \\
@@ -123,13 +468,13 @@
     \]
 
     The geometrical interpretation is to find the vector \(\vec{x}\)
-    such that when the matrix \(M\) is applied to it, the resulting vector is \(\vec{d}\).
+    such that when the \matrix \(M\) is applied to it, the resulting vector is \(\vec{d}\).
     We can also represent it as finding the intersections of straight lines, or finding the coefficients
-    for the linear combinations of the vectors to find the vector of the known-values.
+    for the \linearcombination[linear combinations] of the vectors to find the vector of the known-values.
 
     We may represent the whole system just by
     \[
-        \begin{bmatrix} 
+        \begin{bmatrix}
             a_{1, 1} && a_{1, 2} && \cdots && a_{1, m} && b_1 \\
             a_{2, 1} && a_{2, 2} && \cdots && a_{2, m} && b_2 \\
             \vdots && \vdots && \vdots && \ddots && \vdots \\
@@ -148,10 +493,10 @@
 \includesnpt{linearalgebra-lin-sys-sol-amount}
 
 \begin{snippet}{linearalgebra-expl2}
-    By applying these operations, our goal is to make the system matrix
+    By applying these operations, our goal is to make the system \matrix
     look like the following:
     \[
-        \begin{bmatrix} 
+        \begin{bmatrix}
             1 && 0 && 0 && e_1 \\
             0 && 1 && 0 && e_2 \\
             0 && 0 && 1 && e_3
@@ -176,38 +521,6 @@
     \(0x_1+0x_2+\cdots+0x_n = a\) with \(a \neq 0\).
 \end{snippet}
 
-\begin{snippettheorem}{lu-decomposition-theorem}{LU Decomposition}
-    Given a system of linear equations represented by \(Ax = b\).
-    Given a decomposition of the form \(A = LU\) where \(L\) is a lower triangular
-    matrix and \(U\) is an upper triangular matrix, we have the equation
-    \[
-        LUx = b
-    \]
-    Since \(Ux\) is a vector, let \(y = Ux\). By solving for \(y\) and then for \(x\),
-    we get the solution to the system.
-\end{snippettheorem}
-
-\plain{The lower triangular matrix encodes the elementary operation, and the upper triangular
-matrix is the system matrix in row echelon form.}
-
-\begin{snippetdefinition}{nonsingular-matrix-definition}{Nonsingular matrix}
-    A square \matrix is said to be \emph{nonsingular} if
-    the associated system of equation \(Ax = b\) has only one solution for every \(b\).
-\end{snippetdefinition}
-
-\begin{snippettheorem}{nonsingular-matrix-invertible-theorem}{Nonsingular matrix invertibility}
-    A square \matrix is invertible \ifandonlyif it is nonsingular.
-\end{snippettheorem}
-
-\begin{snippetproof}{nonsingular-matrix-invertible-theorem-proof}{nonsingular-matrix-invertible-theorem}{Nonsingular matrix invertibility}
-    \begin{iffproof}
-        \item If \(A\) is invertible, then \(\exists_{=1} A^{-1} \suchthat A^{-1}A = I_n\).
-        Thus, for every \(b\), we can find a unique solution to \(Ax = b\) for every \(b\), which is \(x = A^{-1}b\).
-        \item If the system has only one solution for every \(b\), then we can find an inverse
-        \(\hat{A}\) such that \(A\hat{A} = I_n\) using the Gauss-Jordan algorithm. Thus, \(A\) is invertible.
-    \end{iffproof}
-\end{snippetproof}
-
 \subsubsection{Examples}
 
 \includesnpt{linearalgebra-matrix-linear-system-1-sol-example-1}
@@ -216,92 +529,183 @@ matrix is the system matrix in row echelon form.}
 
 \section{Cramer's rule}
 
-\begin{snippettheorem}{cramer-rule-theorem}{Cramer's rule}
-    Consider a system of \(n\) equations and unknowns
-    \[
-        A\vec{x}=\vec{b}
-    \]
-    The solution is given by
-    \[
-        \vec{x}_i = \frac{\det(A_i)}{\det(A)}
-    \]
-    where \(A_i\) is formed by replacing the \(i\)-th column
-    of \(A\) by \(\vec{b}\).
-\end{snippettheorem}
+\includesnpt{cramer-rule-theorem}
+\includesnpt{cramer-rule-theorem-proof}
+\includesnpt{cramer-rule-system-example}
 
 \section{Solutions}
 
-\begin{snippetproposition}{two-by-two-syste-unique-solution}{}
-    Consider the system of equations
+\begin{snippetproposition}{two-by-two-syste-unique-solution}{Unique solution of a \(2\times2\) system}
+    Let \(a,b,c,\alpha,\beta,\gamma\in\realnumbers\), and consider the system
     \[
         \begin{cases}
-            ax + by = c \\
-            \alpha x + \beta y = \gamma
+            ax+by=c,\\
+            \alpha x+\beta y=\gamma.
         \end{cases}
     \]
-    This system has a unique solution \ifandonlyif \(\Delta = a\beta - b\alpha \neq 0\)
-    given by
+    Put
     \[
-        \begin{cases}
-            x = \frac{c\beta - b\gamma}{\Delta} \\
-            y = \frac{\alpha\gamma - c\alpha}{\Delta}
-        \end{cases}
+        \Delta=a\beta-b\alpha.
+    \]
+    If \(\Delta\neq 0\), then the system has the unique solution
+    \[
+        x=\frac{c\beta-b\gamma}{\Delta},
+        \qquad
+        y=\frac{a\gamma-c\alpha}{\Delta}.
     \]
 \end{snippetproposition}
 
-\begin{snippetproof}{two-by-two-syste-unique-solution-proof}{two-by-two-syste-unique-solution}{}
-    \begin{iffproof}
-        \item By substituting \(x\) and \(y\) we can see that it is a solution.
-        \item If there were multiple solutions \((x_0, y_0) \neq (x_1, y_1)\)
-        we would have
-        \[
-            (x_0 - x_1) \begin{pmatrix} a \\ \alpha \end{pmatrix}
-             + (y_0 - y_1) \begin{pmatrix} b \\ \beta \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix}
-        \]
-        but this happens \ifandonlyif \(\Delta = 0\), and thus it is absurd \lightning.
-    \end{iffproof}
+\begin{snippetproof}{two-by-two-syste-unique-solution-proof}{two-by-two-syste-unique-solution}{Unique solution of a \(2\times2\) system}
+    Multiplying the first equation by \(\beta\) and the second equation by
+    \(-b\), then adding, gives
+    \[
+        (a\beta-b\alpha)x=c\beta-b\gamma.
+    \]
+    Since \(\Delta\neq0\),
+    \[
+        x=\frac{c\beta-b\gamma}{\Delta}.
+    \]
+    Multiplying the first equation by \(-\alpha\) and the second equation by
+    \(a\), then adding, gives
+    \[
+        (a\beta-b\alpha)y=a\gamma-c\alpha.
+    \]
+    Hence
+    \[
+        y=\frac{a\gamma-c\alpha}{\Delta}.
+    \]
+    These values satisfy the original system by construction.
+
+    If two solutions existed, their difference would be a nonzero solution of
+    the homogeneous system
+    \[
+        \begin{cases}
+            ax+by=0,\\
+            \alpha x+\beta y=0.
+        \end{cases}
+    \]
+    Applying the same elimination to this homogeneous system gives
+    \(\Delta x=0\) and \(\Delta y=0\). Since \(\Delta\neq0\), this forces
+    \(x=y=0\), so two distinct solutions cannot exist.
 \end{snippetproof}
 
-\begin{snippettheorem}{rouche-capelli-theorem}{Rouché-Capelli Theorem}
-    Let \(A \in \matrices_{m\times n}(\mathbb{F})\) and \(b\in \matrices_{m\times 1}(\mathbb{F}) \cong \mathbb{F}^n\). % TOFOURGENT link vector space isomorphism
-    Then, the linear system \(Ax = b\) has solutions \ifandonlyif \(\mrank A = \mrank (A \,|\, b)\).
-    In such case, the \vectorspace of the solutions is an affine linear subspace of \(\mathbb{A}^n(\mathbb{F})\)
-    directed by \(\grpker A\), of dimension \(n - \mrank A\).
+\section{Rank and compatibility}
+
+\begin{snippetdefinition}{augmented-matrix-definition}{Augmented matrix}
+    Let \(\mathbb{F}\) be a \field, let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\), and let
+    \(b\in\mathbb{F}^m\). The \emph{augmented matrix} of the linear system
+    \[
+        Ax=b
+    \]
+    is the \matrix
+    \[
+        (A\mid b)
+    \]
+    obtained by adjoining \(b\) to \(A\) as an extra column.
+\end{snippetdefinition}
+
+\begin{snippetexample}{augmented-matrix-example}{An augmented matrix}
+    Consider the linear system
+    \[
+        \begin{cases}
+            3x-8y+z-2w=7,\\
+            5x-z+6w=3,\\
+            x-y+z=15.
+        \end{cases}
+    \]
+    Its coefficient \matrix and constant vector are
+    \[
+        A=
+        \begin{pmatrix}
+            3 & -8 & 1 & -2\\
+            5 & 0 & -1 & 6\\
+            1 & -1 & 1 & 0
+        \end{pmatrix},
+        \qquad
+        b=
+        \begin{pmatrix}
+            7\\
+            3\\
+            15
+        \end{pmatrix}.
+    \]
+    The augmented \matrix is
+    \[
+        (A\mid b)=
+        \begin{pmatrix}
+            3 & -8 & 1 & -2 & \vline & 7\\
+            5 & 0 & -1 & 6 & \vline & 3\\
+            1 & -1 & 1 & 0 & \vline & 15
+        \end{pmatrix}.
+    \]
+\end{snippetexample}
+
+\begin{snippettheorem}{rouche-capelli-theorem}{Rouché-Capelli theorem}
+    Let \(\mathbb{F}\) be a \field, let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\), and let
+    \(b\in\mathbb{F}^m\). The linear system
+    \[
+        Ax=b
+    \]
+    has a solution if and only if
+    \[
+        \mrank(A\mid b)=\mrank A.
+    \]
+    If the system has a solution, then its solution \set is an
+    \affinespace inside \(\mathbb{F}^n\) directed by
+    \[
+        \{x\in\mathbb{F}^n\suchthat Ax=0\},
+    \]
+    and it has \lineardimtext
+    \[
+        n-\mrank A.
+    \]
 \end{snippettheorem}
 
 \begin{snippetproof}{rouche-capelli-theorem-proof}{rouche-capelli-theorem}{Rouché-Capelli theorem}
-    \begin{iffproof}
-        \item Suppose that \(Ax = b\) has a solution and let us show that the rank
-        of the augmented matrix is equal to the rank of the matrix \(\text{rank} A|b = \text{rank} A\).
-        Let \(\overline{x} \in \mathbb{F}^n\) be a solution of \(Ax = b\).
-        Then \(A\overline{x} = b\) is equivalent to
-        \[
-            \sum_i \overline{x}_i A^i = b \iff b \in \text{span}(A^1, \cdots, A^n)
-        \]
-        but then
-        \[
-            \mrank(A|b) = \text{dim span}(A^1, \cdots, A^n, b) = \text{dim span}(A^1, \cdots, A^n)
-            = \mrank A
-        \]
-        \item Suppose that the two ranks are equal. Then the subspace generated by the columns of \(A\)
-        coincides with the subspace generated by the columns of \(A|b\). In particular, there exist scalars
-        \(\overline{x}_i\) such that
-        \[
-            b = \sum_i \overline{x}_i A^i \iff A\overline{x} = b
-        \]
-        Therefore \(Ax = b\) admits solutions.
-        We already know that the set of solutions is an affine subspace of \(\mathbb{A}^n(\mathbb{F})\)
-        directed by \(\text{ker} A\). Observe that
-        \[
-            \text{ker} A = \{x \in \mathbb{F}^n \suchthat Ax = 0\} = \text{ker} L_A
-        \]
-        where \(L_A \colon \mathbb{F}^n \to \mathbb{F}^n\).
-        \begin{align*}
-            n = \text{dim} \mathbb{F}^n &= \text{dim ker} L_A + \text{dim Im} L_A
-            = \text{dim ker} A + \text{rank} L_A \\
-            &= \text{dim ker} A + \text{rank} A \implies \text{dim ker} A = n-\text{rank} A
-        \end{align*}
-    \end{iffproof}
+    Write \(A^1,\ldots,A^n\) for the columns of \(A\). The system
+    \(Ax=b\) has a solution if and only if there exist
+    \(x_1,\ldots,x_n\in\mathbb{F}\) such that
+    \[
+        x_1A^1+\cdots+x_nA^n=b.
+    \]
+    This is equivalent to
+    \[
+        b\in\linearspan(A^1,\ldots,A^n).
+    \]
+
+    Since
+    \[
+        \mrank A=\lineardim\linearspan(A^1,\ldots,A^n)
+    \]
+    and
+    \[
+        \mrank(A\mid b)=\lineardim\linearspan(A^1,\ldots,A^n,b),
+    \]
+    adding the column \(b\) leaves the rank unchanged exactly when
+    \(b\in\linearspan(A^1,\ldots,A^n)\). This proves the compatibility
+    criterion.
+
+    Suppose now that \(\overline{x}\) is one solution. A vector
+    \(x\in\mathbb{F}^n\) is a solution if and only if
+    \[
+        A(x-\overline{x})=Ax-A\overline{x}=b-b=0.
+    \]
+    Hence the solution \set is
+    \[
+        \overline{x}+\{u\in\mathbb{F}^n\suchthat Au=0\}.
+    \]
+    This is an affine subspace directed by the solution \set of the
+    homogeneous system. Applying rank-nullity to
+    \(L_A\colon\mathbb{F}^n\fromto\mathbb{F}^m\) gives
+    \[
+        n=
+        \lineardim\{u\in\mathbb{F}^n\suchthat Au=0\}
+        +
+        \mrank A,
+    \]
+    so the direction has \lineardimtext \(n-\mrank A\).
 \end{snippetproof}
 
 \end{document}

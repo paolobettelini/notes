@@ -1,0 +1,312 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\title{Stellar}
+\id{linearalgebra-dual-spaces}
+\genpage
+
+\section{Dual space}
+
+\begin{snippetdefinition}{dual-space-definition}{Dual space}
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\). The
+    \emph{dual space} of \(V\) is
+    \[
+        V^\ast=\setoflineartransformations(V,\mathbb{F}).
+    \]
+    Its elements are called \linearfunctional[linear functionals] or
+    \covector[covectors].
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{linear-functional-definition}{Linear functional}
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\). A
+    \emph{linear functional} on \(V\) is a \lineartransformation
+    \[
+        \varphi\colon V\fromto\mathbb{F}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexample}{linear-functional-basic-examples}{Linear functionals}
+    The \function
+    \[
+        \varphi\colon\realnumbers^3\fromto\realnumbers,
+        \qquad
+        \varphi(x,y,z)=4x-5y+2z,
+    \]
+    is a \linearfunctional. The \function
+    \[
+        \psi\colon\realnumbers\fromto\realnumbers,
+        \qquad
+        \psi(x)=x^2,
+    \]
+    is not a \linearfunctional, because it is not linear.
+
+    More generally, if \(c=(c_1,\ldots,c_n)\in\mathbb{F}^n\), then
+    \[
+        \varphi_c\colon\mathbb{F}^n\fromto\mathbb{F},
+        \qquad
+        \varphi_c(x_1,\ldots,x_n)=c_1x_1+\cdots+c_nx_n,
+    \]
+    is a \linearfunctional.
+\end{snippetexample}
+
+\begin{snippetexample}{coordinate-functional-example}{Coordinate functionals}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), and let
+    \[
+        \mathcal{B}=\{v_1,\ldots,v_n\}
+    \]
+    be a \basis of \(V\). For each \(i\in\{1,\ldots,n\}\), define
+    \[
+        \varphi_i\colon V\fromto\mathbb{F}
+    \]
+    by
+    \[
+        \varphi_i(a_1v_1+\cdots+a_nv_n)=a_i.
+    \]
+    Then \(\varphi_i\) is a \linearfunctional on \(V\).
+\end{snippetexample}
+
+\begin{snippetproof}{coordinate-functional-example-proof}{coordinate-functional-example}{Coordinate functionals}
+    Let
+    \[
+        u=a_1v_1+\cdots+a_nv_n,
+        \qquad
+        w=b_1v_1+\cdots+b_nv_n.
+    \]
+    Since coordinates in a \basis are unique,
+    \[
+        u+w=(a_1+b_1)v_1+\cdots+(a_n+b_n)v_n,
+    \]
+    so
+    \[
+        \varphi_i(u+w)=a_i+b_i=\varphi_i(u)+\varphi_i(w).
+    \]
+    Also,
+    \[
+        \varphi_i(\lambda u)=\lambda a_i=\lambda\varphi_i(u).
+    \]
+    Hence \(\varphi_i\) is linear.
+\end{snippetproof}
+
+\begin{snippetexample}{polynomial-and-function-linear-functionals}{Functionals on polynomial and function spaces}
+    The maps
+    \[
+        \varphi\colon\realnumbers[x]\fromto\realnumbers,
+        \qquad
+        \varphi(p)=p(0),
+    \]
+    and
+    \[
+        \psi\colon\realnumbers[x]\fromto\realnumbers,
+        \qquad
+        \psi(p)=p'(0)+p'''(1),
+    \]
+    are \linearfunctional[linear functionals]. If
+    \[
+        \mathcal{C}(\realnumbers)
+        =
+        \{f\colon\realnumbers\fromto\realnumbers\suchthat f
+        \text{ is continuous}\},
+    \]
+    then the evaluation map
+    \[
+        \delta_0\colon\mathcal{C}(\realnumbers)\fromto\realnumbers,
+        \qquad
+        \delta_0(f)=f(0),
+    \]
+    is a \linearfunctional.
+\end{snippetexample}
+
+\begin{snippetexample}{trace-linear-functional-example}{Trace as a linear functional}
+    Let \(\mathbb{F}\) be a \field. The trace map
+    \[
+        \operatorname{tr}\colon\matrices_{n\times n}(\mathbb{F})\fromto\mathbb{F},
+        \qquad
+        \operatorname{tr}(A)=\sum_{i=1}^{n}a_{ii},
+    \]
+    is a \linearfunctional. Indeed,
+    \[
+        \operatorname{tr}(A+B)=\operatorname{tr}(A)+\operatorname{tr}(B),
+        \qquad
+        \operatorname{tr}(\lambda A)=\lambda\operatorname{tr}(A).
+    \]
+\end{snippetexample}
+
+\section{Dual basis}
+
+\begin{snippetdefinition}{dual-basis-definition}{Dual basis}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), and let
+    \[
+        \mathcal{B}=\{v_1,\ldots,v_n\}
+    \]
+    be a \basis of \(V\). For every \(i\in\{1,\ldots,n\}\), define
+    \[
+        \varphi_i\in V^\ast
+    \]
+    by
+    \[
+        \varphi_i(v_j)=
+        \begin{cases}
+            1 & \text{if } i=j,\\
+            0 & \text{if } i\neq j.
+        \end{cases}
+    \]
+    The collection
+    \[
+        \mathcal{B}^\ast=\{\varphi_1,\ldots,\varphi_n\}
+    \]
+    is called the \emph{dual basis} of \(\mathcal{B}\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{dual-basis-is-basis}{The dual basis is a basis}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), and let
+    \[
+        \mathcal{B}=\{v_1,\ldots,v_n\}
+    \]
+    be a \basis of \(V\). Then the \dualbasis
+    \[
+        \mathcal{B}^\ast=\{\varphi_1,\ldots,\varphi_n\}
+    \]
+    is a \basis of \(V^\ast\).
+\end{snippetproposition}
+
+\begin{snippetproof}{dual-basis-is-basis-proof}{dual-basis-is-basis}{The dual basis is a basis}
+    First, \(\mathcal{B}^\ast\) is \linearlyindependent. Suppose
+    \[
+        a_1\varphi_1+\cdots+a_n\varphi_n=0
+    \]
+    as a \linearfunctional. Evaluating at \(v_j\) gives
+    \[
+        0=(a_1\varphi_1+\cdots+a_n\varphi_n)(v_j)=a_j.
+    \]
+    This holds for every \(j\), so all coefficients vanish.
+
+    Now let \(\varphi\in V^\ast\). Define
+    \[
+        \psi=\varphi(v_1)\varphi_1+\cdots+\varphi(v_n)\varphi_n.
+    \]
+    For every \(j\),
+    \[
+        \psi(v_j)=\varphi(v_j).
+    \]
+    Since two \lineartransformation[linear transformations] that agree on a
+    \basis agree on all of \(V\), it follows that \(\psi=\varphi\). Hence
+    \(\mathcal{B}^\ast\) generates \(V^\ast\), and is therefore a \basis.
+\end{snippetproof}
+
+\begin{snippetcorollary}{dual-space-dimension-corollary}{Dimension of the dual space}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\). Then
+    \[
+        \lineardim V^\ast=\lineardim V.
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{dual-space-dimension-corollary-proof}{dual-space-dimension-corollary}{Dimension of the dual space}
+    If \(\mathcal{B}\) is a \basis of \(V\), then
+    \(\mathcal{B}^\ast\) is a \basis of \(V^\ast\) with the same number of
+    elements.
+\end{snippetproof}
+
+\section{Double dual}
+
+\begin{snippetdefinition}{canonical-map-to-double-dual-definition}{Canonical map to the double dual}
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\). The
+    \emph{canonical map} from \(V\) to its double dual \(V^{\ast\ast}\) is
+    \[
+        \iota_V\colon V\fromto V^{\ast\ast},
+        \qquad
+        \iota_V(v)(\varphi)=\varphi(v)
+    \]
+    for every \(v\in V\) and every \(\varphi\in V^\ast\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{finite-dimensional-double-dual-isomorphism}{Finite-dimensional double dual}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\). The canonical map
+    \[
+        \iota_V\colon V\fromto V^{\ast\ast}
+    \]
+    is a \linearisomorphism.
+\end{snippetproposition}
+
+\begin{snippetproof}{finite-dimensional-double-dual-isomorphism-proof}{finite-dimensional-double-dual-isomorphism}{Finite-dimensional double dual}
+    The map \(\iota_V\) is linear because every \(\varphi\in V^\ast\) is
+    linear:
+    \[
+        \iota_V(\lambda u+\mu v)(\varphi)
+        =
+        \varphi(\lambda u+\mu v)
+        =
+        \lambda\varphi(u)+\mu\varphi(v)
+        =
+        \bigl(\lambda\iota_V(u)+\mu\iota_V(v)\bigr)(\varphi).
+    \]
+    If \(v\neq0\), choose a \basis \(\{v,v_2,\ldots,v_n\}\) of \(V\), and
+    let \(\varphi\in V^\ast\) be the corresponding coordinate functional with
+    \(\varphi(v)=1\). Then
+    \[
+        \iota_V(v)(\varphi)=1\neq0,
+    \]
+    so \(\iota_V\) is \injective. Since
+    \[
+        \lineardim V=\lineardim V^\ast=\lineardim V^{\ast\ast},
+    \]
+    an injective \lineartransformation between finite-dimensional
+    \vectorspace[vector spaces] of the same dimension is also \surjective.
+    Hence \(\iota_V\) is a \linearisomorphism.
+\end{snippetproof}
+
+\section{Examples}
+
+\begin{snippetexample}{polynomial-space-dual-basis-example}{Dual basis of \(\mathcal{P}_3(\mathbb{R})\)}
+    Let
+    \[
+        \mathcal{P}_3(\realnumbers)
+    \]
+    have \basis
+    \[
+        \mathcal{B}=\{1,x,x^2,x^3\}.
+    \]
+    Define
+    \[
+        \psi_0(p)=p(0),
+        \qquad
+        \psi_1(p)=p'(0),
+        \qquad
+        \psi_2(p)=p''(0),
+        \qquad
+        \psi_3(p)=p'''(0).
+    \]
+    Their values on \(\mathcal{B}\) are
+    \[
+        \begin{array}{c|cccc}
+            & 1 & x & x^2 & x^3\\
+            \hline
+            \psi_0 & 1 & 0 & 0 & 0\\
+            \psi_1 & 0 & 1 & 0 & 0\\
+            \psi_2 & 0 & 0 & 2 & 0\\
+            \psi_3 & 0 & 0 & 0 & 6.
+        \end{array}
+    \]
+    Therefore the \dualbasis of \(\mathcal{B}\) is
+    \[
+        \left\{
+            \psi_0,\,
+            \psi_1,\,
+            \frac{1}{2}\psi_2,\,
+            \frac{1}{6}\psi_3
+        \right\}.
+    \]
+\end{snippetexample}
+
+\end{document}

@@ -17,42 +17,124 @@
 \begin{snippetexample}{matrix-notation-example}{Matrix notation}
     A \matrix with size \(n \times m\) can be represented as
     \[
-    A \equiv \begin{bmatrix} 
+    A \equiv \begin{bmatrix}
             a_{1,1} & a_{1,2} & \cdots & a_{1,m} \\
             a_{2,1} & a_{2,2} & \cdots & a_{2,m} \\
             \vdots  & \vdots  & \ddots & \vdots  \\
-            a_{n,1} & a_{n,2} & \cdots & a_{n,m} 
+            a_{n,1} & a_{n,2} & \cdots & a_{n,m}
         \end{bmatrix}
     \]
     where \(a_{i,j} \triangleq A((i,j))\).
 \end{snippetexample}
 
+\begin{snippetdefinition}{square-matrix-definition}{Square matrix}
+    Let \(\mathbb{F}\) be a \field, and let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\). The \matrix \(A\) is
+    \emph{square} if
+    \[
+        m=n.
+    \]
+\end{snippetdefinition}
+
 \includesnpt{linearalgebra-zero-matrix-definition}
+
+\begin{snippetdefinition}{row-column-vector-definition}{Row and column vectors}
+    Let \(\mathbb{F}\) be a \field. A \matrix in
+    \(\matrices_{m\times 1}(\mathbb{F})\) is called a \emph{column vector}.
+    A \matrix in \(\matrices_{1\times n}(\mathbb{F})\) is called a
+    \emph{row vector}.
+\end{snippetdefinition}
 
 \includesnpt{linearalgebra-matrix-addition-definition}
 
+\begin{snippetdefinition}{matrix-addition-componentwise-definition}{Matrix addition}
+    Let \(\mathbb{F}\) be a \field, and let
+    \[
+        A,B\in\matrices_{m\times n}(\mathbb{F}).
+    \]
+    The sum \(A+B\) is the \matrix in
+    \(\matrices_{m\times n}(\mathbb{F})\) defined by
+    \[
+        (A+B)_{ij}=a_{ij}+b_{ij}.
+    \]
+\end{snippetdefinition}
+
 \includesnpt{linearalgebra-matrix-scalar-multiplication-definition}
 
+\begin{snippetdefinition}{matrix-scalar-multiplication-componentwise-definition}{Scalar multiplication of a matrix}
+    Let \(\mathbb{F}\) be a \field, let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\), and let
+    \(\lambda\in\mathbb{F}\). The scalar multiple \(\lambda A\) is the
+    \matrix in \(\matrices_{m\times n}(\mathbb{F})\) defined by
+    \[
+        (\lambda A)_{ij}=\lambda a_{ij}.
+    \]
+\end{snippetdefinition}
+
 \includesnpt{linearalgebra-matrix-multiplication-definition}
+
+\begin{snippetdefinition}{matrix-product-componentwise-definition}{Matrix product}
+    Let \(\mathbb{F}\) be a \field, and let
+    \[
+        A\in\matrices_{m\times n}(\mathbb{F}),
+        \qquad
+        B\in\matrices_{n\times p}(\mathbb{F}).
+    \]
+    The product \(AB\) is the \matrix in
+    \(\matrices_{m\times p}(\mathbb{F})\) defined by
+    \[
+        (AB)_{ij}=\sum_{k=1}^n a_{ik}b_{kj}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexample}{matrix-product-componentwise-example}{Matrix product}
+    Let
+    \[
+        A=
+        \begin{pmatrix}
+            1 & 2 & 3\\
+            3 & -1 & 5
+        \end{pmatrix},
+        \qquad
+        B=
+        \begin{pmatrix}
+            15 & 0\\
+            -2 & 2\\
+            7 & 3
+        \end{pmatrix}.
+    \]
+    Then
+    \[
+        AB=
+        \begin{pmatrix}
+            32 & 13\\
+            82 & 13
+        \end{pmatrix}.
+    \]
+    For instance,
+    \[
+        (AB)_{11}=1\cdot15+2\cdot(-2)+3\cdot7=32.
+    \]
+\end{snippetexample}
 
 \begin{snippet}{linearalgebra-expl3}
     This means applying a `dot product' between every row and every column. \\
 
     \[
-        \begin{bmatrix} 
+        \begin{bmatrix}
             a_1 && a_2 && a_3 && a_4 \\
             \mathbf{b_1} && \mathbf{b_2} && \mathbf{b_3} && \mathbf{b_4} \\
             c_1 && c_2 && c_3 && c_4
         \end{bmatrix}
         \cdot
-        \begin{bmatrix} 
+        \begin{bmatrix}
             d_1 && \mathbf{e_1} \\
             d_2 && \mathbf{e_2} \\
             d_3 && \mathbf{e_3} \\
             d_4 && \mathbf{e_4}
         \end{bmatrix}
         =
-        \begin{bmatrix} 
+        \begin{bmatrix}
             a \cdot d && a \cdot e \\
             b \cdot d && \mathbf{b \cdot e} \\
             c \cdot d && c \cdot e
@@ -65,40 +147,81 @@
 \end{snippet}
 
 \begin{snippetproposition}{matrix-multiplication-associative}{Associativity of matrix multiplication}
-    Let \(A \in \matrices_{m,n}(\mathbb{F})\) e \(B \in \matrices_{n,p}(\mathbb{F})\) e \(C \in \matrices_{p,r} (\mathbb{F})\),
-    then 
+    Let \(\mathbb{F}\) be a \field, and let
     \[
-        (AB)C = A(BC)
+        A\in\matrices_{m\times n}(\mathbb{F}),
+        \qquad
+        B\in\matrices_{n\times p}(\mathbb{F}),
+        \qquad
+        C\in\matrices_{p\times q}(\mathbb{F}).
+    \]
+    Then
+    \[
+        A(BC)=(AB)C.
     \]
 \end{snippetproposition}
 
 \begin{snippetproof}{matrix-multiplication-associative-proof}{matrix-multiplication-associative}{Associativity of matrix multiplication}
-    \(AB\) has dimension \(m \times p\). The element at the position \((i,j)\) is given by
-    
-    \[
-        \sum_{k=1}^n A_{i,j}B_{k,j} = D_{i,j}
-    \]
-    The \matrix \((AB)C\) has dimension \(m \times r\). The element at the position \((i,l)\) is
+    For every \(i,j\), the \((i,j)\)-entry of \(A(BC)\) is
     \begin{align*}
-        \sum_{j=1}^p D_{i,j}C_{j,l} &= \sum_{j=1}^p \left( \sum_{k=1}^n A_{i,k}B_{k,j} \right) C_{j,l} \\
-        &= \sum_{j=1}^p \sum_{k=1}^n A_{i,k} B_{k,j} C_{j,l}
+        [A(BC)]_{ij}
+        &=
+        \sum_{k=1}^n a_{ik}(BC)_{kj}\\
+        &=
+        \sum_{k=1}^n a_{ik}
+        \left(\sum_{\ell=1}^p b_{k\ell}c_{\ell j}\right)\\
+        &=
+        \sum_{k=1}^n\sum_{\ell=1}^p a_{ik}b_{k\ell}c_{\ell j}.
     \end{align*}
-    \(BC\) has dimension \(n \times r\). The element at the position \((k,l)\) is
-    \[
-        \sum_{j=1}^p B_{k,j} C_{j,e} = E_{k,e}
-    \]
-    \(A(BC)\) has dimension \(m \times r\). The element at the position \((i,l)\) is
+    The \((i,j)\)-entry of \((AB)C\) is
     \begin{align*}
-        \sum_{k=1}^n A_{i,k}E_{k,l} &= \sum_{k=1}^n A_{i,k} \left( \sum_{j=1}^p B_{k,j}C_{j,e} \right)\\
-        &= \sum_{k=1}^n \sum_{j=1}^p A_{i,k} B_{k,j} C_{j,e}
+        [(AB)C]_{ij}
+        &=
+        \sum_{\ell=1}^p (AB)_{i\ell}c_{\ell j}\\
+        &=
+        \sum_{\ell=1}^p
+        \left(\sum_{k=1}^n a_{ik}b_{k\ell}\right)c_{\ell j}\\
+        &=
+        \sum_{\ell=1}^p\sum_{k=1}^n a_{ik}b_{k\ell}c_{\ell j}.
     \end{align*}
+    The two finite double sums contain the same terms. Hence
+    \(A(BC)=(AB)C\).
 \end{snippetproof}
 
 \includesnpt{kronecker-delta-definition}
 
 \includesnpt{identity-matrix-definition}
 
-% When \(I_n\) is applied to a matrix or vector, the matrix or vector remains the same.
+\begin{snippetproposition}{matrix-identity-property}{Identity matrix property}
+    Let \(\mathbb{F}\) be a \field, and let
+    \[
+        A\in\matrices_{m\times p}(\mathbb{F}).
+    \]
+    Then
+    \[
+        I_mA=A
+        \qquad\text{and}\qquad
+        AI_p=A.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{matrix-identity-property-proof}{matrix-identity-property}{Identity matrix property}
+    For every \(i,j\),
+    \[
+        (I_mA)_{ij}
+        =
+        \sum_{k=1}^m (I_m)_{ik}a_{kj}.
+    \]
+    In the \(i\)-th row of \(I_m\), the only nonzero entry is
+    \((I_m)_{ii}=1\). Hence
+    \[
+        (I_mA)_{ij}=a_{ij}.
+    \]
+    Therefore \(I_mA=A\). The proof of \(AI_p=A\) is analogous, using the
+    columns of \(I_p\).
+\end{snippetproof}
+
+% When \(I_n\) is applied to a \matrix or vector, the \matrix or vector remains the same.
 
 \includesnpt{kronecker-delta-sifting-property}
 
@@ -129,10 +252,10 @@ will be \(1\) only when \(i = k\).
 \includesnpt{linearalgebra-invertible-matrix-definition}
 
 \begin{snippetproposition}{matrix-invertibility}{Matrix invertibility}
-    If \(\det(A) = 0\), meaning that the matrix collapses space into a lower dimension,
-    thus resulting in a loss of information, the matrix is not invertible.
-    Otherwise, the matrix has an inverse and it is unique.
-    
+    If \(\det(A) = 0\), meaning that the \matrix collapses space into a lower \lineardimtext,
+    thus resulting in a loss of information, the \matrix is not invertible.
+    Otherwise, the \matrix has an inverse and it is unique.
+
     This is equivalent to saying that if \(A\vec{v}=0\) for some non-zero vector \(\vec{v}\),
     then \(A\) has no inverse.
 \end{snippetproposition}
@@ -151,42 +274,24 @@ will be \(1\) only when \(i = k\).
 \includesnpt{linearalgebra-inverse-of-a-square-matrix}
 
 \begin{snippet}{linearalgebra-expl5}
-If \(\det(M) = 0\), meaning that the matrix collapses space into a lower dimension,
-thus resulting in a loss of information, the matrix is not invertible.
+If \(\det(M) = 0\), meaning that the \matrix collapses space into a lower \lineardimtext,
+thus resulting in a loss of information, the \matrix is not invertible.
 
 This is equivalent to saying that if \(M\vec{v}=0\) for some non-zero vector \(\vec{v}\),
 then \(M\) has no inverse.
 \end{snippet}
 
-% TODO: commutability matrix theorem
+% TODO: commutability \matrix theorem
 
 \section{Matrix transpose}
 
 \begin{snippetdefinition}{matrix-transpose-definition}{Matrix transpose}
-    The \textit{transpose} of a \(n \times m\) \matrix results in a \(m \times n\) one.
-
+    Let \(\mathbb{F}\) be a \field and let
+    \(A=(a_{ij})\in\matrices_{m\times n}(\mathbb{F})\). The
+    \emph{transpose} of \(A\) is the \matrix
+    \(A^\transpose\in\matrices_{n\times m}(\mathbb{F})\) defined by
     \[
-        {\left(A_{ij}\right)}^t=A_{ji}
-    \]
-    
-    The transpose of a matrix is just a flipped version of the original matrix.
-    We can transpose a matrix by switching its rows with its columns.
-    The original rows become the new columns and the original columns become the new rows.
-    
-    \[
-        {\begin{bmatrix} 
-            a_{1,1} & a_{1,2} & \cdots & a_{1,m} \\
-            a_{2,1} & a_{2,2} & \cdots & a_{2,m} \\
-            \vdots  & \vdots  & \ddots & \vdots  \\
-            a_{n,1} & a_{n,2} & \cdots & a_{n,m} 
-        \end{bmatrix}}^t
-        =
-        \begin{bmatrix} 
-            a_{1,1} & a_{2,1} & \cdots & a_{m,1} \\
-            a_{1,2} & a_{2,2} & \cdots & a_{m,2} \\
-            \vdots  & \vdots  & \ddots & \vdots  \\
-            a_{1,n} & a_{2,n} & \cdots & a_{m,n} 
-        \end{bmatrix}
+        (A^\transpose)_{ij}=a_{ji}.
     \]
 \end{snippetdefinition}
 

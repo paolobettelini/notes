@@ -1,0 +1,294 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{linearalgebra-notable-vector-spaces}
+\genpage
+
+\section{Transpose}
+
+\includesnpt{matrix-transpose-definition}
+
+\begin{snippetexample}{matrix-transpose-example}{Matrix transpose}
+    Let
+    \[
+        A=
+        \begin{pmatrix}
+            2 & 3 & 7\\
+            -1 & 8 & 2
+        \end{pmatrix}
+        \in\matrices_{2\times3}(\realnumbers).
+    \]
+    Then
+    \[
+        A^\transpose=
+        \begin{pmatrix}
+            2 & -1\\
+            3 & 8\\
+            7 & 2
+        \end{pmatrix}
+        \in\matrices_{3\times2}(\realnumbers).
+    \]
+\end{snippetexample}
+
+\begin{snippetproposition}{matrix-transpose-linear-properties}{Transpose and linear operations}
+    Let \(\mathbb{F}\) be a \field. If
+    \(A,B\in\matrices_{m\times n}(\mathbb{F})\) and
+    \(\lambda\in\mathbb{F}\), then
+    \[
+        (A+B)^\transpose=A^\transpose+B^\transpose,
+        \qquad
+        (\lambda A)^\transpose=\lambda A^\transpose.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{matrix-transpose-linear-properties-proof}{matrix-transpose-linear-properties}{Transpose and linear operations}
+    For every \(i,j\),
+    \[
+        ((A+B)^\transpose)_{ij}
+        =
+        (A+B)_{ji}
+        =
+        A_{ji}+B_{ji}
+        =
+        (A^\transpose+B^\transpose)_{ij}.
+    \]
+    The proof for scalar multiplication is analogous:
+    \[
+        ((\lambda A)^\transpose)_{ij}
+        =
+        (\lambda A)_{ji}
+        =
+        \lambda A_{ji}
+        =
+        (\lambda A^\transpose)_{ij}.
+    \]
+\end{snippetproof}
+
+\section{Symmetric and skew-symmetric matrices}
+
+\begin{snippetdefinition}{symmetric-skew-symmetric-matrix-definition}{Symmetric and skew-symmetric matrices}
+    Let \(\mathbb{F}\) be a \field and let
+    \(A\in\matrices_{n\times n}(\mathbb{F})\). The \matrix \(A\) is
+    \emph{symmetric} if
+    \[
+        A^\transpose=A.
+    \]
+    The \matrix \(A\) is \emph{skew-symmetric} if
+    \[
+        A^\transpose=-A.
+    \]
+    We write
+    \[
+        \operatorname{Sym}(n)
+        =
+        \{A\in\matrices_{n\times n}(\mathbb{F})\suchthat A^\transpose=A\}
+    \]
+    and
+    \[
+        \operatorname{Skew}(n)
+        =
+        \{A\in\matrices_{n\times n}(\mathbb{F})\suchthat A^\transpose=-A\}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{symmetric-skew-symmetric-subspaces}{Symmetric and skew-symmetric matrix spaces}
+    Let \(\mathbb{F}\) be a \field. The \set[sets]
+    \[
+        \operatorname{Sym}(n),
+        \qquad
+        \operatorname{Skew}(n)
+    \]
+    are linear subspaces of \(\matrices_{n\times n}(\mathbb{F})\).
+\end{snippetproposition}
+
+\begin{snippetproof}{symmetric-skew-symmetric-subspaces-proof}{symmetric-skew-symmetric-subspaces}{Symmetric and skew-symmetric matrix spaces}
+    We prove the statement for \(\operatorname{Sym}(n)\). The zero \matrix is
+    symmetric. If \(A,B\in\operatorname{Sym}(n)\), then
+    \[
+        (A+B)^\transpose=A^\transpose+B^\transpose=A+B,
+    \]
+    so \(A+B\in\operatorname{Sym}(n)\). If \(\lambda\in\mathbb{F}\), then
+    \[
+        (\lambda A)^\transpose=\lambda A^\transpose=\lambda A,
+    \]
+    so \(\lambda A\in\operatorname{Sym}(n)\).
+
+    The skew-symmetric case is analogous. If \(A^\transpose=-A\) and
+    \(B^\transpose=-B\), then
+    \[
+        (A+B)^\transpose=A^\transpose+B^\transpose=-A-B=-(A+B),
+    \]
+    and
+    \[
+        (\lambda A)^\transpose=\lambda A^\transpose=-\lambda A.
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{symmetric-skew-symmetric-decomposition}{Decomposition into symmetric and skew-symmetric parts}
+    Let \(\mathbb{F}\) be a \field with
+    \(\operatorname{char}(\mathbb{F})\neq2\). Then
+    \[
+        \matrices_{n\times n}(\mathbb{F})
+        =
+        \operatorname{Sym}(n)\oplus\operatorname{Skew}(n).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{symmetric-skew-symmetric-decomposition-proof}{symmetric-skew-symmetric-decomposition}{Decomposition into symmetric and skew-symmetric parts}
+    Let \(A\in\matrices_{n\times n}(\mathbb{F})\). Then
+    \[
+        A=
+        \frac{A+A^\transpose}{2}
+        +
+        \frac{A-A^\transpose}{2}.
+    \]
+    The first \matrix is symmetric, because
+    \[
+        \left(\frac{A+A^\transpose}{2}\right)^\transpose
+        =
+        \frac{A^\transpose+A}{2}
+        =
+        \frac{A+A^\transpose}{2}.
+    \]
+    The second \matrix is skew-symmetric, because
+    \[
+        \left(\frac{A-A^\transpose}{2}\right)^\transpose
+        =
+        \frac{A^\transpose-A}{2}
+        =
+        -\frac{A-A^\transpose}{2}.
+    \]
+    Hence every \matrix is a sum of a symmetric \matrix and a skew-symmetric
+    \matrix.
+
+    If \(A\in\operatorname{Sym}(n)\intersection\operatorname{Skew}(n)\),
+    then \(A^\transpose=A\) and \(A^\transpose=-A\). Hence \(A=-A\), so
+    \(2A=0\). Since \(\operatorname{char}(\mathbb{F})\neq2\), \(A=0\).
+    Therefore the intersection is \(\{0\}\), so the sum is direct.
+\end{snippetproof}
+
+\section{Dimensions}
+
+\begin{snippetproposition}{symmetric-matrix-space-dimension}{Dimension of symmetric matrices}
+    Let \(\mathbb{F}\) be a \field. Then
+    \[
+        \lineardim\operatorname{Sym}(n)=\frac{n(n+1)}{2}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{symmetric-matrix-space-dimension-proof}{symmetric-matrix-space-dimension}{Dimension of symmetric matrices}
+    A symmetric \matrix is determined by its diagonal entries and by the
+    entries above the diagonal; the entries below the diagonal are forced by
+    symmetry. Thus the number of free parameters is
+    \[
+        n+(n-1)+\cdots+1=\frac{n(n+1)}{2}.
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{skew-symmetric-matrix-space-dimension}{Dimension of skew-symmetric matrices}
+    Let \(\mathbb{F}\) be a \field with
+    \(\operatorname{char}(\mathbb{F})\neq2\). Then
+    \[
+        \lineardim\operatorname{Skew}(n)=\frac{n(n-1)}{2}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{skew-symmetric-matrix-space-dimension-proof}{skew-symmetric-matrix-space-dimension}{Dimension of skew-symmetric matrices}
+    If \(A=(a_{ij})\) is skew-symmetric, then
+    \[
+        a_{ii}=-a_{ii},
+    \]
+    so \(2a_{ii}=0\), and therefore \(a_{ii}=0\). Thus the diagonal is
+    forced to be zero. The entries above the diagonal determine the entries
+    below the diagonal, so the number of free parameters is
+    \[
+        (n-1)+(n-2)+\cdots+1=\frac{n(n-1)}{2}.
+    \]
+\end{snippetproof}
+
+\begin{snippetexample}{symmetric-skew-symmetric-n3-example}{The case \(n=3\)}
+    Let \(\mathbb{F}\) be a \field with
+    \(\operatorname{char}(\mathbb{F})\neq2\). In
+    \(\matrices_{3\times3}(\mathbb{F})\), a \basis of
+    \(\operatorname{Sym}(3)\) is
+    \[
+        \{
+            E_{11},E_{22},E_{33},
+            E_{12}+E_{21},
+            E_{13}+E_{31},
+            E_{23}+E_{32}
+        \},
+    \]
+    so \(\lineardim\operatorname{Sym}(3)=6\). A \basis of
+    \(\operatorname{Skew}(3)\) is
+    \[
+        \{
+            E_{12}-E_{21},
+            E_{13}-E_{31},
+            E_{23}-E_{32}
+        \},
+    \]
+    so \(\lineardim\operatorname{Skew}(3)=3\). Hence
+    \[
+        6+3=9=\lineardim\matrices_{3\times3}(\mathbb{F}).
+    \]
+\end{snippetexample}
+
+\section{An infinite-dimensional example}
+
+\begin{snippetproposition}{real-numbers-over-rationals-infinite-dimensional}{\(\mathbb{R}\) over \(\mathbb{Q}\)}
+    The \vectorspace \(\realnumbers\), viewed as a \vectorspace over
+    \(\rationalnumbers\), is infinite-dimensional:
+    \[
+        \lineardim_{\rationalnumbers}\realnumbers=\infty.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{real-numbers-over-rationals-infinite-dimensional-proof}{real-numbers-over-rationals-infinite-dimensional}{\(\mathbb{R}\) over \(\mathbb{Q}\)}
+    It is enough to construct \linearlyindependent collections over
+    \(\rationalnumbers\) of arbitrarily large finite size. Let
+    \(p_1,\ldots,p_m\) be distinct prime numbers. We claim that
+    \[
+        \{\log p_1,\ldots,\log p_m\}
+    \]
+    is \linearlyindependent over \(\rationalnumbers\).
+
+    Suppose
+    \[
+        \alpha_1\log p_1+\cdots+\alpha_m\log p_m=0,
+        \qquad
+        \alpha_i\in\rationalnumbers.
+    \]
+    Multiplying by a common denominator, we may assume that all coefficients
+    are integers:
+    \[
+        a_1\log p_1+\cdots+a_m\log p_m=0,
+        \qquad
+        a_i\in\integers.
+    \]
+    Then
+    \[
+        \log(p_1^{a_1}\cdots p_m^{a_m})=0,
+    \]
+    so
+    \[
+        p_1^{a_1}\cdots p_m^{a_m}=1.
+    \]
+    By uniqueness of prime factorization, this is possible only if
+    \(a_1=\cdots=a_m=0\). Hence also
+    \(\alpha_1=\cdots=\alpha_m=0\).
+
+    Since there are infinitely many primes, we can construct
+    \linearlyindependent collections of arbitrary finite size. Therefore
+    \(\realnumbers\) cannot have a finite generating collection as a
+    \vectorspace over \(\rationalnumbers\).
+\end{snippetproof}
+
+\end{document}

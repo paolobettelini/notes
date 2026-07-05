@@ -4,14 +4,7 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
-
-\hypersetup{
-    colorlinks=true,
-    linkcolor=black,
-    urlcolor=blue,
-    pdftitle={Stellar},
-    pdfpagemode=FullScreen,
-}
+\usepackage{bettelini}
 
 \begin{document}
 
@@ -19,94 +12,638 @@
 \id{linearalgebra-linear-transformation}
 \genpage
 
-\section{Linear Transformation}
+\section{Linear transformations}
 
-\subsection{Definition}
-
-\begin{snippetdefinition}{linear-transformation-definition}{Linear Transformation}
-    Let \(\mathcal{V}\) and \(\mathcal{W}\) be \vectorspace[vector spaces] over a \field \((K, +, \cdot)\).
-    A \function \(f \colon \mathcal{V} \fromto \mathcal{W}\) is a
+\begin{snippetdefinition}{linear-transformation-definition}{Linear transformation}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over the same \field
+    \(\mathbb{F}\). A \function \(f\colon V\fromto W\) is a
     \emph{linear transformation} if
     \begin{enumerate}
-        \item \(\forall u,v \in V, f(u + v) = f(u) + f(v)\);
-        \item \(\forall c\in K, f(c\cdot u) = c\cdot f(u)\).
+        \item \(f(u+v)=f(u)+f(v)\) for every \(u,v\in V\);
+        \item \(f(\lambda v)=\lambda f(v)\) for every
+        \(\lambda\in\mathbb{F}\) and every \(v\in V\).
     \end{enumerate}
+    The \set of all \lineartransformation[linear transformations] from
+    \(V\) to \(W\) is denoted by
+    \[
+        \setoflineartransformations(V,W).
+    \]
 \end{snippetdefinition}
+
+\begin{snippetproposition}{linear-transformation-combined-criterion}{Linear transformation criterion}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\), and let \(f\colon V\fromto W\) be a \function. Then
+    \(f\) is a \lineartransformation if and only if
+    \[
+        f(\lambda u+\mu v)=\lambda f(u)+\mu f(v)
+    \]
+    for every \(u,v\in V\) and every
+    \(\lambda,\mu\in\mathbb{F}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{linear-transformation-combined-criterion-proof}{linear-transformation-combined-criterion}{Linear transformation criterion}
+    If \(f\) is linear, then
+    \[
+        f(\lambda u+\mu v)
+        =
+        f(\lambda u)+f(\mu v)
+        =
+        \lambda f(u)+\mu f(v).
+    \]
+    Conversely, assume that the displayed identity holds. Taking
+    \(\lambda=\mu=1\) gives
+    \[
+        f(u+v)=f(u)+f(v),
+    \]
+    and taking \(\mu=0\) gives
+    \[
+        f(\lambda u)=\lambda f(u)+0f(v)=\lambda f(u).
+    \]
+    Hence \(f\) is additive and homogeneous, so \(f\) is linear.
+\end{snippetproof}
+
+\begin{snippetproposition}{linear-transformation-sends-zero-to-zero}{Linear transformations preserve zero}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\), and let
+    \(f\in\setoflineartransformations(V,W)\). Then
+    \[
+        f(0_V)=0_W.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{linear-transformation-sends-zero-to-zero-proof}{linear-transformation-sends-zero-to-zero}{Linear transformations preserve zero}
+    Since \(0_V=0_V+0_V\), linearity gives
+    \[
+        f(0_V)=f(0_V+0_V)=f(0_V)+f(0_V).
+    \]
+    Adding the opposite of \(f(0_V)\) in \(W\) to both sides gives
+    \(f(0_V)=0_W\).
+\end{snippetproof}
+
+\section{Examples}
+
+\begin{snippetexample}{zero-linear-transformation-example}{The zero linear transformation}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\). The zero \function
+    \[
+        0\colon V\fromto W,
+        \qquad
+        0(v)=0_W,
+    \]
+    is a \lineartransformation.
+\end{snippetexample}
+
+\begin{snippetproof}{zero-linear-transformation-example-proof}{zero-linear-transformation-example}{The zero linear transformation}
+    For every \(u,v\in V\),
+    \[
+        0(u+v)=0_W=0_W+0_W=0(u)+0(v).
+    \]
+    For every \(\lambda\in\mathbb{F}\) and every \(v\in V\),
+    \[
+        0(\lambda v)=0_W=\lambda 0_W=\lambda 0(v).
+    \]
+    Thus the zero \function is linear.
+\end{snippetproof}
+
+\begin{snippetexample}{identity-linear-transformation-example}{The identity linear transformation}
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\). The identity
+    \function
+    \[
+        \identityfunc_V\colon V\fromto V,
+        \qquad
+        \identityfunc_V(v)=v,
+    \]
+    is a \lineartransformation.
+\end{snippetexample}
+
+\begin{snippetproof}{identity-linear-transformation-example-proof}{identity-linear-transformation-example}{The identity linear transformation}
+    For every \(u,v\in V\),
+    \[
+        \identityfunc_V(u+v)=u+v=\identityfunc_V(u)+\identityfunc_V(v).
+    \]
+    For every \(\lambda\in\mathbb{F}\) and every \(v\in V\),
+    \[
+        \identityfunc_V(\lambda v)=\lambda v=\lambda\identityfunc_V(v).
+    \]
+    Thus \(\identityfunc_V\in\setoflineartransformations(V,V)\).
+\end{snippetproof}
+
+\begin{snippetexample}{linear-homothety-example}{Homotheties}
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\), and fix
+    \(\lambda\in\mathbb{F}\). The \function
+    \[
+        h_\lambda\colon V\fromto V,
+        \qquad
+        h_\lambda(v)=\lambda v,
+    \]
+    is a \lineartransformation. Indeed, for every \(u,v\in V\) and every
+    \(\mu\in\mathbb{F}\),
+    \[
+        h_\lambda(u+v)=\lambda(u+v)=\lambda u+\lambda v
+        =h_\lambda(u)+h_\lambda(v),
+    \]
+    and
+    \[
+        h_\lambda(\mu v)=\lambda(\mu v)=(\lambda\mu)v
+        =\mu(\lambda v)=\mu h_\lambda(v).
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{matrix-linear-transformation-example}{Matrix multiplication}
+    Let \(\mathbb{F}\) be a \field and let
+    \(A\in\matrices_{m\times n}(\mathbb{F})\). The \function
+    \[
+        L_A\colon \mathbb{F}^n\fromto\mathbb{F}^m,
+        \qquad
+        L_A(x)=Ax,
+    \]
+    is a \lineartransformation.
+\end{snippetexample}
+
+\begin{snippetproof}{matrix-linear-transformation-example-proof}{matrix-linear-transformation-example}{Matrix multiplication}
+    For every \(x,y\in\mathbb{F}^n\),
+    \[
+        L_A(x+y)=A(x+y)=Ax+Ay=L_A(x)+L_A(y).
+    \]
+    For every \(\lambda\in\mathbb{F}\) and every \(x\in\mathbb{F}^n\),
+    \[
+        L_A(\lambda x)=A(\lambda x)=\lambda Ax=\lambda L_A(x).
+    \]
+    Hence \(L_A\in\setoflineartransformations(\mathbb{F}^n,\mathbb{F}^m)\).
+\end{snippetproof}
+
+\begin{snippetexample}{linear-map-r3-r2-example}{A linear transformation from \(\mathbb{R}^3\) to \(\mathbb{R}^2\)}
+    The \function
+    \[
+        f\colon \realnumbers^3\fromto\realnumbers^2,
+        \qquad
+        f(x,y,z)=(2x-7y+3z,\ 7x+5y-6z),
+    \]
+    is a \lineartransformation. Each coordinate of \(f(x,y,z)\) is a
+    homogeneous linear expression in \(x,y,z\), so addition and scalar
+    multiplication pass through componentwise.
+\end{snippetexample}
+
+\begin{snippetexample}{nonlinear-affine-map-example}{A non-linear affine map}
+    The \function
+    \[
+        \widetilde{f}\colon \realnumbers^3\fromto\realnumbers^2,
+        \qquad
+        \widetilde{f}(x,y,z)=(2x-7y+3z+1,\ 7x+5y-6z),
+    \]
+    is not a \lineartransformation, because
+    \[
+        \widetilde{f}(0,0,0)=(1,0)\neq(0,0).
+    \]
+    Every \lineartransformation sends the zero \vector to the zero \vector.
+\end{snippetexample}
+
+\begin{snippetexample}{linear-shift-operators-example}{Shift operators}
+    Let \(V=\mathbb{F}^{\naturalnumbers}\) be the \vectorspace of sequences
+    over a \field \(\mathbb{F}\). The backward shift
+    \[
+        b_s(x_1,x_2,x_3,\ldots)=(x_2,x_3,x_4,\ldots)
+    \]
+    and the forward shift
+    \[
+        f_s(x_1,x_2,x_3,\ldots)=(0,x_1,x_2,x_3,\ldots)
+    \]
+    define \lineartransformation[linear transformations]
+    \(V\fromto V\).
+\end{snippetexample}
+
+\begin{snippetexample}{linear-coordinate-map-example}{Coordinate map}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), and let
+    \[
+        \mathcal{B}=\{v_1,\ldots,v_n\}
+    \]
+    be a \basis of \(V\). If
+    \[
+        v=a_1v_1+\cdots+a_nv_n,
+    \]
+    define
+    \[
+        \Phi_{\mathcal{B}}\colon V\fromto\mathbb{F}^n,
+        \qquad
+        \Phi_{\mathcal{B}}(v)=(a_1,\ldots,a_n).
+    \]
+    Then \(\Phi_{\mathcal{B}}\) is a \lineartransformation.
+\end{snippetexample}
+
+\begin{snippetproof}{linear-coordinate-map-example-proof}{linear-coordinate-map-example}{Coordinate map}
+    Let
+    \[
+        v=a_1v_1+\cdots+a_nv_n,
+        \qquad
+        w=b_1v_1+\cdots+b_nv_n.
+    \]
+    Since coordinates in a \basis are unique,
+    \[
+        v+w=(a_1+b_1)v_1+\cdots+(a_n+b_n)v_n,
+    \]
+    so
+    \[
+        \Phi_{\mathcal{B}}(v+w)
+        =(a_1+b_1,\ldots,a_n+b_n)
+        =\Phi_{\mathcal{B}}(v)+\Phi_{\mathcal{B}}(w).
+    \]
+    Similarly,
+    \[
+        \Phi_{\mathcal{B}}(\lambda v)
+        =
+        (\lambda a_1,\ldots,\lambda a_n)
+        =
+        \lambda\Phi_{\mathcal{B}}(v).
+    \]
+\end{snippetproof}
+
+\begin{snippetexample}{transpose-linear-transformation-example}{Transposition}
+    Let \(\mathbb{F}\) be a \field. The \function
+    \[
+        T\colon \matrices_{m\times n}(\mathbb{F})
+        \fromto
+        \matrices_{n\times m}(\mathbb{F}),
+        \qquad
+        T(A)=A^\transpose,
+    \]
+    is a \lineartransformation, since
+    \[
+        (A+B)^\transpose=A^\transpose+B^\transpose,
+        \qquad
+        (\lambda A)^\transpose=\lambda A^\transpose.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{polynomial-linear-transformations-example}{Polynomial examples}
+    The \function
+    \[
+        M_{x^2}\colon \realnumbers[x]\fromto\realnumbers[x],
+        \qquad
+        M_{x^2}(p)=x^2p,
+    \]
+    is a \lineartransformation, because multiplication by \(x^2\) distributes
+    over addition and commutes with scalar multiplication. The derivative
+    \[
+        D\colon \realnumbers[x]\fromto\realnumbers[x],
+        \qquad
+        D(p)=p',
+    \]
+    is also a \lineartransformation.
+\end{snippetexample}
+
+\section{Projections}
 
 \begin{snippetdefinition}{linear-projection-definition}{Linear projection}
-    Let \(\mathcal{V}\) be a \vectorspace. Then,
-    a \lineartransformation \(P \colon \mathcal{V} \fromto \mathcal{V}\) is a
-    \emph{linear projection} if \(P \circ P = P\).
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\). A
+    \lineartransformation \(P\colon V\fromto V\) is a
+    \emph{linear projection} if
+    \[
+        P\circ P=P.
+    \]
 \end{snippetdefinition}
 
-\subsection{The basis}
+\section{Values on a basis}
 
-%\plain{Multiplying a vector by a matrix produces another vector. This is a linear transformation.
-%The matrix contains the information about the transformation.}
-
-\begin{snippettheorem}{linear-transformation-on-basis}{Linear transformation on basis}
-    Given a \basis for a \vectorspace
-
+\begin{snippettheorem}{linear-transformation-on-basis}{Linear extension from a basis}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\), and let
     \[
-        \mathcal{B}=\{\vec{b}_1, \vec{b}_2, \ldots, \vec{b}_n\}
+        \mathcal{B}=\{v_1,\ldots,v_n\}
     \]
-    and a linear transformation \(T\), it suffices
-    to know the value of \(T\mathcal{B}=\{T\vec{b}_1, T\vec{b}_2, \ldots, T\vec{b}_n\}\)
-    to determine \(T\) applied to any vector on the vector space.
-    Any transformation \(T\) is completely described by \(\mathcal{B}\)
-    and \(T\mathcal{B}\).
+    be a \basis of \(V\). For every collection
+    \[
+        w_1,\ldots,w_n\in W,
+    \]
+    there exists a unique \lineartransformation
+    \(f\colon V\fromto W\) such that
+    \[
+        f(v_j)=w_j
+        \qquad
+        \forall j\in\{1,\ldots,n\}.
+    \]
 \end{snippettheorem}
 
-\begin{snippetproof}{linear-transformation-on-basis-proof}{linear-transformation-on-basis}{Linear transformation on basis}
-    Given a \basis for a \vectorspace
-
+\begin{snippetproof}{linear-transformation-on-basis-proof}{linear-transformation-on-basis}{Linear extension from a basis}
+    Since \(\mathcal{B}\) is a \basis of \(V\), every \(v\in V\) has a
+    unique expression
     \[
-        \mathcal{B}=\{b_1, b_2, \ldots, b_n\}
+        v=a_1v_1+\cdots+a_nv_n.
     \]
-
-    we can expand a vector \(a\) along this basis
-
+    Define
     \[
-        a = \sum_{k=1}^{n} \alpha_k b_k
+        f(v)=a_1w_1+\cdots+a_nw_n.
     \]
+    This is well-defined because the coordinates of \(v\) in
+    \(\mathcal{B}\) are unique.
 
-    We then apply a transformation \(T\) to the vector \(a\) and use the properties of
-    linear transformations
-    
+    If
     \[
-        Ta
-        = T\sum_{k=1}^{n} \alpha_k b_k
-        = \sum_{k=1}^{n} \alpha_k Tb_k
+        u=a_1v_1+\cdots+a_nv_n,
+        \qquad
+        v=b_1v_1+\cdots+b_nv_n,
     \]
+    then
+    \[
+        u+v=(a_1+b_1)v_1+\cdots+(a_n+b_n)v_n,
+    \]
+    so
+    \[
+        f(u+v)
+        =
+        (a_1+b_1)w_1+\cdots+(a_n+b_n)w_n
+        =
+        f(u)+f(v).
+    \]
+    Also,
+    \[
+        f(\lambda u)
+        =
+        \lambda a_1w_1+\cdots+\lambda a_nw_n
+        =
+        \lambda f(u).
+    \]
+    Thus \(f\) is linear.
+
+    If \(g\colon V\fromto W\) is another \lineartransformation with
+    \(g(v_j)=w_j\) for every \(j\), then for
+    \(v=a_1v_1+\cdots+a_nv_n\),
+    \[
+        g(v)=a_1g(v_1)+\cdots+a_ng(v_n)
+        =
+        a_1w_1+\cdots+a_nw_n=f(v).
+    \]
+    Hence \(g=f\), proving uniqueness.
 \end{snippetproof}
 
 \begin{snippet}{matrix-values-expl}
-    Each column of a matrix is indeed the result of applying its transformation
-    to the corresponding vector in the basis.
-    Intuitively, this is given by the fact that we only need to know where the vectors of the basis
-    end up after the transformation in order to represent the whole information.
+    Let \(A\in\matrices_{m\times n}(\mathbb{F})\), and let
+    \(L_A\colon\mathbb{F}^n\fromto\mathbb{F}^m\) be \(L_A(x)=Ax\). If
+    \(e_1,\ldots,e_n\) are the canonical \basis vectors of
+    \(\mathbb{F}^n\), then
+    \[
+        L_A(e_j)=Ae_j=A^j,
+    \]
+    where \(A^j\) is the \(j\)-th column of \(A\). Thus the columns of a
+    \matrix are the values of its associated \lineartransformation on the
+    canonical \basis.
 \end{snippet}
 
-\begin{snippetproposition}{kernel-of-linear-transformation-is-subspace}{}
-    Let \(f \in \setoflineartransformations(V, W)\). Then, \(\grpker f\) is a linear subspace of \(V\).
+\section{The vector space of linear transformations}
+
+\begin{snippetdefinition}{linear-transformations-addition-scalar-multiplication-definition}{Operations on linear transformations}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\), and let
+    \(f,g\in\setoflineartransformations(V,W)\). The sum \(f+g\) and the
+    scalar multiple \(\lambda f\), with \(\lambda\in\mathbb{F}\), are defined
+    pointwise by
+    \[
+        (f+g)(v)=f(v)+g(v),
+        \qquad
+        (\lambda f)(v)=\lambda f(v)
+    \]
+    for every \(v\in V\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{linear-transformations-closed-under-linear-combinations}{Linear combinations of linear transformations}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\). If
+    \(f,g\in\setoflineartransformations(V,W)\) and
+    \(\lambda\in\mathbb{F}\), then
+    \[
+        f+g\in\setoflineartransformations(V,W),
+        \qquad
+        \lambda f\in\setoflineartransformations(V,W).
+    \]
 \end{snippetproposition}
 
-\begin{snippetproof}{kernel-of-linear-transformation-is-subspace-proof}{kernel-of-linear-transformation-is-subspace}{}
-    \begin{enumerate}
-        \item \(f(0_V) = 0_W \in \grpker f\) since \(f(0_V) = f(0_V + 0_V) = f(0_V) +f(0_V)\);
-        \item let \(u,v \in \grpker f\). Then,
-        \[
-            f(u+v) = f(u) + f(v) = 0_W + 0_W = 0_W \in \grpker f
-        \]
-        \item let \(u \in \grpker f\) and \(\lambda \in \mathbb{F}\). Then,
-        \[
-            f(\lambda u) = \lambda f(u) = \lambda 0_W = 0_W \in \grpker f
-        \]
-    \end{enumerate}
+\begin{snippetproof}{linear-transformations-closed-under-linear-combinations-proof}{linear-transformations-closed-under-linear-combinations}{Linear combinations of linear transformations}
+    For every \(u,v\in V\),
+    \begin{align*}
+        (f+g)(u+v)
+        &=f(u+v)+g(u+v)\\
+        &=f(u)+f(v)+g(u)+g(v)\\
+        &=(f+g)(u)+(f+g)(v).
+    \end{align*}
+    For every \(\mu\in\mathbb{F}\) and every \(v\in V\),
+    \[
+        (f+g)(\mu v)
+        =
+        f(\mu v)+g(\mu v)
+        =
+        \mu f(v)+\mu g(v)
+        =
+        \mu(f+g)(v).
+    \]
+    Hence \(f+g\) is linear. Similarly,
+    \[
+        (\lambda f)(u+v)=\lambda f(u+v)=\lambda f(u)+\lambda f(v)
+    \]
+    and
+    \[
+        (\lambda f)(\mu v)=\lambda f(\mu v)=\lambda\mu f(v)
+        =\mu(\lambda f)(v),
+    \]
+    so \(\lambda f\) is linear.
 \end{snippetproof}
 
-\begin{snippetproposition}{linear-endomorphisms-are-ring}{}
-    The structure \((\setoflineartransformations(V, V), \circ, +)\) is a \ring.
+\begin{snippetproposition}{linear-transformations-vector-space}{The vector space of linear transformations}
+    Let \(V\) and \(W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\). With pointwise addition and scalar multiplication,
+    \[
+        \setoflineartransformations(V,W)
+    \]
+    is a \vectorspace over \(\mathbb{F}\).
 \end{snippetproposition}
+
+\begin{snippetproof}{linear-transformations-vector-space-proof}{linear-transformations-vector-space}{The vector space of linear transformations}
+    Closure under addition and scalar multiplication follows from the previous
+    proposition. The zero \vector is the zero \lineartransformation
+    \(0\colon V\fromto W\). The additive inverse of
+    \(f\in\setoflineartransformations(V,W)\) is \((-1)f\). Associativity,
+    commutativity of addition, and the distributive laws follow pointwise from
+    the corresponding \vectorspace identities in \(W\).
+\end{snippetproof}
+
+\section{Composition}
+
+\begin{snippetdefinition}{linear-transformations-composition-definition}{Composition of linear transformations}
+    Let \(U,V,W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\). If
+    \[
+        f\in\setoflineartransformations(U,V),
+        \qquad
+        g\in\setoflineartransformations(V,W),
+    \]
+    their composition is the \function
+    \[
+        g\circ f\colon U\fromto W,
+        \qquad
+        (g\circ f)(u)=g(f(u)).
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{linear-transformations-composition-linear}{Composition is linear}
+    Let \(U,V,W\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\). If
+    \[
+        f\in\setoflineartransformations(U,V),
+        \qquad
+        g\in\setoflineartransformations(V,W),
+    \]
+    then
+    \[
+        g\circ f\in\setoflineartransformations(U,W).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{linear-transformations-composition-linear-proof}{linear-transformations-composition-linear}{Composition is linear}
+    For every \(u_1,u_2\in U\),
+    \begin{align*}
+        (g\circ f)(u_1+u_2)
+        &=g(f(u_1+u_2))\\
+        &=g(f(u_1)+f(u_2))\\
+        &=g(f(u_1))+g(f(u_2))\\
+        &=(g\circ f)(u_1)+(g\circ f)(u_2).
+    \end{align*}
+    For every \(\lambda\in\mathbb{F}\) and every \(u\in U\),
+    \[
+        (g\circ f)(\lambda u)
+        =
+        g(f(\lambda u))
+        =
+        g(\lambda f(u))
+        =
+        \lambda g(f(u))
+        =
+        \lambda(g\circ f)(u).
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{linear-transformations-composition-properties}{Composition properties}
+    Let \(U,V,W,Z\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\). Whenever the expressions are defined,
+    \[
+        h\circ(g\circ f)=(h\circ g)\circ f,
+    \]
+    \[
+        f\circ\identityfunc_U=f,
+        \qquad
+        \identityfunc_V\circ f=f,
+    \]
+    and
+    \[
+        g\circ(f_1+f_2)=g\circ f_1+g\circ f_2,
+        \qquad
+        (g_1+g_2)\circ f=g_1\circ f+g_2\circ f.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{linear-transformations-composition-properties-proof}{linear-transformations-composition-properties}{Composition properties}
+    Associativity and the identity laws are the usual properties of
+    composition of \function[functions]. For distributivity, for every
+    \(u\in U\),
+    \begin{align*}
+        \bigl(g\circ(f_1+f_2)\bigr)(u)
+        &=g(f_1(u)+f_2(u))\\
+        &=g(f_1(u))+g(f_2(u))\\
+        &=(g\circ f_1)(u)+(g\circ f_2)(u).
+    \end{align*}
+    Hence \(g\circ(f_1+f_2)=g\circ f_1+g\circ f_2\). The other
+    distributive law is pointwise:
+    \[
+        \bigl((g_1+g_2)\circ f\bigr)(u)
+        =
+        g_1(f(u))+g_2(f(u)).
+    \]
+\end{snippetproof}
+
+\section{Endomorphisms}
+
+\begin{snippetdefinition}{linear-endomorphism-definition}{Linear endomorphism}
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\). A
+    \emph{linear endomorphism} of \(V\) is a \lineartransformation
+    \(f\colon V\fromto V\). The \set of all
+    \linearendomorphism[endomorphisms] of \(V\) is denoted by
+    \[
+        \operatorname{End}(V)=\setoflineartransformations(V,V).
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{linear-endomorphisms-are-ring}{Endomorphisms form a ring}
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\). With pointwise
+    addition and composition,
+    \[
+        (\operatorname{End}(V),+,\circ)
+    \]
+    is a \ring.
+\end{snippetproposition}
+
+\begin{snippetproof}{linear-endomorphisms-are-ring-proof}{linear-endomorphisms-are-ring}{Endomorphisms form a ring}
+    By the \vectorspace structure of
+    \(\setoflineartransformations(V,V)\), the pair
+    \((\operatorname{End}(V),+)\) is an abelian group. Composition of
+    \function[functions] is associative, and the identity element for
+    composition is \(\identityfunc_V\). Since composition of
+    \lineartransformation[linear transformations] is linear,
+    composition is an internal operation on \(\operatorname{End}(V)\). The two
+    distributive laws follow from the composition properties. Therefore
+    \((\operatorname{End}(V),+,\circ)\) is a \ring.
+\end{snippetproof}
+
+\begin{snippetproposition}{linear-endomorphisms-are-algebra}{Endomorphisms form an algebra}
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\). With pointwise
+    addition, pointwise scalar multiplication, and composition,
+    \[
+        \operatorname{End}(V)
+    \]
+    is an \(\mathbb{F}\)-\algebra.
+\end{snippetproposition}
+
+\begin{snippetproof}{linear-endomorphisms-are-algebra-proof}{linear-endomorphisms-are-algebra}{Endomorphisms form an algebra}
+    The \set \(\operatorname{End}(V)\) is a \ring with addition and
+    composition, and it is a \vectorspace over \(\mathbb{F}\) with pointwise
+    operations. If \(\lambda\in\mathbb{F}\) and
+    \(f,g\in\operatorname{End}(V)\), then for every \(v\in V\),
+    \[
+        ((\lambda f)\circ g)(v)=\lambda f(g(v))
+        =
+        \bigl(\lambda(f\circ g)\bigr)(v),
+    \]
+    and, using the linearity of \(f\),
+    \[
+        (f\circ(\lambda g))(v)=f(\lambda g(v))
+        =
+        \lambda f(g(v))
+        =
+        \bigl(\lambda(f\circ g)\bigr)(v).
+    \]
+    This is the compatibility required in an \(\mathbb{F}\)-\algebra.
+\end{snippetproof}
+
+\begin{snippetexample}{linear-endomorphisms-noncommutative-example}{Composition is not commutative}
+    Let \(V=\realnumbers[x]\), and define
+    \[
+        M_{x^2}\colon V\fromto V,
+        \qquad
+        M_{x^2}(p)=x^2p,
+    \]
+    and
+    \[
+        D\colon V\fromto V,
+        \qquad
+        D(p)=p'.
+    \]
+    Both are \linearendomorphism[endomorphisms] of \(V\). However,
+    \[
+        (M_{x^2}\circ D)(p)=x^2p',
+    \]
+    while
+    \[
+        (D\circ M_{x^2})(p)=(x^2p)'=2xp+x^2p'.
+    \]
+    Hence \(M_{x^2}\circ D\neq D\circ M_{x^2}\), so
+    \(\operatorname{End}(V)\) is not necessarily a commutative \ring.
+\end{snippetexample}
 
 \end{document}

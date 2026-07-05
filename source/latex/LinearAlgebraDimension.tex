@@ -1,0 +1,334 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{linearalgebra-dimension}
+\genpage
+
+\section{Dimension}
+
+\begin{snippetproposition}{basis-have-same-cardinality}{Basis cardinality}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\). Any two \basis[bases] of \(V\) have the same cardinality.
+\end{snippetproposition}
+
+\begin{snippetproof}{basis-have-same-cardinality-proof}{basis-have-same-cardinality}{Basis cardinality}
+    Let
+    \[
+        B=\{v_1,\ldots,v_n\},
+        \qquad
+        C=\{w_1,\ldots,w_m\}
+    \]
+    be two \basis[bases] of \(V\). Since \(B\) is \linearlyindependent and \(C\)
+    generates \(V\), the comparison theorem between independent collections
+    and generating collections gives \(n\leq m\). Since \(C\) is
+    \linearlyindependent and \(B\) generates \(V\), the same theorem gives
+    \(m\leq n\). Hence \(m=n\).
+\end{snippetproof}
+
+\begin{snippetdefinition}{vector-space-dimension-definition}{Vector space dimension}
+    Let \(V\) be a finite-dimensional \vectorspace. The \emph{dimension} of
+    \(V\), denoted
+    \[
+        \lineardim(V),
+    \]
+    is the cardinality of any \basis of \(V\).
+\end{snippetdefinition}
+
+\begin{snippetexample}{fundamental-dimensions-example}{Fundamental dimensions}
+    Let \(\mathbb{F}\) be a \field. Then
+    \[
+        \lineardim(\mathbb{F}^n)=n,
+    \]
+    because the canonical \basis has \(n\) elements. Also,
+    \[
+        \lineardim(\{0\})=0,
+    \]
+    because the zero \vectorspace has the empty \basis. For bounded-degree
+    \polynomial[polynomials],
+    \[
+        \lineardim\mathcal{P}_m(\mathbb{F})=m+1,
+    \]
+    because \(\{1,x,\ldots,x^m\}\) is a \basis. Finally,
+    \[
+        \lineardim\matrices_{m\times n}(\mathbb{F})=mn,
+    \]
+    because the elementary \matrix[matrices] \(E_{ij}\) form a \basis.
+\end{snippetexample}
+
+\begin{snippetnote}{dimension-depends-on-scalar-field}{Dimension depends on the scalar field}
+    If the scalar \field is not clear from context, it should be shown in the
+    notation. For example,
+    \[
+        \lineardim_{\complexnumbers}\complexnumbers=1,
+        \qquad
+        \lineardim_{\realnumbers}\complexnumbers=2.
+    \]
+    As a complex \vectorspace, \(\complexnumbers\) has \basis \(\{1\}\). As a
+    real \vectorspace, it has \basis \(\{1,\mathrm{i}\}\).
+\end{snippetnote}
+
+\section{Subspaces}
+
+\begin{snippetproposition}{linear-subspace-has-lower-dimension}{Dimension of a subspace}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), and let \(U\subseteq V\) be a linear subspace. Then
+    \[
+        \lineardim(U)\leq\lineardim(V).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{linear-subspace-has-lower-dimension-proof}{linear-subspace-has-lower-dimension}{Dimension of a subspace}
+    A \basis of \(U\) is \linearlyindependent as a collection of \vector[vectors] of
+    \(V\). A \basis of \(V\) generates \(V\). By the comparison theorem
+    between independent collections and generating collections, a \basis of
+    \(U\) has at most as many elements as a \basis of \(V\).
+\end{snippetproof}
+
+\begin{snippetproposition}{same-dimension-subspace-equality}{Subspaces with full dimension}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), and let \(U\subseteq V\) be a linear subspace. Then
+    \[
+        \lineardim(U)=\lineardim(V)
+        \qquad
+        \Longleftrightarrow
+        \qquad
+        U=V.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{same-dimension-subspace-equality-proof}{same-dimension-subspace-equality}{Subspaces with full dimension}
+    \begin{iffproof}
+        \item Suppose that \(\lineardim(U)=\lineardim(V)=n\). Let
+        \(\{u_1,\ldots,u_n\}\) be a \basis of \(U\). Since \(U\subseteq V\),
+        this collection is \linearlyindependent in \(V\). By the \basis
+        extension theorem, it can be extended to a \basis of \(V\). However,
+        it already has \(n\) elements, so no \vector can be added. Therefore
+        it is a \basis of \(V\), and
+        \[
+            V=\linearspan(u_1,\ldots,u_n)=U.
+        \]
+
+        \item If \(U=V\), then clearly \(\lineardim(U)=\lineardim(V)\).
+    \end{iffproof}
+\end{snippetproof}
+
+\section{Dimensional criteria}
+
+\begin{snippetproposition}{linearly-independent-set-of-dim-is-basis}{Independent collection of full size}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), with \(\lineardim(V)=n\). If
+    \[
+        \{v_1,\ldots,v_n\}
+    \]
+    is \linearlyindependent, then it is a \basis of \(V\).
+\end{snippetproposition}
+
+\begin{snippetproof}{linearly-independent-set-of-dim-is-basis-proof}{linearly-independent-set-of-dim-is-basis}{Independent collection of full size}
+    A \linearlyindependent collection can be extended to a \basis of \(V\).
+    Every \basis of \(V\) has exactly \(n\) elements, and the given collection
+    already has \(n\) elements. Hence no additional \vector can be added, so
+    the given collection is already a \basis.
+\end{snippetproof}
+
+\begin{snippetproposition}{generating-set-of-dim-is-basis}{Generating collection of full size}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), with \(\lineardim(V)=n\). If
+    \[
+        \{v_1,\ldots,v_n\}
+    \]
+    generates \(V\), then it is a \basis of \(V\).
+\end{snippetproposition}
+
+\begin{snippetproof}{generating-set-of-dim-is-basis-proof}{generating-set-of-dim-is-basis}{Generating collection of full size}
+    A finite generating collection can be reduced to a \basis by removing
+    redundant \vector[vectors]. Every \basis of \(V\) has exactly \(n\) elements, and
+    the given generating collection already has \(n\) elements. Therefore no
+    \vector can be removed, and the collection is already a \basis.
+\end{snippetproof}
+
+\section{Grassmann formula}
+
+\begin{snippet}{grassmann-formula-sets-analogy}
+    For finite \set[sets],
+    \[
+        |A\union B|
+        =
+        |A|+|B|-|A\intersection B|.
+    \]
+    Grassmann's formula is the \vectorspace analogue: \lineardimtext[dimensions] replace
+    cardinalities, and sums of subspaces replace unions.
+\end{snippet}
+
+\begin{snippettheorem}{grassman-formula-theorem}{Grassmann formula}
+    Let \(V\) be a finite-dimensional \vectorspace over a \field
+    \(\mathbb{F}\), and let \(U,W\) be linear subspaces of \(V\). Then
+    \[
+        \lineardim(U+W)
+        =
+        \lineardim(U)+\lineardim(W)-\lineardim(U\intersection W).
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{grassman-formula-theorem-proof}{grassman-formula-theorem}{Grassmann formula}
+    Since \(V\) is finite-dimensional, the subspaces \(U\), \(W\),
+    \(U\intersection W\), and \(U+W\) are finite-dimensional. Let
+    \[
+        \{v_1,\ldots,v_h\}
+    \]
+    be a \basis of \(U\intersection W\). Extend it to a \basis of \(U\):
+    \[
+        \{v_1,\ldots,v_h,u_1,\ldots,u_j\},
+    \]
+    and extend it to a \basis of \(W\):
+    \[
+        \{v_1,\ldots,v_h,w_1,\ldots,w_k\}.
+    \]
+    We show that
+    \[
+        \mathcal{B}
+        =
+        \{v_1,\ldots,v_h,u_1,\ldots,u_j,w_1,\ldots,w_k\}
+    \]
+    is a \basis of \(U+W\).
+
+    First, \(\mathcal{B}\) generates \(U+W\). If \(x\in U+W\), then
+    \(x=u+w\) for some \(u\in U\) and \(w\in W\). Expressing \(u\) in the
+    extended \basis of \(U\) and \(w\) in the extended \basis of \(W\), the sum
+    \(u+w\) is a \linearcombination of \vector[vectors] in \(\mathcal{B}\).
+
+    Now suppose that
+    \[
+        a_1v_1+\cdots+a_hv_h
+        +b_1u_1+\cdots+b_ju_j
+        +c_1w_1+\cdots+c_kw_k
+        =
+        0.
+    \]
+    Then
+    \[
+        c_1w_1+\cdots+c_kw_k
+        =
+        -(a_1v_1+\cdots+a_hv_h+b_1u_1+\cdots+b_ju_j).
+    \]
+    The left-hand side belongs to \(W\), and the right-hand side belongs to
+    \(U\), so this \vector belongs to \(U\intersection W\). Since
+    \(\{v_1,\ldots,v_h\}\) is a \basis of \(U\intersection W\), there are
+    \vsscalar[scalars] \(d_1,\ldots,d_h\) such that
+    \[
+        c_1w_1+\cdots+c_kw_k=d_1v_1+\cdots+d_hv_h.
+    \]
+    Hence
+    \[
+        d_1v_1+\cdots+d_hv_h-c_1w_1-\cdots-c_kw_k=0.
+    \]
+    Since \(\{v_1,\ldots,v_h,w_1,\ldots,w_k\}\) is a \basis of \(W\), all
+    these coefficients are zero. Thus \(c_1=\cdots=c_k=0\). The original
+    relation becomes
+    \[
+        a_1v_1+\cdots+a_hv_h+b_1u_1+\cdots+b_ju_j=0.
+    \]
+    Since \(\{v_1,\ldots,v_h,u_1,\ldots,u_j\}\) is a \basis of \(U\), all
+    remaining coefficients are zero. Therefore \(\mathcal{B}\) is
+    \linearlyindependent.
+
+    Hence \(\mathcal{B}\) is a \basis of \(U+W\), so
+    \[
+        \lineardim(U+W)=h+j+k.
+    \]
+    Since
+    \[
+        \lineardim(U)=h+j,
+        \qquad
+        \lineardim(W)=h+k,
+        \qquad
+        \lineardim(U\intersection W)=h,
+    \]
+    the formula follows.
+\end{snippetproof}
+
+\section{Examples}
+
+\begin{snippetexample}{grassmann-two-planes-r3-example}{Two planes in \(\mathbb{R}^3\)}
+    Let
+    \[
+        \Pi_1=\{(x,y,z)\in\realnumbers^3\suchthat x+y+z=0\},
+    \]
+    and
+    \[
+        \Pi_2=\{(x,y,z)\in\realnumbers^3\suchthat x-y+2z=0\}.
+    \]
+    Both are linear subspaces of \(\realnumbers^3\). We have
+    \[
+        \Pi_1=\linearspan((1,0,-1),(0,1,-1)),
+        \qquad
+        \lineardim(\Pi_1)=2,
+    \]
+    and
+    \[
+        \Pi_2=\linearspan((1,1,0),(0,2,1)),
+        \qquad
+        \lineardim(\Pi_2)=2.
+    \]
+    The intersection is determined by
+    \[
+        \begin{cases}
+            x+y+z=0,\\
+            x-y+2z=0.
+        \end{cases}
+    \]
+    Solving gives
+    \[
+        (x,y,z)=y(-3,1,2),
+    \]
+    so
+    \[
+        \Pi_1\intersection\Pi_2=\linearspan((-3,1,2)),
+        \qquad
+        \lineardim(\Pi_1\intersection\Pi_2)=1.
+    \]
+    Therefore, by Grassmann's formula,
+    \[
+        \lineardim(\Pi_1+\Pi_2)=2+2-1=3.
+    \]
+    Since \(\Pi_1+\Pi_2\subseteq\realnumbers^3\) and both have \lineardimtext
+    \(3\), it follows that
+    \[
+        \Pi_1+\Pi_2=\realnumbers^3.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{grassmann-two-five-dimensional-subspaces-r9-example}{Two five-dimensional subspaces of \(\mathbb{R}^9\)}
+    Let \(U,W\subseteq\realnumbers^9\) be linear subspaces such that
+    \[
+        \lineardim(U)=5,
+        \qquad
+        \lineardim(W)=5.
+    \]
+    Since \(U+W\subseteq\realnumbers^9\),
+    \[
+        \lineardim(U+W)\leq 9.
+    \]
+    Grassmann's formula gives
+    \[
+        \lineardim(U\intersection W)
+        =
+        \lineardim(U)+\lineardim(W)-\lineardim(U+W)
+        \geq
+        5+5-9
+        =
+        1.
+    \]
+    Thus \(U\intersection W\neq\{0\}\). In particular, two
+    five-dimensional subspaces of \(\realnumbers^9\) always intersect in at
+    least a vector line.
+\end{snippetexample}
+
+\end{document}

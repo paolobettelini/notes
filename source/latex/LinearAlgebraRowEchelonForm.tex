@@ -19,13 +19,13 @@
 \id{row-echelon-form}
 \genpage
 
-\section{Row Echelon Forms}
+\section{Row echelon forms}
 
 \begin{snippetdefinition}{row-echelon-form-definition}{Row echelon form}
     A \snippetref[matrix-definition][matrix] is said to be in \textit{row echelon form}
-    if it fulfils the following properties:
+    if it satisfies the following properties:
     \begin{enumerate}
-        \item all rows having only zero entries are at the bottom.;
+        \item all rows having only zero entries are at the bottom;
         \item the leading entry (that is, the left-most nonzero entry) of every nonzero row,
         called the pivot, is on the right of the leading entry of every row above.
     \end{enumerate}
@@ -37,42 +37,71 @@
 
 \begin{snippetdefinition}{reduced-row-echelon-form-definition}{Reduced row echelon form}
     A \snippetref[matrix-definition][matrix] is said to be in \textit{reduced row echelon form}
-    if it is in \snippetref[row-echelon-form-definition][row echelon form] and
-    each every \matrixpivot is \(1\).
+    if it is in \snippetref[row-echelon-form-definition][row echelon form],
+    every \matrixpivot is \(1\), and each pivot is the only nonzero entry in
+    its column.
 \end{snippetdefinition}
 
 \begin{snippetproposition}{reduced-row-echelon-form-uniqueness}{Uniqueness of reduced row echelon form}
     \snippetref[reduced-row-echelon-form-definition][Reduced row echelon form] is unique.
 \end{snippetproposition}
 
-\section{Gauss-Jordan Algorithm}
+\section{Gauss-Jordan algorithm}
 
 \begin{snippettheorem}{gauss-jordan-algorithm-theorem}{Gauss-Jordan algorithm}
-    Let \(A \in \matrices_n(\realnumbers)\). Then, \(A\)
-    is invertible \ifandonlyif there exist a finite sequence of elementary row operations
-    which transforms \([A|I_n]\) into \([I_n|A^{-1}]\).
+    Let \(\mathbb{F}\) be a \field and let \(A\in\matrices_n(\mathbb{F})\).
+    Then \(A\) is invertible \ifandonlyif there exists a finite sequence of
+    elementary row operations that transforms
+    \[
+        [A\mid I_n]
+    \]
+    into
+    \[
+        [I_n\mid A^{-1}].
+    \]
 \end{snippettheorem}
 
 \begin{snippetproof}{gauss-jordan-algorithm-theorem-proof}{gauss-jordan-algorithm-theorem}{Gauss-Jordan algorithm}
-    We start by applying elementary operations to \(A\) to make it upper triangular.
-    Let \(E = P_1P_2\cdots P_k E_1 E_2 \cdots E_k\) such that \(EA=U\). We now have
+    Suppose first that \(A\) is invertible. Gaussian elimination produces
+    pivots in every column: otherwise the homogeneous system \(Ax=0\) would
+    have a nonzero solution, contradicting invertibility. After possible row
+    swaps and row additions, there is a product \(E\) of elementary \matrix[matrices]
+    such that
     \[
-        P_1P_2\cdots P_k E_1 E_2 \cdots E_k A = U = \begin{bmatrix}
+        EA=U=
+        \begin{bmatrix}
             p_1 & *   & *   & \cdots & * \\
             0   & p_2 & *   & \cdots & * \\
             0   & 0   & p_3 & \cdots & * \\
             \vdots & \vdots & \vdots & \ddots & \vdots \\
             0   & 0   & 0   & \cdots & p_n
-        \end{bmatrix}
+        \end{bmatrix},
     \]
-    We now multiply \(U\) by a diagonal \matrix with elements \(D_{i,i} = 1/p_i\).
-    This transforms the diagonal into ones.
-    Then, we multiply again by elementary operations \(\hat{E}\) to make \(DEA\) also
-    lower triangular, which gives us the identity. We now have
-    \begin{align*}
-        \hat{E}DEA = I
-    \end{align*}
-    meaning that \(\hat{E}DE\) is the inverse of \(A\).
+    with every \(p_i\neq0\). Multiplying by the diagonal \matrix
+    \(D=\operatorname{diag}(p_1^{-1},\ldots,p_n^{-1})\) makes all pivots
+    equal to \(1\). Further elementary row operations eliminate the entries
+    above the pivots, so there is another product \(\widehat{E}\) of
+    elementary \matrix[matrices] such that
+    \[
+        \widehat{E}DEA=I_n.
+    \]
+    Thus \(\widehat{E}DE=A^{-1}\). Applying the same row operations to the
+    augmented \matrix gives
+    \[
+        [A\mid I_n]\longmapsto[I_n\mid A^{-1}].
+    \]
+
+    Conversely, suppose that elementary row operations transform
+    \([A\mid I_n]\) into \([I_n\mid B]\). If \(M\) is the product of the
+    corresponding elementary \matrix[matrices], then
+    \[
+        MA=I_n
+        \qquad\text{and}\qquad
+        MI_n=B.
+    \]
+    Hence \(B=M\) and \(BA=I_n\). Since \(M\) is a product of invertible
+    elementary \matrix[matrices], it is invertible; from \(MA=I_n\) we get
+    \(A=M^{-1}\), so \(A\) is invertible and \(B=A^{-1}\).
 \end{snippetproof}
 
 \end{document}

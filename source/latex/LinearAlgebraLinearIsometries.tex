@@ -1,0 +1,477 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{linearalgebra-linear-isometries}
+\genpage
+
+\section{Linear isometries}
+
+\begin{snippetdefinition}{linear-isometry-definition}{Linear isometry}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be an \innerproductspace over a
+    \field \(\mathbb{F}\in\{\realnumbers,\complexnumbers\}\). An
+    endomorphism \(f\in\setoflineartransformations(V,V)\) is a
+    \emph{linear isometry} if
+    \[
+        \langle f(v),f(w)\rangle=\langle v,w\rangle
+    \]
+    for every \(v,w\in V\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{linear-isometry-preserves-norms}{Linear isometries preserve norms}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be an \innerproductspace over a
+    \field \(\mathbb{F}\in\{\realnumbers,\complexnumbers\}\). If
+    \(f\in\setoflineartransformations(V,V)\) is a \linearisometry, then
+    \[
+        \|f(v)\|=\|v\|
+    \]
+    for every \(v\in V\).
+\end{snippetproposition}
+
+\begin{snippetproof}{linear-isometry-preserves-norms-proof}{linear-isometry-preserves-norms}{Linear isometries preserve norms}
+    For every \(v\in V\),
+    \[
+        \|f(v)\|^2
+        =
+        \langle f(v),f(v)\rangle
+        =
+        \langle v,v\rangle
+        =
+        \|v\|^2.
+    \]
+    Since \norm[norms] are non-negative, \(\|f(v)\|=\|v\|\).
+\end{snippetproof}
+
+\begin{snippetexample}{complex-line-linear-isometries}{Linear isometries of the complex line}
+    Consider \(\complexnumbers\) as a complex \innerproductspace with the
+    canonical \innerproduct. If
+    \(f\in\setoflineartransformations(\complexnumbers,\complexnumbers)\),
+    then there exists \(\lambda\in\complexnumbers\) such that
+    \[
+        f(z)=\lambda z
+    \]
+    for every \(z\in\complexnumbers\). The map \(f\) is a
+    \linearisometry if and only if
+    \[
+        |\lambda|=1.
+    \]
+    Indeed,
+    \[
+        \|f(z)\|=|\lambda z|=|\lambda|\,|z|.
+    \]
+    Hence \(f\) preserves \norm[norms] for every \(z\in\complexnumbers\) if and
+    only if \(|\lambda|=1\). In this case
+    \[
+        \lambda=\cos\theta+\mathrm{i}\sin\theta=e^{\mathrm{i}\theta}
+    \]
+    for some \(\theta\in\realnumbers\).
+\end{snippetexample}
+
+\begin{snippetexample}{plane-rotation-linear-isometry-example}{Plane rotations are linear isometries}
+    For every \(\theta\in\realnumbers\), let
+    \[
+        R_\theta=
+        \begin{pmatrix}
+            \cos\theta & -\sin\theta\\
+            \sin\theta & \cos\theta
+        \end{pmatrix}.
+    \]
+    The associated map
+    \[
+        L_{R_\theta}\colon\realnumbers^2\fromto\realnumbers^2,
+        \qquad
+        L_{R_\theta}(x)=R_\theta x
+    \]
+    is a \linearisometry for the canonical \innerproduct on
+    \(\realnumbers^2\). Indeed, the columns of \(R_\theta\) are
+    \orthonormal and
+    \[
+        R_\theta^\transpose R_\theta=\identmatrix{2}.
+    \]
+    Geometrically, \(L_{R_\theta}\) is the counterclockwise rotation of
+    angle \(\theta\).
+\end{snippetexample}
+
+\section{Characterizations}
+
+\begin{snippettheorem}{linear-isometry-characterization}{Characterization of linear isometries}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be a finite-dimensional
+    \innerproductspace over a
+    \field \(\mathbb{F}\in\{\realnumbers,\complexnumbers\}\), and let
+    \(f\in\setoflineartransformations(V,V)\). The following are
+    equivalent:
+    \begin{enumerate}
+        \item \(f\) is a \linearisometry;
+        \item \(\|f(v)\|=\|v\|\) for every \(v\in V\);
+        \item for every \orthonormalbasis
+            \(\mathcal{B}=\{e_1,\ldots,e_n\}\) of \(V\), the collection
+            \(\{f(e_1),\ldots,f(e_n)\}\) is an \orthonormalbasis of \(V\);
+        \item there exists an \orthonormalbasis
+            \(\mathcal{B}=\{e_1,\ldots,e_n\}\) of \(V\) such that
+            \(\{f(e_1),\ldots,f(e_n)\}\) is an \orthonormalbasis of \(V\);
+        \item \(f^\ast\circ f=\identityfunc_V\);
+        \item \(f\circ f^\ast=\identityfunc_V\);
+        \item \(f^\ast\) is a \linearisometry;
+        \item \(f\) is invertible and \(f^{-1}=f^\ast\).
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{linear-isometry-characterization-proof}{linear-isometry-characterization}{Characterization of linear isometries}
+    The implication \((1)\Rightarrow(2)\) follows from
+    \[
+        \|f(v)\|^2
+        =
+        \langle f(v),f(v)\rangle
+        =
+        \langle v,v\rangle
+        =
+        \|v\|^2.
+    \]
+
+    We prove \((2)\Rightarrow(1)\). If \(\mathbb{F}=\realnumbers\), the
+    polarization identity gives
+    \[
+        \langle x,y\rangle
+        =
+        \frac{\|x+y\|^2-\|x-y\|^2}{4}.
+    \]
+    Since \(f\) is linear and preserves \norm[norms],
+    \[
+        \langle f(v),f(w)\rangle
+        =
+        \frac{\|f(v+w)\|^2-\|f(v-w)\|^2}{4}
+        =
+        \langle v,w\rangle.
+    \]
+    If \(\mathbb{F}=\complexnumbers\), the complex polarization identity is
+    \[
+        \langle x,y\rangle
+        =
+        \frac{\|x+y\|^2-\|x-y\|^2}{4}
+        +
+        \frac{\mathrm{i}\bigl(\|x+\mathrm{i}y\|^2-\|x-\mathrm{i}y\|^2\bigr)}{4}.
+    \]
+    Applying it to \(f(v)\) and \(f(w)\) gives again
+    \(\langle f(v),f(w)\rangle=\langle v,w\rangle\).
+
+    We prove \((1)\Rightarrow(3)\). Let
+    \[
+        \mathcal{B}=\{e_1,\ldots,e_n\}
+    \]
+    be an \orthonormalbasis of \(V\). Then
+    \[
+        \langle f(e_i),f(e_j)\rangle
+        =
+        \langle e_i,e_j\rangle
+        =
+        \delta_{ij}.
+    \]
+    Thus \(\{f(e_1),\ldots,f(e_n)\}\) is an \orthonormal collection of
+    \(n=\lineardim V\) vectors, and therefore an \orthonormalbasis of
+    \(V\).
+
+    The implication \((3)\Rightarrow(4)\) is immediate.
+
+    We prove \((4)\Rightarrow(5)\). Let
+    \[
+        \mathcal{B}=\{e_1,\ldots,e_n\}
+    \]
+    be an \orthonormalbasis such that
+    \(\{f(e_1),\ldots,f(e_n)\}\) is an \orthonormalbasis. For every
+    \(i,j\),
+    \[
+        \langle (f^\ast\circ f)(e_i),e_j\rangle
+        =
+        \langle f(e_i),f(e_j)\rangle
+        =
+        \delta_{ij}
+        =
+        \langle e_i,e_j\rangle.
+    \]
+    Since this holds for every \(j\), \((f^\ast\circ f)(e_i)=e_i\) for
+    every \(i\), and hence \(f^\ast\circ f=\identityfunc_V\).
+
+    We prove \((5)\Rightarrow(6)\). If
+    \(f^\ast\circ f=\identityfunc_V\), then \(f\) is injective. Since
+    \(V\) is finite-dimensional and \(f\) is an endomorphism, \(f\) is
+    invertible. The equality \(f^\ast\circ f=\identityfunc_V\) gives
+    \(f^\ast=f^{-1}\), and therefore
+    \[
+        f\circ f^\ast=\identityfunc_V.
+    \]
+
+    We prove \((6)\Rightarrow(7)\). For every \(v,w\in V\),
+    \[
+        \langle f^\ast(v),f^\ast(w)\rangle
+        =
+        \langle v,(f\circ f^\ast)(w)\rangle
+        =
+        \langle v,w\rangle.
+    \]
+    Hence \(f^\ast\) is a \linearisometry.
+
+    We prove \((7)\Rightarrow(8)\). Since \(f^\ast\) is a
+    \linearisometry, the implication \((1)\Rightarrow(5)\) applied to
+    \(f^\ast\) gives
+    \[
+        (f^\ast)^\ast\circ f^\ast=\identityfunc_V.
+    \]
+    Therefore \(f\circ f^\ast=\identityfunc_V\). In finite dimension this
+    implies that \(f\) is invertible and \(f^{-1}=f^\ast\).
+
+    Finally, \((8)\Rightarrow(1)\). If \(f^{-1}=f^\ast\), then
+    \(f^\ast\circ f=\identityfunc_V\). For every \(v,w\in V\),
+    \[
+        \langle f(v),f(w)\rangle
+        =
+        \langle v,(f^\ast\circ f)(w)\rangle
+        =
+        \langle v,w\rangle.
+    \]
+    Thus \(f\) is a \linearisometry.
+\end{snippetproof}
+
+\begin{snippetcorollary}{linear-isometries-are-normal}{Linear isometries are normal}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be a finite-dimensional
+    \innerproductspace over a
+    \field \(\mathbb{F}\in\{\realnumbers,\complexnumbers\}\). If
+    \(f\in\setoflineartransformations(V,V)\) is a \linearisometry, then
+    \(f\) is \normalendomorphism[normal].
+\end{snippetcorollary}
+
+\begin{snippetproof}{linear-isometries-are-normal-proof}{linear-isometries-are-normal}{Linear isometries are normal}
+    By the characterization of \linearisometry[linear isometries],
+    \(f^{-1}=f^\ast\). Hence
+    \[
+        f^\ast\circ f=f\circ f^\ast=\identityfunc_V.
+    \]
+    In particular \(f\circ f^\ast=f^\ast\circ f\), so \(f\) is
+    \normalendomorphism[normal].
+\end{snippetproof}
+
+\section{Spectral characterization}
+
+\begin{snippettheorem}{complex-linear-isometry-spectral-characterization}{Spectral characterization of complex linear isometries}
+    Let \((V,\langle\cdot,\cdot\rangle)\) be a finite-dimensional complex
+    \innerproductspace, and let
+    \(f\in\setoflineartransformations(V,V)\). The following are
+    equivalent:
+    \begin{enumerate}
+        \item \(f\) is a \linearisometry;
+        \item there exists an \orthonormalbasis of \(V\) made of
+            eigenvectors of \(f\), and every corresponding eigenvalue has
+            modulus \(1\).
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{complex-linear-isometry-spectral-characterization-proof}{complex-linear-isometry-spectral-characterization}{Spectral characterization of complex linear isometries}
+    \begin{iffproof}
+        \item Suppose that \(f\) is a \linearisometry. Then
+            \(f^{-1}=f^\ast\), so
+            \[
+                f^\ast\circ f=f\circ f^\ast=\identityfunc_V.
+            \]
+            Hence \(f\) is \normalendomorphism[normal]. By the complex
+            \spectraltheorem, \(V\) has an \orthonormalbasis
+            \[
+                \mathcal{B}=\{e_1,\ldots,e_n\}
+            \]
+            made of eigenvectors of \(f\). Write
+            \[
+                f(e_i)=\lambda_i e_i.
+            \]
+            Since \(f\) is a \linearisometry,
+            \[
+                1=\|e_i\|=\|f(e_i)\|=|\lambda_i|\,\|e_i\|=|\lambda_i|.
+            \]
+
+        \item Conversely, suppose that \(V\) has an \orthonormalbasis
+            \[
+                \mathcal{B}=\{e_1,\ldots,e_n\}
+            \]
+            such that
+            \[
+                f(e_i)=\lambda_i e_i,
+                \qquad
+                |\lambda_i|=1
+            \]
+            for every \(i\). Let \(v\in V\). By the \parsevalidentity,
+            \[
+                v=\langle v,e_1\rangle e_1+\cdots+\langle v,e_n\rangle e_n.
+            \]
+            Therefore
+            \[
+                f(v)=
+                \lambda_1\langle v,e_1\rangle e_1+\cdots+
+                \lambda_n\langle v,e_n\rangle e_n.
+            \]
+            Again by the \parsevalidentity,
+            \[
+                \|f(v)\|^2
+                =
+                |\lambda_1|^2|\langle v,e_1\rangle|^2+\cdots+
+                |\lambda_n|^2|\langle v,e_n\rangle|^2
+                =
+                \|v\|^2.
+            \]
+            Hence \(f\) preserves \norm[norms]. By the characterization of
+            \linearisometry[linear isometries], \(f\) is a
+            \linearisometry.
+    \end{iffproof}
+\end{snippetproof}
+
+\section{Matrix form}
+
+\begin{snippet}{linear-isometries-matrix-setup}
+    Let \(\mathbb{F}\in\{\realnumbers,\complexnumbers\}\). Consider
+    \(\mathbb{F}^n\) with the canonical \innerproduct. If
+    \(A\in\matrices_{n\times n}(\mathbb{F})\), denote by
+    \[
+        L_A\colon\mathbb{F}^n\fromto\mathbb{F}^n,
+        \qquad
+        L_A(x)=Ax
+    \]
+    the associated \lineartransformation.
+\end{snippet}
+
+\begin{snippetproposition}{matrix-linear-isometry-criterion}{Matrix criterion for linear isometries}
+    Let \(\mathbb{F}\in\{\realnumbers,\complexnumbers\}\), let
+    \(\mathbb{F}^n\) be endowed with the canonical \innerproduct, and let
+    \(A\in\matrices_{n\times n}(\mathbb{F})\). The associated map
+    \(L_A\) is a \linearisometry if and only if \(A\) is invertible and
+    \[
+        A^{-1}=A^\conjtrans.
+    \]
+    Equivalently,
+    \[
+        A^\conjtrans A=\identmatrix{n}
+        \qquad\text{and}\qquad
+        AA^\conjtrans=\identmatrix{n}.
+    \]
+    Over \(\realnumbers\), this condition is
+    \[
+        A^{-1}=A^\transpose.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{matrix-linear-isometry-criterion-proof}{matrix-linear-isometry-criterion}{Matrix criterion for linear isometries}
+    Let \(\mathcal{E}\) be the canonical \orthonormalbasis of
+    \(\mathbb{F}^n\). Since
+    \[
+        M(L_A,\mathcal{E},\mathcal{E})=A,
+    \]
+    the \matrix of \(L_A^\ast\) with respect to \(\mathcal{E}\) is
+    \(A^\conjtrans\). By the characterization of
+    \linearisometry[linear isometries],
+    \[
+        L_A \text{ is a \linearisometry}
+        \qquad\Longleftrightarrow\qquad
+        L_A^{-1}=L_A^\ast.
+    \]
+    In \matrix[matrices], this is exactly \(A^{-1}=A^\conjtrans\). Multiplying by
+    \(A\) gives the two equivalent identities with \(\identmatrix{n}\).
+\end{snippetproof}
+
+\begin{snippetdefinition}{orthogonal-group-definition}{Orthogonal group}
+    For \(n\geq 1\), the \emph{orthogonal group} is
+    \[
+        \operatorname{O}(n)
+        =
+        \left\{
+            A\in\matrices_{n\times n}(\realnumbers)
+            \suchthat
+            A^\transpose A=\identmatrix{n}
+        \right\}.
+    \]
+    Equivalently,
+    \[
+        \operatorname{O}(n)
+        =
+        \left\{
+            A\in\matrices_{n\times n}(\realnumbers)
+            \suchthat
+            A^{-1}=A^\transpose
+        \right\}.
+    \]
+    Its elements are exactly the \orthogonalmatrix[orthogonal matrices],
+    equivalently the \matrix[matrices] whose associated maps are
+    \linearisometry[linear isometries] of \(\realnumbers^n\) for the
+    canonical \innerproduct.
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{special-orthogonal-group-definition}{Special orthogonal group}
+    For \(n\geq 1\), the \emph{special orthogonal group} is
+    \[
+        \operatorname{SO}(n)
+        =
+        \left\{
+            A\in\operatorname{O}(n)
+            \suchthat
+            \det(A)=1
+        \right\}.
+    \]
+    Its elements are the \orientationpreserving real
+    \linearisometry[linear isometries] of \(\realnumbers^n\) in \matrix
+    form.
+\end{snippetdefinition}
+
+\begin{snippetproposition}{orthogonal-group-product-closure}{Product of orthogonal matrices}
+    Let \(n\geq 1\). If \(A,B\in\operatorname{O}(n)\), then
+    \(AB\in\operatorname{O}(n)\).
+\end{snippetproposition}
+
+\begin{snippetproof}{orthogonal-group-product-closure-proof}{orthogonal-group-product-closure}{Product of orthogonal matrices}
+    Since \(A^{-1}=A^\transpose\) and \(B^{-1}=B^\transpose\),
+    \[
+        (AB)^{-1}=B^{-1}A^{-1}=B^\transpose A^\transpose=(AB)^\transpose.
+    \]
+    Therefore \(AB\in\operatorname{O}(n)\).
+\end{snippetproof}
+
+\begin{snippetdefinition}{unitary-group-definition}{Unitary group}
+    For \(n\geq 1\), the \emph{unitary group} is
+    \[
+        \operatorname{U}(n)
+        =
+        \left\{
+            A\in\matrices_{n\times n}(\complexnumbers)
+            \suchthat
+            A^\conjtrans A=\identmatrix{n}
+        \right\}.
+    \]
+    Equivalently,
+    \[
+        \operatorname{U}(n)
+        =
+        \left\{
+            A\in\matrices_{n\times n}(\complexnumbers)
+            \suchthat
+            A^{-1}=A^\conjtrans
+        \right\}.
+    \]
+    Its elements are exactly the \unitarymatrix[unitary matrices],
+    equivalently the \matrix[matrices] whose associated maps are
+    \linearisometry[linear isometries] of \(\complexnumbers^n\) for the
+    canonical \innerproduct.
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{special-unitary-group-definition}{Special unitary group}
+    For \(n\geq 1\), the \emph{special unitary group} is
+    \[
+        \operatorname{SU}(n)
+        =
+        \left\{
+            A\in\operatorname{U}(n)
+            \suchthat
+            \det(A)=1
+        \right\}.
+    \]
+\end{snippetdefinition}
+
+\end{document}
