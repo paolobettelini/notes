@@ -1,0 +1,248 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{probability-expectation}
+\genpage
+
+\section{Expected value}
+
+\begin{snippetdefinition}{expected-value-discrete-random-variable-definition}{Expected value of a discrete random variable}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X\colon\Omega\fromto E\subseteq\realnumbers\) be a real-valued
+    \discreterandomvariable. The \emph{expected value} of \(X\) exists if
+    the series
+    \[
+        \sum_{\omega\in\Omega}X(\omega)\mathbb P(\{\omega\})
+    \]
+    is well-defined in \([-\infty,+\infty]\). In this case,
+    \[
+        \expectation[X]
+        =
+        \sum_{\omega\in\Omega}X(\omega)\mathbb P(\{\omega\}).
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{finite-expected-value-definition}{Finite expected value}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X\colon\Omega\fromto E\subseteq\realnumbers\) be a real-valued
+    \discreterandomvariable. The random variable \(X\) has a \emph{finite
+    expected value} if
+    \[
+        \expectation[|X|]<+\infty.
+    \]
+    In this case \(\expectation[X]\in\realnumbers\).
+\end{snippetdefinition}
+
+\begin{snippetexample}{discrete-random-variable-infinite-expected-value-example}{A discrete random variable with infinite expected value}
+    Let \(\Omega=\naturalnumbers^\exceptzero\), and let
+    \((\Omega,\powerset(\Omega),\mathbb P)\) be the
+    \countableprobabilityspace defined by
+    \[
+        \mathbb P(\{n\})=\frac{c}{n^2},
+        \qquad
+        c=\left(\sum_{n=1}^\infty\frac{1}{n^2}\right)^{-1}.
+    \]
+    Let \(X\colon\Omega\fromto\naturalnumbers^\exceptzero\) be
+    \(X(n)=n\). Then
+    \[
+        \expectation[X]
+        =
+        \sum_{n=1}^\infty n\frac{c}{n^2}
+        =
+        c\sum_{n=1}^\infty\frac{1}{n}
+        =
+        +\infty.
+    \]
+\end{snippetexample}
+
+\begin{snippettheorem}{expected-value-density-formula}{Expected value through the density}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X\colon\Omega\fromto E\subseteq\realnumbers\) be a real-valued
+    \discreterandomvariable with \randomvariabledensity \(p_X\). Then
+    \(X\) has a finite \expectedvalue if and only if
+    \[
+        \sum_{x\in E}|x|p_X(x)<+\infty.
+    \]
+    In this case,
+    \[
+        \expectation[X]=\sum_{x\in E}xp_X(x).
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{expected-value-density-formula-proof}{expected-value-density-formula}{Expected value through the density}
+    For every \(x\in E\), let
+    \[
+        \Omega_x=\{\omega\in\Omega\suchthat X(\omega)=x\}.
+    \]
+    The \event[events] \(\Omega_x\), with \(x\in E\), are pairwise disjoint
+    and their union is \(\Omega\). Moreover, \(p_X(x)=\mathbb P(\Omega_x)\).
+    Hence, whenever the sums are finite,
+    \begin{align*}
+        \sum_{\omega\in\Omega}X(\omega)\mathbb P(\{\omega\})
+        &=
+        \sum_{x\in E}\sum_{\omega\in\Omega_x}
+        X(\omega)\mathbb P(\{\omega\})
+        \\
+        &=
+        \sum_{x\in E}x\sum_{\omega\in\Omega_x}\mathbb P(\{\omega\})
+        =
+        \sum_{x\in E}x\mathbb P(\Omega_x)
+        =
+        \sum_{x\in E}xp_X(x).
+    \end{align*}
+    Applying the same identity to \(|X|\) gives the finiteness criterion.
+\end{snippetproof}
+
+\begin{snippetproposition}{indicator-random-variable-expected-value}{Expected value of an indicator}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let \(A\subseteq\Omega\). Then
+    \[
+        \expectation[\indicator_A]=\mathbb P(A).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{indicator-random-variable-expected-value-proof}{indicator-random-variable-expected-value}{Expected value of an indicator}
+    Since \(\indicator_A(\omega)=1\) exactly on \(A\),
+    \[
+        \expectation[\indicator_A]
+        =
+        \sum_{\omega\in A}\mathbb P(\{\omega\})
+        =
+        \mathbb P(A).
+    \]
+\end{snippetproof}
+
+\section{Change of variable}
+
+\begin{snippettheorem}{discrete-random-variable-change-of-variable-expectation}{Change-of-variable formula for discrete random variables}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace. Let
+    \(X\colon\Omega\fromto E\subseteq\realnumbers^n\) be a
+    \discreterandomvariable with \randomvariabledensity \(p_X\), and let
+    \(g\colon E\fromto\realnumbers\) be a \function. Then \(g\circ X\) has a
+    finite \expectedvalue if and only if
+    \[
+        \sum_{x\in E}|g(x)|p_X(x)<+\infty.
+    \]
+    In this case,
+    \[
+        \expectation[g(X)]
+        =
+        \sum_{x\in E}g(x)p_X(x).
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{discrete-random-variable-change-of-variable-expectation-proof}{discrete-random-variable-change-of-variable-expectation}{Change-of-variable formula for discrete random variables}
+    For every \(x\in E\), let
+    \[
+        \Omega_x=\{\omega\in\Omega\suchthat X(\omega)=x\}.
+    \]
+    As in the density formula for the \expectedvalue,
+    \begin{align*}
+        \expectation[g(X)]
+        &=
+        \sum_{x\in E}\sum_{\omega\in\Omega_x}
+        g(X(\omega))\mathbb P(\{\omega\})
+        \\
+        &=
+        \sum_{x\in E}g(x)\mathbb P(\Omega_x)
+        =
+        \sum_{x\in E}g(x)p_X(x).
+    \end{align*}
+    Applying the same formula to \(|g\circ X|\) gives the finiteness
+    criterion.
+\end{snippetproof}
+
+\begin{snippetcorollary}{joint-density-product-expectation-formula}{Expectation of a function of a discrete random vector}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace. For every \(i\in\{1,\ldots,n\}\), let
+    \(X_i\colon\Omega\fromto E_i\subseteq\realnumbers\) be a
+    \discreterandomvariable, and let \(p_{X_1,\ldots,X_n}\) be the
+    \jointdensity of \((X_1,\ldots,X_n)\). Let
+    \(g\colon\prod_{i=1}^n E_i\fromto\realnumbers\) be a \function. If
+    \[
+        \sum_{(x_1,\ldots,x_n)\in\prod_{i=1}^n E_i}
+        |g(x_1,\ldots,x_n)|p_{X_1,\ldots,X_n}(x_1,\ldots,x_n)<+\infty,
+    \]
+    then
+    \[
+        \expectation[g(X_1,\ldots,X_n)]
+        =
+        \sum_{(x_1,\ldots,x_n)\in\prod_{i=1}^n E_i}
+        g(x_1,\ldots,x_n)p_{X_1,\ldots,X_n}(x_1,\ldots,x_n).
+    \]
+\end{snippetcorollary}
+
+\section{Properties}
+
+\begin{snippetproposition}{basic-properties-discrete-expected-value}{Basic properties of expected value}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X,Y\colon\Omega\fromto\realnumbers\) be real-valued
+    \discreterandomvariable[discrete random variables] with finite
+    \expectedvalue[expected values]. Then:
+    \begin{enumerate}
+        \item if \(X\leq Y\) almost surely, then
+            \(\expectation[X]\leq\expectation[Y]\);
+        \item \(|\expectation[X]|\leq\expectation[|X|]\);
+        \item for every \(a,b\in\realnumbers\),
+            \[
+                \expectation[aX+bY]
+                =
+                a\expectation[X]+b\expectation[Y];
+            \]
+        \item if \(X\geq0\) almost surely, then
+            \[
+                \expectation[X]=0
+                \quad\Longleftrightarrow\quad
+                X\asequal 0;
+            \]
+        \item if \(X\asequal c\) for some \(c\in\realnumbers\), then
+            \[
+                \expectation[X]=c.
+            \]
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{basic-properties-discrete-expected-value-proof}{basic-properties-discrete-expected-value}{Basic properties of expected value}
+    Each statement follows from the defining series. Linearity follows by
+    distributing the absolutely convergent sums. Monotonicity follows because
+    the summands of \(Y-X\) are nonnegative outside a null \event. The
+    inequality \(|\expectation[X]|\leq\expectation[|X|]\) is the triangle
+    inequality for the series. If \(X\geq0\) and \(\expectation[X]=0\), all
+    nonnegative summands \(X(\omega)\mathbb P(\{\omega\})\) vanish, so
+    \(X=0\) outside a null \event. The constant case is immediate.
+\end{snippetproof}
+
+\begin{snippetproposition}{equality-in-law-preserves-discrete-expectation}{Equality in law preserves expected value}
+    Let
+    \((\Omega_1,\powerset(\Omega_1),\mathbb P_1)\) and
+    \((\Omega_2,\powerset(\Omega_2),\mathbb P_2)\) be
+    \countableprobabilityspace[countable probability spaces]. Let
+    \(X\colon\Omega_1\fromto E\subseteq\realnumbers\) and
+    \(Y\colon\Omega_2\fromto E\) be real-valued
+    \discreterandomvariable[discrete random variables]. If \(X\eqdist Y\),
+    then \(X\) has a finite \expectedvalue if and only if \(Y\) has a finite
+    \expectedvalue, and in that case
+    \[
+        \expectation[X]=\expectation[Y].
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{equality-in-law-preserves-discrete-expectation-proof}{equality-in-law-preserves-discrete-expectation}{Equality in law preserves expected value}
+    If \(X\eqdist Y\), then \(p_X(x)=p_Y(x)\) for every \(x\in E\). The
+    density formula for the \expectedvalue gives both the finiteness
+    equivalence and the equality of the two expected values.
+\end{snippetproof}
+
+\end{document}

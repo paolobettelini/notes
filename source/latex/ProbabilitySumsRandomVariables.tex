@@ -1,0 +1,168 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{probability-sums-random-variables}
+\genpage
+
+\section{Bernoulli sums}
+
+\begin{snippettheorem}{binomial-distribution-as-bernoulli-sum}{Binomial distribution as a Bernoulli sum}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, let \(n\in\naturalnumbers^\exceptzero\), let
+    \(p\in[0,1]\), and let \(X_1,\ldots,X_n\) be
+    \iiddiscreterandomvariables such that each \(X_i\) has
+    \bernoullidistribution
+    \[
+        X_i\sim\operatorname{Bernoulli}(p)
+    \]
+    for every \(i\in\{1,\ldots,n\}\). Define
+    \[
+        S_n=\sum_{i=1}^n X_i.
+    \]
+    Then \(S_n\) has \binomialdistribution \(\operatorname{Binomial}(n,p)\).
+\end{snippettheorem}
+
+\begin{snippetproof}{binomial-distribution-as-bernoulli-sum-proof}{binomial-distribution-as-bernoulli-sum}{Binomial distribution as a Bernoulli sum}
+    For \(k\in\{0,\ldots,n\}\), the \event \(\{S_n=k\}\) is the disjoint
+    union of the events
+    \[
+        \{X_1=\varepsilon_1,\ldots,X_n=\varepsilon_n\},
+        \qquad
+        (\varepsilon_1,\ldots,\varepsilon_n)\in\{0,1\}^n,
+        \qquad
+        \sum_{i=1}^n\varepsilon_i=k.
+    \]
+    By independence, each such \event has probability
+    \(p^k(1-p)^{n-k}\). The number of vectors
+    \((\varepsilon_1,\ldots,\varepsilon_n)\in\{0,1\}^n\) with exactly \(k\)
+    entries equal to \(1\) is \(\binom{n}{k}\). Hence
+    \[
+        \mathbb P(S_n=k)=\binom{n}{k}p^k(1-p)^{n-k}.
+    \]
+    This is the \randomvariabledensity of
+    \(\operatorname{Binomial}(n,p)\).
+\end{snippetproof}
+
+\section{Sums and convolution}
+
+\begin{snippetproposition}{sum-of-two-discrete-random-variables-density}{Density of a sum of two discrete random variables}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace. Let \(E,F\subseteq\realnumbers\) be finite or
+    countably infinite \set[sets], and let
+    \(X\colon\Omega\fromto E\) and \(Y\colon\Omega\fromto F\) be
+    real-valued \discreterandomvariable[discrete random variables]. Define
+    \[
+        Z=X+Y,
+        \qquad
+        E+F=\{x+y\in\realnumbers\suchthat x\in E,\ y\in F\}.
+    \]
+    Then \(Z\colon\Omega\fromto E+F\) is a
+    \discreterandomvariable and, for every \(z\in E+F\),
+    \[
+        p_Z(z)
+        =
+        \sum_{\substack{x\in E\\ z-x\in F}}p_{X,Y}(x,z-x)
+        =
+        \sum_{\substack{y\in F\\ z-y\in E}}p_{X,Y}(z-y,y).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{sum-of-two-discrete-random-variables-density-proof}{sum-of-two-discrete-random-variables-density}{Density of a sum of two discrete random variables}
+    Since \(E\) and \(F\) are finite or countably infinite, the \set
+    \(E+F\) is finite or countably infinite. Thus \(Z\) is a
+    \discreterandomvariable. For every \(z\in E+F\), the events
+    \[
+        \{X=x,\ Y=z-x\},
+        \qquad x\in E,\ z-x\in F,
+    \]
+    are pairwise disjoint and their union is \(\{Z=z\}\). Therefore
+    \[
+        p_Z(z)=\mathbb P(Z=z)
+        =
+        \sum_{\substack{x\in E\\z-x\in F}}
+        \mathbb P(X=x,\ Y=z-x)
+        =
+        \sum_{\substack{x\in E\\z-x\in F}}p_{X,Y}(x,z-x).
+    \]
+    The second formula is obtained by decomposing the same \event according
+    to the value of \(Y\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{discrete-sum-independent-convolution-formula}{Convolution formula for independent variables}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace. Let \(E,F\subseteq\realnumbers\) be finite or
+    countably infinite \set[sets], and let
+    \(X\colon\Omega\fromto E\) and \(Y\colon\Omega\fromto F\) be independent
+    real-valued \discreterandomvariable[discrete random variables]. If
+    \(Z=X+Y\), then, for every \(z\in E+F\),
+    \[
+        p_Z(z)
+        =
+        \sum_{\substack{x\in E\\ z-x\in F}}p_X(x)p_Y(z-x)
+        =
+        \sum_{\substack{y\in F\\ z-y\in E}}p_X(z-y)p_Y(y).
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{discrete-sum-independent-convolution-formula-proof}{discrete-sum-independent-convolution-formula}{Convolution formula for independent variables}
+    By independence, the \jointdensity satisfies
+    \[
+        p_{X,Y}(x,y)=p_X(x)p_Y(y)
+    \]
+    for every \((x,y)\in E\cartesianprod F\). Substituting this identity in
+    the density formula for \(X+Y\) gives the result.
+\end{snippetproof}
+
+\begin{snippet}{discrete-convolution-interpretation}
+    The preceding formula says that the \randomvariabledensity of the sum of
+    two independent real-valued \discreterandomvariable[discrete random
+    variables] is the \discreteconvolution of their densities.
+\end{snippet}
+
+\begin{snippetcorollary}{sum-independent-poisson-random-variables}{Sum of independent Poisson random variables}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace. Let \(X,Y\colon\Omega\fromto\naturalnumbers\)
+    be independent \discreterandomvariable[discrete random variables]. If
+    \(X\) has \poissondistribution \(\operatorname{Poisson}(\lambda)\) and
+    \(Y\) has \poissondistribution \(\operatorname{Poisson}(\mu)\), with
+    \(\lambda,\mu>0\), then \(X+Y\) has \poissondistribution
+    \(\operatorname{Poisson}(\lambda+\mu)\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{sum-independent-poisson-random-variables-proof}{sum-independent-poisson-random-variables}{Sum of independent Poisson random variables}
+    Let \(Z=X+Y\). For every \(z\in\naturalnumbers\), the
+    \convolutionformula gives
+    \begin{align*}
+        p_Z(z)
+        &=
+        \sum_{x=0}^z
+        e^{-\lambda}\frac{\lambda^x}{x!}
+        e^{-\mu}\frac{\mu^{z-x}}{(z-x)!}
+        \\
+        &=
+        e^{-(\lambda+\mu)}
+        \sum_{x=0}^z
+        \frac{\lambda^x\mu^{z-x}}{x!(z-x)!}
+        \\
+        &=
+        e^{-(\lambda+\mu)}
+        \frac{1}{z!}
+        \sum_{x=0}^z
+        \binom{z}{x}\lambda^x\mu^{z-x}
+        \\
+        &=
+        e^{-(\lambda+\mu)}
+        \frac{(\lambda+\mu)^z}{z!}.
+    \end{align*}
+    This is the \randomvariabledensity of
+    \(\operatorname{Poisson}(\lambda+\mu)\).
+\end{snippetproof}
+
+\end{document}

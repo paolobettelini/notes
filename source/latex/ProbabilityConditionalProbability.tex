@@ -1,0 +1,173 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{probability-conditional-probability}
+\genpage
+
+\section{Conditional probability}
+
+\begin{snippetdefinition}{conditional-probability-definition}{Conditional probability}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace and let
+    \(A,B\in\mathcal F\). If \(\mathbb P(B)>0\), the
+    \emph{conditional probability} of \(A\) given \(B\) is
+    \[
+        \mathbb P(A\mid B)
+        \triangleq
+        \frac{\mathbb P(A\intersection B)}{\mathbb P(B)}.
+    \]
+    If \(\mathbb P(A\mid B)>\mathbb P(A)\), then \(B\) positively conditions
+    \(A\). If \(\mathbb P(A\mid B)<\mathbb P(A)\), then \(B\) negatively
+    conditions \(A\). If \(\mathbb P(A\mid B)=\mathbb P(A)\), then \(B\)
+    does not change the probability of \(A\).
+\end{snippetdefinition}
+
+\begin{snippetnote}{conditioning-on-null-events}{Conditioning on null events}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace and let
+    \(A,B\in\mathcal F\). Ordinary \conditionalprobability given the \event
+    \(B\) is defined only when \(\mathbb P(B)>0\).
+    If one tries to define \(\mathbb P(A\mid B)\) as a number \(x\in[0,1]\)
+    satisfying
+    \[
+        \mathbb P(A\intersection B)=x\mathbb P(B),
+    \]
+    then for \(\mathbb P(B)=0\) the equation has no unique solution.
+\end{snippetnote}
+
+\begin{snippetproposition}{conditional-probability-measure}{Conditional probability is a probability measure}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace and let
+    \(B\in\mathcal F\) with \(\mathbb P(B)>0\).
+    Define
+    \[
+        \mathbb P_B\colon\mathcal F\fromto[0,1],
+        \qquad
+        \mathbb P_B(A)=\mathbb P(A\mid B).
+    \]
+    Then \(\mathbb P_B\) is a \probabilitymeasure on \((\Omega,\mathcal F)\).
+\end{snippetproposition}
+
+\begin{snippetproof}{conditional-probability-measure-proof}{conditional-probability-measure}{Conditional probability is a probability measure}
+    First,
+    \[
+        \mathbb P_B(\Omega)
+        =
+        \frac{\mathbb P(\Omega\intersection B)}{\mathbb P(B)}
+        =
+        \frac{\mathbb P(B)}{\mathbb P(B)}
+        =
+        1.
+    \]
+    Let \(\{A_n\}_{n\in\naturalnumbers}\subseteq\mathcal F\) be pairwise
+    disjoint. Then the \event[events] \(A_n\intersection B\) are pairwise
+    disjoint, and therefore
+    \begin{align*}
+        \mathbb P_B\left(\bigcup_{n=1}^\infty A_n\right)
+        &=
+        \frac{
+            \mathbb P\left(
+                \left(\bigcup_{n=1}^\infty A_n\right)\intersection B
+            \right)
+        }{\mathbb P(B)}
+        =
+        \frac{
+            \mathbb P\left(
+                \bigcup_{n=1}^\infty (A_n\intersection B)
+            \right)
+        }{\mathbb P(B)}
+        \\
+        &=
+        \frac{
+            \sum_{n=1}^\infty\mathbb P(A_n\intersection B)
+        }{\mathbb P(B)}
+        =
+        \sum_{n=1}^\infty\mathbb P(A_n\mid B)
+        =
+        \sum_{n=1}^\infty\mathbb P_B(A_n).
+    \end{align*}
+\end{snippetproof}
+
+\begin{snippetdefinition}{sample-space-partition-definition}{Sample space partition}
+    Let \((\Omega,\mathcal F)\) be a \measurablespace.
+    A finite or countable family
+    \[
+        \{B_i\}_{i\in I}\subseteq\mathcal F
+    \]
+    is a \emph{partition} of the \samplespace \(\Omega\) if
+    \begin{enumerate}
+        \item \(\Omega=\bigcup_{i\in I}B_i\);
+        \item \(B_i\intersection B_j=\emptyset\) whenever \(i\neq j\).
+    \end{enumerate}
+\end{snippetdefinition}
+
+\begin{snippettheorem}{total-probability-law}{Law of total probability}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace.
+    Let \(\{B_i\}_{i\in I}\subseteq\mathcal F\) be a finite or countable
+    \samplespacepartition of \(\Omega\), and assume that
+    \(\mathbb P(B_i)>0\) for every \(i\in I\).
+    Then, for every \(A\in\mathcal F\),
+    \[
+        \mathbb P(A)
+        =
+        \sum_{i\in I}\mathbb P(A\mid B_i)\mathbb P(B_i).
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{total-probability-law-proof}{total-probability-law}{Law of total probability}
+    Since \(\{B_i\}_{i\in I}\) is a \samplespacepartition of \(\Omega\),
+    the \event[events] \(A\intersection B_i\) are pairwise disjoint and
+    \[
+        A=A\intersection\Omega
+        =
+        A\intersection\left(\bigcup_{i\in I}B_i\right)
+        =
+        \bigcup_{i\in I}(A\intersection B_i).
+    \]
+    Hence, by countable additivity,
+    \[
+        \mathbb P(A)
+        =
+        \sum_{i\in I}\mathbb P(A\intersection B_i)
+        =
+        \sum_{i\in I}\mathbb P(A\mid B_i)\mathbb P(B_i).
+    \]
+\end{snippetproof}
+
+\begin{snippettheorem}{bayes-theorem}{Bayes' theorem}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace.
+    Let \(\{B_i\}_{i\in I}\subseteq\mathcal F\) be a finite or countable
+    \samplespacepartition of \(\Omega\), and assume that
+    \(\mathbb P(B_i)>0\) for every \(i\in I\).
+    If \(A\in\mathcal F\) and \(\mathbb P(A)>0\), then for every \(k\in I\),
+    \[
+        \mathbb P(B_k\mid A)
+        =
+        \frac{\mathbb P(A\mid B_k)\mathbb P(B_k)}
+        {\sum_{i\in I}\mathbb P(A\mid B_i)\mathbb P(B_i)}.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{bayes-theorem-proof}{bayes-theorem}{Bayes' theorem}
+    By the definition of \conditionalprobability,
+    \[
+        \mathbb P(B_k\mid A)
+        =
+        \frac{\mathbb P(A\intersection B_k)}{\mathbb P(A)}
+        =
+        \frac{\mathbb P(A\mid B_k)\mathbb P(B_k)}{\mathbb P(A)}.
+    \]
+    By the \totalprobabilitylaw,
+    \[
+        \mathbb P(A)
+        =
+        \sum_{i\in I}\mathbb P(A\mid B_i)\mathbb P(B_i),
+    \]
+    and substituting this expression for \(\mathbb P(A)\) gives the formula.
+\end{snippetproof}
+
+\end{document}

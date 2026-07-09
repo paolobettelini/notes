@@ -1,0 +1,242 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{probability-event-independence}
+\genpage
+
+\section{Event independence}
+
+\begin{snippetdefinition}{independent-events-definition}{Independent events}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace.
+    Two \event[events] \(A,B\in\mathcal F\) are
+    \emph{independent} if
+    \[
+        \mathbb P(A\intersection B)
+        =
+        \mathbb P(A)\mathbb P(B).
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{conditional-characterization-independent-events}{Conditional characterization of independent events}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace and let
+    \(A,B\in\mathcal F\).
+    If \(\mathbb P(B)>0\), then \(A\) and \(B\) are \independentevents
+    if and only if
+    \[
+        \mathbb P(A\mid B)=\mathbb P(A).
+    \]
+    If also \(\mathbb P(A)>0\), this is equivalent to
+    \[
+        \mathbb P(B\mid A)=\mathbb P(B).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{conditional-characterization-independent-events-proof}{conditional-characterization-independent-events}{Conditional characterization of independent events}
+    Assume \(\mathbb P(B)>0\). By definition,
+    \[
+        \mathbb P(A\mid B)=\mathbb P(A)
+    \]
+    if and only if
+    \[
+        \frac{\mathbb P(A\intersection B)}{\mathbb P(B)}
+        =
+        \mathbb P(A),
+    \]
+    which is equivalent to
+    \[
+        \mathbb P(A\intersection B)
+        =
+        \mathbb P(A)\mathbb P(B).
+    \]
+    This is precisely the definition of \independentevents.
+    The statement with \(\mathbb P(B\mid A)\) follows by the same argument
+    when \(\mathbb P(A)>0\).
+\end{snippetproof}
+
+\begin{snippetproposition}{disjoint-independent-events}{Disjoint independent events}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace and let
+    \(A,B\in\mathcal F\). If \(A\intersection B=\emptyset\), then \(A\) and
+    \(B\) are \independentevents if and only if
+    \[
+        \mathbb P(A)=0
+        \quad\text{or}\quad
+        \mathbb P(B)=0.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{disjoint-independent-events-proof}{disjoint-independent-events}{Disjoint independent events}
+    If \(A\intersection B=\emptyset\), then
+    \[
+        \mathbb P(A\intersection B)=0.
+    \]
+    Thus independence is equivalent to
+    \[
+        0=\mathbb P(A)\mathbb P(B),
+    \]
+    which holds if and only if \(\mathbb P(A)=0\) or \(\mathbb P(B)=0\).
+\end{snippetproof}
+
+\begin{snippetdefinition}{independent-family-events-definition}{Independent family of events}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace.
+    The \event[events] \(A_1,\ldots,A_n\in\mathcal F\) are
+    \emph{independent} if, for every non-empty
+    \(J\subseteq\{1,\ldots,n\}\),
+    \[
+        \mathbb P\left(\bigcap_{j\in J}A_j\right)
+        =
+        \prod_{j\in J}\mathbb P(A_j).
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexample}{pairwise-independent-not-mutually-independent-events}{Pairwise independent events need not be mutually independent}
+    Let \(\Omega=\{H,T\}^3\) be the \samplespace for three distinguishable fair
+    coin tosses, equipped with \classicalprobability.
+    Define the \event[events]
+    \[
+        A_1=\{\text{the first and second tosses are equal}\},
+    \]
+    \[
+        A_2=\{\text{the first and third tosses are equal}\},
+    \]
+    and
+    \[
+        A_3=\{\text{the second and third tosses are equal}\}.
+    \]
+    Then
+    \[
+        \mathbb P(A_1)=\mathbb P(A_2)=\mathbb P(A_3)=\frac12,
+    \]
+    and every pairwise intersection has probability \(\frac14\). For example,
+    \(A_1\intersection A_2\) is the \event that all three tosses are equal.
+    Hence the \event[events] are pairwise \independentevents.
+    However,
+    \[
+        A_1\intersection A_2\intersection A_3
+        =
+        \{(H,H,H),(T,T,T)\},
+    \]
+    so
+    \[
+        \mathbb P(A_1\intersection A_2\intersection A_3)
+        =
+        \frac14
+        \neq
+        \frac18
+        =
+        \mathbb P(A_1)\mathbb P(A_2)\mathbb P(A_3).
+    \]
+    Therefore \(A_1,A_2,A_3\) are not an \independentfamilyofevents.
+\end{snippetexample}
+
+\begin{snippetexample}{total-intersection-not-enough-for-independence}{The total intersection condition is not enough}
+    Let \(\Omega=\{1,\ldots,8\}\), equipped with \classicalprobability.
+    Define
+    \[
+        A=\{1,2,3,4\},\qquad
+        B=\{1,5,6,7\},\qquad
+        C=\{1,2,3,8\}.
+    \]
+    Then
+    \[
+        \mathbb P(A)=\mathbb P(B)=\mathbb P(C)=\frac12,
+    \]
+    and
+    \[
+        \mathbb P(A\intersection B\intersection C)
+        =
+        \frac18
+        =
+        \mathbb P(A)\mathbb P(B)\mathbb P(C).
+    \]
+    Nevertheless,
+    \[
+        A\intersection B=\{1\},
+        \qquad
+        \mathbb P(A\intersection B)=\frac18
+        \neq
+        \frac14
+        =
+        \mathbb P(A)\mathbb P(B).
+    \]
+    Thus the factorization of the intersection of all three \event[events]
+    does not imply independence of the family.
+\end{snippetexample}
+
+\begin{snippettheorem}{independence-complements-characterization}{Independence and complements}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace and let
+    \(A_1,\ldots,A_n\in\mathcal F\). The following are equivalent:
+    \begin{enumerate}
+        \item \(A_1,\ldots,A_n\) are an \independentfamilyofevents;
+        \item for every choice \(B_i\in\{A_i,\Omega\difference A_i\}\),
+            \[
+                \mathbb P\left(\bigcap_{i=1}^n B_i\right)
+                =
+                \prod_{i=1}^n\mathbb P(B_i).
+            \]
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{independence-complements-characterization-proof}{independence-complements-characterization}{Independence and complements}
+    Suppose first that \(A_1,\ldots,A_n\) are independent.
+    We show that complementing any subcollection preserves the product formula.
+    It is enough to complement one \event at a time. Let
+    \(C\) be the intersection of a subcollection of the remaining \event[events]
+    and their complements, and suppose that
+    \[
+        \mathbb P(C\intersection A_k)=\mathbb P(C)\mathbb P(A_k).
+    \]
+    Then
+    \[
+        C\intersection(\Omega\difference A_k)
+        =
+        C\difference(C\intersection A_k),
+    \]
+    and therefore
+    \[
+        \mathbb P(C\intersection(\Omega\difference A_k))
+        =
+        \mathbb P(C)-\mathbb P(C\intersection A_k)
+        =
+        \mathbb P(C)(1-\mathbb P(A_k))
+        =
+        \mathbb P(C)\mathbb P(\Omega\difference A_k).
+    \]
+    Iterating this argument gives the product formula for every choice
+    \(B_i\in\{A_i,\Omega\difference A_i\}\).
+
+    Conversely, assume the product formula holds for every such choice.
+    To prove that \(A_1,\ldots,A_n\) are independent, let
+    \(\emptyset\neq J\subseteq\{1,\ldots,n\}\). Summing the product formula
+    over all choices \(B_i\in\{A_i,\Omega\difference A_i\}\) for
+    \(i\notin J\), and keeping \(B_j=A_j\) for \(j\in J\), gives
+    \[
+        \mathbb P\left(\bigcap_{j\in J}A_j\right)
+        =
+        \prod_{j\in J}\mathbb P(A_j)
+        \prod_{i\notin J}
+        \bigl(\mathbb P(A_i)+\mathbb P(\Omega\difference A_i)\bigr).
+    \]
+    Since each factor in the last product is \(1\), the desired factorization
+    for the subfamily indexed by \(J\) follows.
+\end{snippetproof}
+
+\begin{snippetcorollary}{independence-preserved-by-complements}{Independence is preserved by complements}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace and let
+    \(A_1,\ldots,A_n\in\mathcal F\) be independent \event[events].
+    If \(B_i\in\{A_i,\Omega\difference A_i\}\) for every \(i\), then
+    \(B_1,\ldots,B_n\) are also independent \event[events].
+\end{snippetcorollary}
+
+\begin{snippetproof}{independence-preserved-by-complements-proof}{independence-preserved-by-complements}{Independence is preserved by complements}
+    This is exactly the forward implication of the characterization of
+    independence by complements.
+\end{snippetproof}
+
+\end{document}

@@ -1,0 +1,468 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{probability-variance-covariance}
+\genpage
+
+\section{Moments}
+
+\begin{snippetdefinition}{finite-moments-discrete-random-variable-definition}{Finite moments}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, let
+    \(X\colon\Omega\fromto E\subseteq\realnumbers\) be a real-valued
+    \discreterandomvariable, and let \(k\in\naturalnumbers^\exceptzero\).
+    The random variable \(X\) has a \emph{finite \(k\)-th moment} if
+    \[
+        \expectation[|X|^k]<+\infty.
+    \]
+    In this case, \(\expectation[X^k]\) is called the
+    \emph{\(k\)-th moment} of \(X\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{mixed-moment-discrete-random-variables-definition}{Mixed moment}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X,Y\colon\Omega\fromto\realnumbers\) be real-valued
+    \discreterandomvariable[discrete random variables]. The pair \(X,Y\) has
+    a \emph{finite mixed moment} if
+    \[
+        \expectation[|XY|]<+\infty.
+    \]
+    In this case, \(\expectation[XY]\) is called the
+    \emph{mixed moment} of \(X\) and \(Y\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{discrete-moment-density-formulas}{Moment formulas through densities}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X,Y\colon\Omega\fromto\realnumbers\) be real-valued
+    \discreterandomvariable[discrete random variables]. Let \(p_X\) be the
+    \randomvariabledensity of \(X\), and let \(p_{X,Y}\) be the
+    \jointdensity of \((X,Y)\). Then:
+    \begin{enumerate}
+        \item for \(k\in\naturalnumbers^\exceptzero\), \(X\) has a
+            \finitemoment if and only if
+            \[
+                \sum_{x\in\realnumbers}|x|^kp_X(x)<+\infty,
+            \]
+            and in this case
+            \[
+                \expectation[X^k]
+                =
+                \sum_{x\in\realnumbers}x^kp_X(x);
+            \]
+        \item \(X,Y\) have a \mixedmoment if and only if
+            \[
+                \sum_{(x,y)\in\realnumbers^2}|xy|p_{X,Y}(x,y)<+\infty,
+            \]
+            and in this case
+            \[
+                \expectation[XY]
+                =
+                \sum_{(x,y)\in\realnumbers^2}xyp_{X,Y}(x,y).
+            \]
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{discrete-moment-density-formulas-proof}{discrete-moment-density-formulas}{Moment formulas through densities}
+    Apply the change-of-variable formula for the \expectedvalue to
+    \(g(x)=x^k\) and to \(g(x,y)=xy\).
+\end{snippetproof}
+
+\begin{snippetproposition}{lower-moments-from-higher-moment}{Lower moments from a finite higher moment}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X\colon\Omega\fromto\realnumbers\) be a real-valued
+    \discreterandomvariable. If
+    \[
+        \expectation[|X|^k]<+\infty
+    \]
+    for some \(k\in\naturalnumbers^\exceptzero\), then
+    \[
+        \expectation[|X|^h]<+\infty
+    \]
+    for every \(h\in\{1,\ldots,k\}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{lower-moments-from-higher-moment-proof}{lower-moments-from-higher-moment}{Lower moments from a finite higher moment}
+    For every \(x\in\realnumbers\) and every \(h\leq k\),
+    \[
+        |x|^h\leq 1+|x|^k.
+    \]
+    Taking expected values gives the result.
+\end{snippetproof}
+
+\section{Inequalities}
+
+\begin{snippettheorem}{discrete-jensen-inequality}{Jensen's inequality}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, let
+    \(X\colon\Omega\fromto\realnumbers\) be a real-valued
+    \discreterandomvariable with finite \expectedvalue, and let
+    \(f\colon\realnumbers\fromto\realnumbers\) be a convex \function. If
+    \(f(X)\) has an \expectedvalue, then
+    \[
+        f(\expectation[X])\leq\expectation[f(X)].
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{discrete-jensen-inequality-proof}{discrete-jensen-inequality}{Jensen's inequality}
+    A convex real \function admits a supporting affine function at every
+    point of the interior of its domain. Hence there exists
+    \(\lambda\in\realnumbers\) such that, for every \(x\in\realnumbers\),
+    \[
+        f(x)\geq f(\expectation[X])+\lambda(x-\expectation[X]).
+    \]
+    Substituting \(X\) and taking expected values gives
+    \[
+        \expectation[f(X)]
+        \geq
+        f(\expectation[X])+\lambda(\expectation[X]-\expectation[X])
+        =
+        f(\expectation[X]).
+    \]
+\end{snippetproof}
+
+\begin{snippettheorem}{probability-cauchy-schwarz-inequality}{Cauchy-Schwarz inequality for discrete random variables}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X,Y\colon\Omega\fromto\realnumbers\) be real-valued
+    \discreterandomvariable[discrete random variables]. If
+    \[
+        \expectation[X^2]<+\infty,
+        \qquad
+        \expectation[Y^2]<+\infty,
+    \]
+    then \(X,Y\) have a \mixedmoment and
+    \[
+        |\expectation[XY]|
+        \leq
+        \sqrt{\expectation[X^2]\expectation[Y^2]}.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{probability-cauchy-schwarz-inequality-proof}{probability-cauchy-schwarz-inequality}{Cauchy-Schwarz inequality for discrete random variables}
+    Since \(2|XY|\leq X^2+Y^2\), the mixed moment is finite. If
+    \(\expectation[X^2]=0\) or \(\expectation[Y^2]=0\), then one of the
+    random variables is \(0\) almost surely, and the result is immediate.
+    Otherwise, for every \(t\in\realnumbers\),
+    \[
+        0\leq\expectation[(X+tY)^2]
+        =
+        \expectation[X^2]+2t\expectation[XY]+t^2\expectation[Y^2].
+    \]
+    This quadratic polynomial in \(t\) is nonnegative for every \(t\), so its
+    discriminant is nonpositive:
+    \[
+        4\expectation[XY]^2
+        -
+        4\expectation[X^2]\expectation[Y^2]
+        \leq0.
+    \]
+    Taking square roots gives the inequality.
+\end{snippetproof}
+
+\section{Variance and covariance}
+
+\begin{snippetdefinition}{variance-covariance-definition}{Variance and covariance}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X,Y\colon\Omega\fromto\realnumbers\) be real-valued
+    \discreterandomvariable[discrete random variables] with finite second
+    moments. The \emph{variance} of \(X\) is
+    \[
+        \variance(X)
+        =
+        \expectation[(X-\expectation[X])^2]
+        =
+        \expectation[X^2]-\expectation[X]^2.
+    \]
+    The \emph{covariance} of \(X\) and \(Y\) is
+    \[
+        \covariance(X,Y)
+        =
+        \expectation[(X-\expectation[X])(Y-\expectation[Y])]
+        =
+        \expectation[XY]-\expectation[X]\expectation[Y].
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{variance-covariance-density-formulas}{Density formulas for variance and covariance}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X,Y\colon\Omega\fromto\realnumbers\) be real-valued
+    \discreterandomvariable[discrete random variables] with finite second
+    moments. Then
+    \[
+        \variance(X)
+        =
+        \sum_{x\in\realnumbers}
+        (x-\expectation[X])^2p_X(x),
+    \]
+    and
+    \[
+        \covariance(X,Y)
+        =
+        \sum_{(x,y)\in\realnumbers^2}
+        (x-\expectation[X])(y-\expectation[Y])p_{X,Y}(x,y).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{variance-covariance-density-formulas-proof}{variance-covariance-density-formulas}{Density formulas for variance and covariance}
+    Apply the change-of-variable formula for the \expectedvalue to
+    \(g(x)=(x-\expectation[X])^2\) and to
+    \(h(x,y)=(x-\expectation[X])(y-\expectation[Y])\).
+\end{snippetproof}
+
+\begin{snippetproposition}{zero-variance-characterization}{Zero variance}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X\colon\Omega\fromto\realnumbers\) be a real-valued
+    \discreterandomvariable with finite second moment. Then
+    \[
+        \variance(X)=0
+        \quad\Longleftrightarrow\quad
+        X\asequal \expectation[X].
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{zero-variance-characterization-proof}{zero-variance-characterization}{Zero variance}
+    If \(X\asequal \expectation[X]\), then the defining formula gives
+    \(\variance(X)=0\). Conversely, if \(\variance(X)=0\), then the
+    nonnegative random variable \((X-\expectation[X])^2\) has expected value
+    \(0\). By the basic property of the \expectedvalue, it is \(0\) almost
+    surely, so \(X\asequal \expectation[X]\).
+\end{snippetproof}
+
+\begin{snippetproposition}{expected-value-minimizes-mean-square-error}{Expected value minimizes mean squared error}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X\colon\Omega\fromto\realnumbers\) be a real-valued
+    \discreterandomvariable with finite second moment. Then, for every
+    \(c\in\realnumbers\),
+    \[
+        \variance(X)\leq\expectation[(X-c)^2],
+    \]
+    with equality if and only if \(c=\expectation[X]\).
+\end{snippetproposition}
+
+\begin{snippetproof}{expected-value-minimizes-mean-square-error-proof}{expected-value-minimizes-mean-square-error}{Expected value minimizes mean squared error}
+    Expanding around \(\expectation[X]\),
+    \begin{align*}
+        \expectation[(X-c)^2]
+        &=
+        \expectation[(X-\expectation[X]+\expectation[X]-c)^2]
+        \\
+        &=
+        \variance(X)
+        +
+        2(\expectation[X]-c)\expectation[X-\expectation[X]]
+        +
+        (\expectation[X]-c)^2
+        \\
+        &=
+        \variance(X)+(\expectation[X]-c)^2.
+    \end{align*}
+    The result follows.
+\end{snippetproof}
+
+\begin{snippetproposition}{variance-covariance-algebraic-properties}{Algebraic properties of variance and covariance}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X_1,\ldots,X_n\colon\Omega\fromto\realnumbers\) be real-valued
+    \discreterandomvariable[discrete random variables] with finite second
+    moments. Then:
+    \begin{enumerate}
+        \item for \(a,b\in\realnumbers\),
+            \[
+                \variance(aX_1+b)=a^2\variance(X_1);
+            \]
+        \item \(\variance(X_1)=\covariance(X_1,X_1)\);
+        \item \(\covariance(X_1,X_2)=\covariance(X_2,X_1)\);
+        \item for \(a,b\in\realnumbers\),
+            \[
+                \covariance(aX_1+bX_2,X_3)
+                =
+                a\covariance(X_1,X_3)+b\covariance(X_2,X_3);
+            \]
+        \item
+            \[
+                \variance\left(\sum_{k=1}^nX_k\right)
+                =
+                \sum_{k=1}^n\variance(X_k)
+                +
+                2\sum_{1\leq i<j\leq n}\covariance(X_i,X_j).
+            \]
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{variance-covariance-algebraic-properties-proof}{variance-covariance-algebraic-properties}{Algebraic properties of variance and covariance}
+    Each identity follows by expanding the definitions and using linearity of
+    the \expectedvalue.
+\end{snippetproof}
+
+\begin{snippetproposition}{independence-implies-zero-covariance}{Independence implies zero covariance}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X,Y\colon\Omega\fromto\realnumbers\) be independent real-valued
+    \discreterandomvariable[discrete random variables]. If
+    \[
+        \expectation[|X|]<+\infty,
+        \qquad
+        \expectation[|Y|]<+\infty,
+    \]
+    then \(X,Y\) have a \mixedmoment,
+    \[
+        \expectation[XY]=\expectation[X]\expectation[Y],
+    \]
+    and, if they have finite second moments,
+    \[
+        \covariance(X,Y)=0.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{independence-implies-zero-covariance-proof}{independence-implies-zero-covariance}{Independence implies zero covariance}
+    By independence, \(p_{X,Y}(x,y)=p_X(x)p_Y(y)\). Hence
+    \[
+        \expectation[|XY|]
+        =
+        \sum_{(x,y)\in\realnumbers^2}|xy|p_X(x)p_Y(y)
+        =
+        \left(\sum_{x\in\realnumbers}|x|p_X(x)\right)
+        \left(\sum_{y\in\realnumbers}|y|p_Y(y)\right)
+        <+\infty.
+    \]
+    The same factorization without absolute values gives
+    \[
+        \expectation[XY]
+        =
+        \expectation[X]\expectation[Y].
+    \]
+    Substituting this identity in the definition of covariance gives
+    \(\covariance(X,Y)=0\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{variance-sum-independent-random-variables}{Variance of a sum of independent random variables}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X_1,\ldots,X_n\colon\Omega\fromto\realnumbers\) be independent
+    real-valued \discreterandomvariable[discrete random variables] with
+    finite second moments. Then
+    \[
+        \variance\left(\sum_{k=1}^nX_k\right)
+        =
+        \sum_{k=1}^n\variance(X_k).
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{variance-sum-independent-random-variables-proof}{variance-sum-independent-random-variables}{Variance of a sum of independent random variables}
+    Distinct variables in the family have covariance \(0\). The result follows
+    from the variance formula for a sum.
+\end{snippetproof}
+
+\begin{snippetexample}{zero-covariance-dependent-random-variables-example}{Zero covariance does not imply independence}
+    Let \(X\) be a real-valued \discreterandomvariable with
+    \[
+        \mathbb P(X=-1)=\mathbb P(X=0)=\mathbb P(X=1)=\frac13,
+    \]
+    and let \(Y=X^2\). Then \(X\) and \(Y\) are not independent, because
+    \(Y\) is determined by \(X\). However,
+    \[
+        \expectation[X]=0,
+        \qquad
+        \expectation[Y]=\expectation[X^2]=\frac23,
+        \qquad
+        \expectation[XY]=\expectation[X^3]=0.
+    \]
+    Therefore \(\covariance(X,Y)=0\).
+\end{snippetexample}
+
+\section{Correlation}
+
+\begin{snippetproposition}{covariance-cauchy-schwarz-bound}{Cauchy-Schwarz bound for covariance}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X,Y\colon\Omega\fromto\realnumbers\) be real-valued
+    \discreterandomvariable[discrete random variables] with finite second
+    moments. Then
+    \[
+        |\covariance(X,Y)|
+        \leq
+        \sqrt{\variance(X)\variance(Y)}.
+    \]
+    If \(\variance(X)>0\) and \(\variance(Y)>0\), equality holds if and only
+    if there exist \(a,b\in\realnumbers\), with \(a\neq0\), such that
+    \[
+        Y\asequal aX+b.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{covariance-cauchy-schwarz-bound-proof}{covariance-cauchy-schwarz-bound}{Cauchy-Schwarz bound for covariance}
+    Apply Cauchy-Schwarz to
+    \[
+        \overline X=X-\expectation[X],
+        \qquad
+        \overline Y=Y-\expectation[Y].
+    \]
+    This gives
+    \[
+        |\covariance(X,Y)|
+        =
+        |\expectation[\overline X\overline Y]|
+        \leq
+        \sqrt{\expectation[\overline X^2]\expectation[\overline Y^2]}
+        =
+        \sqrt{\variance(X)\variance(Y)}.
+    \]
+    Equality in Cauchy-Schwarz holds exactly when
+    \(\overline Y\asequal a\overline X\) for some nonzero
+    \(a\in\realnumbers\), which is equivalent to
+    \(Y\asequal aX+b\) for
+    \(b=\expectation[Y]-a\expectation[X]\).
+\end{snippetproof}
+
+\begin{snippetdefinition}{correlation-coefficient-definition}{Correlation coefficient}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X,Y\colon\Omega\fromto\realnumbers\) be real-valued
+    \discreterandomvariable[discrete random variables] with finite second
+    moments and positive variances. The \emph{correlation coefficient}
+    between \(X\) and \(Y\) is
+    \[
+        \correlationcoefficient(X,Y)
+        =
+        \frac{\covariance(X,Y)}
+        {\sqrt{\variance(X)\variance(Y)}}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{correlation-coefficient-range-and-equality}{Range and equality case for correlation}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X,Y\colon\Omega\fromto\realnumbers\) be real-valued
+    \discreterandomvariable[discrete random variables] with finite second
+    moments and positive variances. Then
+    \[
+        -1\leq\correlationcoefficient(X,Y)\leq1.
+    \]
+    Moreover, \(\correlationcoefficient(X,Y)=1\) if and only if
+    \(Y\asequal aX+b\) for some \(a>0\) and \(b\in\realnumbers\), while
+    \(\correlationcoefficient(X,Y)=-1\) if and only if
+    \(Y\asequal aX+b\) for some \(a<0\) and \(b\in\realnumbers\).
+\end{snippetproposition}
+
+\begin{snippetproof}{correlation-coefficient-range-and-equality-proof}{correlation-coefficient-range-and-equality}{Range and equality case for correlation}
+    The range follows by dividing the covariance bound by
+    \(\sqrt{\variance(X)\variance(Y)}\). The equality cases are the equality
+    cases of the covariance bound, with the sign determined by the sign of
+    the covariance.
+\end{snippetproof}
+
+\end{document}

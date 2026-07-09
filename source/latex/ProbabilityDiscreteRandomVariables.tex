@@ -1,0 +1,481 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{probability-discrete-random-variables}
+\genpage
+
+\section{Discrete random variables}
+
+\begin{snippetdefinition}{discrete-random-variable-definition}{Discrete random variable}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace. A \emph{discrete random variable} is a
+    \function
+    \[
+        X\colon\Omega\fromto E,
+    \]
+    where \(E\subseteq\realnumbers^n\) is a finite or countably infinite
+    \set, for some \(n\in\naturalnumbers^\exceptzero\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{law-of-discrete-random-variable-definition}{Law of a discrete random variable}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let \(X\colon\Omega\fromto E\) be a
+    \discreterandomvariable. The \emph{law} of \(X\) is the
+    \function
+    \[
+        \mu_X\colon\powerset(E)\fromto[0,1]
+    \]
+    defined by
+    \[
+        \mu_X(A)
+        =
+        \mathbb P(X\in A)
+        =
+        \mathbb P\left(\{\omega\in\Omega\suchthat X(\omega)\in A\}\right)
+    \]
+    for every \(A\subseteq E\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{law-of-discrete-random-variable-is-probability-measure}{The law is a probability measure}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let \(X\colon\Omega\fromto E\) be a
+    \discreterandomvariable. Then the \lawofrandomvariable \(\mu_X\) is a
+    \probabilitymeasure on \((E,\powerset(E))\).
+\end{snippetproposition}
+
+\begin{snippetproof}{law-of-discrete-random-variable-is-probability-measure-proof}{law-of-discrete-random-variable-is-probability-measure}{The law is a probability measure}
+    First,
+    \[
+        \mu_X(E)
+        =
+        \mathbb P(\{\omega\in\Omega\suchthat X(\omega)\in E\})
+        =
+        \mathbb P(\Omega)
+        =
+        1.
+    \]
+    Let \(\{A_n\}_{n\in\naturalnumbers^\exceptzero}\subseteq\powerset(E)\)
+    be pairwise disjoint. Then the \event[events]
+    \[
+        B_n=\{\omega\in\Omega\suchthat X(\omega)\in A_n\}
+    \]
+    are pairwise disjoint, because \(X\) is a \function. Hence
+    \[
+        \mu_X\left(\bigcup_{n=1}^\infty A_n\right)
+        =
+        \mathbb P\left(\bigcup_{n=1}^\infty B_n\right)
+        =
+        \sum_{n=1}^\infty\mathbb P(B_n)
+        =
+        \sum_{n=1}^\infty\mu_X(A_n).
+    \]
+    Therefore \(\mu_X\) is countably additive.
+\end{snippetproof}
+
+\begin{snippetdefinition}{discrete-random-variable-density-definition}{Discrete density of a random variable}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let \(X\colon\Omega\fromto E\) be a
+    \discreterandomvariable with \lawofrandomvariable \(\mu_X\).
+    The \emph{discrete density} of \(X\) is the \discretedensity
+    \[
+        p_X\colon E\fromto[0,1]
+    \]
+    associated with \(\mu_X\), namely
+    \[
+        p_X(x)
+        =
+        \mu_X(\{x\})
+        =
+        \mathbb P(X=x)
+        =
+        \mathbb P\left(\{\omega\in\Omega\suchthat X(\omega)=x\}\right)
+    \]
+    for every \(x\in E\).
+\end{snippetdefinition}
+
+\begin{snippet}{random-variable-law-notation}
+    Let \(X\) be a \discreterandomvariable and let \(\mu\) be a
+    \discretedistribution on the codomain of \(X\). The notation
+    \[
+        X\sim\mu
+    \]
+    means that the \lawofrandomvariable of \(X\) is \(\mu\).
+\end{snippet}
+
+\begin{snippetexample}{binomial-random-variable-example}{A binomial random variable}
+    Let \(n\in\naturalnumbers\), \(p\in[0,1]\), and let
+    \(X\colon\Omega\fromto\{0,\ldots,n\}\) be a \discreterandomvariable.
+    The statement
+    \[
+        X\sim\operatorname{Binomial}(n,p)
+    \]
+    means that
+    \[
+        p_X(k)=\binom{n}{k}p^k(1-p)^{n-k}
+    \]
+    for every \(k\in\{0,\ldots,n\}\).
+\end{snippetexample}
+
+\begin{snippetproposition}{law-from-random-variable-density}{Computing the law from the density}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, let \(X\colon\Omega\fromto E\) be a
+    \discreterandomvariable, and let \(p_X\) be its \randomvariabledensity.
+    Then, for every \(A\subseteq E\),
+    \[
+        \mu_X(A)
+        =
+        \mathbb P(X\in A)
+        =
+        \sum_{x\in A}p_X(x).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{law-from-random-variable-density-proof}{law-from-random-variable-density}{Computing the law from the density}
+    Since \(E\) is finite or countably infinite,
+    \[
+        \{X\in A\}
+        =
+        \bigcup_{x\in A}\{X=x\},
+    \]
+    and the \event[events] \(\{X=x\}\), for \(x\in A\), are pairwise
+    disjoint. Therefore countable additivity gives
+    \[
+        \mathbb P(X\in A)
+        =
+        \sum_{x\in A}\mathbb P(X=x)
+        =
+        \sum_{x\in A}p_X(x).
+    \]
+\end{snippetproof}
+
+\begin{snippetdefinition}{discrete-random-variable-support-definition}{Support of a discrete random variable}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, let \(X\colon\Omega\fromto E\) be a
+    \discreterandomvariable, and let \(p_X\) be its \randomvariabledensity.
+    The \emph{support} of \(X\) is the \set
+    \[
+        \operatorname{supp}_X
+        =
+        \{x\in E\suchthat p_X(x)>0\}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{discrete-random-variable-support-full-law}{The support has full law}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, let \(X\colon\Omega\fromto E\) be a
+    \discreterandomvariable, and let \(\operatorname{supp}_X\) be its
+    \randomvariablesupport. Then
+    \[
+        \mathbb P(X\in\operatorname{supp}_X)
+        =
+        \mu_X(\operatorname{supp}_X)
+        =
+        1.
+    \]
+    Moreover, if \(A\subseteq E\), then
+    \[
+        \mathbb P(X\in A)>0
+        \quad\ifandonlyif\quad
+        A\intersection\operatorname{supp}_X\neq\emptyset.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{discrete-random-variable-support-full-law-proof}{discrete-random-variable-support-full-law}{The support has full law}
+    By the definition of \(\operatorname{supp}_X\),
+    \(p_X(x)=0\) for every \(x\in E\difference\operatorname{supp}_X\). Hence
+    \[
+        \mu_X(E\difference\operatorname{supp}_X)
+        =
+        \sum_{x\in E\difference\operatorname{supp}_X}p_X(x)
+        =
+        0,
+    \]
+    so \(\mu_X(\operatorname{supp}_X)=1\).
+
+    If \(A\intersection\operatorname{supp}_X=\emptyset\), then \(p_X(x)=0\) for every
+    \(x\in A\), so \(\mathbb P(X\in A)=0\). If
+    \(A\intersection\operatorname{supp}_X\neq\emptyset\), choose
+    \(x\in A\intersection\operatorname{supp}_X\). Then
+    \[
+        \mathbb P(X\in A)\geq \mathbb P(X=x)=p_X(x)>0.
+    \]
+\end{snippetproof}
+
+\section{Indicator random variables}
+
+\begin{snippetproposition}{indicator-random-variable-bernoulli-law}{Indicator random variables are Bernoulli}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let \(A\subseteq\Omega\). The
+    \function
+    \[
+        \indicator_A\colon\Omega\fromto\{0,1\}
+    \]
+    is a \discreterandomvariable, and
+    \[
+        \indicator_A\sim\operatorname{Bernoulli}(\mathbb P(A)).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{indicator-random-variable-bernoulli-law-proof}{indicator-random-variable-bernoulli-law}{Indicator random variables are Bernoulli}
+    By the definition of the indicator function,
+    \[
+        \mathbb P(\indicator_A=1)=\mathbb P(A),
+        \qquad
+        \mathbb P(\indicator_A=0)=\mathbb P(\Omega\difference A)
+        =
+        1-\mathbb P(A).
+    \]
+    These are exactly the point probabilities of a
+    \bernoullidistribution with parameter \(\mathbb P(A)\).
+\end{snippetproof}
+
+\begin{snippetproposition}{indicator-random-variable-identities}{Algebra of indicator random variables}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let \(A,B\subseteq\Omega\). Then
+    \[
+        \indicator_{\Omega\difference A}=1-\indicator_A,
+    \]
+    \[
+        \indicator_{A\intersection B}
+        =
+        \indicator_A\indicator_B
+        =
+        \min\{\indicator_A,\indicator_B\},
+    \]
+    \[
+        \indicator_{A\union B}
+        =
+        \indicator_A+\indicator_B-\indicator_{A\intersection B}
+        =
+        \max\{\indicator_A,\indicator_B\}.
+    \]
+    If \(A\subseteq B\), then
+    \[
+        \indicator_{B\difference A}=\indicator_B-\indicator_A.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{indicator-random-variable-identities-proof}{indicator-random-variable-identities}{Algebra of indicator random variables}
+    All identities are pointwise identities. Fix \(\omega\in\Omega\).
+    Each side of every displayed formula has the same value after checking the
+    possible memberships of \(\omega\) in \(A\) and \(B\).
+\end{snippetproof}
+
+\begin{snippetproposition}{discrete-random-variable-indicator-decomposition}{Indicator decomposition of a discrete random variable}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let \(X\colon\Omega\fromto E\subseteq
+    \realnumbers^n\) be a \discreterandomvariable. For every \(x\in E\), set
+    \[
+        \Omega_x=\{\omega\in\Omega\suchthat X(\omega)=x\}.
+    \]
+    Then the \event[events] \(\Omega_x\), with \(x\in E\), are pairwise
+    disjoint, their union is \(\Omega\), and
+    \[
+        X=\sum_{x\in E}x\indicator_{\Omega_x}
+    \]
+    pointwise.
+\end{snippetproposition}
+
+\begin{snippetproof}{discrete-random-variable-indicator-decomposition-proof}{discrete-random-variable-indicator-decomposition}{Indicator decomposition of a discrete random variable}
+    If \(x\neq y\), then \(\Omega_x\intersection\Omega_y=\emptyset\), because
+    \(X\) is a \function. Also
+    \[
+        \Omega=\bigcup_{x\in E}\Omega_x.
+    \]
+    For each \(\omega\in\Omega\), there is exactly one \(x\in E\) such that
+    \(X(\omega)=x\). In the sum
+    \[
+        \sum_{x\in E}x\indicator_{\Omega_x}(\omega),
+    \]
+    exactly one term is nonzero, and that term is \(X(\omega)\).
+\end{snippetproof}
+
+\section{Canonical construction}
+
+\begin{snippetproposition}{canonical-discrete-random-variable-construction}{Canonical construction from a law}
+    Let \(E\subseteq\realnumbers^n\) be a finite or countably infinite \set,
+    and let \(\mu\) be a \discretedistribution on \(E\). Then there exist a
+    \countableprobabilityspace and a \discreterandomvariable whose
+    \lawofrandomvariable is
+    \(\mu\).
+\end{snippetproposition}
+
+\begin{snippetproof}{canonical-discrete-random-variable-construction-proof}{canonical-discrete-random-variable-construction}{Canonical construction from a law}
+    Take the \countableprobabilityspace
+    \[
+        (E,\powerset(E),\mu)
+    \]
+    and define
+    \[
+        X\colon E\fromto E,
+        \qquad
+        X(\omega)=\omega.
+    \]
+    For every \(A\subseteq E\),
+    \[
+        \mu_X(A)
+        =
+        \mu(\{\omega\in E\suchthat X(\omega)\in A\})
+        =
+        \mu(A).
+    \]
+    Hence the \lawofrandomvariable of \(X\) is \(\mu\).
+\end{snippetproof}
+
+\section{Equality of random variables}
+
+\begin{snippetdefinition}{equality-in-law-definition}{Equality in law}
+    Let
+    \((\Omega_1,\powerset(\Omega_1),\mathbb P_1)\) and
+    \((\Omega_2,\powerset(\Omega_2),\mathbb P_2)\) be
+    \countableprobabilityspace[countable probability spaces]. Let
+    \(X_1\colon\Omega_1\fromto E\) and
+    \(X_2\colon\Omega_2\fromto E\) be \discreterandomvariable[discrete random
+    variables]. We say that \(X_1\) and \(X_2\) are \emph{equal in law},
+    and write
+    \[
+        X_1\eqdist X_2,
+    \]
+    if \(\mu_{X_1}=\mu_{X_2}\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{almost-sure-equality-definition}{Almost sure equality}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let \(X,Y\colon\Omega\fromto E\) be
+    \discreterandomvariable[discrete random variables]. We say that \(X\) and
+    \(Y\) are \emph{almost surely equal}, and write
+    \[
+        X\asequal Y,
+    \]
+    if
+    \[
+        \mathbb P(\{\omega\in\Omega\suchthat X(\omega)=Y(\omega)\})=1.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexample}{equal-in-law-not-almost-surely-equal}{Equality in law does not imply almost sure equality}
+    Let \(\Omega=\{T,C\}\), and let \(\mathbb P\) be the uniform probability
+    on \(\Omega\). Define
+    \[
+        X(T)=1,\quad X(C)=0,
+        \qquad
+        Y(T)=0,\quad Y(C)=1.
+    \]
+    Then \(X\) and \(Y\) have the same \bernoullidistribution with parameter
+    \(\frac12\), so \(X\eqdist Y\). However,
+    \[
+        \mathbb P(X=Y)=0,
+    \]
+    and therefore \(X\) and \(Y\) are not almost surely equal.
+\end{snippetexample}
+
+\begin{snippetproposition}{almost-sure-equality-implies-equality-in-law}{Almost sure equality implies equality in law}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let \(X,Y\colon\Omega\fromto E\) be
+    \discreterandomvariable[discrete random variables]. If \(X\asequal Y\),
+    then \(X\eqdist Y\).
+\end{snippetproposition}
+
+\begin{snippetproof}{almost-sure-equality-implies-equality-in-law-proof}{almost-sure-equality-implies-equality-in-law}{Almost sure equality implies equality in law}
+    Set
+    \[
+        \Omega_0=\{\omega\in\Omega\suchthat X(\omega)=Y(\omega)\}.
+    \]
+    Since \(X\asequal Y\), \(\mathbb P(\Omega_0)=1\). Hence
+    \(\mathbb P(\Omega\difference\Omega_0)=0\).
+    For every \(A\subseteq E\),
+    \begin{align*}
+        \mu_X(A)
+        &=
+        \mathbb P(\{\omega\in\Omega\suchthat X(\omega)\in A\})
+        \\
+        &=
+        \mathbb P(\{\omega\in\Omega_0\suchthat X(\omega)\in A\})
+        \\
+        &=
+        \mathbb P(\{\omega\in\Omega_0\suchthat Y(\omega)\in A\})
+        \\
+        &=
+        \mathbb P(\{\omega\in\Omega\suchthat Y(\omega)\in A\})
+        =
+        \mu_Y(A).
+    \end{align*}
+\end{snippetproof}
+
+\begin{snippetproposition}{equality-in-law-preserved-by-functions}{Equality in law is preserved by functions}
+    Let
+    \((\Omega_1,\powerset(\Omega_1),\mathbb P_1)\) and
+    \((\Omega_2,\powerset(\Omega_2),\mathbb P_2)\) be
+    \countableprobabilityspace[countable probability spaces]. Let
+    \(X\colon\Omega_1\fromto E\) and \(Y\colon\Omega_2\fromto E\) be
+    \discreterandomvariable[discrete random variables], and let
+    \(f\colon E\fromto F\) be a \function, where
+    \(F\subseteq\realnumbers^m\) is a finite or countably infinite \set for
+    some \(m\in\naturalnumbers^\exceptzero\). If \(X\eqdist Y\), then
+    \[
+        f\circ X\eqdist f\circ Y.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{equality-in-law-preserved-by-functions-proof}{equality-in-law-preserved-by-functions}{Equality in law is preserved by functions}
+    For every \(A\subseteq F\),
+    \[
+        \{f\circ X\in A\}=\{X\in f^{-1}(A)\},
+        \qquad
+        \{f\circ Y\in A\}=\{Y\in f^{-1}(A)\}.
+    \]
+    Since \(X\eqdist Y\),
+    \[
+        \mu_{f\circ X}(A)
+        =
+        \mathbb P_1(X\in f^{-1}(A))
+        =
+        \mathbb P_2(Y\in f^{-1}(A))
+        =
+        \mu_{f\circ Y}(A).
+    \]
+    Thus \(f\circ X\eqdist f\circ Y\).
+\end{snippetproof}
+
+\begin{snippetproposition}{density-of-function-of-discrete-random-variable}{Density of a function of a discrete random variable}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, let \(X\colon\Omega\fromto E\) be a
+    \discreterandomvariable with \randomvariabledensity \(p_X\), and let
+    \(g\colon E\fromto F\) be a \function, where
+    \(F\subseteq\realnumbers^m\) is a finite or countably infinite \set for
+    some \(m\in\naturalnumbers^\exceptzero\). Then \(g\circ X\) is a \discreterandomvariable
+    and its \randomvariabledensity is
+    \[
+        p_{g\circ X}(y)
+        =
+        \sum_{\substack{x\in E\\g(x)=y}}p_X(x)
+    \]
+    for every \(y\in F\).
+\end{snippetproposition}
+
+\begin{snippetproof}{density-of-function-of-discrete-random-variable-proof}{density-of-function-of-discrete-random-variable}{Density of a function of a discrete random variable}
+    For every \(y\in F\),
+    \[
+        \{g\circ X=y\}
+        =
+        \bigcup_{\substack{x\in E\\g(x)=y}}\{X=x\}.
+    \]
+    The \event[events] in the union are pairwise disjoint, so countable
+    additivity gives
+    \[
+        \mathbb P(g\circ X=y)
+        =
+        \sum_{\substack{x\in E\\g(x)=y}}\mathbb P(X=x)
+        =
+        \sum_{\substack{x\in E\\g(x)=y}}p_X(x).
+    \]
+\end{snippetproof}
+
+\end{document}

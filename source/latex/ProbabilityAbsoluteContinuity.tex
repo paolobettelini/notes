@@ -1,0 +1,262 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{probability-absolute-continuity}
+\genpage
+
+\section{Absolute continuity}
+
+\begin{snippetdefinition}{absolute-continuity-lebesgue-definition}{Absolute continuity with respect to Lebesgue measure}
+    Let \(\mu\) be a \probabilitymeasure on
+    \((\realnumbers,\mathcal B(\realnumbers))\), and let \(\lambda\) denote
+    \lebesguemeasure on \(\realnumbers\). The measure \(\mu\) is
+    \emph{absolutely continuous with respect to Lebesgue measure}, written
+    \[
+        \mu\ll\lambda,
+    \]
+    if, for every \(A\in\mathcal B(\realnumbers)\),
+    \[
+        \lambda(A)=0
+        \quad\Longrightarrow\quad
+        \mu(A)=0.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{probability-density-definition}{Density of an absolutely continuous probability measure}
+    Let \(\mu\) be a \probabilitymeasure on
+    \((\realnumbers,\mathcal B(\realnumbers))\). A \emph{density} of \(\mu\)
+    with respect to \lebesguemeasure is a nonnegative Borel
+    \function
+    \[
+        f_\mu\colon\realnumbers\fromto[0,+\infty]
+    \]
+    such that
+    \[
+        \mu(A)=\int_A f_\mu(x)\,dx
+    \]
+    for every \(A\in\mathcal B(\realnumbers)\).
+\end{snippetdefinition}
+
+\begin{snippettheorem}{absolute-continuity-density-characterization}{Density characterization of absolute continuity}
+    Let \(\mu\) be a \probabilitymeasure on
+    \((\realnumbers,\mathcal B(\realnumbers))\), and let \(\lambda\) be
+    \lebesguemeasure. Then
+    \[
+        \mu\ll\lambda
+    \]
+    if and only if \(\mu\) admits a \probabilitydensity with respect to
+    \(\lambda\).
+\end{snippettheorem}
+
+\begin{snippetproof}{absolute-continuity-density-characterization-proof}{absolute-continuity-density-characterization}{Density characterization of absolute continuity}
+    If \(\mu(A)=\int_A f_\mu(x)\,dx\) and \(\lambda(A)=0\), then
+    \(\int_A f_\mu(x)\,dx=0\), so \(\mu(A)=0\). Conversely, if
+    \(\mu\ll\lambda\), the Radon-Nikodym theorem gives a nonnegative Borel
+    \function \(f_\mu\) such that
+    \[
+        \mu(A)=\int_A f_\mu(x)\,dx
+    \]
+    for every \(A\in\mathcal B(\realnumbers)\).
+\end{snippetproof}
+
+\begin{snippetproposition}{probability-density-properties}{Properties of probability densities}
+    Let \(\mu\) be an \absolutelycontinuousmeasure on
+    \((\realnumbers,\mathcal B(\realnumbers))\), and let \(f_\mu\) be a
+    \probabilitydensity of \(\mu\). Then:
+    \begin{enumerate}
+        \item \(f_\mu\geq0\) almost everywhere;
+        \item
+            \[
+                \int_\realnumbers f_\mu(x)\,dx=1;
+            \]
+        \item if \(g_\mu\) is another \probabilitydensity of \(\mu\), then
+            \(f_\mu=g_\mu\) almost everywhere;
+        \item if \(F_\mu\) is the \distributionfunction of \(\mu\), then
+            \[
+                F_\mu(x)=\int_{-\infty}^x f_\mu(t)\,dt
+            \]
+            for every \(x\in\realnumbers\), and \(F_\mu\) is continuous.
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{probability-density-properties-proof}{probability-density-properties}{Properties of probability densities}
+    Nonnegativity is part of the definition up to modification on a null
+    \set. Since \(\mu(\realnumbers)=1\),
+    \[
+        1=\mu(\realnumbers)=\int_\realnumbers f_\mu(x)\,dx.
+    \]
+    If \(f_\mu\) and \(g_\mu\) are both densities, then
+    \[
+        \int_A f_\mu(x)\,dx=\int_A g_\mu(x)\,dx
+    \]
+    for every Borel \set \(A\). Therefore \(f_\mu=g_\mu\) almost
+    everywhere. Finally,
+    \[
+        F_\mu(x)=\mu((-\infty,x])=\int_{-\infty}^x f_\mu(t)\,dt.
+    \]
+    Absolute continuity of the Lebesgue integral gives continuity of
+    \(F_\mu\).
+\end{snippetproof}
+
+\begin{snippettheorem}{probability-measure-from-density}{Probability measure induced by a density}
+    Let \(f\colon\realnumbers\fromto[0,+\infty]\) be a Borel \function such
+    that
+    \[
+        \int_\realnumbers f(x)\,dx=1.
+    \]
+    Then
+    \[
+        \mu(A)=\int_A f(x)\,dx,
+        \qquad A\in\mathcal B(\realnumbers),
+    \]
+    defines a unique \absolutelycontinuousmeasure on
+    \((\realnumbers,\mathcal B(\realnumbers))\), and \(f\) is a
+    \probabilitydensity of \(\mu\).
+\end{snippettheorem}
+
+\begin{snippetproof}{probability-measure-from-density-proof}{probability-measure-from-density}{Probability measure induced by a density}
+    Countable additivity follows from countable additivity of the Lebesgue
+    integral on nonnegative functions. Moreover,
+    \[
+        \mu(\realnumbers)=\int_\realnumbers f(x)\,dx=1.
+    \]
+    Thus \(\mu\) is a \probabilitymeasure. Its absolute continuity follows
+    because the integral of \(f\) over a Lebesgue-null \set is \(0\). The
+    formula itself says that \(f\) is a density.
+\end{snippetproof}
+
+\section{Distribution functions and densities}
+
+\begin{snippetproposition}{cdf-from-density-and-density-from-cdf}{Distribution function of a density}
+    Let \(\mu\) be an \absolutelycontinuousmeasure on
+    \((\realnumbers,\mathcal B(\realnumbers))\), let \(f_\mu\) be a
+    \probabilitydensity of \(\mu\), and let \(F_\mu\) be its
+    \distributionfunction. Then
+    \[
+        F_\mu(x)=\int_{-\infty}^x f_\mu(t)\,dt
+    \]
+    for every \(x\in\realnumbers\). Conversely, if a distribution function
+    \(F\) has the form
+    \[
+        F(x)=\int_{-\infty}^x f(t)\,dt
+    \]
+    for some nonnegative Borel \function \(f\) with
+    \(\int_\realnumbers f(t)\,dt=1\), then the corresponding probability
+    measure is absolutely continuous with density \(f\).
+\end{snippetproposition}
+
+\begin{snippetproof}{cdf-from-density-and-density-from-cdf-proof}{cdf-from-density-and-density-from-cdf}{Distribution function of a density}
+    The first statement is the definition of the distribution function
+    together with the density formula:
+    \[
+        F_\mu(x)=\mu((-\infty,x])=\int_{-\infty}^x f_\mu(t)\,dt.
+    \]
+    The converse follows from the probability measure induced by a density
+    and from the fact that a distribution function determines its law.
+\end{snippetproof}
+
+\begin{snippetproposition}{piecewise-c1-cdf-density-criterion}{Piecewise differentiable distribution functions}
+    Let \(\mu\) be a \probabilitymeasure on
+    \((\realnumbers,\mathcal B(\realnumbers))\), and let \(F_\mu\) be its
+    \distributionfunction. Suppose that \(F_\mu\) is continuous and that
+    there is a finite \set \(S\subseteq\realnumbers\) such that
+    \(F_\mu\) is \(\mathcal C^1\) on each connected component of
+    \(\realnumbers\difference S\), with
+    \[
+        F_\mu(y)-F_\mu(x)=\int_x^y F_\mu'(t)\,dt
+    \]
+    for every \(x<y\). Then \(\mu\) is an \absolutelycontinuousmeasure and
+    \[
+        f_\mu(x)=F_\mu'(x)
+    \]
+    almost everywhere is a \probabilitydensity of \(\mu\).
+\end{snippetproposition}
+
+\begin{snippetproof}{piecewise-c1-cdf-density-criterion-proof}{piecewise-c1-cdf-density-criterion}{Piecewise differentiable distribution functions}
+    Define \(f(x)=F_\mu'(x)\) outside \(S\), and define \(f(x)=0\) on \(S\).
+    Since \(F_\mu\) is nondecreasing, \(f\geq0\) almost everywhere. The
+    displayed integral identity gives
+    \[
+        F_\mu(x)=\int_{-\infty}^x f(t)\,dt
+    \]
+    for every \(x\). Since \(F_\mu\) is a distribution function, this integral
+    tends to \(1\) as \(x\to+\infty\). Hence \(f\) is a density, and the law
+    determined by \(F_\mu\) is the law induced by \(f\).
+\end{snippetproof}
+
+\begin{snippetexample}{continuous-cdf-not-absolutely-continuous-example}{A continuous distribution function need not be absolutely continuous}
+    The Cantor distribution has a continuous \distributionfunction, but it is
+    singular with respect to \lebesguemeasure. Hence continuity of a
+    distribution function does not imply absolute continuity of the
+    corresponding probability measure.
+\end{snippetexample}
+
+\section{Mixed laws}
+
+\begin{snippetdefinition}{dirac-measure-definition}{Dirac measure}
+    Let \(a\in\realnumbers\). The \emph{Dirac measure} at \(a\) is the
+    \probabilitymeasure \(\delta_a\) on
+    \((\realnumbers,\mathcal B(\realnumbers))\) defined by
+    \[
+        \delta_a(A)
+        =
+        \begin{cases}
+            1 & a\in A,\\
+            0 & a\notin A,
+        \end{cases}
+    \]
+    for every \(A\in\mathcal B(\realnumbers)\).
+\end{snippetdefinition}
+
+\begin{snippettheorem}{lebesgue-decomposition-probability-measure}{Lebesgue decomposition of a probability measure}
+    Let \(\mu\) be a \probabilitymeasure on
+    \((\realnumbers,\mathcal B(\realnumbers))\). Then \(\mu\) can be
+    decomposed as
+    \[
+        \mu=\alpha\mu_d+\beta\mu_{ac}+\gamma\mu_s,
+    \]
+    where \(\alpha,\beta,\gamma\in[0,1]\), \(\alpha+\beta+\gamma=1\),
+    \(\mu_d\) is discrete, \(\mu_{ac}\) is absolutely continuous with respect
+    to \lebesguemeasure, and \(\mu_s\) is singular continuous. Terms with
+    coefficient \(0\) are omitted.
+\end{snippettheorem}
+
+\begin{snippetexample}{mixed-atom-density-lifetime-law}{A mixed lifetime law}
+    Let \(p\in[0,1]\) and \(\theta>0\). Let
+    \[
+        f(x)=\theta e^{-\theta x}\indicator_{[0,+\infty)}(x),
+    \]
+    and let \(\nu\) be the \probabilitymeasure induced by \(f\). Define
+    \[
+        \mu=p\delta_0+(1-p)\nu.
+    \]
+    Then
+    \[
+        F_\mu(x)
+        =
+        \begin{cases}
+            0 & x<0,\\
+            1-(1-p)e^{-\theta x} & x\geq0.
+        \end{cases}
+    \]
+    If \(p>0\), then \(\mu\) is not absolutely continuous with respect to
+    \lebesguemeasure, because
+    \[
+        \mu(\{0\})=p
+        \qquad\text{while}\qquad
+        \lambda(\{0\})=0.
+    \]
+    Its non-atomic part on \((0,+\infty)\) has density
+    \[
+        (1-p)\theta e^{-\theta x}\indicator_{(0,+\infty)}(x).
+    \]
+\end{snippetexample}
+
+\end{document}

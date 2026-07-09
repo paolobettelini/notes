@@ -1,0 +1,250 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{probability-discrete-random-vectors}
+\genpage
+
+\section{Discrete random vectors}
+
+\begin{snippetdefinition}{discrete-random-vector-definition}{Discrete random vector}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(n\in\naturalnumbers^\exceptzero\). For every \(i\in\{1,\ldots,n\}\),
+    let \(d_i\in\naturalnumbers^\exceptzero\), and let
+    \(E_i\subseteq\realnumbers^{d_i}\) be a finite or countably infinite
+    \set.
+    A \emph{discrete random vector} is an \(n\)-tuple
+    \[
+        X=(X_1,\ldots,X_n)
+    \]
+    such that each \(X_i\colon\Omega\fromto E_i\) is a
+    \discreterandomvariable. Equivalently, \(X\) is the
+    \discreterandomvariable, identifying \(\prod_{i=1}^n E_i\) with a
+    finite or countably infinite subset of
+    \(\realnumbers^{d_1+\cdots+d_n}\),
+    \[
+        X\colon\Omega\fromto\prod_{i=1}^n E_i,
+        \qquad
+        X(\omega)=\bigl(X_1(\omega),\ldots,X_n(\omega)\bigr).
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{joint-law-density-definition}{Joint law and joint density}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X=(X_1,\ldots,X_n)\) be a \discreterandomvector with
+    \(X_i\colon\Omega\fromto E_i\). The \emph{joint law} of \(X\) is the
+    \lawofrandomvariable of
+    \[
+        X\colon\Omega\fromto\prod_{i=1}^n E_i.
+    \]
+    It is denoted by \(\mu_{X_1,\ldots,X_n}\).
+    The \emph{joint density} of \(X\) is the \randomvariabledensity
+    \[
+        p_{X_1,\ldots,X_n}\colon\prod_{i=1}^n E_i\fromto[0,1]
+    \]
+    defined by
+    \[
+        p_{X_1,\ldots,X_n}(x_1,\ldots,x_n)
+        =
+        \mathbb P(X_1=x_1,\ldots,X_n=x_n).
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{joint-law-on-rectangles}{Joint law on rectangles}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X=(X_1,\ldots,X_n)\) be a \discreterandomvector with
+    \(X_i\colon\Omega\fromto E_i\). For every
+    \(A_i\subseteq E_i\),
+    \[
+        \mu_{X_1,\ldots,X_n}\left(\prod_{i=1}^n A_i\right)
+        =
+        \mathbb P(X_1\in A_1,\ldots,X_n\in A_n).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{joint-law-on-rectangles-proof}{joint-law-on-rectangles}{Joint law on rectangles}
+    By definition of the \jointlaw,
+    \[
+        \mu_{X_1,\ldots,X_n}\left(\prod_{i=1}^n A_i\right)
+        =
+        \mathbb P\left(
+            X\in\prod_{i=1}^n A_i
+        \right).
+    \]
+    Since \(X(\omega)=(X_1(\omega),\ldots,X_n(\omega))\), the \event
+    \(X\in\prod_{i=1}^n A_i\) is exactly the \event
+    \(X_1\in A_1,\ldots,X_n\in A_n\).
+\end{snippetproof}
+
+\section{Marginals}
+
+\begin{snippetdefinition}{marginal-law-density-definition}{Marginal law and marginal density}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X=(X_1,\ldots,X_n)\) be a \discreterandomvector with
+    \(X_i\colon\Omega\fromto E_i\). Let
+    \[
+        I=(i_1,\ldots,i_k)
+    \]
+    with \(1\leq i_1<\cdots<i_k\leq n\).
+    The \emph{marginal law} of \(X\) along \(I\) is the
+    \lawofrandomvariable of the subvector
+    \[
+        X_I=(X_{i_1},\ldots,X_{i_k})
+        \colon\Omega\fromto\prod_{j=1}^k E_{i_j}.
+    \]
+    The \emph{marginal density} along \(I\) is the
+    \randomvariabledensity of \(X_I\), denoted by \(p_I\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{marginal-density-from-joint-density}{Marginal density from the joint density}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, and let
+    \(X=(X_1,\ldots,X_n)\) be a \discreterandomvector with
+    \(X_i\colon\Omega\fromto E_i\). Let
+    \(I=(i_1,\ldots,i_k)\) with \(1\leq i_1<\cdots<i_k\leq n\), and let
+    \(p_I\) be the \marginaldensity along \(I\). Then
+    \[
+        p_I(x_{i_1},\ldots,x_{i_k})
+        =
+        \sum_{\substack{x_j\in E_j\\j\notin\{i_1,\ldots,i_k\}}}
+        p_{X_1,\ldots,X_n}(x_1,\ldots,x_n).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{marginal-density-from-joint-density-proof}{marginal-density-from-joint-density}{Marginal density from the joint density}
+    The \event
+    \[
+        \{X_{i_1}=x_{i_1},\ldots,X_{i_k}=x_{i_k}\}
+    \]
+    is the disjoint union, over all choices \(x_j\in E_j\) with
+    \(j\notin\{i_1,\ldots,i_k\}\), of the \event[events]
+    \[
+        \{X_1=x_1,\ldots,X_n=x_n\}.
+    \]
+    By countable additivity,
+    \[
+        \mathbb P(X_{i_1}=x_{i_1},\ldots,X_{i_k}=x_{i_k})
+        =
+        \sum_{\substack{x_j\in E_j\\j\notin\{i_1,\ldots,i_k\}}}
+        \mathbb P(X_1=x_1,\ldots,X_n=x_n),
+    \]
+    which is the desired formula.
+\end{snippetproof}
+
+\begin{snippetcorollary}{two-dimensional-marginal-density-formulas}{Two-dimensional marginal densities}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, let
+    \(X\colon\Omega\fromto E_1\) and \(Y\colon\Omega\fromto E_2\) be
+    \discreterandomvariable[discrete random variables], and let \(p_{X,Y}\)
+    be their \jointdensity. Then
+    \[
+        p_X(x)=\sum_{y\in E_2}p_{X,Y}(x,y),
+        \qquad
+        p_Y(y)=\sum_{x\in E_1}p_{X,Y}(x,y).
+    \]
+    Moreover, for every \(A_1\subseteq E_1\) and \(A_2\subseteq E_2\),
+    \[
+        \mu_{X,Y}(A_1\cartesianprod A_2)
+        =
+        \sum_{x\in A_1}\sum_{y\in A_2}p_{X,Y}(x,y).
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{two-dimensional-marginal-density-formulas-proof}{two-dimensional-marginal-density-formulas}{Two-dimensional marginal densities}
+    The first two formulas are the special case \(n=2\) of the
+    marginalization formula. The formula for \(A_1\cartesianprod A_2\)
+    follows from the \jointdensity:
+    \[
+        \mu_{X,Y}(A_1\cartesianprod A_2)
+        =
+        \sum_{(x,y)\in A_1\cartesianprod A_2}p_{X,Y}(x,y)
+        =
+        \sum_{x\in A_1}\sum_{y\in A_2}p_{X,Y}(x,y).
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{zero-marginal-implies-zero-joint-slice}{Zero marginal slices}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace, let
+    \(X\colon\Omega\fromto E_1\) and \(Y\colon\Omega\fromto E_2\) be
+    \discreterandomvariable[discrete random variables], and let \(p_{X,Y}\)
+    be their \jointdensity. If \(p_X(x)=0\), then
+    \[
+        p_{X,Y}(x,y)=0
+    \]
+    for every \(y\in E_2\). If \(p_Y(y)=0\), then
+    \[
+        p_{X,Y}(x,y)=0
+    \]
+    for every \(x\in E_1\).
+\end{snippetproposition}
+
+\begin{snippetproof}{zero-marginal-implies-zero-joint-slice-proof}{zero-marginal-implies-zero-joint-slice}{Zero marginal slices}
+    If \(p_X(x)=0\), then
+    \[
+        0=p_X(x)=\sum_{y\in E_2}p_{X,Y}(x,y).
+    \]
+    Every term in the sum is nonnegative, so each term must be \(0\).
+    The proof for \(p_Y(y)=0\) is analogous.
+\end{snippetproof}
+
+\section{Joint laws are not determined by marginals}
+
+\begin{snippetexample}{same-marginals-different-joint-laws-urn-example}{Same marginals but different joint laws}
+    Let \(n\in\naturalnumbers\) with \(n\geq2\), and let
+    \(E=\{1,\ldots,n\}\). Consider two experiments in which two balls are
+    drawn from an urn containing \(n\) distinguishable balls numbered by \(E\).
+
+    In the experiment with replacement, let
+    \[
+        \Omega_{\mathrm{wr}}=E^2
+    \]
+    with the uniform probability, and let
+    \(X_1(i,j)=i\), \(X_2(i,j)=j\). Then
+    \[
+        p_{X_1,X_2}^{\mathrm{wr}}(i,j)=\frac{1}{n^2}
+    \]
+    for every \((i,j)\in E^2\).
+
+    In the experiment without replacement, let
+    \[
+        \Omega_{\mathrm{wor}}=\{(i,j)\in E^2\suchthat i\neq j\}
+    \]
+    with the uniform probability, and let
+    \(Y_1(i,j)=i\), \(Y_2(i,j)=j\). Then
+    \[
+        p_{Y_1,Y_2}^{\mathrm{wor}}(i,j)
+        =
+        \begin{cases}
+            \frac{1}{n(n-1)} & i\neq j,\\
+            0 & i=j.
+        \end{cases}
+    \]
+    In both experiments, the two one-dimensional \marginallaw[marginal laws]
+    are uniform on \(E\). However, the \jointlaw[joint laws] are different.
+    Therefore the \marginallaw[marginal laws] do not determine the
+    \jointlaw.
+\end{snippetexample}
+
+\begin{snippetexample}{random-vector-support-not-product-example}{A joint support need not be a product}
+    In the sampling-without-replacement model of the previous example, the
+    \randomvariablesupport of the \discreterandomvector \((Y_1,Y_2)\) is
+    \[
+        \{(i,j)\in E^2\suchthat i\neq j\}.
+    \]
+    The marginal \randomvariablesupport[supports] of \(Y_1\) and \(Y_2\) are
+    both \(E\). Hence the joint \randomvariablesupport is not the product of
+    the marginal \randomvariablesupport[supports].
+\end{snippetexample}
+
+\end{document}

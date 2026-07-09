@@ -1,0 +1,223 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{probability-continuous-random-variables}
+\genpage
+
+\section{Absolutely continuous random variables}
+
+\begin{snippetdefinition}{absolutely-continuous-random-variable-definition}{Absolutely continuous random variable}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X\colon\Omega\fromto\realnumbers\) be a real-valued \randomvariable.
+    The random variable \(X\) is \emph{absolutely continuous} if its
+    \lawofrandomvariable \(\mu_X\) is an \absolutelycontinuousmeasure on
+    \((\realnumbers,\mathcal B(\realnumbers))\). A \emph{density} of \(X\)
+    is a \probabilitydensity \(f_X\) of \(\mu_X\), so that
+    \[
+        \mathbb P(X\in A)=\mu_X(A)=\int_A f_X(x)\,dx
+    \]
+    for every \(A\in\mathcal B(\realnumbers)\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{ac-random-variable-cdf-density-formula}{Distribution function of an absolutely continuous random variable}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X\colon\Omega\fromto\realnumbers\) be an
+    \absolutelycontinuousrandomvariable with density \(f_X\). If \(F_X\) is
+    the \distributionfunction of \(X\), then
+    \[
+        F_X(x)=\int_{-\infty}^x f_X(t)\,dt
+    \]
+    for every \(x\in\realnumbers\). In particular, \(F_X\) is continuous and
+    \(f_X=F_X'\) almost everywhere whenever \(F_X\) is differentiable almost
+    everywhere and the fundamental theorem for the Lebesgue integral applies.
+\end{snippetproposition}
+
+\begin{snippetproof}{ac-random-variable-cdf-density-formula-proof}{ac-random-variable-cdf-density-formula}{Distribution function of an absolutely continuous random variable}
+    By the definition of density,
+    \[
+        F_X(x)=\mathbb P(X\leq x)
+        =
+        \mu_X((-\infty,x])
+        =
+        \int_{-\infty}^x f_X(t)\,dt.
+    \]
+    The continuity follows from absolute continuity of the Lebesgue integral.
+    The last statement is the usual almost everywhere differentiation theorem
+    for indefinite Lebesgue integrals.
+\end{snippetproof}
+
+\begin{snippetproposition}{density-determines-law-not-random-variable}{A density determines the law, not the random variable}
+    Let \(f\colon\realnumbers\fromto[0,+\infty]\) be a Borel \function such
+    that \(\int_{\realnumbers} f(x)\,dx=1\). Then \(f\) determines a unique
+    \probabilitymeasure \(\mu\) on
+    \((\realnumbers,\mathcal B(\realnumbers))\), namely
+    \[
+        \mu(A)=\int_A f(x)\,dx.
+    \]
+    If \(X\) and \(Y\) are \randomvariable[random variables], possibly
+    defined on different \probabilityspace[probability spaces], and both have
+    density \(f\), then \(X\eqdist Y\). This does not imply that \(X\) and
+    \(Y\) are almost surely equal.
+\end{snippetproposition}
+
+\begin{snippetproof}{density-determines-law-not-random-variable-proof}{density-determines-law-not-random-variable}{A density determines the law, not the random variable}
+    The first statement is the probability measure induced by a density. If
+    \(X\) and \(Y\) both have density \(f\), then their laws agree with
+    \(\mu\), hence \(X\eqdist Y\). Almost sure equality is a statement on a
+    common probability space; equality in law only compares the induced
+    probability measures on \(\realnumbers\).
+\end{snippetproof}
+
+\section{Expected value}
+
+\begin{snippetdefinition}{expected-value-random-variable-definition}{Expected value of a random variable}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X\colon\Omega\fromto\realnumbers\) be a real-valued \randomvariable.
+    The \emph{expected value} of \(X\) is the Lebesgue integral
+    \[
+        \expectation[X]=\int_\Omega X(\omega)\,d\mathbb P(\omega),
+    \]
+    whenever this integral is well-defined in \([-\infty,+\infty]\). The
+    random variable \(X\) has a \emph{finite expected value} if
+    \[
+        \expectation[|X|]<+\infty.
+    \]
+\end{snippetdefinition}
+
+\begin{snippettheorem}{expected-value-law-formula}{Expected value through the law}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X\colon\Omega\fromto\realnumbers\) be a real-valued \randomvariable
+    with \lawofrandomvariable \(\mu_X\). Then \(X\) has a finite
+    \expectedvalue if and only if
+    \[
+        \int_{\realnumbers} |x|\,d\mu_X(x)<+\infty.
+    \]
+    In this case,
+    \[
+        \expectation[X]=\int_{\realnumbers} x\,d\mu_X(x).
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{expected-value-law-formula-proof}{expected-value-law-formula}{Expected value through the law}
+    This is the change-of-variable formula for the pushforward measure
+    \(\mu_X=\mathbb P\circ X^{-1}\). Applying it to \(x\mapsto x\) and to
+    \(x\mapsto |x|\) gives both the identity and the finiteness criterion.
+\end{snippetproof}
+
+\begin{snippetcorollary}{expected-value-absolutely-continuous-density-formula}{Expected value through a density}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X\colon\Omega\fromto\realnumbers\) be an
+    \absolutelycontinuousrandomvariable with density \(f_X\). Then \(X\) has
+    a finite \expectedvalue if and only if
+    \[
+        \int_\realnumbers |x|f_X(x)\,dx<+\infty.
+    \]
+    In this case,
+    \[
+        \expectation[X]=\int_\realnumbers xf_X(x)\,dx.
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{expected-value-absolutely-continuous-density-formula-proof}{expected-value-absolutely-continuous-density-formula}{Expected value through a density}
+    Since \(d\mu_X(x)=f_X(x)\,dx\), the formula follows from the expression of
+    the \expectedvalue through the \lawofrandomvariable.
+\end{snippetproof}
+
+\begin{snippettheorem}{random-variable-change-of-variable-expectation}{Change-of-variable formula for expected value}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, let
+    \(X\colon\Omega\fromto\realnumbers^n\) be a \randomvariable, and let
+    \(g\colon\realnumbers^n\fromto\realnumbers\) be a Borel \function. If
+    \(\mu_X\) is the \lawofrandomvariable of \(X\), then \(g(X)\) has a finite
+    \expectedvalue if and only if
+    \[
+        \int_{\realnumbers^n}|g(x)|\,d\mu_X(x)<+\infty.
+    \]
+    In this case,
+    \[
+        \expectation[g(X)]
+        =
+        \int_{\realnumbers^n}g(x)\,d\mu_X(x).
+    \]
+    If \(\mu_X\) has density \(f_X\) with respect to \(n\)-dimensional
+    \lebesguemeasure, then this becomes
+    \[
+        \expectation[g(X)]
+        =
+        \int_{\realnumbers^n}g(x)f_X(x)\,dx.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{random-variable-change-of-variable-expectation-proof}{random-variable-change-of-variable-expectation}{Change-of-variable formula for expected value}
+    The \lawofrandomvariable of \(g(X)\) is the pushforward of \(\mu_X\) by
+    \(g\). Applying the one-dimensional law formula to \(g(X)\) gives the
+    integral with respect to \(\mu_X\). If \(\mu_X\) has density \(f_X\), the
+    last formula follows from the density representation of \(\mu_X\).
+\end{snippetproof}
+
+\section{Moments}
+
+\begin{snippetdefinition}{finite-moment-random-variable-definition}{Finite moment}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, let
+    \(X\colon\Omega\fromto\realnumbers\) be a real-valued \randomvariable,
+    and let \(p>0\). The random variable \(X\) has a \emph{finite moment of
+    order \(p\)} if
+    \[
+        \expectation[|X|^p]<+\infty.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{higher-moment-implies-lower-moment}{Higher moments imply lower moments}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, let
+    \(X\colon\Omega\fromto\realnumbers\) be a real-valued \randomvariable,
+    and let \(0<q\leq p\). If
+    \[
+        \expectation[|X|^p]<+\infty,
+    \]
+    then
+    \[
+        \expectation[|X|^q]<+\infty.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{higher-moment-implies-lower-moment-proof}{higher-moment-implies-lower-moment}{Higher moments imply lower moments}
+    For every \(x\in\realnumbers\),
+    \[
+        |x|^q\leq 1+|x|^p.
+    \]
+    Taking expected values gives
+    \[
+        \expectation[|X|^q]\leq 1+\expectation[|X|^p]<+\infty.
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{variance-absolutely-continuous-density-formula}{Variance through a density}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X\colon\Omega\fromto\realnumbers\) be an
+    \absolutelycontinuousrandomvariable with density \(f_X\). If
+    \[
+        \int_\realnumbers x^2f_X(x)\,dx<+\infty,
+    \]
+    then \(X\) has finite variance and
+    \[
+        \variance(X)
+        =
+        \int_\realnumbers\left(x-\expectation[X]\right)^2f_X(x)\,dx
+        =
+        \int_\realnumbers x^2f_X(x)\,dx-\expectation[X]^2.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{variance-absolutely-continuous-density-formula-proof}{variance-absolutely-continuous-density-formula}{Variance through a density}
+    The second moment assumption implies that the first moment is finite by
+    the higher-to-lower moment result. Apply the change-of-variable formula to
+    \(g(x)=(x-\expectation[X])^2\) and expand the square.
+\end{snippetproof}
+
+\end{document}

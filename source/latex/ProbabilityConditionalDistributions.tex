@@ -1,0 +1,355 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{probability-conditional-distributions}
+\genpage
+
+\section{Discrete conditional laws}
+
+\begin{snippetdefinition}{conditional-law-discrete-definition}{Conditional law in the discrete case}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace. Let
+    \(X\colon\Omega\fromto E\) and \(Y\colon\Omega\fromto F\) be
+    \discreterandomvariable[discrete random variables], where
+    \(E,F\subseteq\realnumbers\) are finite or countably infinite
+    \set[sets]. If \(y\in F\) satisfies \(\mathbb P(Y=y)>0\), the
+    \emph{conditional law} of \(X\) given \(Y=y\) is the
+    \probabilitymeasure on \((E,\powerset(E))\) defined by
+    \[
+        \mu_{X\mid Y=y}(A)
+        =
+        \mathbb P(X\in A\mid Y=y)
+        =
+        \frac{\mathbb P(X\in A,\ Y=y)}{\mathbb P(Y=y)}
+    \]
+    for every \(A\subseteq E\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{conditional-discrete-density-definition}{Conditional discrete density}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace. Let
+    \(X\colon\Omega\fromto E\) and \(Y\colon\Omega\fromto F\) be
+    \discreterandomvariable[discrete random variables], where
+    \(E,F\subseteq\realnumbers\) are finite or countably infinite
+    \set[sets]. Let \(p_{X,Y}\) be the \jointdensity of \((X,Y)\), and let
+    \(p_Y\) be the \randomvariabledensity of \(Y\). If \(y\in F\) satisfies
+    \(p_Y(y)>0\), the \emph{conditional discrete density} of \(X\) given
+    \(Y=y\) is
+    \[
+        p_{X\mid Y}(x\mid y)
+        =
+        \frac{p_{X,Y}(x,y)}{p_Y(y)},
+        \qquad x\in E.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{conditional-discrete-density-is-density}{Conditional discrete densities are densities}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace. Let
+    \(X\colon\Omega\fromto E\) and \(Y\colon\Omega\fromto F\) be
+    \discreterandomvariable[discrete random variables], where
+    \(E,F\subseteq\realnumbers\) are finite or countably infinite
+    \set[sets]. If \(y\in F\) satisfies \(p_Y(y)>0\), then
+    \(p_{X\mid Y}(\cdot\mid y)\) is a \discretedensity on \(E\), and
+    \[
+        \mu_{X\mid Y=y}(A)
+        =
+        \sum_{x\in A}p_{X\mid Y}(x\mid y)
+    \]
+    for every \(A\subseteq E\).
+\end{snippetproposition}
+
+\begin{snippetproof}{conditional-discrete-density-is-density-proof}{conditional-discrete-density-is-density}{Conditional discrete densities are densities}
+    Nonnegativity is immediate. Moreover,
+    \[
+        \sum_{x\in E}p_{X\mid Y}(x\mid y)
+        =
+        \frac{1}{p_Y(y)}
+        \sum_{x\in E}p_{X,Y}(x,y)
+        =
+        \frac{p_Y(y)}{p_Y(y)}
+        =
+        1.
+    \]
+    For \(A\subseteq E\),
+    \[
+        \sum_{x\in A}p_{X\mid Y}(x\mid y)
+        =
+        \frac{1}{p_Y(y)}
+        \sum_{x\in A}\mathbb P(X=x,Y=y)
+        =
+        \frac{\mathbb P(X\in A,Y=y)}{\mathbb P(Y=y)}.
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{conditional-discrete-density-independent-case}{Conditional density under independence}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace. Let
+    \(X\colon\Omega\fromto E\) and \(Y\colon\Omega\fromto F\) be independent
+    \discreterandomvariable[discrete random variables], where
+    \(E,F\subseteq\realnumbers\) are finite or countably infinite
+    \set[sets]. If \(y\in F\) satisfies \(p_Y(y)>0\), then
+    \[
+        p_{X\mid Y}(x\mid y)=p_X(x)
+    \]
+    for every \(x\in E\).
+\end{snippetproposition}
+
+\begin{snippetproof}{conditional-discrete-density-independent-case-proof}{conditional-discrete-density-independent-case}{Conditional density under independence}
+    By independence,
+    \[
+        p_{X,Y}(x,y)=p_X(x)p_Y(y).
+    \]
+    Since \(p_Y(y)>0\),
+    \[
+        p_{X\mid Y}(x\mid y)
+        =
+        \frac{p_X(x)p_Y(y)}{p_Y(y)}
+        =
+        p_X(x).
+    \]
+\end{snippetproof}
+
+\begin{snippetdefinition}{discrete-conditional-expectation-definition}{Conditional expected value in the discrete case}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace. Let
+    \(X\colon\Omega\fromto E\subseteq\realnumbers\) and
+    \(Y\colon\Omega\fromto F\subseteq\realnumbers\) be
+    \discreterandomvariable[discrete random variables], where \(E\) and
+    \(F\) are finite or countably infinite \set[sets]. If \(y\in F\)
+    satisfies \(p_Y(y)>0\) and
+    \[
+        \sum_{x\in E}|x|p_{X\mid Y}(x\mid y)<+\infty,
+    \]
+    then the \emph{conditional expected value} of \(X\) given \(Y=y\) is
+    \[
+        \expectation[X\mid Y=y]
+        =
+        \sum_{x\in E}xp_{X\mid Y}(x\mid y).
+    \]
+    If the above sum is finite for every \(y\in F\) with \(p_Y(y)>0\), the
+    elementary conditional expectation of \(X\) given \(Y\) is the
+    \randomvariable
+    \[
+        \expectation[X\mid Y]
+        =
+        g(Y),
+        \qquad
+        g(y)=\expectation[X\mid Y=y].
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexample}{poisson-split-conditional-binomial-example}{Conditioning two independent Poisson variables on their sum}
+    Let \(X\) and \(Y\) be independent real-valued
+    \discreterandomvariable[discrete random variables] with
+    \[
+        X\sim\operatorname{Poisson}(\lambda),
+        \qquad
+        Y\sim\operatorname{Poisson}(\gamma),
+    \]
+    where \(\lambda,\gamma>0\). Let \(n\in\naturalnumbers\). Then, for
+    \(k\in\{0,\ldots,n\}\),
+    \[
+        \mathbb P(X=k\mid X+Y=n)
+        =
+        \binom{n}{k}
+        \left(\frac{\lambda}{\lambda+\gamma}\right)^k
+        \left(\frac{\gamma}{\lambda+\gamma}\right)^{n-k}.
+    \]
+    Therefore
+    \[
+        X\mid X+Y=n
+        \sim
+        \operatorname{Binomial}\left(n,\frac{\lambda}{\lambda+\gamma}\right),
+    \]
+    and
+    \[
+        \expectation[X\mid X+Y=n]
+        =
+        n\frac{\lambda}{\lambda+\gamma}.
+    \]
+\end{snippetexample}
+
+\begin{snippetproof}{poisson-split-conditional-binomial-example-proof}{poisson-split-conditional-binomial-example}{Conditioning two independent Poisson variables on their sum}
+    Since \(X+Y\sim\operatorname{Poisson}(\lambda+\gamma)\), for
+    \(k\in\{0,\ldots,n\}\),
+    \begin{align*}
+        \mathbb P(X=k\mid X+Y=n)
+        &=
+        \frac{\mathbb P(X=k,\ X+Y=n)}
+        {\mathbb P(X+Y=n)}
+        \\
+        &=
+        \frac{\mathbb P(X=k,\ Y=n-k)}
+        {\mathbb P(X+Y=n)}
+        \\
+        &=
+        \frac{
+            e^{-\lambda}\frac{\lambda^k}{k!}
+            e^{-\gamma}\frac{\gamma^{n-k}}{(n-k)!}
+        }{
+            e^{-(\lambda+\gamma)}
+            \frac{(\lambda+\gamma)^n}{n!}
+        }
+        \\
+        &=
+        \binom{n}{k}
+        \left(\frac{\lambda}{\lambda+\gamma}\right)^k
+        \left(\frac{\gamma}{\lambda+\gamma}\right)^{n-k}.
+    \end{align*}
+    This is the density of the stated \binomialdistribution. Its expected
+    value is the mean of a binomial law.
+\end{snippetproof}
+
+\section{Continuous conditional densities}
+
+\begin{snippetnote}{continuous-conditioning-on-null-event-note}{Conditioning on a point in the continuous case}
+    Let \((X,Y)\) be an \absolutelycontinuousrandomvector in
+    \(\realnumbers^2\). Then typically
+    \[
+        \mathbb P(Y=y)=0
+    \]
+    for every fixed \(y\in\realnumbers\). Thus the expression
+    \(\mathbb P(X\in A\mid Y=y)\) is not ordinary
+    \conditionalprobability given an \event of positive probability. In the
+    density setting, conditioning on \(Y=y\) is represented by a regular
+    conditional density.
+\end{snippetnote}
+
+\begin{snippetdefinition}{conditional-density-absolutely-continuous-definition}{Conditional density in the absolutely continuous case}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \((X,Y)\) be an \absolutelycontinuousrandomvector in \(\realnumbers^2\)
+    with \continuousjointdensity \(f_{X,Y}\). Let
+    \[
+        f_Y(y)=\int_\realnumbers f_{X,Y}(x,y)\,dx
+    \]
+    be the \continuousmarginaldensity of \(Y\). For every
+    \(y\in\realnumbers\) such that \(f_Y(y)>0\), the
+    \emph{conditional density} of \(X\) given \(Y=y\) is
+    \[
+        f_{X\mid Y=y}(x)
+        =
+        f_{X\mid Y}(x\mid y)
+        =
+        \frac{f_{X,Y}(x,y)}{f_Y(y)}
+    \]
+    for almost every \(x\in\realnumbers\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{conditional-continuous-density-is-density}{Conditional continuous densities are densities}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \((X,Y)\) be an \absolutelycontinuousrandomvector in \(\realnumbers^2\)
+    with \continuousjointdensity \(f_{X,Y}\). Let
+    \[
+        f_Y(y)=\int_\realnumbers f_{X,Y}(x,y)\,dx
+    \]
+    be the \continuousmarginaldensity of \(Y\). If \(y\in\realnumbers\)
+    satisfies \(f_Y(y)>0\), then
+    \[
+        f_{X\mid Y=y}(x)
+        =
+        \frac{f_{X,Y}(x,y)}{f_Y(y)}
+    \]
+    is a \probabilitydensity on \(\realnumbers\).
+\end{snippetproposition}
+
+\begin{snippetproof}{conditional-continuous-density-is-density-proof}{conditional-continuous-density-is-density}{Conditional continuous densities are densities}
+    Nonnegativity follows from nonnegativity of \(f_{X,Y}\). Moreover,
+    \[
+        \int_\realnumbers f_{X\mid Y=y}(x)\,dx
+        =
+        \frac{1}{f_Y(y)}
+        \int_\realnumbers f_{X,Y}(x,y)\,dx
+        =
+        1.
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{conditional-continuous-density-independent-case}{Conditional continuous density under independence}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \((X,Y)\) be an \absolutelycontinuousrandomvector in \(\realnumbers^2\)
+    with \continuousjointdensity \(f_{X,Y}\). Let \(f_X\) and \(f_Y\) be the
+    \continuousmarginaldensity[marginal densities] obtained by integrating
+    \(f_{X,Y}\). If \(X\) and \(Y\) are independent, then, for every \(y\)
+    with \(f_Y(y)>0\),
+    \[
+        f_{X\mid Y}(x\mid y)=f_X(x)
+    \]
+    for almost every \(x\in\realnumbers\).
+\end{snippetproposition}
+
+\begin{snippetproof}{conditional-continuous-density-independent-case-proof}{conditional-continuous-density-independent-case}{Conditional continuous density under independence}
+    By the density factorization criterion,
+    \[
+        f_{X,Y}(x,y)=f_X(x)f_Y(y)
+    \]
+    almost everywhere. Dividing by \(f_Y(y)>0\) gives the formula.
+\end{snippetproof}
+
+\begin{snippetdefinition}{continuous-conditional-expectation-definition}{Conditional expected value through a conditional density}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \((X,Y)\) be an \absolutelycontinuousrandomvector in \(\realnumbers^2\)
+    with \conditionaldensity \(f_{X\mid Y=y}\). If
+    \[
+        \int_\realnumbers |x|f_{X\mid Y=y}(x)\,dx<+\infty,
+    \]
+    then
+    \[
+        \expectation[X\mid Y=y]
+        =
+        \int_\realnumbers x f_{X\mid Y=y}(x)\,dx.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexample}{continuous-conditional-exponential-example}{A continuous conditional exponential law}
+    Let \((X,Y)\) be an \absolutelycontinuousrandomvector in
+    \(\realnumbers^2\) with density
+    \[
+        f_{X,Y}(x,y)
+        =
+        \frac{e^{-x/y}e^{-y}}{y}\indicator_{(0,+\infty)^2}(x,y).
+    \]
+    Then \(Y\sim\operatorname{Exp}(1)\), and for every \(y>0\),
+    \[
+        X\mid Y=y\sim\operatorname{Exp}\left(\frac{1}{y}\right).
+    \]
+    In particular,
+    \[
+        \expectation[X\mid Y=y]=y.
+    \]
+\end{snippetexample}
+
+\begin{snippetproof}{continuous-conditional-exponential-example-proof}{continuous-conditional-exponential-example}{A continuous conditional exponential law}
+    For \(y>0\),
+    \begin{align*}
+        f_Y(y)
+        &=
+        \int_\realnumbers
+        \frac{e^{-x/y}e^{-y}}{y}\indicator_{(0,+\infty)^2}(x,y)\,dx
+        \\
+        &=
+        e^{-y}\int_0^{+\infty}\frac{e^{-x/y}}{y}\,dx
+        =
+        e^{-y}.
+    \end{align*}
+    For \(y\leq0\), \(f_Y(y)=0\). Thus
+    \(Y\sim\operatorname{Exp}(1)\). For \(y>0\),
+    \[
+        f_{X\mid Y=y}(x)
+        =
+        \frac{f_{X,Y}(x,y)}{f_Y(y)}
+        =
+        \frac{1}{y}e^{-x/y}\indicator_{(0,+\infty)}(x).
+    \]
+    This is the density of
+    \(\operatorname{Exp}\left(\frac{1}{y}\right)\), whose mean is \(y\).
+\end{snippetproof}
+
+\end{document}

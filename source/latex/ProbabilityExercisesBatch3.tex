@@ -12,6 +12,380 @@
 
 \section{Exercises}
 
-\includesnpt{todo}
+\begin{snippetexercise}{probability-exercises-3-ex-22}{}
+    Let
+    \[
+        \varphi(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}},
+        \qquad x\in\realnumbers.
+    \]
+    \begin{enumerate}
+        \item Show that \(\varphi\) is a \probabilitydensity.
+        \item If \(Z\) is a \randomvariable with density \(\varphi\), compute
+        \(\expectation[Z]\) and \(\variance(Z)\).
+        \item Let \(\mu\in\realnumbers\), let \(\sigma>0\), and define
+        \(X=\sigma Z+\mu\). Determine the density, \expectedvalue and
+        \variance of \(X\).
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{probability-exercises-3-ex-22-sol}{}
+    \begin{enumerate}
+        \item Since \(\varphi(x)\geq0\) for every \(x\in\realnumbers\), it remains
+        to show that its integral is \(1\). Let
+        \[
+            I=\int_{\realnumbers}e^{-\frac{x^2}{2}}\,dx.
+        \]
+        Then, using polar coordinates in \(\realnumbers^2\),
+        \[
+            I^2
+            =
+            \int_{\realnumbers^2}e^{-\frac{x^2+y^2}{2}}\,dx\,dy
+            =
+            \int_0^{2\pi}\int_0^{+\infty}e^{-\frac{r^2}{2}}r\,dr\,d\theta
+            =
+            2\pi.
+        \]
+        Hence \(I=\sqrt{2\pi}\), and
+        \[
+            \int_{\realnumbers}\varphi(x)\,dx=1.
+        \]
+
+        \item By symmetry,
+        \[
+            \expectation[Z]
+            =
+            \int_{\realnumbers}z\varphi(z)\,dz
+            =
+            0.
+        \]
+        Moreover,
+        \[
+            \variance(Z)=\expectation[Z^2].
+        \]
+        Integrating by parts,
+        \[
+            \expectation[Z^2]
+            =
+            \frac{2}{\sqrt{2\pi}}
+            \int_0^{+\infty}z^2e^{-\frac{z^2}{2}}\,dz
+            =
+            \frac{2}{\sqrt{2\pi}}
+            \int_0^{+\infty}e^{-\frac{z^2}{2}}\,dz
+            =
+            1.
+        \]
+        Thus \(\expectation[Z]=0\) and \(\variance(Z)=1\).
+
+        \item Since \(X=\sigma Z+\mu\) and \(\sigma>0\), the change of variables
+        \(z=(x-\mu)/\sigma\) gives
+        \[
+            f_X(x)
+            =
+            \frac{1}{\sigma}
+            \varphi\left(\frac{x-\mu}{\sigma}\right)
+            =
+            \frac{1}{\sigma\sqrt{2\pi}}
+            e^{-\frac{(x-\mu)^2}{2\sigma^2}}.
+        \]
+        Hence \(X\sim\mathcal N(\mu,\sigma^2)\). Also,
+        \[
+            \expectation[X]=\sigma\expectation[Z]+\mu=\mu,
+            \qquad
+            \variance(X)=\sigma^2\variance(Z)=\sigma^2.
+        \]
+    \end{enumerate}
+\end{snippetsolution}
+
+\begin{snippetexercise}{probability-exercises-3-ex-23}{}
+    Let
+    \[
+        \begin{pmatrix}
+            X\\
+            Y
+        \end{pmatrix}
+        \sim
+        \mathcal N
+        \left(
+            \begin{pmatrix}
+                0\\
+                0
+            \end{pmatrix},
+            Q
+        \right),
+        \qquad
+        Q=
+        \begin{pmatrix}
+            a & b\\
+            b & c
+        \end{pmatrix},
+    \]
+    where \(Q\) is a \positivedefinitematrix. Define
+    \[
+        V=X,
+        \qquad
+        Z=X+Y.
+    \]
+    Determine the law of \((V,Z)\) and the law of \(X+Y\). What happens if
+    \(X\) and \(Y\) are independent?
+\end{snippetexercise}
+
+\begin{snippetsolution}{probability-exercises-3-ex-23-sol}{}
+    We have
+    \[
+        \begin{pmatrix}
+            V\\
+            Z
+        \end{pmatrix}
+        =
+        A
+        \begin{pmatrix}
+            X\\
+            Y
+        \end{pmatrix},
+        \qquad
+        A=
+        \begin{pmatrix}
+            1 & 0\\
+            1 & 1
+        \end{pmatrix}.
+    \]
+    By stability of \gaussianvector[Gaussian vectors] under invertible affine
+    transformations,
+    \[
+        \begin{pmatrix}
+            V\\
+            Z
+        \end{pmatrix}
+        \sim
+        \mathcal N(0,\Sigma),
+        \qquad
+        \Sigma=AQA^T.
+    \]
+    Therefore
+    \[
+        \Sigma
+        =
+        \begin{pmatrix}
+            1 & 0\\
+            1 & 1
+        \end{pmatrix}
+        \begin{pmatrix}
+            a & b\\
+            b & c
+        \end{pmatrix}
+        \begin{pmatrix}
+            1 & 1\\
+            0 & 1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            a & a+b\\
+            a+b & a+c+2b
+        \end{pmatrix}.
+    \]
+    The second marginal is therefore
+    \[
+        X+Y=Z\sim\mathcal N(0,a+c+2b).
+    \]
+    Since \(a=\variance(X)\), \(c=\variance(Y)\), and \(b=\covariance(X,Y)\),
+    this can be written as
+    \[
+        X+Y
+        \sim
+        \mathcal N\left(
+            0,
+            \variance(X)+\variance(Y)+2\covariance(X,Y)
+        \right).
+    \]
+    If \(X\) and \(Y\) are independent, then \(b=\covariance(X,Y)=0\), so
+    \[
+        X+Y\sim\mathcal N(0,\variance(X)+\variance(Y)).
+    \]
+\end{snippetsolution}
+
+\begin{snippetexercise}{probability-exercises-3-ex-24}{}
+    Let \((X,Y)\) be an \absolutelycontinuousrandomvector in
+    \(\realnumbers^2\) with joint density
+    \[
+        f_{X,Y}(x,y)
+        =
+        \frac{x}{4}e^{-\frac{x^2}{4}}y\,\indicator_D(x,y),
+        \qquad
+        D=\{(x,y)\in\realnumbers^2\suchthat 0<y<x\}.
+    \]
+    \begin{enumerate}
+        \item Compute the marginal densities of \(X\) and \(Y\).
+        \item Determine whether \(X\) and \(Y\) are independent.
+        \item Let
+        \[
+            U=X,
+            \qquad
+            V=\frac{X}{Y}.
+        \]
+        Determine whether \(U\) and \(V\) are independent.
+    \end{enumerate}
+\end{snippetexercise}
+
+\begin{snippetsolution}{probability-exercises-3-ex-24-sol}{}
+    \begin{enumerate}
+        \item For \(x>0\),
+        \[
+            f_X(x)
+            =
+            \int_0^x\frac{x}{4}e^{-\frac{x^2}{4}}y\,dy
+            =
+            \frac{x^3}{8}e^{-\frac{x^2}{4}}.
+        \]
+        Hence
+        \[
+            f_X(x)=\frac{x^3}{8}e^{-\frac{x^2}{4}}\indicator_{(0,+\infty)}(x).
+        \]
+        For \(y>0\),
+        \[
+            f_Y(y)
+            =
+            \int_y^{+\infty}\frac{x}{4}e^{-\frac{x^2}{4}}y\,dx
+            =
+            \frac{y}{2}e^{-\frac{y^2}{4}}.
+        \]
+        Hence
+        \[
+            f_Y(y)=\frac{y}{2}e^{-\frac{y^2}{4}}\indicator_{(0,+\infty)}(y).
+        \]
+
+        \item The variables \(X\) and \(Y\) are not independent. Indeed, if
+        \(0<x<y\), then \(f_{X,Y}(x,y)=0\), while \(f_X(x)>0\) and
+        \(f_Y(y)>0\). Thus the joint density cannot factor as the product of
+        the two marginal densities.
+
+        \item Consider the map
+        \[
+            \varphi(x,y)=\left(x,\frac{x}{y}\right).
+        \]
+        On \(D\), its image is
+        \[
+            \varphi(D)=(0,+\infty)\cartesianprod(1,+\infty),
+        \]
+        and its inverse is
+        \[
+            \varphi^{-1}(u,v)=\left(u,\frac{u}{v}\right).
+        \]
+        The absolute value of the Jacobian determinant of \(\varphi^{-1}\) is
+        \[
+            \left|\det J\varphi^{-1}(u,v)\right|=\frac{u}{v^2}.
+        \]
+        Therefore
+        \[
+            f_{U,V}(u,v)
+            =
+            \frac{u^3}{4v^3}e^{-\frac{u^2}{4}}
+            \indicator_{(0,+\infty)}(u)\indicator_{(1,+\infty)}(v).
+        \]
+        This factorizes as
+        \[
+            f_{U,V}(u,v)
+            =
+            \left(
+                \frac{u^3}{8}e^{-\frac{u^2}{4}}
+                \indicator_{(0,+\infty)}(u)
+            \right)
+            \left(
+                \frac{2}{v^3}\indicator_{(1,+\infty)}(v)
+            \right).
+        \]
+        Both factors are densities, so \(U\) and \(V\) are independent.
+    \end{enumerate}
+\end{snippetsolution}
+
+\begin{snippetexercise}{probability-exercises-3-ex-25}{}
+    Let \((X,Y)\) be uniformly distributed on the square \([-1,1]^2\), so that
+    \[
+        f_{X,Y}(x,y)=\frac{1}{4}\indicator_{[-1,1]^2}(x,y).
+    \]
+    Let
+    \[
+        G=
+        \frac{1}{\sqrt2}
+        \begin{pmatrix}
+            1 & -1\\
+            1 & 1
+        \end{pmatrix}
+    \]
+    and define
+    \[
+        \begin{pmatrix}
+            U\\
+            V
+        \end{pmatrix}
+        =
+        G
+        \begin{pmatrix}
+            X\\
+            Y
+        \end{pmatrix}.
+    \]
+    Determine the joint density of \((U,V)\), and show that \(U\) and \(V\)
+    are not independent.
+\end{snippetexercise}
+
+\begin{snippetsolution}{probability-exercises-3-ex-25-sol}{}
+    The matrix \(G\) is orthogonal, so \(G^{-1}=G^T\) and
+    \(|\det G|=1\). Hence
+    \[
+        G^{-1}
+        \begin{pmatrix}
+            u\\
+            v
+        \end{pmatrix}
+        =
+        \frac{1}{\sqrt2}
+        \begin{pmatrix}
+            u+v\\
+            v-u
+        \end{pmatrix}.
+    \]
+    By the affine density transformation,
+    \[
+        f_{U,V}(u,v)
+        =
+        \frac{1}{4}
+        \indicator_D(u,v),
+    \]
+    where
+    \[
+        D=
+        \left\{
+            (u,v)\in\realnumbers^2
+            \suchthat
+            |u+v|\leq\sqrt2,\ |v-u|\leq\sqrt2
+        \right\}.
+    \]
+    This is the square \([-1,1]^2\) rotated by \(45^\circ\).
+
+    At the point \((0,0)\), the joint density is
+    \[
+        f_{U,V}(0,0)=\frac{1}{4}.
+    \]
+    The marginal densities at \(0\) are
+    \[
+        f_U(0)
+        =
+        \int_{-\sqrt2}^{\sqrt2}\frac{1}{4}\,dv
+        =
+        \frac{\sqrt2}{2},
+        \qquad
+        f_V(0)
+        =
+        \int_{-\sqrt2}^{\sqrt2}\frac{1}{4}\,du
+        =
+        \frac{\sqrt2}{2}.
+    \]
+    Therefore
+    \[
+        f_U(0)f_V(0)=\frac{1}{2}\neq\frac{1}{4}=f_{U,V}(0,0).
+    \]
+    Thus the joint density does not factor into the product of the marginals,
+    and \(U\) and \(V\) are not independent.
+\end{snippetsolution}
 
 \end{document}

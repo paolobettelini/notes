@@ -1,0 +1,288 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{probability-laws-distribution-functions}
+\genpage
+
+\section{Random variables and laws}
+
+\begin{snippetdefinition}{random-variable-definition}{Random variable}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \((E,\mathcal E)\) be a \measurablespace. A \emph{random variable} with
+    values in \(E\) is a \measurablemap
+    \[
+        X\colon\Omega\fromto E,
+    \]
+    meaning that
+    \[
+        X^{-1}(B)\in\mathcal F
+    \]
+    for every \(B\in\mathcal E\). When
+    \(E=\realnumbers^n\) and \(\mathcal E=\mathcal B(\realnumbers^n)\), the
+    random variable is called \emph{\(\realnumbers^n\)-valued}.
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{law-of-random-variable-definition}{Law of a random variable}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, let
+    \((E,\mathcal E)\) be a \measurablespace, and let
+    \(X\colon\Omega\fromto E\) be a \randomvariable. The \emph{law} of \(X\)
+    is the \probabilitymeasure
+    \[
+        \mu_X\colon\mathcal E\fromto[0,1]
+    \]
+    defined by
+    \[
+        \mu_X(B)
+        =
+        \mathbb P(X\in B)
+        =
+        \mathbb P(X^{-1}(B))
+    \]
+    for every \(B\in\mathcal E\).
+\end{snippetdefinition}
+
+\begin{snippetproof}{law-of-random-variable-is-probability-measure-proof}{law-of-random-variable-definition}{Law of a random variable}
+    Since \(X^{-1}(E)=\Omega\),
+    \[
+        \mu_X(E)=\mathbb P(\Omega)=1.
+    \]
+    If \(B_1,B_2,\ldots\in\mathcal E\) are pairwise disjoint, then the
+    \event[events] \(X^{-1}(B_n)\) are pairwise disjoint and
+    \[
+        X^{-1}\left(\bigcup_{n=1}^\infty B_n\right)
+        =
+        \bigcup_{n=1}^\infty X^{-1}(B_n).
+    \]
+    Hence, by countable additivity of \(\mathbb P\),
+    \[
+        \mu_X\left(\bigcup_{n=1}^\infty B_n\right)
+        =
+        \sum_{n=1}^\infty\mu_X(B_n).
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{probability-measure-realized-as-law}{Every probability measure is a law}
+    Let \((E,\mathcal E,\mu)\) be a \probabilityspace. There exists a
+    \probabilityspace and a \randomvariable whose \lawofrandomvariable is
+    \(\mu\).
+\end{snippetproposition}
+
+\begin{snippetproof}{probability-measure-realized-as-law-proof}{probability-measure-realized-as-law}{Every probability measure is a law}
+    Take the \probabilityspace \((E,\mathcal E,\mu)\), and define
+    \[
+        X\colon E\fromto E,
+        \qquad
+        X(x)=x.
+    \]
+    Then \(X\) is measurable and, for every \(B\in\mathcal E\),
+    \[
+        \mu_X(B)=\mu(X^{-1}(B))=\mu(B).
+    \]
+\end{snippetproof}
+
+\section{Distribution functions}
+
+\begin{snippetdefinition}{distribution-function-definition}{Distribution function}
+    Let \(\mu\) be a \probabilitymeasure on
+    \((\realnumbers,\mathcal B(\realnumbers))\). The \emph{distribution
+    function} of \(\mu\) is the \function
+    \[
+        F_\mu\colon\realnumbers\fromto[0,1],
+        \qquad
+        F_\mu(x)=\mu((-\infty,x]).
+    \]
+    If \(X\) is a real-valued \randomvariable with \lawofrandomvariable
+    \(\mu_X\), the distribution function of \(X\) is
+    \[
+        F_X(x)=F_{\mu_X}(x)=\mathbb P(X\leq x).
+    \]
+\end{snippetdefinition}
+
+\begin{snippettheorem}{distribution-function-determines-law}{A distribution function determines the law}
+    Let \(\mu\) and \(\nu\) be \probabilitymeasure[probability measures] on
+    \((\realnumbers,\mathcal B(\realnumbers))\). If
+    \[
+        F_\mu(x)=F_\nu(x)
+    \]
+    for every \(x\in\realnumbers\), then \(\mu=\nu\).
+\end{snippettheorem}
+
+\begin{snippetproof}{distribution-function-determines-law-proof}{distribution-function-determines-law}{A distribution function determines the law}
+    The half-lines \((-\infty,x]\), with \(x\in\realnumbers\), form a
+    \(\pi\)-system that generates the \borelsigmaalgebra of
+    \(\realnumbers\). The two measures agree on this generating
+    \(\pi\)-system by hypothesis. By the uniqueness theorem for probability
+    measures on a generating \(\pi\)-system, \(\mu=\nu\).
+\end{snippetproof}
+
+\begin{snippetproposition}{distribution-function-properties}{Properties of distribution functions}
+    Let \(\mu\) be a \probabilitymeasure on
+    \((\realnumbers,\mathcal B(\realnumbers))\), and let \(F_\mu\) be its
+    \distributionfunction. Then:
+    \begin{enumerate}
+        \item \(F_\mu\) is nondecreasing;
+        \item \(F_\mu\) is right-continuous;
+        \item
+            \[
+                \lim_{x\to-\infty}F_\mu(x)=0,
+                \qquad
+                \lim_{x\to+\infty}F_\mu(x)=1.
+            \]
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{distribution-function-properties-proof}{distribution-function-properties}{Properties of distribution functions}
+    If \(x\leq y\), then \((-\infty,x]\subseteq(-\infty,y]\), so
+    \(F_\mu(x)\leq F_\mu(y)\).
+
+    Let \(x_n\downarrow x\). Then
+    \[
+        (-\infty,x_n]\downarrow(-\infty,x].
+    \]
+    By \continuityfromabove of probability measures,
+    \[
+        F_\mu(x_n)=\mu((-\infty,x_n])\to\mu((-\infty,x])=F_\mu(x),
+    \]
+    which is right-continuity.
+
+    Finally,
+    \[
+        (-\infty,n]\uparrow\realnumbers,
+        \qquad
+        (-\infty,-n]\downarrow\emptyset.
+    \]
+    The two limits follow from \continuityfrombelow and
+    \continuityfromabove.
+\end{snippetproof}
+
+\begin{snippetproposition}{distribution-function-interval-formulas}{Interval probabilities from a distribution function}
+    Let \(\mu\) be a \probabilitymeasure on
+    \((\realnumbers,\mathcal B(\realnumbers))\), and let \(F_\mu\) be its
+    \distributionfunction. For \(x\in\realnumbers\), write
+    \[
+        F_\mu(x^-)=\lim_{t\to x^-}F_\mu(t).
+    \]
+    If \(x<y\), then
+    \[
+        \mu((x,y])=F_\mu(y)-F_\mu(x),
+    \]
+    \[
+        \mu((x,y))=F_\mu(y^-)-F_\mu(x),
+    \]
+    \[
+        \mu([x,y))=F_\mu(y^-)-F_\mu(x^-),
+    \]
+    and
+    \[
+        \mu([x,y])=F_\mu(y)-F_\mu(x^-).
+    \]
+    For every \(x\in\realnumbers\),
+    \[
+        \mu(\{x\})=F_\mu(x)-F_\mu(x^-).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{distribution-function-interval-formulas-proof}{distribution-function-interval-formulas}{Interval probabilities from a distribution function}
+    The first formula follows from the disjoint decomposition
+    \[
+        (-\infty,y]=(-\infty,x]\union(x,y].
+    \]
+    Also,
+    \[
+        \mu((-\infty,y))
+        =
+        \lim_{t\to y^-}\mu((-\infty,t])
+        =
+        F_\mu(y^-).
+    \]
+    Subtracting the appropriate lower half-line gives the formulas for
+    \((x,y)\), \([x,y)\), and \([x,y]\). The singleton formula follows from
+    \[
+        \{x\}=(-\infty,x]\difference(-\infty,x).
+    \]
+\end{snippetproof}
+
+\section{Discrete laws and atoms}
+
+\begin{snippetdefinition}{probability-atom-definition}{Atom of a probability measure on the real line}
+    Let \(\mu\) be a \probabilitymeasure on
+    \((\realnumbers,\mathcal B(\realnumbers))\). A point
+    \(x\in\realnumbers\) is an \emph{atom} of \(\mu\) if
+    \[
+        \mu(\{x\})>0.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetcorollary}{cdf-jump-atom-correspondence}{Atoms are jumps of the distribution function}
+    Let \(\mu\) be a \probabilitymeasure on
+    \((\realnumbers,\mathcal B(\realnumbers))\), and let \(F_\mu\) be its
+    \distributionfunction. A point \(x\in\realnumbers\) is an
+    \probabilityatom of \(\mu\) if and only if \(F_\mu\) has a jump
+    discontinuity at \(x\). More precisely,
+    \[
+        \mu(\{x\})=F_\mu(x)-F_\mu(x^-).
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{cdf-jump-atom-correspondence-proof}{cdf-jump-atom-correspondence}{Atoms are jumps of the distribution function}
+    This is exactly the singleton formula for a distribution function.
+\end{snippetproof}
+
+\begin{snippetproposition}{discrete-law-distribution-function}{Distribution function of a discrete law}
+    Let \(\mu\) be a \probabilitymeasure on
+    \((\realnumbers,\mathcal B(\realnumbers))\). Suppose that there exists a
+    finite or countably infinite \set \(D\subseteq\realnumbers\) such that
+    \[
+        \mu(D)=1.
+    \]
+    Let \(p(x)=\mu(\{x\})\). Then
+    \[
+        F_\mu(t)
+        =
+        \sum_{\substack{x\in D\\x\leq t}}p(x)
+    \]
+    for every \(t\in\realnumbers\).
+\end{snippetproposition}
+
+\begin{snippetproof}{discrete-law-distribution-function-proof}{discrete-law-distribution-function}{Distribution function of a discrete law}
+    Since \(\mu(D)=1\),
+    \[
+        F_\mu(t)
+        =
+        \mu((-\infty,t])
+        =
+        \mu(D\intersection(-\infty,t]).
+    \]
+    The \set \(D\intersection(-\infty,t]\) is finite or countably infinite,
+    so countable additivity gives
+    \[
+        \mu(D\intersection(-\infty,t])
+        =
+        \sum_{\substack{x\in D\\x\leq t}}\mu(\{x\}).
+    \]
+\end{snippetproof}
+
+\begin{snippetcorollary}{continuous-distribution-function-has-no-atoms}{Continuous distribution functions have no atoms}
+    Let \(\mu\) be a \probabilitymeasure on
+    \((\realnumbers,\mathcal B(\realnumbers))\), and let \(F_\mu\) be its
+    \distributionfunction. If \(F_\mu\) is continuous, then \(\mu\) has no
+    \probabilityatom[atoms].
+\end{snippetcorollary}
+
+\begin{snippetproof}{continuous-distribution-function-has-no-atoms-proof}{continuous-distribution-function-has-no-atoms}{Continuous distribution functions have no atoms}
+    If \(F_\mu\) is continuous, then \(F_\mu(x)=F_\mu(x^-)\) for every
+    \(x\in\realnumbers\). Hence
+    \[
+        \mu(\{x\})=F_\mu(x)-F_\mu(x^-)=0
+    \]
+    for every \(x\).
+\end{snippetproof}
+
+\end{document}

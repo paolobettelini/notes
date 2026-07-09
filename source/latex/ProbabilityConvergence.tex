@@ -1,0 +1,406 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{probability-convergence}
+\genpage
+
+\section{Modes of convergence}
+
+\begin{snippetdefinition}{convergence-in-distribution-definition}{Convergence in distribution}
+    Let \((X_n)_{n\geq 1}\) be a sequence of real-valued
+    \randomvariable[random variables] and let \(X\) be a real-valued
+    \randomvariable, all defined on possibly different \probabilityspace[probability spaces].
+    Let \(F_n\) be the \distributionfunction of \(X_n\) and let \(F\) be the
+    \distributionfunction of \(X\). We say that \(X_n\)
+    \emph{converges in distribution} to \(X\), and we write
+    \[
+        X_n \xrightarrow{d} X,
+    \]
+    if
+    \[
+        \lim_{n\to\infty}F_n(x)=F(x)
+    \]
+    for every continuity point \(x\) of \(F\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{convergence-in-probability-definition}{Convergence in probability}
+    Let \((\Omega,\mathcal{F},\mathbb{P})\) be a \probabilityspace.
+    Let \((X_n)_{n\geq 1}\) be a sequence of real-valued
+    \randomvariable[random variables] on \(\Omega\), and let \(X\) be a
+    real-valued \randomvariable on \(\Omega\). We say that \(X_n\)
+    \emph{converges in probability} to \(X\), and we write
+    \[
+        X_n \xrightarrow{\mathbb{P}} X,
+    \]
+    if, for every \(\varepsilon>0\),
+    \[
+        \lim_{n\to\infty}\mathbb{P}\left(|X_n-X|>\varepsilon\right)=0.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{almost-sure-convergence-definition}{Almost sure convergence}
+    Let \((\Omega,\mathcal{F},\mathbb{P})\) be a \probabilityspace.
+    Let \((X_n)_{n\geq 1}\) be a sequence of real-valued
+    \randomvariable[random variables] on \(\Omega\), and let \(X\) be a
+    real-valued \randomvariable on \(\Omega\). We say that \(X_n\)
+    \emph{converges almost surely} to \(X\), and we write
+    \[
+        X_n \xrightarrow{\mathrm{a.s.}} X,
+    \]
+    if there exists an \event \(\Omega_0\in\mathcal{F}\) such that
+    \(\mathbb{P}(\Omega_0)=1\) and
+    \[
+        \lim_{n\to\infty}X_n(\omega)=X(\omega)
+    \]
+    for every \(\omega\in\Omega_0\).
+\end{snippetdefinition}
+
+\section{Relations between modes}
+
+\begin{snippettheorem}{convergence-in-probability-implies-distribution}{Convergence in probability implies convergence in distribution}
+    Let \((\Omega,\mathcal{F},\mathbb{P})\) be a \probabilityspace.
+    Let \((X_n)_{n\geq 1}\) be a sequence of real-valued
+    \randomvariable[random variables] on \(\Omega\), and let \(X\) be a
+    real-valued \randomvariable on \(\Omega\). If
+    \[
+        X_n\xrightarrow{\mathbb{P}}X,
+    \]
+    then
+    \[
+        X_n\xrightarrow{d}X.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{convergence-in-probability-implies-distribution-proof}{convergence-in-probability-implies-distribution}{Convergence in probability implies convergence in distribution}
+    Let \(F_n\) be the \distributionfunction of \(X_n\), and let \(F\) be
+    the \distributionfunction of \(X\). Fix a continuity point \(x\) of
+    \(F\), and fix \(\varepsilon>0\). Since
+    \[
+        \{X_n\leq x\}
+        \subseteq
+        \{X\leq x+\varepsilon\}\union\{|X_n-X|>\varepsilon\},
+    \]
+    we have
+    \[
+        F_n(x)
+        \leq F(x+\varepsilon)
+        +\mathbb{P}\left(|X_n-X|>\varepsilon\right).
+    \]
+    Taking the upper limit as \(n\to\infty\) gives
+    \[
+        \limsup_{n\to\infty}F_n(x)\leq F(x+\varepsilon).
+    \]
+    Similarly,
+    \[
+        \{X\leq x-\varepsilon\}
+        \subseteq
+        \{X_n\leq x\}\union\{|X_n-X|>\varepsilon\},
+    \]
+    and hence
+    \[
+        F(x-\varepsilon)
+        \leq
+        F_n(x)+\mathbb{P}\left(|X_n-X|>\varepsilon\right).
+    \]
+    Taking the lower limit as \(n\to\infty\) gives
+    \[
+        F(x-\varepsilon)\leq\liminf_{n\to\infty}F_n(x).
+    \]
+    Therefore
+    \[
+        F(x-\varepsilon)
+        \leq
+        \liminf_{n\to\infty}F_n(x)
+        \leq
+        \limsup_{n\to\infty}F_n(x)
+        \leq
+        F(x+\varepsilon).
+    \]
+    Since \(F\) is continuous at \(x\), letting \(\varepsilon\to0^+\)
+    yields
+    \[
+        \lim_{n\to\infty}F_n(x)=F(x).
+    \]
+    Thus \(X_n\xrightarrow{d}X\).
+\end{snippetproof}
+
+\begin{snippetexample}{distribution-convergence-not-probability-example}{Convergence in distribution need not imply convergence in probability}
+    Let \(X\) be a \randomvariable with
+    \(X\sim\operatorname{Bernoulli}(1/2)\), let \(Y=1-X\), and define
+    \(X_n=X\) for every \(n\geq1\). Then \(X_n\eqdist Y\) for every
+    \(n\geq1\), because both \(X_n\) and \(Y\) have the
+    \bernoullidistribution with parameter \(1/2\). Hence
+    \[
+        X_n\xrightarrow{d}Y.
+    \]
+    However, for every \(0<\varepsilon<1\),
+    \[
+        \mathbb{P}\left(|X_n-Y|>\varepsilon\right)
+        =
+        \mathbb{P}\left(|2X-1|>\varepsilon\right)=1.
+    \]
+    Thus \(X_n\) does not converge in probability to \(Y\).
+\end{snippetexample}
+
+\section{Event limits}
+
+\begin{snippetdefinition}{limsup-liminf-events-definition}{Limit superior and limit inferior of events}
+    Let \((\Omega,\mathcal{F},\mathbb{P})\) be a \probabilityspace, and
+    let \((A_n)_{n\geq 1}\) be a sequence of \event[events]. The
+    \emph{limit superior} and \emph{limit inferior} of \((A_n)\) are
+    \[
+        \limsup_{n\to\infty}A_n
+        =
+        \bigcap_{m=1}^{+\infty}\bigcup_{n=m}^{+\infty}A_n
+    \]
+    and
+    \[
+        \liminf_{n\to\infty}A_n
+        =
+        \bigcup_{m=1}^{+\infty}\bigcap_{n=m}^{+\infty}A_n.
+    \]
+    The \event \(\limsup_{n\to\infty}A_n\) occurs when infinitely many
+    \(A_n\) occur. The \event \(\liminf_{n\to\infty}A_n\) occurs when
+    all \(A_n\) occur from some index onward.
+\end{snippetdefinition}
+
+\begin{snippettheorem}{event-fatou-inequalities}{Fatou inequalities for events}
+    Let \((\Omega,\mathcal{F},\mathbb{P})\) be a \probabilityspace, and
+    let \((A_n)_{n\geq1}\) be a sequence of \event[events]. Then
+    \[
+        \mathbb{P}\left(\liminf_{n\to\infty}A_n\right)
+        \leq
+        \liminf_{n\to\infty}\mathbb{P}(A_n)
+        \leq
+        \limsup_{n\to\infty}\mathbb{P}(A_n)
+        \leq
+        \mathbb{P}\left(\limsup_{n\to\infty}A_n\right).
+    \]
+    In particular, if
+    \[
+        \liminf_{n\to\infty}A_n=\limsup_{n\to\infty}A_n=A,
+    \]
+    then
+    \[
+        \lim_{n\to\infty}\mathbb{P}(A_n)=\mathbb{P}(A).
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{event-fatou-inequalities-proof}{event-fatou-inequalities}{Fatou inequalities for events}
+    Put
+    \[
+        S_m=\bigcup_{n=m}^{+\infty}A_n
+        \quad\text{and}\quad
+        L_m=\bigcap_{n=m}^{+\infty}A_n.
+    \]
+    Then \((S_m)\) is decreasing, \((L_m)\) is increasing, and
+    \[
+        \limsup_{n\to\infty}A_n=\bigcap_{m=1}^{+\infty}S_m,
+        \quad
+        \liminf_{n\to\infty}A_n=\bigcup_{m=1}^{+\infty}L_m.
+    \]
+    Since \(L_m\subseteq A_n\subseteq S_m\) for every \(n\geq m\),
+    \[
+        \mathbb{P}(L_m)
+        \leq
+        \inf_{n\geq m}\mathbb{P}(A_n)
+        \leq
+        \sup_{n\geq m}\mathbb{P}(A_n)
+        \leq
+        \mathbb{P}(S_m).
+    \]
+    Letting \(m\to\infty\), and using continuity of probability from
+    below for \((L_m)\) and from above for \((S_m)\), gives the stated
+    inequalities.
+\end{snippetproof}
+
+\begin{snippettheorem}{borel-cantelli-lemma}{Borel-Cantelli lemma}
+    Let \((\Omega,\mathcal{F},\mathbb{P})\) be a \probabilityspace, and
+    let \((A_n)_{n\geq1}\) be a sequence of \event[events]. If
+    \[
+        \sum_{n=1}^{+\infty}\mathbb{P}(A_n)<+\infty,
+    \]
+    then
+    \[
+        \mathbb{P}\left(\limsup_{n\to\infty}A_n\right)=0.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{borel-cantelli-lemma-proof}{borel-cantelli-lemma}{Borel-Cantelli lemma}
+    For every \(m\geq1\),
+    \[
+        \limsup_{n\to\infty}A_n
+        \subseteq
+        \bigcup_{n=m}^{+\infty}A_n.
+    \]
+    Hence, by countable subadditivity,
+    \[
+        \mathbb{P}\left(\limsup_{n\to\infty}A_n\right)
+        \leq
+        \sum_{n=m}^{+\infty}\mathbb{P}(A_n).
+    \]
+    Since the series \(\sum_{n=1}^{+\infty}\mathbb{P}(A_n)\) converges,
+    its tails converge to \(0\). Letting \(m\to\infty\) gives
+    \[
+        \mathbb{P}\left(\limsup_{n\to\infty}A_n\right)=0.
+    \]
+\end{snippetproof}
+
+\section{Almost sure criteria}
+
+\begin{snippettheorem}{almost-sure-convergence-limsup-criterion}{Limsup criterion for almost sure convergence}
+    Let \((\Omega,\mathcal{F},\mathbb{P})\) be a \probabilityspace.
+    Let \((X_n)_{n\geq1}\) be a sequence of real-valued
+    \randomvariable[random variables] on \(\Omega\), and let \(X\) be a
+    real-valued \randomvariable on \(\Omega\). For every
+    \(\varepsilon>0\), define
+    \[
+        A_n(\varepsilon)=\{|X_n-X|>\varepsilon\}.
+    \]
+    Then
+    \[
+        X_n\xrightarrow{\mathrm{a.s.}}X
+    \]
+    if and only if, for every \(\varepsilon>0\),
+    \[
+        \mathbb{P}\left(\limsup_{n\to\infty}A_n(\varepsilon)\right)=0.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{almost-sure-convergence-limsup-criterion-proof}{almost-sure-convergence-limsup-criterion}{Limsup criterion for almost sure convergence}
+    For \(\omega\in\Omega\), the sequence \(X_n(\omega)\) converges to
+    \(X(\omega)\) if and only if, for every rational
+    \(\varepsilon>0\), the inequality
+    \(|X_n(\omega)-X(\omega)|>\varepsilon\) holds only finitely many
+    times. Hence
+    \[
+        \{X_n\not\to X\}
+        =
+        \bigcup_{\substack{\varepsilon\in\rationalnumbers\\ \varepsilon>0}}
+        \limsup_{n\to\infty}A_n(\varepsilon).
+    \]
+    Therefore \(\mathbb{P}(\{X_n\not\to X\})=0\) if and only if
+    every \(\limsup_{n\to\infty}A_n(\varepsilon)\), with
+    \(\varepsilon\in\rationalnumbers\) and \(\varepsilon>0\), has
+    probability \(0\). This is equivalent to the same condition for
+    every real \(\varepsilon>0\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{summability-implies-almost-sure-convergence}{Summability criterion for almost sure convergence}
+    Let \((\Omega,\mathcal{F},\mathbb{P})\) be a \probabilityspace.
+    Let \((X_n)_{n\geq1}\) be a sequence of real-valued
+    \randomvariable[random variables] on \(\Omega\), and let \(X\) be a
+    real-valued \randomvariable on \(\Omega\). If, for every
+    \(\varepsilon>0\),
+    \[
+        \sum_{n=1}^{+\infty}
+        \mathbb{P}\left(|X_n-X|>\varepsilon\right)
+        <+\infty,
+    \]
+    then
+    \[
+        X_n\xrightarrow{\mathrm{a.s.}}X.
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{summability-implies-almost-sure-convergence-proof}{summability-implies-almost-sure-convergence}{Summability criterion for almost sure convergence}
+    Fix \(\varepsilon>0\) and put
+    \[
+        A_n(\varepsilon)=\{|X_n-X|>\varepsilon\}.
+    \]
+    By hypothesis,
+    \[
+        \sum_{n=1}^{+\infty}\mathbb{P}(A_n(\varepsilon))<+\infty.
+    \]
+    The \borelcantellilemma gives
+    \[
+        \mathbb{P}\left(\limsup_{n\to\infty}A_n(\varepsilon)\right)=0.
+    \]
+    Since this holds for every \(\varepsilon>0\), the
+    \almostsureconvergence criterion gives
+    \(X_n\xrightarrow{\mathrm{a.s.}}X\).
+\end{snippetproof}
+
+\begin{snippettheorem}{almost-sure-convergence-implies-probability}{Almost sure convergence implies convergence in probability}
+    Let \((\Omega,\mathcal{F},\mathbb{P})\) be a \probabilityspace.
+    Let \((X_n)_{n\geq1}\) be a sequence of real-valued
+    \randomvariable[random variables] on \(\Omega\), and let \(X\) be a
+    real-valued \randomvariable on \(\Omega\). If
+    \[
+        X_n\xrightarrow{\mathrm{a.s.}}X,
+    \]
+    then
+    \[
+        X_n\xrightarrow{\mathbb{P}}X.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{almost-sure-convergence-implies-probability-proof}{almost-sure-convergence-implies-probability}{Almost sure convergence implies convergence in probability}
+    Fix \(\varepsilon>0\), and put
+    \[
+        A_n=\{|X_n-X|>\varepsilon\}.
+    \]
+    By the \almostsureconvergence criterion,
+    \[
+        \mathbb{P}\left(\limsup_{n\to\infty}A_n\right)=0.
+    \]
+    Since
+    \[
+        \limsup_{n\to\infty}\mathbb{P}(A_n)
+        \leq
+        \mathbb{P}\left(\limsup_{n\to\infty}A_n\right),
+    \]
+    we get
+    \[
+        \lim_{n\to\infty}\mathbb{P}\left(|X_n-X|>\varepsilon\right)=0.
+    \]
+    Thus \(X_n\xrightarrow{\mathbb{P}}X\).
+\end{snippetproof}
+
+\begin{snippetexample}{probability-convergence-not-almost-sure-example}{Convergence in probability need not imply almost sure convergence}
+    Let \((X_n)_{n\geq1}\) be independent \randomvariable[random variables]
+    such that
+    \[
+        X_n\sim\operatorname{Bernoulli}(1/n).
+    \]
+    Then \(X_n\xrightarrow{\mathbb{P}}0\). Indeed, if
+    \(0<\varepsilon<1\), then
+    \[
+        \mathbb{P}(|X_n|>\varepsilon)=\mathbb{P}(X_n=1)=\frac{1}{n},
+    \]
+    while for \(\varepsilon\geq1\) this probability is \(0\).
+
+    However \(X_n\) does not converge almost surely to \(0\). Let
+    \(A_n=\{X_n=1\}\). For \(m\geq2\),
+    \[
+        \mathbb{P}\left(\bigcap_{n=m}^{k} A_n^c\right)
+        =
+        \prod_{n=m}^{k}\left(1-\frac{1}{n}\right)
+        =
+        \frac{m-1}{k}.
+    \]
+    Letting \(k\to\infty\), we get
+    \[
+        \mathbb{P}\left(\bigcap_{n=m}^{+\infty} A_n^c\right)=0.
+    \]
+    Hence
+    \[
+        \mathbb{P}\left(\bigcup_{n=m}^{+\infty}A_n\right)=1
+    \]
+    for every \(m\geq2\), and therefore
+    \[
+        \mathbb{P}\left(\limsup_{n\to\infty}A_n\right)=1.
+    \]
+    Since \(A_n=\{|X_n-0|>1/2\}\), the
+    \almostsureconvergence criterion shows that
+    \(X_n\not\xrightarrow{\mathrm{a.s.}}0\).
+\end{snippetexample}
+
+\end{document}

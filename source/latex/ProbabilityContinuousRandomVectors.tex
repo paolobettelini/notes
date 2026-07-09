@@ -1,0 +1,489 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{probability-continuous-random-vectors}
+\genpage
+
+\section{Random vectors}
+
+\begin{snippetdefinition}{random-vector-definition}{Random vector}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(n\in\naturalnumbers^\exceptzero\). A \emph{random vector} in
+    \(\realnumbers^n\) is a \randomvariable
+    \[
+        X\colon\Omega\fromto\realnumbers^n.
+    \]
+    Equivalently, it is an \(n\)-tuple
+    \[
+        X=(X_1,\ldots,X_n)
+    \]
+    whose components \(X_i\colon\Omega\fromto\realnumbers\) are real-valued
+    \randomvariable[random variables].
+\end{snippetdefinition}
+
+\begin{snippetproposition}{random-vector-component-measurability}{Componentwise measurability}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X=(X_1,\ldots,X_n)\colon\Omega\fromto\realnumbers^n\) be a \function.
+    Then \(X\) is a \randomvector if and only if each component
+    \(X_i\colon\Omega\fromto\realnumbers\) is a real-valued \randomvariable.
+\end{snippetproposition}
+
+\begin{snippetproof}{random-vector-component-measurability-proof}{random-vector-component-measurability}{Componentwise measurability}
+    If \(X\) is measurable, then
+    \(X_i=\pi_i\circ X\), where \(\pi_i\) is the \(i\)-th coordinate
+    projection, is measurable because \(\pi_i\) is continuous. Conversely,
+    if all components are measurable, then the inverse image of a rectangle
+    \(\prod_{i=1}^n A_i\), with \(A_i\in\mathcal B(\realnumbers)\), is
+    \[
+        \bigcap_{i=1}^n X_i^{-1}(A_i)\in\mathcal F.
+    \]
+    Such rectangles generate \(\mathcal B(\realnumbers^n)\), so \(X\) is
+    measurable.
+\end{snippetproof}
+
+\begin{snippetdefinition}{joint-and-marginal-laws-random-vector-definition}{Joint and marginal laws}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X=(X_1,\ldots,X_n)\) be a \randomvector in \(\realnumbers^n\). The
+    \emph{joint law} of \(X_1,\ldots,X_n\) is the
+    \lawofrandomvariable of
+    \[
+        X\colon\Omega\fromto\realnumbers^n,
+    \]
+    denoted by \(\mu_{X_1,\ldots,X_n}\).
+
+    If \(I=(i_1,\ldots,i_k)\) with
+    \(1\leq i_1<\cdots<i_k\leq n\), the \emph{marginal law} along \(I\) is
+    the \lawofrandomvariable of the subvector
+    \[
+        X_I=(X_{i_1},\ldots,X_{i_k})
+        \colon\Omega\fromto\realnumbers^k.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{marginal-law-from-joint-law}{Marginal laws from the joint law}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, let
+    \(X=(X_1,\ldots,X_n)\) be a \randomvector in \(\realnumbers^n\), and let
+    \(I=(i_1,\ldots,i_k)\) with \(1\leq i_1<\cdots<i_k\leq n\). If
+    \(A_1,\ldots,A_k\in\mathcal B(\realnumbers)\), then
+    \[
+        \mu_{X_I}(A_1\cartesianprod\cdots\cartesianprod A_k)
+        =
+        \mu_{X_1,\ldots,X_n}(C_1\cartesianprod\cdots\cartesianprod C_n),
+    \]
+    where
+    \[
+        C_j=
+        \begin{cases}
+            A_\ell & j=i_\ell\text{ for some }\ell\in\{1,\ldots,k\},\\
+            \realnumbers & j\notin\{i_1,\ldots,i_k\}.
+        \end{cases}
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{marginal-law-from-joint-law-proof}{marginal-law-from-joint-law}{Marginal laws from the joint law}
+    The \event \(X_I\in A_1\cartesianprod\cdots\cartesianprod A_k\) is
+    exactly the \event
+    \(X\in C_1\cartesianprod\cdots\cartesianprod C_n\). Applying the
+    definition of law to the two random vectors gives the formula.
+\end{snippetproof}
+
+\begin{snippetdefinition}{joint-distribution-function-random-vector-definition}{Joint distribution function}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X=(X_1,\ldots,X_n)\) be a \randomvector in \(\realnumbers^n\). The
+    \emph{joint distribution function} of \(X\) is the \function
+    \[
+        F_{X_1,\ldots,X_n}\colon\realnumbers^n\fromto[0,1]
+    \]
+    defined by
+    \[
+        F_{X_1,\ldots,X_n}(x_1,\ldots,x_n)
+        =
+        \mathbb P(X_1\leq x_1,\ldots,X_n\leq x_n).
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{marginal-cdf-from-joint-cdf}{Marginal distribution functions from the joint distribution function}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X=(X_1,\ldots,X_n)\) be a \randomvector in \(\realnumbers^n\). If
+    \(I=(i_1,\ldots,i_k)\) with \(1\leq i_1<\cdots<i_k\leq n\), then
+    \[
+        F_{X_{i_1},\ldots,X_{i_k}}(x_{i_1},\ldots,x_{i_k})
+        =
+        \lim_{\substack{x_j\to+\infty\\j\notin\{i_1,\ldots,i_k\}}}
+        F_{X_1,\ldots,X_n}(x_1,\ldots,x_n).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{marginal-cdf-from-joint-cdf-proof}{marginal-cdf-from-joint-cdf}{Marginal distribution functions from the joint distribution function}
+    For simplicity take \(I=(1,\ldots,k)\). Then
+    \[
+        \{X_1\leq x_1,\ldots,X_k\leq x_k\}
+        =
+        \bigcup_{m=1}^\infty
+        \{X_1\leq x_1,\ldots,X_k\leq x_k,
+        X_{k+1}\leq m,\ldots,X_n\leq m\}.
+    \]
+    The \event[events] on the right are increasing in \(m\), so
+    \continuityfrombelow gives the limit. The general case is the same after
+    permuting the coordinates.
+\end{snippetproof}
+
+\section{Independence}
+
+\begin{snippetdefinition}{independent-random-variables-definition}{Independent random variables}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X_i\colon\Omega\fromto\realnumbers\), with \(i\in\{1,\ldots,n\}\), be
+    real-valued \randomvariable[random variables]. The random variables
+    \(X_1,\ldots,X_n\) are \emph{independent} if, for every
+    \(A_i\in\mathcal B(\realnumbers)\),
+    \[
+        \mathbb P(X_1\in A_1,\ldots,X_n\in A_n)
+        =
+        \prod_{i=1}^n\mathbb P(X_i\in A_i).
+    \]
+\end{snippetdefinition}
+
+\begin{snippettheorem}{independent-random-variables-cdf-factorization}{Independence and distribution functions}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X_1,\ldots,X_n\) be real-valued \randomvariable[random variables].
+    Then \(X_1,\ldots,X_n\) are \independentrandomvariables if and only if
+    \[
+        F_{X_1,\ldots,X_n}(x_1,\ldots,x_n)
+        =
+        \prod_{i=1}^n F_{X_i}(x_i)
+    \]
+    for every \((x_1,\ldots,x_n)\in\realnumbers^n\).
+\end{snippettheorem}
+
+\begin{snippetproof}{independent-random-variables-cdf-factorization-proof}{independent-random-variables-cdf-factorization}{Independence and distribution functions}
+    If the variables are independent, apply the definition to the Borel
+    \set[sets] \(A_i=(-\infty,x_i]\). Conversely, the half-lines
+    \((-\infty,x]\) generate \(\mathcal B(\realnumbers)\) and are closed
+    under finite intersections. The standard uniqueness theorem for measures
+    on generated \(\sigma\)-algebras extends the factorization from
+    half-lines to all Borel \set[sets].
+\end{snippetproof}
+
+\section{Absolutely continuous random vectors}
+
+\begin{snippetdefinition}{absolutely-continuous-random-vector-definition}{Absolutely continuous random vector}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X=(X_1,\ldots,X_n)\) be a \randomvector in \(\realnumbers^n\). The
+    random vector \(X\) is \emph{absolutely continuous} if its \jointlaw
+    \(\mu_{X_1,\ldots,X_n}\) is absolutely continuous with respect to
+    \(n\)-dimensional \lebesguemeasure. A \emph{joint density} of \(X\) is a
+    nonnegative Borel \function
+    \[
+        f_{X_1,\ldots,X_n}\colon\realnumbers^n\fromto[0,+\infty]
+    \]
+    such that
+    \[
+        \mathbb P(X\in A)
+        =
+        \int_A f_{X_1,\ldots,X_n}(x)\,dx
+    \]
+    for every \(A\in\mathcal B(\realnumbers^n)\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{joint-density-cdf-formula}{Joint distribution function through a joint density}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X=(X_1,\ldots,X_n)\) be an
+    \absolutelycontinuousrandomvector with \continuousjointdensity
+    \(f_{X_1,\ldots,X_n}\). Then
+    \[
+        F_{X_1,\ldots,X_n}(x_1,\ldots,x_n)
+        =
+        \int_{-\infty}^{x_1}\cdots\int_{-\infty}^{x_n}
+        f_{X_1,\ldots,X_n}(t_1,\ldots,t_n)\,dt_n\cdots dt_1.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{joint-density-cdf-formula-proof}{joint-density-cdf-formula}{Joint distribution function through a joint density}
+    The \event
+    \(\{X_1\leq x_1,\ldots,X_n\leq x_n\}\) is
+    \(X\in(-\infty,x_1]\cartesianprod\cdots\cartesianprod(-\infty,x_n]\).
+    Integrating the joint density over this rectangle gives the formula.
+\end{snippetproof}
+
+\begin{snippetproposition}{marginal-density-continuous-random-vector}{Marginal densities from a joint density}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X=(X_1,\ldots,X_n)\) be an
+    \absolutelycontinuousrandomvector with \continuousjointdensity
+    \(f_{X_1,\ldots,X_n}\). Let
+    \(I=(i_1,\ldots,i_k)\), with \(1\leq i_1<\cdots<i_k\leq n\), and let
+    \(J=\{1,\ldots,n\}\difference\{i_1,\ldots,i_k\}\). Then the marginal
+    vector \(X_I\) is absolutely continuous, and one \continuousmarginaldensity
+    of \(X_I\) is
+    \[
+        f_{X_I}(x_{i_1},\ldots,x_{i_k})
+        =
+        \int_{\realnumbers^{n-k}}
+        f_{X_1,\ldots,X_n}(x_1,\ldots,x_n)
+        \prod_{j\in J}dx_j,
+    \]
+    where the coordinates \(x_{i_1},\ldots,x_{i_k}\) are fixed.
+\end{snippetproposition}
+
+\begin{snippetproof}{marginal-density-continuous-random-vector-proof}{marginal-density-continuous-random-vector}{Marginal densities from a joint density}
+    Take first \(I=(1,\ldots,k)\). Using the formula for the marginal
+    distribution function and Tonelli's theorem,
+    \[
+        F_{X_1,\ldots,X_k}(x_1,\ldots,x_k)
+        =
+        \int_{-\infty}^{x_1}\cdots\int_{-\infty}^{x_k}
+        \left(
+            \int_{\realnumbers^{n-k}}
+            f_{X_1,\ldots,X_n}(t_1,\ldots,t_n)\,dt_{k+1}\cdots dt_n
+        \right)
+        dt_k\cdots dt_1.
+    \]
+    Hence the inner integral is a density of the marginal law. The general
+    case follows by permuting the coordinates.
+\end{snippetproof}
+
+\begin{snippetexample}{absolutely-continuous-marginals-not-joint-example}{Absolutely continuous marginals need not give an absolutely continuous joint law}
+    Let \(Y\) be an \absolutelycontinuousrandomvariable and define
+    \(X=(Y,Y)\). The two marginal laws of \(X\) are absolutely continuous.
+    However, \(X\) is not an \absolutelycontinuousrandomvector. Indeed,
+    \[
+        \mathbb P\bigl((Y,Y)\in D\bigr)=1,
+        \qquad
+        D=\{(x,y)\in\realnumbers^2\suchthat x=y\}.
+    \]
+    The diagonal \(D\) has two-dimensional \lebesguemeasure zero. If \(X\)
+    had a joint density \(f\), then
+    \[
+        1=\mathbb P(X\in D)=\int_D f(x,y)\,d(x,y)=0,
+    \]
+    which is impossible.
+\end{snippetexample}
+
+\begin{snippetexample}{same-continuous-marginals-different-joint-laws}{Same continuous marginals but different joint laws}
+    Let \(U\) and \(V\) be independent
+    \(\operatorname{Unif}([0,1])\) random variables. The random vectors
+    \[
+        (U,V)
+        \qquad\text{and}\qquad
+        (U,U)
+    \]
+    have the same one-dimensional \marginallaw[marginal laws], namely the
+    \continuousuniformdistribution on \([0,1]\). Their \jointlaw[joint laws]
+    are different: the first vector is
+    \absolutelycontinuousrandomvector with density
+    \(\indicator_{[0,1]^2}\), while the second vector is concentrated on the
+    diagonal
+    \[
+        \{(x,y)\in\realnumbers^2\suchthat x=y\}.
+    \]
+    Hence marginal laws do not determine the joint law.
+\end{snippetexample}
+
+\begin{snippettheorem}{continuous-density-factorization-criterion}{Density factorization criterion}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X=(X_1,\ldots,X_n)\) be an
+    \absolutelycontinuousrandomvector with \continuousjointdensity
+    \(f_{X_1,\ldots,X_n}\). Let \(f_{X_i}\) be a density of \(X_i\). Then
+    \(X_1,\ldots,X_n\) are \independentrandomvariables if and only if
+    \[
+        f_{X_1,\ldots,X_n}(x_1,\ldots,x_n)
+        =
+        \prod_{i=1}^n f_{X_i}(x_i)
+    \]
+    almost everywhere on \(\realnumbers^n\).
+\end{snippettheorem}
+
+\begin{snippetproof}{continuous-density-factorization-criterion-proof}{continuous-density-factorization-criterion}{Density factorization criterion}
+    If the variables are independent, their joint distribution function
+    factorizes as the product of the one-dimensional distribution functions.
+    Replacing each one-dimensional distribution function by the integral of
+    its density and applying Tonelli's theorem shows that
+    \(\prod_i f_{X_i}\) is a joint density. Uniqueness of densities gives the
+    almost everywhere equality.
+
+    Conversely, if the displayed factorization holds, then for every
+    \(x=(x_1,\ldots,x_n)\),
+    \[
+        F_{X_1,\ldots,X_n}(x)
+        =
+        \int_{-\infty}^{x_1}\cdots\int_{-\infty}^{x_n}
+        \prod_{i=1}^n f_{X_i}(t_i)\,dt_n\cdots dt_1
+        =
+        \prod_{i=1}^n F_{X_i}(x_i).
+    \]
+    The distribution-function characterization gives independence.
+\end{snippetproof}
+
+\begin{snippetcorollary}{independent-ac-random-variables-product-density}{Independent absolutely continuous variables have product density}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X_1,\ldots,X_n\) be \independentrandomvariables such that each \(X_i\)
+    is an \absolutelycontinuousrandomvariable with density \(f_{X_i}\). Then
+    \(X=(X_1,\ldots,X_n)\) is an \absolutelycontinuousrandomvector with
+    \continuousjointdensity
+    \[
+        f_{X_1,\ldots,X_n}(x_1,\ldots,x_n)
+        =
+        \prod_{i=1}^n f_{X_i}(x_i).
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{independent-ac-random-variables-product-density-proof}{independent-ac-random-variables-product-density}{Independent absolutely continuous variables have product density}
+    The product function integrates to \(1\) by Tonelli's theorem and induces
+    the product law. The distribution function of this product law is
+    \(\prod_i F_{X_i}\), which is the joint distribution function by
+    independence. Hence the product is a joint density.
+\end{snippetproof}
+
+\section{Sums and transformations}
+
+\begin{snippetproposition}{continuous-covariance-density-formula}{Covariance through a joint density}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X,Y\colon\Omega\fromto\realnumbers\) be real-valued
+    \randomvariable[random variables] such that \((X,Y)\) is an
+    \absolutelycontinuousrandomvector with \continuousjointdensity \(f_{X,Y}\). If
+    \(X\) and \(Y\) have finite second moments, then
+    \[
+        \covariance(X,Y)
+        =
+        \int_{\realnumbers^2}xyf_{X,Y}(x,y)\,d(x,y)
+        -
+        \expectation[X]\expectation[Y].
+    \]
+    Equivalently,
+    \[
+        \covariance(X,Y)
+        =
+        \int_{\realnumbers^2}
+        (x-\expectation[X])(y-\expectation[Y])f_{X,Y}(x,y)\,d(x,y).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{continuous-covariance-density-formula-proof}{continuous-covariance-density-formula}{Covariance through a joint density}
+    Apply the change-of-variable formula for expected value to the functions
+    \(g(x,y)=xy\) and
+    \(h(x,y)=(x-\expectation[X])(y-\expectation[Y])\), then use the
+    definition of covariance.
+\end{snippetproof}
+
+\begin{snippettheorem}{sum-of-two-ac-random-variables-density}{Density of a sum of two absolutely continuous random variables}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X,Y\colon\Omega\fromto\realnumbers\) be real-valued
+    \randomvariable[random variables] such that \((X,Y)\) is an
+    \absolutelycontinuousrandomvector with \continuousjointdensity \(f_{X,Y}\). Then
+    \(Z=X+Y\) is an \absolutelycontinuousrandomvariable with density
+    \[
+        f_Z(z)
+        =
+        \int_\realnumbers f_{X,Y}(x,z-x)\,dx
+    \]
+    for almost every \(z\in\realnumbers\). If \(X\) and \(Y\) are independent
+    with densities \(f_X\) and \(f_Y\), then
+    \[
+        f_Z(z)
+        =
+        \int_\realnumbers f_X(x)f_Y(z-x)\,dx.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{sum-of-two-ac-random-variables-density-proof}{sum-of-two-ac-random-variables-density}{Density of a sum of two absolutely continuous random variables}
+    For \(z\in\realnumbers\), let
+    \[
+        D_z=\{(x,y)\in\realnumbers^2\suchthat x+y\leq z\}.
+    \]
+    Then, by Fubini's theorem and the change of variable \(t=x+y\),
+    \begin{align*}
+        F_Z(z)
+        &=
+        \mathbb P(X+Y\leq z)
+        =
+        \int_{D_z} f_{X,Y}(x,y)\,d(x,y)
+        \\
+        &=
+        \int_\realnumbers\int_{-\infty}^{z-x} f_{X,Y}(x,y)\,dy\,dx
+        =
+        \int_{-\infty}^z
+        \left(
+            \int_\realnumbers f_{X,Y}(x,t-x)\,dx
+        \right)dt.
+    \end{align*}
+    Hence the inner integral is a density of \(Z\). If \(X\) and \(Y\) are
+    independent, use the product-density formula.
+\end{snippetproof}
+
+\begin{snippettheorem}{diffeomorphic-transformation-density}{Density under a diffeomorphism}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X\colon\Omega\fromto\realnumbers^n\) be an
+    \absolutelycontinuousrandomvector with density \(f_X\). Let
+    \(A\in\mathcal B(\realnumbers^n)\) satisfy \(\mathbb P(X\in A)=1\), and
+    let
+    \[
+        \varphi\colon A\fromto\varphi(A)
+    \]
+    be a \(C^1\)-diffeomorphism. If \(Y=\varphi(X)\), then \(Y\) is
+    absolutely continuous on \(\varphi(A)\), and a density of \(Y\) is
+    \[
+        f_Y(y)
+        =
+        f_X(\varphi^{-1}(y))
+        \left|\det D\varphi^{-1}(y)\right|
+        \indicator_{\varphi(A)}(y).
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{diffeomorphic-transformation-density-proof}{diffeomorphic-transformation-density}{Density under a diffeomorphism}
+    For every nonnegative Borel \function \(g\),
+    \[
+        \expectation[g(Y)]
+        =
+        \int_A g(\varphi(x))f_X(x)\,dx.
+    \]
+    The multivariable change-of-variable theorem with
+    \(y=\varphi(x)\) gives
+    \[
+        \int_{\varphi(A)}
+        g(y)f_X(\varphi^{-1}(y))
+        \left|\det D\varphi^{-1}(y)\right|\,dy.
+    \]
+    Since this holds for all nonnegative Borel \(g\), the displayed function
+    is a density of \(Y\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{affine-transformation-density}{Density under an invertible affine transformation}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace, and let
+    \(X\colon\Omega\fromto\realnumbers^n\) be an
+    \absolutelycontinuousrandomvector with density \(f_X\). Let
+    \(M\in\realnumbers^{n\times n}\) be invertible, let
+    \(b\in\realnumbers^n\), and define
+    \[
+        Y=MX+b.
+    \]
+    Then \(Y\) is an \absolutelycontinuousrandomvector with density
+    \[
+        f_Y(y)=\frac{1}{|\det M|}f_X(M^{-1}(y-b)).
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{affine-transformation-density-proof}{affine-transformation-density}{Density under an invertible affine transformation}
+    Apply the diffeomorphism formula to
+    \(\varphi(x)=Mx+b\). Then \(\varphi^{-1}(y)=M^{-1}(y-b)\) and
+    \(\left|\det D\varphi^{-1}(y)\right|=|\det M|^{-1}\).
+\end{snippetproof}
+
+\begin{snippetdefinition}{uniform-law-on-measurable-subset-definition}{Uniform law on a measurable subset}
+    Let \(O\in\mathcal B(\realnumbers^n)\) satisfy
+    \(0<\lambda^n(O)<+\infty\), where \(\lambda^n\) denotes
+    \(n\)-dimensional \lebesguemeasure. The \emph{uniform law} on \(O\) is
+    the \probabilitymeasure on
+    \((\realnumbers^n,\mathcal B(\realnumbers^n))\) with density
+    \[
+        f(x)=\frac{1}{\lambda^n(O)}\indicator_O(x).
+    \]
+\end{snippetdefinition}
+
+\end{document}

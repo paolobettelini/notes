@@ -1,0 +1,349 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{probability-limit-theorems}
+\genpage
+
+\section{Sample means}
+
+\begin{snippetdefinition}{iid-random-variables-definition}{Independent and identically distributed random variables}
+    Let \((\Omega,\mathcal{F},\mathbb{P})\) be a \probabilityspace, and
+    let \((X_n)_{n\geq1}\) be a sequence of real-valued
+    \randomvariable[random variables] on \(\Omega\). The sequence
+    \((X_n)_{n\geq1}\) is \emph{independent and identically distributed}
+    if the \randomvariable[random variables] \(X_n\) are mutually
+    independent and
+    \[
+        X_n\eqdist X_1
+    \]
+    for every \(n\geq1\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{sample-mean-definition}{Sample mean}
+    Let \(X_1,\cdots,X_n\) be real-valued \randomvariable[random variables]
+    on a \probabilityspace. The \emph{sample mean} of
+    \(X_1,\cdots,X_n\) is the \randomvariable
+    \[
+        \overline{X}_n
+        =
+        \frac{1}{n}\sum_{i=1}^{n}X_i.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexample}{bernoulli-sample-mean-motivation}{Bernoulli sample means}
+    Let \((X_n)_{n\geq1}\) be \iidrandomvariables with
+    \[
+        X_n\sim\operatorname{Bernoulli}(p)
+    \]
+    for some \(p\in[0,1]\). The \samplemean
+    \[
+        \overline{X}_n=\frac{1}{n}\sum_{i=1}^{n}X_i
+    \]
+    is the random relative frequency of successes among the first
+    \(n\) trials. Limit theorems describe in which sense
+    \(\overline{X}_n\) approaches the parameter \(p\) as \(n\to\infty\).
+\end{snippetexample}
+
+\section{Markov and Chebyshev inequalities}
+
+\begin{snippettheorem}{markov-inequality}{Markov inequality}
+    Let \(X\) be a non-negative \randomvariable on a \probabilityspace.
+    If \(\expectation[X]\) exists and is finite, then, for every
+    \(a>0\),
+    \[
+        \mathbb{P}(X\geq a)\leq\frac{\expectation[X]}{a}.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{markov-inequality-proof}{markov-inequality}{Markov inequality}
+    Since \(X\geq0\),
+    \[
+        X\geq a\indicator_{\{X\geq a\}}.
+    \]
+    Taking expectations gives
+    \[
+        \expectation[X]
+        \geq
+        a\,\expectation[\indicator_{\{X\geq a\}}]
+        =
+        a\,\mathbb{P}(X\geq a).
+    \]
+    Dividing by \(a>0\) yields the inequality.
+\end{snippetproof}
+
+\begin{snippettheorem}{chebyshev-inequality}{Chebyshev inequality}
+    Let \(X\) be a real-valued \randomvariable on a \probabilityspace.
+    If \(\expectation[X]\) and \(\variance(X)\) exist and
+    \(\variance(X)<+\infty\), then, for every \(\varepsilon>0\),
+    \[
+        \mathbb{P}\left(|X-\expectation[X]|\geq\varepsilon\right)
+        \leq
+        \frac{\variance(X)}{\varepsilon^2}.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{chebyshev-inequality-proof}{chebyshev-inequality}{Chebyshev inequality}
+    Apply the \markovinequality to the non-negative \randomvariable
+    \[
+        Y=(X-\expectation[X])^2
+    \]
+    with \(a=\varepsilon^2\). Then
+    \[
+        \mathbb{P}\left(|X-\expectation[X]|\geq\varepsilon\right)
+        =
+        \mathbb{P}\left((X-\expectation[X])^2\geq\varepsilon^2\right)
+        \leq
+        \frac{\expectation[(X-\expectation[X])^2]}{\varepsilon^2}
+        =
+        \frac{\variance(X)}{\varepsilon^2}.
+    \]
+\end{snippetproof}
+
+\section{Laws of large numbers}
+
+\begin{snippettheorem}{weak-law-large-numbers}{Weak law of large numbers}
+    Let \((X_n)_{n\geq1}\) be a sequence of independent real-valued
+    \randomvariable[random variables] on a \probabilityspace. Assume that,
+    for every \(n\geq1\),
+    \[
+        \expectation[X_n]=\mu
+        \quad\text{and}\quad
+        \variance(X_n)=\sigma^2<+\infty.
+    \]
+    Then
+    \[
+        \overline{X}_n\xrightarrow{\mathbb{P}}\mu,
+    \]
+    where
+    \[
+        \overline{X}_n=\frac{1}{n}\sum_{i=1}^{n}X_i.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{weak-law-large-numbers-proof}{weak-law-large-numbers}{Weak law of large numbers}
+    For every \(n\geq1\),
+    \[
+        \expectation[\overline{X}_n]
+        =
+        \frac{1}{n}\sum_{i=1}^{n}\expectation[X_i]
+        =
+        \mu.
+    \]
+    Since the \randomvariable[random variables] \(X_i\) are independent,
+    \[
+        \variance(\overline{X}_n)
+        =
+        \frac{1}{n^2}\sum_{i=1}^{n}\variance(X_i)
+        =
+        \frac{\sigma^2}{n}.
+    \]
+    By the \chebyshevinequality, for every \(\varepsilon>0\),
+    \[
+        \mathbb{P}\left(|\overline{X}_n-\mu|\geq\varepsilon\right)
+        \leq
+        \frac{\sigma^2}{n\varepsilon^2}.
+    \]
+    The right-hand side converges to \(0\), so
+    \[
+        \overline{X}_n\xrightarrow{\mathbb{P}}\mu.
+    \]
+\end{snippetproof}
+
+\begin{snippetexample}{bernoulli-sample-mean-chebyshev-bound}{Chebyshev bound for Bernoulli sample means}
+    Let \((X_n)_{n\geq1}\) be \iidrandomvariables with
+    \(X_n\sim\operatorname{Bernoulli}(p)\). Then
+    \[
+        \expectation[X_n]=p
+        \quad\text{and}\quad
+        \variance(X_n)=p(1-p).
+    \]
+    For every \(\varepsilon>0\), the \chebyshevinequality gives
+    \[
+        \mathbb{P}\left(|\overline{X}_n-p|\geq\varepsilon\right)
+        \leq
+        \frac{p(1-p)}{n\varepsilon^2}
+        \leq
+        \frac{1}{4n\varepsilon^2}.
+    \]
+    Hence the random relative frequency of successes converges in
+    probability to \(p\).
+\end{snippetexample}
+
+\begin{snippettheorem}{strong-law-large-numbers}{Strong law of large numbers}
+    Let \((X_n)_{n\geq1}\) be a sequence of \iidrandomvariables on a
+    \probabilityspace. Assume that
+    \[
+        \expectation[X_1]=\mu
+        \quad\text{and}\quad
+        \variance(X_1)<+\infty.
+    \]
+    Then
+    \[
+        \overline{X}_n\xrightarrow{\mathrm{a.s.}}\mu,
+    \]
+    where
+    \[
+        \overline{X}_n=\frac{1}{n}\sum_{i=1}^{n}X_i.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{strong-law-large-numbers-proof}{strong-law-large-numbers}{Strong law of large numbers}
+    We first prove the result under the additional assumption
+    \(X_1\geq0\). Let
+    \[
+        S_n=\sum_{i=1}^{n}X_i.
+    \]
+    By the \chebyshevinequality, for every \(\varepsilon>0\),
+    \[
+        \mathbb{P}\left(\left|\frac{S_{k^2}}{k^2}-\mu\right|
+        \geq\varepsilon\right)
+        \leq
+        \frac{\variance(X_1)}{k^2\varepsilon^2}.
+    \]
+    Therefore
+    \[
+        \sum_{k=1}^{+\infty}
+        \mathbb{P}\left(\left|\frac{S_{k^2}}{k^2}-\mu\right|
+        \geq\varepsilon\right)<+\infty.
+    \]
+    By the \borelcantellilemma,
+    \[
+        \frac{S_{k^2}}{k^2}\xrightarrow{\mathrm{a.s.}}\mu.
+    \]
+
+    Since \(X_i\geq0\), the sequence \((S_n)\) is increasing. If
+    \(k^2\leq n<(k+1)^2\), then
+    \[
+        \frac{k^2}{(k+1)^2}\frac{S_{k^2}}{k^2}
+        \leq
+        \frac{S_n}{n}
+        \leq
+        \frac{(k+1)^2}{k^2}\frac{S_{(k+1)^2}}{(k+1)^2}.
+    \]
+    Both outer terms converge almost surely to \(\mu\), so
+    \[
+        \frac{S_n}{n}\xrightarrow{\mathrm{a.s.}}\mu
+    \]
+    in the non-negative case.
+
+    For a general real-valued \(X_1\), write
+    \[
+        X_i=X_i^+-X_i^-,
+        \quad
+        X_i^+=\max\{X_i,0\},
+        \quad
+        X_i^-=\max\{-X_i,0\}.
+    \]
+    The sequences \((X_i^+)_{i\geq1}\) and \((X_i^-)_{i\geq1}\) are
+    \iidrandomvariables, non-negative, and have finite variance. Applying
+    the non-negative case to both sequences gives
+    \[
+        \frac{1}{n}\sum_{i=1}^{n}X_i^+
+        \xrightarrow{\mathrm{a.s.}}
+        \expectation[X_1^+],
+        \quad
+        \frac{1}{n}\sum_{i=1}^{n}X_i^-
+        \xrightarrow{\mathrm{a.s.}}
+        \expectation[X_1^-].
+    \]
+    Subtracting the two limits gives
+    \[
+        \overline{X}_n
+        \xrightarrow{\mathrm{a.s.}}
+        \expectation[X_1^+]-\expectation[X_1^-]
+        =
+        \expectation[X_1]
+        =
+        \mu.
+    \]
+\end{snippetproof}
+
+\begin{snippetcorollary}{strong-law-implies-weak-law}{The strong law implies the weak law}
+    Let \((X_n)_{n\geq1}\) be a sequence of \iidrandomvariables on a
+    \probabilityspace. Assume that
+    \[
+        \expectation[X_1]=\mu
+        \quad\text{and}\quad
+        \variance(X_1)<+\infty.
+    \]
+    Then the \stronglawlargenumbers implies the \weaklawlargenumbers:
+    \[
+        \overline{X}_n\xrightarrow{\mathrm{a.s.}}\mu
+        \quad\Longrightarrow\quad
+        \overline{X}_n\xrightarrow{\mathbb{P}}\mu.
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{strong-law-implies-weak-law-proof}{strong-law-implies-weak-law}{The strong law implies the weak law}
+    This is the implication from \almostsureconvergence to
+    \convergenceinprobability applied to the sequence
+    \((\overline{X}_n)_{n\geq1}\) and the constant \randomvariable equal
+    to \(\mu\).
+\end{snippetproof}
+
+\section{Central limit theorem}
+
+\begin{snippettheorem}{central-limit-theorem}{Central limit theorem}
+    Let \((X_n)_{n\geq1}\) be a sequence of \iidrandomvariables on a
+    \probabilityspace. Assume that
+    \[
+        \expectation[X_1]=\mu
+        \quad\text{and}\quad
+        \variance(X_1)=\sigma^2
+    \]
+    with \(0<\sigma^2<+\infty\). Then
+    \[
+        \frac{\sqrt{n}}{\sigma}\left(\overline{X}_n-\mu\right)
+        \xrightarrow{d}
+        Z,
+    \]
+    where \(Z\sim\operatorname{N}(0,1)\).
+\end{snippettheorem}
+
+\begin{snippetnote}{central-limit-theorem-normalization}{Normalization in the central limit theorem}
+    Under the hypotheses of the \centrallimittheorem,
+    \[
+        S_n=\sum_{i=1}^{n}X_i
+    \]
+    satisfies
+    \[
+        \expectation[S_n]=n\mu
+        \quad\text{and}\quad
+        \variance(S_n)=n\sigma^2.
+    \]
+    Therefore
+    \[
+        \frac{\sqrt{n}}{\sigma}(\overline{X}_n-\mu)
+        =
+        \frac{S_n-n\mu}{\sigma\sqrt{n}}
+    \]
+    is the centered and normalized sum.
+\end{snippetnote}
+
+\begin{snippetexample}{gaussian-sample-mean-clt-example}{Gaussian sample means}
+    Let \((X_n)_{n\geq1}\) be \iidrandomvariables such that
+    \[
+        X_n\sim\operatorname{N}(\mu,\sigma^2)
+    \]
+    with \(\sigma^2>0\). Then
+    \[
+        \overline{X}_n\sim\operatorname{N}\left(\mu,\frac{\sigma^2}{n}\right)
+    \]
+    and therefore
+    \[
+        \frac{\sqrt{n}}{\sigma}(\overline{X}_n-\mu)
+        \sim
+        \operatorname{N}(0,1)
+    \]
+    for every \(n\geq1\). In this case the normalized sample mean is
+    already standard Gaussian for every \(n\), not only asymptotically.
+\end{snippetexample}
+
+\end{document}

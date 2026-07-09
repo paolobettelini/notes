@@ -1,0 +1,420 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{probability-countable-spaces}
+\genpage
+
+\section{Countable probability spaces}
+
+\begin{snippetdefinition}{countable-probability-space-definition}{Countable probability space}
+    Let \(\Omega\neq\emptyset\) be a finite or countably infinite \set.
+    A \emph{countable probability space} on \(\Omega\) is a
+    \probabilityspace
+    \[
+        (\Omega,\powerset(\Omega),\mathbb P)
+    \]
+    where \(\mathbb P\colon\powerset(\Omega)\fromto[0,1]\) satisfies:
+    \begin{enumerate}
+        \item \(\mathbb P(\Omega)=1\);
+        \item for every pairwise disjoint family
+            \(\{A_n\}_{n\in\naturalnumbers^\exceptzero}
+            \subseteq\powerset(\Omega)\),
+            \[
+                \mathbb P\left(\bigcup_{n=1}^\infty A_n\right)
+                =
+                \sum_{n=1}^\infty \mathbb P(A_n).
+            \]
+    \end{enumerate}
+    The second condition is called \(\sigma\)-additivity.
+\end{snippetdefinition}
+
+\begin{snippet}{countable-additivity-motivation}
+    Countable additivity is the property that makes infinite probabilistic
+    models compatible with limits of \event[events]. For example, in an infinite
+    sequence of independent trials with success probability \(p>0\), let
+    \(D_n\) be the \event of obtaining at least one success in the first
+    \(n\) trials. Then \(D_n\subseteq D_{n+1}\) and the finite computation
+    gives
+    \[
+        \mathbb P(D_n)=1-(1-p)^n.
+    \]
+    The expected conclusion for
+    \(D=\bigcup_{n=1}^\infty D_n\) is
+    \[
+        \mathbb P(D)=\lim_{n\to\infty}\mathbb P(D_n)=1.
+    \]
+    This passage from an increasing sequence of \event[events] to its limit is a
+    consequence of \(\sigma\)-additivity.
+\end{snippet}
+
+\section{Event limits}
+
+\begin{snippetdefinition}{monotone-event-sequence-definition}{Monotone sequences of events}
+    Let \((\Omega,\mathcal F)\) be a \measurablespace, let
+    \(\{A_n\}_{n\in\naturalnumbers^\exceptzero}\subseteq\mathcal F\), and
+    let \(A\in\mathcal F\).
+    \begin{enumerate}
+        \item We write \(A_n\uparrow A\) if
+            \(A_n\subseteq A_{n+1}\) for every
+            \(n\in\naturalnumbers^\exceptzero\), and
+            \[
+                A=\bigcup_{n=1}^\infty A_n.
+            \]
+        \item We write \(A_n\downarrow A\) if
+            \(A_n\supseteq A_{n+1}\) for every
+            \(n\in\naturalnumbers^\exceptzero\), and
+            \[
+                A=\bigcap_{n=1}^\infty A_n.
+            \]
+    \end{enumerate}
+\end{snippetdefinition}
+
+\begin{snippettheorem}{probability-continuity-from-below}{Continuity from below}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace.
+    If \(\{A_n\}_{n\in\naturalnumbers^\exceptzero}\subseteq\mathcal F\)
+    and \(A_n\uparrow A\), then
+    \[
+        \mathbb P(A)=\lim_{n\to\infty}\mathbb P(A_n).
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{probability-continuity-from-below-proof}{probability-continuity-from-below}{Continuity from below}
+    Define
+    \[
+        B_1=A_1,
+        \qquad
+        B_n=A_n\difference A_{n-1}\quad\text{for }n\geq2.
+    \]
+    The \event[events] \(B_n\) are pairwise disjoint and
+    \[
+        A=\bigcup_{n=1}^\infty B_n.
+    \]
+    By countable additivity,
+    \[
+        \mathbb P(A)
+        =
+        \sum_{n=1}^\infty \mathbb P(B_n)
+        =
+        \lim_{m\to\infty}\sum_{n=1}^m\mathbb P(B_n).
+    \]
+    Since \(\bigcup_{n=1}^m B_n=A_m\), finite additivity gives
+    \[
+        \sum_{n=1}^m\mathbb P(B_n)=\mathbb P(A_m).
+    \]
+    Hence \(\mathbb P(A)=\lim_{m\to\infty}\mathbb P(A_m)\).
+\end{snippetproof}
+
+\begin{snippettheorem}{probability-continuity-from-above}{Continuity from above}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace.
+    If \(\{A_n\}_{n\in\naturalnumbers^\exceptzero}\subseteq\mathcal F\)
+    and \(A_n\downarrow A\), then
+    \[
+        \mathbb P(A)=\lim_{n\to\infty}\mathbb P(A_n).
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{probability-continuity-from-above-proof}{probability-continuity-from-above}{Continuity from above}
+    If \(A_n\downarrow A\), then \(\Omega\difference A_n\uparrow
+    \Omega\difference A\). By \continuityfrombelow,
+    \[
+        \mathbb P(\Omega\difference A)
+        =
+        \lim_{n\to\infty}\mathbb P(\Omega\difference A_n).
+    \]
+    Using the complement rule,
+    \[
+        1-\mathbb P(A)
+        =
+        \lim_{n\to\infty}\left(1-\mathbb P(A_n)\right)
+        =
+        1-\lim_{n\to\infty}\mathbb P(A_n),
+    \]
+    and therefore \(\mathbb P(A)=\lim_{n\to\infty}\mathbb P(A_n)\).
+\end{snippetproof}
+
+\begin{snippettheorem}{countable-additivity-continuity-characterization}{Countable additivity and continuity at the empty event}
+    Let \(\Omega\neq\emptyset\) be a \set, and let
+    \[
+        \mathbb P\colon\powerset(\Omega)\fromto[0,1]
+    \]
+    satisfy \(\mathbb P(\Omega)=1\) and finite additivity on disjoint
+    \event[events]. Then the following conditions are equivalent:
+    \begin{enumerate}
+        \item \(\mathbb P\) is countably additive;
+        \item for every decreasing sequence
+            \(\{A_n\}_{n\in\naturalnumbers^\exceptzero}\subseteq
+            \powerset(\Omega)\) such that \(A_n\downarrow\emptyset\),
+            \[
+                \lim_{n\to\infty}\mathbb P(A_n)=0.
+            \]
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{countable-additivity-continuity-characterization-proof}{countable-additivity-continuity-characterization}{Countable additivity and continuity at the empty event}
+    If \(\mathbb P\) is countably additive, the second condition follows from
+    \continuityfromabove applied to \(A=\emptyset\).
+
+    Conversely, assume the second condition. Let
+    \(\{A_n\}_{n\in\naturalnumbers^\exceptzero}\subseteq\powerset(\Omega)\)
+    be pairwise disjoint, and put
+    \[
+        A=\bigcup_{n=1}^\infty A_n,
+        \qquad
+        R_m=A\difference\bigcup_{n=1}^m A_n.
+    \]
+    Then \(R_m\downarrow\emptyset\). By finite additivity,
+    \[
+        \mathbb P(A)
+        =
+        \mathbb P\left(\bigcup_{n=1}^m A_n\right)+\mathbb P(R_m)
+        =
+        \sum_{n=1}^m\mathbb P(A_n)+\mathbb P(R_m).
+    \]
+    Taking the limit as \(m\to\infty\) and using
+    \(\mathbb P(R_m)\to0\) gives
+    \[
+        \mathbb P(A)
+        =
+        \sum_{n=1}^\infty\mathbb P(A_n).
+    \]
+    Thus \(\mathbb P\) is countably additive.
+\end{snippetproof}
+
+\begin{snippetproposition}{sigma-subadditivity-probability}{Sigma-subadditivity}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace.
+    For every family
+    \(\{A_n\}_{n\in\naturalnumbers^\exceptzero}\subseteq\mathcal F\),
+    \[
+        \mathbb P\left(\bigcup_{n=1}^\infty A_n\right)
+        \leq
+        \sum_{n=1}^\infty\mathbb P(A_n).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{sigma-subadditivity-probability-proof}{sigma-subadditivity-probability}{Sigma-subadditivity}
+    Define
+    \[
+        B_1=A_1,
+        \qquad
+        B_n=A_n\difference\bigcup_{k=1}^{n-1}A_k
+        \quad\text{for }n\geq2.
+    \]
+    The \event[events] \(B_n\) are pairwise disjoint,
+    \(B_n\subseteq A_n\), and
+    \[
+        \bigcup_{n=1}^\infty B_n
+        =
+        \bigcup_{n=1}^\infty A_n.
+    \]
+    Hence, by countable additivity and monotonicity,
+    \[
+        \mathbb P\left(\bigcup_{n=1}^\infty A_n\right)
+        =
+        \sum_{n=1}^\infty\mathbb P(B_n)
+        \leq
+        \sum_{n=1}^\infty\mathbb P(A_n).
+    \]
+\end{snippetproof}
+
+\section{Discrete densities}
+
+\begin{snippetdefinition}{discrete-density-definition}{Discrete density}
+    Let \(\Omega\neq\emptyset\) be a finite or countably infinite \set.
+    A \emph{discrete density} on \(\Omega\) is a \function
+    \[
+        p\colon\Omega\fromto[0,1]
+    \]
+    such that
+    \[
+        \sum_{\omega\in\Omega}p(\omega)=1.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{probability-density-associated-with-countable-space}{Density associated with a countable probability space}
+    Let \((\Omega,\powerset(\Omega),\mathbb P)\) be a
+    \countableprobabilityspace. The \function
+    \[
+        p\colon\Omega\fromto[0,1],
+        \qquad
+        p(\omega)=\mathbb P(\{\omega\})
+    \]
+    is a \discretedensity on \(\Omega\).
+\end{snippetproposition}
+
+\begin{snippetproof}{probability-density-associated-with-countable-space-proof}{probability-density-associated-with-countable-space}{Density associated with a countable probability space}
+    Since \(\Omega\) is finite or countably infinite, it is the disjoint union
+    of the singletons \(\{\omega\}\), with \(\omega\in\Omega\). Therefore
+    \[
+        \sum_{\omega\in\Omega}p(\omega)
+        =
+        \sum_{\omega\in\Omega}\mathbb P(\{\omega\})
+        =
+        \mathbb P(\Omega)
+        =
+        1.
+    \]
+\end{snippetproof}
+
+\begin{snippettheorem}{probability-measure-from-discrete-density}{Probability measure induced by a discrete density}
+    Let \(\Omega\neq\emptyset\) be a finite or countably infinite \set, and
+    let \(p\colon\Omega\fromto[0,1]\) be a \discretedensity. Define
+    \[
+        \mathbb P\colon\powerset(\Omega)\fromto[0,1],
+        \qquad
+        \mathbb P(A)=\sum_{\omega\in A}p(\omega).
+    \]
+    Then \((\Omega,\powerset(\Omega),\mathbb P)\) is a
+    \countableprobabilityspace.
+    Conversely, if \((\Omega,\powerset(\Omega),\mathbb P)\) is a
+    \countableprobabilityspace with associated \discretedensity \(p\), then
+    \[
+        \mathbb P(A)=\sum_{\omega\in A}p(\omega)
+    \]
+    for every \(A\subseteq\Omega\).
+\end{snippettheorem}
+
+\begin{snippetproof}{probability-measure-from-discrete-density-proof}{probability-measure-from-discrete-density}{Probability measure induced by a discrete density}
+    First,
+    \[
+        \mathbb P(\Omega)=\sum_{\omega\in\Omega}p(\omega)=1.
+    \]
+    Let
+    \(\{A_n\}_{n\in\naturalnumbers^\exceptzero}\subseteq\powerset(\Omega)\)
+    be pairwise disjoint. Since all terms are nonnegative,
+    \[
+        \mathbb P\left(\bigcup_{n=1}^\infty A_n\right)
+        =
+        \sum_{\omega\in\bigcup_{n=1}^\infty A_n}p(\omega)
+        =
+        \sum_{n=1}^\infty\sum_{\omega\in A_n}p(\omega)
+        =
+        \sum_{n=1}^\infty\mathbb P(A_n).
+    \]
+    Hence \(\mathbb P\) is countably additive.
+
+    Conversely, if \(\mathbb P\) is a \countableprobabilityspace, then every
+    \(A\subseteq\Omega\) is the disjoint union of the singletons
+    \(\{\omega\}\) with \(\omega\in A\). Therefore
+    \[
+        \mathbb P(A)
+        =
+        \sum_{\omega\in A}\mathbb P(\{\omega\})
+        =
+        \sum_{\omega\in A}p(\omega).
+    \]
+\end{snippetproof}
+
+\begin{snippetcorollary}{discrete-density-determines-probability-measure}{A discrete density determines its probability measure}
+    Let \(\Omega\neq\emptyset\) be a finite or countably infinite \set.
+    Let \(\mathbb P_1\) and \(\mathbb P_2\) be
+    \probabilitymeasure[probability measures] on
+    \((\Omega,\powerset(\Omega))\), with associated \discretedensity[discrete
+    densities] \(p_1\) and \(p_2\). Then
+    \[
+        \mathbb P_1=\mathbb P_2
+        \quad\ifandonlyif\quad
+        p_1=p_2.
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{discrete-density-determines-probability-measure-proof}{discrete-density-determines-probability-measure}{A discrete density determines its probability measure}
+    If \(\mathbb P_1=\mathbb P_2\), then for every \(\omega\in\Omega\),
+    \[
+        p_1(\omega)=\mathbb P_1(\{\omega\})
+        =
+        \mathbb P_2(\{\omega\})=p_2(\omega).
+    \]
+    Conversely, if \(p_1=p_2\), then for every \(A\subseteq\Omega\),
+    \[
+        \mathbb P_1(A)
+        =
+        \sum_{\omega\in A}p_1(\omega)
+        =
+        \sum_{\omega\in A}p_2(\omega)
+        =
+        \mathbb P_2(A).
+    \]
+\end{snippetproof}
+
+\begin{snippetcorollary}{discrete-density-support-full-measure}{Support of a discrete density}
+    Let \(\Omega\neq\emptyset\) be a finite or countably infinite \set, let
+    \(p\) be a \discretedensity on \(\Omega\), and let \(\mathbb P\) be the
+    induced \probabilitymeasure. Define
+    \[
+        S=\{\omega\in\Omega\suchthat p(\omega)>0\}.
+    \]
+    Then \(\mathbb P(S)=1\). Moreover, \(\mathbb P\) gives probability
+    \(1\) to some finite \set if and only if \(S\) is finite.
+\end{snippetcorollary}
+
+\begin{snippetproof}{discrete-density-support-full-measure-proof}{discrete-density-support-full-measure}{Support of a discrete density}
+    Since \(p(\omega)=0\) for every \(\omega\in\Omega\difference S\),
+    \[
+        \mathbb P(\Omega\difference S)
+        =
+        \sum_{\omega\in\Omega\difference S}p(\omega)
+        =
+        0.
+    \]
+    Hence \(\mathbb P(S)=1\).
+
+    If \(S\) is finite, then \(S\) itself is a finite \set with
+    \(\mathbb P(S)=1\). Conversely, suppose that \(F\subseteq\Omega\) is
+    finite and \(\mathbb P(F)=1\). Then
+    \(\mathbb P(\Omega\difference F)=0\), so no
+    \(\omega\in\Omega\difference F\) can satisfy \(p(\omega)>0\). Therefore
+    \(S\subseteq F\), and \(S\) is finite.
+\end{snippetproof}
+
+\section{Countable total probability}
+
+\begin{snippettheorem}{countable-total-probability-law}{Countable law of total probability}
+    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace.
+    Let
+    \[
+        \{B_n\}_{n\in\naturalnumbers^\exceptzero}\subseteq\mathcal F
+    \]
+    be a \samplespacepartition of \(\Omega\), and assume
+    \(\mathbb P(B_n)>0\) for every \(n\in\naturalnumbers^\exceptzero\).
+    Then, for every \(A\in\mathcal F\),
+    \[
+        \mathbb P(A)
+        =
+        \sum_{n=1}^\infty\mathbb P(A\intersection B_n)
+        =
+        \sum_{n=1}^\infty\mathbb P(A\mid B_n)\mathbb P(B_n).
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{countable-total-probability-law-proof}{countable-total-probability-law}{Countable law of total probability}
+    Since \(\{B_n\}_{n\in\naturalnumbers^\exceptzero}\) is a
+    \samplespacepartition of \(\Omega\), the \event[events]
+    \(A\intersection B_n\) are pairwise disjoint and
+    \[
+        A=A\intersection\Omega
+        =
+        \bigcup_{n=1}^\infty(A\intersection B_n).
+    \]
+    Countable additivity gives
+    \[
+        \mathbb P(A)
+        =
+        \sum_{n=1}^\infty\mathbb P(A\intersection B_n).
+    \]
+    Since \(\mathbb P(B_n)>0\), the definition of \conditionalprobability gives
+    \[
+        \mathbb P(A\intersection B_n)
+        =
+        \mathbb P(A\mid B_n)\mathbb P(B_n),
+    \]
+    and the formula follows.
+\end{snippetproof}
+
+\end{document}

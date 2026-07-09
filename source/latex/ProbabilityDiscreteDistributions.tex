@@ -1,0 +1,531 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{probability-discrete-distributions}
+\genpage
+
+\section{Discrete distributions}
+
+\begin{snippetdefinition}{discrete-probability-distribution-definition}{Discrete probability distribution}
+    Let \(S\neq\emptyset\) be a finite or countably infinite \set.
+    A \emph{discrete probability distribution} on \(S\) is a
+    \probabilitymeasure on \((S,\powerset(S))\). Equivalently, it is described
+    by a \discretedensity
+    \[
+        p\colon S\fromto[0,1],
+        \qquad
+        \sum_{x\in S}p(x)=1,
+    \]
+    through the formula
+    \[
+        \mathbb P(A)=\sum_{x\in A}p(x)
+    \]
+    for every \(A\subseteq S\).
+\end{snippetdefinition}
+
+\section{Finite distributions}
+
+\begin{snippetdefinition}{discrete-uniform-distribution-definition}{Discrete uniform distribution}
+    Let \(S\neq\emptyset\) be a finite \set.
+    The \emph{discrete uniform distribution} on \(S\) is the
+    \discretedistribution with \discretedensity
+    \[
+        p(x)=\frac{1}{\cardinality{S}}
+        \qquad x\in S.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{no-countably-infinite-uniform-distribution}{There is no uniform distribution on a countably infinite domain}
+    Let \(S\) be a countably infinite \set. There is no
+    \discretedistribution on \(S\) for which all singletons have the same
+    probability.
+\end{snippetproposition}
+
+\begin{snippetproof}{no-countably-infinite-uniform-distribution-proof}{no-countably-infinite-uniform-distribution}{There is no uniform distribution on a countably infinite domain}
+    Suppose that \(\mathbb P(\{x\})=c\) for every \(x\in S\).
+    If \(c=0\), then by countable additivity
+    \[
+        \mathbb P(S)=\sum_{x\in S}\mathbb P(\{x\})=0,
+    \]
+    which is impossible. If \(c>0\), then the same sum diverges, which is also
+    impossible because \(\mathbb P(S)=1\). Hence no such
+    \discretedistribution exists.
+\end{snippetproof}
+
+\begin{snippetdefinition}{bernoulli-distribution-definition}{Bernoulli distribution}
+    Let \(p\in[0,1]\). The \emph{Bernoulli distribution} with parameter
+    \(p\), denoted \(\operatorname{Bernoulli}(p)\), is the
+    \discretedistribution on \(\{0,1\}\) with \discretedensity
+    \[
+        q_p(1)=p,
+        \qquad
+        q_p(0)=1-p.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{binomial-distribution-definition}{Binomial distribution}
+    Let \(n\in\naturalnumbers\) and \(p\in[0,1]\).
+    The \emph{binomial distribution} with parameters \(n\) and \(p\), denoted
+    \(\operatorname{Binomial}(n,p)\), is the \discretedistribution on
+    \(\{0,\ldots,n\}\) with \discretedensity
+    \[
+        q_{n,p}(k)=\binom{n}{k}p^k(1-p)^{n-k},
+        \qquad
+        k\in\{0,\ldots,n\},
+    \]
+    with the usual convention \(0^0=1\) in the boundary cases \(p=0\) and
+    \(p=1\).
+\end{snippetdefinition}
+
+\begin{snippetproof}{binomial-distribution-normalization}{binomial-distribution-definition}{Binomial distribution}
+    By the binomial theorem,
+    \[
+        \sum_{k=0}^n \binom{n}{k}p^k(1-p)^{n-k}
+        =
+        (p+1-p)^n
+        =
+        1.
+    \]
+    Hence \(q_{n,p}\) is a \discretedensity.
+\end{snippetproof}
+
+\section{Sampling distributions}
+
+\begin{snippetdefinition}{hypergeometric-distribution-definition}{Hypergeometric distribution}
+    Let \(N,R,n\in\naturalnumbers\) satisfy \(R\leq N\) and \(n\leq N\).
+    The \emph{hypergeometric distribution} with parameters \(N\), \(R\), and
+    \(n\) is the \discretedistribution on
+    \[
+        S=\{k\in\{0,\ldots,n\}\suchthat k\leq R
+        \text{ and }n-k\leq N-R\}
+    \]
+    with \discretedensity
+    \[
+        q_{N,R,n}(k)
+        =
+        \frac{\binom{R}{k}\binom{N-R}{n-k}}{\binom{N}{n}}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproof}{hypergeometric-distribution-normalization}{hypergeometric-distribution-definition}{Hypergeometric distribution}
+    Partition a \set of \(N\) elements into \(R\) red elements and \(N-R\)
+    blue elements. The number of \(n\)-element \set[subsets] is
+    \(\binom{N}{n}\). Counting the same \set[subsets] by the number \(k\) of
+    red elements gives
+    \[
+        \binom{N}{n}
+        =
+        \sum_{k\in S}\binom{R}{k}\binom{N-R}{n-k}.
+    \]
+    Dividing by \(\binom{N}{n}\) shows that \(q_{N,R,n}\) is a
+    \discretedensity.
+\end{snippetproof}
+
+\begin{snippetdefinition}{multinomial-distribution-definition}{Multinomial distribution}
+    Let \(m\in\naturalnumbers^\exceptzero\), let
+    \(n\in\naturalnumbers\), and let \(p_1,\ldots,p_m\in[0,1]\) satisfy
+    \[
+        \sum_{i=1}^m p_i=1.
+    \]
+    The \emph{multinomial distribution} with parameters
+    \(n,p_1,\ldots,p_m\) is the \discretedistribution on
+    \[
+        S_{n,m}
+        =
+        \left\{
+            (k_1,\ldots,k_m)\in\naturalnumbers^m
+            \suchthat
+            \sum_{i=1}^m k_i=n
+        \right\}
+    \]
+    with \discretedensity
+    \[
+        q(k_1,\ldots,k_m)
+        =
+        \frac{n!}{k_1!\cdots k_m!}
+        p_1^{k_1}\cdots p_m^{k_m}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproof}{multinomial-distribution-normalization}{multinomial-distribution-definition}{Multinomial distribution}
+    By the multinomial theorem,
+    \[
+        \sum_{\substack{(k_1,\ldots,k_m)\in\naturalnumbers^m\\
+        k_1+\cdots+k_m=n}}
+        \frac{n!}{k_1!\cdots k_m!}
+        p_1^{k_1}\cdots p_m^{k_m}
+        =
+        (p_1+\cdots+p_m)^n
+        =
+        1.
+    \]
+    Hence \(q\) is a \discretedensity.
+\end{snippetproof}
+
+\section{Countably infinite distributions}
+
+\begin{snippetdefinition}{geometric-distribution-definition}{Geometric distribution}
+    Let \(p\in(0,1]\). The \emph{geometric distribution} with parameter
+    \(p\), denoted \(\operatorname{Geometric}(p)\), is the
+    \discretedistribution on \(\naturalnumbers^\exceptzero\) with
+    \discretedensity
+    \[
+        q_p(k)=p(1-p)^{k-1},
+        \qquad
+        k\in\naturalnumbers^\exceptzero.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproof}{geometric-distribution-normalization}{geometric-distribution-definition}{Geometric distribution}
+    If \(p=1\), then \(q_p(1)=1\) and \(q_p(k)=0\) for \(k\geq2\).
+    If \(0<p<1\), then
+    \[
+        \sum_{k=1}^\infty p(1-p)^{k-1}
+        =
+        p\sum_{h=0}^\infty(1-p)^h
+        =
+        p\frac{1}{1-(1-p)}
+        =
+        1.
+    \]
+    Hence \(q_p\) is a \discretedensity.
+\end{snippetproof}
+
+\begin{snippetdefinition}{poisson-distribution-definition}{Poisson distribution}
+    Let \(\lambda>0\). The \emph{Poisson distribution} with parameter
+    \(\lambda\), denoted \(\operatorname{Poisson}(\lambda)\), is the
+    \discretedistribution on \(\naturalnumbers\) with \discretedensity
+    \[
+        q_\lambda(k)
+        =
+        e^{-\lambda}\frac{\lambda^k}{k!},
+        \qquad
+        k\in\naturalnumbers.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproof}{poisson-distribution-normalization}{poisson-distribution-definition}{Poisson distribution}
+    Using the power series of the exponential function,
+    \[
+        \sum_{k=0}^\infty e^{-\lambda}\frac{\lambda^k}{k!}
+        =
+        e^{-\lambda}\sum_{k=0}^\infty\frac{\lambda^k}{k!}
+        =
+        e^{-\lambda}e^\lambda
+        =
+        1.
+    \]
+    Hence \(q_\lambda\) is a \discretedensity.
+\end{snippetproof}
+
+\section{Moments and structural properties}
+
+\begin{snippetproposition}{bernoulli-distribution-mean-variance}{Mean and variance of a Bernoulli distribution}
+    Let \(X\) be a real-valued \discreterandomvariable with
+    \bernoullidistribution \(\operatorname{Bernoulli}(p)\), where
+    \(p\in[0,1]\). Then
+    \[
+        \expectation[X]=p,
+        \qquad
+        \variance(X)=p(1-p).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{bernoulli-distribution-mean-variance-proof}{bernoulli-distribution-mean-variance}{Mean and variance of a Bernoulli distribution}
+    Since \(X\) takes values \(0\) and \(1\),
+    \[
+        \expectation[X]=0(1-p)+1p=p.
+    \]
+    Also \(X^2=X\), so
+    \[
+        \variance(X)
+        =
+        \expectation[X^2]-\expectation[X]^2
+        =
+        p-p^2
+        =
+        p(1-p).
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{geometric-distribution-mean}{Mean of a geometric distribution}
+    Let \(X\) be a real-valued \discreterandomvariable with
+    \geometricdistribution \(\operatorname{Geometric}(p)\), where
+    \(p\in(0,1]\). Then
+    \[
+        \expectation[X]=\frac{1}{p}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{geometric-distribution-mean-proof}{geometric-distribution-mean}{Mean of a geometric distribution}
+    If \(p=1\), then \(X\asequal 1\). If \(0<p<1\), then
+    \begin{align*}
+        \expectation[X]
+        &=
+        \sum_{n=1}^\infty np(1-p)^{n-1}
+        =
+        p\sum_{n=1}^\infty n(1-p)^{n-1}
+        \\
+        &=
+        p\frac{1}{\left(1-(1-p)\right)^2}
+        =
+        \frac{1}{p}.
+    \end{align*}
+\end{snippetproof}
+
+\begin{snippetproposition}{geometric-distribution-variance}{Variance of a geometric distribution}
+    Let \(X\) be a real-valued \discreterandomvariable with
+    \geometricdistribution \(\operatorname{Geometric}(p)\), where
+    \(p\in(0,1]\). Then
+    \[
+        \variance(X)=\frac{1-p}{p^2}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{geometric-distribution-variance-proof}{geometric-distribution-variance}{Variance of a geometric distribution}
+    If \(p=1\), then \(X\asequal 1\), so the variance is \(0\). Assume
+    \(0<p<1\). Using
+    \[
+        \sum_{n=1}^\infty n^2r^{n-1}=\frac{1+r}{(1-r)^3},
+        \qquad |r|<1,
+    \]
+    with \(r=1-p\), we get
+    \[
+        \expectation[X^2]
+        =
+        p\sum_{n=1}^\infty n^2(1-p)^{n-1}
+        =
+        p\frac{2-p}{p^3}
+        =
+        \frac{2-p}{p^2}.
+    \]
+    Therefore
+    \[
+        \variance(X)
+        =
+        \expectation[X^2]-\expectation[X]^2
+        =
+        \frac{2-p}{p^2}-\frac{1}{p^2}
+        =
+        \frac{1-p}{p^2}.
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{geometric-distribution-memoryless-property}{Memoryless property of the geometric distribution}
+    Let \(X\) be a real-valued \discreterandomvariable with
+    \geometricdistribution \(\operatorname{Geometric}(p)\), where
+    \(p\in(0,1]\). Then, for every \(m,n\in\naturalnumbers\) such that
+    \(\mathbb P(X>n)>0\),
+    \[
+        \mathbb P(X>n+m\mid X>n)
+        =
+        \mathbb P(X>m).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{geometric-distribution-memoryless-property-proof}{geometric-distribution-memoryless-property}{Memoryless property of the geometric distribution}
+    For every \(h\in\naturalnumbers\),
+    \[
+        \mathbb P(X>h)
+        =
+        \sum_{k=h+1}^\infty p(1-p)^{k-1}
+        =
+        (1-p)^h.
+    \]
+    Therefore, whenever \(\mathbb P(X>n)>0\),
+    \[
+        \mathbb P(X>n+m\mid X>n)
+        =
+        \frac{\mathbb P(X>n+m)}{\mathbb P(X>n)}
+        =
+        \frac{(1-p)^{n+m}}{(1-p)^n}
+        =
+        (1-p)^m
+        =
+        \mathbb P(X>m).
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{geometric-distribution-memoryless-characterization}{Characterization of the geometric distribution by memorylessness}
+    Let \(X\) be a real-valued \discreterandomvariable such that
+    \[
+        \mathbb P(X\in\naturalnumbers^\exceptzero)=1,
+        \qquad
+        \mathbb P(X=1)=p
+    \]
+    for some \(p\in(0,1]\). Suppose that, for every
+    \(m,n\in\naturalnumbers\) with \(\mathbb P(X>n)>0\),
+    \[
+        \mathbb P(X>n+m\mid X>n)=\mathbb P(X>m).
+    \]
+    Then \(X\) has \geometricdistribution \(\operatorname{Geometric}(p)\).
+\end{snippetproposition}
+
+\begin{snippetproof}{geometric-distribution-memoryless-characterization-proof}{geometric-distribution-memoryless-characterization}{Characterization of the geometric distribution by memorylessness}
+    If \(p=1\), then \(X\asequal 1\), which is
+    \(\operatorname{Geometric}(1)\). Assume \(0<p<1\). Since
+    \(\mathbb P(X>0)=1\) and \(\mathbb P(X>1)=1-p\), the memoryless property
+    with \(m=1\) gives, by induction,
+    \[
+        \mathbb P(X>n)=(1-p)^n
+    \]
+    for every \(n\in\naturalnumbers\). Hence, for
+    \(n\in\naturalnumbers^\exceptzero\),
+    \[
+        \mathbb P(X=n)
+        =
+        \mathbb P(X>n-1)-\mathbb P(X>n)
+        =
+        (1-p)^{n-1}-(1-p)^n
+        =
+        p(1-p)^{n-1}.
+    \]
+    This is the \randomvariabledensity of \(\operatorname{Geometric}(p)\).
+\end{snippetproof}
+
+\begin{snippetproposition}{poisson-distribution-mean-variance}{Mean and variance of a Poisson distribution}
+    Let \(X\) be a real-valued \discreterandomvariable with
+    \poissondistribution \(\operatorname{Poisson}(\lambda)\), where
+    \(\lambda>0\). Then
+    \[
+        \expectation[X]=\lambda,
+        \qquad
+        \variance(X)=\lambda.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{poisson-distribution-mean-variance-proof}{poisson-distribution-mean-variance}{Mean and variance of a Poisson distribution}
+    First,
+    \[
+        \expectation[X]
+        =
+        \sum_{k=1}^\infty k e^{-\lambda}\frac{\lambda^k}{k!}
+        =
+        \lambda e^{-\lambda}\sum_{h=0}^\infty\frac{\lambda^h}{h!}
+        =
+        \lambda.
+    \]
+    Also,
+    \[
+        \expectation[X(X-1)]
+        =
+        \sum_{k=2}^\infty k(k-1)e^{-\lambda}\frac{\lambda^k}{k!}
+        =
+        \lambda^2.
+    \]
+    Since \(X^2=X(X-1)+X\),
+    \[
+        \expectation[X^2]=\lambda^2+\lambda.
+    \]
+    Therefore
+    \[
+        \variance(X)
+        =
+        \expectation[X^2]-\expectation[X]^2
+        =
+        \lambda.
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{binomial-distribution-mean-variance}{Mean and variance of a binomial distribution}
+    Let \(X\) be a real-valued \discreterandomvariable with
+    \binomialdistribution \(\operatorname{Binomial}(n,p)\), where
+    \(n\in\naturalnumbers\) and \(p\in[0,1]\). Then
+    \[
+        \expectation[X]=np,
+        \qquad
+        \variance(X)=np(1-p).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{binomial-distribution-mean-variance-proof}{binomial-distribution-mean-variance}{Mean and variance of a binomial distribution}
+    Let \(X_1,\ldots,X_n\) be
+    \iiddiscreterandomvariables with
+    \(X_i\sim\operatorname{Bernoulli}(p)\). Then
+    \[
+        S_n=\sum_{i=1}^nX_i
+    \]
+    has \binomialdistribution \(\operatorname{Binomial}(n,p)\). By equality
+    in law, it is enough to compute the moments of \(S_n\). Using the
+    Bernoulli formulas and independence,
+    \[
+        \expectation[S_n]
+        =
+        \sum_{i=1}^n\expectation[X_i]
+        =
+        np,
+    \]
+    and
+    \[
+        \variance(S_n)
+        =
+        \sum_{i=1}^n\variance(X_i)
+        =
+        np(1-p).
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{sum-independent-binomial-random-variables}{Sum of independent binomial random variables}
+    Let \(X,Y\) be independent real-valued
+    \discreterandomvariable[discrete random variables]. If
+    \(X\) has \binomialdistribution \(\operatorname{Binomial}(n,p)\) and
+    \(Y\) has \binomialdistribution \(\operatorname{Binomial}(m,p)\), with
+    \(n,m\in\naturalnumbers\) and \(p\in[0,1]\), then \(X+Y\) has
+    \binomialdistribution \(\operatorname{Binomial}(n+m,p)\).
+\end{snippetproposition}
+
+\begin{snippetproof}{sum-independent-binomial-random-variables-proof}{sum-independent-binomial-random-variables}{Sum of independent binomial random variables}
+    For \(k\in\{0,\ldots,n+m\}\), the \convolutionformula gives
+    \[
+        \mathbb P(X+Y=k)
+        =
+        \sum_i
+        \binom{n}{i}p^i(1-p)^{n-i}
+        \binom{m}{k-i}p^{k-i}(1-p)^{m-k+i},
+    \]
+    where the sum is over the integers \(i\) such that
+    \(0\leq i\leq n\) and \(0\leq k-i\leq m\). Thus
+    \[
+        \mathbb P(X+Y=k)
+        =
+        p^k(1-p)^{n+m-k}
+        \sum_i\binom{n}{i}\binom{m}{k-i}.
+    \]
+    Vandermonde's identity gives
+    \[
+        \sum_i\binom{n}{i}\binom{m}{k-i}=\binom{n+m}{k},
+    \]
+    so \(X+Y\) has the density of
+    \(\operatorname{Binomial}(n+m,p)\).
+\end{snippetproof}
+
+\section{Model interpretations}
+
+\begin{snippet}{standard-discrete-distribution-interpretations}
+    The standard \discretedistribution[discrete distributions] above appear
+    in the following basic models:
+    \begin{enumerate}
+        \item the \bernoullidistribution models a single success/failure
+            trial;
+        \item the \binomialdistribution models the number of successes in
+            finitely many independent Bernoulli trials with the same success
+            probability;
+        \item the \hypergeometricdistribution models sampling without
+            replacement from a finite population split into two classes;
+        \item the \multinomialdistribution models counts in finitely many
+            categories after independent trials;
+        \item the \geometricdistribution models the trial number of the first
+            success in independent Bernoulli trials;
+        \item the \poissondistribution models counts of arrivals in a fixed
+            interval when arrivals occur at a constant average rate.
+    \end{enumerate}
+\end{snippet}
+
+\end{document}

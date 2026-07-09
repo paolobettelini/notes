@@ -1,0 +1,199 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{probability-continuous-distributions}
+\genpage
+
+\section{Uniform distribution}
+
+\begin{snippetdefinition}{continuous-uniform-distribution-definition}{Uniform distribution on an interval}
+    Let \(a,b\in\realnumbers\) with \(a<b\). A real-valued
+    \randomvariable \(X\) has the \emph{uniform distribution} on \([a,b]\),
+    written
+    \[
+        X\sim\operatorname{Unif}([a,b]),
+    \]
+    if \(X\) is an \absolutelycontinuousrandomvariable with density
+    \[
+        f_X(x)=\frac{1}{b-a}\indicator_{[a,b]}(x).
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{continuous-uniform-distribution-cdf}{Distribution function of a uniform random variable}
+    Let \(a,b\in\realnumbers\) with \(a<b\), and let
+    \(X\sim\operatorname{Unif}([a,b])\). Then
+    \[
+        F_X(x)
+        =
+        \begin{cases}
+            0 & x<a,\\
+            \dfrac{x-a}{b-a} & a\leq x\leq b,\\
+            1 & x>b.
+        \end{cases}
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{continuous-uniform-distribution-cdf-proof}{continuous-uniform-distribution-cdf}{Distribution function of a uniform random variable}
+    Integrate the density:
+    \[
+        F_X(x)=\int_{-\infty}^x\frac{1}{b-a}\indicator_{[a,b]}(t)\,dt.
+    \]
+    The three cases correspond to \(x<a\), \(a\leq x\leq b\), and \(x>b\).
+\end{snippetproof}
+
+\begin{snippetproposition}{continuous-uniform-distribution-mean-variance}{Mean and variance of a uniform random variable}
+    Let \(a,b\in\realnumbers\) with \(a<b\), and let
+    \(X\sim\operatorname{Unif}([a,b])\). Then
+    \[
+        \expectation[X]=\frac{a+b}{2},
+        \qquad
+        \variance(X)=\frac{(b-a)^2}{12}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{continuous-uniform-distribution-mean-variance-proof}{continuous-uniform-distribution-mean-variance}{Mean and variance of a uniform random variable}
+    The expected value is
+    \[
+        \expectation[X]
+        =
+        \frac{1}{b-a}\int_a^b x\,dx
+        =
+        \frac{a+b}{2}.
+    \]
+    Also,
+    \[
+        \expectation[X^2]
+        =
+        \frac{1}{b-a}\int_a^b x^2\,dx
+        =
+        \frac{a^2+ab+b^2}{3}.
+    \]
+    Therefore
+    \[
+        \variance(X)
+        =
+        \expectation[X^2]-\expectation[X]^2
+        =
+        \frac{a^2+ab+b^2}{3}-\frac{(a+b)^2}{4}
+        =
+        \frac{(b-a)^2}{12}.
+    \]
+\end{snippetproof}
+
+\section{Exponential distribution}
+
+\begin{snippetdefinition}{exponential-distribution-definition}{Exponential distribution}
+    Let \(\lambda>0\). A real-valued \randomvariable \(X\) has the
+    \emph{exponential distribution} with rate \(\lambda\), written
+    \[
+        X\sim\operatorname{Exp}(\lambda),
+    \]
+    if \(X\) is an \absolutelycontinuousrandomvariable with density
+    \[
+        f_X(x)=\lambda e^{-\lambda x}\indicator_{[0,+\infty)}(x).
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{exponential-distribution-cdf-tail}{Distribution function and tail of an exponential random variable}
+    Let \(\lambda>0\), and let \(X\sim\operatorname{Exp}(\lambda)\). Then
+    \[
+        F_X(x)
+        =
+        \begin{cases}
+            0 & x<0,\\
+            1-e^{-\lambda x} & x\geq0,
+        \end{cases}
+    \]
+    and, for every \(x\geq0\),
+    \[
+        \mathbb P(X>x)=e^{-\lambda x}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{exponential-distribution-cdf-tail-proof}{exponential-distribution-cdf-tail}{Distribution function and tail of an exponential random variable}
+    If \(x<0\), then the density vanishes on \((-\infty,x]\). If
+    \(x\geq0\), then
+    \[
+        F_X(x)
+        =
+        \int_0^x\lambda e^{-\lambda t}\,dt
+        =
+        1-e^{-\lambda x}.
+    \]
+    Hence
+    \[
+        \mathbb P(X>x)=1-F_X(x)=e^{-\lambda x}.
+    \]
+\end{snippetproof}
+
+\begin{snippettheorem}{exponential-distribution-memoryless-property}{Memoryless property}
+    Let \(\lambda>0\), and let \(X\sim\operatorname{Exp}(\lambda)\). For
+    every \(y,h\geq0\),
+    \[
+        \mathbb P(X>y+h\mid X>y)
+        =
+        \mathbb P(X>h).
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{exponential-distribution-memoryless-property-proof}{exponential-distribution-memoryless-property}{Memoryless property}
+    Since \(\mathbb P(X>y)>0\),
+    \[
+        \mathbb P(X>y+h\mid X>y)
+        =
+        \frac{\mathbb P(X>y+h)}{\mathbb P(X>y)}
+        =
+        \frac{e^{-\lambda(y+h)}}{e^{-\lambda y}}
+        =
+        e^{-\lambda h}
+        =
+        \mathbb P(X>h).
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{exponential-distribution-mean-variance}{Mean and variance of an exponential random variable}
+    Let \(\lambda>0\), and let \(X\sim\operatorname{Exp}(\lambda)\). Then
+    \[
+        \expectation[X]=\frac{1}{\lambda},
+        \qquad
+        \variance(X)=\frac{1}{\lambda^2}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{exponential-distribution-mean-variance-proof}{exponential-distribution-mean-variance}{Mean and variance of an exponential random variable}
+    Integration by parts gives
+    \[
+        \expectation[X]
+        =
+        \int_0^{+\infty}\lambda xe^{-\lambda x}\,dx
+        =
+        \frac{1}{\lambda}.
+    \]
+    A second integration by parts gives
+    \[
+        \expectation[X^2]
+        =
+        \int_0^{+\infty}\lambda x^2e^{-\lambda x}\,dx
+        =
+        \frac{2}{\lambda^2}.
+    \]
+    Hence
+    \[
+        \variance(X)
+        =
+        \expectation[X^2]-\expectation[X]^2
+        =
+        \frac{2}{\lambda^2}-\frac{1}{\lambda^2}
+        =
+        \frac{1}{\lambda^2}.
+    \]
+\end{snippetproof}
+
+\end{document}

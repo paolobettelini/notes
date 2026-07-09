@@ -1,0 +1,510 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{probability-finite-uniform-models}
+\genpage
+
+\section{Finite uniform models}
+
+\begin{snippetdefinition}{finite-uniform-probability-definition}{Uniform probability on a finite sample space}
+    Let \(\Omega\neq\emptyset\) be a finite \set.
+    The \emph{uniform probability measure} on
+    \((\Omega,\powerset(\Omega))\) is the \probabilitymeasure
+    \[
+        \mathbb P\colon\powerset(\Omega)\fromto[0,1],
+        \qquad
+        \mathbb P(A)=\frac{\cardinality{A}}{\cardinality{\Omega}}.
+    \]
+    Thus every \outcome \(\omega\in\Omega\) has the same probability
+    \[
+        \mathbb P(\{\omega\})=\frac{1}{\cardinality{\Omega}}.
+    \]
+    In a finite uniform model, computing probabilities is equivalent to
+    counting favorable and possible outcomes correctly.
+\end{snippetdefinition}
+
+\begin{snippetexample}{introductory-counting-models-example}{Introductory counting models}
+    The following finite uniform models illustrate the four basic counting
+    patterns:
+    \begin{enumerate}
+        \item simplified Italian license plates with four letters and three
+            digits are modeled by ordered choices with repetition, giving
+            \(26^4\cdot 10^3\) possible plates;
+        \item an ordered deck of \(40\) distinct cards is modeled by ordered
+            choices without repetition, giving \(40!\) possible decks;
+        \item a lottery draw of \(5\) numbers from \(90\), where order is not
+            relevant and numbers are not repeated, gives
+            \(\binom{90}{5}\) possible draws;
+        \item distributing \(100\) indistinguishable coins among \(3\)
+            distinguishable children, allowing a child to receive no coins,
+            gives
+            \[
+                \binom{100+3-1}{100}=\binom{102}{2}
+            \]
+            possible distributions.
+    \end{enumerate}
+\end{snippetexample}
+
+\section{Counting schemes}
+
+\begin{snippetdefinition}{ordered-samples-with-replacement-definition}{Ordered samples with replacement}
+    Let \(U\) be a finite \set with \(\cardinality{U}=n\), and let
+    \(k\in\naturalnumbers\).
+    The \emph{ordered samples with replacement} of length \(k\) from \(U\)
+    are the \(k\)-tuples
+    \[
+        (x_1,\ldots,x_k)\in U^k.
+    \]
+    The same element of \(U\) may appear more than once, and the order of the
+    tuple is part of the outcome.
+\end{snippetdefinition}
+
+\begin{snippetproposition}{ordered-samples-with-replacement-cardinality}{Number of ordered samples with replacement}
+    Let \(U\) be a finite \set with \(\cardinality{U}=n\), and let
+    \(k\in\naturalnumbers\). The number of \orderedwithreplacement of
+    length \(k\) from \(U\) is
+    \[
+        n^k.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{ordered-samples-with-replacement-cardinality-proof}{ordered-samples-with-replacement-cardinality}{Number of ordered samples with replacement}
+    Each of the \(k\) positions can be chosen independently from \(n\) possible
+    elements. By the fundamental principle of counting, the number of outcomes
+    is
+    \[
+        \underbrace{n\cdot n\cdots n}_{k\text{ factors}}=n^k.
+    \]
+\end{snippetproof}
+
+\begin{snippetdefinition}{ordered-samples-without-replacement-definition}{Ordered samples without replacement}
+    Let \(U\) be a finite \set with \(\cardinality{U}=n\), and let
+    \(k\in\naturalnumbers\) with \(k\leq n\).
+    The \emph{ordered samples without replacement} of length \(k\) from \(U\)
+    are the tuples
+    \[
+        (x_1,\ldots,x_k)\in U^k
+        \suchthat
+        x_i\neq x_j\quad\text{whenever }i\neq j.
+    \]
+    The order of the tuple is part of the outcome, and no element can be used
+    twice.
+\end{snippetdefinition}
+
+\begin{snippetproposition}{ordered-samples-without-replacement-cardinality}{Number of ordered samples without replacement}
+    Let \(U\) be a finite \set with \(\cardinality{U}=n\), and let
+    \(k\in\naturalnumbers\) with \(k\leq n\). The number of
+    \orderedwithoutreplacement of length \(k\) from \(U\) is
+    \[
+        n(n-1)\cdots(n-k+1)
+        =
+        \frac{n!}{(n-k)!}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{ordered-samples-without-replacement-cardinality-proof}{ordered-samples-without-replacement-cardinality}{Number of ordered samples without replacement}
+    There are \(n\) choices for the first position, \(n-1\) choices for the
+    second position, and so on. The \(k\)-th position has \(n-k+1\) choices.
+    Multiplying gives
+    \[
+        n(n-1)\cdots(n-k+1)
+        =
+        \frac{n!}{(n-k)!}.
+    \]
+\end{snippetproof}
+
+\begin{snippetdefinition}{unordered-samples-without-replacement-definition}{Unordered samples without replacement}
+    Let \(U\) be a finite \set with \(\cardinality{U}=n\), and let
+    \(k\in\naturalnumbers\) with \(k\leq n\).
+    The \emph{unordered samples without replacement} of size \(k\) from \(U\)
+    are the \set[subsets] \(A\subseteq U\) with \(\cardinality{A}=k\).
+    The order of extraction is ignored, and no element can be used twice.
+\end{snippetdefinition}
+
+\begin{snippetproposition}{unordered-samples-without-replacement-cardinality}{Number of unordered samples without replacement}
+    Let \(U\) be a finite \set with \(\cardinality{U}=n\), and let
+    \(k\in\naturalnumbers\) with \(k\leq n\). The number of
+    \unorderedwithoutreplacement of size \(k\) from \(U\) is
+    \[
+        \binom{n}{k}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{unordered-samples-without-replacement-cardinality-proof}{unordered-samples-without-replacement-cardinality}{Number of unordered samples without replacement}
+    Every unordered sample of size \(k\) has exactly \(k!\) orderings, and
+    these orderings are all distinct because there are no repetitions.
+    Therefore the number of unordered samples is
+    \[
+        \frac{1}{k!}\frac{n!}{(n-k)!}
+        =
+        \binom{n}{k}.
+    \]
+\end{snippetproof}
+
+\begin{snippetdefinition}{unordered-samples-with-replacement-definition}{Unordered samples with replacement}
+    Let \(U=\{u_1,\ldots,u_n\}\) be a finite \set, and let
+    \(k\in\naturalnumbers\).
+    An \emph{unordered sample with replacement} of size \(k\) from \(U\) is
+    specified by a vector
+    \[
+        (m_1,\ldots,m_n)\in\naturalnumbers^n
+        \suchthat
+        \sum_{i=1}^n m_i=k,
+    \]
+    where \(m_i\) is the number of times \(u_i\) appears.
+    The order is ignored, and repetitions are allowed.
+\end{snippetdefinition}
+
+\begin{snippetproposition}{unordered-samples-with-replacement-cardinality}{Number of unordered samples with replacement}
+    Let \(U\) be a finite \set with \(\cardinality{U}=n\), and let
+    \(k\in\naturalnumbers\). The number of \unorderedwithreplacement
+    of size \(k\) from \(U\) is
+    \[
+        \binom{n+k-1}{k}
+        =
+        \binom{n+k-1}{n-1}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{unordered-samples-with-replacement-cardinality-proof}{unordered-samples-with-replacement-cardinality}{Number of unordered samples with replacement}
+    We must count the vectors
+    \[
+        (m_1,\ldots,m_n)\in\naturalnumbers^n
+        \suchthat
+        m_1+\cdots+m_n=k.
+    \]
+    Represent such a vector by \(k\) stars and \(n-1\) separators:
+    \[
+        \underbrace{\star\cdots\star}_{m_1}
+        \mid
+        \underbrace{\star\cdots\star}_{m_2}
+        \mid
+        \cdots
+        \mid
+        \underbrace{\star\cdots\star}_{m_n}.
+    \]
+    There are \(n+k-1\) positions in total, and choosing the \(k\) positions
+    occupied by stars determines the sample. Hence the number is
+    \[
+        \binom{n+k-1}{k}.
+    \]
+\end{snippetproof}
+
+\section{Particle systems}
+
+\begin{snippetproposition}{maxwell-boltzmann-occupancy-model}{Distinguishable particles in finitely many states}
+    Let \(n,r\in\naturalnumbers\). Consider \(n\) distinguishable particles,
+    each of which can occupy one of \(r\) states. Assume every microstate in
+    \[
+        \Omega_{n,r}=\{1,\ldots,r\}^n
+    \]
+    has the same probability. Let
+    \(k_1,\ldots,k_r\in\naturalnumbers\) satisfy
+    \[
+        k_1+\cdots+k_r=n.
+    \]
+    The probability that exactly \(k_i\) particles occupy state \(i\), for
+    every \(i\), is
+    \[
+        \frac{n!}{r^n k_1!\cdots k_r!}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{maxwell-boltzmann-occupancy-model-proof}{maxwell-boltzmann-occupancy-model}{Distinguishable particles in finitely many states}
+    The \samplespace \(\Omega_{n,r}\) has cardinality \(r^n\).
+    For fixed occupation numbers \(k_1,\ldots,k_r\), the favorable microstates
+    are obtained by choosing which \(k_i\) particles occupy state \(i\), for
+    each \(i\). Their number is the multinomial coefficient
+    \[
+        \binom{n}{k_1,\ldots,k_r}
+        =
+        \frac{n!}{k_1!\cdots k_r!}.
+    \]
+    Dividing by \(\cardinality{\Omega_{n,r}}=r^n\) gives the formula.
+\end{snippetproof}
+
+\begin{snippetproposition}{bose-einstein-occupancy-model}{Indistinguishable particles in finitely many states}
+    Let \(n,r\in\naturalnumbers\). Consider \(n\) indistinguishable particles
+    that can occupy \(r\) states, with no restriction on how many particles can
+    occupy the same state. The possible occupancy vectors are
+    \[
+        \widehat\Omega_{n,r}
+        =
+        \left\{
+            (k_1,\ldots,k_r)\in\naturalnumbers^r
+            \suchthat
+            k_1+\cdots+k_r=n
+        \right\}.
+    \]
+    If the \finiteuniformprobability is placed on \(\widehat\Omega_{n,r}\),
+    then
+    \[
+        \cardinality{\widehat\Omega_{n,r}}
+        =
+        \binom{n+r-1}{n},
+    \]
+    and every occupancy vector has probability
+    \[
+        \binom{n+r-1}{n}^{-1}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{bose-einstein-occupancy-model-proof}{bose-einstein-occupancy-model}{Indistinguishable particles in finitely many states}
+    The occupancy vectors are exactly the \unorderedwithreplacement
+    of size \(n\) from the \set of \(r\) states.
+    By the stars-and-bars formula,
+    \[
+        \cardinality{\widehat\Omega_{n,r}}
+        =
+        \binom{r+n-1}{n}.
+    \]
+    The stated probability follows from the \finiteuniformprobability on this
+    finite \samplespace.
+\end{snippetproof}
+
+\section{Urn schemes}
+
+\begin{snippetproposition}{red-blue-urn-with-replacement}{Red balls with replacement}
+    Let \(N,R,n\in\naturalnumbers\) with \(R\leq N\). An urn contains \(N\)
+    distinguishable balls, \(R\) of which are red and \(N-R\) of which are blue.
+    Draw \(n\) balls with replacement, and suppose each ordered sequence of
+    draws is equally likely. If \(A_k\) is the \event of drawing exactly
+    \(k\) red balls, then
+    \[
+        \mathbb P(A_k)
+        =
+        \binom{n}{k}
+        \left(\frac{R}{N}\right)^k
+        \left(1-\frac{R}{N}\right)^{n-k}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{red-blue-urn-with-replacement-proof}{red-blue-urn-with-replacement}{Red balls with replacement}
+    The \samplespace is the \set of \orderedwithreplacement of
+    length \(n\), so it has cardinality \(N^n\).
+    To draw exactly \(k\) red balls, choose the \(k\) positions of the red
+    draws, choose one of the \(R\) red balls for each red position, and choose
+    one of the \(N-R\) blue balls for each remaining position. Thus
+    \[
+        \cardinality{A_k}
+        =
+        \binom{n}{k}R^k(N-R)^{n-k}.
+    \]
+    Dividing by \(N^n\) gives the formula.
+\end{snippetproof}
+
+\begin{snippetproposition}{red-blue-urn-without-replacement}{Red balls without replacement}
+    Let \(N,R,n\in\naturalnumbers\) with \(R\leq N\) and \(n\leq N\).
+    An urn contains \(N\) distinguishable balls, \(R\) of which are red and
+    \(N-R\) of which are blue. Draw \(n\) balls without replacement.
+    If \(A_k\) is the \event of drawing exactly \(k\) red balls, then
+    \[
+        \mathbb P(A_k)
+        =
+        \frac{\binom{R}{k}\binom{N-R}{n-k}}{\binom{N}{n}},
+    \]
+    where the formula is understood for values of \(k\) such that
+    \(0\leq k\leq R\) and \(0\leq n-k\leq N-R\).
+\end{snippetproposition}
+
+\begin{snippetproof}{red-blue-urn-without-replacement-proof}{red-blue-urn-without-replacement}{Red balls without replacement}
+    Since only the selected balls matter, we may use the
+    \finiteuniformprobability on the \unorderedwithoutreplacement of size
+    \(n\).
+    There are \(\binom{N}{n}\) possible samples.
+    To obtain exactly \(k\) red balls, choose \(k\) balls among the \(R\) red
+    balls and \(n-k\) balls among the \(N-R\) blue balls. Thus
+    \[
+        \cardinality{A_k}
+        =
+        \binom{R}{k}\binom{N-R}{n-k}.
+    \]
+    Dividing favorable outcomes by possible outcomes gives the formula.
+\end{snippetproof}
+
+\begin{snippetproposition}{hypergeometric-binomial-limit}{Sampling without replacement approaches sampling with replacement}
+    Let \(n,k\in\naturalnumbers\) be fixed. Let \(N_m,R_m\in\naturalnumbers\)
+    be such that \(R_m\leq N_m\), \(N_m\to+\infty\), and
+    \[
+        \frac{R_m}{N_m}\to p\in(0,1).
+    \]
+    Then
+    \[
+        \frac{\binom{R_m}{k}\binom{N_m-R_m}{n-k}}{\binom{N_m}{n}}
+        \to
+        \binom{n}{k}p^k(1-p)^{n-k}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{hypergeometric-binomial-limit-proof}{hypergeometric-binomial-limit}{Sampling without replacement approaches sampling with replacement}
+    Write the ratio as
+    \[
+        \binom{n}{k}
+        \frac{R_m(R_m-1)\cdots(R_m-k+1)}{N_m(N_m-1)\cdots(N_m-k+1)}
+        \frac{(N_m-R_m)\cdots(N_m-R_m-(n-k)+1)}
+        {(N_m-k)\cdots(N_m-n+1)}.
+    \]
+    For each fixed factor,
+    \[
+        \frac{R_m-a}{N_m-b}\to p
+        \qquad\text{and}\qquad
+        \frac{N_m-R_m-a}{N_m-b}\to 1-p.
+    \]
+    Since \(n\) and \(k\) are fixed, passing to the product gives the limit.
+\end{snippetproof}
+
+\begin{snippetproposition}{red-draw-position-probability}{Probability of a red ball at a fixed position}
+    Let \(N,R,n\in\naturalnumbers\) with \(R\leq N\) and \(n\leq N\).
+    An urn contains \(N\) distinguishable balls, \(R\) of which are red.
+    Whether we draw with replacement or without replacement, if \(R_i\) is the
+    \event that the \(i\)-th draw is red, then
+    \[
+        \mathbb P(R_i)=\frac{R}{N}
+    \]
+    for every \(i\in\{1,\ldots,n\}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{red-draw-position-probability-proof}{red-draw-position-probability}{Probability of a red ball at a fixed position}
+    With replacement, the statement follows immediately because each draw has
+    \(R\) favorable balls out of \(N\).
+
+    Without replacement, use the \finiteuniformprobability on
+    \orderedwithoutreplacement. For each position \(i\), the map that swaps
+    the first and \(i\)-th positions is a bijection of the \samplespace and
+    sends the \event that the first draw is red to the \event that the
+    \(i\)-th draw is red. Therefore all positions have the same probability
+    of being red. Since
+    the first draw is red with probability \(\frac{R}{N}\), so is every
+    \(i\)-th draw.
+\end{snippetproof}
+
+\section{Repeated trials}
+
+\begin{snippetdefinition}{finite-bernoulli-product-model}{Finite Bernoulli product model}
+    Let \(N\in\naturalnumbers\) and \(p\in[0,1]\). The finite Bernoulli
+    product model with \(N\) trials and success probability \(p\) is the
+    \probabilityspace
+    \[
+        \Omega=\{0,1\}^N,
+    \]
+    where \(1\) represents success and \(0\) represents failure, and
+    \[
+        \mathbb P(\{\omega\})
+        =
+        p^{\sum_{i=1}^N\omega_i}
+        (1-p)^{N-\sum_{i=1}^N\omega_i}
+    \]
+    for every \(\omega=(\omega_1,\ldots,\omega_N)\in\Omega\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{bernoulli-product-model-from-independence}{Finite Bernoulli product model from independent trials}
+    Let \(N\in\naturalnumbers\) and \(p\in[0,1]\).
+    Suppose \((\Omega,\powerset(\Omega),\mathbb P)\) is a
+    \probabilityspace with \(\Omega=\{0,1\}^N\).
+    For \(i\in\{1,\ldots,N\}\), let
+    \[
+        T_i=\{\omega\in\Omega\suchthat\omega_i=1\}.
+    \]
+    If \(\mathbb P(T_i)=p\) for every \(i\) and the \event[events]
+    \(T_1,\ldots,T_N\) are \independentevents, then \(\mathbb P\) is the
+    \bernoulliproductmodel.
+\end{snippetproposition}
+
+\begin{snippetproof}{bernoulli-product-model-from-independence-proof}{bernoulli-product-model-from-independence}{Finite Bernoulli product model from independent trials}
+    Let \(C_i=\Omega\difference T_i\). By \eventindependence and the
+    characterization of independence by complements, for every choice
+    \(L_i\in\{T_i,C_i\}\),
+    \[
+        \mathbb P\left(\bigcap_{i=1}^N L_i\right)
+        =
+        \prod_{i=1}^N\mathbb P(L_i).
+    \]
+    For \(\omega\in\{0,1\}^N\), choose \(L_i=T_i\) if \(\omega_i=1\), and
+    \(L_i=C_i\) if \(\omega_i=0\). Then
+    \[
+        \{\omega\}=\bigcap_{i=1}^N L_i,
+    \]
+    so
+    \[
+        \mathbb P(\{\omega\})
+        =
+        \prod_{i=1}^N p^{\omega_i}(1-p)^{1-\omega_i}
+        =
+        p^{\sum_{i=1}^N\omega_i}
+        (1-p)^{N-\sum_{i=1}^N\omega_i}.
+    \]
+    A finite \probabilitymeasure is determined by its values on singletons,
+    so this determines \(\mathbb P\).
+\end{snippetproof}
+
+\begin{snippetproposition}{binomial-count-from-bernoulli-trials}{Number of successes in finite Bernoulli trials}
+    In the \bernoulliproductmodel with \(N\) trials and success
+    probability \(p\), let \(S_k\) be the \event of obtaining exactly
+    \(k\) successes. Then
+    \[
+        \mathbb P(S_k)
+        =
+        \binom{N}{k}p^k(1-p)^{N-k}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{binomial-count-from-bernoulli-trials-proof}{binomial-count-from-bernoulli-trials}{Number of successes in finite Bernoulli trials}
+    Every \(\omega\in S_k\) has exactly \(k\) entries equal to \(1\), and
+    hence
+    \[
+        \mathbb P(\{\omega\})=p^k(1-p)^{N-k}.
+    \]
+    There are \(\binom{N}{k}\) such \outcome[outcomes], one for each choice
+    of the \(k\) success positions. Summing over \(S_k\) gives the formula.
+\end{snippetproof}
+
+\begin{snippetproposition}{first-success-finite-bernoulli-trials}{First success in finite Bernoulli trials}
+    In the \bernoulliproductmodel with \(N\) trials and success
+    probability \(p\), let \(B_n\) be the \event that the first success occurs
+    on trial \(n\), where \(1\leq n\leq N\). Then
+    \[
+        \mathbb P(B_n)=p(1-p)^{n-1}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{first-success-finite-bernoulli-trials-proof}{first-success-finite-bernoulli-trials}{First success in finite Bernoulli trials}
+    The \event \(B_n\) requires failures in the first \(n-1\) trials and a
+    success at trial \(n\). The remaining \(N-n\) trials are unrestricted.
+    Summing over all possibilities for the remaining trials gives
+    \[
+        \mathbb P(B_n)
+        =
+        (1-p)^{n-1}p
+        \sum_{h=0}^{N-n}\binom{N-n}{h}p^h(1-p)^{N-n-h}.
+    \]
+    By the binomial theorem, the sum is \(1\), so
+    \[
+        \mathbb P(B_n)=p(1-p)^{n-1}.
+    \]
+\end{snippetproof}
+
+\begin{snippetproposition}{at-least-one-success-finite-bernoulli-trials}{At least one success in finite Bernoulli trials}
+    In the \bernoulliproductmodel with \(N\) trials and success
+    probability \(p\), let \(D_n\) be the \event of obtaining at least one
+    success in the first \(n\) trials, where \(1\leq n\leq N\). Then
+    \[
+        \mathbb P(D_n)=1-(1-p)^n.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{at-least-one-success-finite-bernoulli-trials-proof}{at-least-one-success-finite-bernoulli-trials}{At least one success in finite Bernoulli trials}
+    The complement of \(D_n\) is the \event that the first \(n\) trials are
+    all failures. Its probability is \((1-p)^n\). Therefore
+    \[
+        \mathbb P(D_n)=1-\mathbb P(\Omega\difference D_n)=1-(1-p)^n.
+    \]
+\end{snippetproof}
+
+\end{document}
