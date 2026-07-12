@@ -1,12 +1,12 @@
 \ProvidesPackage{stellar}[2023/01/01 Stellar LaTeX functions]
 
 \RequirePackage{hyperref}
-\RequirePackage{amsthm}
 \RequirePackage{xparse}
 \RequirePackage{xcolor}
 \RequirePackage{parskip}
 \RequirePackage{fullpage}
 \RequirePackage{ifthen}
+\RequirePackage{amsthm}
 \RequirePackage[most]{tcolorbox}
 
 % Hyperref setup
@@ -20,12 +20,6 @@
     pdftitle={Stellar},
     pdfpagemode=FullScreen,
 }
-
-% Disable hyphenation globally, which can cause problems
-\tolerance=1
-\emergencystretch=\maxdimen
-\hyphenpenalty=10000
-\hbadness=10000
 
 %%%%%%%%%% Stellar commands utils %%%%%%%%%%
 
@@ -52,11 +46,16 @@
 }
 
 % Command to break lines before and after the content.
-% Used for every PDF command.
-\newcommand{\@padcmd}[1]{
+% Used for every PDF command. The zero-width box keeps the command on one
+% unbreakable line while allowing it to extend beyond the page boundary.
+\newcommand{\@padcmd}[1]{%
+\begingroup
+\hbadness=10000
 \beginnewline~\\
-#1
+\makebox[0pt][l]{#1}%
 \beginnewline~\\
+\par
+\endgroup
 }
 
 \renewcommand{\section}[1]{\@padcmd{!section #1}}
@@ -108,6 +107,7 @@
 
 \ExplSyntaxOff
 
+% Snippet enviroment
 \NewDocumentEnvironment{snippet}{m o}
 {\@padcmd{!snippet #1}}
 {\@padcmd{!endsnippet \IfNoValueF{#2}{#2}}}
@@ -186,8 +186,6 @@
 \customsentence{Summary}{Summary}{summarybg}{summaryfr}
 
 %%%%% \begin{stheorem} and such. These enviroments only handle the appearance.
-%%%%% Technically we should add \par before \vspace but the snippet enviroment
-%%%%% adds padding, so there is vertical space there (?)
 
 \newenvironment{stheorem}[1]
 {\vspace{-0.35cm}\begin{Theorem}{#1}{}}
