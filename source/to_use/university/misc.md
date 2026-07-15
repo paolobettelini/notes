@@ -61,7 +61,7 @@ Abbiamo un universo "math", che contiene una lista di corsi.
 Ogni corso contiene una lista di pagine (html), e ogni pagina contiene una lista di snippet.
 Gli snippet vengono scritti in LaTeX e ognuno di essi ha un id univoco.
 Tutte queste pagine si situano in @latex .
-Oltre ai vari snippet di tipo definizione, teorema, proposizione, lemma, dimostrazione etc, a volte si usano dei "plain" snippet "enviroment snippet" per includere delle spiegazioni o illustrazioni o intuizioni varie. A volte si può usare il comando \plain{} per includere direttamente del testo nella pagina senza associarlo ad uno snippet, ma attenzione che non puoi usare comandi latex lì dentro, al massimo tag html. L'idea è che ogni snippet sia self-contained e riutilizzabile.
+Oltre ai vari snippet di tipo definizione, teorema, proposizione, lemma, dimostrazione etc, a volte si usano dei "plain" snippet "enviroment snippet" per includere delle spiegazioni o illustrazioni o intuizioni varie. A volte si può usare l'enviroment "plainhtml" per includere direttamente del testo nella pagina senza associarlo ad uno snippet, ma attenzione che non puoi usare comandi latex lì dentro, al massimo tag html. L'idea è che ogni snippet sia self-contained e riutilizzabile.
 I JSON di tutti i corsi sono in questa cartella @courses .
 Nel file @definitions.sty  ho una serie di comandi speciali che linkano i vari oggetti alle loro definizioni. I comandi sono sia testuali che math mode. Se non sai se un comando esiste non usarlo a caso.
 Nei lavori che ti chiederò di fare potrai chiedermi di: creare nuovi comandi per definizioni che vengono usate spesso; creare nuove pagine se necessario; importare immagini da aggiungere. (O farlo tu se vuoi).
