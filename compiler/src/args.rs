@@ -28,6 +28,10 @@ pub struct App {
     #[arg(long)]
     pub latex: bool,
 
+    /// Check only typst folder
+    #[arg(long)]
+    pub typst: bool,
+
     /// Check only pages folder
     #[arg(long)]
     pub pages: bool,

@@ -16,7 +16,6 @@ const MONGODB_URL_ENV: &str = "MONGO_CONNECTION_URL";
 
 const SOURCE_FOLDER: &str = "source";
 const DATA_FOLDER: &str = "data";
-const LATEX_FOLDER: &str = "latex";
 const SNIPPETS_FOLDER: &str = "snippets";
 const PAGES_FOLDER: &str = "pages";
 const COURSES_FOLDER: &str = "courses";
@@ -62,9 +61,15 @@ async fn main() {
         std::process::exit(1);
     };
 
-    let search_all_folders =
-        !(args.latex || args.snippets || args.pages || args.courses || args.universes);
+    let search_all_folders = !(args.latex
+        || args.typst
+        || args.snippets
+        || args.pages
+        || args.courses
+        || args.universes);
     let search_latex = args.latex || search_all_folders;
+    let search_typst = args.typst || search_all_folders;
+    let search_documents = search_latex || search_typst;
     let search_snippets = args.snippets || search_all_folders;
     let search_pages = args.pages || search_all_folders;
     let search_courses = args.courses || search_all_folders;
@@ -126,14 +131,20 @@ async fn main() {
 
         let source_path = notes_path.join(SOURCE_FOLDER);
 
-        if search_latex {
-            let folder = source_path.join(LATEX_FOLDER);
+        for document_folder in [
+            search_latex.then_some(compiler::LATEX_FOLDER),
+            search_typst.then_some(compiler::TYPST_FOLDER),
+        ]
+        .into_iter()
+        .flatten()
+        {
+            let folder = source_path.join(document_folder);
             let files = get_files!(folder);
 
             let dir = tempdir::TempDir::new("stellar").unwrap();
             for file in files {
                 let (page, snippets) =
-                    compiler::compile_latex(&file, &data_path, &db_client, dir.path()).await;
+                    compiler::compile_document(&file, &data_path, &db_client, dir.path()).await;
 
                 imported_pages_count += page as u32;
                 imported_snippets_count += snippets;
@@ -183,13 +194,13 @@ async fn main() {
     }
 
     log::info!("=== [STATS] ===");
-    if args.pull || args.diff || search_latex {
+    if args.pull || args.diff || search_documents {
         log::info!("Processed PDFs: {}", processed_pdfs_count);
     }
-    if args.pull || args.diff || search_snippets || search_latex {
+    if args.pull || args.diff || search_snippets || search_documents {
         log::info!("Imported snippets: {}", imported_snippets_count);
     }
-    if args.pull || args.diff || search_pages || search_latex {
+    if args.pull || args.diff || search_pages || search_documents {
         log::info!("Imported pages: {}", imported_pages_count);
     }
     if args.pull || args.diff || search_courses {
@@ -222,14 +233,14 @@ async fn compile_generic_files(
         while let Some(parent) = current_path.parent() {
             if let Some(folder_name) = parent.file_name().and_then(|name| name.to_str()) {
                 // parent.to_path_buf()
-                if folder_name == LATEX_FOLDER {
+                if compiler::is_document_folder(folder_name) {
                     if compiled_snippets.contains(current_path) {
                         current_path = parent;
                         continue;
                     }
 
                     let (page, snippets) =
-                        compiler::compile_latex(&current_path, data_path, db_client, dir.path())
+                        compiler::compile_document(&current_path, data_path, db_client, dir.path())
                             .await;
 
                     *imported_pages_count += page as u32;
