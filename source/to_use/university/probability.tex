@@ -277,99 +277,207 @@ Vogliamo espandere al caso della probabilità soggettiva
 \pagebreak
 
 \begin{snippetproposition}{Formula di inclusione-esclusione}
-    Sia \((\Omega, \powerset(\Omega), \mathbb P)\)
+    Sia \((\Omega, \mathcal{P}(\Omega), \mathbb{P})\)
     uno spazio di probabilità con spazio campionario \(\Omega\)
     di cardinalità finita.
-    Prendiamo \(A_1, \cdots, A_n \in \powerset(\Omega)\) con \(n \in \naturalnumbers\).
-    Allora,
+
+    Siano \(A_1, \ldots, A_n \in \mathcal{P}(\Omega)\), con
+    \(n \in \mathbb{N}\). Allora
     \[
-        \mathbb P \left(
-            \bigcup_{j=1}^n A_j
-        \right) = \sum_{k=1}^n \sum_{\substack{i_1, \cdots, i_k \\ \in \{1,\cdots, n\} \\ i_1 \neq \cdots \neq i_k}}
-        (-1)^{k+1} \mathbb P \left(
-            \bigcap_{r=1}^k A_{i_r}
+        \mathbb{P}\left(
+            \bigcup_{j=1}^{n} A_j
         \right)
+        =
+        \sum_{k=1}^{n}
+        (-1)^{k+1}
+        \sum_{1 \leq i_1 < \cdots < i_k \leq n}
+        \mathbb{P}\left(
+            \bigcap_{r=1}^{k} A_{i_r}
+        \right).
     \]
-    Tutte le possibili intersezione di \(k\) elementi pesati da \(A_1, \cdots, A_n\).
+
+    In altre parole, si considerano tutte le possibili intersezioni
+    di \(k\) eventi tra \(A_1, \ldots, A_n\), con segno alternato.
 \end{snippetproposition}
 
 \begin{snippetproof}{}
-    Mostriamolo per induzione
-    Il caso \(n=2\) segue dal caso banale dimostrato in precedenza, cioè
+    Procediamo per induzione su \(n \geq 2\).
+
+    Per \(n=2\) si ha
     \begin{align*}
-        \mathbb P(A_1 \union A_2) &=
-        \sum_{k=1}^2 \sum_{\substack{i_1, \cdots, i_k \\ \in \{1,2\} \\ i_1 \neq \cdots \neq i_k}} (-1)^{k+1} \mathbb P\left(
-            \bigcap_{r=1}^k A_{i_r}
-        \right) \\
-        &= \sum_{i_1 \in \{1,2\} } \mathbb P(A_{i_1})
-        - \sum_{\substack{i_1, i_2 \in \{1,2\} \\ i_1 \neq i_2 }} \mathbb P(A_1 \intersection A_2) \\
-        &= \mathbb P(A_1) + \mathbb P(A_2) - \mathbb P(A_1 \intersection A_2)
+        \mathbb{P}(A_1 \cup A_2)
+        &=
+        \sum_{k=1}^{2}
+        (-1)^{k+1}
+        \sum_{1 \leq i_1 < \cdots < i_k \leq 2}
+        \mathbb{P}\left(
+            \bigcap_{r=1}^{k} A_{i_r}
+        \right)
+        \\
+        &=
+        \mathbb{P}(A_1)
+        +
+        \mathbb{P}(A_2)
+        -
+        \mathbb{P}(A_1 \cap A_2),
     \end{align*}
-    Supponiamo che la formula funzioni per \(n-1\) e dimostriamolo per \(n\).
-    Abbiamo
+    che è la formula per l'unione di due eventi.
+
+    Supponiamo ora che la formula sia vera per \(n-1\) eventi
+    e dimostriamola per \(n\) eventi.
+
+    Poniamo
+    \[
+        B_{n-1}
+        =
+        \bigcup_{j=1}^{n-1} A_j.
+    \]
+
+    Applicando la formula per l'unione di due eventi, otteniamo
     \begin{align*}
-        \overline A_{n-1} &= \bigcup_{j=1}^{n-1}A_j \\
-        \mathbb P\left(
-            \bigcup_{j=1}^n A_j
+        \mathbb{P}\left(
+            \bigcup_{j=1}^{n} A_j
         \right)
-        &= \mathbb P\left(
-            \overline A_{n-1} \union A_n
-        \right) \\
-        &\overset{(n=2)}{=}
-        \mathbb P(\overline A_{n-1}) +\mathbb P(A_n) - \mathbb P \left(\overline A_{n-1} \intersection A_n\right)
+        &=
+        \mathbb{P}(B_{n-1} \cup A_n)
+        \\
+        &=
+        \mathbb{P}(B_{n-1})
+        +
+        \mathbb{P}(A_n)
+        -
+        \mathbb{P}(B_{n-1} \cap A_n).
     \end{align*}
-    Studiamo separatamente il primo termine e l'ultimo termine.
-    Nel primo abbiamo
+
+    Studiamo separatamente il primo e l'ultimo termine.
+
+    Per l'ipotesi induttiva,
+    \[
+        \mathbb{P}(B_{n-1})
+        =
+        \sum_{k=1}^{n-1}
+        (-1)^{k+1}
+        \sum_{1 \leq i_1 < \cdots < i_k \leq n-1}
+        \mathbb{P}\left(
+            \bigcap_{r=1}^{k} A_{i_r}
+        \right).
+    \]
+
+    Inoltre, per la proprietà distributiva,
     \begin{align*}
-        \mathbb P (\overline A_{n-1}) = \mathbb P\left(
-            \sum_{k=1}^{n-1} \sum_{\substack{i_1, \cdots, i_k \\ \in \{1,\cdots,n-1\} \\ i_1 \neq \cdots \neq i_k }} (-1)^{k+1} \mathbb P\left(
-                \bigcap_{r=1}^k A_{i_r}
-            \right)
+        B_{n-1} \cap A_n
+        &=
+        \left(
+            \bigcup_{j=1}^{n-1} A_j
         \right)
+        \cap A_n
+        \\
+        &=
+        \bigcup_{j=1}^{n-1}
+        (A_j \cap A_n).
     \end{align*}
-    Per l'ultimo termine usiamo il passo \(n-1\)
+
+    Applichiamo l'ipotesi induttiva agli \(n-1\) eventi
+    \[
+        A_1 \cap A_n,\ldots,A_{n-1} \cap A_n.
+    \]
+    Otteniamo
     \begin{align*}
-        \mathbb P\left(
-            \overline A_{n-1} \intersection A_n
-        \right) &= \mathbb P \left(
-            \left[
-                \bigcup_{j=1}^{n-1} A_j
-            \right] \intersection A_n
-        \right) \\
-        &= \mathbb P \left(
-            \bigcup_{j=1}^{n-1} (A_j \intersection A_n)
-        \right) \\
-        &= \sum_{k=2}^{n-1}
-        \sum_{\substack{ i_1, \cdots, i_k \\ \in \{1,\cdots, n-1\} \\ i_1 \neq \cdots \neq i_k }}
-        \mathbb P \left(
-            \bigcap_{r=1}^k (A_{i_r} \intersection A_n)
-        \right) \\
-        &= -\sum_{k=2}^{n}
-        \sum_{\substack{ i_2, \cdots, i_k \\ \in \{1,\cdots, n\} \\ i_1 \neq \cdots \neq i_k \\ \exists j \in \{1, \cdots, k\} \\ \suchthat i_j = n }}
-        \mathbb P \left(
-            \bigcap_{r=1}^k A_{i_r}
+        \mathbb{P}(B_{n-1} \cap A_n)
+        &=
+        \sum_{h=1}^{n-1}
+        (-1)^{h+1}
+        \sum_{1 \leq i_1 < \cdots < i_h \leq n-1}
+        \mathbb{P}\left(
+            \bigcap_{r=1}^{h}
+            (A_{i_r} \cap A_n)
         \right)
+        \\
+        &=
+        \sum_{h=1}^{n-1}
+        (-1)^{h+1}
+        \sum_{1 \leq i_1 < \cdots < i_h \leq n-1}
+        \mathbb{P}\left(
+            A_{i_1}
+            \cap \cdots \cap
+            A_{i_h}
+            \cap A_n
+        \right).
     \end{align*}
-    Combinando tutto
+
+    Di conseguenza,
     \begin{align*}
-        \mathbb P \left(
-            \bigcup_{j=1}^n A_j
+        -\mathbb{P}(B_{n-1} \cap A_n)
+        &=
+        \sum_{h=1}^{n-1}
+        (-1)^h
+        \sum_{1 \leq i_1 < \cdots < i_h \leq n-1}
+        \mathbb{P}\left(
+            A_{i_1}
+            \cap \cdots \cap
+            A_{i_h}
+            \cap A_n
         \right)
-        &= \mathbb P (\overline A_{n-1}) + \mathbb P(A_n) - \mathbb P(\overline A_{n-1} \intersection A_n) \\
-        &= \mathbb P(A_n) + \sum_{k=2}^{n}
-        \sum_{\substack{ i_2, \cdots, i_k \\ \in \{1,\cdots, n\} \\ i_1 \neq \cdots \neq i_k \\ \exists j \in \{1, \cdots, k\} \\ \suchthat i_j = n }}
-        \mathbb P \left(
-            \bigcap_{r=1}^k A_{i_r}
-        \right) \\
-        &+ \sum_{k=1}^{n-1} \sum_{\substack{i_1, \cdots, i_k \\ \in \{1,\cdots, n-1\} \\i_1 \neq \cdots \neq i_k }}
-        (-1)^{k+1} \mathbb P\left(
-            \bigcap_{r=1}^k A_{i_r}
-        \right) \\
-        &= \sum_{k=1}^n \sum_{\substack{i_1, \cdots, i_k \\ \in \{1, \cdots, n\} \\ i_1 \neq \cdots \neq i_k }}
-        (-1)^{k+1} \mathbb P\left(
-            \bigcap_{r=1}^k A_{i_r}
-        \right)
+        \\
+        &=
+        \sum_{k=2}^{n}
+        (-1)^{k+1}
+        \sum_{1 \leq i_1 < \cdots < i_{k-1} \leq n-1}
+        \mathbb{P}\left(
+            A_{i_1}
+            \cap \cdots \cap
+            A_{i_{k-1}}
+            \cap A_n
+        \right),
     \end{align*}
+    dove nell'ultima uguaglianza abbiamo posto \(k=h+1\).
+
+    Combinando i termini precedenti, otteniamo
+    \begin{align*}
+        \mathbb{P}\left(
+            \bigcup_{j=1}^{n} A_j
+        \right)
+        &=
+        \mathbb{P}(A_n)
+        \\
+        &\quad+
+        \sum_{k=1}^{n-1}
+        (-1)^{k+1}
+        \sum_{1 \leq i_1 < \cdots < i_k \leq n-1}
+        \mathbb{P}\left(
+            \bigcap_{r=1}^{k} A_{i_r}
+        \right)
+        \\
+        &\quad+
+        \sum_{k=2}^{n}
+        (-1)^{k+1}
+        \sum_{1 \leq i_1 < \cdots < i_{k-1} \leq n-1}
+        \mathbb{P}\left(
+            A_{i_1}
+            \cap \cdots \cap
+            A_{i_{k-1}}
+            \cap A_n
+        \right).
+    \end{align*}
+
+    Il primo termine corrisponde all'intersezione di un solo evento,
+    \(A_n\). La prima sommatoria contiene tutte le intersezioni che
+    non coinvolgono \(A_n\), mentre la seconda contiene tutte quelle
+    che coinvolgono \(A_n\).
+
+    Pertanto
+    \[
+        \mathbb{P}\left(
+            \bigcup_{j=1}^{n} A_j
+        \right)
+        =
+        \sum_{k=1}^{n}
+        (-1)^{k+1}
+        \sum_{1 \leq i_1 < \cdots < i_k \leq n}
+        \mathbb{P}\left(
+            \bigcap_{r=1}^{k} A_{i_r}
+        \right).
+    \]
 \end{snippetproof}
 
 Andiamo a rappresentare il nostro spazio M. D. P con un vettore.
@@ -1339,7 +1447,7 @@ e quindi
     dove in ognuno di essi devo mettere esattamente
     \(k_i\) elementi di \(U\) urna di palline che vengono estratte,
     con il vincolo che le devo mettere tutte, cioè
-    \(\sum k_i = r\). Non conta l'ordine delle palline nei cassetti.
+    \(\sum k_i = n\). Non conta l'ordine delle palline nei cassetti.
     Quante configurazioni abbiamo?
     Nel caso \(r=1\) abbiamo solo la possibilità \(k_1 = n\) e quindi una sola combinazione.
     Nel caso \(r=2\) abbiamo \(k_2 = n-k_1\),
@@ -2028,7 +2136,7 @@ Studiamo se questa definizione si comporta bene con i limiti.
             \]
         \item \emph{continuità dall'alto:}
             \(\{A_n\}_{n \in \naturalnumbers} \subseteq \powerset(\Omega)\)
-            tale che \(A_n \downarrow \Omega\) vale \[
+            tale che \(A_n \downarrow A\) vale \[
                 \lim_n \mathbb P(A_n) = \mathbb P(A)
             \]
         \item \(\{A_n\}_{n \in \naturalnumbers} \subseteq \powerset(\Omega)\)
@@ -2975,7 +3083,7 @@ può essere scritto come unioni o intersezioni di elementi del tipo di
         X_1 \in A_1, X_2 \in A_2,
         \cdots, X_n \in A_n
     \right) = \mathbb P\left(
-        \bigcup_{i=1}^n \left\{X_i \in A_i\right\}
+        \bigcap_{i=1}^n \left\{X_i \in A_i\right\}
     \right)
 \end{align*}
 Inoltre, preso \(k \in \{1, \cdots, n\}\)
@@ -3029,7 +3137,7 @@ e anche qua notiamo che
     del vettore \((X_1, \cdots, X_n)\)
     la densità di \(X\) e la indichiamo con
     \[
-        p_{X-1, \cdots, X_n}
+        p_{X_1, \cdots, X_n}
         \colon \prod_{i=1}^n E_i \fromto [0,1]
     \]
     Dato \(k \in \{1, \cdots, n\}\)
@@ -3089,7 +3197,7 @@ e anche qua notiamo che
     \end{align*}
 \end{snippetproposition}
 
-Cioè stiamo sommando su tutti gli elementi \(E_j\) con \(j \in I\).
+Cioè stiamo sommando su tutti gli elementi \(E_j\) con \(j \notin I\).
 Per \(j \notin I\) consideriamo l'evento \(\{x_j \in E_j\} = \Omega\).
 
 \begin{snippetproof}{}
@@ -3119,7 +3227,7 @@ Per \(j \notin I\) consideriamo l'evento \(\{x_j \in E_j\} = \Omega\).
     \[
         \{(x_1, \cdots, x_n)\}
         \intersection
-        \{(y_1, \cdots, x_n)\} = \emptyset
+        \{(x_1, \cdots, x_n)\} = \emptyset
     \]
     se \(\exists j \in \{1, \cdots, n\}\)
     tale che \(x_j \neq y_j\).
@@ -3261,7 +3369,7 @@ spazio di probabilità discreto.
     discreto per \(i \in \{1, \cdots, n\}\). Diciamo che queste sono indipendenti se
     \[
         \mathbb P(X_1 \in A_1, \cdots, X_n \in A_n)
-        = \prod_{i=1}^n \mathbb P(A_i \in A_i), \quad
+        = \prod_{i=1}^n \mathbb P(X_i \in A_i), \quad
         \forall A_i \in \powerset(E_i), i \in \{1, \cdots, n\}
     \]
 \end{snippetdefinition}
@@ -3372,7 +3480,7 @@ Vediamolo nel caso \(n=2\), \(i \in E_1\) e \(j \in E_2\)
 \begin{snippetproof}{}
     Abbiamo
     \begin{align*}
-        p_X(x) &= \sum_{y \in E} p_{X,Y}(x,y) = \sum{y \in E} \alpha(x)\beta(x)
+        p_X(x) &= \sum_{y \in E} p_{X,Y}(x,y) = \sum_{y \in E} \alpha(x)\beta(x)
         = \alpha(x) \sum_{y\in E} \beta(y)
     \end{align*}
     Quindi \(p_X(x) = C \alpha(x)\) per ogni \(x \in E\),
@@ -3695,7 +3803,7 @@ In generale il valore atteso o la media non sono necessariamente un valore assun
 
 Notiamo che la serie è ben definita poiché \(p_X>0\) al più in una quantità numerabile di \(x\in \realnumbers\).
 
-\begin{snippetproposition}{}
+\begin{snippetproof}{}
     \(\forall x \in X(\Omega)\) definiamo
     \[
         \Omega_x = \{
@@ -3715,7 +3823,7 @@ Notiamo che la serie è ben definita poiché \(p_X>0\) al più in una quantità 
         &= \sum_{x\in X(\Omega)} x \cdot p_X(x)
     \end{align*}
     Allora il primo membro esiste se e solo se l'ultimo membro esiste.
-\end{snippetproposition}
+\end{snippetproof}
 
 \begin{snippetproposition}{}
     Sia \(X \colon \Omega \fromto \realnumbers^n\) variabile aleatoria discreta
@@ -8424,7 +8532,7 @@ Per dimostrare questo teorema ci servono due disuguaglianze fondamentali.
 \begin{snippetproof}{}
     Dimostriamo prima la disuguaglianza di Markov. Poiché \(X\geq0\) quasi certamente, per ogni \(\varepsilon>0\) vale
     \[
-        X\geq \varepsilon\,\mathbb{1}_{\{X\geq \varepsilon\}}
+        X\geq \varepsilon\,\chi_{\{X\geq \varepsilon\}}
         \qquad
         \text{q.c.}
     \]
@@ -8432,9 +8540,9 @@ Per dimostrare questo teorema ci servono due disuguaglianze fondamentali.
     \[
         \mathbb{E}[X]
         \geq
-        \mathbb{E}\bigl[\varepsilon\,\mathbb{1}_{\{X\geq \varepsilon\}}\bigr]
+        \mathbb{E}\bigl[\varepsilon\,\chi_{\{X\geq \varepsilon\}}\bigr]
         =
-        \varepsilon\,\mathbb{E}\bigl[\mathbb{1}_{\{X\geq \varepsilon\}}\bigr]
+        \varepsilon\,\mathbb{E}\bigl[\chi_{\{X\geq \varepsilon\}}\bigr]
         =
         \varepsilon\,\mathbb{P}(X\geq \varepsilon).
     \]
