@@ -49,11 +49,10 @@ pub async fn compile_universe<'a>(
     }
 
     // Import
-    stellar_import::import_universe_with_client(db_client, file)
-        .await
-        .unwrap_or_else(|e| {
-            log::error!("Could not import universe: {}", e);
-        });
+    if let Err(error) = stellar_import::import_universe_with_client(db_client, file).await {
+        log::error!("Could not import universe: {}", error);
+        return false;
+    }
 
     true
 }

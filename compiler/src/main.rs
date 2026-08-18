@@ -80,6 +80,7 @@ async fn main() {
     let mut imported_pages_count = 0;
     let mut imported_courses_count = 0;
     let mut imported_universes_count = 0;
+    let mut errors_count = 0;
 
     if args.pull || args.diff {
         // Query git
@@ -99,6 +100,7 @@ async fn main() {
             &mut imported_pages_count,
             &mut imported_courses_count,
             &mut imported_universes_count,
+            &mut errors_count,
         )
         .await;
     } else {
@@ -143,12 +145,18 @@ async fn main() {
 
             let dir = tempdir::TempDir::new("stellar").unwrap();
             for file in files {
-                let (page, snippets) =
-                    compiler::compile_document(&file, &data_path, &db_client, dir.path()).await;
-
-                imported_pages_count += page as u32;
-                imported_snippets_count += snippets;
-                processed_pdfs_count += 1;
+                match compiler::compile_document(&file, &data_path, &db_client, dir.path()).await {
+                    compiler::DocumentCompilation::Compiled {
+                        page_imported,
+                        snippets_imported,
+                    } => {
+                        imported_pages_count += page_imported as u32;
+                        imported_snippets_count += snippets_imported;
+                        processed_pdfs_count += 1;
+                    }
+                    compiler::DocumentCompilation::Failed => errors_count += 1,
+                    compiler::DocumentCompilation::Skipped => {}
+                }
             }
         }
 
@@ -159,6 +167,7 @@ async fn main() {
             for file in files {
                 let res = compiler::compile_snippet(&file, &data_path, &db_client).await;
                 imported_snippets_count += res as u32;
+                errors_count += (!res) as u32;
             }
         }
 
@@ -169,6 +178,7 @@ async fn main() {
             for file in files {
                 let res = compiler::compile_page(&file, &data_path, &db_client).await;
                 imported_pages_count += res as u32;
+                errors_count += (!res) as u32;
             }
         }
 
@@ -179,6 +189,7 @@ async fn main() {
             for file in files {
                 let res = compiler::compile_course(&file, &data_path, &db_client).await;
                 imported_courses_count += res as u32;
+                errors_count += (!res) as u32;
             }
         }
 
@@ -189,6 +200,7 @@ async fn main() {
             for file in files {
                 let res = compiler::compile_universe(&file, &data_path, &db_client).await;
                 imported_universes_count += res as u32;
+                errors_count += (!res) as u32;
             }
         }
     }
@@ -209,6 +221,7 @@ async fn main() {
     if args.pull || args.diff || search_universes {
         log::info!("Imported universe: {}", imported_universes_count);
     }
+    log::info!("Errors: {}", errors_count);
 }
 
 async fn compile_generic_files(
@@ -220,9 +233,10 @@ async fn compile_generic_files(
     imported_pages_count: &mut u32,
     imported_courses_count: &mut u32,
     imported_universes_count: &mut u32,
+    errors_count: &mut u32,
 ) {
-    // Used to avoid compiling same thing multiple times
-    let mut compiled_snippets = HashSet::new();
+    // Used to avoid compiling the same document multiple times
+    let mut compiled_documents = HashSet::new();
     // When pages will have their own folder, do the same
 
     for file in files {
@@ -234,38 +248,54 @@ async fn compile_generic_files(
             if let Some(folder_name) = parent.file_name().and_then(|name| name.to_str()) {
                 // parent.to_path_buf()
                 if compiler::is_document_folder(folder_name) {
-                    if compiled_snippets.contains(current_path) {
+                    if compiled_documents.contains(current_path) {
                         current_path = parent;
                         continue;
                     }
 
-                    let (page, snippets) =
-                        compiler::compile_document(&current_path, data_path, db_client, dir.path())
-                            .await;
+                    match compiler::compile_document(
+                        &current_path,
+                        data_path,
+                        db_client,
+                        dir.path(),
+                    )
+                    .await
+                    {
+                        compiler::DocumentCompilation::Compiled {
+                            page_imported,
+                            snippets_imported,
+                        } => {
+                            *imported_pages_count += page_imported as u32;
+                            *imported_snippets_count += snippets_imported;
+                            *processed_pdfs_count += 1;
+                        }
+                        compiler::DocumentCompilation::Failed => *errors_count += 1,
+                        compiler::DocumentCompilation::Skipped => {}
+                    }
 
-                    *imported_pages_count += page as u32;
-                    *imported_snippets_count += snippets;
-                    *processed_pdfs_count += 1;
-
-                    compiled_snippets.insert(current_path);
+                    compiled_documents.insert(current_path);
                 }
                 if folder_name == SNIPPETS_FOLDER {
                     let res =
                         compiler::compile_snippet(&current_path, &data_path, &db_client).await;
                     *imported_snippets_count += res as u32;
+                    *errors_count += (!res) as u32;
                 }
                 if folder_name == PAGES_FOLDER {
                     let res = compiler::compile_page(&current_path, &data_path, &db_client).await;
                     *imported_pages_count += res as u32;
+                    *errors_count += (!res) as u32;
                 }
                 if folder_name == COURSES_FOLDER {
                     let res = compiler::compile_course(&current_path, &data_path, &db_client).await;
                     *imported_courses_count += res as u32;
+                    *errors_count += (!res) as u32;
                 }
                 if folder_name == UNIVERSES_FOLDER {
                     let res =
                         compiler::compile_universe(&current_path, &data_path, &db_client).await;
                     *imported_universes_count += res as u32;
+                    *errors_count += (!res) as u32;
                 }
             }
             current_path = parent;

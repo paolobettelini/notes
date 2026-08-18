@@ -110,7 +110,7 @@ pub fn get_notes_path(env: &str) -> PathBuf {
     }
 }
 
-pub fn run_python_script(current_dir: &Path, script_path: &Path, folder_path: &Path) {
+pub fn run_python_script(current_dir: &Path, script_path: &Path, folder_path: &Path) -> bool {
     let res = Command::new("python")
         .current_dir(current_dir)
         .arg(script_path)
@@ -122,10 +122,14 @@ pub fn run_python_script(current_dir: &Path, script_path: &Path, folder_path: &P
             if !output.status.success() {
                 log::error!("Script execution failed");
                 log::error!("{}", String::from_utf8_lossy(&output.stderr));
+                return false;
             }
+
+            true
         }
         Err(e) => {
             log::error!("Script execution failed: {}", e);
+            false
         }
     }
 }

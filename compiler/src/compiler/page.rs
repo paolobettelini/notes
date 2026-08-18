@@ -45,11 +45,10 @@ pub async fn compile_page<'a>(file: &'a Path, data: &PathBuf, db_client: &Client
     }
 
     // Import
-    stellar_import::import_page_with_client(db_client, file)
-        .await
-        .unwrap_or_else(|e| {
-            log::error!("Could not import page: {}", e);
-        });
+    if let Err(error) = stellar_import::import_page_with_client(db_client, file).await {
+        log::error!("Could not import page: {}", error);
+        return false;
+    }
 
     true
 }

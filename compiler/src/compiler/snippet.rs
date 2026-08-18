@@ -54,7 +54,9 @@ pub async fn compile_snippet<'a>(
 
         log::info!("Running custom build script for snippet {}", &filename);
 
-        run_python_script(&folder, &script, &target_folder);
+        if !run_python_script(&folder, &script, &target_folder) {
+            return false;
+        }
     } else {
         // Copy all contents from the source folder to the target folder
         if let Err(e) = copy_recursively(folder, &target_folder) {
@@ -68,11 +70,10 @@ pub async fn compile_snippet<'a>(
     }
 
     // Import
-    stellar_import::import_snippet_with_client(db_client, folder)
-        .await
-        .unwrap_or_else(|e| {
-            log::error!("Could not import snippet: {}", e);
-        });
+    if let Err(error) = stellar_import::import_snippet_with_client(db_client, folder).await {
+        log::error!("Could not import snippet: {}", error);
+        return false;
+    }
 
     true
 }

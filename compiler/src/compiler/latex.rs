@@ -12,14 +12,21 @@ pub(super) fn compile_latex(file: &Path, tempdir: &Path) -> Option<PathBuf> {
     let search_path = format!("search-path={}", SEARCH_FOLDER);
 
     let out = Command::new("tectonic")
-        .current_dir(file.parent().unwrap())
+        .current_dir(file.parent()?)
         .arg(file)
         .arg("-Z")
         .arg(search_path)
         .arg("--outdir")
         .arg(tempdir)
-        .output()
-        .expect("failed to execute tectonic");
+        .output();
+
+    let out = match out {
+        Ok(out) => out,
+        Err(error) => {
+            log::error!("Failed to execute tectonic: {}", error);
+            return None;
+        }
+    };
 
     let stderr = String::from_utf8_lossy(&out.stderr);
     if !out.status.success() {

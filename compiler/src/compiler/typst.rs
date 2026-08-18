@@ -14,8 +14,15 @@ pub(super) fn compile_typst(file: &Path, tempdir: &Path) -> Option<PathBuf> {
         .arg("compile")
         .arg(file)
         .arg(&pdf)
-        .output()
-        .expect("failed to execute typst");
+        .output();
+
+    let out = match out {
+        Ok(out) => out,
+        Err(error) => {
+            log::error!("Failed to execute typst: {}", error);
+            return None;
+        }
+    };
 
     let stderr = String::from_utf8_lossy(&out.stderr);
     if !out.status.success() {

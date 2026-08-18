@@ -58,6 +58,15 @@ fn document_formats() -> &'static HashMap<&'static str, DocumentFormat> {
     })
 }
 
+pub enum DocumentCompilation {
+    Compiled {
+        page_imported: bool,
+        snippets_imported: u32,
+    },
+    Skipped,
+    Failed,
+}
+
 pub fn is_document_folder(folder: &str) -> bool {
     document_formats()
         .values()
@@ -69,10 +78,14 @@ pub async fn compile_document(
     data: &Path,
     db_client: &ClientHandler,
     tempdir: &Path,
-) -> (bool, u32) {
+) -> DocumentCompilation {
+    if !file.is_file() {
+        return DocumentCompilation::Skipped;
+    }
+
     let Some(extension) = file.extension().and_then(|extension| extension.to_str()) else {
         log::warn!("File {} has no extension.", file.display());
-        return (false, 0);
+        return DocumentCompilation::Skipped;
     };
 
     let Some(format) = document_formats().get(extension) else {
@@ -81,11 +94,11 @@ pub async fn compile_document(
             extension,
             file.display()
         );
-        return (false, 0);
+        return DocumentCompilation::Skipped;
     };
 
     let Some(pdf) = (format.compile)(file, tempdir) else {
-        return (false, 0);
+        return DocumentCompilation::Failed;
     };
 
     generate_pdf(&pdf, data, db_client, format).await
@@ -96,14 +109,14 @@ async fn generate_pdf(
     data: &Path,
     db_client: &ClientHandler,
     format: &DocumentFormat,
-) -> (bool, u32) {
+) -> DocumentCompilation {
     log::info!(
         "Generating snippets and pages from {} PDF: {}",
         format.name,
         pdf.display()
     );
 
-    stellar_pdfformat::generate_snippets(
+    match stellar_pdfformat::generate_snippets(
         pdf,
         data,
         Some(db_client),
@@ -113,5 +126,14 @@ async fn generate_pdf(
         None,
     )
     .await
-    .unwrap_or((false, 0))
+    {
+        Ok((page_imported, snippets_imported)) => DocumentCompilation::Compiled {
+            page_imported,
+            snippets_imported,
+        },
+        Err(error) => {
+            log::error!("Failed to process PDF {}: {}", pdf.display(), error);
+            DocumentCompilation::Failed
+        }
+    }
 }

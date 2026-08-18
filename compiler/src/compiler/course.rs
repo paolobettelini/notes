@@ -45,11 +45,10 @@ pub async fn compile_course<'a>(file: &'a Path, data: &PathBuf, db_client: &Clie
     }
 
     // Import
-    stellar_import::import_course_with_client(db_client, file)
-        .await
-        .unwrap_or_else(|e| {
-            log::error!("Could not import course: {}", e);
-        });
+    if let Err(error) = stellar_import::import_course_with_client(db_client, file).await {
+        log::error!("Could not import course: {}", error);
+        return false;
+    }
 
     true
 }
