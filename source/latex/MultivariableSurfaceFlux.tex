@@ -1,0 +1,113 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{cancel}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{surface-flux}
+\genpage
+
+\section{Flux Through a Surface}
+
+\begin{snippetdefinition}{surface-flux-definition}{Flux through an oriented surface}
+    Let \(\Sigma\subseteq\realnumbers^3\) be an oriented regular surface
+    with unit normal \(\nu\), and let
+    \(F\colon U\subseteq\realnumbers^3\fromto\realnumbers^3\) be a
+    continuous vector field on a neighborhood of \(\Sigma\). The
+    \emph{flux of \(F\) through \(\Sigma\)} is
+    \[
+        \iint_\Sigma F\cdot\nu\,dS.
+    \]
+\end{snippetdefinition}
+
+\begin{snippet}{surface-flux-parametrization-formula}
+    If the chosen orientation is induced by a parametrization
+    \(\sigma\colon\overline A\fromto\Sigma\), then
+    \begin{align*}
+        \iint_\Sigma F\cdot\nu\,dS
+        &=\iint_A F(\sigma(u,v))\cdot
+        \frac{\sigma_u\times\sigma_v}
+        {\cancel{\|\sigma_u\times\sigma_v\|}}
+        \cancel{\|\sigma_u\times\sigma_v\|}\,du\,dv\\
+        &=\iint_A F(\sigma(u,v))\cdot
+        (\sigma_u\times\sigma_v)\,du\,dv.
+    \end{align*}
+    Reversing the orientation changes the sign of the flux.
+\end{snippet}
+
+\begin{snippet}{surface-flux-as-two-form}
+    For \(F=(F_1,F_2,F_3)\), the scalar triple product expands as the
+    pullback of the \(2\)-form
+    \[
+        \omega_F=
+        F_3\,dx\wedge dy-F_2\,dx\wedge dz+F_1\,dy\wedge dz.
+    \]
+    Indeed,
+    \[
+        \omega_F(\sigma_u,\sigma_v)
+        =F(\sigma)\cdot(\sigma_u\times\sigma_v),
+    \]
+    so the flux integral is equivalently \(\iint_\Sigma\omega_F\).
+\end{snippet}
+
+\section{Examples}
+
+\begin{snippetexample}{vertical-field-sphere-flux-example}{Flux through a sphere}
+    Let \(F(x,y,z)=(0,0,z)\), and orient the sphere \(S_R\) outward. With
+    spherical coordinates,
+    \[
+        \sigma_\varphi\times\sigma_\theta
+        =R\sin\varphi\,\sigma(\varphi,\theta).
+    \]
+    Therefore
+    \begin{align*}
+        \iint_{S_R}F\cdot\nu\,dS
+        &=\integral[0][\pi]
+        [\integral[0][2\pi]
+        [R^3\sin\varphi\cos^2\varphi][\theta]][\varphi]\\
+        &=\frac43\pi R^3.
+    \end{align*}
+    This equals the volume of the ball because
+    \(\operatorname{div}F=1\), as predicted by the divergence theorem.
+\end{snippetexample}
+
+\begin{snippetexample}{cylinder-outward-flux-example}{Outward flux through a cylinder}
+    Consider the lateral surface
+    \[
+        x^2+y^2=R^2,
+        \qquad 0\leq z\leq1,
+    \]
+    oriented radially outward, and the field
+    \(F(x,y,z)=(\sin z,y,x^2)\). With
+    \(\sigma(\theta,z)=(R\cos\theta,R\sin\theta,z)\),
+    \[
+        \sigma_\theta\times\sigma_z
+        =(R\cos\theta,R\sin\theta,0).
+    \]
+    Hence
+    \begin{align*}
+        \iint_\Sigma F\cdot\nu\,dS
+        &=\integral[0][2\pi]
+        [\integral[0][1]
+        [R\sin z\cos\theta+R^2\sin^2\theta][z]][\theta]\\
+        &=\pi R^2.
+    \end{align*}
+    On the lower and upper disks, the outward normals are respectively
+    \((0,0,-1)\) and \((0,0,1)\). Their fluxes are
+    \[
+        -\iint_{x^2+y^2\leq R^2}x^2\,dx\,dy
+        =-\frac{\pi R^4}{4},
+        \qquad
+        \iint_{x^2+y^2\leq R^2}x^2\,dx\,dy
+        =\frac{\pi R^4}{4},
+    \]
+    so they cancel. The total outward flux through the closed cylinder is
+    \(\pi R^2\), its volume, since \(\operatorname{div}F=1\).
+\end{snippetexample}
+
+\end{document}

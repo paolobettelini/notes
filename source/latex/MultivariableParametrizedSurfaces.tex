@@ -1,0 +1,187 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{parametrized-surfaces}
+\genpage
+
+\section{Parametrized Surfaces}
+
+\begin{snippet}{surface-integration-motivation}
+    Let \(\Sigma\subseteq\realnumbers^3\) be a surface and let
+    \(f\colon\Sigma\fromto\realnumbers\). To give meaning to
+    \[
+        \int_\Sigma f\,dS,
+    \]
+    one describes \(\Sigma\) by parameters and reduces the integral to an
+    ordinary double integral on a subset of \(\realnumbers^2\).
+\end{snippet}
+
+\begin{snippetdefinition}{parametrized-surface-definition}{Parametrized surface}
+    Let \(A\subseteq\realnumbers^k\) be bounded and open. A
+    \(k\)-dimensional parametrization in \(\realnumbers^n\) is a map
+    \[
+        \sigma\colon\overline A\fromto\realnumbers^n.
+    \]
+    Its image \(\Sigma=\sigma(\overline A)\) is called a
+    \emph{parametrized \(k\)-surface}, or a parametrized
+    \(k\)-dimensional submanifold.
+\end{snippetdefinition}
+
+\begin{snippet}{surface-parametrization-three-dimensional-case}
+    For a surface in \(\realnumbers^3\), one has \(k=2\), \(n=3\), and
+    usually writes
+    \[
+        \sigma(u,v)=\bigl(x(u,v),y(u,v),z(u,v)\bigr).
+    \]
+\end{snippet}
+
+\begin{snippetdefinition}{regular-surface-parametrization-definition}{Regular parametrization}
+    Let
+    \[
+        \sigma\colon\overline A\subseteq\realnumbers^k
+        \fromto\realnumbers^n.
+    \]
+    The parametrization is \emph{regular} if
+    \(\sigma\in\mathcal C^1(\overline A)\) and
+    \[
+        \operatorname{rank}J_\sigma(t)=k
+        \qquad\text{for every }t\in A.
+    \]
+    Equivalently, the vectors
+    \(\partial_{t_1}\sigma(t),\ldots,\partial_{t_k}\sigma(t)\) are
+    linearly independent.
+\end{snippetdefinition}
+
+\begin{snippet}{surface-jacobian-matrix}
+    If \(t=(t_1,\ldots,t_k)\), then
+    \[
+        J_\sigma(t)=
+        \begin{bmatrix}
+            \partial_{t_1}\sigma(t)&\cdots&\partial_{t_k}\sigma(t)
+        \end{bmatrix}.
+    \]
+    In the case \(k=2\), \(n=3\),
+    \[
+        J_\sigma(u,v)=
+        \begin{bmatrix}
+            x_u&x_v\\
+            y_u&y_v\\
+            z_u&z_v
+        \end{bmatrix}.
+    \]
+\end{snippet}
+
+\begin{snippetproposition}{surface-regularity-geometric-interpretation}{Geometric interpretation of regularity}
+    Let
+    \(\sigma\colon\overline A\subseteq\realnumbers^2
+    \fromto\realnumbers^3\) be regular and let
+    \(p=\sigma(u_0,v_0)\). Then
+    \[
+        T_p\Sigma=
+        \operatorname{span}\{\sigma_u(u_0,v_0),\sigma_v(u_0,v_0)\}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{surface-regularity-geometric-interpretation-proof}{surface-regularity-geometric-interpretation}{Geometric interpretation of regularity}
+    The coordinate curves
+    \[
+        \gamma(u)=\sigma(u,v_0),
+        \qquad
+        \varphi(v)=\sigma(u_0,v)
+    \]
+    lie on the surface and pass through \(p\). Their tangent vectors at
+    \(p\) are
+    \[
+        \gamma'(u_0)=\sigma_u(u_0,v_0),
+        \qquad
+        \varphi'(v_0)=\sigma_v(u_0,v_0).
+    \]
+    Regularity makes these vectors linearly independent, so they span the
+    tangent plane.
+\end{snippetproof}
+
+\section{Simple Surfaces and Local Graphs}
+
+\begin{snippetdefinition}{simple-surface-parametrization-definition}{Simple parametrization}
+    A parametrization
+    \(\sigma\colon\overline A\fromto\realnumbers^n\) is \emph{simple} if
+    \[
+        \sigma(t)=\sigma(s),\quad t\neq s
+        \quad\Longrightarrow\quad t,s\in\partial A.
+    \]
+    In particular, \(\sigma\) is injective on \(A\).
+\end{snippetdefinition}
+
+\begin{snippet}{simple-parametrization-interpretation}
+    Simplicity prevents the interior of the parameter domain from covering
+    the same part of a surface more than once. Otherwise a parameter-domain
+    integral would count that area repeatedly.
+\end{snippet}
+
+\begin{snippetexample}{graph-surface-regular-parametrization-example}{Graph of a function}
+    Let \(A\subseteq\realnumbers^2\) be open and
+    \(f\in\mathcal C^1(A)\). The map
+    \[
+        \sigma(x,y)=\bigl(x,y,f(x,y)\bigr)
+    \]
+    parametrizes the graph of \(f\), and
+    \[
+        J_\sigma(x,y)=
+        \begin{bmatrix}
+            1&0\\
+            0&1\\
+            f_x&f_y
+        \end{bmatrix}.
+    \]
+    Its columns are linearly independent everywhere, hence the graph
+    parametrization is regular.
+\end{snippetexample}
+
+\begin{snippetproposition}{regular-surface-local-graph-proposition}{Local graph representation}
+    Let
+    \(\sigma\colon\overline A\subseteq\realnumbers^k
+    \fromto\realnumbers^n\) be regular at \(t_0\in A\). Then, after
+    possibly reordering the coordinates of \(\realnumbers^n\), the image of
+    \(\sigma\) is locally the graph of a function of \(k\) variables.
+\end{snippetproposition}
+
+\begin{snippetproof}{regular-surface-local-graph-proposition-proof}{regular-surface-local-graph-proposition}{Local graph representation}
+    Since \(J_\sigma(t_0)\) has rank \(k\), some \(k\times k\) minor is
+    nonzero. Projecting onto the corresponding \(k\) target coordinates
+    gives a map with invertible derivative at \(t_0\). The inverse function
+    theorem provides a local inverse for those coordinates; substituting it
+    into the remaining components of \(\sigma\) gives the desired graph.
+
+    For \(\sigma(u,v)=(x(u,v),y(u,v),z(u,v))\), if
+    \(\partial(x,y)/\partial(u,v)\neq0\), then locally
+    \(u=u(x,y)\), \(v=v(x,y)\), and the surface is
+    \[
+        (x,y)\longmapsto z\bigl(u(x,y),v(x,y)\bigr).
+    \]
+\end{snippetproof}
+
+\begin{snippetdefinition}{surface-coordinate-curves-definition}{Coordinate curves}
+    Let
+    \(\sigma\colon\overline A\subseteq\realnumbers^k
+    \fromto\realnumbers^n\). A \emph{coordinate curve} is obtained by
+    fixing \(k-1\) parameters and varying the remaining one.
+
+    If \(k=2\), the coordinate curves through
+    \(\sigma(u_0,v_0)\) are
+    \[
+        u\longmapsto\sigma(u,v_0),
+        \qquad
+        v\longmapsto\sigma(u_0,v),
+    \]
+    with velocities \(\sigma_u(u_0,v_0)\) and
+    \(\sigma_v(u_0,v_0)\), respectively.
+\end{snippetdefinition}
+
+\end{document}

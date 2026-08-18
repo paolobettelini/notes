@@ -1,0 +1,145 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{classical-stokes-theorem}
+\genpage
+
+\section{From Green to Stokes}
+
+\begin{snippet}{green-gauss-to-stokes-interpretation}
+    Regard \(\Omega\subseteq\realnumbers^2\) as a surface in the plane
+    \(z=0\), with normal \(\mathbf k\), and associate to
+    \(P\,dx+Q\,dy\) the field \(F=(P,Q,0)\). Then
+    \[
+        \operatorname{curl}F=(0,0,Q_x-P_y),
+    \]
+    so Green--Gauss becomes
+    \[
+        \iint_\Omega\operatorname{curl}F\cdot\mathbf k\,dS
+        =\int_{\partial\Omega}F\cdot T\,d\sigma.
+    \]
+    Stokes' theorem extends this identity to oriented surfaces in
+    \(\realnumbers^3\).
+\end{snippet}
+
+\begin{snippettheorem}{classical-stokes-theorem-statement}{Stokes' theorem}
+    Let \(\Sigma\subseteq\realnumbers^3\) be an oriented, piecewise regular
+    surface with piecewise regular boundary \(\partial\Sigma\), and let
+    \(F\in\mathcal C^1(U,\realnumbers^3)\) on an open neighborhood of
+    \(\Sigma\). If \(\nu\) is the chosen unit normal and the boundary has
+    the induced positive orientation, then
+    \[
+        \iint_\Sigma\operatorname{curl}F\cdot\nu\,dS
+        =\int_{\partial\Sigma}F\cdot T\,d\sigma.
+    \]
+\end{snippettheorem}
+
+\begin{snippet}{stokes-boundary-orientation}
+    The boundary orientation is induced by the chosen surface normal.
+    Looking from the tip of \(\nu\), a positively oriented boundary is
+    traversed counterclockwise. Reversing \(\nu\) reverses the boundary
+    orientation and changes both sides of Stokes' formula by a sign.
+\end{snippet}
+
+\section{Examples}
+
+\begin{snippetexample}{stokes-spatial-differential-form-example}{A line integral along a spatial curve}
+    Let
+    \[
+        \omega=(y+z)\,dx+(z+x)\,dy+(x-y)\,dz,
+    \]
+    and let \(\gamma\) be the intersection
+    \[
+        x^2+y^2+z^2=1,
+        \qquad z=y.
+    \]
+    Compute \(\int_\gamma\omega\).
+\end{snippetexample}
+
+\begin{snippetsolution}{stokes-spatial-differential-form-solution}{A line integral along a spatial curve}
+    The curve satisfies \(x^2+2y^2=1\) and can be parametrized by
+    \[
+        \gamma(\theta)=
+        \left(\cos\theta,
+        \frac{\sin\theta}{\sqrt2},
+        \frac{\sin\theta}{\sqrt2}\right),
+        \qquad0\leq\theta\leq2\pi.
+    \]
+    We have
+    \[
+        dx=-\sin\theta\,d\theta,
+        \qquad
+        dy=dz=\frac{\cos\theta}{\sqrt2}\,d\theta.
+    \]
+    Direct substitution gives
+    \begin{align*}
+        \int_\gamma\omega
+        &=\int_0^{2\pi}\Bigg[
+            \sqrt2\sin\theta(-\sin\theta)
+            +\left(\frac{\sin\theta}{\sqrt2}+\cos\theta\right)
+                \frac{\cos\theta}{\sqrt2}
+            +\left(\cos\theta-\frac{\sin\theta}{\sqrt2}\right)
+                \frac{\cos\theta}{\sqrt2}
+        \Bigg],d\theta\\
+        &=\sqrt2\integral[0][2\pi]
+        [\cos^2\theta-\sin^2\theta][\theta]\\
+        &=0.
+    \end{align*}
+
+    Alternatively, associate
+    \(F=(y+z,z+x,x-y)\) to \(\omega\), and let \(\Sigma\) be the planar
+    region in \(z=y\) bounded by \(\gamma\). A unit normal is
+    \(\nu=(0,1,-1)/\sqrt2\), while
+    \[
+        \operatorname{curl}F=(-2,0,0).
+    \]
+    Hence \(\operatorname{curl}F\cdot\nu=0\), and Stokes' theorem again
+    yields \(\int_\gamma\omega=0\).
+\end{snippetsolution}
+
+\begin{snippetexample}{stokes-graph-curl-flux-example}{Flux of a curl through a graph}
+    Let \(F(x,y,z)=(z,x,y)\). Compute the flux of
+    \(\operatorname{curl}F\) through
+    \[
+        \Sigma=\{(x,y,z):z=xy,\ x^2+y^2\leq1\},
+    \]
+    oriented by the normal with nonnegative third component.
+\end{snippetexample}
+
+\begin{snippetsolution}{stokes-graph-curl-flux-solution}{Flux of a curl through a graph}
+    The parametrization \(r(x,y)=(x,y,xy)\) induces the normal
+    \(r_x\times r_y=(-y,-x,1)\). Its positively oriented boundary is
+    \[
+        \gamma(\theta)=
+        (\cos\theta,\sin\theta,\cos\theta\sin\theta),
+        \qquad0\leq\theta\leq2\pi.
+    \]
+    Thus
+    \[
+        \gamma'(\theta)=
+        (-\sin\theta,\cos\theta,\cos^2\theta-\sin^2\theta)
+    \]
+    and
+    \(F(\gamma(\theta))=(\cos\theta\sin\theta,\cos\theta,\sin\theta)\).
+    Stokes' theorem gives
+    \begin{align*}
+        \iint_\Sigma\operatorname{curl}F\cdot\nu\,dS
+        &=\integral[0][2\pi]
+        [F(\gamma(\theta))\cdot\gamma'(\theta)][\theta]\\
+        &=\integral[0][2\pi]
+        [-\sin^2\theta\cos\theta
+          +\cos^2\theta
+          +\sin\theta(\cos^2\theta-\sin^2\theta)][\theta]\\
+        &=\integral[0][2\pi][\cos^2\theta][\theta]=\pi,
+    \end{align*}
+    because all remaining terms integrate to zero over a full period.
+\end{snippetsolution}
+
+\end{document}

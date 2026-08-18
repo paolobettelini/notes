@@ -1,0 +1,178 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{surface-integrals}
+\genpage
+
+\section{Surface Integrals}
+
+\begin{snippetdefinition}{scalar-surface-integral-definition}{Scalar surface integral}
+    Let
+    \(\sigma\colon\overline A\subseteq\realnumbers^2
+    \fromto\realnumbers^3\) be a regular simple parametrization of
+    \(\Sigma=\sigma(\overline A)\), and let
+    \(f\colon\Sigma\fromto\realnumbers\) be continuous. Define
+    \[
+        \iint_\Sigma f\,dS
+        =
+        \iint_A
+        f(\sigma(u,v))
+        \|\sigma_u(u,v)\times\sigma_v(u,v)\|\,du\,dv.
+    \]
+    In particular,
+    \[
+        \operatorname{Area}(\Sigma)
+        =\iint_A\|\sigma_u\times\sigma_v\|\,du\,dv.
+    \]
+\end{snippetdefinition}
+
+\begin{snippet}{surface-area-element-interpretation}
+    The vector \(\sigma_u\times\sigma_v\) is perpendicular to the tangent
+    plane. Its norm is the infinitesimal area-dilation factor, so
+    \[
+        dS=\|\sigma_u\times\sigma_v\|\,du\,dv.
+    \]
+    Measure-theoretically, this is the area measure induced on the image by
+    the parametrization; the factor records its local deformation.
+\end{snippet}
+
+\begin{snippetdefinition}{parametrized-surface-unit-normal-definition}{Unit normal associated with a parametrization}
+    Let
+    \(\sigma\colon\overline A\subseteq\realnumbers^2
+    \fromto\realnumbers^3\) be regular. The associated unit normal is
+    \[
+        \nu(u,v)=
+        \frac{\sigma_u(u,v)\times\sigma_v(u,v)}
+        {\|\sigma_u(u,v)\times\sigma_v(u,v)\|}.
+    \]
+    Reversing the order of the parameters replaces \(\nu\) by \(-\nu\).
+\end{snippetdefinition}
+
+\begin{snippetexample}{graph-surface-area-element-example}{Area element of a graph}
+    For \(\sigma(x,y)=(x,y,f(x,y))\),
+    \[
+        \sigma_x=(1,0,f_x),
+        \qquad
+        \sigma_y=(0,1,f_y),
+    \]
+    and hence
+    \[
+        \sigma_x\times\sigma_y=(-f_x,-f_y,1),
+        \qquad
+        dS=\sqrt{1+\|\nabla f\|^2}\,dx\,dy.
+    \]
+\end{snippetexample}
+
+\section{Classical Surfaces}
+
+\begin{snippetexample}{sphere-surface-parametrization-example}{Sphere}
+    The upper hemisphere of the unit sphere can first be represented as the
+    graph
+    \[
+        \sigma(x,y)=\left(x,y,\sqrt{1-x^2-y^2}\right),
+        \qquad x^2+y^2<1.
+    \]
+    Replacing the square root by its negative gives the lower hemisphere.
+    A spherical-coordinate parametrization of the sphere of radius \(R\) is
+    \[
+        \sigma(\varphi,\theta)=
+        (R\sin\varphi\cos\theta,
+         R\sin\varphi\sin\theta,
+         R\cos\varphi),
+    \]
+    where \(\varphi\in[0,\pi]\) and
+    \(\theta\in[0,2\pi]\). Its coordinate vectors are
+    \[
+        \sigma_\varphi=
+        (R\cos\varphi\cos\theta,
+         R\cos\varphi\sin\theta,
+         -R\sin\varphi)
+    \]
+    and
+    \[
+        \sigma_\theta=
+        (-R\sin\varphi\sin\theta,
+         R\sin\varphi\cos\theta,
+         0).
+    \]
+    Thus
+    \[
+        \sigma_\varphi\times\sigma_\theta
+        =R^2\sin\varphi
+        (\sin\varphi\cos\theta,
+         \sin\varphi\sin\theta,
+         \cos\varphi),
+    \]
+    and therefore
+    \[
+        \|\sigma_\varphi\times\sigma_\theta\|
+        =R^2\sin\varphi.
+    \]
+    The parametrization is regular for \(0<\varphi<\pi\), but degenerates
+    at the poles; the parameter values \(\theta=0\) and \(\theta=2\pi\)
+    are also identified along one meridian. Its normal is outward: at
+    \((\varphi,\theta)=(\pi/2,0)\), both the position and normal directions
+    point along the positive \(x\)-axis.
+\end{snippetexample}
+
+\begin{snippetcorollary}{sphere-surface-area-corollary}{Area of a sphere}
+    The sphere of radius \(R\) has area
+    \[
+        \operatorname{Area}(S_R^2)
+        =\integral[0][2\pi]
+        [\integral[0][\pi][R^2\sin\varphi][\varphi]][\theta]
+        =4\pi R^2.
+    \]
+\end{snippetcorollary}
+
+\begin{snippetexample}{cylinder-surface-area-element-example}{Cylinder}
+    The cylinder \(x^2+y^2=R^2\) is parametrized by
+    \[
+        \sigma(\theta,z)=(R\cos\theta,R\sin\theta,z).
+    \]
+    Since
+    \[
+        \sigma_\theta\times\sigma_z
+        =(R\cos\theta,R\sin\theta,0),
+    \]
+    the normal is outward and \(dS=R\,d\theta\,dz\). For \(R=1\), the
+    parametrization preserves area locally. The values at \(\theta=0\) and
+    \(\theta=2\pi\) are identified along the boundary of the parameter
+    domain.
+\end{snippetexample}
+
+\begin{snippetexample}{torus-surface-area-example}{Torus}
+    Let \(R>r>0\). Rotating the circle
+    \(\gamma(\theta)=(R+r\cos\theta,r\sin\theta)\) about the \(z\)-axis
+    gives
+    \[
+        \sigma(\theta,\varphi)=
+        \bigl((R+r\cos\theta)\cos\varphi,
+              (R+r\cos\theta)\sin\varphi,
+              r\sin\theta\bigr).
+    \]
+    Its area factor is
+    \[
+        \|\sigma_\theta\times\sigma_\varphi\|
+        =r(R+r\cos\theta)>0.
+    \]
+    Therefore
+    \begin{align*}
+        \operatorname{Area}(T)
+        &=\iint_{[0,2\pi]^2}r(R+r\cos\theta)
+            \,d\theta\,d\varphi\\
+        &=4\pi^2rR.
+    \end{align*}
+    This is the product of the length \(2\pi r\) of the generating circle
+    and the distance \(2\pi R\) traveled by its centroid, in agreement with
+    Pappus's theorem.
+\end{snippetexample}
+
+\end{document}
