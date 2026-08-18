@@ -14,61 +14,172 @@
 \section{Lebesgue Measure}
 
 \begin{snippet}{lebesgue-measure-meaning}
-    The idea is to create a measure \(\mu\) which encapsulates
-    and generalizes the classical meaning of a measure (i.e. length, area, volume, \(\cdots\)).
-    However, such measure does not exist for the measurable space \((\realnumbers, \powerset(\realnumbers))\).
+    We want a measure that extends the usual notions of length, area and volume.
+    On the real line it should satisfy
+    \[
+        \mu([a,b])=b-a,
+        \qquad
+        \mu(E+t)=\mu(E).
+    \]
+    We would also like every subset of \(\realnumbers\) to be measurable, but
+    no countably additive, translation-invariant measure defined on
+    \(\powerset(\realnumbers)\) can extend the length of intervals.
 \end{snippet}
 
-\begin{snippettheorem}{no-measure-on-r}{}
-    Let \(M=(\realnumbers, \powerset(\realnumbers), \mu)\)
-    be a measure space with
-    \begin{enumerate}
-        \item \(\mu([a;b]) = b-a, \quad b>1\);
-        \item \textbf{traslation invariant:} \(\mu(A) = \mu(\{k + a \suchthat a \in A\}), \quad A \in \powerset(\realnumbers) \land x \in \realnumbers\).
-    \end{enumerate}
-    Then, \(M\) does not exist.
+\begin{snippettheorem}{no-measure-on-r}{Non-existence of a universal length measure}
+    There is no countably additive measure \(\mu\) on
+    \(\powerset(\realnumbers)\) such that
+    \[
+        \mu([a,b])=b-a
+        \quad\text{and}\quad
+        \mu(E+t)=\mu(E)
+    \]
+    for every \(a<b\), \(E\subseteq\realnumbers\) and \(t\in\realnumbers\).
 \end{snippettheorem}
 
-\begin{snippetproposition}{condition-gives-only-zero-measure}{}
-    Let \((\realnumbers, \powerset(\realnumbers), \mu)\) be a measure space where
-    \begin{enumerate}
-        \item \(\mu((0; 1]) < \infty\);
-        \item \textbf{traslation invariant:} \(\mu(A) = \mu(\{k + a \suchthat a \in A\}), \quad A \in \powerset(\realnumbers) \land x \in \realnumbers\).
-    \end{enumerate}
-    Then, \(\mu = 0\).
+\begin{snippetproposition}{condition-gives-only-zero-measure}{Countable sets have zero length}
+    Let \(\mu\) be a translation-invariant measure whose domain contains the
+    singletons and suppose that \(\mu((0,1])<+\infty\). Then every countable
+    subset of \(\realnumbers\) has measure zero.
 \end{snippetproposition}
 
-% proof: https://youtu.be/Ur3ofJ61bpk?list=PLBh2i93oe2qvMVqAzsX1Kuv6-4fjazZ8j
+\begin{snippetproof}{condition-gives-only-zero-measure-proof}{condition-gives-only-zero-measure}{Countable sets have zero length}
+    Translation invariance gives the same value \(c\) to every singleton.
+    Since \((0,1]\) contains arbitrarily many pairwise disjoint singletons,
+    finite additivity and \(\mu((0,1])<+\infty\) force \(c=0\). Countable
+    additivity then gives measure zero to every countable set.
+\end{snippetproof}
 
-\section{Measurable maps}
+The Peano--Jordan construction uses finite coverings by bounded rectangles and
+is only finitely additive. Lebesgue's construction replaces finite coverings
+with countable coverings.
 
-\begin{snippetdefinition}{measurable-map-definition}{Measurable Map}
-    Let \((\Omega_1, \Sigma_1)\) and \((\Omega_2, \Sigma_2)\) be measurable spaces. \\
-    A map \(f \colon \Omega_1 \fromto \Omega_2\) is called \textit{measurable} (with respect to \(\Sigma_1\) and \(\Sigma_2\))
-    if \(\forall \sigma_2 \in \Sigma_2, f^{-1}(\sigma_2) \in \Sigma_1\).
-    That is, the preimage of any measurable set is still measurable.
+\begin{snippetdefinition}{lebesgue-outer-measure-definition}{Lebesgue outer measure}
+    For \(E\subseteq\realnumbers\), its \emph{Lebesgue outer measure} is
+    \[
+        \mu^*(E)
+        \triangleq
+        \inf_{\substack{E\subseteq\bigcup_{i=1}^{\infty}I_i\\
+        I_i=(a_i,b_i)}}
+        \sum_{i=1}^{\infty}\ell(I_i),
+    \]
+    where the infimum is taken over all countable coverings of \(E\) by
+    bounded open intervals.
 \end{snippetdefinition}
 
-\begin{plainhtml}
-    if you consider a simple real function, we want the sets on the y axis to be measurable,
-\end{plainhtml}
-\begin{plainhtml}
-    as well as those on the x axis. Thus, the preimage of the x values must be measurable.
-\end{plainhtml}
+\begin{snippetexample}{outer-measure-rationals-unit-interval}{Outer measure of \(\rationalnumbers\cap[0,1]\)}
+    Let \(\{q_n\}_{n\geq1}\) enumerate \(\rationalnumbers\cap[0,1]\). For
+    every \(\varepsilon>0\), cover \(q_n\) by an interval \(I_n\) of length
+    \(\varepsilon/2^n\). Then
+    \[
+        \mu^*(\rationalnumbers\cap[0,1])
+        \leq\sum_{n=1}^{\infty}\frac{\varepsilon}{2^n}
+        =\varepsilon.
+    \]
+    Hence \(\mu^*(\rationalnumbers\cap[0,1])=0\). The same argument proves
+    that every countable set has outer measure zero.
 
-% https://youtu.be/11heoNVavvM?list=PLBh2i93oe2qvMVqAzsX1Kuv6-4fjazZ8j&t=356
+    In contrast, the Peano--Jordan inner and outer contents of
+    \(\rationalnumbers\cap[0,1]\) are respectively \(0\) and \(1\), so that
+    set is not Peano--Jordan measurable. For Peano--Jordan content, not only
+    the number of points but also their arrangement matters. A convergent
+    sequence and its limit, for example, can still be covered by finitely many
+    intervals of arbitrarily small total length.
+\end{snippetexample}
 
-\begin{snippetproposition}{measurable-map-composition}{Composition of measurable maps}
-    Let \((\Omega_1, \Sigma_1)\), \((\Omega_2, \Sigma_2)\) and \((\Omega_3, \Sigma_3)\)
-    be measurable spaces.
-    If the maps \(f\colon \Omega_1 \fromto \Omega_2\) and \(g\colon \Omega_2 \fromto \Omega_3\)
-    are measurable, then \(f \circ g\) is also a measurable map.
+\begin{snippetproposition}{lebesgue-outer-measure-basic-properties}{Basic properties of Lebesgue outer measure}
+    The outer measure of an interval equals its length, and Lebesgue outer
+    measure is translation invariant:
+    \[
+        \mu^*(I)=\ell(I),
+        \qquad
+        \mu^*(E+t)=\mu^*(E).
+    \]
 \end{snippetproposition}
 
-% also f+g, f-g, |f|
+Outer measure is not additive, not even finitely additive on arbitrary sets.
+It is, however, countably subadditive.
 
-% measure defined on
-% mu in (-inf; inf)
-% mu > 0
+\begin{snippetproposition}{lebesgue-outer-measure-countable-subadditivity}{Countable subadditivity of outer measure}
+    For every sequence \(\{S_n\}_{n\geq1}\) of subsets of \(\realnumbers\),
+    \[
+        \mu^*\!\left(\bigcup_{n=1}^{\infty}S_n\right)
+        \leq
+        \sum_{n=1}^{\infty}\mu^*(S_n).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{lebesgue-outer-measure-countable-subadditivity-proof}{lebesgue-outer-measure-countable-subadditivity}{Countable subadditivity of outer measure}
+    Fix \(\varepsilon>0\). For each \(n\), choose a countable family of
+    intervals \(\{I_i^n\}_{i\geq1}\) such that
+    \[
+        S_n\subseteq\bigcup_{i=1}^{\infty}I_i^n,
+        \qquad
+        \sum_{i=1}^{\infty}\ell(I_i^n)
+        <\mu^*(S_n)+\frac{\varepsilon}{2^n}.
+    \]
+    The doubly indexed family is countable and covers \(\bigcup_nS_n\).
+    Therefore
+    \begin{align*}
+        \mu^*\!\left(\bigcup_{n=1}^{\infty}S_n\right)
+        &\leq\sum_{n=1}^{\infty}\sum_{i=1}^{\infty}\ell(I_i^n) \\
+        &<\sum_{n=1}^{\infty}\mu^*(S_n)+\varepsilon.
+    \end{align*}
+    Letting \(\varepsilon\to0\) proves the claim. The order of summation is
+    irrelevant because every term is nonnegative.
+\end{snippetproof}
+
+Carath\'eodory's idea is to retain precisely those sets which split every
+other set additively. On this subfamily the outer measure becomes a genuine,
+countably additive measure.
+
+\section{Carath\'eodory's Criterion}
+
+\begin{snippetdefinition}{caratheodory-lebesgue-measurability-definition}{Carath\'eodory measurable set}
+    A set \(E\subseteq\realnumbers\) is \emph{Lebesgue measurable} if, for
+    every \(A\subseteq\realnumbers\),
+    \[
+        \mu^*(A)
+        =\mu^*(A\cap E)+\mu^*(A\cap E^c).
+    \]
+\end{snippetdefinition}
+
+By subadditivity, the inequality \(\leq\) always holds. Thus it is equivalent
+to require only
+\[
+    \mu^*(A)\geq\mu^*(A\cap E)+\mu^*(A\cap E^c).
+\]
+
+\begin{snippettheorem}{caratheodory-measurable-family-theorem}{Carath\'eodory's theorem}
+    The family \(\mathcal L\) of Carath\'eodory measurable subsets of
+    \(\realnumbers\) is a \(\sigma\)-algebra, and
+    \(\restr{\mu^*}{\mathcal L}\) is a countably additive measure.
+\end{snippettheorem}
+
+\begin{snippetproposition}{outer-null-sets-lebesgue-measurable}{Outer-null sets are Lebesgue measurable}
+    If \(\mu^*(E)=0\), then \(E\in\mathcal L\).
+\end{snippetproposition}
+
+\begin{snippetproof}{outer-null-sets-lebesgue-measurable-proof}{outer-null-sets-lebesgue-measurable}{Outer-null sets are Lebesgue measurable}
+    For every \(A\subseteq\realnumbers\), monotonicity gives
+    \(\mu^*(A\cap E)=0\) and \(\mu^*(A\cap E^c)\leq\mu^*(A)\). Hence
+    \[
+        \mu^*(A\cap E)+\mu^*(A\cap E^c)\leq\mu^*(A),
+    \]
+    which is the nontrivial Carath\'eodory inequality.
+\end{snippetproof}
+
+Every subset of an outer-null set is outer-null and therefore belongs to
+\(\mathcal L\). Consequently the resulting measure is complete.
+
+\begin{snippetdefinition}{lebesgue-measure-definition}{Lebesgue measure}
+    The \emph{Lebesgue measure} is the restriction
+    \[
+        \mu\triangleq\restr{\mu^*}{\mathcal L}.
+    \]
+\end{snippetdefinition}
+
+In particular, all intervals are Lebesgue measurable and have their usual
+length.
 
 \end{document}

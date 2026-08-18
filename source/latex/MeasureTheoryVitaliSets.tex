@@ -1,0 +1,101 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bettelini}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{measuretheory-vitali-sets}
+\genpage
+
+\section{Vitali Sets}
+
+\begin{snippetexample}{vitali-non-lebesgue-measurable-set}{A non-Lebesgue-measurable set}
+    Assume the axiom of choice. On \([0,1]\), define
+    \[
+        x\sim y
+        \quad\Longleftrightarrow\quad
+        x-y\in\rationalnumbers.
+    \]
+    Each equivalence class is countable. Choose one representative from every
+    class and let \(V\) be the resulting set. It has the cardinality of the
+    continuum and contains exactly one rational number.
+
+    For \(r\in\rationalnumbers\cap[0,1]\), translate \(V\) modulo one:
+    \[
+        V_r=
+        \bigl((V+r)\cap[0,1]\bigr)
+        \cup
+        \bigl((V+r-1)\cap[0,1]\bigr).
+    \]
+    The two pieces are disjoint. The sets \(V_r\) are pairwise disjoint and
+    cover \([0,1]\). Indeed, every \(x\in[0,1]\) is equivalent to exactly one
+    representative \(v\in V\), so \(x-v\) is rational modulo one. If two
+    translates met, two representatives of \(V\) would differ by a rational,
+    contradicting their choice from distinct classes.
+
+    If \(V\) were Lebesgue measurable, every \(V_r\) would be measurable and
+    translation invariance would give \(\mu(V_r)=\mu(V)\). If
+    \(\mu(V)=0\), countable additivity would imply
+    \[
+        1=\mu([0,1])
+        =\sum_{r\in\rationalnumbers\cap[0,1]}\mu(V_r)=0.
+    \]
+    If \(\mu(V)>0\), the same sum would be \(+\infty\). Both alternatives are
+    impossible. Hence \(V\) is not Lebesgue measurable.
+\end{snippetexample}
+
+\begin{snippetproposition}{lebesgue-outer-measure-not-finitely-additive}{Lebesgue outer measure is not finitely additive}
+    There are finitely many pairwise disjoint subsets
+    \(A_1,\ldots,A_N\subseteq[0,1]\) such that
+    \[
+        \mu^*\!\left(\bigcup_{n=1}^NA_n\right)
+        <
+        \sum_{n=1}^N\mu^*(A_n).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{lebesgue-outer-measure-not-finitely-additive-proof}{lebesgue-outer-measure-not-finitely-additive}{Lebesgue outer measure is not finitely additive}
+    Use the modulo-one translates \(V_r\) from the Vitali construction.
+    Piecewise translation modulo one preserves outer measure, so every
+    \(V_r\) has the same outer measure as \(V\). Subadditivity and
+    \(\bigcup_rV_r=[0,1]\) give
+    \[
+        1
+        =\mu^*([0,1])
+        \leq
+        \sum_{r\in\rationalnumbers\cap[0,1]}\mu^*(V_r).
+    \]
+    Thus their common outer measure is positive. Choose distinct
+    \(r_1,\ldots,r_N\) so that
+    \[
+        \sum_{n=1}^N\mu^*(V_{r_n})>1.
+    \]
+    Since their union is contained in \([0,1]\),
+    \[
+        \mu^*\!\left(\bigcup_{n=1}^NV_{r_n}\right)
+        \leq1
+        <
+        \sum_{n=1}^N\mu^*(V_{r_n}).
+    \]
+    The missing equality is precisely the failure of finite additivity.
+\end{snippetproof}
+
+\begin{snippetexercise}{nonmeasurable-set-in-euclidean-space-exercise}{A nonmeasurable set in higher-dimensional Euclidean space}
+    Starting from a Vitali set \(V\subseteq[0,1]\), construct a
+    non-Lebesgue-measurable subset of \(\realnumbers^n\). One may use
+    \(V\cartesianprod[0,1]^{n-1}\) and the section form of the completed
+    Fubini theorem. Notice that the Cartesian product of two nonmeasurable
+    sets need not automatically be nonmeasurable.
+\end{snippetexercise}
+
+\begin{snippetexercise}{positive-measure-set-contains-nonmeasurable-subset-exercise}{Nonmeasurable subsets of positive-measure sets}
+    Prove that every Lebesgue measurable subset of \(\realnumbers\) with
+    positive measure contains a non-Lebesgue-measurable subset. The set need
+    not contain any interval.
+\end{snippetexercise}
+
+\end{document}

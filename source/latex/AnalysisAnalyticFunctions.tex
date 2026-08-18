@@ -1,0 +1,186 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{analytic-functions}
+\genpage
+
+\section{Taylor series and analyticity}
+
+\begin{snippettheorem}{borel-theorem-smooth-jets}{Borel's theorem}
+    Let \(\{b_n\}_{n\geq0}\) be any real sequence, let \((a,b)\) be an open
+    interval, and let \(x_0\in(a,b)\). There exists
+    \(f\in\mathcal C^\infty((a,b))\) such that
+    \[
+        f^{(n)}(x_0)=b_n,
+        \qquad \forall n\geq0.
+    \]
+\end{snippettheorem}
+
+\begin{snippetexample}{borel-theorem-zero-radius-taylor-series-example}{A smooth function with a Taylor series of zero radius}
+    In Borel's theorem, choose \(b_n=(n!)^2\). The resulting smooth function
+    has Taylor coefficients
+    \[
+        \frac{b_n}{n!}=n!,
+    \]
+    so its Taylor series at \(x_0\) has radius of convergence \(0\). Thus
+    smoothness alone imposes no positive radius of convergence on a Taylor
+    series.
+\end{snippetexample}
+
+\begin{snippetdefinition}{real-analytic-function-definition}{Real analytic function}
+    Let \((a,b)\subseteq\realnumbers\). A \function
+    \(f\in\mathcal C^\infty((a,b))\) is \emph{real analytic} if, for every
+    \(x_0\in(a,b)\), there exists a neighborhood \(U\subseteq(a,b)\) of
+    \(x_0\) such that
+    \[
+        f(x)=\sum_{n=0}^{\infty}\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n,
+        \qquad \forall x\in U.
+    \]
+    The class of real analytic functions on \((a,b)\) is denoted by
+    \(\mathcal C^\omega((a,b))\).
+\end{snippetdefinition}
+
+\begin{snippet}{real-analytic-functions-local-character}
+    Analyticity is local: the Taylor series at each point only needs to agree
+    with the function on some neighborhood of that point, not necessarily on
+    the entire domain. Local power-series representations agree on overlaps.
+    Polynomials are the simplest analytic functions.
+\end{snippet}
+
+\begin{snippetexample}{geometric-function-taylor-radius-by-center-example}{Taylor radius depends on the center}
+    The \function
+    \[
+        f(x)=\frac1{1-x}
+    \]
+    is real analytic on \(( -\infty,1)\), although its Maclaurin expansion
+    \[
+        \frac1{1-x}=\sum_{n=0}^{\infty}x^n
+    \]
+    has radius \(1\). Centered at \(x_0=1/3\), its Taylor series has radius
+    \(2/3\), the distance from the center to the singularity at \(1\).
+\end{snippetexample}
+
+\begin{snippetexample}{rational-function-complex-singularities-taylor-radius-example}{Complex singularities determine a real Taylor radius}
+    The real \function
+    \[
+        f(x)=\frac1{1+x^2}
+    \]
+    is real analytic on all of \(\realnumbers\), but its Maclaurin series
+    \[
+        \sum_{n=0}^{\infty}(-1)^nx^{2n}
+    \]
+    has radius \(1\). In the complex plane, the nearest singularities are the
+    poles at \(\pm i\). If the series is centered at \(x_0=2\), its radius is
+    \(\sqrt5\), the distance from \(2\) to either pole.
+\end{snippetexample}
+
+\section{Sufficient derivative bounds}
+
+\begin{snippettheorem}{analyticity-from-exponential-derivative-bound-theorem}{Analyticity from an exponential derivative bound}
+    Let \(f\in\mathcal C^\infty((a,b))\). Suppose there exist constants
+    \(M,L>0\) such that
+    \[
+        |f^{(n)}(x)|\leq ML^n,
+        \qquad \forall x\in(a,b),\ \forall n\geq0.
+    \]
+    Then \(f\) is analytic on \((a,b)\). More precisely, for every
+    \(x_0,x\in(a,b)\),
+    \[
+        f(x)=\sum_{n=0}^{\infty}\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{analyticity-from-exponential-derivative-bound-theorem-proof}{analyticity-from-exponential-derivative-bound-theorem}{Analyticity from an exponential derivative bound}
+    Fix \(x_0,x\in(a,b)\). Taylor's formula with Lagrange remainder gives,
+    for every \(k\), a point \(c_k\) between \(x_0\) and \(x\) such that
+    \[
+        f(x)=\sum_{n=0}^{k}\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n
+        +\frac{f^{(k+1)}(c_k)}{(k+1)!}(x-x_0)^{k+1}.
+    \]
+    The remainder satisfies
+    \[
+        \left|\frac{f^{(k+1)}(c_k)}{(k+1)!}(x-x_0)^{k+1}\right|
+        \leq M\frac{(L|x-x_0|)^{k+1}}{(k+1)!}\longrightarrow0.
+    \]
+    Letting \(k\to\infty\) proves the representation.
+\end{snippetproof}
+
+\begin{snippet}{analyticity-from-exponential-derivative-bound-local-use}
+    The derivative bound is sufficient, not necessary, and it may be applied
+    locally. For example, \(1/(1-x)\) is analytic on \(( -\infty,1)\), but no
+    single pair \(M,L\) satisfies this bound on the whole interval.
+\end{snippet}
+
+\begin{snippetproposition}{equibounded-derivatives-imply-analyticity}{Equibounded derivatives imply analyticity}
+    Let \(f\in\mathcal C^\infty((a,b))\). If there exists \(K>0\) such that
+    \[
+        |f^{(n)}(x)|\leq K,
+        \qquad \forall x\in(a,b),\ \forall n\geq0,
+    \]
+    then \(f\) is analytic on \((a,b)\).
+\end{snippetproposition}
+
+\begin{snippetproof}{equibounded-derivatives-imply-analyticity-proof}{equibounded-derivatives-imply-analyticity}{Equibounded derivatives imply analyticity}
+    Apply the preceding theorem with \(M=K\) and \(L=1\).
+\end{snippetproof}
+
+\begin{snippetexample}{elementary-functions-analyticity-from-derivative-bounds}{Analyticity of elementary functions}
+    The derivatives of sine and cosine are uniformly bounded on
+    \(\realnumbers\), so both functions are real analytic. The derivatives of
+    \(e^x\) equal \(e^x\); on every interval \(( -\infty,A)\) they are
+    bounded by \(e^A\). Hence the exponential is real analytic on
+    \(\realnumbers\), and its power series has infinite radius, defining an
+    entire function on \(\complexnumbers\).
+\end{snippetexample}
+
+\section{Binomial series}
+
+\includesnpt{binomial-maclaurin-series}
+
+\begin{snippet}{generalized-binomial-series-radius}
+    If \(\alpha\in\naturalnumbers\cup\{0\}\), the series terminates. For
+    every other \(\alpha\), its radius of convergence is \(1\).
+\end{snippet}
+
+\begin{snippetproof}{binomial-maclaurin-series-proof}{binomial-maclaurin-series}{Binomial Maclaurin series}
+    If \(\alpha\) is a nonnegative integer, the identity is the ordinary
+    binomial theorem. Otherwise, the coefficient ratio satisfies
+    \[
+        \left|\frac{\binom{\alpha}{n}}
+        {\binom{\alpha}{n+1}}\right|
+        =\frac{n+1}{|\alpha-n|}\longrightarrow1,
+    \]
+    so the radius is \(1\). Let
+    \[
+        g(x)=\sum_{n=0}^{\infty}\binom{\alpha}{n}x^n.
+    \]
+    Termwise differentiation and the recurrence
+    \((n+1)\binom{\alpha}{n+1}=(\alpha-n)\binom{\alpha}{n}\) give
+    \[
+        (1+x)g'(x)=\alpha g(x),
+        \qquad g(0)=1.
+    \]
+    On \((-1,1)\), the unique solution of this initial-value problem is
+    \(g(x)=(1+x)^\alpha\), proving the identity.
+\end{snippetproof}
+
+\section{Power-series approximation}
+
+\begin{snippet}{taylor-versus-stone-weierstrass-approximation}
+    Stone--Weierstrass says that continuous functions on compact subsets of
+    the real line can be uniformly approximated by polynomials. Taylor
+    approximation is more rigid: for an analytic function, improving the
+    approximation amounts to adding further terms whose coefficients are
+    already fixed by derivatives at the center. A general
+    Stone--Weierstrass approximation has no such nested structure and may need
+    to be rebuilt at each degree.
+\end{snippet}
+
+\end{document}

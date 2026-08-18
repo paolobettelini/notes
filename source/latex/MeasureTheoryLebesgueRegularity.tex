@@ -1,0 +1,137 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bettelini}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{measuretheory-lebesgue-regularity}
+\genpage
+
+\section{Borel and Lebesgue Measurability}
+
+\begin{snippettheorem}{borel-restriction-lebesgue-measure-not-complete}{The Borel restriction is not complete}
+    The restriction of Lebesgue measure to the Borel \(\sigma\)-algebra,
+    \(\restr{\mu}{\mathcal B(\realnumbers)}\), is not complete.
+\end{snippettheorem}
+
+\begin{snippetproof}{borel-restriction-lebesgue-measure-not-complete-proof}{borel-restriction-lebesgue-measure-not-complete}{The Borel restriction is not complete}
+    The Cantor set is a Borel set of measure zero and has the cardinality of
+    the continuum. Its power set therefore has cardinality strictly larger
+    than that of \(\mathcal B(\realnumbers)\). Consequently, some subset of
+    the Cantor set is not Borel. Such a subset is nevertheless Lebesgue
+    measurable because Lebesgue measure is complete.
+\end{snippetproof}
+
+In fact, the Lebesgue \(\sigma\)-algebra is precisely the completion of the
+Borel \(\sigma\)-algebra with respect to Lebesgue measure. The following
+regularity result makes this explicit.
+
+\begin{snippetproposition}{lebesgue-measurable-set-regularity}{Regularity of Lebesgue measurable sets}
+    Let \(E\in\mathcal L\). Then:
+    \begin{enumerate}
+        \item there is a \(G_\delta\) set \(G\supseteq E\) such that
+            \(\mu(G\setminus E)=0\);
+        \item there is an \(F_\sigma\) set \(F\subseteq E\) such that
+            \(\mu(E\setminus F)=0\);
+        \item if \(\mu(E)<+\infty\), then for every \(\varepsilon>0\) there
+            are bounded intervals \(I_1,\ldots,I_N\) such that
+            \[
+                \mu\!\left(E\mathbin{\triangle}\bigcup_{j=1}^N I_j\right)
+                <\varepsilon.
+            \]
+    \end{enumerate}
+\end{snippetproposition}
+
+Thus, up to a null set, every Lebesgue measurable set lies between Borel sets.
+Conversely, if \(E\subseteq G\in G_\delta\) and
+\(\mu^*(G\setminus E)=0\), then \(E\in\mathcal L\).
+
+\begin{snippetproof}{lebesgue-measurable-set-regularity-proof}{lebesgue-measurable-set-regularity}{Regularity of Lebesgue measurable sets}
+    First suppose that \(\mu(E)<+\infty\). By the definition of outer measure,
+    for every \(\varepsilon>0\) there are bounded open intervals \(I_n\) such
+    that
+    \[
+        E\subseteq A\triangleq\bigcup_{n=1}^{\infty}I_n,
+        \qquad
+        \sum_{n=1}^{\infty}\ell(I_n)<\mu(E)+\varepsilon.
+    \]
+    Since \(E\) is measurable and \(E\subseteq A\),
+    \[
+        \mu(A)=\mu(E)+\mu(A\setminus E),
+    \]
+    so \(\mu(A\setminus E)<\varepsilon\).
+
+    For every \(n\), choose such an open set \(A_n\supseteq E\) with
+    \(\mu(A_n\setminus E)<1/n\), and put
+    \[
+        G=\bigcap_{n=1}^{\infty}A_n.
+    \]
+    Then \(G\in G_\delta\), \(G\supseteq E\), and
+    \[
+        \mu(G\setminus E)\leq\mu(A_n\setminus E)<\frac1n
+    \]
+    for every \(n\); hence \(\mu(G\setminus E)=0\).
+
+    If \(\mu(E)=+\infty\), split
+    \[
+        E=\bigcup_{k\in\integers}\bigl(E\cap[k,k+1]\bigr).
+    \]
+    For a fixed error \(\varepsilon\), approximate the \(k\)-th bounded piece
+    from above by an open set with error at most
+    \(\varepsilon/2^{|k|+2}\), then take the union of these open sets. Repeating
+    this construction with error \(1/n\) and finally intersecting the resulting
+    open sets gives the required \(G_\delta\) set.
+
+    Apply the first part to \(E^c\). If \(G\supseteq E^c\) is \(G_\delta\) and
+    \(\mu(G\setminus E^c)=0\), then \(F=G^c\) is \(F_\sigma\), \(F\subseteq E\),
+    and
+    \[
+        E\setminus F=G\setminus E^c,
+    \]
+    so \(\mu(E\setminus F)=0\).
+
+    Finally suppose \(\mu(E)<+\infty\). Choose an open
+    \(A=\bigcup_{n\geq1}I_n\supseteq E\) with
+    \(\mu(A\setminus E)<\varepsilon/2\). Since
+    \(\sum_n\ell(I_n)<+\infty\), choose \(N\) such that
+    \(\sum_{n>N}\ell(I_n)<\varepsilon/2\). For
+    \(U_N=\bigcup_{n=1}^NI_n\),
+    \[
+        E\mathbin{\triangle}U_N
+        \subseteq(A\setminus E)\cup\bigcup_{n>N}I_n,
+    \]
+    and therefore \(\mu(E\mathbin{\triangle}U_N)<\varepsilon\).
+\end{snippetproof}
+
+The last assertion says that all the pathology of a finite-measure Lebesgue
+set can be confined to a set of arbitrarily small measure. For instance, the
+unbounded region under a Gaussian curve has finite area, so it can be
+approximated by finitely many rectangles after discarding tails of arbitrarily
+small area. This fails for an infinite-area strip.
+
+\begin{snippetexample}{large-compact-subset-of-irrationals}{A large compact subset of the irrationals}
+    Let
+    \[
+        E=[0,1]\setminus\rationalnumbers
+    \]
+    and enumerate the rationals as \(\{q_n\}_{n\geq1}\). For
+    \(\varepsilon>0\), consider
+    \[
+        U=\bigcup_{n=1}^{\infty}
+        \left(q_n-\frac{\varepsilon}{2^{n+1}},
+        q_n+\frac{\varepsilon}{2^{n+1}}\right).
+    \]
+    This is an open set containing all rationals and
+    \(\mu(U)\leq\varepsilon\). Hence
+    \[
+        K=[0,1]\setminus U
+    \]
+    is compact, contained in \(E\), and has measure at least
+    \(1-\varepsilon\).
+\end{snippetexample}
+
+\end{document}

@@ -1,0 +1,247 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bettelini}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{measuretheory-measurable-functions}
+\genpage
+
+\section{Measurable maps}
+
+\includesnpt{measurable-space-definition}
+
+\begin{snippetdefinition}{measurable-map-definition}{Measurable map}
+    Let \((X,\Sigma_X)\) and \((Y,\Sigma_Y)\) be \measurablespace[measurable spaces].
+    A map \(f\colon X\fromto Y\) is \emph{measurable} if
+    \[
+        f^{-1}(A)\in\Sigma_X
+        \qquad\text{for every }A\in\Sigma_Y.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{topological-target-measurable-map-criterion}{Topological target criterion}
+    Let \((X,\Sigma)\) be a \measurablespace, let \((Y,\tau)\) be a
+    \topologicalspace, and let \(f\colon X\fromto Y\). Then
+    \(f\colon(X,\Sigma)\fromto(Y,\mathcal B(Y))\) is measurable if and only if
+    \[
+        f^{-1}(V)\in\Sigma
+        \qquad\text{for every }V\in\tau.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproposition}{measurable-preimage-family-sigma-algebra}{Sets with measurable preimage form a \(\sigma\)-algebra}
+    Let \((X,\Sigma)\) be a \measurablespace, let \(Y\) be a \set, and let
+    \(f\colon X\fromto Y\). Then
+    \[
+        \mathcal F_f=\{A\subseteq Y\suchthat f^{-1}(A)\in\Sigma\}
+    \]
+    is a \(\sigma\)-algebra on \(Y\).
+\end{snippetproposition}
+
+\begin{snippetproof}{measurable-preimage-family-sigma-algebra-proof}{measurable-preimage-family-sigma-algebra}{Sets with measurable preimage form a \(\sigma\)-algebra}
+    Since \(f^{-1}(Y)=X\), the family \(\mathcal F_f\) contains \(Y\).
+    Preimages commute with complements and countable unions:
+    \[
+        f^{-1}(Y\difference A)=X\difference f^{-1}(A),
+        \qquad
+        f^{-1}\left(\bigcup_{n=1}^{\infty}A_n\right)
+        =\bigcup_{n=1}^{\infty}f^{-1}(A_n).
+    \]
+    Thus \(\mathcal F_f\) is closed under both operations.
+\end{snippetproof}
+
+\begin{snippetproof}{topological-target-measurable-map-criterion-proof}{topological-target-measurable-map-criterion}{Topological target criterion}
+    If \(f\) is measurable, the preimage of every open set is measurable because
+    \(\tau\subseteq\mathcal B(Y)\). Conversely, the family of subsets of \(Y\)
+    with measurable preimage is a \(\sigma\)-algebra. If it contains \(\tau\),
+    it also contains \(\sigma(\tau)=\mathcal B(Y)\).
+\end{snippetproof}
+
+\begin{snippet}{measurable-functions-integration-motivation}
+    Lebesgue integration is defined for measurable functions. Continuous maps
+    between topological spaces are measurable with respect to their Borel
+    \(\sigma\)-algebras, so this framework contains the continuous functions
+    used in classical integration.
+\end{snippet}
+
+\section{Extended-real-valued functions}
+
+\begin{snippettheorem}{extended-real-measurable-function-ray-criterion}{Measurability criterion for extended-real-valued functions}
+    Let \((X,\Sigma)\) be a \measurablespace and let
+    \(f\colon X\fromto\overline{\realnumbers}\), where
+    \(\overline{\realnumbers}=[-\infty,+\infty]\) has its order topology.
+    Then \(f\) is measurable if and only if
+    \[
+        \{x\in X\suchthat f(x)>a\}
+        =f^{-1}((a,+\infty])\in\Sigma
+        \qquad\text{for every }a\in\realnumbers.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{extended-real-measurable-function-ray-criterion-proof}{extended-real-measurable-function-ray-criterion}{Measurability criterion for extended-real-valued functions}
+    The forward implication follows because each ray \((a,+\infty]\) is open
+    in the order topology. Conversely, the rays \((a,+\infty]\), with
+    \(a\in\realnumbers\), generate the Borel \(\sigma\)-algebra of
+    \(\overline{\realnumbers}\). The family of sets having measurable preimage
+    under \(f\) is a \(\sigma\)-algebra and, by assumption, contains every such
+    ray. It therefore contains \(\mathcal B(\overline{\realnumbers})\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{extended-real-measurability-equivalent-rays}{Equivalent ray criteria}
+    Let \((X,\Sigma)\) be a \measurablespace and let
+    \(f\colon X\fromto\overline{\realnumbers}\). Each of the following
+    conditions, required for every \(a\in\realnumbers\), is equivalent to the
+    measurability of \(f\):
+    \[
+        \{f>a\}\in\Sigma,
+        \qquad
+        \{f\geq a\}\in\Sigma,
+        \qquad
+        \{f<a\}\in\Sigma,
+        \qquad
+        \{f\leq a\}\in\Sigma.
+    \]
+\end{snippetcorollary}
+
+\begin{snippetcorollary}{measurable-function-fibers-measurable}{Fibres of a measurable function}
+    Let \((X,\Sigma)\) be a \measurablespace and let
+    \(f\colon X\fromto\overline{\realnumbers}\) be measurable. Then
+    \[
+        f^{-1}(\{a\})\in\Sigma
+        \qquad\text{for every }a\in\overline{\realnumbers}.
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{measurable-function-fibers-measurable-proof}{measurable-function-fibers-measurable}{Fibres of a measurable function}
+    Every singleton is a Borel subset of \(\overline{\realnumbers}\), and the
+    preimage of every Borel set under a measurable function is measurable.
+\end{snippetproof}
+
+\begin{snippetexample}{measurable-fibers-do-not-imply-measurability}{Measurable fibres do not imply measurability}
+    Let \(A\subseteq\realnumbers\) be non-Borel and define
+    \[
+        f(x)=
+        \begin{cases}
+            e^x & x\in A,\\
+            -e^x & x\notin A.
+        \end{cases}
+    \]
+    Every fibre of \(f\) is either empty or a singleton, hence is Borel.
+    Nevertheless,
+    \[
+        f^{-1}((0,+\infty))=A
+    \]
+    is not Borel, so \(f\) is not measurable.
+\end{snippetexample}
+
+\begin{snippetproposition}{indicator-function-measurability}{Measurability of an indicator function}
+    Let \((X,\Sigma)\) be a \measurablespace and let \(A\subseteq X\). The
+    indicator function \(\indicator_A\colon X\fromto\{0,1\}\) is measurable if
+    and only if \(A\in\Sigma\).
+\end{snippetproposition}
+
+\section{Operations and limits}
+
+\begin{snippetproposition}{measurable-map-composition}{Composition of measurable maps}
+    Let \((X,\Sigma_X)\), \((Y,\Sigma_Y)\), and \((Z,\Sigma_Z)\) be measurable
+    spaces. If \(f\colon X\fromto Y\) and \(g\colon Y\fromto Z\) are measurable,
+    then \(g\circ f\colon X\fromto Z\) is measurable.
+\end{snippetproposition}
+
+\begin{snippetproof}{measurable-map-composition-proof}{measurable-map-composition}{Composition of measurable maps}
+    For every \(A\in\Sigma_Z\),
+    \[
+        (g\circ f)^{-1}(A)=f^{-1}(g^{-1}(A)).
+    \]
+    Since \(g^{-1}(A)\in\Sigma_Y\), its preimage under \(f\) belongs to
+    \(\Sigma_X\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{continuous-postcomposition-preserves-measurability}{Continuous postcomposition preserves measurability}
+    Let \((X,\Sigma)\) be a \measurablespace, let \(Y,Z\) be topological spaces,
+    let \(g\colon X\fromto Y\) be measurable with respect to
+    \(\mathcal B(Y)\), and let \(h\colon Y\fromto Z\) be continuous. Then
+    \(h\circ g\colon X\fromto Z\) is measurable with respect to
+    \(\mathcal B(Z)\).
+\end{snippetcorollary}
+
+\begin{snippetproposition}{arithmetic-operations-measurable-functions}{Arithmetic operations on measurable functions}
+    Let \((X,\Sigma)\) be a \measurablespace and let
+    \(f,g\colon X\fromto\realnumbers\) be measurable. Then \(f+g\), \(fg\),
+    \(\max\{f,g\}\), and \(\min\{f,g\}\) are measurable.
+\end{snippetproposition}
+
+\begin{snippetproposition}{countable-extrema-measurable-functions}{Countable extrema and limits of measurable functions}
+    Let \((X,\Sigma)\) be a \measurablespace and let
+    \(f_n\colon X\fromto\overline{\realnumbers}\) be measurable for every
+    \(n\in\naturalnumbers\). Then the pointwise functions
+    \[
+        \sup_n f_n,
+        \qquad
+        \inf_n f_n,
+        \qquad
+        \limsup_{n\to\infty}f_n,
+        \qquad
+        \liminf_{n\to\infty}f_n
+    \]
+    are measurable whenever the displayed extended-real operations are defined.
+    In particular, every pointwise limit of measurable functions is measurable.
+\end{snippetproposition}
+
+\begin{snippetproof}{countable-extrema-measurable-functions-proof}{countable-extrema-measurable-functions}{Countable extrema and limits of measurable functions}
+    For every \(a\in\realnumbers\),
+    \[
+        \left\{\sup_n f_n>a\right\}
+        =\bigcup_{n=1}^{\infty}\{f_n>a\},
+    \]
+    so \(\sup_n f_n\) is measurable. Since negation is continuous,
+    \(\inf_n f_n=-\sup_n(-f_n)\) is also measurable. Finally,
+    \[
+        \limsup_{n\to\infty}f_n
+        =\inf_m\sup_{n\geq m}f_n,
+        \qquad
+        \liminf_{n\to\infty}f_n
+        =\sup_m\inf_{n\geq m}f_n.
+    \]
+    These are countable infima and suprema of measurable functions. If
+    \(f_n\to f\) pointwise, then \(f=\limsup f_n=\liminf f_n\).
+\end{snippetproof}
+
+\begin{snippetproposition}{absolute-value-measurable-function}{Absolute value of a measurable function}
+    Let \((X,\Sigma)\) be a \measurablespace and let
+    \(f\colon X\fromto\overline{\realnumbers}\) be measurable. Then \(\lvert f\rvert\)
+    is measurable.
+\end{snippetproposition}
+
+\begin{snippetproof}{absolute-value-measurable-function-proof}{absolute-value-measurable-function}{Absolute value of a measurable function}
+    The functions
+    \[
+        f^+=\max\{f,0\},
+        \qquad
+        f^-=-\min\{f,0\}
+    \]
+    are nonnegative and measurable. Since \(\lvert f\rvert=f^++f^-\), the
+    absolute value is measurable.
+\end{snippetproof}
+
+\begin{snippetexample}{measurable-absolute-value-nonmeasurable-function}{The converse for absolute values fails}
+    Let \((X,\Sigma)\) be a \measurablespace and let \(A\subseteq X\) be
+    nonmeasurable. Define
+    \[
+        f=\indicator_A-\indicator_{X\difference A}.
+    \]
+    Then \(\lvert f\rvert=1\) is measurable, whereas \(f\) is not measurable.
+\end{snippetexample}
+
+\begin{snippetproposition}{complex-function-measurability-components}{Measurability of complex-valued functions}
+    Let \((X,\Sigma)\) be a \measurablespace and let
+    \(f\colon X\fromto\complexnumbers\). Then \(f\) is measurable if and only if
+    \(\Re f\) and \(\Im f\) are measurable real-valued functions.
+\end{snippetproposition}
+
+\end{document}

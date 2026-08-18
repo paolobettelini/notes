@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{bettelini}
 
 \begin{document}
 
@@ -11,5 +12,114 @@
 \genpage
 
 \section{Boundedness}
+
+\begin{snippetdefinition}{function-sequence-boundedness-definition}{Bounded sequence of functions}
+    Let \(S\subseteq\realnumbers\) and let
+    \(\{f_n\}_{n\in\naturalnumbers}\) be a \sequence of \function[functions]
+    \(f_n\colon S\fromto\realnumbers\). The sequence is \emph{bounded} on \(S\) if
+    \[
+        \forall n\in\naturalnumbers,\ \exists M_n>0\ \suchthat
+        \forall x\in S,\quad |f_n(x)|\leq M_n.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{function-sequence-uniform-boundedness-definition}{Uniformly bounded sequence of functions}
+    Let \(S\subseteq\realnumbers\) and let
+    \(\{f_n\}_{n\in\naturalnumbers}\) be a \sequence of \function[functions]
+    \(f_n\colon S\fromto\realnumbers\). The sequence is \emph{uniformly bounded}
+    on \(S\) if
+    \[
+        \exists M>0\ \suchthat\ \forall n\in\naturalnumbers,\ \forall x\in S,
+        \quad |f_n(x)|\leq M.
+    \]
+\end{snippetdefinition}
+
+\begin{plainhtml}
+    Uniform boundedness implies that every function in the sequence is bounded; the converse need not hold.
+\end{plainhtml}
+
+\begin{snippetproposition}{uniform-limit-boundedness-proposition}{Boundedness of a uniform limit}
+    Let \(S\subseteq\realnumbers\) and let
+    \(\{f_n\}_{n\in\naturalnumbers}\) be a \sequence of bounded
+    \function[functions] \(f_n\colon S\fromto\realnumbers\).
+    If \(f_n\) converges uniformly on \(S\) to
+    \(f\colon S\fromto\realnumbers\), then \(f\) is bounded on \(S\) and
+    \(\{f_n\}_{n\in\naturalnumbers}\) is uniformly bounded on \(S\).
+\end{snippetproposition}
+
+\begin{snippetproof}{uniform-limit-boundedness-proposition-proof}{uniform-limit-boundedness-proposition}{Boundedness of a uniform limit}
+    By uniform convergence with \(\varepsilon=1\), there exists
+    \(N\in\naturalnumbers\) such that
+    \[
+        |f_n(x)-f(x)|<1,
+        \qquad \forall n>N,\ \forall x\in S.
+    \]
+    Fix \(n_0>N\). Since \(f_{n_0}\) is bounded, there exists
+    \(M_{n_0}>0\) such that \(|f_{n_0}(x)|\leq M_{n_0}\) for every
+    \(x\in S\). Hence
+    \[
+        |f(x)|\leq |f(x)-f_{n_0}(x)|+|f_{n_0}(x)|<1+M_{n_0},
+    \]
+    so \(f\) is bounded. Choose \(M>0\) such that \(|f(x)|\leq M\) on
+    \(S\). For every \(n>N\),
+    \[
+        |f_n(x)|\leq |f_n(x)-f(x)|+|f(x)|<1+M.
+    \]
+    For the finitely many indices \(1,\ldots,N\), choose bounds
+    \(M_1,\ldots,M_N\). Then
+    \[
+        M'=\max\{M_1,\ldots,M_N,1+M\}
+    \]
+    bounds \(|f_n(x)|\) for every \(n\in\naturalnumbers\) and \(x\in S\).
+\end{snippetproof}
+
+\section{Counterexamples}
+
+\begin{snippetexample}{uniform-boundedness-without-pointwise-convergence-example}{Uniform boundedness does not imply pointwise convergence}
+    On \(S=[0,2\pi]\), let \(f_n(x)=\sin(nx)\). The sequence is uniformly
+    bounded by \(1\), but it does not converge pointwise. Indeed, at
+    \(x=\frac{\pi}{2}\),
+    \[
+        \sin\left(n\frac{\pi}{2}\right)=
+        \begin{cases}
+            1 & n=1+4k,\\
+            0 & n=2k,\\
+            -1 & n=3+4k.
+        \end{cases}
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{uniform-boundedness-without-pointwise-convergent-subsequence-example}{Uniform boundedness does not ensure a pointwise convergent subsequence}
+    On \(S=[0,2\pi]\), consider again \(f_n(x)=\sin(nx)\). Suppose that a
+    subsequence \(\{f_{n_k}\}_{k\in\naturalnumbers}\), with \(n_k\to\infty\),
+    converges pointwise. Set
+    \[
+        g_k(x)=\bigl(f_{n_k}(x)-f_{n_{k+1}}(x)\bigr)^2.
+    \]
+    Then \(g_k\to0\) pointwise and \(0\leq g_k\leq4\). The dominated
+    convergence theorem would therefore give
+    \[
+        \lim_{k\to\infty}\integral[0][2\pi][g_k(x)][x]=0.
+    \]
+    On the other hand, orthogonality of the sine functions gives, for every
+    \(k\in\naturalnumbers\),
+    \[
+        \integral[0][2\pi][g_k(x)][x]
+        =\integral[0][2\pi][\bigl(\sin(n_kx)-\sin(n_{k+1}x)\bigr)^2][x]
+        =2\pi,
+    \]
+    a contradiction. Thus no such pointwise convergent subsequence exists.
+\end{snippetexample}
+
+\begin{snippetexercise}{sine-functions-orthogonality-exercise}{Orthogonality of sine functions}
+    Prove that, for all \(i,j\in\naturalnumbers\),
+    \[
+        \integral[0][2\pi][\sin(ix)\sin(jx)][x]=
+        \begin{cases}
+            0 & i\neq j,\\
+            \pi & i=j.
+        \end{cases}
+    \]
+\end{snippetexercise}
 
 \end{document}

@@ -1,0 +1,210 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bettelini}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{measuretheory-lp-spaces}
+\genpage
+
+\section{Lebesgue Spaces}
+
+\begin{snippetdefinition}{l-p-space-definition}{The space \(L^p\)}
+    Let \((X,\mathcal M,\mu)\) be a measure space and
+    \(1\leq p<+\infty\). Let
+    \[
+        \mathcal L^p(\mu)
+        =
+        \left\{
+            f\colon X\fromto\complexnumbers\text{ measurable}
+            \suchthat \int_X|f|^p\,d\mu<+\infty
+        \right\}.
+    \]
+    After identifying functions that agree almost everywhere, define
+    \[
+        L^p(\mu)=\mathcal L^p(\mu)/{\sim},
+        \qquad
+        \|f\|_p=
+        \left(\int_X|f|^p\,d\mu\right)^{1/p}.
+    \]
+    For \(p=+\infty\), define
+    \[
+        \|f\|_\infty=\operatorname*{ess\,sup}_X|f|.
+    \]
+\end{snippetdefinition}
+
+\begin{snippettheorem}{l-p-space-banach-theorem}{Riesz--Fischer theorem}
+    For every measure space and every \(1\leq p\leq+\infty\),
+    \((L^p(\mu),\|\cdot\|_p)\) is a Banach space.
+\end{snippettheorem}
+
+\begin{snippetexample}{discrete-l-p-spaces-example}{Discrete \(L^p\) spaces}
+    If \(X=\{1,\ldots,n\}\) has counting measure, then
+    \(L^p(\mu)=\realnumbers^n\) or \(\complexnumbers^n\), with
+    \[
+        \|x\|_p=\left(\sum_{i=1}^n|x_i|^p\right)^{1/p}.
+    \]
+    For \(p=2\), this is the Euclidean norm. On
+    \(X=\naturalnumbers\) with counting measure, one obtains the sequence
+    spaces \(\ell^p\); in particular, \(\ell^1\) consists of absolutely
+    summable sequences and \(\ell^2\) of square-summable sequences.
+\end{snippetexample}
+
+\section{Duality and the Integral Functional}
+
+\begin{snippetproposition}{integral-continuous-functional-on-l-one}{The integral is continuous on \(L^1\)}
+    The map
+    \[
+        I\colon L^1(\mu)\fromto\complexnumbers,
+        \qquad
+        I(f)=\int_Xf\,d\mu,
+    \]
+    is a continuous linear functional, and \(\|I\|\leq1\).
+\end{snippetproposition}
+
+\begin{snippetproof}{integral-continuous-functional-on-l-one-proof}{integral-continuous-functional-on-l-one}{The integral is continuous on \(L^1\)}
+    Linearity is inherited from the integral, and
+    \[
+        |I(f)|=\left|\int_Xf\,d\mu\right|
+        \leq\int_X|f|\,d\mu=\|f\|_1.
+    \]
+    Hence \(I\) is continuous. Equivalently, if \(f_n\to f\) in \(L^1\),
+    then \(I(f_n)\to I(f)\).
+\end{snippetproof}
+
+\begin{snippet}{l-p-duality-overview}
+    In infinite-dimensional vector spaces, an algebraic linear functional
+    need not be continuous, so the algebraic dual can be strictly larger than
+    the continuous dual. For \(1<p<+\infty\), under standard hypotheses such
+    as \(\sigma\)-finiteness, the continuous dual of \(L^p(\mu)\) is
+    identified with \(L^q(\mu)\), where
+    \[
+        \frac1p+\frac1q=1.
+    \]
+    In particular, \(L^2(\mu)\) is identified with its continuous dual.
+\end{snippet}
+
+\section{Convergence in L1}
+
+\begin{snippet}{continuous-representatives-in-l-one}
+    An \(L^1(\realnumbers)\) element is an equivalence class. Some classes
+    contain a continuous representative and others do not. If a continuous
+    representative exists, it is unique: two distinct continuous functions
+    differ on a nonempty open set, which has positive Lebesgue measure. The
+    Dirichlet function is not a counterexample because it represents the zero
+    class. Fat Cantor sets provide classes with no Riemann-integrable
+    representative.
+\end{snippet}
+
+\begin{snippettheorem}{riesz-subsequence-principle}{Riesz subsequence principle}
+    If \(f_n\to f\) in \(L^1(\mu)\), then there is a subsequence
+    \(f_{n_k}\to f\) almost everywhere. Moreover, if any subsequence
+    \(f_{n_k}\) converges almost everywhere to \(g\), then \(f=g\) almost
+    everywhere.
+\end{snippettheorem}
+
+\begin{snippetproof}{riesz-subsequence-principle-proof}{riesz-subsequence-principle}{Riesz subsequence principle}
+    Choose a subsequence such that
+    \[
+        \|f_{n_k}-f\|_1<2^{-k}.
+    \]
+    Then
+    \[
+        \sum_{k=1}^{\infty}\int_X|f_{n_k}-f|\,d\mu<+\infty.
+    \]
+    The theorem on integration of absolutely summable series implies that
+    \(\sum_k|f_{n_k}-f|<+\infty\) almost everywhere. Hence
+    \(|f_{n_k}-f|\to0\) almost everywhere.
+
+    Now suppose that a subsequence \(f_{n_k}\to g\) almost everywhere. It
+    still converges to \(f\) in \(L^1\), so the first part gives a further
+    subsequence converging almost everywhere to \(f\). The same further
+    subsequence also converges almost everywhere to \(g\), and uniqueness of
+    pointwise limits gives \(f=g\) almost everywhere.
+\end{snippetproof}
+
+\begin{snippetproposition}{essential-uniform-convergence-implies-l-one}{Essentially uniform convergence on a finite measure space}
+    Let \(\mu(X)<+\infty\). If
+    \[
+        \|f_n-f\|_\infty
+        =\operatorname*{ess\,sup}_X|f_n-f|
+        \longrightarrow0,
+    \]
+    then \(f_n\to f\) in \(L^1(\mu)\).
+\end{snippetproposition}
+
+\begin{snippetproof}{essential-uniform-convergence-implies-l-one-proof}{essential-uniform-convergence-implies-l-one}{Essentially uniform convergence on a finite measure space}
+    Directly,
+    \[
+        \|f_n-f\|_1
+        =\int_X|f_n-f|\,d\mu
+        \leq\mu(X)\|f_n-f\|_\infty\longrightarrow0.
+    \]
+\end{snippetproof}
+
+\section{Density and Size}
+
+\begin{snippettheorem}{integrable-simple-functions-dense-in-l-one}{Integrable simple functions are dense in \(L^1\)}
+    Let \(S\) be the set of measurable simple functions \(s\) such that
+    \[
+        \mu(\{x\in X\suchthat s(x)\neq0\})<+\infty.
+    \]
+    Then \(S\) is dense in \(L^1(\mu)\).
+\end{snippettheorem}
+
+\begin{snippetproof}{integrable-simple-functions-dense-in-l-one-proof}{integrable-simple-functions-dense-in-l-one}{Integrable simple functions are dense in \(L^1\)}
+    If \(f\geq0\) is integrable, choose integrable simple functions
+    \(s_n\uparrow f\). Monotone convergence gives
+    \[
+        \|f-s_n\|_1
+        =\int_X(f-s_n)\,d\mu
+        \longrightarrow0.
+    \]
+    A real or complex function is reduced to this case by decomposing its
+    real and imaginary parts into positive and negative parts.
+\end{snippetproof}
+
+\begin{snippet}{l-one-separability-and-dimension}
+    In many standard measure spaces, for example when the
+    \(\sigma\)-algebra is generated modulo null sets by a countable family,
+    \(L^1(\mu)\) is separable. Separability is not automatic for an arbitrary
+    measure space.
+
+    If there are infinitely many pairwise disjoint measurable sets of
+    positive finite measure, their indicator functions are linearly
+    independent, so \(L^1(\mu)\) is infinite-dimensional. The sequence space
+    \(\ell^1\) is a basic infinite-dimensional example.
+\end{snippet}
+
+\begin{snippetproposition}{nontrivial-banach-space-uncountable}{A nontrivial Banach space is uncountable}
+    A nontrivial Banach space cannot have countably infinite cardinality.
+\end{snippetproposition}
+
+\begin{snippetproof}{nontrivial-banach-space-uncountable-proof}{nontrivial-banach-space-uncountable}{A nontrivial Banach space is uncountable}
+    Suppose that \(X=\{x_1,x_2,\ldots\}\). Every singleton is closed and has
+    empty interior: if \(B(x_n,r)\subseteq\{x_n\}\), choose a nonzero
+    \(v\in X\) and sufficiently small \(t>0\); then
+    \(x_n+tv\in B(x_n,r)\) but \(x_n+tv\neq x_n\). Thus every singleton is
+    nowhere dense and
+    \[
+        X=\bigcup_{n=1}^{\infty}\{x_n\}
+    \]
+    is meagre in itself, contradicting the Baire category theorem for the
+    complete metric space \(X\).
+\end{snippetproof}
+
+\begin{snippet}{l-one-tail-behavior}
+    For \(f\in L^1(\realnumbers)\), most of the integral can be confined to a
+    finite-measure region. Nevertheless, a representative need not satisfy
+    \(f(x)\to0\) as \(|x|\to+\infty\): one may alter it at every integer
+    without changing its class, and even continuous integrable functions can
+    have narrow peaks of fixed height escaping to infinity. One can still
+    choose points \(x_n\to+\infty\) along which a suitable representative
+    tends to zero.
+\end{snippet}
+
+\end{document}

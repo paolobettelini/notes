@@ -1,0 +1,288 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bettelini}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{measuretheory-parameter-integrals}
+\genpage
+
+\section{Parameter-Dependent Integrals}
+
+\begin{snippet}{parameter-dependent-integral-setting}
+    Let \(E\subseteq\realnumbers^n\) be measurable,
+    \(A\subseteq\realnumbers^m\) be open, and
+    \(f\colon E\cartesianprod A\fromto\realnumbers\). We study functions of
+    the form
+    \[
+        F(x)=\int_Ef(t,x)\,dt,
+    \]
+    assuming that \(t\mapsto f(t,x)\) is integrable for the relevant
+    parameters \(x\).
+\end{snippet}
+
+\begin{snippetexample}{continuous-integrand-discontinuous-parameter-integral}{A continuous integrand may give a discontinuous integral}
+    Let \(E=(0,+\infty)\), \(A=\realnumbers\), and
+    \[
+        F(x)=\integral[0][+\infty][\frac{x}{1+t^2x^2}][t].
+    \]
+    The integrand is smooth on \(E\cartesianprod A\), and \(F(0)=0\). For
+    \(x>0\), however,
+    \[
+        F(x)=\left[\arctan(tx)\right]_0^{+\infty}=\frac\pi2.
+    \]
+    Hence \(F\) is not continuous at zero.
+\end{snippetexample}
+
+\begin{snippet}{parameter-integral-continuity-motivation}
+    To prove continuity at \(x_0\), take an arbitrary sequence
+    \(x_n\to x_0\). Pointwise continuity in the parameter gives
+    \(f(t,x_n)\to f(t,x_0)\) for almost every \(t\). A single locally valid
+    integrable bound then permits the use of dominated convergence:
+    \[
+        \lim_nF(x_n)
+        =\int_E\lim_nf(t,x_n)\,dt
+        =F(x_0).
+    \]
+\end{snippet}
+
+\begin{snippettheorem}{parameter-integral-continuity-theorem}{Continuity of a parameter-dependent integral}
+    Let \(E\subseteq\realnumbers^n\) be measurable,
+    \(A\subseteq\realnumbers^m\) open, and
+    \(f\colon E\cartesianprod A\fromto\realnumbers\). Fix \(x_0\in A\) and
+    define
+    \[
+        F(x)=\int_Ef(t,x)\,dt.
+    \]
+    Let \(U\subseteq A\) be a neighborhood of \(x_0\). Suppose that:
+    \begin{enumerate}
+        \item \(t\mapsto f(t,x)\) is measurable for every \(x\in U\);
+        \item \(x\mapsto f(t,x)\) is continuous at \(x_0\) for almost every
+            \(t\in E\);
+        \item there is \(g\in\mathcal L^1(E)\) such that
+            \[
+                |f(t,x)|\leq g(t)
+            \]
+            for almost every \(t\in E\) and every \(x\in U\).
+    \end{enumerate}
+    Then \(F\) is well-defined on \(U\) and continuous at \(x_0\).
+\end{snippettheorem}
+
+\begin{snippetproof}{parameter-integral-continuity-theorem-proof}{parameter-integral-continuity-theorem}{Continuity of a parameter-dependent integral}
+    Let \(x_n\to x_0\). Eventually \(x_n\in U\). For almost every \(t\),
+    \[
+        f(t,x_n)\longrightarrow f(t,x_0),
+        \qquad
+        |f(t,x_n)|\leq g(t).
+    \]
+    Dominated convergence therefore gives
+    \[
+        F(x_n)=\int_Ef(t,x_n)\,dt
+        \longrightarrow
+        \int_Ef(t,x_0)\,dt=F(x_0).
+    \]
+    Sequential continuity is equivalent to continuity in
+    \(\realnumbers^m\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{compact-domain-parameter-integral-continuity}{Continuity on a compact integration domain}
+    Let \(E\subseteq\realnumbers^n\) be compact,
+    \(A\subseteq\realnumbers^m\) open, and let
+    \(f\colon E\cartesianprod A\fromto\realnumbers\) be continuous. Then
+    \[
+        F(x)=\int_Ef(t,x)\,dt
+    \]
+    is continuous on \(A\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{compact-domain-parameter-integral-continuity-proof}{compact-domain-parameter-integral-continuity}{Continuity on a compact integration domain}
+    Fix \(x_0\in A\) and choose a neighborhood \(U\) with compact closure
+    contained in \(A\). The function \(f\) is bounded on the compact set
+    \(E\cartesianprod\overline U\). A constant therefore dominates
+    \(|f(t,x)|\) on that set, and it is integrable over \(E\) because compact
+    subsets of \(\realnumbers^n\) have finite Lebesgue measure. Apply the
+    continuity theorem.
+\end{snippetproof}
+
+\section{Differentiation under the Integral Sign}
+
+\begin{snippet}{differentiation-under-integral-sign-motivation}
+    For
+    \[
+        F(x)=\int_Ef(t,x)\,dt,
+    \]
+    the difference quotient is
+    \[
+        \frac{F(x+h)-F(x)}h
+        =\int_E\frac{f(t,x+h)-f(t,x)}h\,dt.
+    \]
+    The mean value theorem suggests controlling these quotients by an
+    integrable bound for \(\partial f/\partial x\).
+\end{snippet}
+
+\begin{snippettheorem}{differentiation-under-integral-sign-theorem}{Differentiation under the integral sign}
+    Let \(E\subseteq\realnumbers^n\) be measurable,
+    \(A\subseteq\realnumbers\) open, and
+    \(f\colon E\cartesianprod A\fromto\realnumbers\). Let \(U\subseteq A\)
+    be an open neighborhood. Suppose that:
+    \begin{enumerate}
+        \item \(t\mapsto f(t,x)\) is measurable and integrable for every
+            \(x\in U\);
+        \item \(x\mapsto f(t,x)\) is differentiable on \(U\) for almost every
+            \(t\in E\);
+        \item there is \(g\in\mathcal L^1(E)\) such that
+            \[
+                \left|\frac{\partial f}{\partial x}(t,x)\right|
+                \leq g(t)
+            \]
+            for almost every \(t\in E\) and every \(x\in U\).
+    \end{enumerate}
+    Then \(F(x)=\int_Ef(t,x)\,dt\) is differentiable on \(U\), and
+    \[
+        F'(x)=\int_E\frac{\partial f}{\partial x}(t,x)\,dt.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{differentiation-under-integral-sign-theorem-proof}{differentiation-under-integral-sign-theorem}{Differentiation under the integral sign}
+    Fix \(x\in U\), and let \(h_n\to0\) with \(x+h_n\in U\). For almost every
+    \(t\),
+    \[
+        q_n(t)=\frac{f(t,x+h_n)-f(t,x)}{h_n}
+        \longrightarrow\frac{\partial f}{\partial x}(t,x).
+    \]
+    By the one-variable mean value theorem,
+    \(|q_n(t)|\leq g(t)\). Therefore
+    \[
+        \left|q_n(t)-\frac{\partial f}{\partial x}(t,x)\right|
+        \leq2g(t).
+    \]
+    Dominated convergence gives
+    \[
+        \frac{F(x+h_n)-F(x)}{h_n}
+        =\int_Eq_n(t)\,dt
+        \longrightarrow
+        \int_E\frac{\partial f}{\partial x}(t,x)\,dt.
+    \]
+    The limit is the same for every sequence \(h_n\to0\), proving the claim.
+\end{snippetproof}
+
+\begin{snippet}{multivariable-differentiation-under-integral-sign}
+    The same argument applies to each partial derivative for parameters in
+    \(\realnumbers^m\), and yields a multivariable differentiability result.
+    In particular, if \(E\) is compact and
+    \(f\in\mathcal C^1(E\cartesianprod A)\), then
+    \(F\in\mathcal C^1(A)\): locally, the derivatives are bounded on a compact
+    product and a constant is an integrable dominator.
+\end{snippet}
+
+\section{Integration of Series}
+
+\begin{snippettheorem}{absolutely-summable-integrals-series-theorem}{Integration of an absolutely summable series}
+    Let \((X,\mathcal M,\mu)\) be a measure space and let
+    \(f_n\colon X\fromto\complexnumbers\) be measurable. If
+    \[
+        \sum_{n=1}^{\infty}\int_X|f_n|\,d\mu<+\infty,
+    \]
+    then \(\sum_nf_n\) converges absolutely almost everywhere to a function
+    \(f\in\mathcal L^1(\mu)\), and
+    \[
+        \int_Xf\,d\mu
+        =\sum_{n=1}^{\infty}\int_Xf_n\,d\mu.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{absolutely-summable-integrals-series-theorem-proof}{absolutely-summable-integrals-series-theorem}{Integration of an absolutely summable series}
+    Since countably many exceptional null sets still form a null set, we may
+    redefine the \(f_n\) so that they are all defined everywhere. Put
+    \[
+        \varphi(x)=\sum_{n=1}^{\infty}|f_n(x)|.
+    \]
+    Integration of nonnegative series gives
+    \[
+        \int_X\varphi\,d\mu
+        =\sum_{n=1}^{\infty}\int_X|f_n|\,d\mu<+\infty.
+    \]
+    Thus \(\varphi<+\infty\) almost everywhere; otherwise its integral would
+    be infinite. Hence \(\sum_nf_n\) converges absolutely almost everywhere.
+    Define its sum \(f\) arbitrarily on the exceptional null set.
+
+    For the partial sums \(S_k=\sum_{n=1}^kf_n\),
+    \[
+        |S_k|\leq\sum_{n=1}^k|f_n|\leq\varphi\in\mathcal L^1(\mu).
+    \]
+    Dominated convergence gives \(f\in\mathcal L^1(\mu)\) and
+    \[
+        \int_Xf\,d\mu
+        =\lim_{k\to\infty}\int_XS_k\,d\mu
+        =\sum_{n=1}^{\infty}\int_Xf_n\,d\mu.
+    \]
+\end{snippetproof}
+
+\begin{snippetexample}{absolutely-summable-series-may-diverge-on-null-set}{The exceptional null set may be nonempty}
+    On \([0,1]\), define
+    \[
+        f_n(x)=
+        \begin{cases}
+            \dfrac1{2^n\sqrt x} & x\neq0,\\
+            1 & x=0.
+        \end{cases}
+    \]
+    The hypotheses of the series theorem hold, but
+    \(\sum_nf_n(0)=+\infty\). Indeed,
+    \[
+        \sum_{n=1}^{\infty}|f_n(x)|
+        =
+        \begin{cases}
+            \dfrac1{\sqrt x} & x\neq0,\\
+            +\infty & x=0.
+        \end{cases}
+    \]
+\end{snippetexample}
+
+\section{Vanishing Integrals}
+
+\begin{snippettheorem}{nonnegative-zero-integral-almost-everywhere-zero}{A nonnegative function with zero integral vanishes almost everywhere}
+    Let \(f\colon X\fromto[0,+\infty]\) be measurable. If
+    \[
+        \int_Xf\,d\mu=0,
+    \]
+    then \(f=0\) almost everywhere.
+\end{snippettheorem}
+
+\begin{snippetproof}{nonnegative-zero-integral-almost-everywhere-zero-proof}{nonnegative-zero-integral-almost-everywhere-zero}{A nonnegative function with zero integral vanishes almost everywhere}
+    For \(n\geq1\), let
+    \[
+        A_n=\left\{x\in X\suchthat f(x)>\frac1n\right\}.
+    \]
+    If \(\mu(A_n)>0\), monotonicity would give
+    \[
+        \int_Xf\,d\mu\geq\frac1n\mu(A_n)>0,
+    \]
+    a contradiction. Hence every \(A_n\) is null. Since
+    \(\{f>0\}=\bigcup_nA_n\), the set on which \(f\neq0\) is null.
+\end{snippetproof}
+
+\begin{snippettheorem}{vanishing-integrals-on-all-measurable-sets}{A function is determined by all its integrals}
+    Let \(f\in\mathcal L^1(X,\mathcal M,\mu)\). If
+    \[
+        \int_Ef\,d\mu=0
+    \]
+    for every \(E\in\mathcal M\), then \(f=0\) almost everywhere.
+\end{snippettheorem}
+
+\begin{snippetproof}{vanishing-integrals-on-all-measurable-sets-proof}{vanishing-integrals-on-all-measurable-sets}{A function is determined by all its integrals}
+    Write \(f=u+iv\). On the measurable set \(E_+=\{u\geq0\}\),
+    \[
+        0=\Re\int_{E_+}f\,d\mu=\int_{E_+}u\,d\mu.
+    \]
+    The preceding theorem gives \(u=0\) almost everywhere on \(E_+\).
+    Applying it to \(-u\) on \(E_-=\{u\leq0\}\) gives the same conclusion
+    there. Since \(X=E_+\cup E_-\), \(u=0\) almost everywhere. Repeating the
+    argument for \(v\) proves \(f=0\) almost everywhere.
+\end{snippetproof}
+
+\end{document}

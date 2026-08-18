@@ -1,0 +1,128 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{sequences-functions-functional-setting}
+\genpage
+
+\section{Practical criteria}
+
+\begin{snippet}{uniform-convergence-supremum-formulation}
+    A \sequence of \function[functions] \(f_n\colon S\fromto\realnumbers\)
+    converges uniformly to \(f\colon S\fromto\realnumbers\) precisely when
+    \[
+        \lim_{n\to\infty}\sup_{x\in S}|f_n(x)-f(x)|=0.
+    \]
+    Thus the pointwise error is controlled by a single numerical sequence,
+    independent of \(x\).
+\end{snippet}
+
+\begin{snippetproposition}{uniform-convergence-comparison-criterion}{Comparison criterion for uniform convergence}
+    Let \(\{f_n\}\) and \(\{g_n\}\) be \sequence[sequences] of real-valued
+    \function[functions] on \(S\). Suppose there exists \(C>0\) such that
+    \[
+        \sup_{x\in S}|f_n(x)-f_m(x)|
+        \leq C\sup_{x\in S}|g_n(x)-g_m(x)|
+    \]
+    for every \(m,n\in\naturalnumbers\). If \(\{g_n\}\) converges uniformly
+    on \(S\), then \(\{f_n\}\) also converges uniformly on \(S\).
+\end{snippetproposition}
+
+\begin{snippetproof}{uniform-convergence-comparison-criterion-proof}{uniform-convergence-comparison-criterion}{Comparison criterion for uniform convergence}
+    Uniform convergence of \(\{g_n\}\) implies, by the uniform Cauchy
+    criterion, that for every \(\varepsilon>0\) there exists
+    \(N\in\naturalnumbers\) such that
+    \[
+        \sup_{x\in S}|g_n(x)-g_m(x)|<\frac{\varepsilon}{C}
+    \]
+    whenever \(m,n>N\). The assumed inequality then gives
+    \[
+        \sup_{x\in S}|f_n(x)-f_m(x)|<\varepsilon,
+    \]
+    so the uniform Cauchy criterion yields uniform convergence of
+    \(\{f_n\}\).
+\end{snippetproof}
+
+\begin{snippetproposition}{uniform-convergence-moving-points-obstruction}{Moving-points obstruction to uniform convergence}
+    Let \(f_n,f\colon S\fromto\realnumbers\). If there exists a
+    \sequence \(\{x_n\}_{n\in\naturalnumbers}\subseteq S\) such that
+    \[
+        \limsup_{n\to\infty}|f_n(x_n)-f(x_n)|>0,
+    \]
+    then \(f_n\) does not converge uniformly to \(f\) on \(S\).
+\end{snippetproposition}
+
+\begin{snippetproof}{uniform-convergence-moving-points-obstruction-proof}{uniform-convergence-moving-points-obstruction}{Moving-points obstruction to uniform convergence}
+    For every \(n\in\naturalnumbers\),
+    \[
+        \sup_{x\in S}|f_n(x)-f(x)|\geq|f_n(x_n)-f(x_n)|.
+    \]
+    The right-hand side does not tend to zero, so neither can the uniform
+    error on the left.
+\end{snippetproof}
+
+\section{The space of bounded continuous functions}
+
+\begin{snippetdefinition}{bounded-continuous-functions-space-definition}{Space of bounded continuous functions}
+    Let \(S\subseteq\realnumbers\). The \emph{space of bounded continuous
+    functions on \(S\)} is
+    \[
+        C_b(S)=\left\{
+            f\colon S\fromto\realnumbers\suchthat
+            f\text{ is continuous and bounded}
+        \right\}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippet}{bounded-continuous-functions-uniform-norm}
+    On \(C_b(S)\), define the uniform norm by
+    \[
+        \lVert f\rVert_\infty=\sup_{x\in S}|f(x)|.
+    \]
+    Its induced metric is
+    \[
+        d_\infty(f,g)=\lVert f-g\rVert_\infty.
+    \]
+    Convergence in this metric is exactly uniform convergence on \(S\).
+\end{snippet}
+
+\begin{snippettheorem}{bounded-continuous-functions-banach-theorem}{The space of bounded continuous functions is Banach}
+    For every \(S\subseteq\realnumbers\), the space \(C_b(S)\) is a Banach
+    space with respect to the uniform norm.
+\end{snippettheorem}
+
+\begin{snippetproof}{bounded-continuous-functions-banach-theorem-proof}{bounded-continuous-functions-banach-theorem}{The space of bounded continuous functions is Banach}
+    Let \(\{f_n\}_{n\in\naturalnumbers}\) be a Cauchy \sequence in
+    \(C_b(S)\), so
+    \[
+        \lVert f_n-f_m\rVert_\infty\longrightarrow0
+        \qquad\text{as }m,n\to\infty.
+    \]
+    The uniform Cauchy criterion gives a \function
+    \(f\colon S\fromto\realnumbers\) such that \(f_n\to f\) uniformly.
+    A uniform limit of continuous functions is continuous, and a uniform
+    limit of bounded functions is bounded. Hence \(f\in C_b(S)\), and
+    \[
+        \lVert f_n-f\rVert_\infty\longrightarrow0.
+    \]
+    Thus every Cauchy sequence converges in \(C_b(S)\).
+\end{snippetproof}
+
+\section{Polynomial approximation}
+
+\begin{snippettheorem}{stone-weierstrass-real-compact-subset-theorem}{Stone--Weierstrass theorem on a compact subset of the real line}
+    Let \(K\subseteq\realnumbers\) be compact. For every continuous
+    \function \(f\colon K\fromto\realnumbers\), there exists a
+    \sequence of real \polynomial[polynomials] \(\{P_n\}\) such that
+    \(P_n\to f\) uniformly on \(K\). Equivalently, the restrictions to
+    \(K\) of real polynomials are dense in \(C(K)=C_b(K)\) with respect to
+    the uniform norm.
+\end{snippettheorem}
+
+\end{document}

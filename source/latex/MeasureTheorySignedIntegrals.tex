@@ -1,0 +1,213 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bettelini}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{measuretheory-signed-integrals}
+\genpage
+
+\section{Integrals of Functions of Arbitrary Sign}
+
+For a measurable real-valued function \(f\), we would like to set
+\[
+    \int_Xf\,d\mu
+    =\int_Xf^+\,d\mu-\int_Xf^-\,d\mu.
+\]
+This is meaningful only when the indeterminate expression
+\(+\infty-(+\infty)\) is avoided. Since
+\(f^+,f^-\leq|f|\), finiteness of the integral of \(|f|\) provides the
+appropriate condition.
+
+\begin{snippetdefinition}{lebesgue-integrable-function-definition}{Integrable function}
+    Let \((X,\mathcal M,\mu)\) be a measure space and let
+    \(f\colon X\fromto\realnumbers\) or
+    \(f\colon X\fromto\complexnumbers\) be measurable. We say that \(f\) is
+    \emph{integrable} if
+    \[
+        \int_X|f|\,d\mu<+\infty.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{arbitrary-sign-lebesgue-integral-definition}{Lebesgue integral of a real or complex function}
+    If \(f\colon X\fromto\realnumbers\) is integrable, define
+    \[
+        \int_Xf\,d\mu
+        \triangleq
+        \int_Xf^+\,d\mu-\int_Xf^-\,d\mu.
+    \]
+    If \(f\colon X\fromto\complexnumbers\) is integrable, define
+    \[
+        \int_Xf\,d\mu
+        \triangleq
+        \int_X\Re f\,d\mu+i\int_X\Im f\,d\mu.
+    \]
+\end{snippetdefinition}
+
+In the complex case one therefore reduces to the four nonnegative functions
+\((\Re f)^+\), \((\Re f)^-\), \((\Im f)^+\), and \((\Im f)^-\).
+
+\begin{snippetdefinition}{caligraphic-l-one-definition}{The space of integrable functions}
+    Define
+    \[
+        \mathcal L^1(X,\mathcal M,\mu)
+        \triangleq
+        \left\{
+            f\colon X\fromto\complexnumbers
+            \suchthat f\text{ is measurable and integrable}
+        \right\}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippettheorem}{integrable-functions-vector-space}{Linearity of the integral}
+    The set \(\mathcal L^1(\mu)\) is a vector space, and
+    \[
+        f\longmapsto\int_Xf\,d\mu
+    \]
+    is a linear functional on it.
+\end{snippettheorem}
+
+\begin{snippettheorem}{absolute-value-integral-inequality}{Integral triangle inequality}
+    If \(f\in\mathcal L^1(\mu)\), then for every measurable \(E\),
+    \[
+        \left|\int_Ef\,d\mu\right|
+        \leq\int_E|f|\,d\mu.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{absolute-value-integral-inequality-proof}{absolute-value-integral-inequality}{Integral triangle inequality}
+    For real-valued \(f\), the inequality follows from
+    \(-|f|\leq f\leq|f|\). In the complex case put
+    \(I=\int_Ef\,d\mu\). If \(I\neq0\), choose
+    \(\lambda=\overline I/|I|\). Then \(|\lambda|=1\) and
+    \[
+        |I|=\Re(\lambda I)
+        =\int_E\Re(\lambda f)\,d\mu
+        \leq\int_E|f|\,d\mu.
+    \]
+    The case \(I=0\) is immediate.
+\end{snippetproof}
+
+In particular, if \(f\) is measurable and \(|f|\leq g\) for some
+\(g\in\mathcal L^1(\mu)\), then \(f\in\mathcal L^1(\mu)\).
+
+\section{Dominated Convergence}
+
+\begin{snippettheorem}{lebesgue-dominated-convergence-theorem}{Lebesgue dominated convergence theorem}
+    Let \(f_n\colon X\fromto\complexnumbers\) be measurable and suppose that
+    \(f_n(x)\to f(x)\) for every \(x\in X\). If there is
+    \(g\in\mathcal L^1(\mu)\) such that \(|f_n|\leq g\) for every \(n\)
+    (or eventually), then all functions for which the domination holds and
+    \(f\) are integrable, and
+    \[
+        \int_X|f_n-f|\,d\mu\longrightarrow0.
+    \]
+    Consequently,
+    \[
+        \int_Xf_n\,d\mu\longrightarrow\int_Xf\,d\mu.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{lebesgue-dominated-convergence-theorem-proof}{lebesgue-dominated-convergence-theorem}{Lebesgue dominated convergence theorem}
+    The functions \(f_n\) are integrable because \(|f_n|\leq g\). The
+    pointwise limit \(f\) is measurable and, passing to the limit in the
+    domination, \(|f|\leq g\), so \(f\) is integrable as well. Moreover,
+    \[
+        |f_n-f|\leq|f_n|+|f|\leq2g.
+    \]
+    The functions \(2g-|f_n-f|\) are nonnegative and converge pointwise to
+    \(2g\). Fatou's lemma gives
+    \[
+        \int_X2g\,d\mu
+        \leq
+        \liminf_n\int_X\bigl(2g-|f_n-f|\bigr)\,d\mu.
+    \]
+    Since \(\int_X2g\,d\mu<+\infty\), we may subtract it and obtain
+    \[
+        \limsup_n\int_X|f_n-f|\,d\mu\leq0.
+    \]
+    The integrals are nonnegative, hence they converge to zero. Finally,
+    \[
+        \left|\int_Xf_n\,d\mu-\int_Xf\,d\mu\right|
+        \leq\int_X|f_n-f|\,d\mu\longrightarrow0.
+    \]
+\end{snippetproof}
+
+In the standard examples where a pointwise limit cannot be exchanged with an
+integral, the missing hypothesis is typically domination.
+
+\begin{snippetexample}{integrals-converge-without-l-one-convergence}{Convergence of integrals does not imply \(\mathcal L^1\)-convergence}
+    Let
+    \[
+        f_n(x)=\sin(x)\chi_{(n\pi,(n+2)\pi)}(x).
+    \]
+    One full sine period moves progressively to the right, so \(f_n\to0\)
+    pointwise. For every \(n\),
+    \[
+        \int_\realnumbers f_n\,d\mu=0
+        =\int_\realnumbers0\,d\mu,
+    \]
+    whereas
+    \[
+        \int_\realnumbers|f_n|\,d\mu=4.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{l-one-convergence-without-common-dominating-function}{\(\mathcal L^1\)-convergence without an integrable dominator}
+    Let
+    \[
+        f_n=\frac1n\chi_{(n,n+1)}.
+    \]
+    Then \(f_n\to0\) pointwise and uniformly, and
+    \[
+        \int_\realnumbers|f_n|\,d\mu=\frac1n\longrightarrow0.
+    \]
+    The supports are disjoint, so the smallest common nonnegative dominator is
+    \[
+        g=\sum_{n=1}^{\infty}\frac1n\chi_{(n,n+1)}.
+    \]
+    It is not integrable because its integral is the harmonic series.
+\end{snippetexample}
+
+\section{Counting Measure Examples}
+
+\begin{snippetexample}{finite-counting-measure-integral}{A finite set with counting measure}
+    Let \(X=\{1,\ldots,n\}\) with the power-set \(\sigma\)-algebra and counting
+    measure. Every function is measurable and integrable, so
+    \[
+        \mathcal L^1(\mu)=\realnumbers^n
+        \quad\text{or}\quad
+        \complexnumbers^n.
+    \]
+    Writing \(v=\sum_i\alpha_ie_i\), where
+    \(e_i=\chi_{\{i\}}\), gives
+    \[
+        \int_Xv\,d\mu=\sum_{i=1}^n\alpha_i,
+        \qquad
+        \int_X|v|\,d\mu=\sum_{i=1}^n|\alpha_i|.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{natural-numbers-counting-measure-integral}{Sequences as integrable functions}
+    Let \(X=\naturalnumbers\) with the power-set \(\sigma\)-algebra and
+    counting measure. Functions on \(X\) are real or complex sequences. If
+    \(f(n)=a_n\), then \(f\) is integrable exactly when
+    \(\sum_n|a_n|<+\infty\), and in that case
+    \[
+        \int_{\naturalnumbers} f\,d\mu=\sum_{n=1}^{\infty}a_n.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{real-line-lebesgue-integrability}{The real line with Lebesgue measure}
+    On \(\realnumbers\) with Lebesgue measure, measurability is no longer
+    automatic because the \(\sigma\)-algebra cannot be the entire power set.
+    A useful sufficient condition is that the set of discontinuities of \(f\)
+    have measure zero; integrability additionally requires
+    \(\int|f|\,d\mu<+\infty\).
+\end{snippetexample}
+
+\end{document}

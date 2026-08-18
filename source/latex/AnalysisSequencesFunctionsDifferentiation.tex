@@ -1,0 +1,196 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{sequences-functions-differentiation}
+\genpage
+
+\section{Interchange with differentiation}
+
+\begin{snippettheorem}{uniform-convergence-differentiation-theorem}{Differentiation of a sequence of functions}
+    Let \(a<b\) and let \(\{f_n\}_{n\in\naturalnumbers}\) be a \sequence of
+    differentiable \function[functions]
+    \(f_n\colon[a,b]\fromto\realnumbers\). Suppose there exists
+    \(x_0\in[a,b]\) such that the numerical sequence \(\{f_n(x_0)\}\)
+    converges, and suppose \(\{f_n'\}\) converges uniformly on \([a,b]\) to
+    \(g\colon[a,b]\fromto\realnumbers\). Then there exists a differentiable
+    \function \(f\colon[a,b]\fromto\realnumbers\) such that \(f_n\to f\)
+    uniformly and \(f'=g\). In particular,
+    \[
+        \lim_{n\to\infty}f_n'(x)=f'(x),
+        \qquad \forall x\in[a,b].
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{uniform-convergence-differentiation-theorem-proof}{uniform-convergence-differentiation-theorem}{Differentiation of a sequence of functions}
+    We first prove that \(\{f_n\}\) is uniformly Cauchy. Fix
+    \(\varepsilon>0\). The convergence of \(\{f_n(x_0)\}\) and the uniform
+    convergence of \(\{f_n'\}\) provide \(N\in\naturalnumbers\) such that,
+    for every \(m,n>N\),
+    \[
+        |f_n(x_0)-f_m(x_0)|<\frac{\varepsilon}{2},
+        \qquad
+        \lVert f_n'-f_m'\rVert_\infty<\frac{\varepsilon}{2(b-a)}.
+    \]
+    By the mean value theorem, for every \(x\in[a,b]\) there is a point
+    \(\xi\) between \(x\) and \(x_0\) such that
+    \[
+        (f_n-f_m)(x)-(f_n-f_m)(x_0)
+        =(f_n'-f_m')(\xi)(x-x_0).
+    \]
+    Therefore,
+    \[
+        |f_n(x)-f_m(x)|
+        \leq|f_n(x_0)-f_m(x_0)|
+        +(b-a)\lVert f_n'-f_m'\rVert_\infty
+        <\varepsilon.
+    \]
+    The uniform Cauchy criterion gives a \function
+    \(f\colon[a,b]\fromto\realnumbers\) such that \(f_n\to f\) uniformly.
+
+    Fix \(x\in(a,b)\) and, for \(t\neq x\), set
+    \[
+        \Delta_n(t)=\frac{f_n(t)-f_n(x)}{t-x}.
+    \]
+    Applying the mean value theorem to \(f_n-f_m\) yields
+    \[
+        |\Delta_n(t)-\Delta_m(t)|
+        \leq\lVert f_n'-f_m'\rVert_\infty,
+        \qquad t\in[a,b]\difference\{x\}.
+    \]
+    Hence \(\{\Delta_n\}\) converges uniformly on
+    \([a,b]\difference\{x\}\). For every \(t\neq x\),
+    \[
+        \Delta_n(t)\longrightarrow
+        \Delta(t)=\frac{f(t)-f(x)}{t-x},
+    \]
+    while \(\lim_{t\to x}\Delta_n(t)=f_n'(x)\). Interchanging the limits
+    gives
+    \[
+        f'(x)=\lim_{t\to x}\Delta(t)
+        =\lim_{n\to\infty}f_n'(x)=g(x).
+    \]
+    At the endpoints the same argument gives the corresponding one-sided
+    derivatives. Thus \(f'=g\) on \([a,b]\), with the usual endpoint
+    convention.
+\end{snippetproof}
+
+\section{Counterexamples}
+
+\begin{snippetexample}{uniform-derivative-convergence-without-function-convergence-example}{Uniform convergence of derivatives does not ensure convergence of the functions}
+    On \(S=[0,1]\), let \(f_n(x)=x+n\). Then \(f_n'\equiv1\), so the
+    derivatives converge uniformly to \(g=1\). However,
+    \(\{f_n(x)\}\) does not converge at any point. The missing hypothesis is
+    convergence at one fixed point, which controls the additive constants.
+\end{snippetexample}
+
+\begin{snippetexample}{uniform-limit-differentiable-functions-not-differentiable-example}{A uniform limit of differentiable functions need not be differentiable}
+    Let \(S=[-a,a]\), where \(a>0\), and define
+    \[
+        f_n(x)=\sqrt{\frac1n+x^2}.
+    \]
+    Then \(f_n\to f\) pointwise, where \(f(x)=|x|\), and the convergence is
+    uniform because
+    \[
+        0\leq f_n(x)-|x|
+        =\frac{1/n}{\sqrt{x^2+1/n}+|x|}
+        \leq\frac1{\sqrt n}.
+    \]
+    Each \(f_n\) is differentiable, but \(f\) is not differentiable at zero.
+    Moreover,
+    \[
+        f_n'(x)=\frac{x}{\sqrt{1/n+x^2}}
+    \]
+    converges pointwise to
+    \[
+        h(x)=\begin{cases}
+            -1 & x<0,\\
+            0 & x=0,\\
+            1 & x>0.
+        \end{cases}
+    \]
+    This derivative convergence is not uniform. Indeed,
+    \begin{align*}
+        \left|f_n'\left(\frac1n\right)-h\left(\frac1n\right)\right|
+        &=\left|\frac1{\sqrt{n+1}}-1\right|\longrightarrow1,
+    \end{align*}
+    and hence
+    \[
+        \sup_{x\in[-a,a]}|f_n'(x)-h(x)|
+        \geq\left|f_n'\left(\frac1n\right)-h\left(\frac1n\right)\right|.
+    \]
+    On every interval \([\varepsilon,a]\) with \(\varepsilon>0\), the
+    derivative convergence is instead uniform.
+\end{snippetexample}
+
+\begin{snippetexample}{differentiation-theorem-unbounded-domain-counterexample}{The compact-interval hypothesis cannot be omitted}
+    On \(S=\realnumbers\), let \(f_n(x)=x/n\). Then \(f_n\to0\) pointwise
+    and \(f_n'=1/n\to0\) uniformly, while \(f_n\) does not converge uniformly
+    on \(\realnumbers\), since
+    \[
+        \sup_{x\in\realnumbers}|f_n(x)|
+        \geq|f_n(n)|=1.
+    \]
+    On every compact interval \([a,b]\), however,
+    \[
+        \sup_{x\in[a,b]}|f_n(x)|
+        =\frac{\max\{|a|,|b|\}}{n}\longrightarrow0.
+    \]
+\end{snippetexample}
+
+\section{Local uniform convergence}
+
+\begin{snippetdefinition}{function-sequence-local-uniform-convergence-definition}{Local uniform convergence}
+    Let \(S\subseteq\realnumbers\) and let
+    \(f_n,f\colon S\fromto\realnumbers\). The \sequence
+    \(\{f_n\}_{n\in\naturalnumbers}\) \emph{converges locally uniformly} to
+    \(f\) on \(S\) if, for every compact subset \(K\subseteq S\), \(f_n\)
+    converges uniformly to \(f\) on \(K\).
+\end{snippetdefinition}
+
+\begin{snippettheorem}{local-uniform-convergence-differentiation-theorem}{Differentiation under local uniform convergence}
+    Let \(I\subseteq\realnumbers\) be an interval and let
+    \(\{f_n\}_{n\in\naturalnumbers}\) be a \sequence of differentiable
+    \function[functions] \(f_n\colon I\fromto\realnumbers\). Suppose there
+    exists \(x_0\in I\) such that \(\{f_n(x_0)\}\) converges. If
+    \(\{f_n'\}\) converges locally uniformly on \(I\) to
+    \(g\colon I\fromto\realnumbers\), then \(\{f_n\}\) converges locally
+    uniformly on \(I\) to a differentiable \function
+    \(f\colon I\fromto\realnumbers\), and
+    \[
+        \lim_{n\to\infty}f_n'(x)=f'(x)=g(x),
+        \qquad \forall x\in I.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{local-uniform-convergence-differentiation-theorem-proof}{local-uniform-convergence-differentiation-theorem}{Differentiation under local uniform convergence}
+    Let \(K\subseteq I\) be compact. There exists a compact interval
+    \(J\subseteq I\) containing both \(K\) and \(x_0\). The derivatives
+    \(f_n'\) converge uniformly on \(J\), and \(\{f_n(x_0)\}\) converges.
+    The differentiation theorem on compact intervals therefore yields a
+    differentiable \function \(f_J\colon J\fromto\realnumbers\) such that
+    \(f_n\to f_J\) uniformly on \(J\) and \(f_J'=g\) on \(J\).
+
+    Pointwise limits are unique, so the functions \(f_J\) obtained from
+    different compact intervals agree on overlaps. They therefore define a
+    single \function \(f\colon I\fromto\realnumbers\). Since \(K\subseteq J\),
+    the convergence \(f_n\to f\) is uniform on \(K\), and \(f'=g\) there.
+    As \(K\) was arbitrary, the convergence is locally uniform on \(I\) and
+    \(f'=g\) throughout \(I\).
+\end{snippetproof}
+
+\begin{snippetexercise}{local-uniform-derivatives-primitives-exercise}{Locally uniform convergence of derivatives}
+    Let \(I\subseteq\realnumbers\) be an interval and let
+    \(f_n\colon I\fromto\realnumbers\) be differentiable. Prove that if
+    \(\{f_n(x_0)\}\) converges for some \(x_0\in I\) and \(\{f_n'\}\)
+    converges locally uniformly on \(I\), then \(\{f_n\}\) converges locally
+    uniformly to a primitive of \(\lim_{n\to\infty}f_n'\).
+\end{snippetexercise}
+
+\end{document}

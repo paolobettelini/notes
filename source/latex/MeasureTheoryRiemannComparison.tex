@@ -1,0 +1,229 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bettelini}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{wrapfig}
+
+\begin{document}
+
+\id{measuretheory-riemann-comparison}
+\genpage
+
+\section{Comparison with the Riemann Integral}
+
+Let \([a,b]\subseteq\realnumbers\) be equipped with Lebesgue measure. We
+compare Riemann integrable functions with
+\(\mathcal L^1([a,b])\).
+
+\begin{snippettheorem}{riemann-integral-embeds-into-lebesgue-integral}{Embedding of the Riemann integral into the Lebesgue integral}
+    If \(f\) is Riemann integrable on a compact interval, then it is Lebesgue
+    integrable there and the two integrals coincide.
+\end{snippettheorem}
+
+One tempting but incorrect measurability argument is to approximate a
+nonnegative Riemann integrable function by the step functions associated with
+lower sums. Even along refinements these functions need not converge
+pointwise to \(f\). For example, if
+\(f=\chi_{\{\widetilde x\}}\), every lower step function is zero, including
+at \(\widetilde x\), although \(f(\widetilde x)=1\). The exceptional set may
+even have the cardinality of the continuum while still having measure zero.
+
+\begin{snippettheorem}{lebesgue-criterion-riemann-integrability}{Lebesgue's criterion for Riemann integrability}
+    A function \(f\colon[a,b]\fromto\realnumbers\) is Riemann integrable if
+    and only if it is bounded and its set \(D_f\) of discontinuity points has
+    Lebesgue measure zero.
+\end{snippettheorem}
+
+Thus Riemann integrability permits discontinuities on a set of continuum
+cardinality. Not every set can occur as the discontinuity set of a function:
+such sets are precisely the \(F_\sigma\) sets. In particular, no real
+function is discontinuous exactly at every irrational and continuous exactly
+at every rational.
+
+\begin{snippetexercise}{function-discontinuous-exactly-on-rationals}{Discontinuities at all rational points}
+    Construct a function whose discontinuity set is exactly
+    \(\rationalnumbers\). The Dirichlet function is not suitable because it is
+    discontinuous everywhere.
+\end{snippetexercise}
+
+One solution is Thomae's function: write a rational in lowest terms as
+\(p/q\), set \(f(p/q)=1/q\), and set \(f(x)=0\) for irrational \(x\).
+
+\begin{snippetexercise}{discontinuity-sets-are-f-sigma}{Characterization of discontinuity sets}
+    Prove that, for every \(f\colon\realnumbers\fromto\realnumbers\), the set
+    \(D_f\) is \(F_\sigma\), and conversely that every \(F_\sigma\) set is the
+    discontinuity set of some real-valued function.
+\end{snippetexercise}
+
+\section{Almost-Everywhere Continuity and Measurability}
+
+\begin{snippetdefinition}{borel-measure-definition}{Borel measure}
+    A measure on a topological space is a \emph{Borel measure} if its
+    \(\sigma\)-algebra contains the topology.
+\end{snippetdefinition}
+
+Its domain need not be exactly the Borel \(\sigma\)-algebra. Let
+\((X,\tau)\) be a topological space and
+\((X,\mathcal M,\mu)\) a measure space whose measure is Borel. Without
+completeness, being continuous outside a null set does not imply
+measurability.
+
+\begin{snippetexample}{almost-everywhere-continuity-needs-completeness}{Completeness is necessary}
+    Equip \(\realnumbers\) with its Euclidean topology, Borel
+    \(\sigma\)-algebra, and the restriction of Lebesgue measure to Borel
+    sets. Let \(E\) be the Cantor set and choose a non-Borel subset
+    \(F\subseteq E\). Then
+    \[
+        f=\chi_F
+    \]
+    is continuous on the open set \(E^c\), whose complement has measure zero,
+    but it is not Borel measurable because
+    \(f^{-1}((1/2,+\infty))=F\). The obstruction is precisely that the Borel
+    restriction of Lebesgue measure is not complete.
+\end{snippetexample}
+
+\begin{snippettheorem}{almost-everywhere-continuous-function-measurable}{Almost-everywhere continuity implies measurability for complete Borel measures}
+    Let \((X,\tau)\) also be a complete measure space
+    \((X,\mathcal M,\mu)\), with \(\mu\) a Borel measure. If
+    \(f\colon X\fromto\mathbb F\) is continuous outside a measurable null
+    set, then \(f\) is measurable. In particular, this holds if
+    \(D_f\in\mathcal M\) and \(\mu(D_f)=0\).
+\end{snippettheorem}
+
+Continuity almost everywhere is not the same as being almost everywhere
+equal to a continuous function. A jump discontinuity cannot be removed by
+changing only the value at the jump. Conversely, the Dirichlet function is
+almost everywhere equal to zero but is continuous nowhere.
+
+\begin{snippetproof}{almost-everywhere-continuous-function-measurable-proof}{almost-everywhere-continuous-function-measurable}{Almost-everywhere continuity implies measurability for complete Borel measures}
+    Let \(N\in\mathcal M\) be null and suppose that
+    \(\restr{f}{X\setminus N}\) is continuous for the subspace topology.
+    It is therefore measurable for the induced \(\sigma\)-algebra. For every
+    open \(U\subseteq\mathbb F\), there is \(A\in\mathcal M\) such that
+    \[
+        f^{-1}(U)\cap(X\setminus N)=A\cap(X\setminus N).
+    \]
+    The remaining part \(f^{-1}(U)\cap N\) is measurable by completeness, so
+    \(f^{-1}(U)\in\mathcal M\).
+\end{snippetproof}
+
+Now let \(f\) be Riemann integrable on \([a,b]\). Lebesgue's criterion makes
+\(f\) measurable. Since it is bounded and the interval has finite measure,
+\(f\) is dominated by an integrable constant and hence belongs to
+\(\mathcal L^1([a,b])\).
+
+\begin{snippetproof}{riemann-and-lebesgue-integrals-coincide-proof}{riemann-integral-embeds-into-lebesgue-integral}{Equality of the Riemann and Lebesgue integrals}
+    Suppose first that \(f\geq0\). A lower Riemann sum is the integral of a
+    measurable simple function below \(f\); hence it is at most
+    \(\int_{[a,b]}f\,d\mu\). An upper Riemann sum is the integral of a
+    measurable simple function above \(f\), so by monotonicity it is at least
+    \(\int_{[a,b]}f\,d\mu\). Since Riemann integrability gives, for every
+    \(\varepsilon>0\), lower and upper sums whose difference is less than
+    \(\varepsilon\), the Lebesgue integral is squeezed between quantities
+    converging to the Riemann integral. Thus
+    \[
+        \int_a^b f(x)\,dx=\int_{[a,b]}f\,d\mu.
+    \]
+    Applying this result to \(f^+\) and \(f^-\) proves the general case.
+\end{snippetproof}
+
+For this reason, the Riemann notation is also used for Lebesgue integrals over
+intervals.
+
+\section{Improper Riemann Integrals}
+
+Absolute improper Riemann integrability is sufficient for Lebesgue
+integrability.
+
+\begin{snippetproposition}{absolutely-convergent-improper-riemann-integral-lebesgue}{Absolute improper Riemann integrability implies Lebesgue integrability}
+    Let \(-\infty\leq a<b\leq+\infty\). If \(|f|\) is improperly Riemann
+    integrable on \((a,b)\), then \(f\in\mathcal L^1((a,b))\) and its
+    Lebesgue and improper Riemann integrals coincide.
+\end{snippetproposition}
+
+\begin{snippetproof}{absolutely-convergent-improper-riemann-integral-lebesgue-proof}{absolutely-convergent-improper-riemann-integral-lebesgue}{Absolute improper Riemann integrability implies Lebesgue integrability}
+    \begin{wrapfigure}{r}{6cm}
+        \begin{center}
+            \begin{tikzpicture}[scale=0.8]
+                \draw[->] (0,0) -- (7,0);
+                \draw[->] (0,0) -- (0,5);
+
+                \draw[dashed] (1,0) -- (1,5);
+                \draw[dashed] (0,1) -- (7,1);
+
+                \draw[thick,domain=1.3:6.4,samples=200,smooth]
+                plot (\x,{1 + 1.8/((\x-1)^0.9)});
+
+                \fill (1,0) circle (0pt) node[below] {$a$};
+                \fill (6.2,0) circle (0pt) node[below] {$b$};
+            \end{tikzpicture}
+        \end{center}
+    \end{wrapfigure}
+    Consider first the endpoint configuration shown in the figure and a
+    nonnegative function. Choose a monotone sequence \(x_n\downarrow a\).
+    By the proper-integral comparison,
+    \[
+        \int_{x_n}^bf(x)\,dx
+        =\int_{(a,b)}f(x)\chi_{(x_n,b)}(x)\,d\mu.
+    \]
+    The integrands increase pointwise to \(f\). Hence the monotone convergence
+    theorem identifies the improper limit with the Lebesgue integral.
+    Applying this to \(|f|\) proves that \(f\in\mathcal L^1\), and applying it
+    to \(f^+\) and \(f^-\) proves equality of the integrals. The other finite
+    or infinite endpoint configurations follow by choosing increasing compact
+    subintervals of \((a,b)\).
+    \wrapfill
+\end{snippetproof}
+
+\begin{snippetexercise}{parameter-integral-log-over-quadratic}{A parameter-dependent improper integral}
+    Consider
+    \[
+        F(y)=\int_0^{+\infty}\frac{\ln x}{x^2+y}\,dx.
+    \]
+    Determine its domain and study continuity.
+\end{snippetexercise}
+
+\begin{snippetsolution}{parameter-integral-log-over-quadratic-solution}{parameter-integral-log-over-quadratic}{A parameter-dependent improper integral}
+    If \(y>0\), the denominator never vanishes. Near \(+\infty\) the
+    integrand is \(O(\ln x/x^2)\), while near zero it behaves like
+    \((\ln x)/y\); both are integrable. For \(y=0\) it is not integrable.
+    If \(y<0\), the denominator vanishes at \(x=\sqrt{-y}\). Unless \(y=-1\),
+    the numerator does not vanish there and the singularity is of order
+    \(1/(x-\sqrt{-y})\), so the integral diverges. If \(y=-1\), both numerator
+    and denominator vanish linearly at \(x=1\), and their quotient has a
+    removable singularity. Therefore
+    \[
+        D(F)=(0,+\infty)\cup\{-1\}.
+    \]
+
+    The point \(-1\) is isolated in this domain. Fix \(y_0>0\) and let
+    \(y_n\to y_0\). Then
+    \[
+        f_n(x)=\frac{\ln x}{x^2+y_n}
+        \longrightarrow
+        \frac{\ln x}{x^2+y_0}
+    \]
+    pointwise. Eventually \(y_n\geq y_0/2\), so
+    \[
+        |f_n(x)|
+        \leq
+        \frac{|\ln x|}{x^2+y_0/2},
+    \]
+    and the function on the right belongs to
+    \(\mathcal L^1((0,+\infty))\). Dominated convergence shows that
+    \(F(y_n)\to F(y_0)\). Thus \(F\) is continuous on its domain.
+\end{snippetsolution}
+
+Conditionally convergent improper Riemann integrals do not fit this
+identification. For example,
+\[
+    \frac{\sin x}{x}\notin\mathcal L^1((0,+\infty)),
+\]
+although its improper Riemann integral converges. One sometimes calls this an
+improper Lebesgue integral, but it is not a Lebesgue integral in the
+\(\mathcal L^1\) sense.
+
+\end{document}

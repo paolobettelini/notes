@@ -1,0 +1,225 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{tikz}
+\usetikzlibrary{cd}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{sequences-functions-ascoli-arzela}
+\genpage
+
+\section{Equicontinuity}
+
+\begin{snippetdefinition}{function-sequence-equicontinuity-definition}{Equicontinuity}
+    Let \(S\subseteq\realnumbers\) and let
+    \(\{f_n\}_{n\in\naturalnumbers}\) be a \sequence of \function[functions]
+    \(f_n\colon S\fromto\realnumbers\). The sequence is \emph{equicontinuous}
+    on \(S\) if
+    \[
+        \forall\varepsilon>0,\ \exists\delta>0\ \suchthat
+        \forall x,y\in S,\ \forall n\in\naturalnumbers,
+        \quad |x-y|<\delta\implies|f_n(x)-f_n(y)|<\varepsilon.
+    \]
+\end{snippetdefinition}
+
+\begin{snippet}{function-sequence-equicontinuity-interpretation}
+    Equicontinuity is uniform continuity with a modulus shared by the whole
+    family. It implies that every \(f_n\) is uniformly continuous on \(S\),
+    but the converse need not hold: the modulus for the individual functions
+    may depend on \(n\).
+\end{snippet}
+
+\begin{snippetproposition}{uniform-lipschitz-equicontinuity-criterion}{Uniform Lipschitz criterion for equicontinuity}
+    Let \(\{f_n\}_{n\in\naturalnumbers}\) be a \sequence of
+    \function[functions] \(f_n\colon S\fromto\realnumbers\). If there exists
+    \(L>0\), independent of \(n\), such that
+    \[
+        |f_n(x)-f_n(y)|\leq L|x-y|,
+        \qquad \forall x,y\in S,\ \forall n\in\naturalnumbers,
+    \]
+    then \(\{f_n\}\) is equicontinuous on \(S\).
+\end{snippetproposition}
+
+\begin{snippetproof}{uniform-lipschitz-equicontinuity-criterion-proof}{uniform-lipschitz-equicontinuity-criterion}{Uniform Lipschitz criterion for equicontinuity}
+    Given \(\varepsilon>0\), choose \(\delta=\varepsilon/L\). Then
+    \(|x-y|<\delta\) implies
+    \[
+        |f_n(x)-f_n(y)|\leq L|x-y|<\varepsilon
+    \]
+    for every \(n\in\naturalnumbers\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{uniformly-bounded-derivatives-equicontinuity-criterion}{Uniformly bounded derivatives imply equicontinuity}
+    Let \(I\subseteq\realnumbers\) be an interval and let
+    \(f_n\colon I\fromto\realnumbers\) be differentiable for every
+    \(n\in\naturalnumbers\). If there exists \(L>0\) such that
+    \[
+        |f_n'(x)|\leq L,
+        \qquad \forall x\in I,\ \forall n\in\naturalnumbers,
+    \]
+    then \(\{f_n\}_{n\in\naturalnumbers}\) is equicontinuous on \(I\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{uniformly-bounded-derivatives-equicontinuity-criterion-proof}{uniformly-bounded-derivatives-equicontinuity-criterion}{Uniformly bounded derivatives imply equicontinuity}
+    The mean value theorem gives
+    \(|f_n(x)-f_n(y)|\leq L|x-y|\) for every \(x,y\in I\). The uniform
+    Lipschitz criterion applies.
+\end{snippetproof}
+
+\begin{snippetproposition}{uniformly-convergent-continuous-sequence-equicontinuity-proposition}{Uniformly convergent continuous sequences are equicontinuous on compact sets}
+    Let \(K\subseteq\realnumbers\) be compact and let
+    \(\{f_n\}_{n\in\naturalnumbers}\) be a \sequence of continuous
+    \function[functions] \(f_n\colon K\fromto\realnumbers\). If \(f_n\)
+    converges uniformly on \(K\), then \(\{f_n\}\) is equicontinuous on
+    \(K\).
+\end{snippetproposition}
+
+\begin{snippetproof}{uniformly-convergent-continuous-sequence-equicontinuity-proposition-proof}{uniformly-convergent-continuous-sequence-equicontinuity-proposition}{Uniformly convergent continuous sequences are equicontinuous on compact sets}
+    Let \(f_n\to f\) uniformly and fix \(\varepsilon>0\). The function \(f\)
+    is continuous, hence uniformly continuous on the compact set \(K\). Choose
+    \(N\) such that
+    \[
+        |f_n(x)-f(x)|<\frac{\varepsilon}{3},
+        \qquad \forall n>N,\ \forall x\in K,
+    \]
+    and choose \(\delta_0>0\) such that
+    \[
+        |x-y|<\delta_0\implies
+        |f(x)-f(y)|<\frac{\varepsilon}{3}.
+    \]
+    Then, for \(n>N\) and \(|x-y|<\delta_0\),
+    \begin{align*}
+        |f_n(x)-f_n(y)|
+        &\leq |f_n(x)-f(x)|+|f(x)-f(y)|+|f(y)-f_n(y)|\\
+        &<\varepsilon.
+    \end{align*}
+    Each of the finitely many functions \(f_1,\ldots,f_N\) is uniformly
+    continuous on \(K\). Let \(\delta_i>0\) be a suitable modulus for
+    \(f_i\), and take
+    \[
+        \delta=\min\{\delta_0,\delta_1,\ldots,\delta_N\}.
+    \]
+    This \(\delta\) works for every \(n\in\naturalnumbers\).
+\end{snippetproof}
+
+\section{From pointwise to uniform convergence}
+
+\begin{snippetlemma}{equicontinuous-pointwise-convergence-uniform-lemma}{Equicontinuous pointwise convergence on a compact set}
+    Let \(K\subseteq\realnumbers\) be compact and let
+    \(\{f_n\}_{n\in\naturalnumbers}\) be an equicontinuous \sequence of
+    \function[functions] \(f_n\colon K\fromto\realnumbers\). If \(f_n\)
+    converges pointwise on \(K\) to \(f\colon K\fromto\realnumbers\), then
+    \(f_n\) converges uniformly to \(f\) on \(K\). In particular, \(f\) is
+    continuous.
+\end{snippetlemma}
+
+\begin{snippetproof}{equicontinuous-pointwise-convergence-uniform-lemma-proof}{equicontinuous-pointwise-convergence-uniform-lemma}{Equicontinuous pointwise convergence on a compact set}
+    Fix \(\varepsilon>0\). Equicontinuity yields \(\delta>0\) such that
+    \[
+        |x-y|<\delta\implies
+        |f_i(x)-f_i(y)|<\frac{\varepsilon}{3}
+    \]
+    for every \(i\in\naturalnumbers\). Compactness provides points
+    \(x_1,\ldots,x_r\in K\) such that
+    \[
+        K\subseteq\bigcup_{j=1}^{r}B_\delta(x_j).
+    \]
+    At each \(x_j\), the numerical sequence \(\{f_n(x_j)\}\) is Cauchy.
+    Hence there exists \(N_j\) such that
+    \[
+        |f_n(x_j)-f_m(x_j)|<\frac{\varepsilon}{3}
+    \]
+    whenever \(m,n>N_j\). Let \(N=\max\{N_1,\ldots,N_r\}\). Given
+    \(x\in K\), choose \(x_j\) with \(|x-x_j|<\delta\). For every
+    \(m,n>N\),
+    \begin{align*}
+        |f_n(x)-f_m(x)|
+        &\leq |f_n(x)-f_n(x_j)|+|f_n(x_j)-f_m(x_j)|
+        +|f_m(x_j)-f_m(x)|\\
+        &<\varepsilon.
+    \end{align*}
+    Thus \(\{f_n\}\) is uniformly Cauchy and therefore converges uniformly.
+    Its uniform limit must equal the pointwise limit \(f\).
+\end{snippetproof}
+
+\section{Ascoli--Arzelà theorem}
+
+\begin{snippettheorem}{ascoli-arzela-sequence-theorem}{Ascoli--Arzelà theorem}
+    Let \(K\subseteq\realnumbers\) be compact and let
+    \(\{f_n\}_{n\in\naturalnumbers}\) be a \sequence of \function[functions]
+    \(f_n\colon K\fromto\realnumbers\). If the sequence is equicontinuous and
+    uniformly bounded on \(K\), then it has a subsequence that converges
+    uniformly on \(K\).
+\end{snippettheorem}
+
+\begin{snippetproof}{ascoli-arzela-sequence-theorem-proof}{ascoli-arzela-sequence-theorem}{Ascoli--Arzelà theorem}
+    Choose a countable dense subset
+    \(\{r_j\}_{j\in\naturalnumbers}\subseteq K\). Uniform boundedness makes
+    the numerical sequence \(\{f_n(r_1)\}\) bounded, so Bolzano--Weierstrass
+    gives a convergent subsequence, denoted \(\{f_n^1\}\). From it extract a
+    subsequence \(\{f_n^2\}\) that converges at \(r_2\). Continuing gives
+    nested subsequences
+    \[
+        \{f_n\}\supseteq\{f_n^1\}\supseteq\{f_n^2\}
+        \supseteq\{f_n^3\}\supseteq\cdots,
+    \]
+    where \(\{f_n^j(r_j)\}\) converges for every \(j\).
+
+    Consider the diagonal subsequence \(g_k=f_k^k\):
+    \begin{center}
+        \begin{tikzcd}
+            f_1^1 \arrow[rd] & f_2^1            & f_3^1            & f_4^1  & \cdots \\
+            f_1^2            & f_2^2 \arrow[rd] & f_3^2            & f_4^2  & \cdots \\
+            f_1^3            & f_2^3            & f_3^3 \arrow[rd] & f_4^3  & \cdots \\
+            f_1^4            & f_2^4            & f_3^4            & f_4^4  & \cdots \\
+            \vdots           & \vdots           & \vdots           & \vdots & \ddots
+        \end{tikzcd}
+    \end{center}
+    By construction, \(\{g_k(r_j)\}\) converges for every \(j\).
+
+    We show that \(\{g_k(x)\}\) is Cauchy for every \(x\in K\). Fix
+    \(\varepsilon>0\). Equicontinuity gives \(\delta>0\) such that
+    \[
+        |g_k(x)-g_k(y)|<\frac{\varepsilon}{3}
+    \]
+    for every \(k\) whenever \(|x-y|<\delta\). By density, choose
+    \(r_j\) with \(|x-r_j|<\delta\). Since \(\{g_k(r_j)\}\) is Cauchy,
+    there exists \(N=N(\varepsilon,x)\) such that
+    \[
+        |g_n(r_j)-g_m(r_j)|<\frac{\varepsilon}{3}
+    \]
+    for \(m,n>N\). Therefore,
+    \begin{align*}
+        |g_n(x)-g_m(x)|
+        &\leq |g_n(x)-g_n(r_j)|+|g_n(r_j)-g_m(r_j)|
+        +|g_m(r_j)-g_m(x)|\\
+        &<\varepsilon.
+    \end{align*}
+    Thus \(\{g_k\}\) converges pointwise on \(K\). It remains
+    equicontinuous as a subsequence of \(\{f_n\}\), so the preceding lemma
+    upgrades the convergence to uniform convergence.
+\end{snippetproof}
+
+\begin{snippetexample}{uniformly-bounded-sequence-without-uniformly-convergent-subsequence-example}{Uniform boundedness alone is insufficient}
+    On \(K=[0,1]\), let
+    \[
+        f_n(x)=\frac{x^2}{x^2+(1-nx)^2}.
+    \]
+    The sequence converges pointwise to zero and satisfies
+    \(|f_n(x)|\leq1\), but \(f_n(1/n)=1\). Every pointwise convergent
+    subsequence must therefore have pointwise limit zero, whereas for any
+    subsequence \(\{f_{n_k}\}\),
+    \[
+        \sup_{x\in[0,1]}|f_{n_k}(x)|
+        \geq f_{n_k}\left(\frac1{n_k}\right)=1.
+    \]
+    Hence no subsequence converges uniformly. In particular, the original
+    family cannot be equicontinuous.
+\end{snippetexample}
+
+\end{document}

@@ -1,0 +1,216 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bettelini}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{measuretheory-integral-functions}
+\genpage
+
+\section{Integral Functions}
+
+\includesnpt{fundamental-theorem-of-calculus}
+
+\begin{snippet}{integral-functions-riemann-comparison}
+    If \(f\) is Riemann integrable on a bounded interval \([a,b]\), its
+    integral function
+    \[
+        F(x)=\integral[a][x][f(t)][t]
+    \]
+    is Lipschitz continuous because
+    \[
+        |F(x)-F(y)|
+        =\left|\integral[x][y][f(t)][t]\right|
+        \leq\sup_{t\in[a,b]}|f(t)|\,|x-y|.
+    \]
+    In particular, it is uniformly continuous.
+
+    For an improper Riemann integral the integrand need not be bounded, so
+    Lipschitz continuity may be lost. Continuity at an improper endpoint is
+    instead built into the existence of the improper limit. For example,
+    \[
+        \integral[a][b][f(t)][t]
+        =\lim_{x\to a^+}\integral[x][b][f(t)][t].
+    \]
+\end{snippet}
+
+\begin{snippetproposition}{lebesgue-integral-function-continuity}{Continuity of a Lebesgue integral function}
+    Let \(I\subseteq\realnumbers\) be an interval,
+    \(f\in\mathcal L^1(I)\), and \(a\in\overline I\), where an endpoint may
+    equal \(+\infty\) or \(-\infty\). Then the oriented integral function
+    \[
+        F(x)=\int_a^x f(t)\,dt
+    \]
+    is continuous on \(\overline I\). If \(I\) is bounded, then \(F\) is
+    uniformly continuous.
+\end{snippetproposition}
+
+\begin{snippetproof}{lebesgue-integral-function-continuity-proof}{lebesgue-integral-function-continuity}{Continuity of a Lebesgue integral function}
+    Let \(x_n\to c\in\overline I\). Up to the harmless orientation convention,
+    write
+    \[
+        F(x_n)=\int_I f(t)\chi_{(a,x_n)}(t)\,dt.
+    \]
+    For every \(n\),
+    \[
+        |f\chi_{(a,x_n)}|\leq|f|\in\mathcal L^1(I),
+    \]
+    and the indicators converge pointwise to \(\chi_{(a,c)}\), except
+    possibly at the single point \(c\). Dominated convergence gives
+    \(F(x_n)\to F(c)\). Thus \(F\) is continuous. If \(I\) is bounded,
+    \(\overline I\) is compact, so continuity implies uniform continuity.
+\end{snippetproof}
+
+\begin{snippetexercise}{integrability-on-closure-of-open-set-exercise}{Integrability on the closure}
+    If \(A\subseteq\realnumbers\) is open and \(f\in\mathcal L^1(A)\), under
+    which interpretation or additional hypotheses can one conclude that
+    \(f\in\mathcal L^1(\overline A)\)?
+\end{snippetexercise}
+
+\begin{snippettheorem}{lebesgue-integral-function-almost-everywhere-differentiability}{Almost-everywhere differentiability of integral functions}
+    Let \(I\subseteq\realnumbers\) be an interval and
+    \(f\in\mathcal L^1_{\mathrm{loc}}(I)\). For \(a\in I\), define
+    \[
+        F(x)=\int_a^x f(t)\,dt.
+    \]
+    Then \(F\) is differentiable almost everywhere and
+    \[
+        F'(x)=f(x)
+    \]
+    for almost every \(x\in I\).
+\end{snippettheorem}
+
+\begin{snippetdefinition}{locally-integrable-function-definition}{Locally integrable function}
+    Let \(A\subseteq\realnumbers^n\) be open. A measurable function \(f\) is
+    \emph{locally integrable} on \(A\), written
+    \(f\in\mathcal L^1_{\mathrm{loc}}(A)\), if every point \(p\in A\) has a
+    neighborhood \(U\subseteq A\) such that
+    \(f\in\mathcal L^1(U)\).
+\end{snippetdefinition}
+
+\begin{snippetexample}{reciprocal-function-locally-integrable-example}{A locally integrable function which is not integrable}
+    On \(I=(0,+\infty)\), the function \(f(t)=1/t\) is locally integrable but
+    does not belong to \(\mathcal L^1(I)\). For every fixed \(a>0\),
+    \[
+        F(x)=\integral[a][x][\frac1t][t]
+    \]
+    is nevertheless defined for every \(x>0\). The base point cannot be moved
+    to either endpoint: both \(\int_0^xdt/t\) and
+    \(\int_x^{+\infty}dt/t\) diverge.
+\end{snippetexample}
+
+\begin{snippetexercise}{local-integrability-compact-subsets-exercise}{Compact-set criterion for local integrability}
+    Prove that a measurable function on an open set
+    \(A\subseteq\realnumbers^n\) is locally integrable if and only if it is
+    integrable on every compact set \(K\subseteq A\).
+\end{snippetexercise}
+
+\begin{snippet}{almost-everywhere-defined-functions-and-integrals}
+    On a complete measure space, a function used in integration need only be
+    defined almost everywhere: it can be extended arbitrarily on the
+    remaining null set without changing its integral. Similarly, a function
+    is essentially bounded when it is bounded outside a null set.
+\end{snippet}
+
+\begin{snippetexample}{almost-everywhere-bounded-unbounded-function}{A function bounded almost everywhere}
+    Let \(\{q_n\}_{n\geq1}\) enumerate the rationals and define
+    \[
+        f(x)=
+        \begin{cases}
+            n & x=q_n,\\
+            0 & x\notin\rationalnumbers.
+        \end{cases}
+    \]
+    The function is unbounded on every interval but is bounded almost
+    everywhere, since it vanishes outside the null set \(\rationalnumbers\).
+\end{snippetexample}
+
+\begin{snippetdefinition}{essential-supremum-definition}{Essential supremum}
+    Let \(f\colon X\fromto[-\infty,+\infty]\) be measurable on a measure
+    space \((X,\mathcal M,\mu)\). Its \emph{essential supremum} is
+    \[
+        \operatorname*{ess\,sup}_{X}f
+        \triangleq
+        \inf\left\{
+            k\in[-\infty,+\infty]
+            \suchthat f\leq k\text{ almost everywhere}
+        \right\}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippet}{essential-supremum-interpretation}
+    The essential supremum is the least upper bound after values on a null
+    set are ignored. The infimum in its definition is attained.
+\end{snippet}
+
+\begin{snippetexercise}{essential-supremum-is-essential-upper-bound-exercise}{The essential supremum is attained}
+    Let \(M=\operatorname*{ess\,sup}f\). Prove that
+    \(f\leq M\) almost everywhere.
+\end{snippetexercise}
+
+\section{Exercise}
+
+\begin{snippetexercise}{logarithmic-function-series-integrability-exercise}{Integrability of a logarithmic function series}
+    Determine whether
+    \[
+        f(x)=\sum_{n=1}^{\infty}\frac{\ln x}{n(nx^2+1)}
+    \]
+    belongs to \(\mathcal L^1((0,+\infty))\).
+\end{snippetexercise}
+
+\begin{snippetsolution}{logarithmic-function-series-integrability-solution}{logarithmic-function-series-integrability-exercise}{Integrability of a logarithmic function series}
+    The series converges pointwise on \((0,+\infty)\). It cannot converge
+    uniformly on the entire interval because each term is unbounded near
+    zero. It does, however, converge locally uniformly. Indeed, on
+    \([a,+\infty)\), with \(a>0\),
+    \[
+        \left|\frac{\ln x}{n(nx^2+1)}\right|
+        \leq\frac{|\ln x|}{n^2x^2}
+        \leq\frac{K_a}{n^2}.
+    \]
+    Thus \(f\) is continuous, and in particular measurable.
+
+    On \((1,+\infty)\) all terms are nonnegative and
+    \[
+        \sum_{n=1}^{\infty}\int_1^{+\infty}
+        \left|\frac{\ln x}{n(nx^2+1)}\right|\,dx
+        \leq
+        \left(\int_1^{+\infty}\frac{\ln x}{x^2}\,dx\right)
+        \sum_{n=1}^{\infty}\frac1{n^2}<+\infty.
+    \]
+
+    On \((0,1)\) the terms are nonpositive. Integration by parts gives
+    \begin{align*}
+        \int_0^1\frac{-\ln x}{n(nx^2+1)}\,dx
+        &=\frac1{n\sqrt n}
+        \left(
+            \left[-\ln x\,\arctan(\sqrt n x)\right]_0^1
+            +\int_0^1\frac{\arctan(\sqrt n x)}{x}\,dx
+        \right)\\
+        &=\frac1{n\sqrt n}
+        \int_0^1\frac{\arctan(\sqrt n x)}{x}\,dx.
+    \end{align*}
+    The boundary term vanishes. Split the last integral at
+    \(x=1/\sqrt n\). Using
+    \(\arctan(\sqrt n x)\leq\sqrt n x\) on the first part and
+    \(\arctan(\sqrt n x)\leq\pi/2\) on the second gives
+    \begin{align*}
+        \int_0^1\frac{-\ln x}{n(nx^2+1)}\,dx
+        &\leq\frac1{n\sqrt n}
+        \left[
+            \int_0^{1/\sqrt n}\sqrt n\,dx
+            +\int_{1/\sqrt n}^{1}\frac{\pi}{2x}\,dx
+        \right]\\
+        &=\frac1{n\sqrt n}
+        \left(1+\frac\pi2\ln\sqrt n\right).
+    \end{align*}
+    The series of these bounds converges. Therefore
+    \(f\in\mathcal L^1((0,+\infty))\). The splitting point
+    \(1/\sqrt n\) preserves the summable factor \(n^{-3/2}\).
+\end{snippetsolution}
+
+\end{document}

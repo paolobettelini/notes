@@ -1,0 +1,120 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{sequences-functions-integration}
+\genpage
+
+\section{Interchange with integration}
+
+\begin{snippettheorem}{uniform-convergence-integration-theorem}{Integration of a uniformly convergent sequence}
+    Let \(a<b\) and let \(\{f_n\}_{n\in\naturalnumbers}\) be a \sequence of
+    Riemann-integrable \function[functions]
+    \(f_n\colon[a,b]\fromto\realnumbers\). If \(f_n\) converges uniformly on
+    \([a,b]\) to \(f\colon[a,b]\fromto\realnumbers\), then \(f\) is Riemann
+    integrable and
+    \[
+        \integral[a][b][f(x)][x]
+        =\lim_{n\to\infty}\integral[a][b][f_n(x)][x].
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{uniform-convergence-integration-theorem-proof}{uniform-convergence-integration-theorem}{Integration of a uniformly convergent sequence}
+    Write \(\lVert g\rVert_\infty=\sup_{x\in[a,b]}|g(x)|\). Fix
+    \(\varepsilon>0\). Uniform convergence gives an index \(n\) such that
+    \[
+        \lVert f-f_n\rVert_\infty<\frac{\varepsilon}{4(b-a)}.
+    \]
+    Since \(f_n\) is Riemann integrable, there is a partition \(P\) of
+    \([a,b]\) satisfying
+    \[
+        U(f_n,P)-L(f_n,P)<\frac{\varepsilon}{2},
+    \]
+    where \(U\) and \(L\) are the upper and lower Darboux sums. On every
+    subinterval \(I\) of \(P\),
+    \[
+        \sup_I f-\inf_I f
+        \leq \sup_I f_n-\inf_I f_n+2\lVert f-f_n\rVert_\infty.
+    \]
+    Multiplying by the subinterval lengths and summing gives
+    \begin{align*}
+        U(f,P)-L(f,P)
+        &\leq U(f_n,P)-L(f_n,P)
+        +2(b-a)\lVert f-f_n\rVert_\infty\\
+        &<\varepsilon.
+    \end{align*}
+    The Darboux criterion therefore shows that \(f\) is Riemann integrable.
+
+    Moreover,
+    \begin{align*}
+        \left|
+            \integral[a][b][f_n(x)][x]-\integral[a][b][f(x)][x]
+        \right|
+        &\leq\integral[a][b][|f_n(x)-f(x)|][x]\\
+        &\leq(b-a)\lVert f_n-f\rVert_\infty\longrightarrow0,
+    \end{align*}
+    which proves the asserted interchange.
+\end{snippetproof}
+
+\section{Unbounded domains}
+
+\begin{plainhtml}
+    Uniform convergence alone does not extend the theorem to improper integrals on unbounded domains.
+\end{plainhtml}
+
+\begin{snippetexample}{uniform-limit-improper-integrability-counterexample}{A uniform limit of improperly integrable functions need not be integrable}
+    On \(S=[1,+\infty)\), define
+    \[
+        f_n(x)=\frac1x\chi_{[1,n]}(x)
+        =\begin{cases}
+            \frac1x & x\in[1,n],\\
+            0 & x>n.
+        \end{cases}
+    \]
+    For every fixed \(n\), the improper integral exists and equals
+    \[
+        \integral[1][\infty][f_n(x)][x]
+        =\integral[1][n][\frac1x][x]=\log n.
+    \]
+    The sequence converges uniformly to \(f(x)=1/x\), since
+    \[
+        \sup_{x\in[1,+\infty)}|f_n(x)-f(x)|
+        =\sup_{x>n}\frac1x=\frac1n\longrightarrow0.
+    \]
+    Nevertheless, \(1/x\) is not improperly integrable on
+    \([1,+\infty)\).
+\end{snippetexample}
+
+\begin{snippetexample}{uniform-convergence-improper-integral-interchange-counterexample}{Uniform convergence does not justify interchanging improper integrals}
+    On \(S=\realnumbers\), define
+    \[
+        f_n(x)=\frac1n\chi_{[n,2n]}(x)
+        =\begin{cases}
+            \frac1n & x\in[n,2n],\\
+            0 & x\notin[n,2n].
+        \end{cases}
+    \]
+    Every \(f_n\) is improperly integrable and
+    \[
+        \integral[-\infty][+\infty][f_n(x)][x]
+        =\integral[n][2n][\frac1n][x]=1.
+    \]
+    On the other hand,
+    \[
+        \sup_{x\in\realnumbers}|f_n(x)|=\frac1n\longrightarrow0,
+    \]
+    so \(f_n\to0\) uniformly on \(\realnumbers\). Therefore
+    \[
+        \integral[-\infty][+\infty][0][x]
+        =0\neq1
+        =\lim_{n\to\infty}\integral[-\infty][+\infty][f_n(x)][x].
+    \]
+\end{snippetexample}
+
+\end{document}

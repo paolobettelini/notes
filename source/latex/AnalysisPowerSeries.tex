@@ -1,0 +1,192 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{power-series}
+\genpage
+
+\section{Power series}
+
+\begin{snippetdefinition}{power-series-definition}{Power series}
+    Let \(z_0\in\complexnumbers\) and let
+    \(\{a_n\}_{n\geq0}\subseteq\complexnumbers\). A \emph{power series}
+    centered at \(z_0\) is a series of the form
+    \[
+        \sum_{n=0}^{\infty}a_n(z-z_0)^n.
+    \]
+    It always converges at its center. After the translation
+    \(w=z-z_0\), it can be studied in the centered form
+    \(\sum_{n=0}^{\infty}a_nw^n\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{power-series-radius-of-convergence-definition}{Radius of convergence}
+    The \emph{radius of convergence} of a power series
+    \(\sum_{n=0}^{\infty}a_n(z-z_0)^n\) is the unique
+    \(R\in[0,+\infty]\) such that the series converges absolutely whenever
+    \(|z-z_0|<R\) and diverges whenever \(|z-z_0|>R\). Its behavior on the
+    boundary \(|z-z_0|=R\) must be studied separately.
+\end{snippetdefinition}
+
+\begin{snippetproposition}{power-series-convergence-inside-convergent-point}{Convergence inside a convergent point}
+    Let \(\sum_{n=0}^{\infty}a_nz^n\) be a complex power series. If it
+    converges at \(\widetilde z\in\complexnumbers\), then it converges
+    absolutely at every \(z\) satisfying \(|z|<|\widetilde z|\). Moreover,
+    for every \(r<|\widetilde z|\), it converges totally and hence uniformly
+    on the closed disk \(\{z\in\complexnumbers\suchthat |z|\leq r\}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{power-series-convergence-inside-convergent-point-proof}{power-series-convergence-inside-convergent-point}{Convergence inside a convergent point}
+    Convergence at \(\widetilde z\) implies that the sequence
+    \(\{a_n\widetilde z^n\}\) is bounded. If \(\widetilde z=0\), the first
+    assertion is empty. Otherwise, choose \(M>0\) such that
+    \(|a_n\widetilde z^n|\leq M\) for every \(n\). For
+    \(|z|<|\widetilde z|\),
+    \[
+        |a_nz^n|
+        =|a_n\widetilde z^n|
+        \left|\frac{z}{\widetilde z}\right|^n
+        \leq M\left|\frac{z}{\widetilde z}\right|^n.
+    \]
+    The geometric majorant is summable, proving absolute convergence.
+
+    If \(|z|\leq r<|\widetilde z|\), the same estimate becomes
+    \[
+        |a_nz^n|\leq M\left(\frac r{|\widetilde z|}\right)^n,
+    \]
+    independently of \(z\). The Weierstrass test proves total and uniform
+    convergence on the closed disk.
+\end{snippetproof}
+
+\begin{snippetcorollary}{power-series-local-uniform-convergence-corollary}{Local uniform convergence of power series}
+    A power series converges totally, and therefore uniformly, on every compact
+    subset of the interior of its disk of convergence.
+\end{snippetcorollary}
+
+\section{Cauchy--Hadamard theorem}
+
+\begin{snippettheorem}{cauchy-hadamard-theorem}{Cauchy--Hadamard theorem}
+    Let \(\sum_{n=0}^{\infty}a_nz^n\) be a complex power series. Its radius
+    of convergence is
+    \[
+        R=\frac1{\displaystyle\limsup_{n\to\infty}\sqrt[n]{|a_n|}},
+    \]
+    with the conventions \(1/0=+\infty\) and \(1/(+\infty)=0\).
+\end{snippettheorem}
+
+\begin{snippetproof}{cauchy-hadamard-theorem-proof}{cauchy-hadamard-theorem}{Cauchy--Hadamard theorem}
+    Set
+    \[
+        L=\limsup_{n\to\infty}\sqrt[n]{|a_n|}.
+    \]
+    Suppose first that \(0<L<+\infty\). If \(|z|<1/L\), choose
+    \(\varepsilon>0\) such that \(|z|(L+\varepsilon)<1\). Eventually,
+    \(\sqrt[n]{|a_n|}<L+\varepsilon\), and hence
+    \[
+        |a_nz^n|\leq\bigl(|z|(L+\varepsilon)\bigr)^n.
+    \]
+    The geometric comparison proves absolute convergence.
+
+    If \(|z|>1/L\), choose \(\varepsilon>0\) such that
+    \(|z|(L-\varepsilon)>1\). By the definition of the limit superior,
+    \(\sqrt[n]{|a_n|}>L-\varepsilon\) for infinitely many \(n\). Along
+    those indices,
+    \[
+        |a_nz^n|>\bigl(|z|(L-\varepsilon)\bigr)^n>1,
+    \]
+    so the terms do not tend to zero and the series diverges.
+
+    If \(L=0\), the convergence argument applies to every \(z\), giving
+    \(R=+\infty\). If \(L=+\infty\), the divergence argument applies to
+    every \(z\neq0\), giving \(R=0\).
+\end{snippetproof}
+
+\begin{snippetexample}{power-series-cubic-coefficients-radius-example}{A power series diverging everywhere on its boundary}
+    For
+    \[
+        \sum_{n=1}^{\infty}n^3z^n,
+    \]
+    the Cauchy--Hadamard theorem gives \(R=1\). If \(|z|=1\), then
+    \(|n^3z^n|=n^3\), so the general term does not tend to zero. Thus the
+    convergence set is exactly the open unit disk.
+\end{snippetexample}
+
+\begin{snippetexample}{power-series-inverse-cubic-coefficients-radius-example}{A power series converging on its entire boundary}
+    The power series
+    \[
+        \sum_{n=1}^{\infty}\frac{z^n}{n^3}
+    \]
+    has radius \(R=1\). On \(|z|=1\), it converges absolutely by comparison
+    with \(\sum_n1/n^3\). Hence it converges on the whole closed unit disk.
+\end{snippetexample}
+
+\section{Ratio criterion}
+
+\begin{snippettheorem}{power-series-ratio-radius-criterion}{Ratio criterion for the radius of convergence}
+    Let \(\sum_{n=0}^{\infty}a_nz^n\) be a power series whose coefficients
+    are eventually nonzero. If
+    \[
+        \lim_{n\to\infty}\left|\frac{a_{n+1}}{a_n}\right|=L
+    \]
+    exists in \([0,+\infty]\), then its radius of convergence is \(R=1/L\),
+    with the usual conventions at \(0\) and \(+\infty\).
+\end{snippettheorem}
+
+\begin{snippetproof}{power-series-ratio-radius-criterion-proof}{power-series-ratio-radius-criterion}{Ratio criterion for the radius of convergence}
+    For fixed \(z\), the ratio of consecutive absolute terms is
+    \[
+        \left|\frac{a_{n+1}z^{n+1}}{a_nz^n}\right|
+        =|z|\left|\frac{a_{n+1}}{a_n}\right|\longrightarrow |z|L.
+    \]
+    The numerical ratio test gives absolute convergence when \(|z|L<1\)
+    and divergence when \(|z|L>1\), which yields \(R=1/L\).
+\end{snippetproof}
+
+\begin{snippetexample}{power-series-oscillating-coefficients-radius-example}{Oscillating coefficients}
+    Let \(a_n=1\) for odd \(n\) and \(a_n=e^{-n}\) for even \(n\). Then
+    \[
+        \limsup_{n\to\infty}\sqrt[n]{|a_n|}=1,
+    \]
+    because the odd subsequence equals \(1\), while the even subsequence
+    equals \(e^{-1}\). Thus \(\sum_na_nz^n\) has radius \(R=1\).
+\end{snippetexample}
+
+\begin{snippetexample}{power-series-zero-coefficients-ratio-criterion-example}{The ratio criterion may be unavailable}
+    For \(\sum_{n=0}^{\infty}z^{2n}\), infinitely many coefficients in its
+    standard power-series representation vanish, so the coefficient ratio
+    criterion does not apply. Writing \(w=z^2\) reduces it to a geometric
+    series, showing that \(R=1\).
+\end{snippetexample}
+
+\begin{snippetexample}{exponential-power-series-radius-example}{The exponential power series}
+    The ratio criterion gives radius \(R=+\infty\) for
+    \[
+        \sum_{n=0}^{\infty}\frac{z^n}{n!}.
+    \]
+    It converges uniformly on every compact subset of \(\complexnumbers\),
+    but not uniformly on the whole complex plane.
+\end{snippetexample}
+
+\begin{snippetproposition}{power-series-global-uniform-convergence-polynomial-characterization}{Globally uniform power series are polynomials}
+    A power series with infinite radius of convergence converges uniformly on
+    all of \(\complexnumbers\) if and only if its coefficients are eventually
+    zero, equivalently, if its sum is a polynomial.
+\end{snippetproposition}
+
+\begin{snippetproof}{power-series-global-uniform-convergence-polynomial-characterization-proof}{power-series-global-uniform-convergence-polynomial-characterization}{Globally uniform power series are polynomials}
+    If the coefficients are eventually zero, the series is a finite sum and
+    converges uniformly. Conversely, uniform convergence on
+    \(\complexnumbers\) would force \(a_nz^n\to0\) uniformly. Whenever
+    \(a_n\neq0\), however,
+    \[
+        \sup_{z\in\complexnumbers}|a_nz^n|=+\infty.
+    \]
+    Hence all sufficiently large coefficients must vanish.
+\end{snippetproof}
+
+\end{document}

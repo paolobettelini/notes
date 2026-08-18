@@ -1,0 +1,189 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{power-series-calculus}
+\genpage
+
+\section{Termwise differentiation}
+
+\begin{snippetproposition}{power-series-derivative-radius-proposition}{Radius of convergence of the differentiated series}
+    Let
+    \[
+        \sum_{n=0}^{\infty}a_nx^n
+    \]
+    be a real power series with radius of convergence
+    \(0<R\leq+\infty\). The termwise differentiated series
+    \[
+        \sum_{n=1}^{\infty}na_nx^{n-1}
+    \]
+    has the same radius of convergence \(R\). The two series may nevertheless
+    behave differently at the boundary points \(x=\pm R\) when \(R<+\infty\).
+\end{snippetproposition}
+
+\begin{snippetproof}{power-series-derivative-radius-proposition-proof}{power-series-derivative-radius-proposition}{Radius of convergence of the differentiated series}
+    Multiplication by \(x\) does not change the radius of convergence, so it
+    suffices to compare \(\sum_na_nx^n\) with \(\sum_nna_nx^n\). By the
+    Cauchy--Hadamard theorem,
+    \[
+        \frac1R=\limsup_{n\to\infty}\sqrt[n]{|a_n|}.
+    \]
+    Since \(\sqrt[n]{n}\to1\),
+    \[
+        \limsup_{n\to\infty}\sqrt[n]{n|a_n|}
+        =\limsup_{n\to\infty}
+        \left(\sqrt[n]{n}\sqrt[n]{|a_n|}\right)
+        =\limsup_{n\to\infty}\sqrt[n]{|a_n|}.
+    \]
+    Thus both series have the same Cauchy--Hadamard radius.
+\end{snippetproof}
+
+\begin{snippettheorem}{power-series-termwise-differentiation-theorem}{Termwise differentiation of power series}
+    Let \(f(x)=\sum_{n=0}^{\infty}a_nx^n\) have positive radius of
+    convergence \(R\). Then \(f\) is infinitely differentiable on
+    \((-R,R)\), and for every \(k\geq1\),
+    \[
+        f^{(k)}(x)
+        =\sum_{n=k}^{\infty}
+        n(n-1)\cdots(n-k+1)a_nx^{n-k}.
+    \]
+    Every derived series has the same radius of convergence \(R\).
+\end{snippettheorem}
+
+\begin{snippetproof}{power-series-termwise-differentiation-theorem-proof}{power-series-termwise-differentiation-theorem}{Termwise differentiation of power series}
+    Fix \(0<r<R\). The original power series and its differentiated series
+    converge uniformly on \([-r,r]\). The theorem on differentiation of a
+    uniformly convergent sequence, applied to the partial sums, shows that the
+    sum is differentiable there and that its derivative is the sum of the
+    differentiated series. Since \(r<R\) was arbitrary, the conclusion holds
+    throughout \((-R,R)\). Iterating the argument proves the formula for every
+    \(k\).
+\end{snippetproof}
+
+\begin{snippetexample}{power-series-boundary-changes-after-differentiation-example}{Differentiation can change boundary convergence}
+    The power series
+    \[
+        \sum_{n=1}^{\infty}\frac{x^n}{n}
+    \]
+    has radius \(R=1\) and converges on \([-1,1)\). Its differentiated series
+    is
+    \[
+        \sum_{n=1}^{\infty}x^{n-1},
+    \]
+    which has the same radius but converges only on \((-1,1)\).
+\end{snippetexample}
+
+\begin{snippetexample}{power-series-successive-derivatives-boundary-example}{Successive derivatives and boundary convergence}
+    The series
+    \[
+        \sum_{n=1}^{\infty}\frac{x^n}{n^2}
+    \]
+    has radius \(R=1\) and converges absolutely at both boundary points. Its
+    first derivative,
+    \[
+        \sum_{n=1}^{\infty}\frac{x^{n-1}}n,
+    \]
+    converges on \([-1,1)\), while its second derivative,
+    \[
+        \sum_{n=2}^{\infty}\frac{n-1}{n}x^{n-2},
+    \]
+    converges only on \((-1,1)\).
+\end{snippetexample}
+
+\section{Recovery of coefficients}
+
+\begin{snippetproposition}{power-series-coefficient-recovery-proposition}{Recovery of power-series coefficients}
+    If
+    \[
+        f(x)=\sum_{n=0}^{\infty}a_nx^n
+    \]
+    has positive radius of convergence, then
+    \[
+        f^{(k)}(0)=k!a_k,
+        \qquad
+        a_k=\frac{f^{(k)}(0)}{k!}.
+    \]
+    Consequently, the values of a power-series function on any neighborhood
+    of the center determine all its coefficients and therefore determine the
+    function throughout its disk of convergence.
+\end{snippetproposition}
+
+\begin{snippet}{power-series-rigidity-interpretation}
+    Power-series functions are rigid: two such representations that agree on
+    a neighborhood cannot branch into different functions farther inside a
+    common disk of convergence. This distinguishes analyticity from mere
+    smoothness.
+\end{snippet}
+
+\begin{snippetexample}{smooth-flat-function-not-analytic-example}{A smooth function that is not analytic}
+    Define
+    \[
+        f(x)=\begin{cases}
+            e^{-1/x^2} & x\neq0,\\
+            0 & x=0.
+        \end{cases}
+    \]
+    This function is infinitely differentiable and
+    \(f^{(k)}(0)=0\) for every \(k\geq0\). Its Maclaurin series is therefore
+    identically zero, although \(f(x)>0\) for \(x\neq0\). Hence \(f\) is not
+    analytic at the origin.
+\end{snippetexample}
+
+\section{Termwise integration}
+
+\begin{snippettheorem}{power-series-termwise-integration-theorem}{Termwise integration of power series}
+    Let \(f(x)=\sum_{n=0}^{\infty}a_nx^n\) have radius of convergence
+    \(R>0\). For every \(|x|<R\),
+    \[
+        \integral[0][x][f(t)][t]
+        =\sum_{n=0}^{\infty}\frac{a_n}{n+1}x^{n+1}.
+    \]
+    The integrated power series has the same radius of convergence \(R\).
+\end{snippettheorem}
+
+\begin{snippetproof}{power-series-termwise-integration-theorem-proof}{power-series-termwise-integration-theorem}{Termwise integration of power series}
+    Fix \(r<R\). The power series converges uniformly on \([-r,r]\), so its
+    partial sums may be integrated term by term on every interval contained in
+    \([-r,r]\). This gives the displayed identity for \(|x|\leq r\). Since
+    \(r<R\) is arbitrary, it holds for every \(|x|<R\). The coefficient
+    ratio, or Cauchy--Hadamard theorem, shows that division by \(n+1\) does not
+    change the radius.
+\end{snippetproof}
+
+\begin{snippetexample}{logarithm-from-integrated-geometric-series-example}{Logarithm from the geometric series}
+    Integrating the geometric series on \(|x|<1\) gives
+    \[
+        \log(1-x)=-\sum_{n=1}^{\infty}\frac{x^n}{n}
+    \]
+    and, after replacing \(x\) by \(-x\),
+    \[
+        \log(1+x)=\sum_{n=1}^{\infty}(-1)^{n+1}\frac{x^n}{n}.
+    \]
+    The latter identity holds for \(-1<x<1\) and extends continuously to
+    \(x=1\) by Abel's theorem.
+\end{snippetexample}
+
+\begin{snippetexample}{arctangent-from-integrated-geometric-series-example}{Arctangent from the geometric series}
+    Since
+    \[
+        \frac1{1+x^2}=\sum_{n=0}^{\infty}(-1)^nx^{2n},
+        \qquad |x|<1,
+    \]
+    termwise integration yields
+    \[
+        \arctan x=\sum_{n=0}^{\infty}(-1)^n
+        \frac{x^{2n+1}}{2n+1},
+        \qquad |x|<1.
+    \]
+    The series also converges at \(x=\pm1\), although its radius remains
+    \(1\). The real function \(\arctan\) is analytic beyond this particular
+    Maclaurin disk.
+\end{snippetexample}
+
+\end{document}

@@ -1,0 +1,192 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bettelini}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{measuretheory-convergence-theorems}
+\genpage
+
+\section{Convergence Theorems for Nonnegative Functions}
+
+\begin{snippettheorem}{monotone-convergence-measurable-non-negative-function-theorem}{Monotone convergence theorem}
+    Let \((X,\mathcal M,\mu)\) be a measure space and let
+    \(f_n\colon X\fromto[0,+\infty]\) be measurable. If
+    \(f_n\uparrow f\) pointwise, then
+    \[
+        \int_Xf_n\,d\mu\uparrow\int_Xf\,d\mu.
+    \]
+\end{snippettheorem}
+
+The pointwise limit exists automatically because the sequence is increasing,
+although it may take the value \(+\infty\).
+
+\begin{snippetproof}{monotone-convergence-measurable-non-negative-function-theorem-proof}{monotone-convergence-measurable-non-negative-function-theorem}{Monotone convergence theorem}
+    Monotonicity of the integral gives
+    \[
+        \int_Xf_n\,d\mu\leq\int_Xf_{n+1}\,d\mu,
+    \]
+    so these integrals increase to some \(\alpha\in[0,+\infty]\). Since
+    \(f_n\leq f\), we have \(\alpha\leq\int_Xf\,d\mu\).
+
+    For the reverse inequality, fix a nonnegative measurable simple function
+    \(s\leq f\) and a constant \(0<c<1\). Define
+    \[
+        E_n=\{x\in X\suchthat f_n(x)\geq cs(x)\}.
+    \]
+    The sets \(E_n\) increase. Moreover, \(\bigcup_nE_n=X\): if \(f(x)=0\)
+    then \(s(x)=0\), while if \(f(x)>0\), the strict inequality
+    \(cs(x)<f(x)\) implies that \(f_n(x)\geq cs(x)\) eventually. Therefore
+    \[
+        \int_Xf_n\,d\mu
+        \geq\int_{E_n}f_n\,d\mu
+        \geq c\int_{E_n}s\,d\mu.
+    \]
+    The set function \(\varphi(E)=\int_Es\,d\mu\) is a measure, so continuity
+    from below yields
+    \[
+        \int_{E_n}s\,d\mu=\varphi(E_n)\longrightarrow
+        \varphi(X)=\int_Xs\,d\mu.
+    \]
+    Thus \(\alpha\geq c\int_Xs\,d\mu\). Letting \(c\uparrow1\) and then taking
+    the supremum over all simple \(s\leq f\) gives
+    \(\alpha\geq\int_Xf\,d\mu\).
+\end{snippetproof}
+
+\begin{snippetexample}{monotone-convergence-monotonicity-is-necessary}{Why monotonicity is necessary}
+    On \(\realnumbers\) with Lebesgue measure, let
+    \[
+        f_n=n\chi_{(0,1/n)}.
+    \]
+    Then \(f_n\to0\) pointwise, but
+    \[
+        \int_\realnumbers f_n\,d\mu=1
+        \neq0=\int_\realnumbers0\,d\mu.
+    \]
+    The sequence is not monotone.
+\end{snippetexample}
+
+\begin{snippetproposition}{nonnegative-lebesgue-integral-additivity}{Additivity of the nonnegative integral}
+    If \(f,g\colon X\fromto[0,+\infty]\) are measurable, then
+    \[
+        \int_X(f+g)\,d\mu
+        =\int_Xf\,d\mu+\int_Xg\,d\mu.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{nonnegative-lebesgue-integral-additivity-proof}{nonnegative-lebesgue-integral-additivity}{Additivity of the nonnegative integral}
+    Choose nonnegative measurable simple functions
+    \(s_n\uparrow f\) and \(t_n\uparrow g\). Then
+    \(s_n+t_n\uparrow f+g\), and additivity holds for simple functions.
+    Applying monotone convergence to all three sequences gives
+    \begin{align*}
+        \int_X(f+g)\,d\mu
+        &=\lim_n\int_X(s_n+t_n)\,d\mu\\
+        &=\lim_n\left(\int_Xs_n\,d\mu+\int_Xt_n\,d\mu\right)\\
+        &=\int_Xf\,d\mu+\int_Xg\,d\mu.
+    \end{align*}
+\end{snippetproof}
+
+\begin{snippettheorem}{nonnegative-series-integration-theorem}{Integration of a nonnegative series}
+    If \(f_n\colon X\fromto[0,+\infty]\) are measurable, then
+    \[
+        \int_X\sum_{n=1}^{\infty}f_n\,d\mu
+        =\sum_{n=1}^{\infty}\int_Xf_n\,d\mu.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{nonnegative-series-integration-theorem-proof}{nonnegative-series-integration-theorem}{Integration of a nonnegative series}
+    By finite additivity of the integral,
+    \[
+        \int_X\sum_{n=1}^Nf_n\,d\mu
+        =\sum_{n=1}^N\int_Xf_n\,d\mu.
+    \]
+    The partial sums increase pointwise to \(\sum_{n\geq1}f_n\), so the
+    monotone convergence theorem gives the result as \(N\to\infty\).
+\end{snippetproof}
+
+\begin{snippettheorem}{fatou-lemma-theorem}{Fatou's lemma}
+    Let \(f_n\colon X\fromto[0,+\infty]\) be measurable. Then
+    \[
+        \int_X\liminf_{n\to\infty}f_n\,d\mu
+        \leq
+        \liminf_{n\to\infty}\int_Xf_n\,d\mu.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{fatou-lemma-theorem-proof}{fatou-lemma-theorem}{Fatou's lemma}
+    Put
+    \[
+        g_k=\inf_{n\geq k}f_n.
+    \]
+    Each \(g_k\) is measurable, \(g_k\uparrow\liminf_nf_n\), and
+    \(g_k\leq f_k\). Monotone convergence and monotonicity of the integral
+    therefore give
+    \[
+        \int_X\liminf_nf_n\,d\mu
+        =\lim_k\int_Xg_k\,d\mu
+        \leq\liminf_k\int_Xf_k\,d\mu.
+    \]
+\end{snippetproof}
+
+For nonpositive measurable functions the analogous statement uses
+\(\limsup\) and the reverse inequality.
+
+\section{Measures Defined by Densities}
+
+Let \(f\colon X\fromto[0,+\infty]\) be measurable and define
+\[
+    \varphi_f(E)\triangleq\int_Ef\,d\mu.
+\]
+
+\begin{snippetproposition}{measure-defined-by-density}{A density defines a measure}
+    The set function \(\varphi_f\) is a measure on \(\mathcal M\). Moreover,
+    for every nonnegative measurable \(g\),
+    \[
+        \int_Xg\,d\varphi_f=\int_Xfg\,d\mu.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{measure-defined-by-density-proof}{measure-defined-by-density}{A density defines a measure}
+    If the sets \(E_i\) are pairwise disjoint, then
+    \[
+        \chi_{\bigcup_{i=1}^{\infty}E_i}
+        =\sum_{i=1}^{\infty}\chi_{E_i}.
+    \]
+    Integration of a nonnegative series gives
+    \begin{align*}
+        \varphi_f\!\left(\bigcup_{i=1}^{\infty}E_i\right)
+        &=\int_Xf\chi_{\bigcup_iE_i}\,d\mu\\
+        &=\sum_{i=1}^{\infty}\int_Xf\chi_{E_i}\,d\mu
+        =\sum_{i=1}^{\infty}\varphi_f(E_i).
+    \end{align*}
+    The change-of-measure identity is immediate for indicator functions,
+    follows by linearity for nonnegative simple functions, and then follows
+    for arbitrary nonnegative measurable functions by monotone convergence.
+\end{snippetproof}
+
+We write \(d\varphi_f=f\,d\mu\), or
+\[
+    f=\frac{d\varphi_f}{d\mu}.
+\]
+When such an \(f\) exists, it is called the Radon--Nikodym derivative of
+\(\varphi_f\) with respect to \(\mu\).
+
+\begin{snippetdefinition}{absolute-continuity-of-measures-definition}{Absolute continuity of measures}
+    Let \(\varphi\) and \(\mu\) be measures on the same measurable space.
+    The measure \(\varphi\) is \emph{absolutely continuous} with respect to
+    \(\mu\), written \(\varphi\ll\mu\), if
+    \[
+        \mu(E)=0\implies\varphi(E)=0
+    \]
+    for every measurable set \(E\).
+\end{snippetdefinition}
+
+If \(d\varphi=f\,d\mu\), then necessarily \(\varphi\ll\mu\). The
+Radon--Nikodym theorem gives a converse under suitable hypotheses.
+
+\end{document}

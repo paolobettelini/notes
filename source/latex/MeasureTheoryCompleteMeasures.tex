@@ -1,0 +1,149 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bettelini}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{measuretheory-complete-measures}
+\genpage
+
+\section{Complete measures}
+
+\begin{snippet}{complete-measure-motivation}
+    Let \((X,\Sigma,\mu)\) be a measure space, let \(N\in\Sigma\) satisfy
+    \(\mu(N)=0\), and let \(E\subseteq N\). It may happen that \(E\notin\Sigma\).
+    This is inconvenient in integration: changing a function on a subset of a
+    null set should not destroy measurability. A complete measure space rules out
+    this phenomenon.
+\end{snippet}
+
+\begin{snippetdefinition}{complete-measure-definition}{Complete measure}
+    A \measurespace \((X,\Sigma,\mu)\) is \emph{complete} if, for every
+    \(N\in\Sigma\) with \(\mu(N)=0\), every subset \(E\subseteq N\) belongs to
+    \(\Sigma\).
+\end{snippetdefinition}
+
+\begin{plainhtml}
+    By monotonicity, every measurable subset of a null set also has measure zero.
+\end{plainhtml}
+
+\section{Completion}
+
+\begin{snippetdefinition}{measure-completion-definition}{Completion of a measure space}
+    Let \((X,\Sigma,\mu)\) be a \measurespace. Its \emph{completion} is the
+    family
+    \[
+        \Sigma^\mu
+        =\left\{E\subseteq X\suchthat
+        \begin{array}{c}
+            \text{there exist }A,B\in\Sigma\text{ such that}\\
+            A\subseteq E\subseteq B
+            \text{ and }\mu(B\difference A)=0
+        \end{array}
+        \right\}.
+    \]
+    For \(E\in\Sigma^\mu\), define
+    \[
+        \overline\mu(E)=\mu(A)=\mu(B),
+    \]
+    where \(A\) and \(B\) are any measurable sets satisfying the displayed
+    conditions.
+\end{snippetdefinition}
+
+\begin{snippetproposition}{measure-completion-proposition}{Properties of the completion}
+    Let \((X,\Sigma,\mu)\) be a \measurespace and let
+    \((X,\Sigma^\mu,\overline\mu)\) be its completion. Then:
+    \begin{enumerate}
+        \item \(\overline\mu\) is well defined;
+        \item \(\Sigma^\mu\) is a \(\sigma\)-algebra containing \(\Sigma\);
+        \item \(\overline\mu\) is a complete measure on \(\Sigma^\mu\) and
+        extends \(\mu\);
+        \item \(\Sigma^\mu\) is the smallest \(\sigma\)-algebra containing
+        \(\Sigma\) on which \(\mu\) admits a complete extension.
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{measure-completion-proposition-proof}{measure-completion-proposition}{Properties of the completion}
+    Suppose first that
+    \[
+        A\subseteq E\subseteq B,
+        \qquad
+        A_1\subseteq E\subseteq B_1,
+    \]
+    where all four bounding sets are in \(\Sigma\) and
+    \(\mu(B\difference A)=\mu(B_1\difference A_1)=0\). Since
+    \[
+        A\difference A_1\subseteq B_1\difference A_1,
+        \qquad
+        A_1\difference A\subseteq B\difference A,
+    \]
+    monotonicity gives
+    \(\mu(A\difference A_1)=\mu(A_1\difference A)=0\). Finite additivity then
+    yields
+    \[
+        \mu(A)=\mu(A\intersection A_1)=\mu(A_1).
+    \]
+    The same argument gives \(\mu(B)=\mu(A)\), so \(\overline\mu\) is well defined.
+
+    Every \(A\in\Sigma\) belongs to \(\Sigma^\mu\) by choosing both bounding
+    sets equal to \(A\). If \(A\subseteq E\subseteq B\) witnesses
+    \(E\in\Sigma^\mu\), then
+    \[
+        X\difference B\subseteq X\difference E\subseteq X\difference A,
+        \qquad
+        \mu\bigl((X\difference A)\difference(X\difference B)\bigr)
+        =\mu(B\difference A)=0.
+    \]
+    Hence \(X\difference E\in\Sigma^\mu\). If
+    \(A_n\subseteq E_n\subseteq B_n\) witnesses \(E_n\in\Sigma^\mu\), set
+    \(A=\bigcup_nA_n\) and \(B=\bigcup_nB_n\). Then
+    \[
+        A\subseteq\bigcup_nE_n\subseteq B,
+        \qquad
+        B\difference A\subseteq\bigcup_n(B_n\difference A_n).
+    \]
+    Countable subadditivity gives \(\mu(B\difference A)=0\), so
+    \(\Sigma^\mu\) is a \(\sigma\)-algebra.
+
+    To prove countable additivity, let \(E_n\in\Sigma^\mu\) be pairwise disjoint
+    and choose \(A_n\subseteq E_n\subseteq B_n\) as above. The measurable sets
+    \(A_n\) are pairwise disjoint. With \(A=\bigcup_nA_n\), the set
+    \((\bigcup_nE_n)\difference A\) is contained in the measurable null set
+    \(\bigcup_n(B_n\difference A_n)\). Consequently,
+    \[
+        \overline\mu\left(\bigcup_nE_n\right)
+        =\mu(A)
+        =\sum_n\mu(A_n)
+        =\sum_n\overline\mu(E_n).
+    \]
+    Thus \(\overline\mu\) is a measure, and it agrees with \(\mu\) on \(\Sigma\).
+
+    If \(E\in\Sigma^\mu\) and \(\overline\mu(E)=0\), choose
+    \(A\subseteq E\subseteq B\) as above. Then \(\mu(B)=0\), and for every
+    \(N\subseteq E\) the inclusions \(\emptyset\subseteq N\subseteq B\) show
+    that \(N\in\Sigma^\mu\) and \(\overline\mu(N)=0\). Hence the completion is
+    complete.
+
+    Finally, let \(\mathcal T\) be a \(\sigma\)-algebra containing \(\Sigma\)
+    on which \(\mu\) has a complete extension \(\nu\). If
+    \(A\subseteq E\subseteq B\) and \(\mu(B\difference A)=0\), then
+    \(E=A\union(E\difference A)\), where
+    \(E\difference A\subseteq B\difference A\). Completeness gives
+    \(E\difference A\in\mathcal T\), so \(E\in\mathcal T\). Therefore
+    \(\Sigma^\mu\subseteq\mathcal T\), proving minimality.
+\end{snippetproof}
+
+\begin{snippet}{borel-lebesgue-completion-preview}
+    The restriction of Lebesgue measure to the Borel \(\sigma\)-algebra is not
+    complete. Its completion is Lebesgue measure on the Lebesgue
+    \(\sigma\)-algebra, and therefore
+    \[
+        \mathcal B(\realnumbers)\subseteq\mathcal L(\realnumbers).
+    \]
+\end{snippet}
+
+\end{document}

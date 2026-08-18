@@ -1,0 +1,250 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{tikz}
+\usetikzlibrary{cd}
+\usepackage{bettelini}
+
+\begin{document}
+
+\id{series-of-functions-convergence-criteria}
+\genpage
+
+\section{Total convergence}
+
+\begin{snippetdefinition}{function-series-total-convergence-definition}{Total convergence}
+    Let \(S\subseteq\realnumbers\) and let
+    \(f_n\colon S\fromto\realnumbers\) be bounded for every
+    \(n\in\naturalnumbers\). The \series \(\sum_{n=1}^{\infty}f_n\)
+    \emph{converges totally} on \(S\) if the numerical series
+    \[
+        \sum_{n=1}^{\infty}\lVert f_n\rVert_{\infty,S},
+        \qquad
+        \lVert f_n\rVert_{\infty,S}=\sup_{x\in S}|f_n(x)|,
+    \]
+    converges.
+\end{snippetdefinition}
+
+\begin{snippet}{function-series-total-convergence-majorant-characterization}
+    A \series \(\sum f_n\) converges totally on \(S\) if and only if there
+    exists a summable numerical sequence \(\{M_n\}\) such that
+    \[
+        \lVert f_n\rVert_{\infty,S}\leq M_n,
+        \qquad \forall n\in\naturalnumbers.
+    \]
+    Indeed, one implication follows by comparison, while for the converse one
+    can choose \(M_n=\lVert f_n\rVert_{\infty,S}\).
+\end{snippet}
+
+\begin{snippettheorem}{weierstrass-function-series-test}{Weierstrass test}
+    Let \(S\subseteq\realnumbers\) and let
+    \(f_n\colon S\fromto\realnumbers\). Suppose there exists a sequence of
+    nonnegative real numbers \(\{M_n\}_{n\in\naturalnumbers}\) such that
+    \[
+        |f_n(x)|\leq M_n,
+        \qquad \forall x\in S,\ \forall n\in\naturalnumbers,
+    \]
+    and \(\sum_{n=1}^{\infty}M_n<\infty\). Then
+    \(\sum_{n=1}^{\infty}f_n\) converges uniformly on \(S\).
+\end{snippettheorem}
+
+\begin{snippetproof}{weierstrass-function-series-test-proof}{weierstrass-function-series-test}{Weierstrass test}
+    Given \(\varepsilon>0\), the numerical Cauchy criterion supplies
+    \(N\in\naturalnumbers\) such that
+    \[
+        \sum_{k=n+1}^{m}M_k<\varepsilon,
+        \qquad \forall m>n\geq N.
+    \]
+    Therefore, for every \(x\in S\),
+    \[
+        \left|\sum_{k=n+1}^{m}f_k(x)\right|
+        \leq\sum_{k=n+1}^{m}|f_k(x)|
+        \leq\sum_{k=n+1}^{m}M_k<\varepsilon.
+    \]
+    The uniform Cauchy criterion completes the proof.
+\end{snippetproof}
+
+\begin{snippetcorollary}{function-series-total-implies-uniform-convergence}{Total convergence implies uniform convergence}
+    Let \(S\subseteq\realnumbers\) and let
+    \(f_n\colon S\fromto\realnumbers\). If
+    \(\sum_{n=1}^{\infty}f_n\) converges totally on \(S\), then it converges
+    uniformly on \(S\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{function-series-total-implies-uniform-convergence-proof}{function-series-total-implies-uniform-convergence}{Total convergence implies uniform convergence}
+    Total convergence means that
+    \(\sum_n\lVert f_n\rVert_{\infty,S}<\infty\). Thus, for every
+    \(\varepsilon>0\), there exists \(N\) such that, whenever \(m>n\geq N\),
+    \[
+        \left|\sum_{k=n+1}^{m}f_k(x)\right|
+        \leq\sum_{k=n+1}^{m}|f_k(x)|
+        \leq\sum_{k=n+1}^{m}\lVert f_k\rVert_{\infty,S}
+        <\varepsilon
+    \]
+    for every \(x\in S\). The uniform Cauchy criterion applies.
+\end{snippetproof}
+
+\section{Comparison of convergence notions}
+
+\begin{snippet}{function-series-convergence-implications}
+    The principal implications between convergence notions are
+    \[
+        \begin{tikzcd}[column sep=large]
+            \text{Total convergence}
+                \arrow[r, Rightarrow]
+                & \text{Uniform absolute convergence}
+                \arrow[r, Rightarrow]
+                \arrow[d, Rightarrow]
+                & \text{Pointwise absolute convergence}
+                \arrow[d, Rightarrow] \\
+            & \text{Uniform convergence}
+                \arrow[r, Rightarrow]
+                & \text{Pointwise convergence.}
+        \end{tikzcd}
+    \]
+\end{snippet}
+
+\begin{snippetexample}{function-series-uniform-without-total-convergence-example}{Uniform convergence does not imply total convergence}
+    On \(S=[1,+\infty)\), define
+    \[
+        f_n(x)=\frac1n\chi_{[n,n+1)}(x).
+    \]
+    Since the supports are pairwise disjoint, for \(m>n\),
+    \[
+        \sup_{x\in S}\left|\sum_{k=n+1}^{m}f_k(x)\right|
+        =\max_{n<k\leq m}\frac1k
+        =\frac1{n+1}\longrightarrow0.
+    \]
+    Hence the series converges uniformly. Its pointwise sum is the step
+    function
+    \[
+        f(x)=\frac1{\lfloor x\rfloor},
+        \qquad x\in[1,+\infty).
+    \]
+    However,
+    \[
+        \sum_{n=1}^{\infty}\lVert f_n\rVert_{\infty,S}
+        =\sum_{n=1}^{\infty}\frac1n=+\infty,
+    \]
+    so the convergence is not total.
+\end{snippetexample}
+
+\begin{snippetproposition}{uniformly-convergent-function-series-term-test}{Term test for uniformly convergent series of functions}
+    Let \(S\subseteq\realnumbers\) and let
+    \(f_n\colon S\fromto\realnumbers\). If the \series
+    \(\sum_{n=1}^{\infty}f_n\) converges uniformly on \(S\), then
+    \(f_n\to0\) uniformly on \(S\).
+\end{snippetproposition}
+
+\begin{snippetproof}{uniformly-convergent-function-series-term-test-proof}{uniformly-convergent-function-series-term-test}{Term test for uniformly convergent series of functions}
+    Let \(S_n=\sum_{k=1}^{n}f_k\). Uniform convergence of the series means
+    that \(S_n\to S\) uniformly. Since \(f_n=S_n-S_{n-1}\),
+    \[
+        \lVert f_n\rVert_{\infty,S}
+        \leq\lVert S_n-S\rVert_{\infty,S}
+        +\lVert S_{n-1}-S\rVert_{\infty,S}\longrightarrow0.
+    \]
+\end{snippetproof}
+
+\begin{snippetexercise}{uniform-term-convergence-not-sufficient-exercise}{Uniform convergence of the terms is not sufficient}
+    On a nonempty set \(S\), let \(f_n(x)=1/n\) for every \(x\in S\).
+    Verify that \(f_n\to0\) uniformly while
+    \(\sum_{n=1}^{\infty}f_n\) does not converge pointwise, and therefore
+    cannot converge uniformly.
+\end{snippetexercise}
+
+\begin{snippetexercise}{zeta-function-series-not-uniform-exercise}{A pointwise but not uniformly convergent series}
+    Consider
+    \[
+        \sum_{n=1}^{\infty}\frac1{n^x},
+        \qquad x\in(1,+\infty).
+    \]
+    Show that it converges pointwise and that its terms tend uniformly to zero,
+    since
+    \[
+        \sup_{x>1}\frac1{n^x}=\frac1n\longrightarrow0,
+    \]
+    but the series does not converge uniformly. Indeed, uniform convergence
+    would allow the limit \(x\to1^+\) to be interchanged with the limit of the
+    partial sums, forcing the harmonic partial sums
+    \(\sum_{k=1}^{n}1/k\) to converge.
+\end{snippetexercise}
+
+\begin{snippetproposition}{boundary-divergence-obstructs-uniform-series-convergence}{Boundary divergence obstructs uniform convergence}
+    Let \(a<b\) and let \(f_n\colon[a,b)\fromto\realnumbers\) be continuous.
+    If \(\sum_n f_n(x)\) converges pointwise for every \(x\in(a,b)\), while
+    the numerical series \(\sum_n f_n(a)\) diverges, then
+    \(\sum_n f_n\) does not converge uniformly on \((a,b)\).
+\end{snippetproposition}
+
+\begin{snippetproof}{boundary-divergence-obstructs-uniform-series-convergence-proof}{boundary-divergence-obstructs-uniform-series-convergence}{Boundary divergence obstructs uniform convergence}
+    If the series converged uniformly on \((a,b)\), its sequence of partial
+    sums \(S_n\) would converge uniformly there. Every \(S_n\) has the finite
+    limit
+    \[
+        \lim_{x\to a^+}S_n(x)=\sum_{k=1}^{n}f_k(a).
+    \]
+    The interchange-of-limits theorem would imply that these boundary values
+    form a convergent numerical sequence, contradicting divergence of
+    \(\sum_n f_n(a)\).
+\end{snippetproof}
+
+\section{Alternating series}
+
+\begin{snippetproposition}{uniform-alternating-function-series-test}{Uniform alternating-series test}
+    Let \(S\subseteq\realnumbers\) and let
+    \(f_n\colon S\fromto\realnumbers^{\geq0}\). Suppose
+    \[
+        f_{n+1}(x)\leq f_n(x),
+        \qquad \forall x\in S,\ \forall n\in\naturalnumbers,
+    \]
+    and that \(f_n\to0\) uniformly on \(S\). Then the alternating series
+    \[
+        \sum_{n=1}^{\infty}(-1)^nf_n(x)
+    \]
+    converges uniformly on \(S\).
+\end{snippetproposition}
+
+\begin{snippetproof}{uniform-alternating-function-series-test-proof}{uniform-alternating-function-series-test}{Uniform alternating-series test}
+    The remainder estimate for alternating numerical series, applied at each
+    \(x\in S\), gives
+    \[
+        \left|
+            \sum_{k=1}^{\infty}(-1)^kf_k(x)
+            -\sum_{k=1}^{n}(-1)^kf_k(x)
+        \right|\leq f_{n+1}(x).
+    \]
+    Taking the supremum over \(S\) and using uniform convergence
+    \(f_{n+1}\to0\) proves uniform convergence of the series.
+\end{snippetproof}
+
+\begin{snippetexample}{function-series-uniform-without-absolute-convergence-example}{Uniform convergence does not imply absolute convergence}
+    On any nonempty set \(S\), let \(f_n(x)=(-1)^n/n\). This is a series of
+    constant functions, so convergence of the alternating harmonic series is
+    uniform on \(S\). Its series of absolute values is the harmonic series and
+    diverges at every point.
+\end{snippetexample}
+
+\begin{snippetexample}{function-series-absolute-uniform-without-total-convergence-example}{Absolute and uniform convergence do not imply total convergence}
+    On \(S=\realnumbers^{>0}\), define
+    \[
+        f_n(x)=\frac1n\chi_{[n-1,n)}(x).
+    \]
+    At each point at most one term is nonzero, so the series converges
+    absolutely pointwise. Moreover, for \(m>n\),
+    \[
+        \sup_{x\in S}\left|\sum_{k=n+1}^{m}f_k(x)\right|
+        =\frac1{n+1}\longrightarrow0,
+    \]
+    hence it converges uniformly. Nevertheless,
+    \[
+        \sum_{n=1}^{\infty}\lVert f_n\rVert_{\infty,S}
+        =\sum_{n=1}^{\infty}\frac1n=+\infty,
+    \]
+    so it does not converge totally.
+\end{snippetexample}
+
+\end{document}

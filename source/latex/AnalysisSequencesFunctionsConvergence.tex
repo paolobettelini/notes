@@ -15,7 +15,9 @@
 \section{Pointwise convergence}
 
 \begin{snippetdefinition}{function-sequence-convergence-definition}{Convergence}
-    Let \(\{f_n\}_{n\in\naturalnumbers}\) be a \sequence of \function[functions].
+    Let \(D\subseteq\realnumbers\), let \(x_0\in D\), and let
+    \(\{f_n\}_{n\in\naturalnumbers}\) be a \sequence of \function[functions]
+    \(f_n\colon D\fromto\realnumbers\).
     The sequence \emph{converges} at a point \(x_0\) if
     \[
         \lim_{n\to\infty} f_n(x_0) \in \realnumbers
@@ -23,7 +25,9 @@
 \end{snippetdefinition}
 
 \begin{snippetdefinition}{pointwise-convergence-definition}{Pointwise convergence}
-    Let \(\{f_n\}_{n\in\naturalnumbers}\) be a \sequence of \function[functions].
+    Let \(D\subseteq\realnumbers\) and let
+    \(\{f_n\}_{n\in\naturalnumbers}\) be a \sequence of \function[functions]
+    \(f_n\colon D\fromto\realnumbers\).
     The sequence \emph{converges pointwise} to a \function \(f\colon D \to \realnumbers\) if
     \[
         \forall x\in D, \lim_{n\to\infty} f_n(x) = f(x)
@@ -82,7 +86,7 @@
         \end{tikzpicture}
     \end{center}
     The candidate limit is \[
-        f(x) = -\chi_{[-1, 0)}(x) + \chi_{[0,1]}(x) = \begin{cases}
+        f(x) = -\chi_{[-1, 0]}(x) + \chi_{[0,1]}(x) = \begin{cases}
             -1 & x \in [-1, 0) \\
             0 & x = 0 \\
             1 & x \in (0, 1]
@@ -93,7 +97,8 @@
     relative to points further away.
     Let us fix \(x \in S\) and \(\varepsilon > 0\).
     We want to find \(N(x, \varepsilon)\) that satisfies the definition.
-    We can choose an \(N\) such that \(N > \frac{1}{|x|}\).
+    If \(x=0\), then \(f_n(0)=f(0)=0\) for every \(n\). If \(x\neq0\),
+    we can choose \(N\) such that \(N>1/|x|\).
 \end{snippetexample}
 
 \begin{snippetexample}{functions-pointwise-convergence-derivative-example}{Pointwise convergence of the derivatives of a sequence differing from the derivative of the limit}
@@ -159,13 +164,32 @@
 \section{Uniform convergence}
 
 \begin{snippetdefinition}{function-sequence-uniform-convergence-definition}{Uniform convergence}
-    Let \(\{f_n\}_{n\in\naturalnumbers}\) be a \sequence of \function[functions].
+    Let \(D\subseteq\realnumbers\) and let
+    \(\{f_n\}_{n\in\naturalnumbers}\) be a \sequence of \function[functions]
+    \(f_n\colon D\fromto\realnumbers\).
     The sequence \emph{converges uniformly} to a \function \(f\colon D \to \realnumbers\) if
     \[
         \sup_{x\in D} \left| f_n(x) - f(x) \right| \to 0
     \]
     as \(n\to\infty\).
 \end{snippetdefinition}
+
+\begin{snippet}{function-sequence-uniform-convergence-equivalent-condition}
+    Equivalently, \(\{f_n\}_{n\in\naturalnumbers}\) converges uniformly to
+    \(f\colon D\fromto\realnumbers\) if and only if
+    \[
+        \forall \varepsilon>0,\ \exists N\in\naturalnumbers\ \suchthat
+        \forall n>N,\ \forall x\in D,\quad
+        |f_n(x)-f(x)|<\varepsilon.
+    \]
+    In terms of the uniform norm, this is
+    \[
+        \forall \varepsilon>0,\ \exists N\in\naturalnumbers\ \suchthat
+        \forall n>N,\quad \lVert f_n-f\rVert_{\infty,D}<\varepsilon.
+    \]
+    The index \(N\) is independent of \(x\), so the rate of convergence is
+    controlled simultaneously on the whole domain.
+\end{snippet}
 
 \begin{plainhtml}
     Everything that converges uniformly also converges pointwise.
@@ -229,7 +253,9 @@
 \section{Uniform Cauchy convergence}
 
 \begin{snippetdefinition}{function-sequence-uniform-cauchy-sequence-definition}{Uniform Cauchy sequence}
-    Let \(\{f_n\}_{n\in\naturalnumbers}\) be a \sequence of \function[functions].
+    Let \(D\subseteq\realnumbers\) and let
+    \(\{f_n\}_{n\in\naturalnumbers}\) be a \sequence of \function[functions]
+    \(f_n\colon D\fromto\realnumbers\).
     The \sequence is \emph{uniformly Cauchy} if
     \[
         \forall \varepsilon > 0,
@@ -245,8 +271,11 @@
 \end{plainhtml}
 
 \begin{snippettheorem}{function-sequence-cauchy-criterion}{Cauchy criterion for sequences of functions}
-    A \sequence of \function[functions] \(\{f_n\}_{n\in\naturalnumbers}\) converges uniformly to \(f \colon S \fromto \realnumbers\)
-    in \(S\) \ifandonlyif for each \(\varepsilon > 0\) there exists \(N(\varepsilon)\) natural such that
+    Let \(S\subseteq\realnumbers\) and let
+    \(\{f_n\}_{n\in\naturalnumbers}\) be a \sequence of \function[functions]
+    \(f_n\colon S\fromto\realnumbers\). The sequence converges uniformly on
+    \(S\) to some \(f\colon S\fromto\realnumbers\) \ifandonlyif for each
+    \(\varepsilon>0\) there exists \(N\in\naturalnumbers\) such that
     \[
         \forall m,n > N,
         |f_n(x) - f_m(x)| < \varepsilon, \forall x \in S
@@ -263,8 +292,8 @@
         \]
         for each \(n > N\) and \(x \in S\).
         Therefore, \begin{align*}
-            \left|f_n(x) - f(x)\right| &\leq \left|f_n(x) - f(x)\right| + \left|f_n(x) - f(x)\right| \\
-            &\leq \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon
+            \left|f_n(x)-f_m(x)\right| &\leq \left|f_n(x)-f(x)\right| + \left|f(x)-f_m(x)\right| \\
+            &< \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon
         \end{align*}
         \item Let us show the uniform convergence. Let \(x \in S\).
         Then, by the satisfied condition, \(\{f_n(x)\}\) is a numerical sequence
@@ -278,14 +307,14 @@
         \[
             f(x) \triangleq f_x
         \]
-        By hypothesis, for every \(\varepsilon > 0\) there exists a natural number \(N(\varepsilon)\) such that
+        Apply the hypothesis with \(\varepsilon/2\). There exists a natural number \(N\) such that
         \begin{align*}
-            |f_n(x) - f_m(x)| < \varepsilon
+            |f_n(x) - f_m(x)| < \frac{\varepsilon}{2}
         \end{align*}
         for all \(m,n > N\) and \(x \in S\).
         Taking the limit as \(m \to \infty\), by the definition of \(f\), we obtain
         \[
-            |f_n(x) - f(x)| < \varepsilon
+            |f_n(x) - f(x)| \leq \frac{\varepsilon}{2}<\varepsilon
         \]
         for all \(n > N\) and \(x \in S\).
     \end{iffproof}

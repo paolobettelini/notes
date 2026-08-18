@@ -13,53 +13,224 @@
 
 \section{Measures}
 
-\begin{snippetdefinition}{measurable-space-definition}{Measurable space}
-    A \textit{measurable space} is a tuple \((X, \Sigma)\)
-    where \(X\) is a \set and \(\Sigma\) or a \sigmaalgebra over \(X\).
-\end{snippetdefinition}
+\begin{snippet}{lebesgue-integration-completeness-motivation}
+    The normed space \(C([0,1])\), equipped with
+    \[
+        \lVert f\rVert_1=\int_0^1\lvert f(x)\rvert\,dx,
+    \]
+    is not complete. Its completion is the space \(L^1([0,1])\), constructed
+    using the Lebesgue integral. This is one reason for enlarging the classical
+    theory of integration.
+\end{snippet}
+
+\begin{snippet}{measure-domain-and-codomain-motivation}
+    A positive measure assigns a value in \([0,+\infty]\) to each measurable
+    subset of a set \(X\). Allowing \(+\infty\) is essential for unbounded
+    spaces, while restricting to nonnegative values avoids undefined expressions
+    such as \(+\infty-\infty\). The domain is a \(\sigma\)-algebra rather than
+    the whole power set because, in general, not every subset can be assigned a
+    measure with the desired properties.
+\end{snippet}
 
 \begin{snippetdefinition}{measure-definition}{Measure}
-    Let \(X\) be a \set and \(\Sigma\) be a \sigmaalgebra over \(X\).
-    A \textit{measure} is a \function
+    Let \((X,\Sigma)\) be a \measurablespace. A \emph{measure} on
+    \((X,\Sigma)\) is a \function
     \[
-        \mu\colon \Sigma \fromto [-\infty; + \infty]
+        \mu\colon\Sigma\fromto[0,+\infty]
     \]
-    where
+    such that
     \begin{enumerate}
-        \item \(\mu(\emptyset) = 0\);
-        \item \emph{non-negative:} \(\forall A \in \Sigma, \mu(A) \geq 0\);
-        \item \emph{countable additive:} for all \countable collections \({\{A_k\}}_{k=1}^\infty\)
-        of pairwise disjoint sets in \(\Sigma\)
+        \item \(\mu(\emptyset)=0\);
+        \item for every sequence \(\{A_n\}_{n=1}^{\infty}\subseteq\Sigma\) of
+        pairwise disjoint sets,
         \[
-            \mu\left( \bigcup_{k=1}^\infty E_k \right)
-            =
-            \sum_{k=1}^\infty \mu(A_k)
+            \mu\left(\bigcup_{n=1}^{\infty}A_n\right)
+            =\sum_{n=1}^{\infty}\mu(A_n).
         \]
     \end{enumerate}
+    The second property is called \emph{countable additivity} or
+    \emph{\(\sigma\)-additivity}.
 \end{snippetdefinition}
 
-\begin{snippetdefinition}{measure-space-definition}{Measure space}
-    A \textit{measure space} is a triple \((X, \Sigma, \mu)\)
-    where \(X\) is a \set, \(\Sigma\) or a \sigmaalgebra on \(X\)
-    and \(\mu\) is a \measure on \((X, \Sigma)\).
-\end{snippetdefinition}
-
-\section{Examples}
-
-\begin{snippetdefinition}{counting-measure-definition}{Counting measure space}
-    Let \(X\) be a \set and \(\Sigma = \powerset(X)\) be a \sigmaalgebra.
-    The \textit{counting measure space}
-    is defined as the measure space \((X, \Sigma, \mu)\)
-    where
+\begin{snippet}{extended-nonnegative-arithmetic-conventions}
+    For nonnegative extended-real values, the conventions are
     \[
-        \mu(A) = \begin{cases}
-            \cardinality{A} & A \text{ is finite} \\
-            +\infty & \text{ otherwise}
+        a+(+\infty)=+\infty,
+        \qquad
+        a\cdot(+\infty)=
+        \begin{cases}
+            +\infty & a>0,\\
+            0 & a=0.
         \end{cases}
     \]
-    for all \(A \in \Sigma\).
+    A series of nonnegative terms is independent of the order of summation,
+    which makes countable additivity compatible with the fact that a union does
+    not depend on the order in which its sets are listed. Signed and complex
+    measures require separate definitions: one cannot allow both \(+\infty\)
+    and \(-\infty\), and countable sums of complex values must converge
+    unconditionally.
+\end{snippet}
+
+\section{Properties}
+
+\begin{snippettheorem}{measure-basic-properties-theorem}{Basic properties of a measure}
+    Let \((X,\Sigma,\mu)\) be a \measurespace. Then:
+    \begin{enumerate}
+        \item \emph{finite additivity:} if \(A_1,\ldots,A_m\in\Sigma\) are
+        pairwise disjoint, then
+        \[
+            \mu\left(\bigcup_{i=1}^m A_i\right)=\sum_{i=1}^m\mu(A_i);
+        \]
+        \item \emph{monotonicity:} if \(A,B\in\Sigma\) and \(A\subseteq B\), then
+        \(\mu(A)\leq\mu(B)\);
+        \item if \(A\subseteq B\) and \(\mu(A)<+\infty\), then
+        \[
+            \mu(B\difference A)=\mu(B)-\mu(A);
+        \]
+        \item \emph{countable subadditivity:} for every sequence
+        \(A_n\in\Sigma\),
+        \[
+            \mu\left(\bigcup_{n=1}^{\infty}A_n\right)
+            \leq\sum_{n=1}^{\infty}\mu(A_n);
+        \]
+        \item \emph{continuity from below:} if \(A_1\subseteq A_2\subseteq\cdots\), then
+        \[
+            \mu\left(\bigcup_{n=1}^{\infty}A_n\right)
+            =\lim_{n\to\infty}\mu(A_n)=\sup_n\mu(A_n);
+        \]
+        \item \emph{continuity from above:} if \(A_1\supseteq A_2\supseteq\cdots\)
+        and \(\mu(A_m)<+\infty\) for some \(m\), then
+        \[
+            \mu\left(\bigcap_{n=1}^{\infty}A_n\right)
+            =\lim_{n\to\infty}\mu(A_n)=\inf_n\mu(A_n).
+        \]
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{measure-basic-properties-theorem-proof}{measure-basic-properties-theorem}{Basic properties of a measure}
+    \begin{enumerate}
+        \item Extend the finite family by setting \(A_i=\emptyset\) for \(i>m\),
+        and apply countable additivity.
+
+        \item Since \(B=A\sqcup(B\difference A)\), finite additivity gives
+        \[
+            \mu(B)=\mu(A)+\mu(B\difference A)\geq\mu(A).
+        \]
+
+        \item The same identity can be rearranged because \(\mu(A)<+\infty\).
+
+        \item Define
+        \[
+            B_1=A_1,
+            \qquad
+            B_n=A_n\difference\bigcup_{k=1}^{n-1}A_k
+            \quad(n\geq2).
+        \]
+        The sets \(B_n\) are pairwise disjoint, \(B_n\subseteq A_n\), and
+        \(\bigcup_nB_n=\bigcup_nA_n\). Hence
+        \[
+            \mu\left(\bigcup_nA_n\right)
+            =\sum_n\mu(B_n)
+            \leq\sum_n\mu(A_n).
+        \]
+
+        \item Set \(B_1=A_1\) and \(B_n=A_n\difference A_{n-1}\) for \(n\geq2\).
+        Then the \(B_n\) are pairwise disjoint,
+        \[
+            A_n=\bigcup_{i=1}^nB_i,
+            \qquad
+            \bigcup_{n=1}^{\infty}A_n=\bigcup_{n=1}^{\infty}B_n.
+        \]
+        Therefore
+        \[
+            \mu(A_n)=\sum_{i=1}^n\mu(B_i)
+            \longrightarrow
+            \sum_{i=1}^{\infty}\mu(B_i)
+            =\mu\left(\bigcup_{n=1}^{\infty}A_n\right).
+        \]
+        Monotonicity makes \(\mu(A_n)\) increasing, so its limit is its supremum.
+
+        \item Choose \(m\) such that \(\mu(A_m)<+\infty\), and for \(n\geq m\) set
+        \(B_n=A_m\difference A_n\). The sequence \(B_n\) is increasing and
+        \[
+            \bigcup_{n=m}^{\infty}B_n
+            =A_m\difference\bigcap_{n=1}^{\infty}A_n.
+        \]
+        By continuity from below and the finite-measure difference formula,
+        \begin{align*}
+            \mu(A_m)-\mu\left(\bigcap_{n=1}^{\infty}A_n\right)
+            &=\mu\left(A_m\difference\bigcap_{n=1}^{\infty}A_n\right)\\
+            &=\lim_{n\to\infty}\mu(A_m\difference A_n)\\
+            &=\mu(A_m)-\lim_{n\to\infty}\mu(A_n).
+        \end{align*}
+        Cancelling the finite quantity \(\mu(A_m)\) proves the identity. By
+        monotonicity, \(\mu(A_n)\) is decreasing, so its limit is its infimum.
+    \end{enumerate}
+\end{snippetproof}
+
+\begin{snippetexample}{continuity-from-above-finiteness-counterexample}{Why continuity from above needs finiteness}
+    On \(\naturalnumbers\) with counting measure, let
+    \[
+        A_n=\{n,n+1,n+2,\ldots\}.
+    \]
+    Then \(A_n\downarrow\emptyset\), but \(\mu(A_n)=+\infty\) for every \(n\).
+    Hence
+    \[
+        \mu\left(\bigcap_{n=1}^{\infty}A_n\right)=0
+        \neq+\infty=\inf_n\mu(A_n).
+    \]
+\end{snippetexample}
+
+\section{Measure spaces and examples}
+
+\begin{snippetdefinition}{measure-space-definition}{Measure space}
+    A \emph{measure space} is a triple \((X,\Sigma,\mu)\), where
+    \((X,\Sigma)\) is a \measurablespace and \(\mu\) is a \measure on
+    \((X,\Sigma)\). When the \(\sigma\)-algebra is understood, one may write
+    \((X,\mu)\).
 \end{snippetdefinition}
 
-% dirac measure. le due misure
+\begin{snippet}{finite-measure-normalization}
+    If \(0<\mu(X)<+\infty\), then
+    \[
+        \nu(A)=\frac{\mu(A)}{\mu(X)}
+    \]
+    defines a measure with \(\nu(X)=1\). Thus every nonzero finite measure can
+    be normalized to a probability measure; measurable subsets are then called
+    events.
+\end{snippet}
+
+\begin{snippetexample}{zero-and-infinite-measures-example}{Degenerate measures}
+    The function \(\mu(A)=0\) for every \(A\in\Sigma\) is a measure. Another
+    measure is
+    \[
+        \nu(A)=
+        \begin{cases}
+            0 & A=\emptyset,\\
+            +\infty & A\neq\emptyset.
+        \end{cases}
+    \]
+    These are useful boundary cases, although most applications require sets of
+    positive finite measure.
+\end{snippetexample}
+
+\begin{snippetdefinition}{counting-measure-definition}{Counting measure}
+    Let \(X\) be a \set and equip it with \(\powerset(X)\). The
+    \emph{counting measure} is defined by
+    \[
+        \mu(A)=
+        \begin{cases}
+            \cardinality{A} & A\text{ is finite},\\
+            +\infty & A\text{ is infinite},
+        \end{cases}
+        \qquad A\subseteq X.
+    \]
+\end{snippetdefinition}
+
+\begin{plainhtml}
+    With the full power set as sigma algebra, every subset and every map from the space into a measurable space is measurable.
+\end{plainhtml}
+
+\includesnpt{dirac-measure-definition}
 
 \end{document}

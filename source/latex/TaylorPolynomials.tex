@@ -17,7 +17,7 @@
 \section{Prerequisites}
 
 \begin{snippetproposition}{power-rule-nth-derivative}{\(n\)-th derivative of \(x^n\)}
-    The \(n\)-the derivative of \(x^n\) for \(n \in {\naturalnumbers}^*\)
+    The \(n\)-th derivative of \(x^n\), for \(n \in {\naturalnumbers}^*\),
     is given by
     \[
         \derivativeD^n x^n = n\factorial
@@ -30,7 +30,7 @@
         &=\frac{d^{(n-1)}}{dx^{(n-1)}}\left(nx^{(n-1)}\right)\\
         &=\frac{d^{(n-2)}}{dx^{(n-2)}}\left(n(n-1)x^{(n-2)}\right)\\
         &=\cdots\\
-        &=\prod_i^n i=n\factorial
+        &=\prod_{i=1}^n i=n\factorial.
     \end{align*}
 \end{snippetproof}
 
@@ -39,14 +39,10 @@
     \[
         P(x) = \sum_{k=0}^n a_k{(x-x_0)}^k
     \]
-    be a \polynomial where \(\polynomialdeg P(x) \leq n\) in \(x-x_0\).
-    Then,
+    be a \polynomial of degree at most \(n\), written in powers of \(x-x_0\).
+    Then, for every \(m \in \{0,\ldots,n\}\),
     \[
-        \derivativeD^m P(x_0) = \sum_{k=0}^n a_k \derivativeD^m {(x-x_0)}^k
-        = \begin{cases}
-            0 & m \neq k \\
-            m\factorial = k\factorial & m = k
-        \end{cases}
+        P^{(m)}(x_0)=m\factorial a_m.
     \]
 \end{snippetlemma}
 
@@ -81,7 +77,7 @@
         c_3&=\frac{f'''(a)}{6}
     \end{align*}
 
-    More generally, to extract the coefficient \(c_n\) we take the n-th derivative of the function. \\
+    More generally, to extract the coefficient \(c_n\), we take the \(n\)-th derivative of the function. \\
     This brings us to
     \begin{align*}
         c_n=\frac{f^{(n)}(a)}{n\factorial}
@@ -90,15 +86,15 @@
     \begin{align*}
         \sum_{n=0}^{\infty}\frac{{(x-a)}^n f^{(n)}(a)}{n\factorial}
     \end{align*}
-    which might not converge and not coincide with the function.
+    This series need not converge, and even when it does, its sum need not coincide with the function.
 \end{snippet}
 
 \section{Taylor Polynomial}
 
 \begin{snippetdefinition}{taylor-polynomial-definition}{Taylor polynomial}
-    Let \(f\colon I \fromto \realnumbers\) where \(f\)
-    is differentiable \(n\) times in \(x_0\) where \(x_0\) is an internal point of \(I\).
-    The \emph{Taylor polynomial of order \(n\) centered in \(x_0\)}
+    Let \(n\in\naturalnumbers\), and let \(f\colon I \fromto \realnumbers\) be
+    \(n\) times differentiable at an interior point \(x_0\) of \(I\).
+    The \emph{Taylor polynomial of order \(n\) centered at \(x_0\)}
     is defined as
     \[
         P_n(f, x_0, x) \triangleq \sum_{k=0}^n
@@ -106,189 +102,157 @@
     \]
 \end{snippetdefinition}
 
-\begin{snippetdefinition}{maclaurin-polynomial-definition}{MacLaurin polynomial}
-    A \emph{MacLaurin polynomial} is a Taylor polynomial centered around \(x_0 = 0\).
+\begin{snippetdefinition}{maclaurin-polynomial-definition}{Maclaurin polynomial}
+    A \emph{Maclaurin polynomial} is a Taylor polynomial centered at \(x_0 = 0\).
 \end{snippetdefinition}
 
-\begin{snippetproposition}{taylor-polynomial-unique-property}{}
-    The Taylor polynomial of \(f\) centered around \(x_0\)
-    up to the order \(n\) is the only \polynomial such that
-    \(\forall k \leq n\),
+\begin{snippetproposition}{taylor-polynomial-unique-property}{Characterization of the Taylor polynomial}
+    Let \(n\in\naturalnumbers\), and let \(f\colon I\to\realnumbers\) be
+    \(n\) times differentiable at an interior point \(x_0\) of \(I\).
+    The Taylor polynomial of \(f\) of order \(n\), centered at \(x_0\), is the
+    unique \polynomial \(P\) of degree at most \(n\) such that,
+    for every \(k \in \{0,\ldots,n\}\),
     \[
-        \derivativeD^k P_n(x_0) = \derivativeD^kf(x_0)
+        P^{(k)}(x_0)=f^{(k)}(x_0).
     \]
 \end{snippetproposition}
 
 \begin{plainhtml}
-    The next theorem extends the properties of differentiable functions, allowing them to be approximated with
-    higher degree polynomial
+    The next theorem extends the local linear approximation of differentiable functions
+    to approximation by higher-degree polynomials.
 \end{plainhtml}
 
 \begin{snippettheorem}{taylor-theorem}{Taylor's theorem}
-    Let \(f\colon I \to \realnumbers\) be differentiable
-    \(n\) times in \(x_0\) whre \(x_0\) is an internal point of \(I\) and let
+    Let \(n\in\naturalnumbers^*\), and let \(f\colon I \to \realnumbers\) be
+    \(n\) times differentiable at an interior point \(x_0\) of the interval \(I\).
+    Let
     \[
         P_n(x) = \sum_{k=0}^n \frac{f^{(k)}(x_0){(x-x_0)}^k}{k!}
     \]
-    be its Taylor polynomial of order \(n\)
-    centered around \(x_0\).
+    be its Taylor polynomial of order \(n\), centered at \(x_0\).
     Then,
     \begin{enumerate}
-        \item \emph{Taylor formula with Peano form of the remainder:} \[
-            f(x) = P_n(x) + r_n(x), \quad \littleO({(x-x_0)}^n) \to 0 \text{ for } x\to \infty
-        \]
-        \item \emph{Taylor formula with Lagrange form of the remainder:} assume that \(f\) is differentiable \(n+1\) times
-        in \(I\), then
+        \item \emph{Taylor's formula with the Peano form of the remainder:}
         \[
-            f(x) = P_n(x) + r_n(x)
+            f(x)=P_n(x)+r_n(x),
+            \qquad
+            r_n(x)=\littleO\!\left({(x-x_0)}^n\right)
+            \quad\text{as }x\to x_0.
         \]
-        where \(r_n\) is represented as follows:
-        \(\forall x\in I\), there exist \(c_x\) between \(x_0\) and \(x\)
-        (which generally both depends on \(x\) and \(n\)), such that
+        \item \emph{Taylor's formula with the Lagrange form of the remainder:}
+        if \(f\) is \((n+1)\) times differentiable on \(I\), then, for every
+        \(x\in I\setminus\{x_0\}\), there exists a point \(c_x\) strictly between
+        \(x_0\) and \(x\) such that
         \[
-            r_n(x) = \frac{f^{(n+1)}(c_x)}{(n+1)!} (x-x_0)^{n+1}
+            f(x)=P_n(x)+r_n(x),
+            \qquad
+            r_n(x)=\frac{f^{(n+1)}(c_x)}{(n+1)!}(x-x_0)^{n+1}.
         \]
+        In general, \(c_x\) depends on both \(x\) and \(n\).
     \end{enumerate}
 \end{snippettheorem}
 
 \begin{snippetproof}{taylor-theorem-proof}{taylor-theorem}{Taylor's theorem}
     \begin{enumerate}
-        \item Abbiamo
-        \begin{align*}
-            \lim_{x\to x_0} \frac{r_n(x)}{{(x-x_0)}^n} &=
-            \lim_{x\to x_0} \frac{f(x) - P_n(x)}{{(x-x_0)}^n} \\
-            &\overset{H}{=} \lim_{x\to x_0} \frac{f'(x) - P_n'(x)}{n{(x-x_0)}^{n-1}} \\
-        \end{align*}
-        Siccome \(\forall k \leq n, \derivativeD^k P(x_0) = \derivativeD^k f(x_0)\) possiamo applicare nuovamente
-        il teormea de l'Hôpital iterativamente.
-        \begin{align*}
-            &\overset{H}{=}\lim_{x\to x_0} \frac{
-                \derivativeD^2f(x) - \derivativeD^2P_n(x)
-            }{
-                n(n-1){(x-x_0)}^{n-1}
-            } \\
-            &\overset{H}{=}\lim_{x\to x_0} \frac{
-                \derivativeD^{n-1}f(x) - \derivativeD^{n-1}P_n(x)
-            }{
-                n(n-1) \cdots 2(x-x_0)
-            }
-        \end{align*}
-        A questo punto non possiamo più applicare il teorema in quanto
-        si necessiti che la funzione sia derivabiel in un intorno, ma
-        possiamo necessariamente derivarla solo in \(x_0\).
-        Tuttavia, \(\derivativeD^n(f(x_0)) = \derivativeD^n P_n(x_0)\). Quindi,
-        \begin{align*}
-            &= \frac{1}{n!} \lim_{x\to x_0}
-            \frac{\derivativeD^{n-1}f(x) - \derivativeD^{n-1} f(x_0)}{x-x_0}
-            - \frac{\derivativeD^{n-1}P_n(x) - \derivativeD^{n-1}P_n(x_0)}{x-x_0} \\
-            &= \frac{1}{n!} \left\{
-                \derivativeD^n f(x_0) - \derivativeD^n P_n(x_0)
-            \right\} \\
-            &= 0
-        \end{align*}
-        \item Mostriamo che per tutte le \(x\) esiste \(c\)
-        compreso tra \(x_0\) e \(x\) tale che
+        \item We prove the Peano formula by induction on \(n\). For \(n=1\),
+        differentiability at \(x_0\) gives
         \[
-            r_n(x) = f(x) - P_n(x) = \frac{1}{(n+1)!} \derivativeD^{n+1}f(c)(x-x_0)^{n+1}
+            f(x)=f(x_0)+f'(x_0)(x-x_0)+\littleO(x-x_0).
         \]
-        equivalentemente
+        Suppose the result holds at order \(n-1\). Applying the induction
+        hypothesis to \(f'\) yields
         \[
-            \frac{f(x) - P_n(x)}{{(x-x_0)}^{n+1}} = \frac{1}{(n+1)!} \derivativeD^{n+1}f(c)
+            f'(x)-P_n'(x)=\littleO\!\left({(x-x_0)}^{n-1}\right).
         \]
-        Vogliamo applicare il teorema di Cauchy. Poniamo \(F(x) = f(x) - P_n(x)\)
-        e \(G(x) = {(x-x_0)}^{n+1}\) e notiamo che
-        \(F(0) = 0\) e infatti \(\forall k \leq n, \derivativeD^k F(x_0) = 0\),
-        e analogamente \(G(x_0) = 0\) e infatti \[\forall k \leq n, D^k {(x-x_0)}^{n+1} = (n+1)n\cdots(n-k){(x-x_0)}^{n-k+1} = 0\]
-        in \(x=x_0\).
-        Allora,
+        Set \(g(x)=f(x)-P_n(x)\). Since \(g(x_0)=0\), the mean value theorem
+        gives, for every \(x\neq x_0\) sufficiently close to \(x_0\), a point
+        \(\xi_x\) between \(x_0\) and \(x\) such that
         \[
-            \frac{f(x) - P_n(x)}{{(x-x_0)}^{n+1}} = \frac{F(x) - F(x_0)}{G(x) - G(x_0)}
+            g(x)=g'(\xi_x)(x-x_0).
         \]
-        notando che \(F,G\) sono derivabili \(n+1\) volte in \(I\)
-        e \(G(x) - G(x_0) \neq 0\), e \(\derivativeD^k G(x) \neq 0\) per \(x\neq x_0\)
-        per ogni \(t = 1 \cdots n+1\).
-        Esiste quindi \(x_1\) compreso fra \(x\) e \(x_0\) tale che
+        As \(x\to x_0\), we also have \(\xi_x\to x_0\), and therefore
         \[
-            \frac{F(x) - F(x_0)}{x-x_0} = \frac{F'(x_1)}{G'(x_1)}
-            = \frac{F'(x_1) - F'(x_0)}{G'(x_1) - G'(x_0)}
+            g'(\xi_x)=\littleO\!\left({(\xi_x-x_0)}^{n-1}\right)
+            =\littleO\!\left({(x-x_0)}^{n-1}\right).
         \]
-        Usiamo allora il teorema di Cauchy nuovamente: esiste un \(x_2\)
-        fra \(x_1\) e \(x\)
-        \begin{align*}
-            = \frac{\derivativeD^2 F(x_2)}{\derivativeD^2 G(x_2)} = \frac{\derivativeD^2 F(x_0) - \derivativeD^2 F(x_0)}{\derivativeD^2 G(x_2) - \derivativeD^2 G(x_0)}
-        \end{align*}
-        e ripetiamo iterativamente quanto possiamo: esiste \(c\)
-        compreso tra \(x_n\) e \(x_0\)
-        \begin{align*}
-            = \frac{\derivativeD^{n+1} F(c)}{\derivativeD^{n+1} G(c)}
-            = \frac{1}{(n+1)} \derivativeD^{n+1}F(c) = (n+1)!
-        \end{align*}
-        Abbiamo quindi
+        Hence \(g(x)=\littleO\!\left({(x-x_0)}^n\right)\), which proves the
+        Peano form of the remainder.
+
+        \item Fix \(x\in I\setminus\{x_0\}\), and write
         \[
-            \frac{1}{(n+1)!} \left\{
-                \derivativeD^{n+1}f(c) - \derivativeD^{n+1}P_n(c)
-            \right\} = \frac{1}{(n+1)!} \derivativeD^{n+1}f(c)
+            R=f(x)-P_n(x).
         \]
+        Define, on the interval with endpoints \(x_0\) and \(x\),
+        \[
+            \Phi(t)=f(t)-P_n(t)
+            -R\left(\frac{t-x_0}{x-x_0}\right)^{n+1}.
+        \]
+        We have \(\Phi(x_0)=\Phi(x)=0\), and the defining property of the
+        Taylor polynomial gives
+        \[
+            \Phi^{(k)}(x_0)=0
+            \qquad\text{for every }k\in\{1,\ldots,n\}.
+        \]
+        Repeated application of Rolle's theorem therefore yields a point \(c_x\)
+        strictly between \(x_0\) and \(x\) such that
+        \(\Phi^{(n+1)}(c_x)=0\). Since \(P_n^{(n+1)}=0\),
+        \[
+            0=f^{(n+1)}(c_x)-R\frac{(n+1)!}{(x-x_0)^{n+1}}.
+        \]
+        Solving for \(R\) gives
+        \[
+            R=\frac{f^{(n+1)}(c_x)}{(n+1)!}(x-x_0)^{n+1},
+        \]
+        which is the Lagrange form of the remainder.
     \end{enumerate}
 \end{snippetproof}
 
-\begin{snippettheorem}{taylor-uniqueness-theorem}{Taylor uniqueness theorem}
-    Sia \(f\colon I \to \realnumbers\) derivabile \(n\) volte in \(x_0\)
-    interno ad \(I\).
-    Supponiamo che
+\begin{snippettheorem}{taylor-uniqueness-theorem}{Uniqueness of the Taylor polynomial}
+    Let \(n\in\naturalnumbers^*\), and let \(f\colon I \to \realnumbers\) be
+    \(n\) times differentiable at an interior point \(x_0\) of \(I\). Suppose that
     \[
         P(x) = \sum_{k=0}^n a_k {(x-x_0)}^k
     \]
-    sia un polinomio di grado minore o uguale a \(n\)
-    tale che \(f(x) = P(x) + \littleO({(x-x_0)}^n)\).
-    Allora, \(P(x) = P_n(x)\).
-    In particolare,
+    is a polynomial of degree at most \(n\) such that
     \[
-        \forall k \leq n, a_k = \frac{\derivativeD^k f(x_0)}{k!}
+        f(x)=P(x)+\littleO\!\left({(x-x_0)}^n\right)
+        \qquad\text{as }x\to x_0.
+    \]
+    Then \(P=P_n\), where \(P_n\) is the Taylor polynomial of \(f\) of order
+    \(n\), centered at \(x_0\). In particular,
+    \[
+        a_k=\frac{f^{(k)}(x_0)}{k!}
+        \qquad\text{for every }k\in\{0,\ldots,n\}.
     \]
 \end{snippettheorem}
 
-\begin{snippetproof}{taylor-uniqueness-proof}{taylor-uniqueness}{Taylor uniqueness theorem}
-    Poiché \(f\) è derivabile \(n\) volte in \(x_0\)
-    dalla Fromula di Taylor conr esto Peano risulta che
+\begin{snippetproof}{taylor-uniqueness-proof}{taylor-uniqueness-theorem}{Uniqueness of the Taylor polynomial}
+    Taylor's formula with the Peano remainder gives
     \[
-        f(x) = P_n(x) +\littleO({(x-x_0)}^n)
+        f(x)=P_n(x)+\littleO\!\left({(x-x_0)}^n\right).
     \]
-    risulta quindi
+    Hence
     \[
-        P(x) - P_n(x) = [f(x) -P_n(x)]
-        - [f(x) - P(x)] = \littleO({(x-x_0)}^n)
+        P(x)-P_n(x)
+        =[f(x)-P_n(x)]-[f(x)-P(x)]
+        =\littleO\!\left({(x-x_0)}^n\right).
     \]
-    Posto \(Q(x) = P(x) - P_n(x)\) la dimostrazione si riduce a mostrare che se \(Q(x)\)
-    è un polinomio in \((x-x_0)\) di grado minore o uguale a \(n\)
-    e \(Q(x) = \littleO({(x-x_0)}^n)\) allora \(Q(x) = 0\)
-    cioè tutti i coefficienti di \(Q\) sono nulli.
-    Scriviamo
+    Set \(Q=P-P_n\), and write
     \[
-        Q(x) = \sum_{k=0}^n b_k{(x-x_0)}^k
+        Q(x) = \sum_{k=0}^n b_k{(x-x_0)}^k.
     \]
-    e supponiamo per assurdo che
+    Suppose, by contradiction, that \(Q\neq 0\), and let \(k_0\) be the
+    smallest index such that \(b_{k_0}\neq 0\). Then
     \[
-        \frac{Q(x)}{{(x-x_0)}^n} \to 0
+        \frac{Q(x)}{{(x-x_0)}^n}
+        ={(x-x_0)}^{k_0-n}
+        \sum_{k=k_0}^n b_k{(x-x_0)}^{k-k_0}.
     \]
-    ma \(Q(x) \neq 0\).
-    Tra tutti i coefficienti non nulli, ce n'è uno con indice più piccolo \(k_0\),
-    quindi tutti quelli prima sono nulli.
-    Abbiamo quindi che \[
-        Q(x) = \sum_{k=k_0}^n b_k {(x-x_0)}^k
-    \]
-    Siccome il termine tende a zero, raccogliamo la potenza più piccola
-    \[
-        Q(x) = {(x-x_0)}^{k_0}\sum_{k=k_0}^n b_k {(x-x_0)}^{t-t_0}
-    \]
-    da cui
-    \[
-        \frac{Q(x)}{{(x-x_0)}^n} = {(x-x_0)}^{k_0 - n}
-        \sum_{k=k_0}^n b_k {(x-x_0)}^{k-k_0}
-    \]
-    la sommatoria tende a \(b_{k_0}\) e il termine esterno
-    \(\pm \infty\) per \(k_0 < n\), altrimenti \(1\) (o magari non esiste il limite).
-    Quindi, \(Q(x)\) non tende a zero \lightning.
+    The sum tends to \(b_{k_0}\neq 0\). If \(k_0=n\), the quotient tends to
+    \(b_n\neq 0\); if \(k_0<n\), its absolute value is unbounded. In either case
+    the quotient cannot tend to zero, contradicting
+    \(Q(x)=\littleO\!\left({(x-x_0)}^n\right)\). Therefore \(Q=0\), and hence
+    \(P=P_n\).
 \end{snippetproof}
 
 \end{document}
