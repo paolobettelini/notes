@@ -12,6 +12,8 @@
 \RequirePackage{wrapfig}
 \RequirePackage{tikz}
 \RequirePackage{enumitem}
+\RequirePackage{zref-savepos}
+\RequirePackage{zref-abspage}
 
 % Integral command
 \ExplSyntaxOn
@@ -138,41 +140,144 @@
 \newenvironment{snippetremark}[1]{\begin{Remark}{#1}{}}{\end{Remark}}
 
 % Creates a line on the left side with a radioactive warning logo
-\newtcolorbox{radioactive}{
-enhanced,
-breakable,
-width=\dimexpr\textwidth+28pt\relax,
-before=\par\vspace{\bigskipamount}\noindent,
-enlarge left by=-14pt,
-overlay unbroken and first={
-\node[
-anchor=north east,
-inner xsep=8pt,
-rounded corners=5pt
-] at ([xshift=-4pt]frame.north west) (tit) {%
-\includegraphics[width=2em]{./media/radioactive.png}%
-};
-\draw[
-line width=3pt,
-rounded corners=10pt,
-red,
-dash pattern=on 5pt off 3pt,
-] ([xshift=4pt]frame.north west) -- ([xshift=4pt]frame.south west);
-},
-overlay middle and last={
-\draw[
-line width=3pt,
-rounded corners=5pt,
-red,
-dash pattern=on 5pt off 3pt
-] ([xshift=4pt]frame.north west) -- ([xshift=4pt]frame.south west);
-},
-frame hidden,
-interior hidden,
-colback=white,
-top=0pt,
-bottom=0pt
+\newcounter{radioactive}
+
+\makeatletter
+
+\zref@addprop{savepos}{abspage}
+
+\def\radioactive@ids{}
+
+\newcommand{\radioactive@register}[1]{%
+    \ifx\radioactive@ids\@empty
+        \xdef\radioactive@ids{#1}%
+    \else
+        \xdef\radioactive@ids{\radioactive@ids,#1}%
+    \fi
 }
+
+\newdimen\radioactive@x
+\newdimen\radioactive@iconx
+\newdimen\radioactive@top
+\newdimen\radioactive@bottom
+\newdimen\radioactive@ystart
+\newdimen\radioactive@yend
+
+\newcommand{\radioactive@drawone}[1]{%
+    \edef\radioactive@startpage{%
+        \zref@extractdefault{radioactive-start-#1}{abspage}{0}%
+    }%
+    \edef\radioactive@endpage{%
+        \zref@extractdefault{radioactive-end-#1}{abspage}{0}%
+    }%
+
+    \ifnum\radioactive@startpage>0\relax
+    \ifnum\radioactive@endpage>0\relax
+    \ifnum\value{abspage}<\radioactive@startpage\relax
+    \else
+    \ifnum\value{abspage}>\radioactive@endpage\relax
+    \else
+
+        \if@twoside
+            \ifodd\value{abspage}
+                \radioactive@x=\dimexpr
+                    1in+\hoffset+\oddsidemargin-10pt
+                \relax
+            \else
+                \radioactive@x=\dimexpr
+                    1in+\hoffset+\evensidemargin-10pt
+                \relax
+            \fi
+        \else
+            \radioactive@x=\dimexpr
+                1in+\hoffset+\oddsidemargin-10pt
+            \relax
+        \fi
+
+        \radioactive@iconx=\radioactive@x
+        \advance\radioactive@iconx by -8pt
+
+        \radioactive@bottom=\dimexpr
+            \paperheight
+            -1in
+            -\voffset
+            -\topmargin
+            -\headheight
+            -\headsep
+            -\textheight
+        \relax
+
+        \radioactive@top=\dimexpr
+            \radioactive@bottom+\textheight
+        \relax
+
+        \ifnum\value{abspage}=\radioactive@startpage\relax
+            \radioactive@ystart=\dimexpr
+                \zposy{radioactive-start-#1}sp
+            \relax
+        \else
+            \radioactive@ystart=\radioactive@top
+        \fi
+
+        \ifnum\value{abspage}=\radioactive@endpage\relax
+            \radioactive@yend=\dimexpr
+                \zposy{radioactive-end-#1}sp
+            \relax
+        \else
+            \radioactive@yend=\radioactive@bottom
+        \fi
+
+        \begin{tikzpicture}[remember picture,overlay]
+            \draw[
+                line width=3pt,
+                rounded corners=5pt,
+                red,
+                dash pattern=on 5pt off 3pt
+            ]
+            ([xshift=\radioactive@x,yshift=\radioactive@ystart]current page.south west) --
+            ([xshift=\radioactive@x,yshift=\radioactive@yend]current page.south west);
+
+            \ifnum\value{abspage}=\radioactive@startpage\relax
+                \node[
+                    anchor=east,
+                    inner sep=0pt
+                ] at ([xshift=\radioactive@iconx,yshift=\radioactive@ystart]current page.south west) {%
+                    \includegraphics[width=2em]{./media/radioactive.png}%
+                };
+            \fi
+        \end{tikzpicture}%
+
+    \fi
+    \fi
+    \fi
+    \fi
+}
+
+\newcommand{\radioactive@drawpage}{%
+    \@for\radioactive@id:=\radioactive@ids\do{%
+        \radioactive@drawone{\radioactive@id}%
+    }%
+}
+
+\AddToHook{shipout/foreground}{%
+    \radioactive@drawpage
+}
+
+\NewDocumentEnvironment{radioactive}{}{%
+    \stepcounter{radioactive}%
+    \edef\radioactive@current{\arabic{radioactive}}%
+    \expandafter\radioactive@register
+        \expandafter{\radioactive@current}%
+    \expandafter\zsavepos
+        \expandafter{radioactive-start-\radioactive@current}%
+    \ignorespaces
+}{%
+    \expandafter\zsavepos
+        \expandafter{radioactive-end-\radioactive@current}%
+    \ignorespacesafterend
+}
+
+\makeatother
 
 % Black hole enviroment
 \NewDocumentEnvironment{blackhole}{+b}{}{}
@@ -276,4 +381,3 @@ bottom=0pt
   \fi
 }
 \makeatother
-
