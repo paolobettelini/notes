@@ -12,4 +12,192 @@
 
 \section{Quotient groups}
 
+\subsection{Congruences}
+
+\begin{snippetdefinition}{group-congruence-definition}{Group congruence}
+    Let \(G\) be a \group. A \emph{congruence} on \(G\) is an
+    \equivrelation \(\sim\) such that, for all \(x,x',y,y'\in G\),
+    \[
+        x\sim x' \land y\sim y' \implies xy\sim x'y'.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{group-congruence-induced-operation}{Operation induced by a congruence}
+    Let \(\sim\) be a congruence on a \group \(G\). The operation
+    \[
+        [x]_{\sim}[y]_{\sim}\triangleq[xy]_{\sim}
+    \]
+    is well-defined on \(G/{\sim}\) and makes \(G/{\sim}\) a \group.
+    Its identity is \([1_G]_{\sim}\) and
+    \({[x]_{\sim}}^{-1}=[x^{-1}]_{\sim}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{group-congruence-induced-operation-proof}{group-congruence-induced-operation}{Operation induced by a congruence}
+    If \([x]_{\sim}=[x']_{\sim}\) and \([y]_{\sim}=[y']_{\sim}\), then
+    \(x\sim x'\) and \(y\sim y'\), so the congruence property gives
+    \([xy]_{\sim}=[x'y']_{\sim}\). Thus the operation is well-defined.
+    Associativity follows from associativity in \(G\), while
+    \([1_G]_{\sim}\) and \([x^{-1}]_{\sim}\) have the asserted properties
+    by direct computation.
+\end{snippetproof}
+
+\begin{snippettheorem}{group-congruences-normal-subgroups-theorem}{Congruences and normal subgroups}
+    Let \(G\) be a \group.
+    Every congruence \(\sim\) on \(G\) determines the \normalsubgrptext[normal subgroup]
+    \(N=[1_G]_{\sim}\), and its equivalence classes are exactly the cosets \(gN\).
+    Conversely, every \normalsubgrptext[normal subgroup] \(N\normalsubgrp G\)
+    determines a congruence by
+    \[
+        x\sim_N y \iff xN=yN.
+    \]
+    These constructions are inverse to each other.
+\end{snippettheorem}
+
+\begin{snippetproof}{group-congruences-normal-subgroups-theorem-proof}{group-congruences-normal-subgroups-theorem}{Congruences and normal subgroups}
+    Let \(N=[1_G]_{\sim}\). It is non-empty. If \(a,b\in N\), then
+    \(a\sim1_G\sim b\), hence \(a\sim b\). By reflexivity,
+    \(b^{-1}\sim b^{-1}\), so compatibility gives
+    \(ab^{-1}\sim b b^{-1}=1_G\). Thus \(ab^{-1}\in N\), and
+    \(N\subgroupleq G\). For \(g\in G\) and \(a\in N\),
+    \(g^{-1}ag\sim g^{-1}1_Gg=1_G\), so \(N\normalsubgrp G\).
+
+    If \(x\sim g\), compatibility with \(g^{-1}\sim g^{-1}\) gives
+    \(g^{-1}x\sim1_G\), hence \(x\in gN\). Conversely, if \(x=gn\)
+    with \(n\in N\), then \(x=gn\sim g1_G=g\). Thus
+    \([g]_{\sim}=gN\).
+
+    Conversely, let \(N\normalsubgrp G\). Equality of cosets is an
+    equivalence relation. If \(xN=x'N\) and \(yN=y'N\), normality gives
+    \[
+        xyN=(xN)(yN)=(x'N)(y'N)=x'y'N,
+    \]
+    so it is a congruence. Its identity class is \(N\), proving that the two
+    constructions are inverse.
+\end{snippetproof}
+
+\subsection{Construction and canonical projection}
+
+\begin{snippetdefinition}{quotient-group-definition}{Quotient group}
+    Let \(G\) be a \group and let \(N\normalsubgrp G\). The
+    \emph{quotient group} of \(G\) by \(N\) is
+    \[
+        G/N\triangleq\{gN\suchthat g\in G\},
+        \qquad (gN)(hN)\triangleq ghN.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{quotient-group-properties}{Quotient group properties}
+    Let \(G\) be a \group and \(N\normalsubgrp G\). The product in \(G/N\)
+    is well-defined and makes \(G/N\) a \group. Moreover,
+    \[
+        1_{G/N}=N,\qquad {(gN)}^{-1}=g^{-1}N,
+        \qquad |G/N|=|G:N|
+    \]
+    whenever the indicated cardinalities are finite.
+\end{snippetproposition}
+
+\begin{snippetproof}{quotient-group-properties-proof}{quotient-group-properties}{Quotient group properties}
+    By the congruence--normal-subgroup correspondence, the coset relation of
+    \(N\) is a congruence, so the induced product is well-defined and is a
+    group operation. The formulas for the identity and inverses follow from
+    \((gN)(g^{-1}N)=N\). The elements of \(G/N\) are precisely the cosets of
+    \(N\), hence their number is the index \(|G:N|\).
+\end{snippetproof}
+
+\begin{snippetproposition}{quotient-canonical-projection}{Canonical projection}
+    Let \(G\) be a \group and \(N\normalsubgrp G\). The map
+    \[
+        \pi_N\colon G\fromto G/N,\qquad \pi_N(g)=gN,
+    \]
+    is a surjective \grouphomomorphism and \(\grpker\pi_N=N\).
+\end{snippetproposition}
+
+\begin{snippetproof}{quotient-canonical-projection-proof}{quotient-canonical-projection}{Canonical projection}
+    For \(g,h\in G\),
+    \(\pi_N(gh)=ghN=(gN)(hN)=\pi_N(g)\pi_N(h)\), so \(\pi_N\) is a
+    homomorphism. Every coset is \(\pi_N(g)\) for some \(g\), so it is
+    surjective. Finally,
+    \(\pi_N(g)=N\) \ifandonlyif \(g\in N\), hence
+    \(\grpker\pi_N=N\).
+\end{snippetproof}
+
+\begin{snippettheorem}{quotient-group-universal-property}{Universal property of quotient groups}
+    Let \(G,H\) be \group[groups], let \(N\normalsubgrp G\), and let
+    \(\varphi\colon G\fromto H\) be a \grouphomomorphism such that
+    \(N\subgroupleq\grpker\varphi\). There is a unique
+    \grouphomomorphism \(\overline{\varphi}\colon G/N\fromto H\) satisfying
+    \(\varphi=\overline{\varphi}\circ\pi_N\). It is given by
+    \[
+        \overline{\varphi}(gN)=\varphi(g).
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{quotient-group-universal-property-proof}{quotient-group-universal-property}{Universal property of quotient groups}
+    If \(gN=hN\), then \(h^{-1}g\in N\subgroupleq\grpker\varphi\), so
+    \(\varphi(g)=\varphi(h)\); hence \(\overline{\varphi}\) is well-defined.
+    It is a homomorphism because
+    \[
+        \overline{\varphi}((gN)(hN))=\varphi(gh)
+        =\varphi(g)\varphi(h).
+    \]
+    Its defining formula gives the required factorization. Since \(\pi_N\)
+    is surjective, any map satisfying that factorization must have the same
+    value on every coset, proving uniqueness.
+\end{snippetproof}
+
+\subsection{Generators and the center}
+
+\begin{snippetproposition}{quotient-group-generators}{Generators of a quotient group}
+    Let \(G\) be a \group, let \(N\normalsubgrp G\), and let
+    \(G=\gengrp{X}\). Then,
+    \[
+        G/N=\gengrp{\{xN\suchthat x\in X\}}.
+    \]
+    In particular, every quotient of a \cyclicgroup is cyclic.
+\end{snippetproposition}
+
+\begin{snippetproof}{quotient-group-generators-proof}{quotient-group-generators}{Generators of a quotient group}
+    Every \(g\in G\) is a word in elements of \(X\) and their inverses.
+    Applying the canonical projection expresses \(gN\) as the same word in
+    the cosets \(xN\). Thus those cosets generate \(G/N\). The final claim is
+    the case in which \(X\) has one element.
+\end{snippetproof}
+
+\begin{snippettheorem}{cyclic-quotient-by-center-implies-abelian}{Cyclic quotient by the center}
+    Let \(G\) be a \group. If \(G/\groupcenter(G)\) is cyclic, then \(G\) is
+    \abeliangroup[abelian].
+\end{snippettheorem}
+
+\begin{snippetproof}{cyclic-quotient-by-center-implies-abelian-proof}{cyclic-quotient-by-center-implies-abelian}{Cyclic quotient by the center}
+    Suppose \(G/\groupcenter(G)=\gengrp{g\groupcenter(G)}\). For any
+    \(x,y\in G\), there are \(m,n\in\integers\) and
+    \(z,w\in\groupcenter(G)\) such that \(x=g^mz\) and \(y=g^nw\). Hence
+    \[
+        xy=g^{m+n}zw=g^{n+m}wz=yx.
+    \]
+\end{snippetproof}
+
+\begin{snippetcorollary}{group-center-cannot-have-prime-index}{The center cannot have prime index}
+    Let \(G\) be a non-abelian finite \group. Then
+    \(|G:\groupcenter(G)|\) is not prime.
+\end{snippetcorollary}
+
+\begin{snippetproof}{group-center-cannot-have-prime-index-proof}{group-center-cannot-have-prime-index}{The center cannot have prime index}
+    A group of prime order is cyclic. Thus a prime value of
+    \(|G:\groupcenter(G)|\) would make \(G/\groupcenter(G)\) cyclic, and the
+    preceding theorem would make \(G\) abelian, a contradiction.
+\end{snippetproof}
+
+\begin{snippetcorollary}{group-order-p-squared-is-abelian}{Groups of order \(p^2\) are abelian}
+    Let \(G\) be a finite \group of order \(p^2\), where \(p\) is prime.
+    Then \(G\) is \abeliangroup[abelian].
+\end{snippetcorollary}
+
+\begin{snippetproof}{group-order-p-squared-is-abelian-proof}{group-order-p-squared-is-abelian}{Groups of order \(p^2\) are abelian}
+    A non-trivial finite \(p\)-group has non-trivial center, so
+    \(|\groupcenter(G)|\) is \(p\) or \(p^2\). The first possibility would
+    give the center prime index, which is impossible for a non-abelian group.
+    Hence \(\groupcenter(G)=G\), so \(G\) is abelian.
+\end{snippetproof}
+
 \end{document}

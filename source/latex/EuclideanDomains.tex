@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{tikz}
 
 \begin{document}
 
@@ -13,35 +14,194 @@
 \section{Euclidean domains}
 
 \begin{snippetdefinition}{euclidean-domain-definition}{Euclidean domain}
-    Let \(A\) be a domain of integrity
-    and \(\delta \colon A \difference \{0_A\} \fromto \naturalnumbers\)
-    such that \(\forall a,b \in A\), \(\exists q, r \in A\)
-    with \(\delta(r) < \delta(b)\) or \(r = 0_A\) and \(a = b\cdot q + r\).
-    Then, \(A\) is said to be a \emph{domain of integrity}.
+    Let \(A\) be an \integraldomain. A \emph{Euclidean function} on \(A\)
+    is a \function
+    \[
+        \delta\colon A\difference\{0_A\}\fromto\naturalnumbers
+    \]
+    such that, for all \(a,b\in A\) with \(b\neq0_A\), there exist
+    \(q,r\in A\) satisfying
+    \[
+        a=bq+r
+    \]
+    and either \(r=0_A\) or \(\delta(r)<\delta(b)\). An
+    \emph{Euclidean domain} is an \integraldomain admitting a Euclidean
+    function.
 \end{snippetdefinition}
 
-\begin{snippetproposition}{euclidea-domain-is-principal-ideal-domain}{}
-    An euclidean domain is a principal ideal domain.
+\begin{snippet}{euclidean-function-nonuniqueness}
+    A \euclideanfunction need not be unique. For example, the usual
+    absolute value
+    \[
+        \delta(n)=|n|,
+        \qquad
+        n\in\integers\difference\{0\},
+    \]
+    is a Euclidean function on \(\integers\).
+\end{snippet}
+
+\begin{snippetproposition}{euclidea-domain-is-principal-ideal-domain}{Euclidean domains are principal ideal domains}
+    Every \euclideandomain is a \principalidealdomain.
 \end{snippetproposition}
 
-\begin{plainhtml}
-    This is the same proof as the one over the integers or over polynomials over a field.
-\end{plainhtml}
-
-\begin{snippetproof}{euclidea-domain-is-principal-ideal-domain-proof}{euclidea-domain-is-principal-ideal-domain}{}
-    Let \(A\) be an euclidean domain.
-    Take \(I \idealin A\) such that \(I \neq A, \{0_A\}\)
-    and take \(x\in I\) such that \(\delta(x) \min \{ \delta(y) \suchthat y \in I\}\).
-    We show that \(I = (x)\).
-    If we take \(y \in I\), then \(\exists q, r \in A\) with \(\delta(r) < \delta(x)\)
-    or \(r = 0_A\) such that \(y = qx + r\).
-    Thus, \(r = y - qx \in I\) which means that \(\delta(r)\)
-    is not less than \(\delta(x)\) and thus \(r = 0_A\).
-    This implies that \(y = qx\) and \(y \in (x)\).
+\begin{snippetproof}{euclidea-domain-is-principal-ideal-domain-proof}{euclidea-domain-is-principal-ideal-domain}{Euclidean domains are principal ideal domains}
+    Let \(A\) be a \euclideandomain with \euclideanfunction \(\delta\), and
+    let \(I\idealin A\). If \(I=(0_A)\), it is principal. Otherwise choose
+    \(x\in I\difference\{0_A\}\) for which
+    \[
+        \delta(x)
+        =
+        \min\{\delta(y)\suchthat y\in I,\ y\neq0_A\}.
+    \]
+    Since \(x\in I\), one has \((x)\subseteq I\). Given \(y\in I\),
+    Euclidean division gives
+    \[
+        y=qx+r,
+        \qquad
+        r=0_A\text{ or }\delta(r)<\delta(x).
+    \]
+    But \(r=y-qx\in I\), so minimality of \(\delta(x)\) forces \(r=0_A\).
+    Hence \(y=qx\in(x)\), proving \(I=(x)\).
 \end{snippetproof}
 
-\begin{plainhtml}
-    In an euclidean domain we can define the greatest common divisor.
-\end{plainhtml}
+\section{Euclidean algorithm}
+
+\begin{snippetproposition}{euclidean-domain-gcd-algorithm}{Euclidean algorithm and greatest common divisors}
+    Let \(A\) be a \euclideandomain and let \(a,b\in A\), with
+    \(b\neq0_A\). Repeated Euclidean division terminates, and its last
+    nonzero remainder is a greatest common divisor \(d\) of \(a\) and
+    \(b\). Moreover,
+    \[
+        (a)+(b)=(d).
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{euclidean-domain-gcd-algorithm-proof}{euclidean-domain-gcd-algorithm}{Euclidean algorithm and greatest common divisors}
+    Starting from
+    \[
+        a=q_1b+r_1,
+    \]
+    continue, whenever the remainder is nonzero, with
+    \[
+        b=q_2r_1+r_2,
+        \qquad
+        r_1=q_3r_2+r_3,
+        \qquad\ldots
+    \]
+    The Euclidean values form a strictly decreasing sequence
+    \[
+        \delta(b)>\delta(r_1)>\delta(r_2)>\cdots
+    \]
+    in \(\naturalnumbers\), so the process terminates. Reversing the
+    division identities shows that the last nonzero remainder \(d\) is an
+    \(A\)-linear combination of \(a\) and \(b\), and hence
+    \(d\in(a)+(b)\). Conversely, every common divisor of \(a\) and \(b\)
+    divides each successive remainder, and therefore divides \(d\). Thus
+    \(d\) is a greatest common divisor and
+    \[
+        (d)\subseteq(a)+(b)\subseteq(d).
+    \]
+\end{snippetproof}
+
+\section{Examples}
+
+\begin{snippetexample}{integers-euclidean-domain-example}{The integers}
+    The \ring \(\integers\) is a \euclideandomain with \euclideanfunction
+    \[
+        \delta(n)=|n|.
+    \]
+    For all \(a,b\in\integers\), with \(b\neq0\), there exist
+    \(q,r\in\integers\) such that
+    \[
+        a=bq+r,
+        \qquad
+        0\leq r<|b|.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{field-polynomial-euclidean-domain-example}{Polynomials over a field}
+    Let \(K\) be a \field. The \ring \(K[x]\) is a \euclideandomain with
+    \euclideanfunction
+    \[
+        \delta(f)=\deg f.
+    \]
+    For \(f,g\in K[x]\), with \(g\neq0\), polynomial division gives
+    \(q,r\in K[x]\) such that
+    \[
+        f=qg+r,
+        \qquad
+        r=0\text{ or }\deg r<\deg g.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{gaussian-integers-euclidean-domain-example}{Gaussian integers}
+    The \ring of Gaussian integers is
+    \[
+        \integers[i]
+        =
+        \{a+bi\suchthat a,b\in\integers\}
+        \subseteq\complexnumbers.
+    \]
+    It is an \integraldomain, and
+    \[
+        \delta(a+bi)=a^2+b^2=|a+bi|^2
+    \]
+    is a \euclideanfunction.
+
+    Let \(\alpha,\beta\in\integers[i]\), with \(\beta\neq0\), and put
+    \(z=\alpha/\beta\in\complexnumbers\). Choose a nearest Gaussian integer
+    \(q\) to \(z\). Then
+    \[
+        |z-q|\leq\frac{\sqrt2}{2}<1.
+    \]
+    Setting \(r=\alpha-\beta q\) gives \(\alpha=\beta q+r\), and
+    \begin{align*}
+        \delta(r)
+        &=
+        |\alpha-\beta q|^2\\
+        &=
+        |\beta|^2\left|\frac{\alpha}{\beta}-q\right|^2\\
+        &<
+        |\beta|^2
+        =
+        \delta(\beta).
+    \end{align*}
+    Thus \(\integers[i]\) is a \euclideandomain.
+
+    \begin{center}
+        \begin{tikzpicture}[scale=1.05]
+            \draw[->] (-2.3,0) -- (2.6,0);
+            \draw[->] (0,-1.8) -- (0,2.2);
+
+            \foreach \x in {-2,-1,0,1,2}
+                \foreach \y in {-1,0,1,2}
+                    \fill (\x,\y) circle (1.2pt);
+
+            \coordinate (q) at (1,1);
+            \coordinate (z) at (1.32,0.82);
+
+            \draw[dashed] (1,0) rectangle (2,1);
+
+            \fill (q) circle (2pt);
+            \node[above left=2pt] at (q) {\(q\)};
+
+            \fill[red] (z) circle (2pt);
+            \node[right=5pt] at (z) {\(z=\frac{\alpha}{\beta}\)};
+
+            \draw (q) -- (z)
+                node[midway, below right=3pt] {\(\leq \frac{\sqrt{2}}{2}\)};
+        \end{tikzpicture}
+    \end{center}
+\end{snippetexample}
+
+\begin{snippet}{euclidean-quadratic-rings-limitation}
+    Since \(\integers[i]\) is a \euclideandomain, it is also a
+    \principalidealdomain. Not every quadratic \ring of the form
+    \[
+        \integers[\sqrt{-n}]
+    \]
+    is Euclidean; in particular, \(\integers[\sqrt{-5}]\) is not a
+    \euclideandomain.
+\end{snippet}
 
 \end{document}

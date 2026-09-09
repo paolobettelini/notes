@@ -1,0 +1,222 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{coprime-ideals-chinese-remainder}
+\genpage
+
+\section{Comaximal ideals}
+
+\begin{snippetdefinition}{comaximal-ideals-definition}{Comaximal ideals}
+    Let \(A\) be a \commutativering and let \(I,J\idealin A\). The
+    \ideal[ideals] \(I\) and \(J\) are \emph{comaximal} if
+    \[
+        I+J=A.
+    \]
+    Equivalently, there exist \(x\in I\) and \(y\in J\) such that
+    \[
+        x+y=1_A.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetexample}{integer-comaximal-ideals-example}{Comaximal ideals in the integers}
+    If \(m,n\in\integers\) satisfy \(\gcd(m,n)=1\), then the
+    \ideal[ideals] \((m)\) and \((n)\) are comaximal. Indeed, Bézout's
+    identity gives \(h,k\in\integers\) such that
+    \[
+        hm+kn=1,
+    \]
+    and therefore \(1\in(m)+(n)\).
+\end{snippetexample}
+
+\begin{snippetproposition}{powers-of-comaximal-ideals}{Powers of comaximal ideals are comaximal}
+    Let \(A\) be a \commutativering and let \(I,J\idealin A\) be
+    \comaximal. For every \(n,m\geq1\),
+    \[
+        I^n+J^m=A.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{powers-of-comaximal-ideals-proof}{powers-of-comaximal-ideals}{Powers of comaximal ideals are comaximal}
+    Choose \(x\in I\) and \(y\in J\) such that \(x+y=1_A\), and put
+    \(s=n+m-1\). In the binomial expansion
+    \[
+        1_A=(x+y)^s
+        =
+        \sum_{h=0}^{s}\binom{s}{h}x^hy^{s-h},
+    \]
+    every term belongs to \(I^n\) or to \(J^m\). Indeed, if \(h\geq n\)
+    it belongs to \(I^n\), whereas if \(h<n\), then
+    \(s-h\geq m\), so it belongs to \(J^m\). Hence
+    \(1_A\in I^n+J^m\).
+\end{snippetproof}
+
+\begin{snippetproposition}{ideal-product-intersection-comaximal}{Product and intersection of pairwise comaximal ideals}
+    Let \(A\) be a \commutativering, and let
+    \(I_1,\ldots,I_r\idealin A\) be pairwise \comaximal. Then
+    \[
+        I_1\cdots I_r
+        =
+        \bigcap_{i=1}^{r}I_i.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{ideal-product-intersection-comaximal-proof}{ideal-product-intersection-comaximal}{Product and intersection of pairwise comaximal ideals}
+    First let \(r=2\). One always has
+    \(I_1I_2\subseteq I_1\intersection I_2\). Choose
+    \(x\in I_1\) and \(y\in I_2\) with \(x+y=1_A\). If
+    \(z\in I_1\intersection I_2\), then
+    \[
+        z=z(x+y)=zx+zy\in I_1I_2,
+    \]
+    proving \(I_1I_2=I_1\intersection I_2\).
+
+    For the general case, proceed by induction. Pairwise \comaximal[comaximality]
+    implies
+    \[
+        I_r+\bigcap_{i=1}^{r-1}I_i=A.
+    \]
+    To see this, choose \(x_i\in I_r\) and \(y_i\in I_i\) with
+    \(x_i+y_i=1_A\), and expand
+    \[
+        1_A=\prod_{i=1}^{r-1}(x_i+y_i).
+    \]
+    Every term except \(y_1\cdots y_{r-1}\) lies in \(I_r\), while that
+    exceptional term lies in every \(I_i\), for \(i<r\). Applying the
+    two-ideal case and the induction hypothesis yields
+    \begin{align*}
+        I_1\cdots I_r
+        &=
+        I_r\left(\bigcap_{i=1}^{r-1}I_i\right)\\
+        &=
+        I_r\intersection\bigcap_{i=1}^{r-1}I_i
+        =
+        \bigcap_{i=1}^{r}I_i.
+    \end{align*}
+\end{snippetproof}
+
+\section{Chinese remainder theorem}
+
+\begin{snippetexample}{finite-direct-product-rings-example}{Finite direct products of rings}
+    Let \(A_1,\ldots,A_r\) be \commutativering[commutative rings]. Their
+    direct product
+    \[
+        \prod_{i=1}^{r}A_i
+    \]
+    is a \commutativering under componentwise addition and multiplication.
+    In particular, for two factors,
+    \[
+        (a_1,b_1)+(a_2,b_2)
+        =
+        (a_1+a_2,b_1+b_2)
+    \]
+    and
+    \[
+        (a_1,b_1)(a_2,b_2)
+        =
+        (a_1a_2,b_1b_2).
+    \]
+    Its zero and identity are
+    \[
+        (0_{A_1},\ldots,0_{A_r}),
+        \qquad
+        (1_{A_1},\ldots,1_{A_r}).
+    \]
+\end{snippetexample}
+
+\begin{snippettheorem}{commutative-ring-chinese-remainder-theorem}{Chinese remainder theorem for commutative rings}
+    Let \(A\) be a \commutativering and let
+    \(I_1,\ldots,I_r\idealin A\) be pairwise \comaximal. The
+    \ringhomomorphism
+    \[
+        \varphi\colon A\fromto\prod_{i=1}^{r}A/I_i,
+        \qquad
+        \varphi(a)=(a+I_1,\ldots,a+I_r),
+    \]
+    is \surjective and satisfies
+    \[
+        \ringker\varphi
+        =
+        \bigcap_{i=1}^{r}I_i
+        =
+        I_1\cdots I_r.
+    \]
+    Consequently,
+    \[
+        A/(I_1\cdots I_r)
+        \ringisomorphic
+        \prod_{i=1}^{r}A/I_i.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{commutative-ring-chinese-remainder-theorem-proof}{commutative-ring-chinese-remainder-theorem}{Chinese remainder theorem for commutative rings}
+    Since each component of \(\varphi\) is a canonical projection,
+    \(\varphi\) is a \ringhomomorphism. Moreover,
+    \[
+        \ringker\varphi
+        =
+        \{a\in A\suchthat a\in I_i\text{ for all }i\}
+        =
+        \bigcap_{i=1}^{r}I_i
+        =
+        I_1\cdots I_r.
+    \]
+
+    For every \(i\), the \ideal \(I_i\) is \comaximal with
+    \(\bigcap_{j\neq i}I_j\). Choose
+    \[
+        x_i\in I_i,
+        \qquad
+        y_i\in\bigcap_{j\neq i}I_j,
+        \qquad
+        x_i+y_i=1_A.
+    \]
+    Then \(y_i\equiv1_A\pmod{I_i}\) and
+    \(y_i\equiv0_A\pmod{I_j}\) for \(j\neq i\). Given
+    \[
+        (b_1+I_1,\ldots,b_r+I_r)
+        \in\prod_{i=1}^{r}A/I_i,
+    \]
+    the element \(b=\sum_{i=1}^{r}b_iy_i\) satisfies
+    \[
+        \varphi(b)=(b_1+I_1,\ldots,b_r+I_r).
+    \]
+    Thus \(\varphi\) is \surjective. The first isomorphism theorem for
+    rings gives the asserted isomorphism.
+\end{snippetproof}
+
+\begin{snippetcorollary}{commutative-ring-crt-congruences-corollary}{Chinese remainder theorem for congruences}
+    Let \(n_1,\ldots,n_r\in\integers\) be pairwise \coprime positive
+    integers. For every \(b_1,\ldots,b_r\in\integers\), the system
+    \[
+        x\equiv b_i\pmod{n_i},
+        \qquad
+        i=1,\ldots,r,
+    \]
+    has a solution, unique modulo \(N=n_1\cdots n_r\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{commutative-ring-crt-congruences-corollary-proof}{commutative-ring-crt-congruences-corollary}{Chinese remainder theorem for congruences}
+    The \ideal[ideals] \((n_i)\) are pairwise \comaximal by Bézout's
+    identity. Hence the ring-theoretic Chinese remainder theorem gives a
+    \surjective \ringhomomorphism
+    \[
+        \integers\fromto
+        \prod_{i=1}^{r}\integers/n_i\integers.
+    \]
+    Surjectivity gives existence of a simultaneous solution, while its
+    kernel is
+    \[
+        \bigcap_{i=1}^{r}(n_i)
+        =
+        (n_1\cdots n_r).
+    \]
+    Thus two solutions are congruent modulo \(N\).
+\end{snippetproof}
+
+\end{document}

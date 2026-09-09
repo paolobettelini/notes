@@ -4,7 +4,6 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
-\usepackage{bettelini}
 \usepackage{tikz}
 
 \usetikzlibrary{cd}
@@ -14,287 +13,322 @@
 \id{commutative-rings}
 \genpage
 
-\section{Fields and fractions}
+\section{Fields and ideals}
 
-%\begin{snippet}{fields-and-fractions-expl}
-%    Let \(\mathbb{K}\) be a \field.
-%    \(\mathbb{K}\) and \(\{0_\mathbb{K}\}\)
-%    are ideals for \(\mathbb{K}\).
-%\end{snippet}
-
-\begin{plainhtml}
-    Given a domain of integrity we want to find the smallest field containing it.
-\end{plainhtml}
-
-\begin{snippetdefinition}{field-of-fractions-definition}{Field of fractions}
-    Let \(A\) be an integral domain.
-    Then, the \emph{field of fractions} or \emph{quotient field}
-    \(\mathbb{K} = \text{Quot}(A)\) is the \set of \equivclass[equivalence classes]
-    \({[(a,b)]}_\sim\) defined as:
-    \begin{enumerate}
-        \item \(0_\mathbb{K} = {[(0_A,b)]}_\sim\);
-        \item \(1_\mathbb{K} = {[(a,a)]}_\sim\) with \(a \neq 0_A\);
-        \item \({[(a_1,b_1)]}_\sim + {[(a_2,b_2)]}_\sim \triangleq {[(a_1b_2 + a_2b_1,b_1b_2)]}_\sim\);
-        \item \({[(a_1,b_1)]}_\sim \cdot {[(a_2,b_2)]}_\sim \triangleq {[(a_1a_2,b_1b_2)]}_\sim\);
-    \end{enumerate}        
-\end{snippetdefinition}
-
-\begin{snippetproposition}{field-of-fractions-is-field}{}
-    \(\quotientfield(\mathbb{A})\) is a \field.
-\end{snippetproposition}
-
-\begin{snippetproof}{field-of-fractions-is-field-proof}{field-of-fractions-is-field}{}
-    Let us denote \({[(a,b)]}_\sim \in \quotientfield(A)\) as \(a/b\).
-    \begin{enumerate}
-        \item \emph{closure under addition:} \[
-            \left(\frac{a_1}{b_1}\right)
-            + \left(\frac{a_2}{b_2}\right)
-            = \frac{a_1b_2 + a_2b_1}{b_1b_2} \in \quotientfield(A)
-        \]
-        \item \emph{closure under addition inverse:}
-        \[ -\frac{a}{b} = \left(\frac{-a}{b}\right) \in \quotientfield(A) \]
-        \item \emph{closure under multiplication:} \[
-            \left(\frac{a_1}{b_1}\right)
-            \cdot
-            \left(\frac{a_2}{b_2}\right)
-            = 
-            \left(\frac{a_1a_2}{b_1b_2}\right)\in \quotientfield(A)
-        \]
-        Note that since \(b_1, b_2 \neq 0\), \(b_1b_2 \neq 0\).
-        \item the other properties are given by the properties of the ring operations.
-    \end{enumerate}
-\end{snippetproof}
-
-\begin{plainhtml}
-    The domain of integrity can be seen as a subgroup of the quotient field.
-\end{plainhtml}
-
-\begin{snippetproposition}{universal-property-field-fraction}{}
-    Let \(A\) be a domain of integrity and \(\mathbb{K} = \quotientfield(A)\).
-    For each \injective \ringhomomorphism \(\varphi \colon A \fromto \mathbb{L}\)
-    where \(\mathbb{L}\) is a \field viewed as a \ring,
-    there exist a unique \ringhomomorphism \(\tilde{\varphi} \colon \mathbb{K} \fromto \mathbb{K}\)
-    such that \(\varphi = \tilde{\varphi} \circ i\).
-    \begin{center}
-        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAEEQBfU9TXfIRQAmclVqMWbADrSAtnRwALAEYrgAaS7deIDNjwEiARlLHx9Zq0QhZC5WuAAZbV3EwoAc3hFQAMwAnCDkkMhAcCCRTcLosBjYlCAgAaxBqSykbLB1-IJDEMIikUQkrGWl6ALQlbOoGOhUYBgAFfkMhEACsTyUcHJBA4KjqIsQSjOtbaTwGWGBZSuqsVwouIA
-        \begin{tikzcd}
-        A \arrow[rr, "i", hook] \arrow[rd, "\varphi"'] &            & \mathbb{K} \arrow[ld, "\tilde{\varphi}"] \\
-                                                    & \mathbb{L} &                                         
-        \end{tikzcd}
-    \end{center}
-\end{snippetproposition}
-
-\begin{snippetproof}{universal-property-field-fraction-proof}{universal-property-field-fraction}{}
-    Given \(a'/b' \sim a/b\) we have \(a'b-b'a = 0\).
-    We thus define
+\begin{snippetproposition}{field-ideals-trivial}{Ideals of a field}
+    Let \(K\) be a \field. Its only \ideal[ideals] are
     \[
-        \tilde{\varphi}\left(\frac{a'}{b'}\right) \triangleq \varphi(a') \cdot {\varphi(b')}^{-1}
+        \{0_K\}
+        \qquad\text{and}\qquad
+        K.
     \]
-    and we get
-    \begin{align*}
-        \tilde{\varphi}\left(\frac{a'}{b'}\right) - \tilde{\varphi}\left(\frac{a}{b}\right) 
-        = \left(
-            \varphi(a') \cdot {\varphi(b')}^{-1} - \varphi(a) {\varphi(b)}^{-1}
-        \right)
-    \end{align*}
-    We want to show that this value is null. We umltiply by \(\varphi(b)\varphi(b')\) on both sides:
-    \begin{align*}
-        \varphi(b)\varphi(b') \left(
-            \tilde{\varphi}\left(\frac{a'}{b'}\right) - \tilde{\varphi}\left(\frac{a}{b}\right)
-        \right)
-        &=
-        \varphi(b)\varphi(b')
-        \left(
-            \varphi(a') \cdot {\varphi(b')}^{-1} - \varphi(a) {\varphi(b)}^{-1}
-        \right) \\
-        &= \varphi(a')\varphi(b) - \varphi(a)\varphi(b') = 0 
-    \end{align*}
-    Since we are working in a domain of integrity
-    and \(\varphi(b)\varphi(b')\neq 0\), the other term must be null and thus
-    \[ \tilde{\varphi}\left(\frac{a'}{b'}\right) - \tilde{\varphi}\left(\frac{a}{b}\right)  = 0 \]
-    We will now show that it is a \ringhomomorphism:
-    \begin{enumerate}
-        \item \[
-            \tilde{\varphi}(0_{\mathbb{K}})
-            = \tilde{\varphi}(\frac{0_A}{b}) = \varphi(0_A) \cdot {\varphi(b)}^{-1} = 0_{\mathbb{L}} \cdot
-            {\varphi(b)}^{-1} = 0_{\mathbb{L}}
-        \]
-        \item \[
-            \tilde{\varphi}(1_{\mathbb{K}}) = \tilde{\varphi}\left(\frac{1_A}{1_A}\right)
-            = \varphi(1_A) \cdot \varphi(1_A)^{-1} = 1_{\mathbb{L}}
-        \]
-        \item \begin{align*}
-            \tilde{\varphi}\left(
-                \frac{a_1}{b_1}- \frac{a_2}{b_2}
-            \right)
-            &= \tilde{\varphi}\left(
-                \frac{a_1b_2 - a_2 b_1}{b_1b_2}
-            \right)
-            = \varphi(a_1b_2 - a_2b_1) \cdot {\varphi(b_1b_2)}^{-1}\\
-            &= \left(\varphi(a_1) \varphi(b_2) - \varphi(a_1)\varphi(b_1)\right)
-            {\varphi(b_1)}^{-1}{\varphi(b_2)}^{-1} \\
-            &= \varphi(a_1){\varphi(b_1)}^{-1}
-            - \varphi(a_2) {\varphi(b_2)}^{-1}
-        \end{align*}
-        and \[
-            \tilde{\varphi}\left(\frac{a_1}{b_1}\right)
-            - \tilde{\varphi}\left(\frac{a_2}{b_2}\right)
-            = \varphi(a_1){\varphi(b_1)}^{-1}
-            - \varphi(a_2) {\varphi(b_2)}^{-1}
-        \]
-        which are equal
-        \item the same for the multiplication.
-    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{field-ideals-trivial-proof}{field-ideals-trivial}{Ideals of a field}
+    Let \(I\idealin K\) be nonzero, and choose
+    \(\alpha\in I\difference\{0_K\}\). Since \(\alpha\) is invertible and
+    \(I\) is an \ideal,
+    \[
+        1_K=\alpha^{-1}\alpha\in I.
+    \]
+    Therefore \(\beta=\beta1_K\in I\) for every \(\beta\in K\), so
+    \(I=K\).
 \end{snippetproof}
 
-\begin{snippetcorollary}{corollary-placeholder}{}
-    The quotient \(\quotientfield(A)\) is the only \field satisfying
-    the \snippetref[universal-property-field-fraction][universal property of the field of fraction].
+\begin{snippetcorollary}{field-ring-homomorphism-injective}{Ring homomorphisms from fields are injective}
+    Let \(K\) be a \field, let \(A\) be a nontrivial \ring, and let
+    \(\varphi\colon K\fromto A\) be a \ringhomomorphism. Then \(\varphi\)
+    is \injective.
 \end{snippetcorollary}
 
-\begin{snippetproof}{corollary-placeholder-proof}{corollary-placeholder}{}
-    \begin{center}
-        % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZARgBoAGAXVJADcBDAGwFcYkQBBEAX1PU1z5CKcqWLU6TVuwA6MgLb0cACwBGq4AGluPPiAzY8BImXE0GLNohBzFK9Vu4ByXf0NCiAJjESL067ZKahraPBIwUADm8ESgAGYAThDySKIgOBBIAMw0jPSqMIwACgJGwiCMMHE4IOZSViBYriCJyak0GUhkkpbsTbn5hSXuxtYJWJHKNbzxSSmIaZ2I3j3+jS4zLXNdHZnLdb0BMniMsMByDAloylg6AwXFpR5jE1PNrfMrSzmrDXInZzkaGwdwqg0eI3K40m00o3CAA
-        \begin{tikzcd}
-                                                & A \arrow[rd, "i"] \arrow[ld, "i"'] \arrow[d, "i'"] &            \\
-        \mathbb{K} \arrow[r, "\tilde{\varphi}"'] & \mathbb{K}' \arrow[r, "\tilde{\psi}"']             & \mathbb{K}
-        \end{tikzcd}
-    \end{center}
-    \todo % 13 
+\begin{snippetproof}{field-ring-homomorphism-injective-proof}{field-ring-homomorphism-injective}{Ring homomorphisms from fields are injective}
+    The \ideal \(\ringker\varphi\) is either \(\{0_K\}\) or \(K\). The
+    second possibility would imply
+    \[
+        1_A=\varphi(1_K)=0_A,
+    \]
+    contrary to the assumption that \(A\) is nontrivial. Hence
+    \(\ringker\varphi=\{0_K\}\), and \(\varphi\) is \injective.
 \end{snippetproof}
 
-\section{Ideals}
+\begin{snippet}{field-ring-homomorphism-trivial-codomain-exception}
+    The nontrivial-codomain hypothesis is necessary: if \(A=\{0_A\}\),
+    the unique unital \ringhomomorphism \(K\fromto A\) is not
+    \injective.
+\end{snippet}
 
-\begin{snippetdefinition}{principal-ideal-definition}{Principal ideal}
-    Let \(A\) be a commutative \ring and \(I \idealin A\).
-    If \(I = \{ax \suchthat a \in A\} \triangleq (x)\)
-    for some \(x\in A\), then \(I\) is said to be the a \emph{principal ideal}
-    generated by \(x\). If every \ideal in \(A\)
-    is a \emph{principal ideal}, \(A\) is said to be a \emph{principal ideal domain}.
+\section{Constructing the field of fractions}
+
+\begin{snippetdefinition}{field-of-fractions-equivalence-definition}{Equivalence of formal fractions}
+    Let \(A\) be an \integraldomain. On the \set
+    \(A\times(A\difference\{0_A\})\), define
+    \[
+        (a_1,b_1)\sim(a_2,b_2)
+        \ifandonlyif
+        a_1b_2=a_2b_1.
+    \]
 \end{snippetdefinition}
 
-\begin{snippetdefinition}{prime-ideal-definition}{Prime ideal}
-    Let \(A\) be a commutative \ring and \(I \idealin A\) such that \(I\neq A\).
-    Then, \(I\) is said to be a \emph{prime ideal}
-    if given \(a,b \in A\) such that \(ab\in I\), then
-    \(a \in I \lor b \in I\).
-\end{snippetdefinition}
-
-\begin{snippetdefinition}{maximal-ideal-definition}{Maximal ideal}
-    Let \(A\) be a commutative \ring and \(I \idealin A\) such that \(I \subset A\)
-    and there is no \(J \idealin I\) such that \(J \supset I\).
-    Then, \(I\) is said to be a \emph{prime ideal}.
-\end{snippetdefinition}
-
-\begin{plainhtml}
-    There could be multiple distinct maximal ideals.
-\end{plainhtml}
-
-\begin{snippetproposition}{principale-ideal-domain-every-prime-ideal-is-maximal}{}
-    Let \(A\) be a \principalidealdomain. Then, if \(I\)
-    is a \primeideal is it also a \maximalideal.
+\begin{snippetproposition}{field-of-fractions-equivalence-relation}{Formal-fraction equivalence is an equivalence relation}
+    Let \(A\) be an \integraldomain. The relation
+    \[
+        (a_1,b_1)\sim(a_2,b_2)
+        \ifandonlyif
+        a_1b_2=a_2b_1
+    \]
+    is an \equivrelation on \(A\times(A\difference\{0_A\})\).
 \end{snippetproposition}
 
-\begin{snippetproof}{principale-ideal-domain-every-prime-ideal-is-maximal-proof}{principale-ideal-domain-every-prime-ideal-is-maximal}{}
-    Let \(I \idealin A\) be a \primeideal. This means that it is also a \principalideal
-    as \(\exists x \in A \suchthat I = (x)\). Let \(J \idealin A\)
-    such that \(J \supseteq\).
-    \(J\) is also a \principalideal and this \(\exists y \in A \suchthat J = (y)\).
-    We now have \((y) = J \supseteq I = (x)\)
-    and thus \(x \in (y)\) as \(x = ay\) for some \(a\in A\),
-    meaning \(ay \in (x) = I\).
-    We have two cases:
-    \begin{enumerate}
-        \item \(y\in(x) \implies y = bx\) for some \(b\in A\):
-            since \(A\) is a \principalidealdomain,
-            \begin{align*}
-                x &= ay = abx \\
-                1 &= ab
-            \end{align*}
-            and thus \(a,b \in A^*\) meaning that 
-            \begin{align*}
-                y &= a^{-1} x \\
-                y &\in (x) \implies (y) \subseteq (x) \\
-                &\implies J=I
-            \end{align*}
-        \item \(a \in (a) \implies a = cx\) for some \(c\in A\):
-        \begin{align*}
-            x &= ay = cxy \\
-            1 &= cy \\
-            &\implies c,y \in A^* \\
-            &\implies c^{-1} \in A
-        \end{align*}
-        Thus, \(c y = 1_A \in (y)\) which implies \(J = (y) = A\).
-    \end{enumerate}
-    Thus, we do not have an intermediate ideal.
+\begin{snippetproof}{field-of-fractions-equivalence-relation-proof}{field-of-fractions-equivalence-relation}{Formal-fraction equivalence is an equivalence relation}
+    Reflexivity and symmetry follow directly from equality. For
+    transitivity, suppose
+    \[
+        a_1b_2=a_2b_1,
+        \qquad
+        a_2b_3=a_3b_2.
+    \]
+    Multiplying the first equality by \(b_3\), the second by \(b_1\), and
+    using commutativity gives
+    \[
+        b_2(a_1b_3-a_3b_1)=0_A.
+    \]
+    Since \(b_2\neq0_A\) and \(A\) has no zero divisors,
+    \(a_1b_3=a_3b_1\). Thus \((a_1,b_1)\sim(a_3,b_3)\).
 \end{snippetproof}
 
-\begin{snippetdefinition}{ideal-addition-multiplication-definition}{Ideal addition and multiplication}
-    Let \(A\) be a commutative \ring and \(I, J \idealin A\).
-    We define:
-    \begin{enumerate}
-        \item \emph{addition of ideals:} \[
-            I + J \triangleq \{x + y \suchthat x \in I \land y \in J\}
-        \]
-        \item \emph{multiplication of ideals:} \[
-            I \cdot J \triangleq \left\{
-                \sum_{i=1}^n x_iy_i \suchthat x_i \in I \land y_i \in J
-                \land n < \infty
-            \right\}
-        \]
-    \end{enumerate}
+\begin{snippetdefinition}{field-of-fractions-definition}{Field of fractions}
+    Let \(A\) be an \integraldomain. Its \emph{field of fractions}, or
+    \emph{quotient field}, is
+    \[
+        \quotientfield(A)
+        =
+        \big(A\times(A\difference\{0_A\})\big)/{\sim}.
+    \]
+    The class of \((a,b)\) is denoted by
+    \[
+        \frac{a}{b}=[(a,b)]_\sim.
+    \]
+    Addition and multiplication are defined by
+    \[
+        \frac{a_1}{b_1}+\frac{a_2}{b_2}
+        =
+        \frac{a_1b_2+a_2b_1}{b_1b_2},
+        \qquad
+        \frac{a_1}{b_1}\frac{a_2}{b_2}
+        =
+        \frac{a_1a_2}{b_1b_2}.
+    \]
 \end{snippetdefinition}
 
-\begin{snippetproposition}{ideal-addition-multiplication-is-ideal}{}
-    Let \(A\) be a commutative \ring and \(I, J \idealin A\).
-    Then, \(I+J\) and \(I\cdot J\) are \ideal[ideals] in \(A\).
+\begin{snippetproposition}{field-of-fractions-is-field}{The field of fractions is a field}
+    Let \(A\) be an \integraldomain. The operations in the definition of
+    \(\quotientfield(A)\) are well-defined and make
+    \(\quotientfield(A)\) into a \field.
 \end{snippetproposition}
 
-\begin{snippetproof}{ideal-addition-multiplication-is-ideal-proof}{ideal-addition-multiplication-is-ideal}{}
-    Let \(a \in A, z \in I \cdot J\).
-    This means that \(z = x_1y_1 + \cdots + x_ry_r\) for some \(r \geq 0\)
-    and \(x_i \in I\) and \(y_i \in J\). We have
+\begin{snippetproof}{field-of-fractions-is-field-proof}{field-of-fractions-is-field}{The field of fractions is a field}
+    Since \(A\) is an \integraldomain, products of nonzero denominators
+    are nonzero, so the displayed operations always produce formal
+    fractions.
+
+    Suppose
     \[
-        az = \sum_{i=1} \underbrace{ax_i}_{\in I} \underbrace{y_i}_{\in J}
+        \frac{a_1}{b_1}=\frac{a_1'}{b_1'},
+        \qquad
+        \frac{a_2}{b_2}=\frac{a_2'}{b_2'}.
     \]
-    The null element is given by
+    Thus \(a_1b_1'=a_1'b_1\) and \(a_2b_2'=a_2'b_2\). Multiplying these
+    equalities proves
     \[
-        0_A = 0_A \cdot 0_A
+        (a_1a_2)(b_1'b_2')=(a_1'a_2')(b_1b_2),
     \]
-    if \(z_1, z_2 \in I\cdot J\) we have
-    \[
-        z_1 = \sum^r x_i y_i, \qquad z_2 = \sum^s v_i w_i
-    \]
-    for \(r,s \geq 0\).
-    The addition is given by
+    so multiplication is independent of the representatives. Moreover,
     \begin{align*}
-        z_1 - z_2 &=  \sum^r x_i y_i + \sum^s x_i y_i
-        = \sum^{r+s} t_i u_i
+        &(a_1b_2+a_2b_1)b_1'b_2'\\
+        &\qquad
+        =a_1b_1'b_2b_2'+a_2b_2'b_1b_1'\\
+        &\qquad
+        =(a_1'b_2'+a_2'b_1')b_1b_2,
     \end{align*}
+    so addition is also well-defined.
+
+    The identities and additive inverse are
+    \[
+        0_{\quotientfield(A)}=\frac{0_A}{1_A},
+        \qquad
+        1_{\quotientfield(A)}=\frac{1_A}{1_A},
+        \qquad
+        -\frac{a}{b}=\frac{-a}{b}.
+    \]
+    The ring laws follow from those of \(A\). Finally,
+    \[
+        \frac{a}{b}=0_{\quotientfield(A)}
+        \ifandonlyif a=0_A.
+    \]
+    Hence every nonzero fraction has inverse
+    \[
+        \left(\frac{a}{b}\right)^{-1}=\frac{b}{a}.
+    \]
+    Therefore \(\quotientfield(A)\) is a \field.
+\end{snippetproof}
+
+\section{Canonical embedding and examples}
+
+\begin{snippetproposition}{canonical-field-of-fractions-embedding}{Canonical embedding into the field of fractions}
+    Let \(A\) be an \integraldomain. The \function
+    \[
+        \iota\colon A\fromto\quotientfield(A),
+        \qquad
+        \iota(a)=\frac{a}{1_A},
+    \]
+    is an \injective \ringhomomorphism.
+\end{snippetproposition}
+
+\begin{snippetproof}{canonical-field-of-fractions-embedding-proof}{canonical-field-of-fractions-embedding}{Canonical embedding into the field of fractions}
+    Direct computation gives
+    \[
+        \iota(a+b)=\iota(a)+\iota(b),
+        \qquad
+        \iota(ab)=\iota(a)\iota(b),
+        \qquad
+        \iota(1_A)=1_{\quotientfield(A)}.
+    \]
+    If \(\iota(a)=\iota(b)\), then
+    \(a1_A=b1_A\), and hence \(a=b\). Thus \(\iota\) is \injective.
+\end{snippetproof}
+
+\begin{snippet}{field-of-fractions-generated-by-inverses}
+    Identifying an \integraldomain \(A\) with its image under the canonical
+    embedding, every element of \(\quotientfield(A)\) has the form
+    \[
+        \frac{a}{b}
+        =
+        \frac{a}{1_A}
+        \left(\frac{b}{1_A}\right)^{-1}.
+    \]
+    Thus the field of fractions is obtained by adjoining inverses of all
+    nonzero elements of \(A\).
+\end{snippet}
+
+\begin{snippetexample}{integers-field-of-fractions-example}{Fractions of the integers}
+    The usual interpretation of a formal fraction gives a
+    \ringisomorphism
+    \[
+        \quotientfield(\integers)\ringisomorphic\rationalnumbers.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{polynomial-field-of-fractions-example}{Rational functions}
+    Let \(K\) be a \field. Then
+    \[
+        \quotientfield(K[x])=K(x),
+    \]
     where
     \[
-        t_i = \begin{cases}
-            x_i & i \leq r \\
-            v_i & i < r
-        \end{cases}, \qquad 
-        u_i = \begin{cases}
-            y_i & i \leq r \\
-            w_i & i < r
-        \end{cases}
+        K(x)
+        =
+        \left\{\frac{f(x)}{g(x)}
+        \suchthat f,g\in K[x],\ g\neq0\right\}
     \]
+    is the \field of rational functions in one variable.
+\end{snippetexample}
+
+\section{Universal property}
+
+\begin{snippetproposition}{universal-property-field-fraction}{Universal property of the field of fractions}
+    Let \(A\) be an \integraldomain, let \(L\) be a \field, and let
+    \(\varphi\colon A\fromto L\) be an \injective \ringhomomorphism.
+    There exists a unique \ringhomomorphism
+    \[
+        \widetilde{\varphi}\colon\quotientfield(A)\fromto L
+    \]
+    such that
+    \[
+        \varphi=\widetilde{\varphi}\circ\iota,
+    \]
+    where \(\iota\colon A\fromto\quotientfield(A)\) is the canonical
+    embedding. Equivalently, the diagram
+    \[
+        \begin{tikzcd}
+            A \arrow[r, "\iota", hook]
+              \arrow[dr, "\varphi"']
+                & \quotientfield(A)
+                  \arrow[d, dashed, "\widetilde{\varphi}"] \\
+                & L
+        \end{tikzcd}
+    \]
+    commutes.
+\end{snippetproposition}
+
+\begin{snippetproof}{universal-property-field-fraction-proof}{universal-property-field-fraction}{Universal property of the field of fractions}
+    Define
+    \[
+        \widetilde{\varphi}\left(\frac{a}{b}\right)
+        =\varphi(a)\varphi(b)^{-1}.
+    \]
+    This is meaningful because \(b\neq0_A\) and injectivity gives
+    \(\varphi(b)\neq0_L\). If \(a'/b'=a/b\), then \(a'b=ab'\), so
+    \[
+        \varphi(a')\varphi(b)
+        =
+        \varphi(a)\varphi(b').
+    \]
+    Multiplying by the inverses of \(\varphi(b)\) and \(\varphi(b')\)
+    proves that the definition is independent of representatives.
+
+    The formulas for addition and multiplication of fractions give
+    \[
+        \widetilde{\varphi}(u+v)
+        =\widetilde{\varphi}(u)+\widetilde{\varphi}(v),
+        \qquad
+        \widetilde{\varphi}(uv)
+        =\widetilde{\varphi}(u)\widetilde{\varphi}(v),
+    \]
+    and
+    \(\widetilde{\varphi}(1_{\quotientfield(A)})=1_L\). Moreover,
+    \[
+        \widetilde{\varphi}(\iota(a))
+        =
+        \widetilde{\varphi}\left(\frac{a}{1_A}\right)
+        =\varphi(a).
+    \]
+
+    If \(\psi\) is another such \ringhomomorphism, then
+    \begin{align*}
+        \psi\left(\frac{a}{b}\right)
+        &=
+        \psi\left(
+            \frac{a}{1_A}
+            \left(\frac{b}{1_A}\right)^{-1}
+        \right)\\
+        &=
+        \varphi(a)\varphi(b)^{-1}
+        =
+        \widetilde{\varphi}\left(\frac{a}{b}\right).
+    \end{align*}
+    Hence \(\psi=\widetilde{\varphi}\).
 \end{snippetproof}
 
-\begin{snippetdefinition}{ideal-generator-definition}{Ideal generator}
-    Let \(A\) be a commutative \ring and \(I \idealin A\).
-    A finite \set \(\{x_1, x_2, \cdots, x_n\}\)
-    is said to be a \emph{generator} of \(I\) if 
+\begin{snippetcorollary}{corollary-placeholder}{Uniqueness of the field of fractions}
+    Let \(A\) be an \integraldomain. The field \(\quotientfield(A)\),
+    together with its canonical embedding of \(A\), is unique up to a unique
+    isomorphism compatible with that embedding.
+\end{snippetcorollary}
+
+\begin{snippetproof}{corollary-placeholder-proof}{corollary-placeholder}{Uniqueness of the field of fractions}
+    Let \(K'\) be another \field with an embedding
+    \(i'\colon A\fromto K'\) satisfying the same universal property.
+    Applying the two universal properties gives \ringhomomorphism[ring
+    homomorphisms]
     \[
-        I = \left\{
-            \sum_{i=1}^n a_i x_i
-            \suchthat
-            a_i \in A
-        \right\} = \sum_{i=1}^n (x_i)
+        \Phi\colon\quotientfield(A)\fromto K',
+        \qquad
+        \Psi\colon K'\fromto\quotientfield(A)
     \]
-\end{snippetdefinition}
+    compatible with the embeddings. Both \(\Psi\circ\Phi\) and the
+    identity extend the canonical embedding of \(A\); uniqueness forces
+    them to coincide. Similarly \(\Phi\circ\Psi\) is the identity on
+    \(K'\). Thus \(\Phi\) is the required unique \ringisomorphism.
+\end{snippetproof}
 
 \end{document}

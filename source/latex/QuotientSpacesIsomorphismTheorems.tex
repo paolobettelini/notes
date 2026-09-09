@@ -4,14 +4,240 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{tikz}
+
+\usetikzlibrary{cd}
 
 \begin{document}
 
 \id{quotient-spaces-isomorphism-theorems}
 \genpage
 
+\section{Canonical projection}
+
+\begin{snippetproposition}{quotient-vector-space-canonical-projection}{Canonical projection onto a quotient space}
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\), and let
+    \(W\subseteq V\) be a linear subspace. The \function
+    \[
+        \pi\colon V\fromto V/W,
+        \qquad
+        \pi(v)=v+W,
+    \]
+    is a \surjective \lineartransformation with
+    \(\ltkernel\pi=W\).
+\end{snippetproposition}
+
+\begin{snippetproof}{quotient-vector-space-canonical-projection-proof}{quotient-vector-space-canonical-projection}{Canonical projection onto a quotient space}
+    For \(v_1,v_2\in V\) and \(\lambda\in\mathbb{F}\),
+    \begin{align*}
+        \pi(v_1+v_2)
+        &=(v_1+v_2)+W
+        =(v_1+W)+(v_2+W), \\
+        \pi(\lambda v_1)
+        &=\lambda v_1+W
+        =\lambda(v_1+W).
+    \end{align*}
+    Thus \(\pi\) is linear. Every coset \(v+W\) equals \(\pi(v)\), so
+    \(\pi\) is \surjective. Finally,
+    \[
+        \pi(v)=0_{V/W}
+        \ifandonlyif v+W=W
+        \ifandonlyif v\in W,
+    \]
+    whence \(\ltkernel\pi=W\).
+\end{snippetproof}
+
+\begin{snippetproposition}{linear-map-induced-on-kernel-quotient}{Linear map induced on the quotient by the kernel}
+    Let \(V_1,V_2\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\), and let
+    \(\varphi\colon V_1\fromto V_2\) be a \lineartransformation. The
+    \function
+    \[
+        \overline{\varphi}\colon V_1/\ltkernel\varphi\fromto V_2,
+        \qquad
+        \overline{\varphi}(v+\ltkernel\varphi)=\varphi(v),
+    \]
+    is a well-defined \lineartransformation.
+\end{snippetproposition}
+
+\begin{snippetproof}{linear-map-induced-on-kernel-quotient-proof}{linear-map-induced-on-kernel-quotient}{Linear map induced on the quotient by the kernel}
+    Suppose that \(v'=v+w\), where \(w\in\ltkernel\varphi\). Then
+    \[
+        \varphi(v')=\varphi(v)+\varphi(w)=\varphi(v),
+    \]
+    so \(\overline{\varphi}\) is well-defined. For \(v_1,v_2\in V_1\) and
+    \(\lambda\in\mathbb{F}\),
+    \begin{align*}
+        \overline{\varphi}((v_1+\ltkernel\varphi)+(v_2+\ltkernel\varphi))
+        &=\varphi(v_1+v_2) \\
+        &=\overline{\varphi}(v_1+\ltkernel\varphi)
+          +\overline{\varphi}(v_2+\ltkernel\varphi), \\
+        \overline{\varphi}(\lambda(v_1+\ltkernel\varphi))
+        &=\varphi(\lambda v_1)
+        =\lambda\overline{\varphi}(v_1+\ltkernel\varphi).
+    \end{align*}
+\end{snippetproof}
+
+\begin{snippet}{linear-map-kernel-quotient-factorization}
+    Let \(V_1,V_2\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\), let
+    \(\varphi\colon V_1\fromto V_2\) be a \lineartransformation, and let
+    \(\pi\colon V_1\fromto V_1/\ltkernel\varphi\) be the canonical
+    projection. Then \(\varphi=\overline{\varphi}\circ\pi\). Equivalently,
+    the following diagram commutes:
+    \[
+        \begin{tikzcd}
+            V_1 \arrow[r, "\varphi"] \arrow[d, "\pi"'] & V_2 \\
+            V_1/\ltkernel\varphi
+                \arrow[ur, "\overline{\varphi}"']
+        \end{tikzcd}
+    \]
+    Indeed,
+    \[
+        (\overline{\varphi}\circ\pi)(v)
+        =\overline{\varphi}(v+\ltkernel\varphi)
+        =\varphi(v)
+    \]
+    for every \(v\in V_1\).
+\end{snippet}
+
 \section{Isomorphism theorems}
 
-\includesnpt{todo}
+\begin{snippettheorem}{vector-space-first-isomorphism-theorem}{First isomorphism theorem for vector spaces}
+    Let \(V_1,V_2\) be \vectorspace[vector spaces] over a \field
+    \(\mathbb{F}\), and let
+    \(\varphi\colon V_1\fromto V_2\) be a \lineartransformation. Then
+    \[
+        V_1/\ltkernel\varphi\cong\ltimage\varphi.
+    \]
+    More precisely, the \function
+    \[
+        \overline{\varphi}\colon
+        V_1/\ltkernel\varphi\fromto\ltimage\varphi,
+        \qquad
+        \overline{\varphi}(v+\ltkernel\varphi)=\varphi(v),
+    \]
+    is a \linearisomorphism.
+\end{snippettheorem}
+
+\begin{snippetproof}{vector-space-first-isomorphism-theorem-proof}{vector-space-first-isomorphism-theorem}{First isomorphism theorem for vector spaces}
+    The induced \function \(\overline{\varphi}\) is linear and well-defined.
+    It is \surjective onto \(\ltimage\varphi\) by definition. Moreover,
+    \begin{align*}
+        \ltkernel\overline{\varphi}
+        &=\{v+\ltkernel\varphi
+            \suchthat\varphi(v)=0_{V_2}\} \\
+        &=\{0_{V_1}+\ltkernel\varphi\}.
+    \end{align*}
+    Hence \(\overline{\varphi}\) is \injective and therefore a
+    \linearisomorphism.
+\end{snippetproof}
+
+\begin{snippetexample}{direct-sum-quotient-isomorphism-example}{Quotients of a direct sum}
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\), and suppose
+    that \(V=W_1\oplus W_2\). Every \(v\in V\) has a unique expression
+    \(v=w_1+w_2\), with \(w_i\in W_i\). The projection
+    \[
+        p_1\colon V\fromto W_1,
+        \qquad
+        p_1(w_1+w_2)=w_1,
+    \]
+    has kernel \(W_2\), while the analogous projection \(p_2\) has kernel
+    \(W_1\). The first isomorphism theorem therefore gives
+    \[
+        V/W_2\cong W_1,
+        \qquad
+        V/W_1\cong W_2.
+    \]
+    The corresponding factorizations are
+    \[
+        \begin{tikzcd}[column sep=large]
+            V \arrow[r, "p_1"] \arrow[d, "\pi_1"'] & W_1 \\
+            V/W_2 \arrow[ur, "\overline{p_1}"']
+        \end{tikzcd}
+        \qquad
+        \begin{tikzcd}[column sep=large]
+            V \arrow[r, "p_2"] \arrow[d, "\pi_2"'] & W_2 \\
+            V/W_1 \arrow[ur, "\overline{p_2}"']
+        \end{tikzcd}
+    \]
+\end{snippetexample}
+
+\begin{snippettheorem}{vector-space-second-isomorphism-theorem}{Second isomorphism theorem for vector spaces}
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\), and let
+    \(W,U\subseteq V\) be linear subspaces. Then
+    \[
+        W/(W\intersection U)\cong(W+U)/U.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{vector-space-second-isomorphism-theorem-proof}{vector-space-second-isomorphism-theorem}{Second isomorphism theorem for vector spaces}
+    Consider the \lineartransformation
+    \[
+        \varphi\colon W\fromto(W+U)/U,
+        \qquad
+        \varphi(w)=w+U.
+    \]
+    Every element of \((W+U)/U\) has the form
+    \((w+u)+U=w+U\), where \(w\in W\) and \(u\in U\). Thus
+    \(\varphi\) is \surjective. Furthermore,
+    \begin{align*}
+        \ltkernel\varphi
+        &=\{w\in W\suchthat w+U=U\} \\
+        &=\{w\in W\suchthat w\in U\}
+        =W\intersection U.
+    \end{align*}
+    The first isomorphism theorem now yields
+    \[
+        W/(W\intersection U)
+        =W/\ltkernel\varphi
+        \cong\ltimage\varphi
+        =(W+U)/U.
+    \]
+\end{snippetproof}
+
+\begin{snippet}{vector-space-second-isomorphism-theorem-inclusion-note}
+    Let \(U\) and \(W\) be linear subspaces of a \vectorspace \(V\). The
+    second isomorphism theorem does not require \(U\subseteq W\) or
+    \(W\subseteq U\). In particular, it compares the two subspaces even when
+    neither quotient \(W/U\) nor \(U/W\) is defined.
+\end{snippet}
+
+\begin{snippettheorem}{vector-space-third-isomorphism-theorem}{Third isomorphism theorem for vector spaces}
+    Let \(V\) be a \vectorspace over a \field \(\mathbb{F}\), and let
+    \(U\subseteq W\subseteq V\) be linear subspaces. Then \(W/U\) is a
+    linear subspace of \(V/U\), and
+    \[
+        (V/U)/(W/U)\cong V/W.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{vector-space-third-isomorphism-theorem-proof}{vector-space-third-isomorphism-theorem}{Third isomorphism theorem for vector spaces}
+    Since \(U\subseteq W\subseteq V\), the operations of \(W/U\) are the
+    restrictions of those of \(V/U\), so \(W/U\) is a linear subspace of
+    \(V/U\). Define
+    \[
+        \overline{\varphi}\colon V/U\fromto V/W,
+        \qquad
+        \overline{\varphi}(v+U)=v+W.
+    \]
+    If \(v'+U=v+U\), then \(v'-v\in U\subseteq W\), whence
+    \(v'+W=v+W\). Thus \(\overline{\varphi}\) is well-defined. Its
+    linearity follows directly from the quotient operations, and it is
+    \surjective because every \(v+W\) is the image of \(v+U\). Finally,
+    \begin{align*}
+        \ltkernel\overline{\varphi}
+        &=\{v+U\in V/U\suchthat v+W=W\} \\
+        &=\{v+U\in V/U\suchthat v\in W\}
+        =W/U.
+    \end{align*}
+    The first isomorphism theorem gives
+    \[
+        (V/U)/(W/U)
+        =(V/U)/\ltkernel\overline{\varphi}
+        \cong\ltimage\overline{\varphi}
+        =V/W.
+    \]
+\end{snippetproof}
 
 \end{document}

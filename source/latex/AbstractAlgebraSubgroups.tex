@@ -19,7 +19,7 @@
 \begin{snippetdefinition}{subgroup-definition}{Subgroups}
     Given an \algebraicstructure \(h=(H, \circ)\) and a \group \(g=(G, \circ)\), \(h\)
     is a \textit{subgroup} of \(g\)
-    \[g \leq h\]
+    \[h \leq g\]
     if \(H \subseteq G\) and \(h\) is a \group where the identity element is the same.
 \end{snippetdefinition}
 
@@ -32,19 +32,6 @@
 \end{snippetproposition}
 
 \subsection{Subgroup tests}
-
-%TODOURGENT
-%\begin{snippettheorem}{identity-in-set-equivalent-non-empty}{}
-%    Let \((G, \circ) \subgroupleq (H, \circ)\) be a \group[groups].
-%    Then,
-%    \[
-%        1 \in H \iff H \neq H
-%    \]
-%\end{snippettheorem}
-%
-%\begin{snippetproof}{identity-in-set-equivalent-non-empty-proof}{identity-in-set-equivalent-non-empty}{}
-%    \todo
-%\end{snippetproof}
 
 \begin{plainhtml}
     The condition of containing the identity in a group can be replaced
@@ -67,7 +54,7 @@
             \item \textit{inverse}: let \(k\in H\), \(a=1\) and \(b=k\). Then,
             \(a\circ b^{-1} = 1 \circ k^{-1} \implies k^{-1} \in H\).
             \item \textit{closure}: let \(m, n \in H \implies n^{-1} \in H\) and let \(a=m\) and \(b=n^{-1}\).
-            \(a\circ b^{-1} = a \circ (b^{-1})^{-1}=a\circ b\). This implies \(a, b \in H\).
+            \(a\circ b^{-1} = m \circ (n^{-1})^{-1}=m\circ n\in H\).
         \end{itemize}
     \end{iffproof}
 \end{snippetproof}
@@ -83,27 +70,13 @@
     \begin{iffproof}
         \item Assume \((H, \circ) \subgroupleq (G, \circ)\).
         The properties of a \group directly infer \(\forall a,b \in H, ab \in H\).
-        \item Assume \(\forall a,b \in H, ab \in H\) and \(H \neq \emptyset\).
-        We need to show that \(\forall a \in H, a^{-1} \in H\).
-        By \principleofinduction[induction] on \(n\) we show that \(x^n \in H\) for \(n \in \naturalnumbers^\exceptzero\):
-        \begin{itemize}
-            \item the base case is given by \(a^1 = a \in H\);
-            \item for the induction case let \(k \in \naturalnumbers^\exceptzero\)
-                such that \(x^k \in H\). Then, \(x^{k+1} = x^k \circ x \in H\)
-                since \(\circ\) is closed.
-        \end{itemize}
-        Since \(\cardinality{H} < \infty\) and \(\forall a, a^k \in H\)
-        for \(n\in \naturalnumbers^\exceptzero\), infinite powers of \(a\)
-        will give a finite amount of results, meaning that there are \(n,m \in \naturalnumbers^\exceptzero\)
-        where \(m \neq n\) such that the exponentiation is equal \(x^n = x^m\).
-        Without loss of generality, assume \(n>m\).
-        Then, \(x^m = x^n \circ x^{m-n} = x^n\). By the cancellation laws, we find \(x^{m-n} = 1\).
-        We distinguish two cases:
-        \begin{enumerate}
-            \item if \(m-n=1\), we get \(x^1 = 1\) which means \(x=1 \land x^{-1} = 1 \in H\);
-            \item if \(m-n > 1\), we get \(x \circ x^{m-n-1} = 1\) which means
-            \(x^{m-n-1} = x^{-1}\) and \(x^{m-n-1} \in H\) since \(m-n-1 > 0\).
-        \end{enumerate}
+        \item Assume \(H\neq\emptyset\) is closed under multiplication and
+            fix \(x\in H\). Every positive power of \(x\) belongs to \(H\).
+            Since \(H\) is finite, \(x^m=x^n\) for some \(m<n\). Cancelling
+            \(x^m\) gives \(x^{n-m}=1_G\), so \(1_G\in H\). If
+            \(n-m=1\), then \(x=1_G=x^{-1}\). Otherwise,
+            \(x^{-1}=x^{n-m-1}\in H\). Thus \(H\) contains inverses and the
+            identity, and is a subgroup.
     \end{iffproof}
 \end{snippetproof}
 
@@ -124,12 +97,10 @@
 \end{plainhtml}
 
 \begin{snippetproof}{subgroup-intersection-is-subgroup-proof}{subgroup-intersection-is-subgroup}{Subgroup intersection is subgroup}
-    Without loss of generality, assume \(\{H_i\}_{i\in I} = \{H, K\}\).
-    Since \(1\in H\) and \(1\in K\), we have \(1 \in H \intersection K\).
-    Let \(a,b \in H\intersection K\), meaning \(a \in H\), \(a\in K\), \(b\in K\), \(b\in K\).
-    Then, \(a\in H, b\in H \implies a\circ b^{-1} \in H\)
-    and \(a\in K, b\in K \implies a\circ b^{-1} \in K\),
-    which together imply \(a \circ b^{-1} \in H \intersection K\).
+    Every \(H_i\) contains \(1_G\), so their intersection is non-empty.
+    If \(a,b\in\bigcap_{i\in I}H_i\), then \(a,b\in H_i\) for every
+    \(i\in I\), and therefore \(ab^{-1}\in H_i\) for every \(i\).
+    Hence \(ab^{-1}\in\bigcap_{i\in I}H_i\), and the one-step subgroup test applies.
 \end{snippetproof}
 
 \begin{plainhtml}

@@ -14,18 +14,18 @@
 \id{cyclid-groups}
 \genpage
 
-\section{Cyclid groups}
+\section{Cyclic groups}
 
 \begin{snippetdefinition}{cyclic-group-definition}{Cyclic Group}
-    Let \(G\) be a \group. For any element \(g\in G\),
-    the \textit{cyclic group} is the \subgroup \(\gengrp{g}\).
+    A \group \(G\) is \emph{cyclic} if there exists \(g\in G\) such that
+    \(G=\gengrp{g}\). Such an element \(g\) is called a generator of \(G\).
 \end{snippetdefinition}
 
 \begin{snippetproposition}{cyclic-group-powers}{Cyclic groups powers}
     Let \(G\) be a \group. For any element \(g\in G\),
     the \cyclicgroup
     \[
-        \gengrp{g} = \{ g^k \suchthat k \in \naturalnumbers \}
+        \gengrp{g} = \{ g^k \suchthat k \in \integers \}.
     \]
 \end{snippetproposition}
 
@@ -65,7 +65,7 @@
     We thus divide \(m\) by \(d\). We get
     \begin{align*}
         m &= dq + r \qquad 0\leq r < d \\
-        g^m &= g^{dq+r} = {(g^d)}^r \circ g^r
+        g^m &= g^{dq+r} = {(g^d)}^q \circ g^r
     \end{align*}
     We want to show that \(g^r = 1\). Now, \(g^r = {(g^d)}^{-q} \circ g^m\).
     Both terms are in \(H\), so \(g^r \in H\). By definition of \(d\), \(r=0\)
@@ -107,7 +107,14 @@
 \end{snippettheorem}
 
 \begin{snippetproof}{cyclic-group-period-properties-theorem-proof}{cyclic-group-period-properties-theorem}{}
-    \todo
+    The elements of \(G\) are the powers \(g^k\). If the period is infinite,
+    \(g^i=g^j\) implies \(g^{i-j}=1_G\), hence \(i=j\). Thus all powers
+    are distinct and \(G\) is infinite.
+
+    If \(\elementperiod{g}=n<\infty\), then
+    \(g^i=g^j\) \ifandonlyif \(g^{i-j}=1_G\), which holds \ifandonlyif
+    \(n\divides(i-j)\), equivalently \(i\equiv j\pmod n\). Therefore the
+    distinct powers are \(1_G,g,\ldots,g^{n-1}\), so \(|G|=n\).
 \end{snippetproof}
 
 %\begin{snippettheorem}{cyclic-group-periodic-finite}{Finite cyclic group}
@@ -155,7 +162,9 @@
 \end{snippetproposition}
 
 \begin{snippetproof}{infinite-cyclic-period-of-power-proof}{infinite-cyclic-period-of-power}{}
-    \todo
+    If \(n=0\), then \(g^n=1_G\), whose period is \(1\). If \(n\neq0\)
+    and \({(g^n)}^k=1_G\), then \(g^{nk}=1_G\). Since \(g\) has infinite
+    period, \(nk=0\), and hence \(k=0\). Thus \(g^n\) has infinite period.
 \end{snippetproof}
 
 \begin{snippetcorollary}{infinite-cyclic-non-trivial-intersection}{Non-trivial intersection of infinite cyclic subgroups}
@@ -165,7 +174,11 @@
 \end{snippetcorollary}
 
 \begin{snippetproof}{infinite-cyclic-non-trivial-intersection-proof}{infinite-cyclic-non-trivial-intersection}{Non-trivial intersection of infinite cyclic subgroups}
-    \todo
+    Every non-trivial subgroup of \(G\) has the form \(\gengrp{g^m}\) with
+    \(m\neq0\). Write \(H=\gengrp{g^m}\) and
+    \(K=\gengrp{g^n}\), with \(m,n\neq0\). Then
+    \(g^{\lcm(|m|,|n|)}\) belongs to both \(H\) and \(K\), and it is not
+    the identity because \(g\) has infinite period.
 \end{snippetproof}
 
 \begin{snippettheorem}{order-of-power-of-group-element-theorem}{Order of Power of Group Element}
@@ -174,19 +187,19 @@
 \end{snippettheorem}
 
 \begin{snippetproof}{order-of-power-of-group-element-proof}{order-of-power-of-group-element-theorem}{Order of Power of Group Element}
-    Let \(d=d'\gcd(d,n)\) and \(n=n'(d,n)\) where \(d = \elementperiod{g}\).
+    Let \(d=d'\gcd(d,n)\) and \(n=n'\gcd(d,n)\) where \(d = \elementperiod{g}\).
     The values \(n'\) and \(d'\) are \coprime. We need to show that \(\elementperiod{g^n} = d'\).
     We have
     \[
         {(g^n)}^{d'} = g^{nd'} = g^{n'\gcd(d,n)d'} = g^{dn'}
         = {(g^d)}^{n'} = 1^{n'} = 1
     \]
-    We thus show that \(\elementperiod{g^n}\) divides \(d'\).
+    This shows that \(\elementperiod{g^n}\) divides \(d'\).
     Let \(k \in\integers\) such that \({(g^n)}^k = 1\), meaning \(g^{nk} = 1\).
     This happens \ifandonlyif \(d \divides nk\), meaning \ifandonlyif there exist \(h\in\integers\)
-    such that \(dh = nk\). However, \(hd'\gcd(d,n) = \gcd(d,n)n'k\) and thus \(d'h = n^k\).
+    such that \(dh = nk\). Hence \(hd'\gcd(d,n) = \gcd(d,n)n'k\) and thus \(d'h = n'k\).
     Since \(d'\) and \(n'\) are \coprime, this happens \ifandonlyif \(d' \divides k\) and thus
-    \({(g^n)}^k = 1\) \ifandonlyif \(k\) is a multiple of \(d\), which is the \elementperiodtext.
+    \({(g^n)}^k = 1\) \ifandonlyif \(k\) is a multiple of \(d'\), which is the \elementperiodtext.
 \end{snippetproof}
 
 \begin{snippet}{order-of-power-of-group-element-note}
@@ -210,31 +223,25 @@
 \end{snippettheorem}
 
 \begin{snippetproof}{cyclic-subgroups-order-classification-theorem-proof}{cyclic-subgroups-order-classification-theorem}{}
-    %Let \(d\) be a divisor of \(n\).
-    %We want to show that there exist at least a \subgroup of \((G, \circ)\)
-    %of order \(d\). We know that 
-    %\[
-    %    |g^k| = \frac{n}{\gcd(n,k)}
-    %\]
-    %so we choose, for instance, \(k=\frac{n}{d}\), we thus get
-    %\[
-    %    |g^k| = \frac{n}{\gcd(n, n/d)} = \frac{n}{n/d} = d
-    %\]
-    %We now show that if \(|g^h| = d\), then \(\gengrp{g^h} = \gengrp{g^{k}}\),
-    %which means that the \subgroup of order \(d\) is unique.
-    %We have \[ \frac{n}{\gcd(n,d)} = d \]
-    %meaning \(\gcd(n,h) = \gcd(n, k) = k\).
-    %In particular, \(k \divides h\). Thus,
-    %\(g^h\) is a power of \(g^k\), meaning that \(g^h \in \gengrp{g^k}\),
-    %from which it follows that \(\gengrp{g^h} \subgroupleq \gengrp{g^k}\).
-    %However, \(|\gengrp{g^h}| = |\gengrp{g^k}|\), meaning \(\gengrp{g^h} = \gengrp{g^k}\).
-    %We now show that if \(H\) and \(K\) are \subgroup[subgroups] of \((G, \circ)\), 
-    %we have \(H \subgroupleq K \iff |H| \divides |K|\).
-    %We just proved that if \(H \subgroupleq K\), then \(|H| \divides |K|\).
-    %Viceversa, if \(|H| \divides |K|\), we know that there exist a \(H' \subgroupleq K\)
-    %of order \(|H|\). However, \(H\) and \(H'\) are \subgroup[subgroups] of \((G, \circ)\)
-    %of the same order, so they are the same \(H=H'\subgroupleq K\).
-    \todo
+    Every subgroup of \(G\) is cyclic, so its order divides \(n\) by
+    Lagrange's theorem. Conversely, if \(d\divides n\), then
+    \[
+        H_d=\gengrp{g^{n/d}}
+    \]
+    has order \(d\), by the formula for the order of a power.
+
+    If \(K\subgroupleq G\) has order \(d\), write \(K=\gengrp{g^k}\).
+    The equality \(\elementperiod{g^k}=d\) gives
+    \(\gcd(n,k)=n/d\), so \(n/d\divides k\). Hence
+    \(K\subgroupleq H_d\), and equality follows from the equal orders. Thus
+    \(H_d\) is unique. Its generators are precisely its elements of order
+    \(d\), of which there are \(\eulertotient(d)\).
+
+    Finally, for subgroups \(H,K\subgroupleq G\), inclusion implies
+    \(|H|\divides|K|\) by Lagrange. Conversely, if
+    \(|H|\divides|K|\), the unique subgroup of \(K\) of order \(|H|\) is
+    also the unique subgroup of \(G\) of that order, namely \(H\); hence
+    \(H\subgroupleq K\).
 \end{snippetproof}
 
 \begin{plainhtml}
@@ -244,9 +251,9 @@
 \end{plainhtml}
 
 \begin{snippetcorollary}{integer-sum-of-eulertotient}{}
-    Let \(d\) be a positive integer.
+    Let \(n\) be a positive integer.
     \[
-        \sum_{n \divides d} \eulertotient(n) = n
+        \sum_{d \divides n} \eulertotient(d) = n.
     \]
 \end{snippetcorollary}
 

@@ -20,11 +20,11 @@
     Let \(A\) be a \set where \(A \neq \emptyset\).
     There exist a \function
     \[
-        f\colon \powerset(A) \fromto A
+        f\colon \powerset(A)\difference\{\emptyset\} \fromto A
     \]
     such that
     \[
-        \forall X \subset A \suchthat A \neq\emptyset, f(x) \in x
+        \forall X\subseteq A\text{ with }X\neq\emptyset,\quad f(X)\in X.
     \]
 \end{snippetaxiom}
 
@@ -34,10 +34,22 @@
     \[
         \exists n\in\naturalnumbers, \exists \varphi \colon \naturalnumbers^\exceptzero_{\leq n} \fromto A
     \]
-    such that \(f\) is \bijective.
+    such that \(\varphi\) is \bijective.
 \end{snippetdefinition}
 
-% TODOURGENT F_n è univoco e esiste
+\begin{snippetproposition}{finite-set-cardinality-unique}{Uniqueness of finite cardinality}
+    Let \(A\) be a finite \set. There is a unique \(n\in\naturalnumbers\)
+    such that \(A\) is in bijection with
+    \(\naturalnumbers^\exceptzero_{\leq n}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{finite-set-cardinality-unique-proof}{finite-set-cardinality-unique}{Uniqueness of finite cardinality}
+    Existence is the definition of finiteness. If both
+    \(\naturalnumbers^\exceptzero_{\leq m}\) and
+    \(\naturalnumbers^\exceptzero_{\leq n}\) are in bijection with \(A\),
+    they are in bijection with each other. The pigeonhole principle implies
+    that this is possible only when \(m=n\).
+\end{snippetproof}
 
 \begin{snippetdefinition}{cardinality-definition}{Cardinality}
     The \textit{cardinality} of a \set \(A\) is a measure of the amount of its elements.
@@ -178,17 +190,31 @@
 \end{snippetcorollary}
 
 \begin{snippetproof}{cartesian-prod-is-countable-proof}{cartesian-prod-is-countable}{Cartesian product is countable}
-    \todo
+    Let \(f\colon X\fromto A\subseteq\naturalnumbers\) and
+    \(g\colon Y\fromto B\subseteq\naturalnumbers\) be bijections.
+    The map \((x,y)\mapsto (f(x),g(y))\) is a bijection from
+    \(X\cartesianprod Y\) to \(A\cartesianprod B\), which is countable as a
+    subset of the countable set \(\naturalnumbers\cartesianprod\naturalnumbers\).
 \end{snippetproof}
 
 \begin{snippetcorollary}{unitary-interval-reals-bijection}{}
     The \function \(f\colon (-1;1) \fromto \realnumbers\)
     such that
     \[
-        f(x) = \frac{1}{1-|x|}
+        f(x) = \frac{x}{1-|x|}
     \]
     is \bijective.
 \end{snippetcorollary}
+
+\begin{snippetproof}{unitary-interval-reals-bijection-proof}{unitary-interval-reals-bijection}{}
+    The function is strictly increasing on \((-1,1)\), with
+    \(f(x)\to-\infty\) as \(x\to-1^+\) and
+    \(f(x)\to+\infty\) as \(x\to1^-\).
+    More explicitly, its inverse is
+    \[
+        f^{-1}(y)=\frac{y}{1+|y|}, \qquad y\in\realnumbers.
+    \]
+\end{snippetproof}
 
 \begin{snippettheorem}{reals-are-uncountable-theorem}{Reals are uncountable}
     Since there is a \bijective \function between \((0;1)\) with \(\realnumbers\),
@@ -296,8 +322,11 @@
 \end{snippetproposition}
 
 \begin{snippetproof}{square-side-to-square-bijection-proof}{square-side-to-square-bijection}{}
-    The proof is done by considering the decimal expansions of \(x\) and \(y\)
-    and constructing a number that alternates their digits.
+    Choose for every number in \([0,1)\) its decimal expansion that is not
+    eventually equal to \(9\). Interleaving the digits of \(x\) and \(y\)
+    gives an injection from \([0,1)^2\) into \([0,1)\). Conversely,
+    \(x\mapsto(x,0)\) is an injection from \([0,1)\) into \([0,1)^2\).
+    The Cantor--Schröder--Bernstein theorem yields the desired bijection.
 \end{snippetproof}
 
 % TODOURGENT |X cartesian Y| = max(|X|, |Y|)

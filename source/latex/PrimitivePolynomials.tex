@@ -1,0 +1,222 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{primitive-polynomials}
+\genpage
+
+\section{Primitive polynomials}
+
+Let \(A\) be a \uniquefactorizationdomain and let
+\[
+    K=\quotientfield(A).
+\]
+We identify \(A[x]\) with its canonical subring in \(K[x]\).
+
+\begin{snippetdefinition}{primitive-polynomial-definition}{Primitive polynomial}
+    Let \(A\) be a \uniquefactorizationdomain. A nonzero \polynomial
+    \(f\in A[x]\) is \emph{primitive} if
+    \[
+        \nu_p(f)=0
+        \qquad
+        \text{for every \primeelement \(p\in A\)}.
+    \]
+    Equivalently, no prime element of \(A\) divides every coefficient of
+    \(f\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{monic-polynomials-primitive}{Monic polynomials are primitive}
+    Let \(A\) be a \uniquefactorizationdomain. Every monic \polynomial
+    in \(A[x]\) is primitive.
+\end{snippetproposition}
+
+\begin{snippetproof}{monic-polynomials-primitive-proof}{monic-polynomials-primitive}{Monic polynomials are primitive}
+    If
+    \[
+        f=a_0+a_1x+\cdots+a_nx^n
+    \]
+    is monic, then \(a_n=1_A\). Hence
+    \(\nu_p(a_n)=\nu_p(1_A)=0\) for every \primeelement \(p\), and
+    therefore \(\nu_p(f)=0\).
+\end{snippetproof}
+
+\begin{snippetexample}{primitive-integer-polynomial-example}{A primitive integer polynomial}
+    The \polynomial
+    \[
+        f=2x^3+3x^2+5x\in\integers[x]
+    \]
+    is primitive because no prime integer divides all of its
+    coefficients. In valuation language,
+    \[
+        \nu_p(f)=0
+        \qquad
+        \text{for every prime integer }p.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{rational-polynomial-factorization-example}{A factorization over the rationals}
+    In \(\rationalnumbers[x]\),
+    \[
+        (x^2+1)^2(x-3)
+    \]
+    is a product of irreducible polynomials: \(x-3\) is linear, and
+    \(x^2+1\) has no root in \(\rationalnumbers\).
+\end{snippetexample}
+
+\section{Gauss's lemma}
+
+\begin{snippetlemma}{primitive-polynomial-product-lemma}{Products of primitive polynomials}
+    Let \(A\) be a \uniquefactorizationdomain. The product of two
+    primitive polynomials in \(A[x]\) is primitive.
+\end{snippetlemma}
+
+\begin{snippetproof}{primitive-polynomial-product-lemma-proof}{primitive-polynomial-product-lemma}{Products of primitive polynomials}
+    If \(f,g\in A[x]\) are primitive, then for every \primeelement
+    \(p\in A\),
+    \[
+        \nu_p(fg)=\nu_p(f)+\nu_p(g)=0.
+    \]
+    Thus \(fg\) is primitive.
+\end{snippetproof}
+
+\begin{snippettheorem}{gauss-lemma-theorem}{Gauss's lemma}
+    Let \(A\) be a \uniquefactorizationdomain and let
+    \(K=\quotientfield(A)\). Then \(A[x]\) is a
+    \uniquefactorizationdomain.
+
+    Moreover, an element \(h\in A[x]\) is prime in \(A[x]\)
+    \ifandonlyif exactly one of the following descriptions applies:
+    \begin{enumerate}
+        \item \(h\in A\) and \(h\) is prime in \(A\);
+        \item \(h\) is primitive, \(\polynomialdeg h\geq1\), and \(h\)
+        is prime in \(K[x]\).
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{gauss-lemma-theorem-proof}{gauss-lemma-theorem}{Gauss's lemma}
+    We first record a normalization fact. For every nonzero
+    \(f\in K[x]\), there exists \(\alpha\in K^\times\) such that
+    \(\alpha f\in A[x]\) is primitive. Indeed, first multiply by a common
+    denominator of the coefficients. The resulting polynomial lies in
+    \(A[x]\); dividing it by the common prime powers of its coefficients
+    produces a primitive scalar multiple of \(f\).
+
+    We now characterize the prime elements of \(A[x]\).
+
+    Suppose first that \(h\in A\) is prime in \(A\). Coefficientwise
+    reduction induces a surjective \ringhomomorphism
+    \[
+        \varphi\colon A[x]\fromto(A/(h))[x]
+    \]
+    with kernel \((h)\). Hence
+    \[
+        A[x]/(h)\ringisomorphic(A/(h))[x].
+    \]
+    The right-hand side is an \integraldomain because \((h)\) is a prime
+    \ideal of \(A\). Thus \((h)\) is a prime ideal of \(A[x]\), so \(h\)
+    is prime in \(A[x]\).
+
+    Next, suppose that \(h\in A[x]\) is primitive, has positive degree,
+    and is prime in \(K[x]\). If \(h\divides f_1f_2\) in \(A[x]\), then
+    the same divisibility holds in \(K[x]\), so \(h\divides f_1\) or
+    \(h\divides f_2\) there. Say \(f_1=hg\) for some \(g\in K[x]\). For
+    every \primeelement \(p\in A\),
+    \[
+        \nu_p(g)
+        =
+        \nu_p(f_1)-\nu_p(h)
+        =
+        \nu_p(f_1)\geq0.
+    \]
+    Thus every coefficient of \(g\) belongs to \(A\), so \(g\in A[x]\).
+    Therefore \(h\divides f_1\) already in \(A[x]\), and \(h\) is prime
+    in \(A[x]\).
+
+    Conversely, let \(h\in A[x]\) be prime. If
+    \(\polynomialdeg h=0\), then \(h\in A\), and applying the prime
+    divisibility property to constant polynomials shows that \(h\) is
+    prime in \(A\).
+
+    Suppose instead that \(\polynomialdeg h\geq1\). A prime element is
+    irreducible. If a prime \(p\in A\) divided every coefficient of
+    \(h\), then \(h=ph_1\) would be a factorization into two nonunits of
+    \(A[x]\), a contradiction. Hence \(h\) is primitive.
+
+    To prove that \(h\) is prime in \(K[x]\), suppose
+    \(h\divides FG\) for \(F,G\in K[x]\). Choose
+    \(\alpha,\beta\in K^\times\) such that
+    \(\alpha F,\beta G\in A[x]\) are primitive. Since \(h\) and
+    \((\alpha F)(\beta G)\) are primitive, their quotient in \(K[x]\)
+    has nonnegative valuation at every prime of \(A\), and therefore
+    belongs to \(A[x]\). Thus
+    \[
+        h\divides(\alpha F)(\beta G)
+        \qquad\text{in }A[x].
+    \]
+    Primality in \(A[x]\) gives
+    \(h\divides\alpha F\) or \(h\divides\beta G\), and hence
+    \(h\divides F\) or \(h\divides G\) in \(K[x]\).
+
+    It remains to prove that \(A[x]\) is a
+    \uniquefactorizationdomain. Let \(f\in A[x]\) be a nonzero nonunit.
+    Since \(K[x]\) is a \principalidealdomain, it is a
+    \uniquefactorizationdomain, so
+    \[
+        f=c\widetilde h_1\cdots\widetilde h_r
+    \]
+    in \(K[x]\), where \(c\in K^\times\) and the factors are irreducible
+    and hence prime. The list of nonconstant factors may be empty.
+    Normalize every factor by choosing \(\alpha_i\in K^\times\) so that
+    \[
+        h_i=\alpha_i\widetilde h_i\in A[x]
+    \]
+    is primitive. The characterization above shows that each \(h_i\) is
+    prime in \(A[x]\). We may write
+    \[
+        f=a h_1\cdots h_r
+    \]
+    for some \(a\in K^\times\). For every prime \(p\in A\),
+    \[
+        \nu_p(a)=\nu_p(f)\geq0,
+    \]
+    because all the \(h_i\) are primitive. Hence \(a\in A\).
+    Factorizing \(a\) into prime elements of \(A\), which remain prime in
+    \(A[x]\), gives a factorization of \(f\) into prime elements of
+    \(A[x]\). Such a factorization is unique up to order and associates,
+    so \(A[x]\) is a \uniquefactorizationdomain.
+\end{snippetproof}
+
+\begin{snippetcorollary}{primitive-polynomial-fraction-field-irreducibility}{Irreducibility over the fraction field}
+    Let \(A\) be a \uniquefactorizationdomain, let
+    \(K=\quotientfield(A)\), and let \(f\in A[x]\) be primitive. Then
+    \[
+        f\text{ is irreducible in }A[x]
+        \ifandonlyif
+        f\text{ is irreducible in }K[x].
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{primitive-polynomial-fraction-field-irreducibility-proof}{primitive-polynomial-fraction-field-irreducibility}{Irreducibility over the fraction field}
+    If \(f\) is irreducible in \(K[x]\), then it is prime there because
+    \(K[x]\) is a \principalidealdomain. Gauss's lemma makes \(f\) prime,
+    and hence irreducible, in \(A[x]\).
+
+    Conversely, suppose that \(f\) is irreducible in \(A[x]\) and that
+    \(f=g_1g_2\) in \(K[x]\). Normalize the factors to obtain primitive
+    \(h_1,h_2\in A[x]\) and a scalar \(c\in K^\times\) such that
+    \[
+        f=c h_1h_2.
+    \]
+    Since \(f,h_1,h_2\) are primitive,
+    \(\nu_p(c)=0\) for every prime \(p\in A\), so \(c\in A^\times\).
+    This is a factorization in \(A[x]\); irreducibility of \(f\) makes
+    one of the \(h_i\) a unit in \(A[x]\), and the corresponding \(g_i\)
+    is a unit in \(K[x]\). Thus \(f\) is irreducible in \(K[x]\).
+\end{snippetproof}
+
+\end{document}

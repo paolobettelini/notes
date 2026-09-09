@@ -1,0 +1,171 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{unique-factorization-domains}
+\genpage
+
+\section{Factorization elements}
+
+\begin{snippetdefinition}{domain-factorization-elements-definition}{Associates, irreducible elements, and prime elements}
+    Let \(A\) be an \integraldomain.
+    \begin{enumerate}
+        \item Elements \(a,b\in A\) are \emph{associates} if
+        \(b=au\) for some unit \(u\in A^\times\). In this case one writes
+        \(a\sim b\).
+        \item An element \(a\in A\) is \emph{irreducible} if
+        \(a\neq0_A\), \(a\notin A^\times\), and every factorization
+        \(a=xy\) has \(x\in A^\times\) or \(y\in A^\times\).
+        \item An element \(a\in A\) is \emph{prime} if
+        \(a\neq0_A\), \(a\notin A^\times\), and the \ideal \((a)\) is
+        prime. Equivalently,
+        \[
+            a\divides xy
+            \implies
+            a\divides x\ \lor\ a\divides y
+        \]
+        for all \(x,y\in A\).
+    \end{enumerate}
+\end{snippetdefinition}
+
+\begin{snippet}{irreducible-prime-element-distinction}
+    An \irreducibleelement has no nontrivial factorization. A
+    \primeelement satisfies the stronger divisibility property that, when
+    it divides a product, it divides at least one factor.
+\end{snippet}
+
+\begin{snippetproposition}{associate-irreducible-prime-properties}{Associates, irreducibles, and primes}
+    Let \(A\) be an \integraldomain.
+    \begin{enumerate}
+        \item For \(a,b\in A\),
+        \[
+            a\sim b
+            \ifandonlyif
+            (a)=(b).
+        \]
+        \item Every \primeelement is \irreducibleelement[irreducible].
+        \item If \(A\) is a \principalidealdomain, every
+        \irreducibleelement is prime.
+    \end{enumerate}
+\end{snippetproposition}
+
+\begin{snippetproof}{associate-irreducible-prime-properties-proof}{associate-irreducible-prime-properties}{Associates, irreducibles, and primes}
+    If \(b=au\) for a unit \(u\), then \(b\in(a)\) and
+    \(a=bu^{-1}\in(b)\), so \((a)=(b)\). Conversely, suppose
+    \((a)=(b)\). If \(a=0_A\), then \(b=0_A\), and the two elements are
+    associates. Otherwise write
+    \[
+        b=ac,
+        \qquad
+        a=bc'.
+    \]
+    Then \(a=acc'\), so cancellation gives \(cc'=1_A\). Thus \(c\) is a
+    unit and \(a,b\) are \associateelements.
+
+    Let \(a\) be prime and suppose \(a=xy\). Since \(xy\in(a)\),
+    primality gives \(x\in(a)\) or \(y\in(a)\). If \(x=ac\), then
+    \[
+        a=xy=acy,
+    \]
+    so cancellation gives \(cy=1_A\), and \(y\) is a unit. The other case
+    similarly makes \(x\) a unit. Hence \(a\) is irreducible.
+
+    Finally, let \(A\) be a PID and let \(a\) be irreducible. If
+    \[
+        (a)\subseteq J\subseteq A,
+    \]
+    write \(J=(b)\). Then \(a=bc\) for some \(c\in A\). Irreducibility
+    implies that \(b\) or \(c\) is a unit. In the first case \(J=A\); in
+    the second, \(a\) and \(b\) are associates, so \(J=(a)\). Thus
+    \((a)\) is maximal, hence prime, and \(a\) is a \primeelement.
+\end{snippetproof}
+
+\section{Unique factorization}
+
+\begin{snippetdefinition}{unique-factorization-domain-definition}{Unique factorization domain}
+    A \emph{unique factorization domain}, abbreviated \emph{UFD}, is an
+    \integraldomain \(A\) in which every nonzero nonunit can be written as
+    a finite product of \primeelement[prime elements]. More precisely, if
+    \[
+        a=p_1\cdots p_r=q_1\cdots q_s
+    \]
+    are two such factorizations, then \(r=s\) and, after reordering,
+    \(p_i\sim q_i\) for every \(i\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{prime-factorization-uniqueness}{Uniqueness of factorization into prime elements}
+    In an \integraldomain, a factorization into
+    \primeelement[prime elements] is unique up to reordering and replacing
+    factors by \associateelements.
+\end{snippetproposition}
+
+\begin{snippetproof}{prime-factorization-uniqueness-proof}{prime-factorization-uniqueness}{Uniqueness of factorization into prime elements}
+    Suppose
+    \[
+        p_1\cdots p_r=q_1\cdots q_s,
+    \]
+    with every factor prime. Since \(p_1\) divides the product on the
+    right, it divides some \(q_j\). After reordering, assume
+    \(q_1=p_1u\). The element \(q_1\) is irreducible and \(p_1\) is not a
+    unit, so \(u\) is a unit. Hence \(q_1\sim p_1\), so they are
+    \associateelements.
+
+    Substitution and cancellation of the nonzero element \(p_1\) give
+    \[
+        p_2\cdots p_r=uq_2\cdots q_s.
+    \]
+    Absorb the unit \(u\) into one of the remaining prime factors and
+    repeat. This process pairs all factors with \associateelements. Since no prime
+    factor is a unit, neither side can have unpaired factors; therefore
+    \(r=s\).
+\end{snippetproof}
+
+\begin{snippettheorem}{principal-ideal-domain-is-unique-factorization-domain}{Every PID is a UFD}
+    Every \principalidealdomain is a \uniquefactorizationdomain.
+\end{snippettheorem}
+
+\begin{snippetproof}{principal-ideal-domain-is-unique-factorization-domain-proof}{principal-ideal-domain-is-unique-factorization-domain}{Every PID is a UFD}
+    Let \(A\) be a PID. Every \ideal of \(A\) is finitely generated, so
+    \(A\) is a \noetherianring. Suppose that some nonzero nonunit is not a
+    finite product of primes, and let \(\mathcal{S}\) be the nonempty
+    \set of principal \ideal[ideals] generated by such elements. The
+    maximal-element characterization of Noetherian rings gives a maximal
+    member \((a)\in\mathcal{S}\).
+
+    The element \(a\) is not prime. In a PID every irreducible is prime,
+    so \(a\) is reducible:
+    \[
+        a=bc
+    \]
+    for nonunits \(b,c\). Then
+    \[
+        (a)\subseteq(b),
+        \qquad
+        (a)\subseteq(c).
+    \]
+    Both inclusions are strict. For example, equality
+    \((a)=(b)\) would make \(a\) and \(b\) associates; comparing
+    \(a=bc\) with \(a=bu\) and cancelling \(b\neq0_A\) would make \(c\)
+    a unit.
+
+    Maximality of \((a)\) in \(\mathcal{S}\) therefore implies that both
+    \(b\) and \(c\) are finite products of primes. Hence so is
+    \(a=bc\), a contradiction. Thus every nonzero nonunit factors into
+    primes, and uniqueness follows from the preceding proposition.
+\end{snippetproof}
+
+\begin{snippetcorollary}{euclidean-domain-is-unique-factorization-domain}{Every Euclidean domain is a UFD}
+    Every \euclideandomain is a \uniquefactorizationdomain.
+\end{snippetcorollary}
+
+\begin{snippetproof}{euclidean-domain-is-unique-factorization-domain-proof}{euclidean-domain-is-unique-factorization-domain}{Every Euclidean domain is a UFD}
+    Every \euclideandomain is a \principalidealdomain, and every
+    \principalidealdomain is a \uniquefactorizationdomain.
+\end{snippetproof}
+
+\end{document}

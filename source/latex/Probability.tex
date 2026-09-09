@@ -254,44 +254,192 @@
 \end{snippetproof}
 
 \begin{snippettheorem}{inclusion-exclusion-principle}{Inclusion-exclusion principle}
-    Let \((\Omega,\mathcal F,\mathbb P)\) be a \probabilityspace.
-    Let \(n\in\naturalnumbers\) and let
-    \(A_1,\ldots,A_n\in\mathcal F\). Then
+    Let \((\Omega, \mathcal{P}(\Omega), \mathbb{P})\)
+    be a \probabilityspace with finite sample space \(\Omega\).
+    Let \(A_1, \ldots, A_n \in \mathcal{P}(\Omega)\), with
+    \(n \in \mathbb{N}\). Then
     \[
-        \mathbb P\left(\bigcup_{i=1}^n A_i\right)
+        \mathbb{P}\left(
+            \bigcup_{j=1}^{n} A_j
+        \right)
         =
-        \sum_{\emptyset\neq I\subseteq\{1,\ldots,n\}}
-        (-1)^{\cardinality{I}+1}
-        \mathbb P\left(\bigcap_{i\in I}A_i\right).
+        \sum_{k=1}^{n}
+        (-1)^{k+1}
+        \sum_{1 \leq i_1 < \cdots < i_k \leq n}
+        \mathbb{P}\left(
+            \bigcap_{r=1}^{k} A_{i_r}
+        \right).
     \]
+    In other words, we consider all possible intersections
+    of \(k\) events among \(A_1, \ldots, A_n\), with alternating sign.
 \end{snippettheorem}
 
 \begin{snippetproof}{inclusion-exclusion-principle-proof}{inclusion-exclusion-principle}{Inclusion-exclusion principle}
-    We prove the formula by induction on \(n\). For \(n=1\) it is immediate.
-    Assume it holds for \(n\), and put
-    \[
-        U_n=\bigcup_{i=1}^n A_i.
-    \]
-    By the formula for the union of two \event[events],
-    \[
-        \mathbb P(U_n\union A_{n+1})
-        =
-        \mathbb P(U_n)+\mathbb P(A_{n+1})
+    We proceed by induction on \(n \geq 2\).
+    For \(n=2\), we have
+    \begin{align*}
+        \mathbb{P}(A_1 \cup A_2)
+        &=
+        \sum_{k=1}^{2}
+        (-1)^{k+1}
+        \sum_{1 \leq i_1 < \cdots < i_k \leq 2}
+        \mathbb{P}\left(
+            \bigcap_{r=1}^{k} A_{i_r}
+        \right)
+        \\
+        &=
+        \mathbb{P}(A_1)
+        +
+        \mathbb{P}(A_2)
         -
-        \mathbb P(U_n\intersection A_{n+1}).
-    \]
-    The first term is handled by the induction hypothesis applied to
-    \(A_1,\ldots,A_n\). For the last term, note that
+        \mathbb{P}(A_1 \cap A_2),
+    \end{align*}
+    which is the formula for the union of two events.
+    Assume now that the formula holds for \(n-1\) events
+    and let us prove it for \(n\) events.
+    Let
     \[
-        U_n\intersection A_{n+1}
+        B_{n-1}
         =
-        \bigcup_{i=1}^n (A_i\intersection A_{n+1}),
+        \bigcup_{j=1}^{n-1} A_j.
     \]
-    so the induction hypothesis applied to
-    \(A_1\intersection A_{n+1},\ldots,A_n\intersection A_{n+1}\)
-    gives exactly the terms in the formula whose index \set contains
-    \(n+1\), with the opposite sign. Combining these terms yields the formula
-    for \(n+1\).
+    Applying the formula for the union of two events, we obtain
+    \begin{align*}
+        \mathbb{P}\left(
+            \bigcup_{j=1}^{n} A_j
+        \right)
+        &=
+        \mathbb{P}(B_{n-1} \cup A_n)
+        \\
+        &=
+        \mathbb{P}(B_{n-1})
+        +
+        \mathbb{P}(A_n)
+        -
+        \mathbb{P}(B_{n-1} \cap A_n).
+    \end{align*}
+    We study separately the first and the last term.
+    By the induction hypothesis,
+    \[
+        \mathbb{P}(B_{n-1})
+        =
+        \sum_{k=1}^{n-1}
+        (-1)^{k+1}
+        \sum_{1 \leq i_1 < \cdots < i_k \leq n-1}
+        \mathbb{P}\left(
+            \bigcap_{r=1}^{k} A_{i_r}
+        \right).
+    \]
+    Moreover, by the distributive property,
+    \begin{align*}
+        B_{n-1} \cap A_n
+        &=
+        \left(
+            \bigcup_{j=1}^{n-1} A_j
+        \right)
+        \cap A_n
+        \\
+        &=
+        \bigcup_{j=1}^{n-1}
+        (A_j \cap A_n).
+    \end{align*}
+    We apply the induction hypothesis to the \(n-1\) events
+    \[
+        A_1 \cap A_n,\ldots,A_{n-1} \cap A_n.
+    \]
+    We obtain
+    \begin{align*}
+        \mathbb{P}(B_{n-1} \cap A_n)
+        &=
+        \sum_{h=1}^{n-1}
+        (-1)^{h+1}
+        \sum_{1 \leq i_1 < \cdots < i_h \leq n-1}
+        \mathbb{P}\left(
+            \bigcap_{r=1}^{h}
+            (A_{i_r} \cap A_n)
+        \right)
+        \\
+        &=
+        \sum_{h=1}^{n-1}
+        (-1)^{h+1}
+        \sum_{1 \leq i_1 < \cdots < i_h \leq n-1}
+        \mathbb{P}\left(
+            A_{i_1}
+            \cap \cdots \cap
+            A_{i_h}
+            \cap A_n
+        \right).
+    \end{align*}
+    Therefore,
+    \begin{align*}
+        -\mathbb{P}(B_{n-1} \cap A_n)
+        &=
+        \sum_{h=1}^{n-1}
+        (-1)^h
+        \sum_{1 \leq i_1 < \cdots < i_h \leq n-1}
+        \mathbb{P}\left(
+            A_{i_1}
+            \cap \cdots \cap
+            A_{i_h}
+            \cap A_n
+        \right)
+        \\
+        &=
+        \sum_{k=2}^{n}
+        (-1)^{k+1}
+        \sum_{1 \leq i_1 < \cdots < i_{k-1} \leq n-1}
+        \mathbb{P}\left(
+            A_{i_1}
+            \cap \cdots \cap
+            A_{i_{k-1}}
+            \cap A_n
+        \right),
+    \end{align*}
+    where in the last equality we set \(k=h+1\).
+    Combining the previous terms, we obtain
+    \begin{align*}
+        \mathbb{P}\left(
+            \bigcup_{j=1}^{n} A_j
+        \right)
+        &=
+        \mathbb{P}(A_n)
+        \\
+        &\quad+
+        \sum_{k=1}^{n-1}
+        (-1)^{k+1}
+        \sum_{1 \leq i_1 < \cdots < i_k \leq n-1}
+        \mathbb{P}\left(
+            \bigcap_{r=1}^{k} A_{i_r}
+        \right)
+        \\
+        &\quad+
+        \sum_{k=2}^{n}
+        (-1)^{k+1}
+        \sum_{1 \leq i_1 < \cdots < i_{k-1} \leq n-1}
+        \mathbb{P}\left(
+            A_{i_1}
+            \cap \cdots \cap
+            A_{i_{k-1}}
+            \cap A_n
+        \right).
+    \end{align*}
+    The first term corresponds to the intersection consisting only
+    of the event \(A_n\). The first sum contains all intersections
+    that do not involve \(A_n\), while the second sum contains all
+    intersections that involve \(A_n\).
+    Therefore,
+    \[
+        \mathbb{P}\left(
+            \bigcup_{j=1}^{n} A_j
+        \right)
+        =
+        \sum_{k=1}^{n}
+        (-1)^{k+1}
+        \sum_{1 \leq i_1 < \cdots < i_k \leq n}
+        \mathbb{P}\left(
+            \bigcap_{r=1}^{k} A_{i_r}
+        \right).
+    \]
 \end{snippetproof}
 
 \begin{snippetproposition}{finite-probability-simplex-correspondence}{Finite probability measures as a simplex}

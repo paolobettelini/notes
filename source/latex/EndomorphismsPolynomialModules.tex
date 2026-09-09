@@ -1,0 +1,164 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{endomorphisms-polynomial-modules}
+\genpage
+
+\section{The polynomial-module viewpoint}
+
+\begin{snippet}{endomorphism-polynomial-module-setting}
+    Let \(K\) be a \field, let \(V\) be a finite-dimensional
+    \(K\)-\vectorspace, and let
+    \[
+        \varphi\colon V\fromto V
+    \]
+    be a \linearendomorphism. For \(k\in\naturalnumbers\), write
+    \[
+        \varphi^k
+        =
+        \underbrace{\varphi\circ\cdots\circ\varphi}_{k\text{ times}},
+        \qquad
+        \varphi^0=\identity_V.
+    \]
+    A choice of basis identifies \(\varphi\) with a matrix in
+    \(\matrices_n(K)\), but the module viewpoint below does not depend
+    on that choice.
+\end{snippet}
+
+\begin{snippetdefinition}{endomorphism-polynomial-module-definition}{Polynomial module associated with an endomorphism}
+    Let \(K\) be a \field, let \(V\) be a \(K\)-\vectorspace, and let
+    \(\varphi\colon V\fromto V\) be a \linearendomorphism. Define an
+    action of \(K[X]\) on \(V\) by
+    \[
+        X\cdot v=\varphi(v)
+    \]
+    and, more generally, by
+    \[
+        \left(a_0+a_1X+\cdots+a_mX^m\right)\cdot v
+        =
+        a_0v+a_1\varphi(v)+\cdots+a_m\varphi^m(v).
+    \]
+    With this action, \(V\) is a \(K[X]\)-\module, called the
+    \emph{polynomial module associated with \(\varphi\)}.
+\end{snippetdefinition}
+
+\begin{snippetproof}{endomorphism-polynomial-module-definition-proof}{endomorphism-polynomial-module-definition}{Polynomial module associated with an endomorphism}
+    Additivity in the polynomial and in the vector follows from the
+    linearity of \(\varphi\). If
+    \[
+        f=\sum_i a_iX^i,
+        \qquad
+        g=\sum_j b_jX^j,
+    \]
+    then
+    \begin{align*}
+        (fg)\cdot v
+        &=
+        \sum_{i,j}a_ib_j\varphi^{i+j}(v)\\
+        &=
+        \sum_i a_i\varphi^i
+        \left(\sum_j b_j\varphi^j(v)\right)\\
+        &=
+        f\cdot(g\cdot v).
+    \end{align*}
+    Finally, \(1\cdot v=v\). Thus all module axioms hold.
+\end{snippetproof}
+
+\section{Invariant subspaces}
+
+\begin{snippetdefinition}{endomorphism-invariant-subspace-definition}{Invariant subspace}
+    Let \(\varphi\colon V\fromto V\) be a \linearendomorphism. A vector
+    subspace \(W\leq V\) is \emph{\(\varphi\)-invariant} if
+    \[
+        \varphi(w)\in W
+        \qquad
+        \text{for every }w\in W.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{invariant-subspaces-polynomial-submodules}{Invariant subspaces are polynomial submodules}
+    Let \(V\) carry the \(K[X]\)-module structure associated with
+    \(\varphi\). A vector subspace \(W\leq V\) is
+    \(\varphi\)-\invariant \ifandonlyif it is a \(K[X]\)-\submodule of
+    \(V\).
+\end{snippetproposition}
+
+\begin{snippetproof}{invariant-subspaces-polynomial-submodules-proof}{invariant-subspaces-polynomial-submodules}{Invariant subspaces are polynomial submodules}
+    If \(W\) is a \(K[X]\)-\submodule, then
+    \[
+        \varphi(w)=X\cdot w\in W
+    \]
+    for every \(w\in W\), so \(W\) is invariant.
+
+    Conversely, if \(W\) is invariant, induction gives
+    \(\varphi^k(w)\in W\) for every \(k\geq0\). Hence, for
+    \(f=\sum_{k=0}^{m}a_kX^k\),
+    \[
+        f\cdot w=\sum_{k=0}^{m}a_k\varphi^k(w)\in W.
+    \]
+    Thus \(W\) is closed under the \(K[X]\)-action and is a submodule.
+\end{snippetproof}
+
+\begin{snippetexample}{invariant-subspace-block-upper-triangular-example}{Invariant subspaces and block upper-triangular matrices}
+    Let
+    \[
+        \mathcal B=\{w_1,\ldots,w_m,u_1,\ldots,u_s\}
+    \]
+    be a basis of \(V\), and put
+    \[
+        W=\operatorname{Span}_K\{w_1,\ldots,w_m\},
+        \qquad
+        U=\operatorname{Span}_K\{u_1,\ldots,u_s\}.
+    \]
+    If the matrix of \(\varphi\) in \(\mathcal B\) is
+    \[
+        \begin{pmatrix}
+            B_1&B_2\\
+            0&B_3
+        \end{pmatrix},
+    \]
+    then \(W\) is \(\varphi\)-invariant: the images of its basis vectors
+    involve only the \(w_i\). In general \(U\) is not invariant, because
+    \(B_2\) records components of \(\varphi(u_j)\) along \(W\).
+\end{snippetexample}
+
+\begin{snippetproposition}{invariant-direct-sum-block-diagonal-matrix}{Invariant direct sums give block-diagonal matrices}
+    Suppose
+    \[
+        V=W_1\oplus\cdots\oplus W_r
+    \]
+    and every \(W_i\) is \(\varphi\)-\invariant. Concatenating bases of
+    the \(W_i\) gives a basis of \(V\) in which
+    \[
+        [\varphi]
+        =
+        \begin{pmatrix}
+            B_1&0&\cdots&0\\
+            0&B_2&\cdots&0\\
+            \vdots&\vdots&\ddots&\vdots\\
+            0&0&\cdots&B_r
+        \end{pmatrix},
+    \]
+    where \(B_i\) represents \(\varphi|_{W_i}\). Consequently,
+    \[
+        \det[\varphi]=\prod_{i=1}^{r}\det B_i,
+        \qquad
+        \mrank[\varphi]=\sum_{i=1}^{r}\mrank B_i.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{invariant-direct-sum-block-diagonal-matrix-proof}{invariant-direct-sum-block-diagonal-matrix}{Invariant direct sums give block-diagonal matrices}
+    Since \(\varphi(W_i)\subseteq W_i\), the coordinate vector of the
+    image of a basis element of \(W_i\) has no component in any
+    \(W_j\) with \(j\neq i\). Hence all off-diagonal blocks vanish.
+    The determinant and rank formulas are the standard formulas for a
+    block-diagonal matrix.
+\end{snippetproof}
+
+\end{document}

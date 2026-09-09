@@ -10,98 +10,162 @@
 \id{polynomials}
 \genpage
 
-\section{Polynomials}
+\section{Polynomial rings}
 
-% multiple indeterminates?
-\begin{snippetdefinition}{polynomial-definition}{Polynomial}
-    Let \((R, +, \cdot)\) be a \ring.
-    A \textit{polynomial} over \(R\) is an expression of the form
+\begin{snippetdefinition}{polynomial-definition}{Polynomial ring}
+    Let \(A\) be a commutative \ring with identity. The \emph{polynomial
+    ring} \(A[x]\) is the \set of sequences
     \[
-        p(x)=\sum_{k=0}^n a_k x^k
+        (a_0,a_1,a_2,\ldots)\in A^{\naturalnumbers}
     \]
-    where \(a_n\in R\) and \(x\) is an indeterminate.
+    with finite support. Such a sequence is written formally as
+    \[
+        f=\sum_{i\geq0}a_ix^i,
+    \]
+    where \(x\) is an indeterminate. Addition is coefficientwise, while
+    multiplication is defined by convolution:
+    \[
+        \left(\sum_{i\geq0}a_ix^i\right)
+        \left(\sum_{j\geq0}b_jx^j\right)
+        =
+        \sum_{n\geq0}\left(\sum_{i+j=n}a_ib_j\right)x^n.
+    \]
+    The elements of \(A\) are identified with the constant polynomials,
+    and \(x=(0_A,1_A,0_A,\ldots)\).
 \end{snippetdefinition}
 
-\begin{plainhtml}
-    Every polynomial induces a corresponding function.
-\end{plainhtml}
+\begin{snippet}{polynomial-formal-expression-versus-function}
+    Let \(A\) be a commutative \ring. A \polynomial in \(A[x]\) is a
+    formal sequence of coefficients, not a
+    \function. Every \(f\in A[x]\) induces the polynomial \function
+    \[
+        \widetilde f\colon A\fromto A,
+        \qquad
+        \widetilde f(a)=\sum_{i\geq0}a_i a^i,
+    \]
+    but distinct polynomials may induce the same function. For example,
+    \(x^2-x\) and the zero polynomial induce the same function on
+    \(\integers/2\integers\).
+\end{snippet}
 
 \begin{snippetdefinition}{polynomial-degree-definition}{Polynomial degree}
-    Given a \polynomial of the form
+    Let \(A\) be a commutative \ring and let
     \[
-        p(x)=\sum_{k=0}^n a_k x^k
+        f=\sum_{i\geq0}a_ix^i\in A[x]
     \]
-    the \textit{degree} of \(p(x)\), denoted \(\deg p(x)\),
-    is the maximum index \(k\) such that \(a_k \neq 0\).
+    be nonzero. Its \emph{degree} and \emph{leading coefficient} are
+    \[
+        \polynomialdeg f=\max\{i\in\naturalnumbers\suchthat a_i\neq0_A\},
+        \qquad
+        \operatorname{lc}(f)=a_{\polynomialdeg f}.
+    \]
+    A nonzero polynomial is \emph{monic} if
+    \(\operatorname{lc}(f)=1_A\).
 \end{snippetdefinition}
 
 \begin{snippet}{null-polynomial-expl}
-    The polynomial \(p(x)=0\) has no degree. However, sometimes it is
-    convenient to say that it has degree \(-\infty\) or \(-1\).
+    Let \(A\) be a commutative \ring. The zero polynomial in \(A[x]\)
+    has no degree. It is often convenient to adopt
+    the convention
+    \[
+        \polynomialdeg 0=-\infty,
+    \]
+    which makes standard degree inequalities valid without a separate
+    zero case.
 \end{snippet}
 
-\begin{snippetdefinition}{polynomial-root-multiplicity-definition}{Polynomial root multiplicity}
-    Let \(P(x)\) be a \polynomial. Then, a root \(x_0\) of \(P(x)\)
-    has \textit{multiplicity} \(m \in \naturalnumbers^\exceptzero\) if
-    \(P(x)\) is divisible by \({(x-x_0)}^m\) but not \({(x-x_0)}^{m + 1}\).
+\begin{snippetproposition}{polynomial-degree-arithmetic}{Degree and arithmetic}
+    Let \(A\) be a commutative \ring and let \(f,g\in A[x]\). Then
+    \[
+        \polynomialdeg(f+g)
+        \leq
+        \max\{\polynomialdeg f,\polynomialdeg g\}.
+    \]
+    If \(f,g\neq0\), then
+    \[
+        \polynomialdeg(fg)\leq\polynomialdeg f+\polynomialdeg g.
+    \]
+    Equality holds whenever
+    \(\operatorname{lc}(f)\operatorname{lc}(g)\neq0_A\); in particular,
+    it always holds when \(A\) is an \integraldomain.
+\end{snippetproposition}
+
+\begin{snippetdefinition}{multivariable-polynomial-ring-definition}{Polynomials in several indeterminates}
+    Let \(A\) be a commutative \ring and let \(n\geq1\). The polynomial
+    \ring in \(n\) commuting indeterminates is defined recursively by
+    \[
+        A[x_1,\ldots,x_n]
+        =
+        A[x_1,\ldots,x_{n-1}][x_n].
+    \]
+    Equivalently, its elements are finite formal sums
+    \[
+        \sum_{\alpha\in\naturalnumbers^n}a_\alpha x^\alpha,
+        \qquad
+        x^\alpha=x_1^{\alpha_1}\cdots x_n^{\alpha_n}.
+    \]
 \end{snippetdefinition}
 
 \section{Polynomial division}
 
 \begin{snippettheorem}{polynomial-division-theorem}{Polynomial division}
-    Let \(f(x)\) and \(g(x)\) be two \polynomial[polynomials] over \(R\)
-    where \(g(x)\neq0\).
-    Then, there always exist two unique polynomials \(q(x)\) and \(r(x)\) over \(R\)
-    such that \[ f(x)=g(x)q(x) + r(x) \]
-    where \(r(x)=0\) or \(\polynomialdeg r(x) < \polynomialdeg g(x)\).
+    Let \(A\) be a commutative \ring, and let \(f,g\in A[x]\), with
+    \(g\neq0\) and \(\operatorname{lc}(g)\in A^\times\). There exist
+    unique \polynomial[polynomials] \(q,r\in A[x]\) such that
+    \[
+        f=gq+r,
+        \qquad
+        r=0\text{ or }\polynomialdeg r<\polynomialdeg g.
+    \]
+    In particular, this holds for every nonzero \(g\) when \(A\) is a
+    \field.
 \end{snippettheorem}
 
 \begin{snippetproof}{polynomial-division-proof}{polynomial-division-theorem}{Polynomial division}
-    \textbf{Existence of \(q(x)\) and \(r(x)\):}
-    Start with some initial value for \(q(x)\) and \(r(x)\)
-    by letting \(q_0(x)=0\) and \(r_0=f(x)\) (so that the equation remains satisfied).
-    
-    If \(r_0(x)=0\) or \(\polynomialdeg r_0(x) < \polynomialdeg g(x)\) (i.e. the dividend is the null polynomials
-    or its degree is less than the divisor), the process has already ended.
-    Otherwise, we have the situation in which \(f(x) = a_0 + a_1x + \cdots + a_nx^n\)
-    with \(a_n \neq 0\) and \(g(x)=b_0 + b_1x + \cdots + b_nx^m\) with \(a_m \neq 0\)
-    where \(m \leq n\).
-    
-    The next step is to adjust the quotient, thus letting \[
-        q_1(x)=q_0(x) + \frac{a_n}{b_m}x^{n-m}
-        = \frac{a_n}{b_n}x^{n-m}
+    Set \(q_0=0\) and \(r_0=f\). If \(r_0=0\) or
+    \(\polynomialdeg r_0<\polynomialdeg g\), the required decomposition
+    is already obtained. Otherwise, write
+    \[
+        n=\polynomialdeg r_0,
+        \qquad
+        m=\polynomialdeg g,
+        \qquad
+        a=\operatorname{lc}(r_0),
+        \qquad
+        b=\operatorname{lc}(g).
     \]
-    and finding
-    \begin{align*}
-        r_1(x)=f(x)-q_1(x)g(x) &= a_0 + a_1 x \cdots a_n x^n - 
-            \left(
-            \frac{a_n}{b_m}x^{n-m}b_0 + \cdots + \frac{a_n}{b_m}x^{n-m}b_m x^m
-        \right) \\
-        &= a_nx^n - a_nx^n + \cdots
-    \end{align*}
-    
-    And thus only remains terms of degree less than \(n\).
-    Now \(r_1(x)=0\) or \(r_1(x)\) has degree less than \(r_0(x)=f(x)\) (the degree has diminuished).
-    
-    If \(r_1(x)=0\) or \(\polynomialdeg r_1(x) < \polynomialdeg g(x)\), the process has ended.
-    Otherwise, if \(\polynomialdeg r_1(x) \geq \polynomialdeg g(x) = m\) the process is repeated.
-    Eventually, remainders of smaller degrees will be found (or the null remainder),
-    at which point the process has ended.
-    The quotient and remainder are thus \(q_k(x)\) and \(r_k(x)\).
-    \\
-    \textbf{Uniqueness of \(q(x)\) and \(r(x)\):}
-    Assume that \(f(x)=g(x)q(x) + r(x)=g(x)q'(x)+r'(x)\) with
-    \(r(x)=0\) or \(\polynomialdeg r(x)<\deg g(x)\) and
-    \(r'(x)=0\) or \(\polynomialdeg r'(x)<\polynomialdeg g(x)\).
+    Since \(b\) is a unit, define
+    \[
+        q_1=q_0+ab^{-1}x^{n-m},
+        \qquad
+        r_1=f-gq_1.
+    \]
+    The leading terms cancel, so either \(r_1=0\) or
+    \(\polynomialdeg r_1<\polynomialdeg r_0\). Repeating this step gives
+    a strictly decreasing sequence of nonnegative degrees and therefore
+    terminates, producing \(f=gq+r\) with the required bound.
 
-    Starting from \(g(x)q(x)-g(x)q'(x)=r'(x)-r(x)\),
-    we arrive at \(q(x)\left(q(x)-q'(x)\right) = r'(x)-r(x)\).
-
-    For the proof we suppose that the quotient and remainder are not unique,
-    so \(q(x)\neq q'(x)\) or \(q(x)-q'(x)\neq 0\),
-    The first member should have a degree less than \(n\).
-    The second member is null or it has degree less than \(n\).
-    This is a contradiction, implying that quotient (and the remainder) are thus unique.
+    For uniqueness, suppose
+    \[
+        f=gq+r=gq'+r',
+    \]
+    where both remainders are zero or have degree smaller than
+    \(\polynomialdeg g\). Then
+    \[
+        g(q-q')=r'-r.
+    \]
+    If \(q-q'\neq0\), the leading coefficient of \(g\) being a unit
+    gives
+    \[
+        \polynomialdeg\bigl(g(q-q')\bigr)
+        =
+        \polynomialdeg g+\polynomialdeg(q-q')
+        \geq
+        \polynomialdeg g,
+    \]
+    whereas the right-hand side has degree smaller than
+    \(\polynomialdeg g\), a contradiction. Hence \(q=q'\), and then
+    \(r=r'\).
 \end{snippetproof}
 
 \begin{snippet}{polynomial-division-method-illustration}
@@ -125,81 +189,101 @@
     \end{center}
 \end{snippet}
 
-\section{Remainder theorem}
+\section{Evaluation and roots}
+
+\begin{snippetproposition}{polynomial-evaluation-homomorphism}{Evaluation homomorphism}
+    Let \(A\) be a commutative \ring and let \(a\in A\). Evaluation at
+    \(a\) is the \ringhomomorphism
+    \[
+        \operatorname{ev}_a\colon A[x]\fromto A,
+        \qquad
+        \operatorname{ev}_a(f)=f(a),
+    \]
+    which restricts to the identity on \(A\).
+\end{snippetproposition}
 
 \begin{snippettheorem}{polynomial-remainder-theorem}{Remainder theorem}
-    Let \(p(x)\) be a \polynomial and \(\alpha \in \complexnumbers\).
-    The division of \(p(x)\) by \(x-\alpha\) has remainder \(p(\alpha)\)
+    Let \(A\) be a commutative \ring, \(f\in A[x]\), and \(a\in A\).
+    There exists a unique \(q\in A[x]\) such that
     \[
-        p(x) = q(x)(x-\alpha) + p(\alpha)
+        f(x)=(x-a)q(x)+f(a).
     \]
-    for some \(q(x)\).
 \end{snippettheorem}
 
 \begin{snippetproof}{polynomial-remainder-proof}{polynomial-remainder-theorem}{Remainder theorem}
-    By dividing \(p(\alpha)\) by \(x-\alpha\)
-    we get
+    The polynomial \(x-a\) is monic, so polynomial division yields
     \[
-        p(x) = q(x)(x-\alpha) + r(x)
+        f(x)=(x-a)q(x)+r
     \]
-    for some \(q(x)\) and \(r(x)\),
-    where either \(r(x)=0\) or \(\polynomialdeg r(x) < \polynomialdeg x-\alpha = 1\).
-    So, \(r(x)\) is constant.
-    We can now plug \(\alpha\) in and get
-    \[ p(\alpha) = (\alpha - \alpha) q(\alpha) + r(\alpha) \]
-    but \(r(\alpha)\) is constant, so we get
-    \[ r(x) = p(\alpha) \]
+    for a constant remainder \(r\in A\). Evaluating at \(a\) gives
+    \(f(a)=r\).
 \end{snippetproof}
 
-\begin{snippetcorollary}{remainder-theorem-polynomial-root}{Root of polynomial}
-    Given a \polynomial \(p(x)\), a value \(\alpha\)
-    is a root of the polynomial \(p(\alpha) = 0\)
-    \ifandonlyif \(p(x) = q(x)(x-\alpha)\) for some \polynomial \(q(x)\).
+\begin{snippetcorollary}{remainder-theorem-polynomial-root}{Root and linear factor}
+    Let \(A\) be a commutative \ring, \(f\in A[x]\), and \(a\in A\).
+    Then
+    \[
+        f(a)=0_A
+        \ifandonlyif
+        f(x)=(x-a)q(x)
+    \]
+    for some \(q\in A[x]\).
 \end{snippetcorollary}
 
-%\begin{snippetcorollary}{polynomial-divisibility-by-x-1}{Polynomial divisibility by \(x-1\)}
-%    Let
-%    \[ P(x) = \sum_{k=0}^n a_k x^k \]
-%    be a \polynomial. Then, \(P(x)\)
-%    is divisible by \(x-1\) if
-%    \[ \sum_{k=0}^n a_k = 0 \]
-%\end{snippetcorollary}
-
-\section{Algebraic equations}
-
-\begin{snippetdefinition}{algebraic-equation-definition}{Algebraic equation}
-    An equation is said to be \textit{algebraic} if it has the form
-    \[ f(x)=0\]
-    where \(f(x)\) is a non-null \polynomial.
+\begin{snippetdefinition}{polynomial-root-multiplicity-definition}{Polynomial root multiplicity}
+    Let \(A\) be a commutative \ring, let \(f\in A[x]\) be nonzero, and
+    let \(a\in A\) be a root of \(f\). The \emph{multiplicity} of \(a\)
+    is the largest \(m\in\naturalnumbers\difference\{0\}\) such that
+    \[
+        (x-a)^m\divides f.
+    \]
 \end{snippetdefinition}
 
+\begin{snippetdefinition}{algebraic-equation-definition}{Algebraic equation}
+    Let \(A\) be a commutative \ring. An equation in one variable is
+    \emph{algebraic over \(A\)} if it has the form
+    \[
+        f(x)=0_A
+    \]
+    for some nonzero \(f\in A[x]\).
+\end{snippetdefinition}
 
-\begin{snippettheorem}{solutions-of-algebraic-equation-theorem}{Solutions of algebraic equations}
-    Any \algebraicequation \(f(x)=0\) has at most \(n\) distinct solutions,
-    where \(n=\polynomialdeg f(x)\).
+\begin{snippettheorem}{solutions-of-algebraic-equation-theorem}{Bound on the number of roots}
+    Let \(A\) be an \integraldomain. A nonzero \polynomial
+    \(f\in A[x]\) has at most \(\polynomialdeg f\) distinct roots in
+    \(A\).
 \end{snippettheorem}
 
-\begin{snippetproof}{solutions-of-algebraic-equation-proof}{solutions-of-algebraic-equation-theorem}{Solutions of algebraic equations}
-    Let \(a_1\), \(a_2\), \(\cdots\), \(a_t\) be distinct solutions of \(f(x)=0\)
-    where \(f(x)\) is non-null.
-    We must show that \(t<n\).
-    By the \snippetref[polynomial-remainder-theorem][remainder theorem] \(f(x)=(x-a_1)q_1(x)\) for some \polynomial \(q_1(x)\).\\
-    The same goes for \(a_2\), \(a_3\), \(\cdots\).
-    Substituting, we then get
-    \(0=f(a_2)=(a_2-a_1)q_1(a_2)\).
-    Since \(a_1 \neq a_2\), we have (by the cancellation principle)
-    that \(q_1(a_2)=0\). By the \snippetref[polynomial-remainder-theorem][remainder theorem] \(q_1(x)=(x-a_2)q_2(x)\) for some \(q_2(x)\),
-    and thus \(f(x) = (x-a_1)(x-a_2)q_2(x)\).
-    By induction, we come to \(f(x)=(x-a_1)(x-a_2)\cdots(x-a_t)q_t(x)\)
-    and by confronting the degrees we find that \(t \leq n\).
+\begin{snippetproof}{solutions-of-algebraic-equation-proof}{solutions-of-algebraic-equation-theorem}{Bound on the number of roots}
+    Let \(a_1,\ldots,a_t\) be distinct roots of \(f\). The root-factor
+    criterion gives \(f=(x-a_1)q_1\). Since
+    \[
+        0=f(a_2)=(a_2-a_1)q_1(a_2)
+    \]
+    and \(A\) is an \integraldomain with \(a_2-a_1\neq0_A\), one has
+    \(q_1(a_2)=0_A\). Repeating the argument yields
+    \[
+        f=(x-a_1)\cdots(x-a_t)q_t.
+    \]
+    Comparing degrees gives \(t\leq\polynomialdeg f\).
 \end{snippetproof}
 
+\section{Rational functions}
+
 \begin{snippetdefinition}{rational-function-definition}{Rational function}
-    A \function \(f(x)\) is \emph{rational} if it can be written in the form
+    Let \(K\) be a \field. The \emph{field of rational functions} in
+    one indeterminate over \(K\) is the fraction field
     \[
-        f(x) = \frac{P(x)}{Q(x)}
+        K(x)=\quotientfield(K[x]).
     \]
-    where \(P(x)\) and \(Q(x)\) are \polynomial[polynomials] of \(x\) where \(Q(x) \neq 0\).
+    Its elements are equivalence classes of quotients
+    \[
+        \frac{P(x)}{Q(x)},
+        \qquad
+        P,Q\in K[x],
+        \quad
+        Q\neq0.
+    \]
 \end{snippetdefinition}
 
 \end{document}

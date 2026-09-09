@@ -4,6 +4,9 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
+\usepackage{tikz}
+
+\usetikzlibrary{cd}
 
 \begin{document}
 
@@ -12,43 +15,191 @@
 
 \section{Isomorphism theorems}
 
-\begin{snippettheorem}{ring-first-isomorphism-theorem}{First isomorphism theorem}
-    Let \(\varphi\colon G \fromto H\) be a \ringhomomorphism.
-    Then, \[G / \ringker \varphi \ringisomorphic \image \varphi\]
+\begin{snippettheorem}{ring-first-isomorphism-theorem}{First isomorphism theorem for rings}
+    Let \(\varphi\colon A\fromto B\) be a \ringhomomorphism. Then
+    \[
+        A/\ringker\varphi\ringisomorphic\varphi(A).
+    \]
+    More precisely, the \function
+    \[
+        \overline{\varphi}\colon
+        A/\ringker\varphi\fromto\varphi(A),
+        \qquad
+        \overline{\varphi}(a+\ringker\varphi)=\varphi(a),
+    \]
+    is a \ringisomorphism.
 \end{snippettheorem}
 
-\begin{snippettheorem}{ring-second-isomorphism-theorem}{Second isomorphism theorem}
-    Let \(A\) be a \ring and let
-    \(B \subringleq A\) and \(I \idealin A\).
-    Then, the quotient ring
+\begin{snippetproof}{ring-first-isomorphism-theorem-proof}{ring-first-isomorphism-theorem}{First isomorphism theorem for rings}
+    Put \(I=\ringker\varphi\). If \(a'+I=a+I\), then
+    \(a'-a\in I\), so \(\varphi(a')=\varphi(a)\). Thus
+    \(\overline{\varphi}\) is well-defined. It preserves the identity,
+    addition, and multiplication because \(\varphi\) does:
     \[
-        \frac{(B+I)}{I} \ringisomorphic \frac{B}{I \intersection B} 
+        \overline{\varphi}(1_A+I)=1_B,
+    \]
+    \[
+        \overline{\varphi}((a_1+a_2)+I)
+        =\varphi(a_1)+\varphi(a_2),
+    \]
+    and
+    \[
+        \overline{\varphi}(a_1a_2+I)
+        =\varphi(a_1)\varphi(a_2).
+    \]
+    It is \surjective onto \(\varphi(A)\) by definition, and
+    \[
+        \ringker\overline{\varphi}
+        =\{a+I\suchthat a\in I\}
+        =\{0_A+I\}.
+    \]
+    Hence it is also \injective.
+\end{snippetproof}
+
+\begin{snippet}{ring-first-isomorphism-theorem-factorization}
+    Under the hypotheses of the first isomorphism theorem, if
+    \(\pi\colon A\fromto A/\ringker\varphi\) is the canonical projection,
+    then
+    \[
+        \varphi=\overline{\varphi}\circ\pi.
+    \]
+    Equivalently, the diagram
+    \[
+        \begin{tikzcd}
+            A \arrow[r, "\varphi"] \arrow[d, "\pi"'] & \varphi(A) \\
+            A/\ringker\varphi
+                \arrow[ur, "\overline{\varphi}"']
+        \end{tikzcd}
+    \]
+    commutes.
+\end{snippet}
+
+\begin{snippettheorem}{ring-second-isomorphism-theorem}{Second isomorphism theorem for rings}
+    Let \(A\) be a \ring, let \(B\subringleq A\), and let
+    \(I\idealin A\) be a two-sided \ideal. Then
+    \[
+        B+I\subringleq A,
+        \qquad
+        I\idealin B+I,
+        \qquad
+        I\intersection B\idealin B,
+    \]
+    and
+    \[
+        (B+I)/I\ringisomorphic B/(I\intersection B).
     \]
 \end{snippettheorem}
 
-\begin{snippettheorem}{ring-third-isomorphism-theorem}{Third isomorphism theorem}
-    Let \(A\) be a \ring, \(I, J \idealin A\) and \(J \subset I\).
-    Then,
+\begin{snippetproof}{ring-second-isomorphism-theorem-proof}{ring-second-isomorphism-theorem}{Second isomorphism theorem for rings}
+    The \set
     \[
-        \frac{A/J}{I/J} \ringisomorphic \frac{A}{I}
+        B+I=\{b+x\suchthat b\in B,\ x\in I\}
     \]
-    In particular, there is a \bijective \function
-    between the \set of \ideal[ideals] of \(A/J\)
-    and the \set of \ideal[ideals] \(I\) of \(A\) such that \(I \subseteq J\).
+    contains \(0_A\) and \(1_A\), and it is closed under differences. If
+    \(z_j=b_j+x_j\), then
+    \[
+        z_1z_2
+        =b_1b_2+(b_1x_2+x_1b_2+x_1x_2)\in B+I,
+    \]
+    since the parenthesized term lies in \(I\). Thus
+    \(B+I\subringleq A\). Since \(I\subseteq B+I\), it remains a two-sided
+    \ideal after restricting the ambient ring to \(B+I\).
+
+    The intersection \(I\intersection B\) is an additive \subgroup of
+    \(B\). If \(x\in I\intersection B\) and \(b\in B\), then both \(bx\)
+    and \(xb\) belong to \(I\) and to \(B\), so
+    \(I\intersection B\idealin B\).
+
+    Define the \ringhomomorphism
+    \[
+        \psi\colon B\fromto(B+I)/I,
+        \qquad
+        \psi(b)=b+I.
+    \]
+    Every coset in \((B+I)/I\) has the form
+    \[
+        (b+x)+I=b+I,
+    \]
+    so \(\psi\) is \surjective. Moreover,
+    \[
+        \ringker\psi
+        =\{b\in B\suchthat b\in I\}
+        =I\intersection B.
+    \]
+    The first isomorphism theorem gives the desired isomorphism.
+\end{snippetproof}
+
+\begin{snippet}{ring-second-isomorphism-trivial-case}
+    In the second isomorphism theorem, if \(B\subseteq I\), then
+    \(B+I=I\) and \(I\intersection B=B\). Both quotient rings in the
+    theorem are therefore trivial.
+\end{snippet}
+
+\begin{snippettheorem}{ring-third-isomorphism-theorem}{Third isomorphism theorem for rings}
+    Let \(A\) be a \ring and let \(J\subseteq I\) be two-sided
+    \ideal[ideals] of \(A\). Then
+    \[
+        I/J\idealin A/J
+    \]
+    and
+    \[
+        (A/J)/(I/J)\ringisomorphic A/I.
+    \]
 \end{snippettheorem}
 
-\subsection{Proofs}
+\begin{snippetproof}{ring-third-isomorphism-theorem-proof}{ring-third-isomorphism-theorem}{Third isomorphism theorem for rings}
+    The \set \(I/J=\{x+J\suchthat x\in I\}\) is an additive
+    \subgroup of \(A/J\). For \(x\in I\) and \(a\in A\),
+    \[
+        (x+J)(a+J)=xa+J\in I/J,
+        \qquad
+        (a+J)(x+J)=ax+J\in I/J,
+    \]
+    so \(I/J\idealin A/J\).
 
-\begin{snippetproof}{ring-first-isomorphism-theorem-proof}{ring-first-isomorphism-theorem}{First isomorphism theorem}
-    \todo
+    Define
+    \[
+        \varphi\colon A/J\fromto A/I,
+        \qquad
+        \varphi(a+J)=a+I.
+    \]
+    If \(a'+J=a+J\), then \(a'-a\in J\subseteq I\), so the \function is
+    well-defined. It is a \surjective \ringhomomorphism, and
+    \[
+        \ringker\varphi
+        =\{a+J\suchthat a\in I\}
+        =I/J.
+    \]
+    The first isomorphism theorem now gives
+    \[
+        (A/J)/(I/J)\ringisomorphic A/I.
+    \]
 \end{snippetproof}
 
-\begin{snippetproof}{ring-second-isomorphism-theorem-proof}{ring-second-isomorphism-theorem}{Second isomorphism theorem}
-    \todo
-\end{snippetproof}
+\begin{snippetcorollary}{quotient-ring-ideal-correspondence}{Ideal correspondence for quotient rings}
+    Let \(A\) be a \ring and \(J\idealin A\). There is an
+    inclusion-preserving \bijective correspondence
+    \[
+        \{\text{two-sided ideals of }A/J\}
+        \longleftrightarrow
+        \{I\idealin A\suchthat J\subseteq I\},
+    \]
+    given by \(I\mapsto I/J\). Its inverse sends an \ideal
+    \(L\idealin A/J\) to its preimage under the canonical projection
+    \(A\fromto A/J\).
+\end{snippetcorollary}
 
-\begin{snippetproof}{ring-third-isomorphism-theorem-proof}{ring-third-isomorphism-theorem}{Third isomorphism theorem}
-   \todo
+\begin{snippetproof}{quotient-ring-ideal-correspondence-proof}{quotient-ring-ideal-correspondence}{Ideal correspondence for quotient rings}
+    Let \(\pi\colon A\fromto A/J\) be the canonical projection. If
+    \(I\idealin A\) contains \(J\), then \(\pi(I)=I/J\idealin A/J\). If
+    \(L\idealin A/J\), then \(\pi^{-1}(L)\idealin A\) and contains
+    \(\ringker\pi=J\). Surjectivity of \(\pi\) gives
+    \[
+        \pi^{-1}(\pi(I))=I,
+        \qquad
+        \pi(\pi^{-1}(L))=L.
+    \]
+    Hence the two assignments are inverse and preserve inclusions.
 \end{snippetproof}
 
 \end{document}

@@ -13,12 +13,12 @@
 \section{Semidirect product}
 
 \begin{snippet}{semidirect-product-motivation}
-    If the \group[groups] \(G_1, G_2, G_n\)
+    If the \group[groups] \(G_1, G_2, \ldots, G_n\)
     are \abeliangroup[abelian], their product remains \abeliangroup[abelian].
     We would like to construct complicated groups from relatively simpler \group[groups],
     hence also non-abelian.
-    We relax the condition that both groups must be \normalsubgrptext, and require that
-    at least one of them to be \normalsubgrptext.
+    We relax the condition that both factors must be \normalsubgrptext, and require
+    only one of them to be normal.
 \end{snippet}
 
 %
@@ -55,5 +55,154 @@
         H \ltimes_\varphi N \triangleq (H \cartesianprod N, \star)
     \]
 \end{snippetdefinition}
+
+\begin{snippet}{semidirect-product-right-action-convention}
+    These notes use a right-action convention: \(\varphi(h)(n)\) is written
+    as the action of \(h\) on the right of \(n\). Consequently,
+    \[
+        \varphi(h_1h_2)(n)=\varphi(h_2)(\varphi(h_1)(n)),
+    \]
+    and the normal factor is written second, as \(H\ltimes_\varphi N\).
+    With the common left-action convention the same construction is usually
+    written \(N\rtimes H\).
+\end{snippet}
+
+\begin{snippettheorem}{internal-semidirect-product-characterization}{Internal semidirect product characterization}
+    Let \(G\) be a \group, \(H\subgroupleq G\), and \(N\normalsubgrp G\).
+    The following are equivalent:
+    \begin{enumerate}
+        \item \(G=H\ltimes N\);
+        \item every \(g\in G\) has a unique expression \(g=hn\), with
+            \(h\in H\) and \(n\in N\).
+    \end{enumerate}
+\end{snippettheorem}
+
+\begin{snippetproof}{internal-semidirect-product-characterization-proof}{internal-semidirect-product-characterization}{Internal semidirect product characterization}
+    If \(G=HN\), existence is immediate. If \(h_1n_1=h_2n_2\), then
+    \[
+        h_2^{-1}h_1=n_2n_1^{-1}\in H\intersection N=1,
+    \]
+    so \(h_1=h_2\) and \(n_1=n_2\). Conversely, unique decomposition gives
+    \(G=HN\). The identity has both decompositions \(1_G1_G\) and \(x x^{-1}\)
+    for any \(x\in H\intersection N\), so uniqueness forces \(x=1_G\).
+\end{snippetproof}
+
+\begin{snippetproposition}{internal-semidirect-product-conjugation-action}{Action associated with an internal semidirect product}
+    Let \(G=H\ltimes N\) be an internal semidirect product. Conjugation
+    determines a right action
+    \[
+        \varphi\colon H\fromto\operatorname{Aut}(N),
+        \qquad \varphi(h)(n)=h^{-1}nh.
+    \]
+    Under the unique decomposition \(g=hn\), multiplication is
+    \[
+        (h_1n_1)(h_2n_2)
+        =h_1h_2\,\varphi(h_2)(n_1)n_2.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{internal-semidirect-product-conjugation-action-proof}{internal-semidirect-product-conjugation-action}{Action associated with an internal semidirect product}
+    Since \(N\normalsubgrp G\), conjugation by an element of \(H\) restricts
+    to an automorphism of \(N\). The right-action law follows from
+    \({(n^{h_1})}^{h_2}=n^{h_1h_2}\). Finally,
+    \[
+        h_1n_1h_2n_2
+        =h_1h_2(h_2^{-1}n_1h_2)n_2
+        =h_1h_2\varphi(h_2)(n_1)n_2.
+    \]
+\end{snippetproof}
+
+\begin{snippettheorem}{external-semidirect-product-is-group}{External semidirect product is a group}
+    Let \(H,N\) be \group[groups] and let
+    \(\varphi\colon H\fromto\operatorname{Aut}(N)\) be a homomorphism under
+    the right-action convention. The operation
+    \[
+        (h_1,n_1)(h_2,n_2)
+        =(h_1h_2,\varphi(h_2)(n_1)n_2)
+    \]
+    makes \(H\cartesianprod N\) a \group, denoted \(H\ltimes_\varphi N\).
+    Its identity and inverses are
+    \[
+        (1_H,1_N),
+        \qquad
+        (h,n)^{-1}=\left(h^{-1},\varphi(h^{-1})(n^{-1})\right).
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{external-semidirect-product-is-group-proof}{external-semidirect-product-is-group}{External semidirect product is a group}
+    The right-action law and the fact that each \(\varphi(h)\) is an
+    automorphism give
+    \begin{align*}
+        &((h_1,n_1)(h_2,n_2))(h_3,n_3) \\
+        &\quad=(h_1h_2h_3,
+        \varphi(h_2h_3)(n_1)\varphi(h_3)(n_2)n_3) \\
+        &\quad=(h_1,n_1)((h_2,n_2)(h_3,n_3)),
+    \end{align*}
+    proving associativity. The displayed identity is immediate. Multiplying
+    \((h,n)\) by the proposed inverse on either side gives \((1_H,1_N)\),
+    using that \(\varphi(h^{-1})\) and \(\varphi(h)\) are inverse
+    automorphisms.
+\end{snippetproof}
+
+\begin{snippettheorem}{external-semidirect-product-internal-structure}{External semidirect products are internal}
+    Let \(G=H\ltimes_\varphi N\). The subsets
+    \[
+        \widehat H=\{(h,1_N)\suchthat h\in H\},
+        \qquad
+        \widehat N=\{(1_H,n)\suchthat n\in N\}
+    \]
+    are \subgroup[subgroups] isomorphic to \(H\) and \(N\), respectively.
+    Moreover, \(\widehat N\normalsubgrp G\),
+    \(\widehat H\intersection\widehat N=1\), and
+    \(G=\widehat H\widehat N\). Thus \(G\) is their internal semidirect product.
+\end{snippettheorem}
+
+\begin{snippetproof}{external-semidirect-product-internal-structure-proof}{external-semidirect-product-internal-structure}{External semidirect products are internal}
+    The maps \(h\mapsto(h,1_N)\) and \(n\mapsto(1_H,n)\) are injective
+    homomorphisms, and the two images have trivial intersection. Every element
+    decomposes as
+    \[
+        (h,n)=(h,1_N)(1_H,n).
+    \]
+    Finally, direct computation gives
+    \[
+        (1_H,n)^{(h,1_N)}=(1_H,\varphi(h)(n)),
+    \]
+    so \(\widehat N\) is normal.
+\end{snippetproof}
+
+\begin{snippettheorem}{internal-external-semidirect-product-isomorphism}{Internal and external semidirect products}
+    Let \(G=H\ltimes N\) be an internal semidirect product and let
+    \(\varphi(h)(n)=h^{-1}nh\). Then
+    \[
+        H\ltimes_\varphi N\groupisomorphic G
+    \]
+    through the map \((h,n)\mapsto hn\).
+\end{snippettheorem}
+
+\begin{snippetproof}{internal-external-semidirect-product-isomorphism-proof}{internal-external-semidirect-product-isomorphism}{Internal and external semidirect products}
+    Unique decomposition makes the map bijective. The multiplication formula
+    for an internal semidirect product shows that
+    \[
+        (h_1,n_1)(h_2,n_2)\longmapsto
+        h_1h_2\varphi(h_2)(n_1)n_2=(h_1n_1)(h_2n_2),
+    \]
+    so it is a homomorphism.
+\end{snippetproof}
+
+\begin{snippetproposition}{semidirect-products-isomorphic-precomposed-actions}{Isomorphic semidirect products from precomposed actions}
+    Let \(\varphi,psi\colon H\fromto\operatorname{Aut}(N)\) define right
+    actions and let \(\theta\in\operatorname{Aut}(H)\) satisfy
+    \(\psi(h)=\varphi(\theta(h))\) for every \(h\in H\). Then
+    \[
+        H\ltimes_\psi N\groupisomorphic H\ltimes_\varphi N.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{semidirect-products-isomorphic-precomposed-actions-proof}{semidirect-products-isomorphic-precomposed-actions}{Isomorphic semidirect products from precomposed actions}
+    The map \((h,n)\mapsto(\theta(h),n)\) is bijective. The relation between
+    the actions shows directly that it preserves the semidirect-product
+    multiplication.
+\end{snippetproof}
 
 \end{document}

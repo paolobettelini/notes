@@ -1,0 +1,219 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{minimal-polynomial-canonical-forms}
+\genpage
+
+\section{Cyclic and block-diagonal matrices}
+
+\begin{snippetproposition}{cyclic-endomorphism-minimal-polynomial}{Minimal polynomial of a cyclic endomorphism}
+    Let \(V=K[X]v\) be the cyclic module associated with a
+    \linearendomorphism \(\varphi\), and suppose
+    \[
+        \moduleann(v)=(p)
+    \]
+    for a monic polynomial \(p\). Then every matrix \(A\) representing
+    \(\varphi\) satisfies
+    \[
+        \mu_A=\chi_A=p.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{cyclic-endomorphism-minimal-polynomial-proof}{cyclic-endomorphism-minimal-polynomial}{Minimal polynomial of a cyclic endomorphism}
+    In a cyclic basis, the matrix of \(\varphi\) is \(C(p)\), whose
+    characteristic polynomial is \(p\). Moreover, a polynomial \(f\)
+    annihilates \(\varphi\) only if it annihilates the cyclic generator
+    \(v\), hence only if \(p\divides f\). Since \(p\) annihilates the
+    whole quotient module \(K[X]/(p)\), it is the minimal polynomial.
+    Similarity invariance extends the conclusion to every representing
+    matrix.
+\end{snippetproof}
+
+\begin{snippetcorollary}{companion-matrix-minimal-polynomial}{Minimal polynomial of a companion matrix}
+    If \(p\in K[X]\) is monic, then
+    \[
+        \mu_{C(p)}=\chi_{C(p)}=p.
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{companion-matrix-minimal-polynomial-proof}{companion-matrix-minimal-polynomial}{Minimal polynomial of a companion matrix}
+    Apply the cyclic-endomorphism result to
+    \(K[X]/(p)\), with generator \(1+(p)\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{jordan-block-minimal-polynomial}{Minimal polynomial of a Jordan block}
+    For every \jordanblock \(J_n(a)\),
+    \[
+        \mu_{J_n(a)}=\chi_{J_n(a)}=(X-a)^n.
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{jordan-block-minimal-polynomial-proof}{jordan-block-minimal-polynomial}{Minimal polynomial of a Jordan block}
+    The block \(J_n(a)\) represents the action of \(X\) on the cyclic
+    module \(K[X]/((X-a)^n)\).
+\end{snippetproof}
+
+\begin{snippetproposition}{block-diagonal-minimal-polynomial-lcm}{Minimal polynomial of a block-diagonal matrix}
+    Let
+    \[
+        B=\operatorname{diag}(B_1,\ldots,B_s).
+    \]
+    For every \(f\in K[X]\),
+    \[
+        f(B)=\operatorname{diag}(f(B_1),\ldots,f(B_s)).
+    \]
+    Consequently,
+    \[
+        \mu_B=\lcm(\mu_{B_1},\ldots,\mu_{B_s}),
+    \]
+    where the least common multiple is chosen monic.
+\end{snippetproposition}
+
+\begin{snippetproof}{block-diagonal-minimal-polynomial-lcm-proof}{block-diagonal-minimal-polynomial-lcm}{Minimal polynomial of a block-diagonal matrix}
+    Every power of a block-diagonal matrix is obtained by taking the
+    corresponding power of each block, which proves the formula for
+    \(f(B)\). Thus \(f(B)=0\) exactly when every \(\mu_{B_i}\) divides
+    \(f\). The monic polynomial of least degree with this property is
+    their least common multiple.
+\end{snippetproof}
+
+\section{Canonical forms}
+
+\begin{snippettheorem}{minimal-polynomial-rational-canonical-form}{Minimal polynomial from rational canonical form}
+    Suppose the \rationalcanonicalform of \(A\) has companion blocks
+    \[
+        C(d_1),\ldots,C(d_s),
+        \qquad
+        d_1\divides\cdots\divides d_s.
+    \]
+    Then
+    \[
+        \mu_A=d_s,
+        \qquad
+        \chi_A=d_1\cdots d_s.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{minimal-polynomial-rational-canonical-form-proof}{minimal-polynomial-rational-canonical-form}{Minimal polynomial from rational canonical form}
+    The minimal polynomial is the least common multiple of the minimal
+    polynomials \(d_i\) of the companion blocks. The divisibility chain
+    makes this least common multiple equal to \(d_s\). The
+    characteristic-polynomial formula is the product formula for
+    companion blocks.
+\end{snippetproof}
+
+\begin{snippetcorollary}{minimal-characteristic-polynomial-irreducible-factors}{Minimal and characteristic polynomials have the same irreducible factors}
+    The \minimalpolynomial of \(A\) divides its
+    \characteristicpolynomial, and the two polynomials have exactly the
+    same monic irreducible factors. In particular, one splits into
+    linear factors over \(K\) \ifandonlyif the other does.
+\end{snippetcorollary}
+
+\begin{snippetproof}{minimal-characteristic-polynomial-irreducible-factors-proof}{minimal-characteristic-polynomial-irreducible-factors}{Minimal and characteristic polynomials have the same irreducible factors}
+    In rational canonical form,
+    \[
+        \mu_A=d_s,
+        \qquad
+        \chi_A=d_1\cdots d_s,
+        \qquad
+        d_i\divides d_s.
+    \]
+    Thus \(\mu_A\divides\chi_A\). Every irreducible factor of \(\mu_A\)
+    appears in \(\chi_A\), while every irreducible factor of some
+    \(d_i\), and hence of \(\chi_A\), divides \(d_s=\mu_A\).
+\end{snippetproof}
+
+\begin{snippettheorem}{minimal-polynomial-jordan-form}{Minimal polynomial from Jordan form}
+    Suppose the characteristic polynomial of \(A\) splits over \(K\).
+    For each distinct \eigenvalue \(a_i\), let \(n_i\) be the maximum
+    size of a Jordan block belonging to \(a_i\). Then
+    \[
+        \mu_A
+        =
+        \prod_i(X-a_i)^{n_i}.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{minimal-polynomial-jordan-form-proof}{minimal-polynomial-jordan-form}{Minimal polynomial from Jordan form}
+    By similarity invariance, compute on the Jordan form. The minimal
+    polynomial of \(J_m(a)\) is \((X-a)^m\), and the minimal polynomial
+    of a block-diagonal matrix is the least common multiple of the
+    block minimal polynomials. For a fixed eigenvalue this selects the
+    largest exponent; factors belonging to distinct eigenvalues are
+    coprime, so their least common multiple is the displayed product.
+\end{snippetproof}
+
+\section{Cayley--Hamilton and diagonalizability}
+
+\begin{snippettheorem}{cayley-hamilton-theorem}{Cayley--Hamilton theorem}
+    Every square \matrix over a \field annihilates its own
+    \characteristicpolynomial:
+    \[
+        \chi_A(A)=0.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{cayley-hamilton-theorem-proof}{cayley-hamilton-theorem}{Cayley--Hamilton theorem}
+    Rational canonical form shows that
+    \(\mu_A\divides\chi_A\). Since every multiple of the minimal
+    polynomial annihilates \(A\), the characteristic polynomial
+    annihilates \(A\).
+\end{snippetproof}
+
+\begin{snippetcorollary}{minimal-polynomial-diagonalizability-criterion}{Diagonalizability criterion from the minimal polynomial}
+    A square \matrix \(A\) over \(K\) is \diagonalizable over \(K\)
+    \ifandonlyif its \minimalpolynomial is a product of distinct monic
+    linear factors in \(K[X]\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{minimal-polynomial-diagonalizability-criterion-proof}{minimal-polynomial-diagonalizability-criterion}{Diagonalizability criterion from the minimal polynomial}
+    If \(A\) is diagonalizable with distinct eigenvalues
+    \(a_1,\ldots,a_s\), then
+    \[
+        \mu_A=\prod_{i=1}^{s}(X-a_i).
+    \]
+    Conversely, if the minimal polynomial is a product of distinct
+    linear factors, the characteristic polynomial also splits. In the
+    Jordan formula for \(\mu_A\), every maximal block size is therefore
+    \(1\), so every Jordan block has size \(1\) and \(A\) is
+    diagonalizable.
+\end{snippetproof}
+
+\section{Examples}
+
+\begin{snippetexample}{minimal-polynomial-jordan-blocks-example}{Reading the minimal polynomial from Jordan blocks}
+    If
+    \[
+        A\sim J_2(2)\oplus J_1(2)\oplus J_2(3),
+    \]
+    then the largest block for each eigenvalue has size \(2\). Hence
+    \[
+        \mu_A=(X-2)^2(X-3)^2,
+        \qquad
+        \chi_A=(X-2)^3(X-3)^2.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{minimal-characteristic-polynomials-different-example}{Different minimal and characteristic polynomials}
+    If
+    \[
+        A\sim J_3(0)\oplus J_2(3)\oplus J_1(3),
+    \]
+    then
+    \[
+        \chi_A=X^3(X-3)^3,
+        \qquad
+        \mu_A=X^3(X-3)^2.
+    \]
+    The exponent of each linear factor in \(\mu_A\) is the largest
+    Jordan-block size for the corresponding eigenvalue, whereas its
+    exponent in \(\chi_A\) is the sum of all those block sizes.
+\end{snippetexample}
+
+\end{document}

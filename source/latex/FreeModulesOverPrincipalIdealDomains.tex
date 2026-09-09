@@ -1,0 +1,281 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{free-modules-over-principal-ideal-domains}
+\genpage
+
+\section{Factorization length}
+
+\begin{snippetdefinition}{pid-element-factorization-length}{Factorization length}
+    Let \(A\) be a \principalidealdomain and let
+    \(a\in A\difference\{0_A\}\). Write
+    \[
+        a=up_1^{n_1}\cdots p_r^{n_r},
+        \qquad
+        u\in A^\times,
+    \]
+    where the \(p_i\) are pairwise nonassociate
+    \primeelement[prime elements]. The \emph{factorization length} of
+    \(a\) is
+    \[
+        \ell(a)=n_1+\cdots+n_r.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetnote}{pid-element-factorization-length-properties}{Properties of factorization length}
+    Unique factorization shows that \(\ell(a)\) is well-defined. If
+    \(b\divides a\), then
+    \[
+        \ell(b)\leq\ell(a),
+    \]
+    because every prime exponent in \(b\) is at most the corresponding
+    exponent in \(a\).
+\end{snippetnote}
+
+\section{Splitting along a homomorphism}
+
+\begin{snippetlemma}{pid-module-homomorphism-splitting}{Splitting along a homomorphism to the PID}
+    Let \(\varphi\colon M\fromto A\) be a \modulehomomorphism. Suppose
+    that some \(v\in M\) satisfies
+    \[
+        \moduleimage(\varphi)=(\varphi(v)),
+        \qquad
+        \varphi(v)\neq0_A.
+    \]
+    Then
+    \[
+        M=Av\oplus\moduleker(\varphi).
+    \]
+\end{snippetlemma}
+
+\begin{snippetproof}{pid-module-homomorphism-splitting-proof}{pid-module-homomorphism-splitting}{Splitting along a homomorphism to the PID}
+    Put \(b=\varphi(v)\). If \(av\in\moduleker(\varphi)\), then
+    \[
+        0_A=\varphi(av)=ab.
+    \]
+    Since \(A\) is an \integraldomain and \(b\neq0_A\), one has \(a=0_A\).
+    Thus \(Av\intersection\moduleker(\varphi)=\{0_M\}\).
+
+    For any \(w\in M\), the equality
+    \(\moduleimage(\varphi)=(b)\) gives \(\varphi(w)=cb\) for some
+    \(c\in A\). Hence
+    \[
+        \varphi(w-cv)=\varphi(w)-c\varphi(v)=0_A,
+    \]
+    and
+    \[
+        w=cv+(w-cv)\in Av+\moduleker(\varphi).
+    \]
+    The sum is therefore direct and equals \(M\).
+\end{snippetproof}
+
+\section{Submodules of free modules}
+
+\begin{snippettheorem}{pid-submodule-of-finite-free-module}{Submodules of finite free modules over a PID}
+    Let \(M\) be a finite \freemodule over the
+    \principalidealdomain \(A\), with
+    \[
+        \freemodulerank(M)=r.
+    \]
+    Every \submodule \(V\submoduleleq M\) is free and
+    \[
+        \freemodulerank(V)\leq r.
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{pid-submodule-of-finite-free-module-proof}{pid-submodule-of-finite-free-module}{Submodules of finite free modules over a PID}
+    Proceed by induction on \(r\). The case \(r=0\) is immediate. If
+    \(r=1\), identify \(M\) with \(A\). Then \(V\) corresponds to an
+    \ideal \(I=(c)\). If \(c=0_A\), it is free of rank \(0\); otherwise,
+    multiplication by \(c\) defines an isomorphism \(A\to(c)\), because
+    \(A\) is a domain. Thus \(V\) is free of rank \(1\).
+
+    Suppose \(r>1\) and identify
+    \[
+        M=A^{r-1}\oplus A.
+    \]
+    Put \(W=A^{r-1}\oplus\{0_A\}\) and let
+    \(\pi\colon M\fromto A\) be projection onto the last coordinate.
+    By induction, \(V\intersection W\) is free of rank at most \(r-1\).
+    If \(V\subseteq W\), the result follows.
+
+    Otherwise \(\pi|_V\) has nonzero image. Since \(A\) is a PID,
+    \[
+        \moduleimage(\pi|_V)=(c)
+    \]
+    for some \(c\neq0_A\). Choose \(v\in V\) with \(\pi(v)=c\). The
+    splitting lemma applied to \(\pi|_V\) gives
+    \[
+        V=Av\oplus\moduleker(\pi|_V)
+        =
+        Av\oplus(V\intersection W).
+    \]
+    Hence \(V\) is free of rank at most \(r\).
+\end{snippetproof}
+
+\section{Primitive vectors and coefficient gcds}
+
+\begin{snippetlemma}{free-module-coefficient-gcd-homomorphisms}{Coefficient gcds and homomorphisms to the PID}
+    Let \(M\) be a finite \freemodule with basis
+    \(\mathcal X=\{v_1,\ldots,v_r\}\), and write
+    \[
+        w=a_1v_1+\cdots+a_rv_r.
+    \]
+    Let \(b\) be a greatest common divisor of the coefficients, so
+    \[
+        (b)=(a_1,\ldots,a_r).
+    \]
+    Then:
+    \begin{enumerate}
+        \item \(b\divides\varphi(w)\) for every
+        \modulehomomorphism \(\varphi\colon M\fromto A\);
+        \item there exists a \modulehomomorphism
+        \(\psi\colon M\fromto A\) such that \(\psi(w)=b\).
+    \end{enumerate}
+\end{snippetlemma}
+
+\begin{snippetproof}{free-module-coefficient-gcd-homomorphisms-proof}{free-module-coefficient-gcd-homomorphisms}{Coefficient gcds and homomorphisms to the PID}
+    For every \(\varphi\colon M\fromto A\),
+    \[
+        \varphi(w)=a_1\varphi(v_1)+\cdots+a_r\varphi(v_r).
+    \]
+    Since \(b\) divides every \(a_i\), it divides \(\varphi(w)\).
+
+    The identity \((b)=(a_1,\ldots,a_r)\) gives coefficients
+    \(c_1,\ldots,c_r\in A\) such that
+    \[
+        b=a_1c_1+\cdots+a_rc_r.
+    \]
+    By the universal property of the free module, there is a unique
+    \modulehomomorphism \(\psi\colon M\fromto A\) with
+    \(\psi(v_i)=c_i\). It satisfies \(\psi(w)=b\).
+\end{snippetproof}
+
+\begin{snippetnote}{free-module-coefficient-gcd-associates}{The coefficient gcd is defined up to associates}
+    The greatest common divisor in the previous lemma is understood up
+    to multiplication by a unit. Equivalently, it is any generator of
+    the \ideal \((a_1,\ldots,a_r)\).
+\end{snippetnote}
+
+\section{Compatible bases}
+
+\begin{snippettheorem}{pid-submodule-compatible-bases}{Diagonal form for a submodule of a free module}
+    Let \(M\) be a free \(A\)-module of rank \(r\), and let
+    \(V\submoduleleq M\). There exist a basis
+    \[
+        \mathcal X=\{x_1,\ldots,x_r\}
+    \]
+    of \(M\) and elements \(c_1,\ldots,c_r\in A\) such that
+    \[
+        V=\langle c_1x_1,\ldots,c_rx_r\rangle.
+    \]
+    After discarding the zero generators, the remaining vectors form a
+    basis of \(V\).
+\end{snippettheorem}
+
+\begin{snippetproof}{pid-submodule-compatible-bases-proof}{pid-submodule-compatible-bases}{Diagonal form for a submodule of a free module}
+    Proceed by induction on \(r\). The cases \(r=0\) and \(V=\{0_M\}\)
+    are immediate. Fix an initial basis
+    \(\mathcal Y=\{y_1,\ldots,y_r\}\). For each nonzero
+    \[
+        z=a_1y_1+\cdots+a_ry_r\in V,
+    \]
+    let \(d(z)\) be a gcd of \(a_1,\ldots,a_r\). Choose \(w\neq0_M\)
+    in \(V\) so that \(\ell(d(w))\) is minimal. Write
+    \[
+        w=a_1y_1+\cdots+a_ry_r,
+        \qquad
+        a_i=da_i',
+        \qquad
+        d=d(w),
+    \]
+    and put \(x_1=\sum_i a_i'y_i\). Then \(w=dx_1\) and
+    \((a_1',\ldots,a_r')=A\). The gcd lemma gives a
+    \modulehomomorphism \(\psi\colon M\fromto A\) such that
+    \(\psi(x_1)=1_A\). The splitting lemma yields
+    \[
+        M=Ax_1\oplus\moduleker(\psi).
+    \]
+
+    Now \(\moduleimage(\psi|_V)=(c)\) for some \(c\in A\). Since
+    \(\psi(w)=d\), one has \(c\divides d\). Choose \(u\in V\) with
+    \(\psi(u)=c\). The gcd lemma gives \(d(u)\divides c\), while the
+    minimal choice of \(w\) gives
+    \[
+        \ell(d)\leq\ell(d(u)).
+    \]
+    Consequently,
+    \[
+        \ell(d)
+        \leq\ell(d(u))
+        \leq\ell(c)
+        \leq\ell(d).
+    \]
+    Thus \(c\) and \(d\) are associates, and
+    \[
+        \moduleimage(\psi|_V)=(d)=(\psi(w)).
+    \]
+    Applying the splitting lemma to \(\psi|_V\) gives
+    \[
+        V=Aw\oplus\moduleker(\psi|_V)
+        =
+        A(dx_1)\oplus(V\intersection\moduleker(\psi)).
+    \]
+
+    The kernel of \(\psi\) is free of rank \(r-1\). By induction, it has
+    a basis \(\{x_2,\ldots,x_r\}\) and there are
+    \(c_2,\ldots,c_r\in A\) such that
+    \[
+        V\intersection\moduleker(\psi)
+        =
+        \langle c_2x_2,\ldots,c_rx_r\rangle.
+    \]
+    Taking \(c_1=d\), the basis
+    \(\{x_1,\ldots,x_r\}\) of \(M\) has the required form.
+\end{snippetproof}
+
+\begin{snippetcorollary}{full-rank-integer-submodule-index}{Index of a full-rank integer submodule}
+    Let \(M\) be a finite free \(\integers\)-module, and let
+    \(V\submoduleleq M\) satisfy
+    \[
+        \freemodulerank(V)=\freemodulerank(M)=r.
+    \]
+    If \(\mathcal X=\{x_1,\ldots,x_r\}\) is a basis of \(M\),
+    \(\mathcal Y=\{y_1,\ldots,y_r\}\) is a basis of \(V\), and
+    \(C\in\operatorname{Mat}_r(\integers)\) expresses the vectors of
+    \(\mathcal Y\) in the basis \(\mathcal X\), then
+    \[
+        [M:V]=|\det C|.
+    \]
+\end{snippetcorollary}
+
+\begin{snippetproof}{full-rank-integer-submodule-index-proof}{full-rank-integer-submodule-index}{Index of a full-rank integer submodule}
+    Compatible bases give a basis \(\{x_1,\ldots,x_r\}\) of \(M\) and
+    nonzero integers \(c_1,\ldots,c_r\) such that
+    \[
+        V=\langle c_1x_1,\ldots,c_rx_r\rangle.
+    \]
+    Hence
+    \[
+        M/V
+        \moduleisomorphic
+        \integers/(c_1)\oplus\cdots\oplus\integers/(c_r)
+    \]
+    and
+    \[
+        [M:V]=|M/V|=|c_1\cdots c_r|.
+    \]
+    In these bases, the inclusion matrix is
+    \(\operatorname{diag}(c_1,\ldots,c_r)\). Arbitrary changes of bases
+    multiply it on the left and right by unimodular matrices, whose
+    determinants are \(\pm1\). Thus the absolute value of the
+    determinant remains \(|c_1\cdots c_r|\).
+\end{snippetproof}
+
+\end{document}

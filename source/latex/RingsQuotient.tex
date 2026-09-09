@@ -13,60 +13,221 @@
 \section{Quotient rings}
 
 \begin{snippetdefinition}{quotient-ring-definition}{Quotient ring}
-    Let \(A\) be a \ring
-    and \(I \idealin A\) a \ideal[bilateral ideal].
-    The \emph{quotient ring} is defined as
+    Let \(A\) be a \ring and let \(I\idealin A\) be a two-sided \ideal.
+    For \(a,b\in A\), define
     \[
-        A/I \triangleq \{
-            a + I \suchthat a \in A   
-        \}
+        a\sim_I b
+        \ifandonlyif b-a\in I.
     \]
-    with addition
+    The \emph{quotient ring of \(A\) by \(I\)} is the \set
     \[
-        (a+I) + (b+I) \triangleq (a+b) + I
+        A/I=\{a+I\suchthat a\in A\},
+        \qquad
+        a+I=\{a+x\suchthat x\in I\},
     \]
-    and multiplication
+    equipped with the operations
     \[
-        (a+I) \cdot (b+I) \triangleq (a \cdot b) + I
+        (a+I)+(b+I)=(a+b)+I,
+        \qquad
+        (a+I)(b+I)=ab+I.
     \]
 \end{snippetdefinition}
 
-\begin{plainhtml}
-    This is the equivalence class of the equivalence where two elements are equivalent
-    if their difference is in the lateral.
-\end{plainhtml}
-
-\begin{snippetproposition}{quotient-ring-is-ring}{Quotient ring is a ring}
-    Let \(A\) be a \ring
-    and \(I \idealin A\) a \ideal[bilateral ideal].
-    Then, \(A/I\) is a \ring.
+\begin{snippetproposition}{quotient-ring-is-ring}{A quotient ring is a ring}
+    Let \(A\) be a \ring and let \(I\idealin A\) be a two-sided \ideal.
+    The operations
+    \[
+        (a+I)+(b+I)=(a+b)+I,
+        \qquad
+        (a+I)(b+I)=ab+I
+    \]
+    are well-defined and make \(A/I\) into a \ring.
 \end{snippetproposition}
 
-\begin{snippetproof}{quotient-ring-is-ring-proof}{quotient-ring-is-ring}{Quotient ring is a ring}
-    \begin{enumerate}
-        \item the neutral element is
-        \[
-            0_{A/I} = 0_A + I
-        \]
-        \item the identity element is
-        \[
-            0_{A/I} = 1_A + I
-        \]
-        \item the addition is well-defined: TODO.
-        \item the multiplication is well-defined:
-        let \(a' \in a + I, b' \in b+I\),
-        which means that \(a' = a+x, b' =b+y\) for some \(x,y \in I\).
-        \begin{align*}
-            (a'+I) \cdot (b' + I)
-            &= (ab+ay+xb + xy) + I
-            = ab + I
-        \end{align*}
-        since the \ideal is bilateral we can hide all the other terms.
-        \item the product is associative and the distributive properties are satisfied
-        since they are satisfied in the \ring.
-    \end{enumerate}
+\begin{snippetproof}{quotient-ring-is-ring-proof}{quotient-ring-is-ring}{A quotient ring is a ring}
+    Addition is well-defined because \(I\) is an additive \subgroup of
+    \(A\). For multiplication, suppose
+    \[
+        a'=a+x,
+        \qquad
+        b'=b+y,
+        \qquad
+        x,y\in I.
+    \]
+    Then
+    \[
+        a'b'=ab+ay+xb+xy.
+    \]
+    Since \(I\) is a two-sided \ideal, \(ay,xb,xy\in I\), and therefore
+    \(a'b'+I=ab+I\).
+
+    The additive identity, multiplicative identity, and additive inverse are
+    \[
+        0_{A/I}=0_A+I=I,
+        \qquad
+        1_{A/I}=1_A+I,
+        \qquad
+        -(a+I)=(-a)+I.
+    \]
+    Associativity and distributivity follow from the corresponding laws in
+    \(A\).
 \end{snippetproof}
 
+\begin{snippet}{quotient-ring-trivial-cases}
+    Let \(A\) be a \ring. Then \(A/A\) is the trivial ring, while the
+    \function
+    \[
+        A/\{0_A\}\fromto A,
+        \qquad
+        a+\{0_A\}\mapsto a,
+    \]
+    is a \ringisomorphism.
+\end{snippet}
 
+\section{Integer quotients}
+
+\begin{snippetexample}{integer-quotient-rings-example}{Quotients of the integers}
+    Every \ideal of \(\integers\) has the form
+    \(n\integers\), with \(n\in\naturalnumbers\union\{0\}\). For
+    \(n\geq1\),
+    \[
+        \integers/n\integers
+        =\{[a]_n\suchthat a\in\integers\},
+        \qquad
+        [a]_n=a+n\integers.
+    \]
+    Each class has a unique representative \(a\) satisfying
+    \(0\leq a<n\).
+
+    If \(n\) is composite, say \(n=ab\) with \(0<a,b<n\), then
+    \[
+        [a]_n\neq[0]_n,
+        \qquad
+        [b]_n\neq[0]_n,
+        \qquad
+        [a]_n[b]_n=[0]_n.
+    \]
+    Hence \(\integers/n\integers\) is not an integral domain.
+
+    If \(n=p\) is a \primen, every nonzero \([a]_p\) is invertible.
+    Indeed, \(\gcd(a,p)=1\), so Bézout's identity gives
+    \(ak_1+pk_2=1\), and therefore
+    \[
+        [a]_p[k_1]_p=[1]_p.
+    \]
+    Thus \(\integers/p\integers\) is a \field.
+\end{snippetexample}
+
+\section{Polynomial quotients}
+
+\begin{snippetproposition}{polynomial-quotient-unique-representative}{Canonical representatives modulo a polynomial}
+    Let \(K\) be a \field and let \(f\in K[x]\setminus\{0\}\). Every coset
+    in \(K[x]/(f)\) has a unique representative \(r\) such that
+    \[
+        r=0
+        \qquad\text{or}\qquad
+        \deg r<\deg f.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{polynomial-quotient-unique-representative-proof}{polynomial-quotient-unique-representative}{Canonical representatives modulo a polynomial}
+    For \(g\in K[x]\), Euclidean division gives
+    \[
+        g=qf+r,
+        \qquad
+        r=0\text{ or }\deg r<\deg f.
+    \]
+    Hence \(g+(f)=r+(f)\).
+
+    If \(r_1+(f)=r_2+(f)\) and both remainders have degree less than
+    \(\deg f\), then \(r_1-r_2=hf\) for some \(h\in K[x]\). Unless
+    \(r_1-r_2=0\), its degree is less than \(\deg f\), whereas the degree of
+    \(hf\) is at least \(\deg f\), a contradiction. Thus \(r_1=r_2\).
+\end{snippetproof}
+
+\begin{snippetexample}{rational-polynomial-quotient-example}{A quotient of a rational polynomial ring}
+    Let
+    \[
+        f=x^2-3x+2=(x-2)(x-1)
+    \]
+    and consider \(\rationalnumbers[x]/(f)\). The nonzero classes of
+    \(x-2\) and \(x-1\) satisfy
+    \[
+        ((x-2)+(f))((x-1)+(f))=f+(f)=0,
+    \]
+    so they are zero divisors.
+
+    In this quotient,
+    \[
+        x^2+(f)=(3x-2)+(f).
+    \]
+    Consequently,
+    \[
+        x^3+(f)=(7x-6)+(f)
+    \]
+    and
+    \[
+        (x^3-1)+(f)=(7x-7)+(f).
+    \]
+    Similarly,
+    \[
+        (x^2+x+1)+(f)=(4x-1)+(f),
+    \]
+    and direct multiplication gives
+    \[
+        ((4x-1)+(f))((x-1)+(f))
+        =(7x-7)+(f)
+        =(x^3-1)+(f),
+    \]
+    in agreement with \(x^3-1=(x-1)(x^2+x+1)\).
+\end{snippetexample}
+
+\begin{snippetexample}{polynomial-quotient-euclidean-division-example}{Euclidean division modulo a polynomial}
+    For \(f=x^2-3x+2\), Euclidean division gives
+    \[
+        x^3-1=(x+3)(x^2-3x+2)+(7x-7).
+    \]
+    Therefore
+    \[
+        (x^3-1)+(f)=(7x-7)+(f),
+    \]
+    and \(7x-7\) is the unique representative of degree less than \(2\).
+\end{snippetexample}
+
+\section{Canonical projection}
+
+\begin{snippetproposition}{ring-canonical-projection-surjective}{Canonical projection onto a quotient ring}
+    Let \(A\) be a \ring and let \(I\idealin A\) be a two-sided \ideal.
+    The \function
+    \[
+        \pi\colon A\fromto A/I,
+        \qquad
+        \pi(a)=a+I,
+    \]
+    is a \surjective \ringhomomorphism with
+    \[
+        \ringker\pi=I.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{ring-canonical-projection-surjective-proof}{ring-canonical-projection-surjective}{Canonical projection onto a quotient ring}
+    Every element of \(A/I\) is of the form \(a+I=\pi(a)\), so \(\pi\) is
+    \surjective. Moreover,
+    \[
+        \pi(1_A)=1_A+I=1_{A/I},
+    \]
+    and, for \(a,b\in A\),
+    \[
+        \pi(a+b)=\pi(a)+\pi(b),
+        \qquad
+        \pi(ab)=\pi(a)\pi(b).
+    \]
+    Finally,
+    \[
+        \pi(a)=0_{A/I}
+        \ifandonlyif a+I=I
+        \ifandonlyif a\in I.
+    \]
+\end{snippetproof}
 
 \end{document}

@@ -4,342 +4,306 @@
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
-\usepackage{bettelini}
 
 \begin{document}
 
 \id{rings-introduction}
 \genpage
 
-\section{Definition}
+\section{Definitions}
 
 \begin{snippetdefinition}{ring-definition}{Ring}
-    A \textit{ring} \((R, +, \circ)\) is a triple containing a \set \(R\) and two \binoperation[binary operations]
-    \(+\) and \(\circ\) on \(R\) such that:
+    A \emph{ring} is a \set \(A\) equipped with two
+    \binoperation[binary operations], addition and multiplication, such that:
     \begin{enumerate}
-        \item \((R, +)\) is an \abeliangroup;
-        \item \((R, \circ)\) is a \monoid;
-        \item \textit{left distributivity}: \(\forall a,b,c\in R, a\circ(b+c) = (a\circ b) + (a \circ c)\);
-        \item \textit{right distributivity}: \(\forall a,b,c\in R, (b+c)\circ a = (b\circ a) + (c \circ a)\).
+        \item \((A,+)\) is an \abeliangroup, with identity \(0_A\);
+        \item \((A,\cdot)\) is a \monoid, with identity \(1_A\);
+        \item for every \(a,b,c\in A\),
+        \[
+            a(b+c)=ab+ac,
+            \qquad
+            (a+b)c=ac+bc.
+        \]
     \end{enumerate}
+    Ring homomorphisms in these notes are required to preserve \(1\).
 \end{snippetdefinition}
 
 \begin{snippetdefinition}{commutative-ring-definition}{Commutative ring}
-    A \ring \((R, +, \circ)\) is said to be \textit{commutative} if:
-    \begin{enumerate}
-        \item \textit{distributivity}: \(\forall a,b\in R, a\circ b = b\circ a\).
-    \end{enumerate}
+    A \ring \(A\) is said to be \emph{commutative} if
+    \[
+        ab=ba
+    \]
+    for all \(a,b\in A\).
 \end{snippetdefinition}
 
-\begin{snippetproposition}{ring-zero-multiplication}{}
-    Let \(A = (R, +, \circ)\) be a \ring. Then, \[
-        a \circ 0_A = 0_A, \quad \forall a \in R
-    \]
+\begin{snippetproposition}{trivial-ring-characterization}{The trivial ring}
+    Let \(A\) be a \ring. Then \(0_A=1_A\) \ifandonlyif
+    \(A=\{0_A\}\).
 \end{snippetproposition}
 
-\begin{snippetproof}{ring-zero-multiplication-proof}{ring-zero-multiplication}{}
-    We first note that \(0_A = 0_A + 0_A\)
-    and that \(0_A \circ a = a \circ 0_A = 0_A\).
-    From this we get \(a \circ 0_A = a \circ 0_A + a \circ 0_A\)
-    and by subtracting we get \(0_A \circ a = 0_A\).
-    Likewise, we find that \(a \circ 0_A = 0_A\).
-\end{snippetproof}
-
-\begin{snippetproposition}{ring-inverse-addition-multiplication}{}
-    Let \(A = (R, +, \circ)\) be a \ring. Then, \[
-        - a = (- 1_A) \circ a = a \circ (- 1_A), \quad \forall a \in R
+\begin{snippetproof}{trivial-ring-characterization-proof}{trivial-ring-characterization}{The trivial ring}
+    If \(0_A=1_A\), then for every \(a\in A\),
+    \[
+        a=a1_A=a0_A=0_A.
     \]
-\end{snippetproposition}
-
-\begin{snippetproof}{ring-inverse-addition-multiplication-proof}{ring-inverse-addition-multiplication}{}
-    We have
-    \begin{align*}
-        1_A + (-1_A) &= 0_A \\
-        0_A &= a \circ 0_A = a \circ (1_A + (1_A)) = a \circ 1_A + a \circ (-1_A) \\
-        &= a + a \circ (-1_A) \\
-        -a &= a \circ (-1_A)
-    \end{align*}
-    Likewise, we find \(-a = (-1_A) \circ a\).
+    Hence \(A=\{0_A\}\). The converse is immediate.
 \end{snippetproof}
 
-\begin{plainhtml}
-    We can define the multiplication by an integer as repeated addition.
-\end{plainhtml}
+\includesnpt{field-definition}
 
-\begin{snippetproposition}{ring-multiplication-as-addition}{}
-    Let \(A = (R, +, \circ)\) be a \ring. Then, \[
-        n(ab) = (ab)n = a(nb)
+\begin{snippetdefinition}{division-ring-definition}{Division ring}
+    A \emph{division ring} is a nontrivial \ring \(A\) in which every
+    nonzero element has a two-sided multiplicative inverse. A division ring
+    is also called a \emph{skew field}. It need not be commutative.
+\end{snippetdefinition}
+
+\section{Examples}
+
+\begin{snippetexample}{integers-ring-example}{The ring of integers}
+    The \set \(\integers\), with its usual addition and multiplication, is a
+    \commutativering. Its only invertible elements are \(1\) and \(-1\).
+\end{snippetexample}
+
+\begin{snippetexample}{polynomial-ring-over-field-example}{A polynomial ring}
+    Let \(K\) be a \field. The \set \(K[x]\) of \polynomial[polynomials]
+    with coefficients in \(K\) is a \commutativering. Its invertible
+    elements are precisely the nonzero constant polynomials, namely the
+    elements of \(K^\times\).
+\end{snippetexample}
+
+\begin{snippetexample}{matrix-ring-example}{Matrix rings}
+    Let \(K\) be a \field and \(n\geq1\). The \set
+    \(\matrices_n(K)\) of \(n\times n\) \matrix[matrices], with matrix
+    addition and multiplication, is a \ring. Its additive and multiplicative
+    identities are the zero matrix \(0_n\) and the identity matrix \(I_n\).
+    If \(n>1\), the ring is not commutative. Its invertible elements are
+    precisely the matrices in \(\operatorname{GL}_n(K)\).
+\end{snippetexample}
+
+\begin{snippetexample}{standard-fields-example}{Standard fields}
+    The number systems
+    \[
+        \rationalnumbers,\qquad \realnumbers,\qquad \complexnumbers
+    \]
+    are \field[fields]. If \(p\) is a \primen, then
+    \(\integers/p\integers\) is also a \field.
+\end{snippetexample}
+
+\begin{snippetexample}{function-ring-example}{Rings of functions}
+    Let \(A\) be a \ring and \(X\) a \set. The \set
+    \[
+        A^X=\{f\colon X\fromto A\}
+    \]
+    of all \function[functions] from \(X\) to \(A\) is a \ring under
+    pointwise operations:
+    \[
+        (f+g)(x)=f(x)+g(x),
+        \qquad
+        (fg)(x)=f(x)g(x).
+    \]
+    Its identities are the constant \function[functions]
+    \(0_{A^X}(x)=0_A\) and \(1_{A^X}(x)=1_A\).
+\end{snippetexample}
+
+\begin{snippetexample}{hamilton-quaternions-ring-example}{Hamilton's quaternions}
+    The Hamilton quaternions form the real \vectorspace
+    \[
+        \mathbb{H}
+        =\operatorname{span}_{\realnumbers}\{1,i,j,k\},
+    \]
+    with multiplication determined bilinearly by
+    \[
+        i^2=j^2=k^2=-1,
+        \qquad
+        ij=k,\quad jk=i,\quad ki=j,
     \]
     and
     \[
-        (-n) \circ a = -(n \circ a)
+        ji=-k,\quad kj=-i,\quad ik=-j.
+    \]
+    Thus \(\mathbb{H}\) is not commutative. For
+    \(q=a+bi+cj+dk\), define
+    \[
+        \overline q=a-bi-cj-dk.
+    \]
+    Then
+    \[
+        q\overline q=\overline q q=a^2+b^2+c^2+d^2,
+    \]
+    so every \(q\neq0\) has inverse
+    \[
+        q^{-1}
+        =\frac{\overline q}{a^2+b^2+c^2+d^2}.
+    \]
+    Hence \(\mathbb{H}\) is a noncommutative division ring.
+\end{snippetexample}
+
+\section{Elementary properties}
+
+\begin{snippetproposition}{ring-zero-multiplication}{Multiplication by zero}
+    Let \(A\) be a \ring. For every \(a\in A\),
+    \[
+        a0_A=0_Aa=0_A.
     \]
 \end{snippetproposition}
 
-\begin{snippetproof}{ring-multiplication-as-addition-proof}{ring-multiplication-as-addition}{}
-    By induction:
-    \begin{enumerate}
-        \item the base case is \(n=2\),
-        \[
-            2(ab) = ab + ab = \begin{cases}
-                a(b+b) = a(2b) \\
-                (a+a)b = (2a)b
-            \end{cases}
-        \]
-    \end{enumerate}
+\begin{snippetproof}{ring-zero-multiplication-proof}{ring-zero-multiplication}{Multiplication by zero}
+    Since \(0_A=0_A+0_A\),
+    \[
+        a0_A=a(0_A+0_A)=a0_A+a0_A.
+    \]
+    Cancellation in the additive \group gives \(a0_A=0_A\). The proof that
+    \(0_Aa=0_A\) is analogous.
 \end{snippetproof}
 
-\begin{plainhtml}
-    Using these properties we can prove prove that a negative times a negative is a positive.
-\end{plainhtml}
+\begin{snippetproposition}{ring-inverse-addition-multiplication}{Multiplication by minus one}
+    Let \(A\) be a \ring. For every \(a\in A\),
+    \[
+        a(-1_A)=(-1_A)a=-a.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{ring-inverse-addition-multiplication-proof}{ring-inverse-addition-multiplication}{Multiplication by minus one}
+    From \(1_A+(-1_A)=0_A\), distributivity gives
+    \[
+        a+a(-1_A)=a(1_A+(-1_A))=a0_A=0_A.
+    \]
+    Thus \(a(-1_A)\) is the additive inverse of \(a\). Multiplying the same
+    equality on the right by \(a\) proves \((-1_A)a=-a\).
+\end{snippetproof}
+
+\begin{snippetproposition}{ring-multiplication-as-addition}{Integer multiples in a ring}
+    Let \(A\) be a \ring, let \(a,b\in A\), and let
+    \(n\in\naturalnumbers\). Writing
+    \[
+        na=\underbrace{a+\cdots+a}_{n\text{ times}},
+    \]
+    one has
+    \[
+        n(ab)=(na)b=a(nb).
+    \]
+    Moreover,
+    \[
+        (-a)b=a(-b)=-(ab),
+        \qquad
+        (-a)(-b)=ab.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{ring-multiplication-as-addition-proof}{ring-multiplication-as-addition}{Integer multiples in a ring}
+    The equality \(n(ab)=(na)b=a(nb)\) follows by induction on \(n\), using
+    distributivity in the induction step. Since \(-a=(-1_A)a\),
+    associativity and multiplication by \(-1_A\) yield
+    \[
+        (-a)b=(-1_A)(ab)=-(ab).
+    \]
+    The remaining identities follow in the same way.
+\end{snippetproof}
+
+\section{Zero divisors and cancellation}
 
 \begin{snippetdefinition}{ring-zero-divisor-definition}{Zero divisor}
-    Let \(A = (R, +, \circ)\) be a \ring and \(a \in R\) such that \(a \neq 0_A\).
-    We say that \(a\) is a \emph{left or right zero divisor} if
-    \[
-        \exists b \in R \suchthat b \neq 0_A \land a \circ b = 0_A
-    \]
-    or
-    \[
-        \exists b \in R \suchthat b \neq 0_A \land b \circ a = 0_A
-    \]
-    respectively.
+    Let \(A\) be a \ring and let \(a\in A\setminus\{0_A\}\). The element
+    \(a\) is a \emph{left zero divisor} if there exists
+    \(b\in A\setminus\{0_A\}\) such that \(ab=0_A\), and it is a
+    \emph{right zero divisor} if there exists
+    \(b\in A\setminus\{0_A\}\) such that \(ba=0_A\). A \emph{zero divisor}
+    is an element that is a left or right zero divisor.
 \end{snippetdefinition}
 
 \begin{snippetdefinition}{integral-domain-definition}{Integral domain}
-    Let \(A = (R, +, \circ)\) be a commutative \ring.
-    Then, \(A\) is said to be an \emph{integral domain}
-    if it does not contain any zero divisor.
+    An \emph{integral domain} is a nontrivial \commutativering with no
+    nonzero zero divisors.
 \end{snippetdefinition}
 
-\begin{snippetproposition}{zero-divisors-are-not-invertible}{Zero divisors are not invertible}
-    Let \(A = (R, +, \circ)\) be a \ring and \(a \in R\)
-    a zero divisor. Then, \(a\) is not invertible.
-\end{snippetproposition}
-
-\begin{snippetproof}{zero-divisors-are-not-invertible-proof}{zero-divisors-are-not-invertible}{zero divisors are not invertible}
-    There exist a non-null \(b \in R\) such that \(ab = 0_A\).
-    Suppose that \(a^{-1} \in A\). We then have
-    \begin{align*}
-        a^{-1} \circ a \circ b &= 1_A \circ b = b = 0_A \circ a^{-1} = 0_A
-    \end{align*}
-    which is absurd \lightning.
-\end{snippetproof}
-
-\begin{snippetproposition}{zero-divisors-simplification}{}
-    Let \(A = (R, +, \circ)\) be a \ring and \(a \in R\)
-    such that \(a\neq 0_A\) is not a left/right zero-divisor. Then,
+\begin{snippetexample}{matrix-ring-zero-divisors-example}{Zero divisors in a matrix ring}
+    Let \(K\) be a \field. In \(\matrices_2(K)\), the nonzero matrices
     \[
-        a \circ b = a \circ c \implies b = c
+        A=\begin{pmatrix}0&1\\0&0\end{pmatrix},
+        \qquad
+        B=\begin{pmatrix}1&0\\0&0\end{pmatrix}
     \]
-    and
+    satisfy \(AB=0\), whereas
     \[
-        b \circ a = c \circ a \implies b = c
+        BA=A\neq0.
     \]
-    respectively.
-\end{snippetproposition}
-
-\begin{snippetproof}{zero-divisors-simplification-proof}{zero-divisors-simplification}{}
-    We will prove the left case
-    \begin{align*}
-        ab &= ac \\
-        ab + (-ac) &= 0_A \\
-        a\circ (b-c) &= 0_A
-    \end{align*}
-    Since there are no zero-divisors, either \(a\) or \(b-c\) is null.
-    Since \(a \neq 0\), \(b-c = 0_A\).
-\end{snippetproof}
-
-\begin{snippetdefinition}{subring-definition}{Subring}
-    Let \(A = (R, +, \circ)\) be a \ring.
-    A \emph{subring} of \(A\) is a subset \(S \subseteq R\)
-    such that \((S, +, \circ)\) is a \ring.
-\end{snippetdefinition}
-
-\begin{snippetdefinition}{ring-ideal-definition}{Ideal}
-    Let \(A = (R, +, \circ)\) be a \ring.
-    A \emph{left/right ideal} of \(A\) is a subset \(I \subseteq R\)
-    such that:
-    \begin{enumerate}
-        \item \((I, +)\) is a \subgroup of \((R, +)\);
-        \item \(\forall i \in I, \forall r \in R\), we have \(ir \in I\) (left ideal) and \(ri \in I\) (right ideal).
-    \end{enumerate}
-    If the ideal is both a left and right ideal, it is called a
-    \emph{two-sided ideal}, \emph{bilateral} or simply an \emph{ideal}.
-\end{snippetdefinition}
-
-\begin{plainhtml}
-    In a commutative ring, every ideal is bilateral.
-\end{plainhtml}
-
-\begin{snippetproposition}{ring-ideal-identity}{}
-    Let \(A\) be a \ring and \(I \idealin A\) such that \(1_A \in I\).
-    Then, \(A = I\).
-\end{snippetproposition}
-
-\begin{snippetproof}{ring-ideal-identity-proof}{ring-ideal-identity}{}
-    We have:
-    \begin{enumerate}
-        \item if the ideal is left, \(\forall a \in A, a = 1_A \cdot a \in I\) and thus \(A \subseteq I\);
-        \item if the ideal is right, \(\forall a \in A, a = a \cdot 1_A \in I\) and thus \(A \subseteq I\).
-    \end{enumerate}
-\end{snippetproof}
-
-\begin{snippetproposition}{trivial-ring-ideals}{}
-    Let \(A\) be a \ring.
-    Then, \(A, \{0_A\} \idealin A\).
-\end{snippetproposition}
-
-\begin{snippetproposition}{ring-subsets-intersection}{}
-    Let \(A\) be a \ring and \(\{B_i\}_{i \in I} \leq A\).
-    Then,
-    \[
-        B = \left(\bigcap_{i \in I} B_i\right) \leq A
-    \]
-\end{snippetproposition}
-
-\begin{snippetproof}{ring-subsets-intersection}{ring-subsets-intersection}{}
-    We have \(0_A, 1_A \in B\).
-    For all \(a,b \in B, a,b \in B_i\) for all \(i \in I\).
-\end{snippetproof}
-
-\begin{plainhtml}
-    This does not work in general for the sum and union.
-\end{plainhtml}
-
-\begin{snippetdefinition}{algebra-definition}{Algebra}
-    Let \(\mathbb{F}\) be a \field and \(A\) a \set and let
-    \begin{align*}
-        + \colon A \cartesianprod A \fromto A \\
-        \circ \colon A \cartesianprod A \fromto A \\
-        \cdot \colon F \cartesianprod A \fromto A
-    \end{align*}
-    Then, \(A\) is a \emph{\(\mathbb{F}\)-algebra} if:
-    \begin{enumerate}
-        \item \((A, +, \circ)\) is a \ring;
-        \item \((A, +, \cdot)\) is a \vectorspace over \(\mathbb{F}\);
-        \item \(\forall a,b \in A, \forall \lambda \in \mathbb{F}, (\lambda \cdot a) \circ b = \lambda \cdot (a\circ b)\).
-    \end{enumerate}
-\end{snippetdefinition}
-
-\begin{snippet}{algebra-as-subring}
-    Let \(\mathbb{F}\) be a \field and \(A\) a \ring.
-    Then, in the \algebra induced by \(A\)
-    we can see the field as a subring
-    \[
-        \{\lambda \cdot 1_A \suchthat \lambda \in \mathbb{F}\} \leq A
-    \]
-\end{snippet}
-
-\begin{snippetexample}{algebra-example1}{}
-    Let \(\mathbb{K}\) be a \field.
-    Then, \(\mathbb{K}[x]\) is an \algebra over \(\mathbb{K}\)
-    \[
-        \{\lambda \cdot 1\}
-    \]
+    Thus left and right zero-divisor behavior can differ in a
+    noncommutative \ring.
 \end{snippetexample}
 
-\subsection{Morphisms}
+\begin{snippetproposition}{zero-divisors-are-not-invertible}{Zero divisors are not invertible}
+    A zero divisor in a \ring is not invertible.
+\end{snippetproposition}
 
-\begin{snippetdefinition}{ring-homomorphism-definition}{Ring homomorphism}
-    Let \((A, \cdot, +)\) and \((H, \circ, \ast)\) be \ring[rings].
-    A \function \(\varphi\colon A \fromto B\)
-    such that:
+\begin{snippetproof}{zero-divisors-are-not-invertible-proof}{zero-divisors-are-not-invertible}{Zero divisors are not invertible}
+    Suppose that \(a\) is invertible and \(ab=0_A\). Multiplication on the
+    left by \(a^{-1}\) gives \(b=0_A\), so \(a\) cannot be a left zero
+    divisor. If \(ba=0_A\), multiplication on the right by \(a^{-1}\)
+    similarly gives \(b=0_A\).
+\end{snippetproof}
+
+\begin{snippetproposition}{zero-divisors-simplification}{Cancellation in rings}
+    Let \(A\) be a \ring and let \(a\in A\setminus\{0_A\}\).
     \begin{enumerate}
-        \item it is a \grouphomomorphism;
-        \item \(\varphi(1_A) = 1_B\)
-        \item \emph{morphism property:} \(\forall a_1,a_2 \in A, \varphi(a_1\cdot a_2) = \varphi(a_1) \circ \varphi(a_2)\)
-    \end{enumerate}
-    is said to be a \emph{ring homomorphism}.
-\end{snippetdefinition}
-
-\begin{snippetdefinition}{ring-kernel-definition}{Ring kernel}
-    \todo
-    % pure il kernel che manda in 0_B
-\end{snippetdefinition}
-
-\begin{snippetproposition}{ring-homomorphism-properties}{}
-    Let \(\varphi \colon A \fromto B\) be a \ringhomomorphism. Then,
-    \begin{enumerate}
-        \item if \(a \in A^x\), then \(\varphi(x) \in B^x\);
-        \item if \(S \leq A\), then \(\varphi(S) \leq B\);
-        \item if \(R \leq B\), then \(\varphi^{-1}(R) = \{a \in A \suchthat \varphi(a) \in R\} \leq A\);
-        \item \(\ringker \varphi \idealin A\);
-        \item \(\varphi\) is \injective \ifandonlyif \(\ringker \varphi = \{0_A\}\).
+        \item If \(a\) is not a left zero divisor, then
+        \[
+            ab=ac\implies b=c.
+        \]
+        \item If \(a\) is not a right zero divisor, then
+        \[
+            ba=ca\implies b=c.
+        \]
     \end{enumerate}
 \end{snippetproposition}
 
-\begin{snippetproof}{ring-homomorphism-properties-proof}{ring-homomorphism-properties}{}
-    \begin{enumerate}
-        \item there exist \(b\in A\) such that \(ab = 1_A\), meaning
-        \[
-            \varphi(a) \cdot \varphi(b) = \varphi(ab) = \varphi(1_A) = 1_B
-        \]
-        \item \begin{enumerate}
-            \item \(\varphi(S)\) è closed under addition and multiplication and \(0_B, 1_B \in \varphi(S)\);
-            \item \(0_A \in S \implies 0_B = \varphi(0_A) \in \varphi(S)\)
-            and \(1_A \in S \implies 1_B = \varphi(1_A) \in \varphi(S)\).
-            \item if \(b_1, b_2 \in \varphi(S)\) there exist \(a_1, a_2 \in S\)
-            such that \(\varphi(a_i) = b_i\) for \(i=1,2\).
-            This means that
-            \begin{align*}
-                b_1 - b_2 &= \varphi(a_1) - \varphi(a_2) = \varphi(a_1 - a_2) \in \varphi(S) \\
-                b1 \cdot b_2 &= \varphi(b_1) \cdot \varphi(b_2) = \varphi(b_1 \cdot b_2) \in \varphi(S)
-            \end{align*}
-            \item we have \(1_A \in \varphi^\inversefunction(1_B)\)
-            and \(0_A \in \varphi^\inversefunction(0_B)\).
-            If \(a_1, a_2 \in \varphi^\inversefunction(R)\) we have
-            \(\varphi(a_1),\varphi(a_2) \in R\) and thus
-            \begin{align*}
-                \varphi(a_1) - \varphi(a_2) &= \varphi(a_1 - a_2) \\
-                \varphi(a_1) \cdot \varphi(a_2) = \varphi(a_1 \cdot a_2)
-            \end{align*}
-            which meman \(a_1 - a_2\in \varphi^\inversefunction(R)\)
-            and \(a_1 \cdot a_2\in \varphi^\inversefunction(R)\).
-            \item It is clear that \(0_A \in \ringker \varphi\)
-            and that if \(x,y \in \ringker \varphi\) then \(x-y \in \ringker \varphi\).
-            For all \(x \in \ringker \varphi\) and for all \(a \in A\),
-            \begin{align*}
-                \varphi(ax) &= \varphi(a) \cdot \varphi(x)
-                = \varphi(a) \cdot 0_B = 0_B \\
-                \varphi(xa) = \varphi(x) \cdot \varphi(a) = 0_B \cdot \varphi(a) = 0_B
-            \end{align*}
-            it is thus a \ideal[bilateral ideal].
-            \item \begin{iffproof}
-                \item If \(\varphi\) is \injective,
-                \(\varphi(0_A) = 0_B\) which means that \(\ringker \varphi = \{0_A\}\).
-                \item If \(\ringker \varphi = \{0_A\}\), \(\forall a_1, a_2 \in A\) we have
-                \[
-                    \varphi(a_1) - \varphi(a_2) = \varphi(a_1 - a_2)
-                \]
-                But if \(\varphi(a_1) = \varphi(a_2)\), then
-                \(a_1 - a_2 \in \ringker \varphi = \{0_A\}\)
-                and thus \(a_1 = a_2\).
-            \end{iffproof}
-        \end{enumerate}
-    \end{enumerate}
+\begin{snippetproof}{zero-divisors-simplification-proof}{zero-divisors-simplification}{Cancellation in rings}
+    If \(ab=ac\), then \(a(b-c)=0_A\). Since \(a\neq0_A\) is not a left
+    zero divisor, \(b-c=0_A\), and hence \(b=c\). The right-hand statement
+    is analogous.
 \end{snippetproof}
 
-\begin{snippetproposition}{ring-canonical-projection-surjective}{}
-    Let \(A\) be a \ring and \(I \idealin A\).
-    Then, the canonical projection \(\pi: \colon A \fromto A/I\)
-    is \surjective ring homomorphism. % TODOURGENT link
+\begin{snippet}{zero-divisor-cancellation-failure}
+    Cancellation may fail for a zero divisor: if \(a(b-c)=0_A\) with
+    \(a\neq0_A\) and \(b-c\neq0_A\), then \(ab=ac\) although \(b\neq c\).
+\end{snippet}
+
+\section{Units}
+
+\begin{snippetdefinition}{ring-unit-group-definition}{Group of units}
+    Let \(A\) be a \ring. A \emph{unit} of \(A\) is an element \(a\in A\)
+    admitting a two-sided multiplicative inverse. The \set of units is
+    denoted
+    \[
+        A^\times=\{a\in A\suchthat
+        \text{there exists }a^{-1}\in A\}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{ring-units-form-group}{Units form a group}
+    Let \(A\) be a \ring. The \set \(A^\times\) is a \group under ring
+    multiplication.
 \end{snippetproposition}
 
-\begin{snippetproof}{ring-canonical-projection-surjective-proof}{ring-canonical-projection-surjective}{}
-    The morphism \(\pi(a) = a + I\) is clearly \surjective.
-    \begin{enumerate}
-        \item It is a morphism of additive \group[groups]
-            \((A,+)\) and \((A/I, +)\).
-        \item \(\pi 0_A = 0_A + I = 0_{A/I}\);
-        \item \(\forall a,b \in A\), \[\pi(a-b) = (a-b) + I = (a+I) - (b+I) = \pi(a) - \pi(b)\]
-        \item It is a morphism of multiplicative monoids \((A, \cdot)\)
-        and \((A/I, \cdot)\).
-        \item \(\forall a,b \in A\),
-        \[
-            \pi(ab) = ab+I = (a+I)(b+I) = \pi(a)\pi(b)
-        \]
-    \end{enumerate}
+\begin{snippetproof}{ring-units-form-group-proof}{ring-units-form-group}{Units form a group}
+    The identity \(1_A\) is a unit. If \(a,b\in A^\times\), then
+    \[
+        (ab)^{-1}=b^{-1}a^{-1},
+    \]
+    so \(ab\in A^\times\). Finally, the inverse of a unit is again a unit.
+    Associativity is inherited from \(A\).
 \end{snippetproof}
+
+\begin{snippetexample}{ring-unit-groups-example}{Examples of unit groups}
+    Let \(K\) be a \field. Then
+    \[
+        \integers^\times=\{\pm1\},
+        \qquad
+        K[x]^\times=K^\times,
+        \qquad
+        \matrices_n(K)^\times=\operatorname{GL}_n(K),
+        \qquad
+        K^\times=K\setminus\{0_K\}.
+    \]
+\end{snippetexample}
 
 \end{document}

@@ -1,0 +1,197 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+
+\begin{document}
+
+\id{field-extensions}
+\genpage
+
+\section{Field extensions}
+
+\begin{snippetdefinition}{field-extension-definition}{Field extension}
+    Let \(K\) and \(L\) be \field[fields]. A \emph{field extension of
+    \(K\)} is a \field \(L\) equipped with an injective
+    \ringhomomorphism
+    \[
+        \iota\colon K\fromto L.
+    \]
+    After identifying \(K\) with \(\iota(K)\subseteq L\), one writes
+    \[
+        L/K.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{field-extension-degree-definition}{Degree of a field extension}
+    Let \(L/K\) be a \fieldextension. Multiplication in \(L\) makes \(L\)
+    a \vectorspace over \(K\). The \emph{degree} of the extension is
+    \[
+        [L:K]=\lineardim_K L.
+    \]
+    The extension is \emph{finite} if \([L:K]<\infty\).
+\end{snippetdefinition}
+
+\section{Extensions from irreducible polynomials}
+
+\begin{snippetproposition}{irreducible-polynomial-quotient-field-extension}{Quotient by an irreducible polynomial}
+    Let \(K\) be a \field and let \(f\in K[x]\) be an irreducible
+    \polynomial of degree \(n\geq1\). Then
+    \[
+        L=K[x]/(f)
+    \]
+    is a \fieldextension of \(K\) of degree \(n\). A \(K\)-basis is
+    \[
+        \mathcal{B}
+        =
+        \{1+(f),x+(f),\ldots,x^{n-1}+(f)\}.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{irreducible-polynomial-quotient-field-extension-proof}{irreducible-polynomial-quotient-field-extension}{Quotient by an irreducible polynomial}
+    Since \(K[x]\) is a \principalidealdomain, the irreducibility of
+    \(f\) makes \((f)\) a \maximalideal. Hence \(L=K[x]/(f)\) is a
+    \field.
+
+    The map
+    \[
+        \iota\colon K\fromto L,
+        \qquad
+        \iota(\lambda)=\lambda+(f),
+    \]
+    is a \ringhomomorphism. If \(\iota(\lambda)=0_L\), then the constant
+    polynomial \(\lambda\) belongs to \((f)\). Since
+    \(\polynomialdeg f\geq1\), this forces \(\lambda=0_K\), so \(\iota\)
+    is injective and \(L/K\) is a \fieldextension.
+
+    Every element of \(L\) has the form \(g+(f)\) for some \(g\in K[x]\).
+    Polynomial division gives
+    \[
+        g=qf+r,
+        \qquad
+        r=0\text{ or }\polynomialdeg r<n.
+    \]
+    Thus \(g+(f)=r+(f)\), and writing
+    \[
+        r=a_0+a_1x+\cdots+a_{n-1}x^{n-1}
+    \]
+    shows that \(\mathcal{B}\) spans \(L\).
+
+    If
+    \[
+        a_0(1+(f))+\cdots+a_{n-1}(x^{n-1}+(f))=0_L,
+    \]
+    then
+    \[
+        a_0+\cdots+a_{n-1}x^{n-1}\in(f).
+    \]
+    A nonzero member of \((f)\) has degree at least \(n\), so all
+    coefficients \(a_i\) vanish. Therefore \(\mathcal{B}\) is linearly
+    independent and \([L:K]=n\).
+\end{snippetproof}
+
+\section{Examples}
+
+\begin{snippetexample}{gaussian-rational-field-extension-example}{The field of Gaussian rationals}
+    The polynomial \(x^2+1\in\rationalnumbers[x]\) is irreducible because
+    it has no rational root. Hence
+    \[
+        L=\rationalnumbers[x]/(x^2+1)
+    \]
+    is a degree-two extension of \(\rationalnumbers\), and every element
+    has a unique representative \(a+bx\), with
+    \(a,b\in\rationalnumbers\).
+
+    In \(L\),
+    \[
+        (x+(x^2+1))^2=-1+(x^2+1),
+    \]
+    so \(x+(x^2+1)\) behaves like \(i\). More precisely, evaluation at
+    \(i\) gives a surjective \ringhomomorphism
+    \[
+        \varphi\colon\rationalnumbers[x]\fromto\rationalnumbers(i),
+        \qquad
+        \varphi(g)=g(i).
+    \]
+    Dividing \(g\) by \(x^2+1\) shows that \(g(i)=0\)
+    \ifandonlyif \(x^2+1\divides g\). Therefore
+    \[
+        \ringker\varphi=(x^2+1),
+    \]
+    and the first isomorphism theorem gives
+    \[
+        \rationalnumbers[x]/(x^2+1)
+        \ringisomorphic
+        \rationalnumbers(i).
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{gaussian-rational-field-inverses-example}{Inverses in the Gaussian rational field}
+    Let \(I=(x^2+1)\idealin\rationalnumbers[x]\). Every nonzero element of
+    \(\rationalnumbers[x]/I\) has the form
+    \[
+        (a+bx)+I,
+        \qquad
+        a,b\in\rationalnumbers,
+        \quad
+        (a,b)\neq(0,0).
+    \]
+    Its inverse is
+    \[
+        \bigl((a+bx)+I\bigr)^{-1}
+        =
+        \frac{a-bx}{a^2+b^2}+I.
+    \]
+    Indeed,
+    \begin{align*}
+        \bigl((a+bx)+I\bigr)
+        \left(\frac{a-bx}{a^2+b^2}+I\right)
+        &=
+        \frac{a^2-b^2x^2}{a^2+b^2}+I\\
+        &=
+        1+I,
+    \end{align*}
+    because \(x^2+I=-1+I\).
+\end{snippetexample}
+
+\begin{snippetexample}{irreducible-polynomial-quotient-inverse-example}{An inverse in a polynomial quotient}
+    Let
+    \[
+        f=x^4+3x^3+x^2-2x+1\in\rationalnumbers[x].
+    \]
+    The polynomial \(f\) is irreducible, so
+    \(L=\rationalnumbers[x]/(f)\) is a \field. To invert
+    \(g+(f)\), where \(g=x^2+1\), apply the Euclidean algorithm:
+    \[
+        f=(x^2+3x)g+(1-5x)
+    \]
+    and
+    \[
+        g=
+        \left(-\frac15x-\frac1{25}\right)(1-5x)+\frac{26}{25}.
+    \]
+    Back-substitution gives
+    \[
+        1
+        =
+        \left[
+            \frac{25}{26}
+            -(x^2+3x)\left(\frac5{26}x+\frac1{26}\right)
+        \right]g
+        +
+        \left(\frac5{26}x+\frac1{26}\right)f.
+    \]
+    Consequently,
+    \[
+        (g+(f))^{-1}
+        =
+        \left[
+            \frac{25}{26}
+            -(x^2+3x)\left(\frac5{26}x+\frac1{26}\right)
+        \right]+(f).
+    \]
+\end{snippetexample}
+
+\end{document}

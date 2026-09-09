@@ -12,105 +12,99 @@
 
 \section{Exercises}
 
-\begin{snippetexercise}{rings-ex1}{}
-    Let \(A\) be a \ring such that \(\forall a \in A, a^2 = a\) (boolean ring).
+\begin{snippetexercise}{rings-ex1}{Boolean rings}
+    Let \(A\) be a \ring such that
+    \[
+        z^2=z
+        \qquad
+        \text{for every }z\in A.
+    \]
     Show that:
     \begin{enumerate}
-        \item \(A\) is commutative;
-        \item \(\forall a \in A, a+a = 0_A\);
+        \item \(z+z=0_A\) for every \(z\in A\);
+        \item \(A\) is commutative.
     \end{enumerate}
 \end{snippetexercise}
 
-\begin{snippetsolution}{rings-ex1-sol}{}
-    \begin{enumerate}
-        \item We need to show that \(ab - ba = 0_A\)
-        for all \(a,b \in A\). We have
-        \begin{align*}
-            a+b &= (a+b)(a+b) =a + b + 2b + b^2 \\
-            ab + ba &= 0_A \\
-            &\implies ab = -ba
-        \end{align*}
-        But \(-ba = ab\) by the next proposition.
-        \item We have
-        \begin{align*}
-            (a+1)(a+1) &= a+1 \\
-            a\cdot a + 2a + 1 &= a + 1 \\
-            2a &= 0
-        \end{align*}
-    \end{enumerate}
-\end{snippetsolution}
-
-\begin{snippetexercise}{rings-ex2}{}
-    Let \(U\) be a \set.
-    Given \(A,B \subseteq \powerset(U)\) define
-    \begin{itemize}
-        \item \[
-            A + B \triangleq (A \difference B) \union (B \difference A)
-        \]
-        \item \[
-            A \cdot B \triangleq A \intersection B
-        \]
-    \end{itemize}
-    Show that \(S = (\powerset(U), +, \cdot)\) is a commutative \ring.
-\end{snippetexercise}
-
-\begin{snippetsolution}{rings-ex2-sol}{}
-    \begin{enumerate}
-        \item \(0_S = \emptyset\) as
-        \begin{enumerate}
-            \item \(A \cdot \emptyset = A \intersection \emptyset = \emptyset\);
-            \item \[A + \emptyset = (A \difference \emptyset) \union (\emptyset \difference A) = A \union \emptyset = A \]
-        \end{enumerate}
-        \item \(1_S = U\) as \(A \cdot U = A \intersection U = A\);
-        \item the product is associative since the intersection is associative;
-        \item \((\powerset(U), +)\) is an \abeliangroup:
-        \begin{enumerate}
-            \item it is clearly abelian by the symmetric of the addition operation;
-            \item \(-A = A\) as
-            \[
-                A + A = (A \difference A) \union (A \difference A) = \emptyset = 0_S
-            \]
-            \item the addition is clearly closed;
-            \item the associativity is given by the symmetry of the diagram.
-        \end{enumerate}
-        \item the commutativity is given by the commutativity of the intersection.
-        \item \emph{distributivity:}
-        \begin{align*}
-            (A + B) \cdot C &= AC + BC = A \intersection C + B \intersection C
-            = ((A \intersection C) \difference (B \intersection C)) \union
-            ((B \intersection C) \difference (A \intersection C)) \\
-            &= ((A \difference B) \union (B \difference A)) \intersection C
-        \end{align*}
-        which can be verified with the two diagrams.
-    \end{enumerate}
-\end{snippetsolution}
-
-
-\begin{snippetexercise}{rings-ex3}{}
-    Consider the \set
+\begin{snippetsolution}{rings-ex1-sol}{Boolean rings}
+    Applying the hypothesis to \(z+z\) gives
     \[
-        A = \left\{
-            \begin{pmatrix}
-                z & w \\
-                -w^* & z^*
-            \end{pmatrix}
-            \suchthat
-            z,w \in \complexnumbers
-        \right\} \subseteq \matrices_2(\complexnumbers)
+        z+z=(z+z)^2=z^2+z^2+z^2+z^2
+        =z+z+z+z.
     \]
-    Show that \(A \cong \mathbb{H}\).
+    Cancellation in the additive group yields \(z+z=0_A\). Hence
+    every element is its own additive inverse.
+
+    For \(a,b\in A\), idempotence of \(a+b\) gives
+    \[
+        a+b=(a+b)^2=a+ab+ba+b,
+    \]
+    so \(ab+ba=0_A\), or \(ab=-ba\). Since every element is its own
+    additive inverse, \(-ba=ba\), and therefore \(ab=ba\). Thus \(A\)
+    is commutative.
+\end{snippetsolution}
+
+\begin{snippetnote}{boolean-rings-characteristic-two-note}{Boolean rings have characteristic two}
+    In a Boolean \ring,
+    \[
+        2z=z+z=0_A
+        \qquad
+        \text{for every }z\in A.
+    \]
+    This is the step that turns \(ab+ba=0_A\) into \(ab=ba\).
+\end{snippetnote}
+
+\begin{snippetexercise}{rings-ex2}{The ring of subsets}
+    Let \(U\) be a \set and let \(\mathcal S=\powerset(U)\). For
+    \(A,B\subseteq U\), define
+    \[
+        A+B=(A\difference B)\union(B\difference A),
+        \qquad
+        A\cdot B=A\intersection B.
+    \]
+    Show that \((\mathcal S,+,\cdot)\) is a commutative Boolean ring.
 \end{snippetexercise}
 
-\begin{snippetsolution}{rings-ex3-sol}{}
-    Consider the basis
+\begin{snippetsolution}{rings-ex2-sol}{The ring of subsets}
+    Associate with every \(A\subseteq U\) its characteristic
+    \function
     \[
-        \left\{
-            \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix},
-            \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix},
-            \begin{pmatrix} i & 0 \\ 0 & -i \end{pmatrix},
-            \begin{pmatrix} 0 & i \\ i & 0 \end{pmatrix}
-        \right\}
+        \chi_A\colon U\fromto\integers/2\integers.
     \]
+    Pointwise,
+    \[
+        \chi_{A+B}=\chi_A+\chi_B,
+        \qquad
+        \chi_{A\cdot B}=\chi_A\chi_B.
+    \]
+    Indeed, the symmetric difference contains precisely the points
+    belonging to exactly one of \(A,B\), while intersection corresponds
+    to multiplication of the two characteristic values.
+
+    Therefore the operations on \(\powerset(U)\) are transported from
+    the pointwise operations on the commutative ring
+    \((\integers/2\integers)^U\). The zero and the unit are
+    \[
+        0_{\mathcal S}=\emptyset,
+        \qquad
+        1_{\mathcal S}=U.
+    \]
+    Moreover,
+    \[
+        A+A=\emptyset,
+        \qquad
+        A\cdot A=A.
+    \]
+    Hence every element is idempotent and \(\mathcal S\) is Boolean.
 \end{snippetsolution}
+
+\begin{snippetexample}{ring-of-subsets-symmetric-difference-example}{Symmetric difference}
+    If \(U=\{1,2,3\}\), then
+    \[
+        \{1,2\}+\{2,3\}=\{1,3\}.
+    \]
+    The element \(2\) belongs to both subsets and is therefore removed
+    by the symmetric difference.
+\end{snippetexample}
 
 \end{document}
