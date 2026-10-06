@@ -35,69 +35,152 @@
 \begin{snippettheorem}{Determinante matrice di Vandermonde}
     Sia \(V\) una matrice di Vandermonde. Allora
     \[
-        \det V = \prod_{1 \leq i < j \leq n}(z_j - z_i)
+        \det V = \prod_{1 \leq i < j \leq n}(z_j - z_i).
     \]
 \end{snippettheorem}
 
-Quindi è invertibile se e solo se \(i \neq j \implies z_i \neq z_j\).
+Quindi \(V\) è invertibile se e solo se
+\[
+    i \neq j \implies z_i \neq z_j.
+\]
 
 \begin{snippetproof}{Determinante matrice di Vandermonde}
-    Procediamo per induzione.
+    Procediamo per induzione su \(n\).
+
     \begin{enumerate}
-        \item \emph{Caso base:} se \(n=1\), allora \(\det V = \det [1] = 1\).
+        \item \emph{Caso base:} se \(n=1\), allora
+        \[
+            \det V_1 = \det[1] = 1,
+        \]
+        e la tesi è verificata.
+
         \item \emph{Passo induttivo:} supponiamo che la tesi valga per \(n-1\).
-            Allora possiamo calcolare il determinante usando l'espansione di Laplace
-            \[
-                \renewcommand{\arraystretch}{1.4}
-                V = \left(
-                    \begin{array}{cccc @{\hspace{1em}} | @{\hspace{1em}} c}
-                        1 & z_1 & \dots & z_1^{n-2} & z_1^{n-1} \\
-                        1 & z_2 & \dots & z_2^{n-2} & z_2^{n-1} \\
-                        \vdots & \vdots & \ddots & \vdots & \vdots \\
-                        1 & z_{n-1} & \dots & z_{n-1}^{n-2} & z_{n-1}^{n-1} \\
-                        \hline
-                        1 & z_n & \dots & z_n^{n-2} & z_n^{n-1}
-                    \end{array}
-                \right)
-            \]
-            Abbiamo \[
-                \det V_n = \sum_{k=0}^{n-1} {(-1)}^{n+(k+1)}z^k_n M_k =
-                \sum_{k=0}^{n-1} A_k z_n^k
-            \]
-            dove \(M_k\) è il minor ottenuto togliendo l'ultima riga e la colonna \(k+1\) e quindi
-            \(A_k = {(-1)}^{n+(k+1)}M_k\).
-            Quindi il determinante è un polinomio \(P(z)\) di grado \(n-1\) la cui potenza massima
-            \(z^{n-1}_n\) corrisponde alla colonna \(n\), cioè \(M_{n-1} = \det V_{n-1}\). Otteniamo quindi l'espansione
-            \[
-                \det V_n = z_n^{n-1} \det V_{n-1} + \sum_{k=0}^{n-2} V_k z_n^k
-            \]
-            Per ipotesi induttiva, \[
-                \det V_{n-1} = \prod_{1 \leq i < j \leq n-1} (z_j - z_i)
-            \]
-            che è il coefficiente del grado massimo \(z_n^{n-1}\).
-            Notiamo ora che se avessimo \(z_n = z_k\) per qualche \(k<n\), allora due righe della matrice
-            coincidono e quindi \(\det V_n = 0\), ciò implica che \(P(z_k) = 0\), e quindi
-            \(P\) ha le radici \(z_1, \cdots, z_{n-1}\). Allora, il polinomio ha esattamente la forma
-            \[
-                P(z_n) = C \prod_{i=1}^{n-1} (z_n - z_i)
-            \]
-            per qualche costante \(C\).
-            Ma noi sappiamo che questo coefficiente principale \(C\) è precisamente \(A\), e quindi sostituendo otteniamo
-            \[
-                \det V_n = \left(
-                    \prod_{1 \leq i < j \leq n-1} (z_j - z_i)
+
+        Consideriamo
+        \[
+            \renewcommand{\arraystretch}{1.4}
+            V_n =
+            \left(
+                \begin{array}{cccc @{\hspace{1em}} | @{\hspace{1em}} c}
+                    1 & z_1 & \dots & z_1^{n-2} & z_1^{n-1} \\
+                    1 & z_2 & \dots & z_2^{n-2} & z_2^{n-1} \\
+                    \vdots & \vdots & \ddots & \vdots & \vdots \\
+                    1 & z_{n-1} & \dots & z_{n-1}^{n-2} & z_{n-1}^{n-1} \\
+                    \hline
+                    1 & z_n & \dots & z_n^{n-2} & z_n^{n-1}
+                \end{array}
+            \right).
+        \]
+
+        Espandendo il determinante lungo l'ultima riga otteniamo
+        \[
+            \det V_n
+            =
+            \sum_{k=0}^{n-1}
+            (-1)^{n+k+1} z_n^k M_k,
+        \]
+        dove \(M_k\) è il determinante della matrice ottenuta eliminando
+        l'ultima riga e la colonna \(k+1\).
+
+        Ponendo
+        \[
+            A_k = (-1)^{n+k+1}M_k,
+        \]
+        possiamo vedere \(\det V_n\) come un polinomio in \(z_n\):
+        \[
+            P(z_n)=\det V_n
+            =
+            \sum_{k=0}^{n-1} A_k z_n^k.
+        \]
+
+        Il termine di grado massimo corrisponde a \(k=n-1\). In questo caso
+        \[
+            A_{n-1}
+            =
+            (-1)^{2n}M_{n-1}
+            =
+            M_{n-1}
+            =
+            \det V_{n-1}.
+        \]
+        Quindi
+        \[
+            P(z_n)
+            =
+            z_n^{n-1}\det V_{n-1}
+            +
+            \sum_{k=0}^{n-2}A_k z_n^k.
+        \]
+
+        Per ipotesi induttiva,
+        \[
+            \det V_{n-1}
+            =
+            \prod_{1 \leq i < j \leq n-1}(z_j-z_i).
+        \]
+
+        Se tra \(z_1,\dots,z_{n-1}\) ci sono due valori uguali, allora
+        \(V_n\) ha due righe uguali e quindi
+        \[
+            \det V_n=0.
+        \]
+        D'altra parte, anche
+        \[
+            \prod_{1 \leq i < j \leq n}(z_j-z_i)=0,
+        \]
+        per cui la tesi è verificata.
+
+        Possiamo dunque supporre che
+        \(z_1,\dots,z_{n-1}\) siano distinti.
+
+        Se poniamo \(z_n=z_i\) per un certo \(i<n\), la riga \(n\)-esima
+        coincide con la riga \(i\)-esima, e quindi
+        \[
+            P(z_i)=0.
+        \]
+        Pertanto \(P\) ha le \(n-1\) radici distinte
+        \[
+            z_1,\dots,z_{n-1}.
+        \]
+
+        Poiché \(P\) ha grado al più \(n-1\), esiste una costante \(C\) tale che
+        \[
+            P(z)
+            =
+            C\prod_{i=1}^{n-1}(z-z_i).
+        \]
+
+        Il coefficiente del termine di grado \(n-1\) è \(C\), ma dall'espansione
+        precedente sappiamo che tale coefficiente è
+        \[
+            C=\det V_{n-1}.
+        \]
+        Pertanto
+        \[
+            \begin{aligned}
+                \det V_n
+                &=
+                \det V_{n-1}
+                \prod_{i=1}^{n-1}(z_n-z_i) \\
+                &=
+                \left(
+                    \prod_{1 \leq i < j \leq n-1}(z_j-z_i)
                 \right)
                 \left(
-                    \prod_{i=1}^{n-1} (z_n - z_i)
-                \right)
-                = \prod_{1 \leq i < j \leq n} (z_j - z_i)
-            \]
+                    \prod_{i=1}^{n-1}(z_n-z_i)
+                \right) \\
+                &=
+                \prod_{1 \leq i < j \leq n}(z_j-z_i).
+            \end{aligned}
+        \]
+
+        Questo conclude il passo induttivo.
     \end{enumerate}
 \end{snippetproof}
 
 \begin{snippettheorem}{Forma normale di Schur}
     Sia \(A \in \matrices_{n \times n}(\complexnumbers)\).
-    Esiste una matrice unitaria \(Q\), cioè \(Q^*Q=1\), tale che
+    Esiste una matrice unitaria \(Q\), cioè \(Q^*Q=I_n\), tale che
     \[
         Q^*AQ = T
     \]
@@ -118,11 +201,11 @@ Quindi è invertibile se e solo se \(i \neq j \implies z_i \neq z_j\).
             \[
                 U_1^* A U_1 =
                 \begin{pmatrix}
-                    \lambda_1 & \ast \\ 0 & A_1
+                    \lambda & \ast \\ 0 & A_1
                 \end{pmatrix}
             \]
             dove \(A_1\) è una matrice \((n-1) \times (n-1)\) complessa.
-            Per ipotesi induttiva esiste matrice unitaria \(U_2\) tale che \(U_2^* A_1 U_2 = T\) con \(T\) triangolare superiore.
+            Per ipotesi induttiva esiste matrice unitaria \(U_2\) tale che \(U_2^* A_1 U_2 = T_1\) con \(T_1\) triangolare superiore.
             Allora costruiamo
             \[
                 U = U_1
@@ -134,7 +217,7 @@ Quindi è invertibile se e solo se \(i \neq j \implies z_i \neq z_j\).
             \[
                 U^* A U =
                 \begin{pmatrix}
-                    \lambda_1 & \ast \\ 0 & T_1
+                    \lambda & \ast \\ 0 & T_1
                 \end{pmatrix} = T
             \]
             è triangolare superiore, con diagonale formata dagli autovalori di \(A\).
@@ -198,12 +281,12 @@ Quindi è invertibile se e solo se \(i \neq j \implies z_i \neq z_j\).
 \subsection{Norme, matrici normali e teoremi spettrali}
 
 Siano \(x,y \in \complexnumbers^n\), allora \(||x||_2^2 = x^*x\)
-e \((xy)^* = y^*x^*\).
+e, per matrici di dimensioni compatibili, \((XY)^* = Y^*X^*\).
 Inoltre,
 \[
     ||A||_2 = \sup_{x \neq 0} \frac{||Ax||_2}{||x||_2} = \sqrt{\rho(A^* A)}
 \]
-Se \(A\) è unitaria \(||A||_2 = \sqrt{\rho(I)} = 1\), ma si può dire anche che \(Ax = \lambda x\).
+Se \(A\) è unitaria \(||A||_2 = \sqrt{\rho(I)} = 1\). Inoltre, per un autovettore \(x\neq 0\), vale \(Ax = \lambda x\).
 
 \begin{snippettheorem}{}
     Sia \(\lambda\) autovalore di \(A\) unitaria, allora \(|\lambda| = 1\).
@@ -220,7 +303,7 @@ Se \(A\) è unitaria \(||A||_2 = \sqrt{\rho(I)} = 1\), ma si può dire anche che
 \end{snippettheorem}
 
 \begin{snippettheorem}{}
-    Consideriamo \(||\cdot||_2\) su \(\matrices_{n\times n}(\complexnumbers)\) è unitariamente invariante,
+    La norma \(||\cdot||_2\) su \(\matrices_{n\times n}(\complexnumbers)\) è unitariamente invariante,
     cioè \(\forall A \in \matrices_{n \times n}(\complexnumbers)\), \(\forall P, Q\) unitarie su \(\matrices_{n \times n}(\complexnumbers)\),
     vale \(||PA||_2 = ||AQ||_2 = ||A||_2\).
 \end{snippettheorem}
@@ -232,7 +315,7 @@ Se \(A\) è unitaria \(||A||_2 = \sqrt{\rho(I)} = 1\), ma si può dire anche che
     \]
     Inoltre
     \begin{align*}
-        ||AQ||_2 &= \sup_{x \neq 0} \frac{||AQx||}{||x||_2} &= \sup_{x \neq 0} \frac{||Ay||_2}{||y||_2} = ||A||_2
+        ||AQ||_2 &= \sup_{x \neq 0} \frac{||AQx||_2}{||x||_2} = \sup_{x \neq 0} \frac{||Ay||_2}{||y||_2} = ||A||_2
     \end{align*}
     dove \(y = Qx\) e poiché \(Q\) è unitario \(||y||_2 = ||x||_2\).
 \end{snippetproof}
@@ -278,7 +361,7 @@ Se \(A\) è unitaria \(||A||_2 = \sqrt{\rho(I)} = 1\), ma si può dire anche che
 
 \begin{snippetdefinition}{Matrice definita positiva}
     \(X\) è \emph{definita positiva} se e solo se \(X\) è Hermitiana e \(r_X(v) > 0\)
-    per tutti i \(v\), e tutti gli analoghi.
+    per tutti i \(v\neq 0\), e analogamente per le altre definitezze.
 \end{snippetdefinition}
 
 Questa è la definizione.
@@ -315,7 +398,7 @@ usiamo il teorema di Schur.
 
 Cioè il teorema spettrale.
 Sulla matrice diagonale ci sono gli autovalori e stiamo dicendo che sono reali.
-Cioè una matrice è Hermitiana se e solo se tutti gli autovalori sono normali
+Cioè una matrice è Hermitiana se e solo se tutti gli autovalori sono reali
 e gli autovettori formano una base ortonormale.
 
 \begin{snippetproof}{}
@@ -335,11 +418,11 @@ e gli autovettori formano una base ortonormale.
 
 \begin{snippettheorem}{}
     \(A\) è una matrice normale
-    se e solo se \(A = QDQ^*\), \(D\) diagonale.
+    se e solo se \(A = QDQ^*\), con \(Q\) unitaria e \(D\) diagonale.
 \end{snippettheorem}
 
 Questa è un'estensione del teorema spettrale: tutte e sole le matrici
-normali ammettono base ortonormata.
+normali ammettono una base ortonormale di autovettori.
 
 \begin{snippetproof}{}
     Scomponiamo \(A = QTQ^*\) per il teorema di Schur.
@@ -380,9 +463,9 @@ normali ammettono base ortonormata.
 \end{snippetproof}
 
 \begin{snippettheorem}{}
-    Se \(A\) è una matrice unitaria
+    \(A\) è una matrice unitaria
     se e solo se \(A = QDQ^*\), \(D\) diagonale
-    unitaria con \(|D_{i,i}| = 1\).
+    unitaria con \(|D_{i,i}| = 1\), e \(Q\) unitaria.
 \end{snippettheorem}
 
 \begin{snippetproof}{}
@@ -401,7 +484,7 @@ La \(Q\) sarà pure unitaria e consiste negli autovettori.
 
 \begin{snippettheorem}{}
     \(A\) è definita positiva se e solo se \(A = QDQ^*\) con \(D\)
-    diagonale e \(D_{j,j} > 0\). E analoghi gli altri.
+    diagonale, \(D_{j,j} > 0\) e \(Q\) unitaria. E analoghi gli altri.
 \end{snippettheorem}
 
 \begin{snippetproof}{}
@@ -433,7 +516,7 @@ La \(Q\) sarà pure unitaria e consiste negli autovettori.
     \]
     e abbiamo quindi
     \begin{align*}
-        r_A(v) &=  \hat w^* D \hat w = \sum_{n=1}^n |\hat w_j|^2 \lambda_j(A)
+        r_A(v) &=  \hat w^* D \hat w = \sum_{j=1}^n |\hat w_j|^2 \lambda_j(A)
     \end{align*}
     dove \(\lambda_j(A)\) sono gli autovalori di \(A\).
     I coefficienti \(|\hat w_j|^2\) sono non-negativi e sommano uno, quindi abbiamo una combinazione convessa.
@@ -441,7 +524,7 @@ La \(Q\) sarà pure unitaria e consiste negli autovettori.
     cioè un poliedro complesso in cui i vertici
     sono autovalori.
     Siccome \(A\) è Hermitiana, tutti gli autovalori sono reali, quindi il poliedro è in realtà
-    il segmento fra l'autovalore meno alto e il raggio spettrale.
+    il segmento fra l'autovalore minimo e quello massimo.
 \end{snippetproof}
 
 \begin{snippetdefinition}{}
@@ -449,10 +532,10 @@ La \(Q\) sarà pure unitaria e consiste negli autovettori.
     diciamo che \(X\) è \(\omega\)-Hermitiana se \(X^* = \omega X\).
 \end{snippetdefinition}
 
-Una matrice è Hermitiana se e solo se è \(1\)-Hermitiane, e i suoi autovalori sono reali.
+Una matrice è Hermitiana se e solo se è \(1\)-Hermitiana, e i suoi autovalori sono reali.
 Una matrice è anti-Hermitiana se e solo se è \(-1\)-Hermitiana.
 Moltiplicare per \(i\) trasforma una matrice anti-Hermitiana in una matrice Hermitiana.
-Le matrici \(\omega\)-Hermitiane sono uno spazio vettoriale reale ma non complesso.
+Le matrici \(\omega\)-Hermitiane formano uno spazio vettoriale reale; se lo spazio contiene matrici non nulle, non è uno spazio vettoriale complesso.
 
 In generale, siccome \(X^{**}=X\) è un'involuzione sulle matrici \(\omega\)-Hermitiane otteniamo
 \[
@@ -463,7 +546,7 @@ il vettore nullo (matrice nulla).
 Vogliamo quindi \(\omega = e^{i\theta}\).
 Notiamo che per \(\theta = 0\), gli autovalori sono reali.
 Per \(\theta = \pi\), gli autovalori sono puramente immaginari,
-e più in generale gli autovalori stanno sulla retta di angolo \(\theta/2\).
+e più in generale gli autovalori stanno sulla retta di angolo \(-\theta/2\) modulo \(\pi\).
 Partendo da \(Ax = \lambda x\) abbiamo
 \begin{align*}
     x^* A x &= \lambda ||x||_2^2 \\
@@ -494,23 +577,23 @@ Matrici elementari nel senso dell'eliminazione gaussiana.
 \begin{snippetproposition}{}
     Sia \(A\) diade non banale. Allora, i suoi autovalori sono
     \begin{enumerate}
-        \item \(0\) con molteplicità geometrica \(n-1\),
+        \item \(0\) con molteplicità geometrica \(n-1\) (se \(n>1\)),
             e \(y^*x\) come autovalore non banale.
         \item se \(y^*x = 0\) allora \(0\) ha molteplicità algebrica \(n\) e geometrica \(n-1\),
             e tutti gli autovettori sono gli \(z\) tali che \(y^*z = 0\), che è un sottospazio di dimensione \(n-1\), cioè quelli ortogonali a \(y\).
-            Se \(y^*x \neq 0\) le molteplicità coincidono ed è diagonalizzabile, l'autovalore rimanente è precisamente \(x\),
+            Se \(y^*x \neq 0\) le molteplicità coincidono ed è diagonalizzabile, l'autovettore rimanente è precisamente \(x\),
             cioè l'autospazio relativo a \(\lambda = y^*x\) è generato da \(x\).
     \end{enumerate}
 \end{snippetproposition}
 
 \begin{snippetproof}{}
-    Siano \(x,y\) vettori complessi non banale, quindi \(xy^*\) ha rango \(1\)
+    Siano \(x,y\) vettori complessi non banali, quindi \(xy^*\) ha rango \(1\)
     in quanto ogni riga è un multiplo di \(y^*\).
     Quindi \(n-1\) autovalori sono nulli.
     Dunque per tutti gli \(z\) ortogonali a \(y\) ovvero \(y^*z = 0\),
     vale che \(Az = xy^*z = x \cdot 0 = 0\).
-    Studiamo ora i vari casi. Se \(xy^*=0\) la traccia è nulla, quindi l'autovalore rimanente è zero.
-    La moltiplicità algebrica sale a \(n\) mentre quella geometrica rimane \(n-1\).
+    Studiamo ora i vari casi. Se \(y^*x=0\) la traccia è nulla, quindi l'autovalore rimanente è zero.
+    La molteplicità algebrica sale a \(n\) mentre quella geometrica rimane \(n-1\).
     Se invece \(y^*x \neq 0\), cioè non è ortogonale, allora \(Ax = (y^*x)\cdot x\).
 \end{snippetproof}
 
@@ -534,7 +617,7 @@ Matrici elementari nel senso dell'eliminazione gaussiana.
             1 + y^*x
         \end{cases}
     \]
-    quindi nel secondo caso vogliamo assicurarsi che \(y^*x \neq -1\).
+    quindi nel secondo caso vogliamo assicurarci che \(y^*x \neq -1\).
     Se la matrice è invertibile,
     \[
         A^{-1} = I + \alpha xy^*
@@ -547,9 +630,9 @@ Matrici elementari nel senso dell'eliminazione gaussiana.
     \end{align*}
 \end{snippetproof}
 
-Dato un sistema lineare \(Bv = C\)
-con \(B = A + xy^*\), dove \(x,y \neq 0\),
-supponiamo di volerci ricondurre alla soluzione del sistema \(Av = C\)
+Dato un sistema lineare \(Bv = c\)
+con \(B = A + xy^*\), dove \(A\) è invertibile, \(x,y \neq 0\) e \(1+y^*A^{-1}x\neq 0\),
+supponiamo di volerci ricondurre alla soluzione del sistema \(Av = c\)
 (cioè abbiamo perturbato il sistema con una matrice di rango 1) perché supponiamo di avere un algoritmo
 ottimale per risolvere un sistema associato ad \(A\).
 Abbiamo che \[
@@ -561,7 +644,7 @@ e quindi il sistema si risolve come
     v &= B^{-1} c = (I + r_1y^*)^{-1} A^{-1} c
 \end{align*}
 dove \(r_1\) lo sappiamo risolvere da \(Ar_1 = x\).
-Pure l'inversa \(A^{-1}\) può essere calcolata risolvendo \(A\hat c = c\).
+Pure il vettore \(A^{-1}c\) può essere calcolato risolvendo \(A\hat c = c\).
 Quindi alla fine dobbiamo applicare l'algoritmo iniziale due volte.
 Quindi otteniamo
 \[
@@ -585,7 +668,7 @@ Sia \(a \in \complexnumbers^n\), \(a_1 \neq 0\).
 Allora \[
     E = I -
     \begin{pmatrix}
-        0 \\ a_1/a_1 \\ \vdots \\ a_n/a_1
+        0 \\ a_2/a_1 \\ \vdots \\ a_n/a_1
     \end{pmatrix}
     e_1^t
 \]
@@ -626,20 +709,12 @@ Allora
     E_1 = I -
     \begin{pmatrix}
         0 \\ v_1
-    \end{pmatrix}e_1^t, E_2 = \left(
-        \begin{array}{c@{\hspace{1em}}|@{\hspace{1em}}cccc}
-            1 & 0 & 0 & 0 & 0 \\
-            \hline
-            0 & 1 & 0 & 0 & 0 \\
-            \vdots & \vdots & \ddots & \vdots & \vdots \\
-            0 & 0 & \dots & 1 & 0 \\
-            0 & 0 & \dots & 0 & 1
-        \end{array}
-    \right)  = I -
+    \end{pmatrix}e_1^t, E_2 = I -
     \begin{pmatrix}
         0 \\ 0 \\ v_2
-    \end{pmatrix}
+    \end{pmatrix}e_2^t
 \]
+
 E in generale
 \[
     E_{n-1} = I -
@@ -713,7 +788,7 @@ Notiamo che nella struttura della moltiplicazione \(A=LU\),
 per come si svolge il prodotto, possiamo considerare la matrice a blocchi
 mettendo in evidenza il minore \(A_k\),
 e da questa osservazione sul prodotto di matrici a blocchi,
-notiamo il se e solo se con la forte non-singolarità. Vale \(A_k = U_k L_k\)
+notiamo il se e solo se con la forte non-singolarità. Vale \(A_k = L_k U_k\)
 e l'ipotesi di invertibilità è equivalente a dire che i pivot non sono nulli.
 
 \subsection{Riflettori di Householder e fattorizzazione \(QR\)}
@@ -727,7 +802,7 @@ cioè unitaria per triangolare superiore.
     \[
         H_v = I - \frac{2}{||v||_2^2} vv^*
     \]
-    e definiamo \(H_0 = I_0\).
+    e definiamo \(H_0 = I_n\).
 \end{snippetdefinition}
 
 È una correzione di rango \(1\) dell'identità.
@@ -773,9 +848,9 @@ cioè unitaria per triangolare superiore.
 
 Siccome è una matrice Hermitiana e unitaria, quindi ha autovalori reali
 di modulo \(1\).
-Inoltre è elementare quindi ha \(1\) con molteplicità \(n-1\)
+Inoltre, per \(v\neq 0\), è elementare quindi ha \(1\) con molteplicità \(n-1\)
 e \(-1\) con molteplicità \(1\).
-È diagonalizzabile quindi non distinguo il tipo di moltiplicità.
+È diagonalizzabile quindi non distinguo il tipo di molteplicità.
 D'altro canto,
 \begin{align*}
     (H_v) v &= v - \frac{2}{||v||_2^2} vv^*v = -v
@@ -793,7 +868,7 @@ Quindi l'applicazione è
     H_v x = H_v(\alpha v + w) = \alpha H_v v + H_v w =
     w - \alpha v
 \]
-Quindi applicare \(H_v\) ad \(x\) è come coniugare \(x\)
+Quindi applicare \(H_v\) ad \(x\) è come riflettere \(x\)
 rispetto all'iperpiano \(v^\perp\).
 
 \begin{snippettheorem}{}
@@ -814,9 +889,9 @@ rispetto all'iperpiano \(v^\perp\).
     Siccome \(H_v\) è Hermitiana e \(y^* H y \in \realnumbers\)
     per tutte le \(y \in \complexnumbers^n\),
     allora \(x^* H_v x = x^* \alpha e_1 = \alpha \overline{x}_1\).
-    Quindi, se scriviamo \(x_1 = |x_1| e^{i\theta}\),
+    Quindi, se scriviamo \(x_1 = |x_1| e^{i\theta}\) (scegliendo \(\theta=0\) se \(x_1=0\)),
     allora \[\alpha \overline{x}_1 = ||x||_2 |x_1| e^{i(\psi - \theta)}\]
-    Dunque \(\psi = \theta\) oppure \(\psi = \theta + \pi\).
+    Dunque, se \(x_1\neq 0\), \(\psi = \theta\) oppure \(\psi = \theta + \pi\), modulo \(2\pi\).
     Abbiamo quindi due possibili soluzioni
     \(\alpha = \pm ||x||_2 e^{i\theta}\).
     Avendo informazioni su \(\alpha\), imponiamo \(H_v x = \alpha e_1\).
@@ -836,7 +911,7 @@ rispetto all'iperpiano \(v^\perp\).
         &= ||x||_2^2 - (\pm ||x||_2 |x_1| e^{i\theta}e^{-i\theta}) \\
         &= ||x||_2^2 \mp ||x||_2 |x_1|
     \end{align*}
-    abbiamo scritto \(x^*v\) al posto di \(v^*x\) ma tanto è non-nullo.
+    abbiamo scritto \(x^*v\) al posto di \(v^*x\): sono coniugati e, in questo caso, reali. Inoltre \(||v||_2^2=2v^*x\), quindi la scelta verifica effettivamente \(H_vx=\alpha e_1\).
     Scegliendo \(\alpha = - ||x||_2 e^{i\theta}\) siamo sicuri che non si annulli
     e otteniamo la scelta numericamente più stabile.
 \end{snippetproof}
@@ -891,7 +966,7 @@ rispetto all'iperpiano \(v^\perp\).
                     I_{k-2} & & 0 & \\
                     \hline
                     & & & \\
-                    0 & & H_v^{(k-2)} & \\
+                    0 & & H_v^{(k-1)} & \\
                     & & &
                 \end{array}
         \right)}_{\hat H^{(k-1)}} A^{(k-1)}
@@ -922,7 +997,7 @@ rispetto all'iperpiano \(v^\perp\).
 
 \begin{snippetproposition}{}
     La complessità
-    dell'algoritmo di fattorizzazione \(QR\) è \(O\left(\frac43n^3\right)\). % todo bigO
+    dell'algoritmo di fattorizzazione \(QR\) è \(\frac43n^3+\mathcal O(n^2)\) operazioni aritmetiche, quindi \(\mathcal O(n^3)\).
 \end{snippetproposition}
 
 \begin{snippetproof}{}
@@ -952,15 +1027,15 @@ rispetto all'iperpiano \(v^\perp\).
     Il costo da iterare è quindi quello di una moltiplicazione di un vettore
     per una matrice di Householder, cioè il costo di \((I + xy^*) c\)
     per \(c \in \complexnumbers^n\).
-    Sia \(\gamma = y^* c\), che è un prodotto scalare, quindi \(m\)
+    Sia \(\gamma = y^* c\), che è un prodotto scalare, quindi \(n\)
     moltiplicazioni ed \(n-1\) somme (parallelizzabile).
     Dopodiché \(\hat x = \gamma x\)
     costa \(n\) moltiplicazioni. Infine
-    \(I + \hat x\) sono \(n\) somme.
+    \(c + \hat x\) sono \(n\) somme.
     Abbiamo quindi un costo complessivo di \((n-1)(4n-1)\) operazioni.
     Considerando tutti i passaggi abbiamo una somma
     \begin{align*}
-        \sum_{\tau = n}^2 (\tau-1)(4\tau-1)
+        \sum_{\tau = 2}^n (\tau-1)(4\tau-1)
         &= \sum_{\tau = 2}^n (\tau-1)(4\tau-1) = \sum_{\tau = 2}^n
         \left(4\tau^2 - 5\tau + 1\right) \\
         &= \sum_{\tau = 2}^n 4\tau^2 + \mathcal O(n^2) = \frac{4}{3}n^3 + \mathcal O(n^2)
@@ -984,15 +1059,15 @@ Il sistema è quindi equivalente a \((M-N)x = b\),
 oppure \(Mx = b + Nx\).
 Siccome \(M\) è invertibile, \(x = Px + c\)
 dove \(P = M^{-1}N\) e \(c = M^{-1}b\).
-Siccome \(x=Px + c\), allora la soluzione è punto fisso di una trasformazione lineare
+Siccome \(x=Px + c\), allora la soluzione è punto fisso di una trasformazione affine
 \(T\colon \complexnumbers^n \fromto \complexnumbers^n\)
 tale che \(T(y) = Py + c\).
 Vogliamo quindi trovare il punto fisso di \(T\).
 Il metodo iterativo collegato è
 \(x^{(k+1)} = Px^{(k)} + c\) dato un punto iniziale \(x^{(0)}\).
-Quindi, definito \(e^{(j)} = x^{(j)} - x\), abbiamo che
+Quindi, definito \(e^{(j)} = x - x^{(j)}\), abbiamo che
 \(e^{(k+1)} = Pe^{(k)}\), e quindi \(e^{(k)} = P^k e^{(0)}\).
-Abbiamo quindi convergenza se e solo se \[
+Abbiamo quindi convergenza per ogni punto iniziale se e solo se \[
     \lim_{k \to \infty} P^k = 0
 \]
 Ci serve che il raggio spettrale sia minore di \(1\).
@@ -1106,7 +1181,7 @@ Ci serve che il raggio spettrale sia minore di \(1\).
     \end{iffproof}
 \end{snippetproof}
 
-Negli spazi finiti dimensionali, tutte le metriche sono equivalenti
+Negli spazi finiti dimensionali, tutte le norme sono equivalenti
 e quindi il risultato non dipende dalla norma.
 Invece, in uno spazio infinito dimensionale va specificato,
 in quanto qualcosa può contrarsi rispetto ad una metrica ma non rispetto ad un'altra.
@@ -1134,7 +1209,7 @@ Utilizziamo quindi questo per il teorema delle contrazioni di Banach.
 
 \begin{snippetdefinition}{Metodo iterativo consistente}
     Metodo iterativo matriciale si dice \emph{consistente}
-    se è un punto fisso della mappa
+    se la soluzione esatta è un punto fisso della mappa
     \(\complexnumbers^n \fromto \complexnumbers^n\)
     data da \(y \fromto Py+q\).
 \end{snippetdefinition}
@@ -1180,15 +1255,14 @@ Nel metodo di Jacobi \(\det M \neq 0\)
 se e solo se tutti gli elementi principali di \(A\) sono
 non-nulli.
 
-Il metodo di Jacobi è sia consistente che stabile.
-È costruito usando la definizione di consistenza, quindi quello è ovvio.
-Inoltre, il metodo è stabile in quanto la matrice ha raggio spettrale minore di \(1\).
+Il metodo di Jacobi è consistente per costruzione.
+È stabile se e solo se la matrice di iterazione ha raggio spettrale minore di \(1\).
 In forma
 \begin{align*}
     x_i^{(k+1)}
     &= \frac{1}{a_{i,i}}
     \left[
-        b_i - \sum_{\substack{j = i \\ i \neq j}}^n a_{i,j} x_j^{(k)}
+        b_i - \sum_{\substack{j = 1 \\ i \neq j}}^n a_{i,j} x_j^{(k)}
     \right]
 \end{align*}
 
@@ -1196,12 +1270,12 @@ In forma
 
 \begin{snippettheorem}{}
     Sia \(A = D-B-C\) la decomposizione a tre fattori di \(A\).
-    Se almeno una delle seguenti ipotesi:
+    Se vale almeno una delle seguenti ipotesi:
     \begin{enumerate}
-        \item \(A\) è a predominanza diagonale forte (sia righe che colonne);
-        \item \(A\) è a predominanza diagonale debole e \(A\) è irriducibile;
+        \item \(A\) è a predominanza diagonale forte per righe;
+        \item \(A\) è a predominanza diagonale debole per righe, con almeno una riga stretta, e \(A\) è irriducibile;
         \item \(A\) è a predominanza diagonale forte per colonne;
-        \item \(A\) è a predominanza diagonale debole per colonne e \(A\) è irriducibile;
+        \item \(A\) è a predominanza diagonale debole per colonne, con almeno una colonna stretta, e \(A\) è irriducibile;
     \end{enumerate}
     Allora, \(\rho(P) < 1\) e quindi il metodo di Jacobi è convergente.
 \end{snippettheorem}
@@ -1227,11 +1301,11 @@ In forma
     \[
         |h_{i,j}| =
         \begin{cases}
-            |\mu a_{i,i}| & i=j \\
+            |\nu a_{i,i}| & i=j \\
             |a_{i,j}| & i \neq j
         \end{cases}
     \]
-    Poiché \(|\mu| \geq 1\) e \(H\) è a predominanza diagonale per colonne e irriducibile,
+    Poiché \(|\nu| \geq 1\) e \(H\) è a predominanza diagonale forte per colonne,
     quindi è anche invertibile. Ma questo è assurdo \lightning.
 \end{snippetproof}
 
@@ -1267,14 +1341,14 @@ In forma
             \sum_{\substack{j=1 \\ j \neq i}}^n |a_{i,j}|
         }{
             |a_{i,i}|
-        } < 1
+        } \leq 1
     \]
-    per il terzo teorema di Gershgorin,
+    con disuguaglianze tutte strette nel caso di predominanza diagonale forte. Nel caso debole, il terzo teorema di Gershgorin esclude autovalori di modulo uno,
     siccome \(A\) è a predominanza diagonale stretta oppure \(A\)
     è a predominanza diagonale debole ed è irriducibile.
 \end{snippetproof}
 
-È un altamente paralelizzabile.
+È un metodo altamente parallelizzabile.
 
 \subsection{Metodo di Gauss-Seidel}
 
@@ -1295,7 +1369,7 @@ L'iterazione ha forma
 \begin{align*}
     x^{(k+1)}
     &= Gx^{(k)} + (D-B)^{-1}b \\
-    Dx^{(n+1)} - Bx^{(k+1)} &= Cx^{(k)} + b \\
+    Dx^{(k+1)} - Bx^{(k+1)} &= Cx^{(k)} + b \\
     x^{(k+1)} &= D^{-1}Bx^{(k+1)} + D^{-1}Cx^{(k)} + D^{-1}b \\
     x_i^{(k+1)} &= \frac{1}{a_{i,i}} \left[
         b_i - \sum_{j=1}^{i-1}
@@ -1310,10 +1384,10 @@ il metodo degli elementi successivi.
     Sia \(A = D-B-C\) la decomposizione di \(A\) per tre fattori.
     Se vale una delle seguenti ipotesi:
     \begin{enumerate}
-        \item \(A\) è a predominanza diagonale forte (sia righe che colonne);
-        \item \(A\) è a predominanza diagonale debole e \(A\) è irriducibile;
+        \item \(A\) è a predominanza diagonale forte per righe;
+        \item \(A\) è a predominanza diagonale debole per righe, con almeno una riga stretta, e \(A\) è irriducibile;
         \item \(A\) è a predominanza diagonale forte per colonne;
-        \item \(A\) è a predominanza diagonale debole per colonne e \(A\) è irriducibile;
+        \item \(A\) è a predominanza diagonale debole per colonne, con almeno una colonna stretta, e \(A\) è irriducibile;
     \end{enumerate}
     Allora, \(\rho(P) < 1\) e quindi il metodo di Gauss-Seidel è convergente.
 \end{snippettheorem}
@@ -1321,7 +1395,7 @@ il metodo degli elementi successivi.
 \begin{snippetproof}{}
     \(A\) è invertibile per i teoremi di Gershgorin e gli elementi diagonali
     sono non-nulli, altrimenti non sarebbe né invertibile né a predominanza diagonale.
-    La consistenza è data dalla definizione. Dobbiamo solamente mostrare che \(\rho(J) < 1\).
+    La consistenza è data dalla definizione. Dobbiamo solamente mostrare che \(\rho(G) < 1\).
     Supponiamo per assurdo che esista \(\exists \nu\)
     tale che \(|\nu| \geq 1\).
     Allora deve soddisfare il polinomio caratteristico
@@ -1335,26 +1409,26 @@ il metodo degli elementi successivi.
     \[
         |h_{i,j}| =
         \begin{cases}
-            |\mu a_{i,i}| & i\geq j \\
+            |\nu a_{i,j}| & i\geq j \\
             |a_{i,j}| & i < j
         \end{cases}
     \]
-    Poiché \(|\mu| \geq 1\) e \(H\) è a predominanza diagonale per colonne e irriducibile (come \(A\)),
-    allora
+    Poiché \(|\nu|\geq 1\), per ogni colonna \(j\) abbiamo
     \begin{align*}
-        |h_{i,j}| &= |\nu| \sum_{\substack{j=1 \\ j \neq i}}^n |a_{i,j}|
-        = |\nu| \sum_{j > 1}^n |a_{i,j}| + \nu| \sum_{j < i} |a_{i,j}| \\
-        &= \sum_{j < 1}^n |h_{i,j}| + |\nu| \sum_{j>1}^n |a_{i,j}| %\Arrow{(\ast)} \\
-        \overset{(\ast)}{\geq} \sum_{j < i} |h_{i,j}| + \sum_{j > i}|a_{i,j}|
-        = \sum_{j\neq i}^n |h_{i,j}|
+        |h_{j,j}| &= |\nu|\,|a_{j,j}|
+        \geq |\nu|\sum_{i\neq j}|a_{i,j}| \\
+        &\geq \sum_{i<j}|a_{i,j}|+|\nu|\sum_{i>j}|a_{i,j}|
+        =\sum_{i\neq j}|h_{i,j}|.
     \end{align*}
+    Quindi \(H\) è a predominanza diagonale per colonne. Nel caso forte tutte le disuguaglianze sono strette;
+    nel caso debole \(H\) è irriducibile (come \(A\)).
     Sempre per il fatto che \(A\) è a predominanza diagonale per colonne,
     \(\exists i_0 \in \{1, \cdots, n\}\)
     tale che
     \[
-        |a_{i_0, i_0}| > \sum_{\substack{j=1 \\ j\neq i}}^n |a_{j, i_0}|
+        |a_{i_0, i_0}| > \sum_{\substack{j=1 \\ j\neq i_0}}^n |a_{j, i_0}|
     \]
-    e per questo indice la maggiorazione in \((\ast)\) vale in senso stretto.
+    e per questo indice la maggiorazione precedente vale in senso stretto.
     Ma quindi la matrice \(H\) è invertibile, che è assurdo \lightning.
 \end{snippetproof}
 
@@ -1368,10 +1442,10 @@ il metodo degli elementi successivi.
             3 & 0 & 4 \\
             7 & 4 & 2 \\
             -1 & -1 & -2
-        \end{pmatrix}, \quad
+        \end{pmatrix}, \quad b=
         \begin{pmatrix}
             7 & 13 & -4
-        \end{pmatrix}
+        \end{pmatrix}^T
     \]
     Abbiamo quindi la matrice di iterazione di Jacobi e Gauss-Seidel
     \[
@@ -1401,10 +1475,10 @@ il metodo degli elementi successivi.
             -3 & 3 & -6 \\
             -4 & 7 & -8 \\
             5 & 7 & -9
-        \end{pmatrix}, \quad
+        \end{pmatrix}, \quad b=
         \begin{pmatrix}
             -6 & -5 & 3
-        \end{pmatrix}
+        \end{pmatrix}^T
     \]
     Abbiamo quindi la matrice di iterazione di Jacobi e Gauss-Seidel
     \[
@@ -1433,10 +1507,10 @@ il metodo degli elementi successivi.
             4 & 1 & 1 \\
             2 & -9 & 0 \\
             0 & -8 & -6
-        \end{pmatrix}, \quad
+        \end{pmatrix}, \quad b=
         \begin{pmatrix}
             6 & -7 & -14
-        \end{pmatrix}
+        \end{pmatrix}^T
     \]
     Abbiamo quindi la matrice di iterazione di Jacobi e Gauss-Seidel
     \[
@@ -1475,12 +1549,12 @@ più veloce rispetto a quello di Jacobi.
         A =
         \begin{pmatrix}
             11 & -5 & -5 \\
-            5 & -12 & 6 \\
+            5 & 12 & 6 \\
             6 & -4 & 11
-        \end{pmatrix}, \quad
+        \end{pmatrix}, \quad b=
         \begin{pmatrix}
             1 & 23 & 13
-        \end{pmatrix}
+        \end{pmatrix}^T
     \]
     Abbiamo quindi la matrice di iterazione di Jacobi e Gauss-Seidel
     \[
@@ -1536,13 +1610,13 @@ più veloce rispetto a quello di Jacobi.
     tali che
     \begin{enumerate}
         \item \(s_l \intersection s_m = \emptyset\)
-            per \(l,m \in \{1, \cdots, t\}\) con \(l \neq n\);
+            per \(l,m \in \{1, \cdots, t\}\) con \(l \neq m\);
         \item \(\bigcup_i I_i = \{1, \cdots, n\}\)
-            e \(I_l \intersection I_n = \emptyset\)
-            per \(l\neq n\).
+            e \(I_l \intersection I_m = \emptyset\)
+            per \(l\neq m\).
     \end{enumerate}
     Chiamiamo \(k_l = |I_l|\).
-    Allora, \(s_i\) contiene esattamente \(k_i\) autovalori.
+    Allora, \(s_i\) contiene esattamente \(k_i\) autovalori, contati con molteplicità algebrica.
 \end{snippettheorem}
 
 \begin{snippetproof}{Teorema di Gershgorin I}
@@ -1554,7 +1628,7 @@ più veloce rispetto a quello di Jacobi.
     cioè vogliamo massimizzare la parte destra. Riscriviamo questa relazione
     per l'indice \(p\) ma isolando questo termine,
     \begin{DispWithArrows*}[tikz=blue]
-        \lambda x_p - A_{p,p} x_p &=
+        |\lambda x_p - A_{p,p} x_p| &=
         \sum_{\substack{k=1 \\ k \neq p}}^n A_{p,k} x_k \\
         |(\lambda - A_{p,p})x_p| &= \left|
         \sum_{\substack{k=1 \\ k \neq p}}^n A_{p,k} x_k
@@ -1567,7 +1641,7 @@ più veloce rispetto a quello di Jacobi.
     Quindi, l'autovalore sta nell'unione di tutti i cerchi, in quanto non so in quale
     cerchio sta
     \[
-        \lambda \in \sum_{j=1}^n C_j
+        \lambda \in \bigcup_{j=1}^n C_j
     \]
 \end{snippetproof}
 
@@ -1593,14 +1667,17 @@ più veloce rispetto a quello di Jacobi.
     dai coefficienti. Quindi siccome \(A_{j,k}(t)\) è una funzione lineare affine in \(t\),
     allora \[
         \det(A_n(t) - \lambda I) = (-1)^n \lambda^n +
-        \alpha_{n-1}(t)\lambda^{n-1} + \cdots + \alpha_1(t)\lambda + \alpha_0
+        \alpha_{n-1}(t)\lambda^{n-1} + \cdots + \alpha_1(t)\lambda + \alpha_0(t)
     \]
+    Per Gershgorin I, gli autovalori restano in \(\bigcup_j C_j(t)\subseteq\bigcup_j C_j(1)\).
+    Poiché i gruppi \(s_i\) sono disgiunti e compatti, un autovalore non può passare da un gruppo all'altro lungo una traiettoria continua.
+    Per \(t=0\), in \(s_i\) ci sono precisamente \(|I_i|\) elementi diagonali, contati con molteplicità. Il loro numero rimane quindi lo stesso per \(t=1\).
 \end{snippetproof}
 
-Se abbiamo dei cerchi di Gershgorin separati, allora tutti gli autovalori sono separati.
+Se tutti i cerchi di Gershgorin sono a due a due disgiunti, ciascuno contiene un solo autovalore, che è quindi semplice.
 Ma se per esempio la matrice evolve in maniera continua, e due cerchi si toccano,
 allora entrambi gli autovalori di quei due cerchi possono
-spostarsi interamente in uno dei cerchio ma non nell'altro.
+spostarsi entrambi in uno dei due cerchi; resta vincolato il loro numero totale nella componente isolata.
 
 \begin{radioactive}
     \begin{snippetexample}{Teorema di Gershgorin I}
@@ -1613,7 +1690,7 @@ spostarsi interamente in uno dei cerchio ma non nell'altro.
                     \draw[blue, thick, fill=blue!10, fill opacity=0.5] (10,0) circle (7);
                     \draw[red, thick, fill=red!10, fill opacity=0.5] (4,0) circle (3);
                     \draw[green!60!black, thick, fill=green!10, fill opacity=0.5] (4,0) circle (2);
-                    \draw[orange, thick, fill=orange!10, fill opacity=0.5] (0,-3) circle (1.414);
+                    \draw[orange, thick, fill=orange!10, fill opacity=0.5] (0,3) circle (1.414);
                 \end{tikzpicture}
             \end{center}
             \vspace{-3cm}
@@ -1652,7 +1729,7 @@ spostarsi interamente in uno dei cerchio ma non nell'altro.
     Si dice che \(A\) è \emph{irriducibile}
     se \(G_A\) è fortemente connesso dove \(G_A\)
     è il grafo \((N, E)\) con \(N = \{1, \cdots, n\}\)
-    dove \((J,K) \in E\) se e solo se \(A_{j,k} \neq 0\).
+    dove \((j,k) \in E\) se e solo se \(A_{j,k} \neq 0\).
 \end{snippetdefinition}
 
 \begin{radioactive}
@@ -1694,7 +1771,7 @@ spostarsi interamente in uno dei cerchio ma non nell'altro.
             C_6 &= \{ z \in \complexnumbers \suchthat |z-77| \leq 1\}
         \end{align*}
         C'è quindi un singolo autovalore in \(C_6\),
-        ma quest'ultimo non può essere propriamente complesso in quanto ci sarebbe un'altro
+        ma quest'ultimo non può essere propriamente complesso in quanto ci sarebbe un altro
         autovalore coniugato nello stesso cerchio.
         Quindi quell'autovalore è reale e coincide con il raggio spettrale, data la sua distanza dall'origine.
         Il suo grafo associato è fortemente connesso:
@@ -1723,13 +1800,13 @@ spostarsi interamente in uno dei cerchio ma non nell'altro.
 
 \begin{snippettheorem}{Teorema di Gershgorin III}
     Sia \(A \in \matrices_{n \times n}(\complexnumbers)\),
-    \(A\) irriducibile e tale
+    \(A\) irriducibile e tale che
     l'autovalore \(\lambda\) sta sul bordo dell'unione dei cerchi
     \[
         \lambda \in \partial \left(\bigcup_{j=1}^n C_j\right)
     \]
     Allora \(\lambda\) sta sul bordo di tutti i cerchi
-    \(\lambda \in \partial C_j, \forall J \in \{1, \cdots, n\}\).
+    \(\lambda \in \partial C_j, \forall j \in \{1, \cdots, n\}\).
 \end{snippettheorem}
 
 Non si verifica quasi mai l'ipotesi, quindi conviene usare la contronominale.
@@ -1743,18 +1820,18 @@ Non si verifica quasi mai l'ipotesi, quindi conviene usare la contronominale.
     dove scegliamo \(j\) come indice \(p\) tale che \(|x_p| = ||x||_\infty > 0\),
     cioè vogliamo massimizzare la parte destra.
     \begin{align*}
-        \lambda x_p - A_{p,p} x_p &\leq
+        |\lambda x_p - A_{p,p} x_p| &\leq
         \sum_{\substack{k=1 \\ k \neq p}}^n |A_{p,k}| \cdot |x_k| \leq |x_p| \cdot r_p \\
-        \lambda x_p - A_{p,p} x_p &=
+        |\lambda x_p - A_{p,p} x_p| &=
         \sum_{\substack{k=1 \\ k \neq p}}^n |A_{p,k}| \cdot |x_k| = |x_p| \cdot r_p
     \end{align*}
     Ma per l'ipotesi l'autovalore sta sul bordo, quindi \(r_p\) è precisamente il raggio
     del cerchio.
     Scelgo \(u = p\) e guardiamo con attenzione alla relazione
     \begin{align*}
-        \sum_{\substack{k=1 \\ k \neq p}}
+        \sum_{\substack{k=1 \\ k \neq p}}^n
         |A_{p,k}| \cdot |x_k| &= \left(
-            \sum_{\substack{u=1 \\ p \neq p}} |A_{p,k}|
+            \sum_{\substack{k=1 \\ k \neq p}}^n |A_{p,k}|
         \right) |x_p|
     \end{align*}
     Visto che è irriducibile, almeno un termine \(i_2 \neq p\)
@@ -1764,7 +1841,7 @@ Non si verifica quasi mai l'ipotesi, quindi conviene usare la contronominale.
     su \(i_2 \neq p\) al posto di \(p\).
     Quindi, \(\lambda \in C_{i_2}\), e per ipotesi
     \(\lambda\) sta quindi in \(\partial C_{i_2}\).
-    Iterando questo argomento \(n-1\), esaurendo l'insieme dei nodi, otteniamo la tesi.
+    Propagando questo argomento lungo i cammini del grafo, la forte connessione permette di raggiungere tutti i nodi e ottenere la tesi.
 \end{snippetproof}
 
 \begin{snippetexample}{Teorema di Gershgorin III}
@@ -1863,7 +1940,7 @@ Non si verifica quasi mai l'ipotesi, quindi conviene usare la contronominale.
     \end{wrapfigure}
     Dai teoremi di Gershgorin, siccome gli autovalori sono reali,
     sappiamo quindi che \(\lambda \in [0,4]\).
-    La matrice associata è irriducibile in quanto tridiagonale.
+    La matrice associata è irriducibile in quanto tridiagonale con sottodiagonale e sopradiagonale non nulle.
     Tuttavia, \(0,4 \notin \partial C_1\), mentre
     \[
         0,4 \in \partial \left(
@@ -1871,7 +1948,7 @@ Non si verifica quasi mai l'ipotesi, quindi conviene usare la contronominale.
         \right)
     \]
     dunque \(\lambda \in (0,4)\).
-    Sappiamo che se \(B = A^*\), allora \[
+    Sappiamo che se \(B=B^*\), allora \[
         \lambda_{\text{min}}(B)
         = \min_{\substack{x \in \complexnumbers^n \\ x \neq 0}} \frac{x^* B x}{x^* x}
     \]
@@ -1879,12 +1956,12 @@ Non si verifica quasi mai l'ipotesi, quindi conviene usare la contronominale.
     \[
         A_n e =
         \begin{pmatrix} 1 & 0 & \cdots & 0 & 1
-        \end{pmatrix}
+        \end{pmatrix}^T
     \]
-    e il raggio \(r_n = 2/n \to 0\) per \(n \to \infty\).
+    e il quoziente di Rayleigh \(r_n = 2/n \to 0\) per \(n \to \infty\).
     Se scegliessimo il vettore con elementi che si alternano \(1, -1\),
-    abbiamo più sovrapposizione possibili. I coefficienti oscillano,
-    il vettore oscilla e quindi risuoniamo il più possibile.
+    abbiamo la massima oscillazione fra componenti adiacenti. I coefficienti oscillano,
+    il vettore oscilla e quindi amplifica l'effetto delle differenze fra componenti adiacenti.
     In tal caso otteniamo un valore appena inferiore al \(4\).
     \wrapfill
 \end{snippetexample}
@@ -1897,27 +1974,27 @@ Consideriamo \(Y=X^2\), cioè
 \[
     (Y)_{j,k} = \sum_{l=1}^n x_{j,l} x_{l,k}
 \]
-Cioè visto che i termini sono booleani, allora fa \(1\)
-se posso muovermi da \(j\) a \(e\) e da \(e\) a \(k\),
+Cioè visto che i termini sono booleani, allora è positivo
+se esiste un nodo \(l\) tale che posso muovermi da \(j\) a \(l\) e da \(l\) a \(k\),
 quindi muoversi fra \(j\) a \(k\) in due passi.
 Quindi il termine \((Y)_{j,k}\) è il numero di modi di attraversare i due nodi in \(2\) passi.
 Possiamo semplificare usando una or iterata
 \[
     (Y)_{j,k}
-    = \bigvee_{l=1}^n x_{j,e} \cdot x_{e,k}
+    = \bigvee_{l=1}^n x_{j,l} \cdot x_{l,k}
 \]
-In generale, \((X^n)_{j,k}\) ci mostra il numero di cammini
+In generale, \((X^n)_{j,k}\) ci mostra il numero di cammini di lunghezza \(n\)
 per connettere i nodi \(j, k\).
 Sia \[
     \tilde X = I_n \vee \bigvee_{k=1}^{n-1} X^k
 \]
-Se tale matrice è tutta piena di \(1\),
+Qui le potenze sono calcolate con il prodotto booleano. Se tale matrice è tutta piena di \(1\),
 significa che \(X\) è fortemente connessa.
-L'identità serve per assicurarci che abbiamo uni sulla diagonale, cioè ogni elemento
+L'identità serve per assicurarci che abbiamo uno sulla diagonale, cioè ogni elemento
 ha un percorso verso sé stesso, cioè il percorso nullo.
 
 Tuttavia, l'algoritmo più ottimale è quello
-di fare un traversamento DFS sul grafo, controllare, e poi un traversamente DFS
+di fare un attraversamento DFS sul grafo, controllare, e poi un attraversamento DFS
 sul grafo invertito (che è associato alla matrice trasposta).
 
 \subsection{Applicazioni ai metodi iterativi}
@@ -2040,11 +2117,11 @@ sul grafo invertito (che è associato alla matrice trasposta).
         \]
         Prendiamo come dato iniziale
         \[
-            \widehat{x}^{(0)}=x^\ast+\widehat{u}
+            \widehat{x}^{(0)}=x^\ast-\widehat{u}
         \]
         e consideriamo la successione \(\{\widehat{x}^{(k)}\}_{k\geq 0}\) generata dal metodo. Definiamo
         \[
-            \widehat{e}^{(k)}=\widehat{x}^{(k)}-x^\ast.
+            \widehat{e}^{(k)}=x^\ast-\widehat{x}^{(k)}.
         \]
         Poiché il metodo è consistente,
         \[
@@ -2066,7 +2143,7 @@ sul grafo invertito (che è associato alla matrice trasposta).
         \[
             \widehat{e}^{(0)}
             =
-            \widehat{x}^{(0)}-x^\ast
+            x^\ast-\widehat{x}^{(0)}
             =
             \widehat{u}.
         \]
@@ -2109,7 +2186,7 @@ sul grafo invertito (che è associato alla matrice trasposta).
         \]
         Definendo
         \[
-            e^{(k)}=x^{(k)}-x^\ast,
+            e^{(k)}=x^\ast-x^{(k)},
         \]
         otteniamo
         \[
@@ -2151,17 +2228,17 @@ allora
 \]
 
 \begin{snippetdefinition}{Tasso di riduzione medio dell'errore}
-    Il \emph{tasso di riduzione medio dell'errore} al passo \(k\) è
+    Il \emph{tasso di riduzione medio dell'errore} al passo \(k\geq 1\) è (il prodotto telescopico è interpretato tramite il rapporto finale se un errore intermedio è nullo)
     \[
         t_k
         =
-        \sup_{e^{(0)}\in\complexnumbers^n}
+        \sup_{e^{(0)}\in\complexnumbers^n\setminus\{0\}}
         \sqrt[k]{
             \prod_{j=1}^k
             \frac{\norm{e^{(j)}}}{\norm{e^{(j-1)}}}
         }
         =
-        \sup_{e^{(0)}\in\complexnumbers^n}
+        \sup_{e^{(0)}\in\complexnumbers^n\setminus\{0\}}
         \sqrt[k]{
             \frac{\norm{e^{(k)}}}{\norm{e^{(0)}}}
         }.
@@ -2184,7 +2261,7 @@ allora
     \[
         t_k^k
         =
-        \sup_{e^{(0)}\in\complexnumbers^n}
+        \sup_{e^{(0)}\in\complexnumbers^n\setminus\{0\}}
         \frac{\norm{P^k e^{(0)}}}{\norm{e^{(0)}}}
         =
         \norm{P^k}.
@@ -2223,32 +2300,21 @@ allora
         =
         \rho(P).
     \]
-    D'altra parte, per ogni \(\varepsilon>0\) esiste una norma matriciale indotta tale che
+    D'altra parte, per ogni \(\varepsilon>0\) esiste una norma matriciale indotta \(\norm{\cdot}_\varepsilon\) tale che
     \[
-        \norm{P}\leq \rho(P)+\varepsilon.
+        \norm{P}_\varepsilon\leq\rho(P)+\varepsilon.
     \]
-    Allora
+    Per equivalenza delle norme esiste \(C_\varepsilon>0\), indipendente da \(k\), tale che
     \[
-        t_k^k
-        =
-        \norm{P^k}
-        \leq
-        \norm{P}^k
-        \leq
-        \left(\rho(P)+\varepsilon\right)^k,
+        t_k^k=\norm{P^k}\leq C_\varepsilon\norm{P^k}_\varepsilon
+        \leq C_\varepsilon(\rho(P)+\varepsilon)^k.
     \]
-    e dunque
-    \[
-        t_k\leq \rho(P)+\varepsilon.
-    \]
-    Facendo tendere \(\varepsilon\) a \(0\), otteniamo
-    \[
-        \lim_{k\to+\infty}t_k=\rho(P).
-    \]
+    Quindi \(\limsup_k t_k\leq\rho(P)+\varepsilon\). Facendo tendere \(\varepsilon\) a zero e usando la minorazione precedente, otteniamo la tesi.
+
 \end{snippetproof}
 
 \begin{snippettheorem}{}
-    Se il metodo è convergente e l'errore non si annulla, allora
+    Se \(P\) è diagonalizzabile, ha un unico autovalore dominante in modulo e l'errore iniziale ha componente non nulla lungo il relativo autovettore, allora
     \[
         \gamma_k
         =
@@ -2316,7 +2382,7 @@ Il secondo criterio è sconsigliato quando il raggio spettrale è troppo vicino 
 
 \subsection{Criteri d'arresto}
 
-Vogliamo capire cosa succede quando fermiamo il metodo con i criteri precedenti. Definiamo l'\emph{errore relativo}
+Supponiamo \(b\neq 0\). Vogliamo capire cosa succede quando fermiamo il metodo con i criteri precedenti. Definiamo l'\emph{errore relativo}
 come
 \[
     \frac{\norm{e^{(k)}}}{\norm{x^\ast}}
@@ -2417,7 +2483,7 @@ allora
     \leq
     \norm{(I-P)^{-1}}\varepsilon.
 \]
-Questo criterio può essere poco affidabile quando \(\rho(P)\approx 1\): in quel caso \(I-P\) è vicina a essere
+Questo criterio può essere poco affidabile quando \(\rho(P)\approx 1\): se esiste un autovalore di \(P\) vicino a \(1\), la matrice \(I-P\) è vicina a essere
 singolare e quindi \(\norm{(I-P)^{-1}}\) può essere molto grande. In altre parole, gli iterati consecutivi possono
 essere molto vicini anche se l'errore rispetto alla soluzione è ancora grande.
 
@@ -2436,16 +2502,16 @@ essere molto vicini anche se l'errore rispetto alla soluzione è ancora grande.
     \begin{align*}
         G &= (D-B)^{-1}C
         = (D- B)^{-1} B^H \\
-        &= (D-B)^{-1}(B^H + D - B - D + D) = I - (D - B)^{-1}A
+        &= (D-B)^{-1}(D-B-A) = I - (D - B)^{-1}A
     \end{align*}
-    Prima di dimostrare l'uguaglianza, mostriamo
+    La formula \(G=I-(D-B)^{-1}A\) mostra che, se \(A\) è singolare, \(1\) è autovalore di \(G\): il metodo non converge e \(A\) non è definita positiva. Possiamo dunque supporre \(A\) non singolare. Prima di concludere, mostriamo
     che la matrice \(Z \triangleq A-G^H A G\) è definita positiva.
     Poniamo \(F \triangleq (D-B)^{-1}A\).
     Data l'uguaglianza precedente \(G = I-F\).
     In particolare,
     \begin{align*}
         Z &= A- G^HAG = A - (I-F)^H A (I - F) \\
-        &= \cancel A - \cancel A + F^H A + AF - FAF
+        &= \cancel A - \cancel A + F^H A + AF - F^HAF
         = F^H\left(A + F^{-H}AF - AF\right) \\
         &= F^H \left(AF^{-1} + F^{-H}A - A\right)F \\
         &= F^H \left(
@@ -2475,7 +2541,7 @@ essere molto vicini anche se l'errore rispetto alla soluzione è ancora grande.
             &= \left(1 - |\lambda|^2\right)x^H A x
         \end{align*}
         Siccome \(Z\) è definito positivo,
-        questo termine è positivo se e solo se \(1-|\lambda|^2\),
+        questo termine è positivo se e solo se \(1-|\lambda|^2>0\),
         cioè \(1 > |\lambda|\).
         In altre parole se e solo se \(\rho(G) < 1\).
     \item Supponiamo che il metodo sia convergente e mostriamo che \(A\)
@@ -2487,23 +2553,20 @@ essere molto vicini anche se l'errore rispetto alla soluzione è ancora grande.
         Poiché \(e^{(k)} = Pe^{(k-1)}, \forall k \geq 1\), abbiamo
         \(e^{(k)} = Ge^{(k-1)}\). Allora, considerando la matrice \(Z\) dello scorso punto,
         \begin{align*}
-            x^H Z x &= (e^{(0)})^H A e^{(0)}
-            - \frac{
-                (e^{(0)})^H G^H A \overbrace{Ge^{(0)}}^{(e^{(1)})}
-            }{
-                (e^{(1)})^H
-            } = (e^{(0)})^H A e^{(0)} - (e^{(1)})^H A (e^{(1)})
+            (e^{(0)})^H Z e^{(0)} &= (e^{(0)})^H A e^{(0)}
+            -(e^{(0)})^H G^H A Ge^{(0)} \\
+            &= (e^{(0)})^H A e^{(0)}-(e^{(1)})^H A e^{(1)}.
         \end{align*}
         O più in generale
         \[
-            0 < (e^{(k)})^H Z e^{(k)}
-            = \underbrace{(e^{(k)})^H A e^{(k)}}_{\alpha_n}
-            - \underbrace{(e^{(k+1)})^H A e^{(k+1)}}_{\alpha_{n+1}}
-            \iff \alpha_n > \alpha_{n+1}
+            0 < (e^{(k)})^H Z e^{(k)}\quad(e^{(k)}\neq 0)
+            = \underbrace{(e^{(k)})^H A e^{(k)}}_{\alpha_k}
+            - \underbrace{(e^{(k+1)})^H A e^{(k+1)}}_{\alpha_{k+1}}
+            \iff \alpha_k > \alpha_{k+1}
         \]
-        cioè se la successione tende a zero dal basso.
+        cioè la successione è strettamente decrescente finché l'errore è non nullo. Poiché tende a zero, deve partire da un valore strettamente positivo.
         Supponiamo per assurdo che \(A\) non sia definita positiva, allora esisterebbe
-        un certo vettore \(e_0 \neq 0\) (cioè un errore iniziale particolare)
+        un certo vettore \(e^{(0)} \neq 0\) (cioè un errore iniziale particolare)
         per cui
         \begin{align*}
             (e^{(0)})^H A e^{(0)} \leq 0
@@ -2515,21 +2578,20 @@ essere molto vicini anche se l'errore rispetto alla soluzione è ancora grande.
 \subsection{Metodi di rilassamento}
 
 Metodo di rilassamento:
-se lo spettro della matrice è troppo vicno ad uno, esiste una modifica che sposta
-lo spettro più in basso per acellerare la convergenza. Al posto di risolvere \(Ax = b\)
-risolviamo \(\omega Ax = \omega b\).
+se il raggio spettrale della matrice di iterazione è troppo vicino a uno, si può cercare un parametro che lo riduca per accelerare la convergenza; il miglioramento dipende dalla matrice e dalla scelta del parametro. Al posto di risolvere \(Ax = b\)
+risolviamo \(\omega Ax = \omega b\), con \(\omega\in\realnumbers\setminus\{0\}\).
 Una volta effettuata la decomposizione \(\omega A = M - N\)
 vale
 \(M = D-\omega B\) e \(N = (1-\omega) D + \omega C\).
-Se il determinante di \(N\) è non nullo, \[
+Se \(\det D\neq 0\), allora \(M=D-\omega B\) è invertibile e \[
     x^{(k)} = \underbrace{(D-\omega B)^{-1} \left[
             (1-\omega) D + \omega C
     \right]}_{P_\omega}
     x^{(k-1)} + \omega(D - \omega B)^{-1}b
 \]
 A questo punto abbiamo due classi di rilassamento, quelli \(\omega > 1\) (sovrarilassamenti)
-e \(\omega < 1\) (sottorilassamenti).
-Abbiamo \(\rho(P_\omega) > |\omega-1|\),
+e \(0<\omega < 1\) (sottorilassamenti).
+Abbiamo \(\rho(P_\omega) \geq |\omega-1|\),
 quindi se \(|\omega-1| \geq 1\) non convergerà.
 
 \subsection{Esempi di confronto fra Jacobi e Gauss-Seidel}
@@ -2563,10 +2625,10 @@ quindi se \(|\omega-1| \geq 1\) non convergerà.
             0 & 1 & -2 & 0
         \end{pmatrix}
     \]
-    Il polinomio caratteristiche della matrice di Gauss-Seidel è
+    Il polinomio caratteristico della matrice di Gauss-Seidel è
     \begin{align*}
         \rho_G(\lambda)
-        &= -\lambda^4 - \frac{3}{64}\lambda^2
+        &= \lambda^4 - \frac{3}{64}\lambda^2
         - \frac{\lambda}{256} = \lambda\left(\lambda - \frac14\right)
         \left(\lambda + \frac18\right)^2
     \end{align*}
@@ -2592,7 +2654,7 @@ quindi se \(|\omega-1| \geq 1\) non convergerà.
             1 & 3 & 0 & 4
         \end{pmatrix}
     \]
-    ha predominanza diagonale debole ed è irridubicile.
+    ha predominanza diagonale debole ed è irriducibile.
     Abbiamo le matrici di Jacobi e Gauss-Seidel \[
         J = \frac14
         \begin{pmatrix}
@@ -2634,7 +2696,7 @@ quindi se \(|\omega-1| \geq 1\) non convergerà.
             0 & -4 & 0 & 4
         \end{pmatrix}
     \]
-    ha predominanza diagonale debole ma non è irridubicile.
+    ha predominanza diagonale debole ma non è irriducibile.
     Abbiamo le matrici di Jacobi e Gauss-Seidel \[
         J = \frac14
         \begin{pmatrix}
@@ -2648,21 +2710,21 @@ quindi se \(|\omega-1| \geq 1\) non convergerà.
         \begin{pmatrix}
             0 & -4 & 4 & 4 \\
             0 & 0 & 0 & -16 \\
-            0 & -1 & -1 & -1 \\
-            0 & 0 & 0 & 16
+            0 & 1 & -1 & -1 \\
+            0 & 0 & 0 & -16
         \end{pmatrix}
     \]
     Il polinomio caratteristico della matrice \(J\) è
     \[
         \rho_J(\lambda) =
         \lambda^4 + \frac{17}{16}\lambda^2 + \frac{1}{16}
-        = \left(\lambda^2 + 1\right)\left(\lambda^2 + 16\right)
+        = \left(\lambda^2 + 1\right)\left(\lambda^2 + \frac{1}{16}\right)
     \]
     quindi abbiamo autovalori \(\lambda_1 = i, \lambda_2 = -i, \lambda_3 = \frac{i}{4}, \lambda_4 = -\frac{i}{4}\).
     Abbiamo quindi un raggio spettrale di esattamente \(1\), e quindi nessuna convergenza.
-    Il polinomio caratteristiche per Gauss-Seidel abbimo
+    Il polinomio caratteristico per Gauss-Seidel abbiamo
     \[
-        \rho_J(\lambda) = \lambda^4 + \frac{17}{16}\lambda^3 + \frac{\lambda^2}{16}
+        \rho_G(\lambda) = \lambda^4 + \frac{17}{16}\lambda^3 + \frac{\lambda^2}{16}
         = \lambda^2\left(\lambda + 1\right)\left(\lambda + \frac{1}{16}\right)
     \]
     abbiamo quindi autovalori
@@ -2676,27 +2738,27 @@ quindi se \(|\omega-1| \geq 1\) non convergerà.
     Siano \(A \in \matrices_n(\complexnumbers)\)
     e \(\det A \neq 0\)
     con \(A = D - B - C\) e \(\det D \neq 0\).
-    Scriviamo \(P_J = D^{-1}(D + B)\)
+    Scriviamo \(P_J = D^{-1}(B + C)\)
     e \(P_{GS} = (D-B)^{-1}C\).
     Per semplicità indichiamo \(P_J = L+U\)
     con \(L = D^{-1}B\)
     e \(U = D^{-1}C\), e analogamente
     \[
         P_{GS} = (D(I-D^{-1}B))^{-1}C = (I - D^{-1} B)^{-1}D^{-1}C
-        = (I-L)U
+        = (I-L)^{-1}U
     \]
     Si dice che \(A\) è \emph{consistentemente ordinata}
-    se \(\forall \alpha \neq 0\) vale \(P_J\)
-    è simile \[
+    se per ogni \(\alpha\in\complexnumbers\setminus\{0\}\) la matrice \(P_J\)
+    è simile a \[
         P_J(\alpha) \triangleq \alpha L + \frac{1}{\alpha}U
     \]
 \end{snippetdefinition}
 
 Le matrici tridiagonali che soddisfano le ipotesi della definizione sono
-consistentemente ordinate. Sia infati \(A \in \matrices_n(\complexnumbers)\)
+consistentemente ordinate. Sia infatti \(A \in \matrices_n(\complexnumbers)\)
 tridiagonale, allora \(B\) è nulla tranne la sottodiagonale, e \(C\)
 è nulla tranne la sopradiagonale. Siccome la riscalatura
-non cambia il pattern della matrice, pure \(L\) hanno queste forme rispettivamente.
+non cambia il pattern della matrice, pure \(L\) e \(U\) hanno queste forme rispettivamente.
 \[
     L =
     \begin{pmatrix}
@@ -2711,12 +2773,13 @@ non cambia il pattern della matrice, pure \(L\) hanno queste forme rispettivamen
         0 & u_{1,2} & && \\
         & \ddots & u_{2,3} && \\
         & &  \ddots & \ddots & \\
-        & & & 0 & u_{n-1,n}
+        & & & 0 & u_{n-1,n} \\
+        & & & & 0
     \end{pmatrix}
 \]
 Consideriamo la matrice \(\Delta = \operatorname{diag}(1, \alpha, \alpha^2, \cdots, \alpha^{n-1})\)
-da cui \(\Delta P_J = \Delta^{-1} = P_J(\alpha)\).
-Questa matrice applicata ad ogni matrice della forma \(X = J + U\)
+da cui \(\Delta P_J \Delta^{-1} = P_J(\alpha)\).
+Questa matrice applicata ad ogni matrice della forma \(X = L + U\)
 produce la forma \(\alpha L + \frac{1}{\alpha}U\).
 Quindi, questa classe include le tridiagonali ed è abbastanza ampia da chiedersi
 cosa fanno i metodi iterativi.
@@ -2725,14 +2788,14 @@ cosa fanno i metodi iterativi.
     Siano \(A \in \matrices_n(\complexnumbers)\)
     e \(\det A \neq 0\)
     con \(A = D - B - C\) e \(\det D \neq 0\).
-    Scriviamo \(P_J = D^{-1}(D + B)\)
+    Scriviamo \(P_J = D^{-1}(B + C)\)
     e \(P_{GS} = (D-B)^{-1}C\).
     Per semplicità indichiamo \(P_J = L+U\)
     con \(L = D^{-1}B\)
     e \(U = D^{-1}C\), e analogamente
     \[
         P_{GS} = (D(I-D^{-1}B))^{-1}C = (I - D^{-1} B)^{-1}D^{-1}C
-        = (I-L)U
+        = (I-L)^{-1}U
     \]
     Sia \(A\) consistentemente ordinata.
     Allora, \[
@@ -2742,7 +2805,7 @@ cosa fanno i metodi iterativi.
 \end{snippettheorem}
 
 Quindi, o divergono assieme o convergono assieme, e quando convergono Gauss-Seidel
-è il doppio più veloce.
+richiede asintoticamente circa la metà delle iterazioni di Jacobi per la stessa riduzione dell'errore (quando \(0<\rho(P_J)<1\)).
 
 \begin{snippetproof}{}
     Valutiamo il polinomio caratteristico
@@ -2762,27 +2825,27 @@ Quindi, o divergono assieme o convergono assieme, e quando convergono Gauss-Seid
             \sqrt \lambda L + \frac{1}{\sqrt \lambda} U - \sqrt \lambda I
         \right) = g(\lambda)
     \end{DispWithArrows*}
-    Possiamo eliminare il caso \(\lambda \neq 0\)
+    Possiamo escludere il caso \(\lambda = 0\)
     in quanto la radice nulla non contribuisce verso il raggio spettrale.
     Facciamo diventare questa funzione a due variabili, cioè \(g(\lambda) = f(\lambda, \sqrt\lambda)\)
     \begin{align*}
         f(\lambda, \mu) &= (\sqrt\lambda)^n \det\left(
             \sqrt\lambda L + \frac{1}{\sqrt\lambda}U - \mu I
         \right) \\
-        &= (\sqrt\lambda)^n \operatorname{pol. char}\underbrace{\left(\sqrt\lambda L + \frac{1}{\sqrt \lambda}U\right)(\mu)}_{P_J(\sqrt\lambda) \sim P_J}(\mu)
+        &= (\sqrt\lambda)^n \det\left(\underbrace{\sqrt\lambda L + \frac{1}{\sqrt \lambda}U}_{P_J(\sqrt\lambda)\sim P_J}-\mu I\right)
         = (\sqrt\lambda)^n \det\left(
-            P_j - \mu I
+            P_J - \mu I
         \right)
     \end{align*}
-    Quindi, purché \(\lambda\) sia autovalore nullo, che non mi interessa, allora
+    Quindi, per \(\lambda\neq 0\),
     per \(\lambda\) che annulla il polinomio caratteristico di Gauss-Seidel, quello
     che annulla il polinomio caratteristico di Jacobi è \(\sqrt\lambda\).
-    Ciò vale per tutti gli autovalori grandi e quindi vale per il raggio spettrale.
-    Quindi abbiamo inolte dimostrato che per ogni autovalore non-nullo di Gauss-Seidel
+    Viceversa, ogni autovalore non nullo \(\mu\) di Jacobi dà \(\lambda=\mu^2\) autovalore di Gauss-Seidel tramite la stessa identità. Quindi vale l'uguaglianza dei raggi spettrali, anche quando entrambi sono nulli.
+    Quindi abbiamo inoltre dimostrato che per ogni autovalore non-nullo di Gauss-Seidel
     ne corrisponde uno, la radice, per la matrice di Jacobi.
 \end{snippetproof}
 
-Questa condizione/problematicca dell'autovalore nullo è in realtà inevitabile.
+Questa condizione/problematica dell'autovalore nullo è in realtà inevitabile.
 Consideriamo
 \[
     A =
@@ -2796,15 +2859,15 @@ Abbiamo quindi
 \[
     P_J = D^{-1}(B + C) =
     \begin{pmatrix}
-        0 & -\alpha & \alpha & 0
+        0 & -\alpha \\ -\alpha & 0
     \end{pmatrix}
 \]
 Se consideriamo il vettore di tutti \(1\), troviamo che un autovalore è
-per esempio \(\alpha\). Siccome la traccia è nulla l'altro autovalore è \(-\alpha\).
+\(-\alpha\). Siccome la traccia è nulla l'altro autovalore è \(\alpha\).
 D'altra parte abbiamo \[
     P_{GS} = (D-B)^{-1}C =
     \begin{pmatrix}
-        1 & 0 \\ \alpha 1
+        1 & 0 \\ \alpha & 1
     \end{pmatrix}^{-1}
     \begin{pmatrix}
         0 & -\alpha \\ 0 & 0
@@ -2821,9 +2884,9 @@ D'altra parte abbiamo \[
         0 & -\alpha \\ 0 & \alpha^2
     \end{pmatrix}
 \]
-Quindi a zero non corrisponde la radice di zero cioè zero come autovalore.
-La matrice di Jacobi ha sempre uno autovalore nullo,
-mentre quella di Gauss-Seidel non necessariamente.
+Quindi l'autovalore zero di Gauss-Seidel non implica che zero sia autovalore di Jacobi (per \(\alpha\neq 0\)).
+La matrice di Gauss-Seidel ha sempre un autovalore nullo,
+mentre quella di Jacobi non necessariamente.
 Esistono matrici per cui \(J\) e \(GS\) sono ben definite tali che \(\rho(P_J) < 1\)
 e \(\rho(P_{GS}) > 1\).
 Esistono matrici per cui \(J\) e \(GS\) sono ben definite tale che
@@ -2983,20 +3046,19 @@ Passando alle norme troviamo
 \end{align*}
 Abbiamo usato il fatto che \(||b|| = ||Ax|| \leq ||A|| \cdot ||x||\).
 Il termine \(\mu(A)\) è detto numero di condizionamento.
-Inoltre notiamo che il numero di condizionamento è sempre maggiore di \(1\)
+Inoltre notiamo che il numero di condizionamento è sempre maggiore o uguale a \(1\)
 in quanto
 \[
     1 = ||I|| = ||A^{-1} A|| \leq ||A|| \cdot ||A^{-1}|| = \mu(A)
 \]
 
-Per le matrici normali, il numero di condizionamento è il rapporto fra l'autovalore massimo
-e quello minimo (esercizio).
+Per le matrici normali invertibili, il numero di condizionamento in norma \(2\) è il rapporto fra il massimo e il minimo modulo degli autovalori (esercizio).
 
 \subsubsection{Norme submoltiplicative e stime generali}
 
 Mettiamo il tutto in un contesto un pochettino più ampio.
 
-Abbiamo una norma \(||\cdot||_c\) su \(\matrices_{n \times n}(\complexnumbers)\)
+Abbiamo una norma \(||\cdot||_a\) su \(\matrices_{n \times n}(\complexnumbers)\)
 e \(||\cdot||_b\) su \(\complexnumbers^n\).
 
 \begin{snippetdefinition}{Norma submoltiplicativa}
@@ -3016,7 +3078,7 @@ e \(||\cdot||_b\) su \(\complexnumbers^n\).
 
 \begin{snippetproposition}{}
     Sia data \[
-        ||A||_a = \sup_{x \neq 0} \frac{||Ax||_b}{||x||}
+        ||A||_a = \sup_{x \neq 0} \frac{||Ax||_b}{||x||_b}
     \]
     allora le due norme sono compatibili e la norma \(||\cdot||_a\) è submoltiplicativa.
 \end{snippetproposition}
@@ -3026,13 +3088,13 @@ e \(||\cdot||_b\) su \(\complexnumbers^n\).
     Sia \(y = 0\).
     Si ha
     \begin{align*}
-        ||Ay||_b = 0 = ||A||_e \cdot ||y||_b = 0
+        ||Ay||_b = 0 = ||A||_a \cdot ||y||_b = 0
     \end{align*}
     Se invece \(y\neq 0\) abbiamo
     \begin{align*}
         ||Ay||_b &= \frac{||Ay||_b}{||y||_b} \cdot ||y||_b \\
         &\leq \left(
-            \sup_{x\neq 0} \frac{||Ay||_b}{||y||_b}
+            \sup_{x\neq 0} \frac{||Ax||_b}{||x||_b}
         \right) \cdot ||y||_b
         = ||A||_a \cdot ||y||_b
     \end{align*}
@@ -3040,13 +3102,13 @@ e \(||\cdot||_b\) su \(\complexnumbers^n\).
     \begin{align*}
         ||AB||_a &= \sup_{y\neq 0} \frac{||ABy||_b}{||y||_b}
         \leq \sup_{y\neq 0} ||A||_a \cdot \frac{||By||_b}{||y||_b} \\
-        &= ||A||_a \cdot ||B||_a = ||A||_a \cdot ||y||_b
+        &= ||A||_a \cdot ||B||_a
     \end{align*}
 \end{snippetproof}
 
 Supponiamo di avere \(A \in \matrices_{n \times n}(\complexnumbers)\)
 invertibile e consideriamo il sistema \(Ax = b\).
-Consideriamo il sistema perturbato \((A + \delta A)(x + \delta x) = b + \delta\).
+Consideriamo il sistema perturbato \((A + \delta A)(x + \delta x) = b + \delta b\).
 Quantomeno la matrice \(A + \delta A\) deve rimanere invertibile.
 Scegliamo una \(||\cdot||\) norma vettoriale data con
 \(||\cdot||\) su \(\matrices_{n\times n}(\complexnumbers)\)
@@ -3068,10 +3130,10 @@ valgono.
         Ax &= b \\
         (A + \delta A)(x + \delta x) &= b + \delta b \\
         Ax + A\delta x + \delta A(x + \delta x) &= b + \delta b \Arrow{} \Arrow{Sottrazione \\ della (1) dalla (2)} \\
-        (A + \delta A)\delta x + \delta A x &= \delta B \\
+        (A + \delta A)\delta x + \delta A x &= \delta b \\
         (A + \delta A)\delta x &= \delta b - \delta A x \\
-        A(I + A^{-1} \delta A) \delta X &= \delta B - \delta A x \\
-        (I + A^{-1} \delta A)^{-1} A^{-1}(\delta b + \delta Ax) &= \delta x
+        A(I + A^{-1} \delta A) \delta x &= \delta b - \delta A x \\
+        (I + A^{-1} \delta A)^{-1} A^{-1}(\delta b - \delta Ax) &= \delta x
     \end{DispWithArrows*}
     Passando alle norme e usando la compatibilità e la submoltiplicatività,
     \begin{align*}
@@ -3080,7 +3142,7 @@ valgono.
     Estraiamo il numero di condizionamento
     \[
         ||A^{-1}\delta A||
-        = ||A^{-1}|| \cdot ||\delta A||
+        \leq ||A^{-1}|| \cdot ||\delta A||
         = \underbrace{||A^{-1}||\cdot ||A||}_{\mu(A)} \cdot \underbrace{\frac{||\delta A||}{||A||}}_{< 1}
     \]
     Chiamando \(V = A^{-1}\delta A\) abbiamo \(V^j \to 0\)
@@ -3093,7 +3155,7 @@ valgono.
         ||(I+V)^{-1}|| &\leq \sum_{j=0}^\infty ||V^j|| \leq \sum_{j=0}^\infty ||V||^j
     \end{align*}
     in quanto \(||V^j|| \leq ||V^{j-1}|| \cdot ||V|| \leq ||V||^j\).
-    Abbiamo quindi una serie geometria e
+    Abbiamo quindi una serie geometrica e
     \[
         ||(I+V)^{-1}|| \leq \frac{1}{1 - ||V||}
     \]
@@ -3103,7 +3165,7 @@ valgono.
         \left(
             \frac{||\delta b||}{||A||} + \frac{||\delta A||}{||A||} \cdot ||x||
         \right) \\
-        &= \frac{\mu(A)}{1 - \varepsilon_A \mu(A)} \left(
+        &\leq \frac{\mu(A)||x||}{1 - \varepsilon_A \mu(A)} \left(
             \frac{||\delta b||}{||b||} + \varepsilon_A
         \right) \\
         \frac{||\delta x||}{||x||} = \varepsilon_x
@@ -3124,8 +3186,7 @@ e inoltre il raggio spettrale è l'inf di tutte le norme matriciali indotte.
                 \rho(\alpha A) = |\alpha| \rho(A)
             \]
             vale.
-        \item \emph{Disuguaglianza triangolare:} Consideriamo \(A\) triangolare superiore con zeri sulla diagonale
-            e \(B=A^t\), allora
+        \item \emph{Disuguaglianza triangolare:} Consideriamo \(A=\begin{pmatrix}0&1\\0&0\end{pmatrix}\) e \(B=A^t\), allora
             \[
                 \rho(A+B) > \rho(A) = \rho(B) = \rho(A) + \rho(B) = 0
             \]
@@ -3141,7 +3202,7 @@ la fattorizzazione \(LU\), la fattorizzazione \(QR\) e la fattorizzazione \(LL^H
 \(L\) è triangolare inferiore con elementi principali \(>0\).
 
 Per la fattorizzazione \(LL^H\) abbiamo il metodo di Cholesky,
-mentre per la \(QR\) il metodo di Hausholder.
+mentre per la \(QR\) il metodo di Householder.
 
 \begin{snippettheorem}{Esistenza e unicità della fattorizzazione \(LU\)}
     Sia \(A \in \matrices_n(\complexnumbers)\) fortemente non singolare.
@@ -3192,10 +3253,11 @@ mentre per la \(QR\) il metodo di Hausholder.
     Analizziamo i blocchi:
     \begin{enumerate}
         \item \(L_{n-1}U_{n-1} + 0\cdot0^H = A_{n-1}\);
-        \item \(L_{n-1}U_{n-1} + 1 \cdot 0^H = b\) poiché \(L_{n-1}\) è invertibile esiste un'unica \(V\) t ale che \(L_{n-1}V =b\);
+        \item \(L_{n-1}V + 0\cdot B = b\) poiché \(L_{n-1}\) è invertibile esiste un'unica \(V\) tale che \(L_{n-1}V =b\);
         \item \(M^H U_{n-1} + 1 \cdot 0^H = c^H\) e quindi \(U_{n-1}^H M = c\), quindi esiste un'unica \(M\) tale che \(U_{n-1}^H M = c\);
         \item \(M^H V + 1 \cdot B = \alpha\) e quindi \(B = \alpha - M^H V\).
     \end{enumerate}
+    Tutti i blocchi sono così determinati univocamente, e il loro prodotto è \(A\).
 \end{snippetproof}
 
 \begin{snippettheorem}{}
@@ -3274,7 +3336,7 @@ mentre per la \(QR\) il metodo di Hausholder.
             1 & 0 & 0 \\ -1 & 1 & 0 \\ 1 & -1 & 1
         \end{pmatrix}
         \begin{pmatrix}
-            1 & 2 & -1 \\ 0 & 1 & 1 \\ 0 & 0 & 4
+            1 & 2 & 1 \\ 0 & 1 & 3 \\ 0 & 0 & 4
         \end{pmatrix}
     \]
 \end{snippetexample}
@@ -3291,7 +3353,7 @@ permutazioni. \\
         \ast & & 1
     \end{bmatrix}
 \]
-dove \(\ast\) sno elementi della forma \(-\sfrac{a_{i,j}}{a_{j,j}}\) e quindi
+dove \(\ast\) sono elementi della forma \(-\sfrac{a_{i,j}}{a_{j,j}}\) e quindi
 \[
     E_1 =
     \begin{bmatrix}
@@ -3346,7 +3408,7 @@ Ora se \(E_j = I + m_j e_j^T\) dove \(m_j \in \linearspan\{e_{j+1}, \cdots, e_n\
 calcoliamo \(E_j^{-1} = I - m_je_j^T\) e pertanto
 \(E_1^{-1}E_2^{-1} \cdots E_{k-1}^{-1}\) è triangolare inferiore con \(1\) sulla diagonale.
 Abbiamo quindi \[
-    A = \underbrace{E_1^{-1} \cdots E_{k-1}^{-1} A^{(k)}}_{\xi^{(k)}}
+    A = \underbrace{E_1^{-1} \cdots E_{k-1}^{-1}}_{\xi^{(k)}} A^{(k)}
     =
     \begin{bmatrix}
         1 &        &        & 0 \\
@@ -3369,12 +3431,12 @@ Quindi \(\Theta\) va moltiplicato con la parte nulla della sopradiagonale di \(E
 Prendiamo una generica matrice \(B \in \matrices_n(\complexnumbers)\), \(B_{k-1}\) è il suo minore principale di testa di ordine \(k-1\).
 Dunque,
 \[
-    A_{k-1} = \left(\xi^{(k)}A^{(k)}\right)_{k-1} = \xi^{(k)}_{k-1} A_{k-1}^{(k)}
+    A_k = \left(\xi^{(k)}A^{(k)}\right)_k = \xi^{(k)}_k A_k^{(k)}
 \]
-Poiché \(A\) è fortemente non singolare, \(\det(A_{k-1})\neq 0\) allora
+Poiché \(A\) è fortemente non singolare, \(\det(A_k)\neq 0\) allora
 \[
     0\neq
-    \det(A_{k_1}) = \det(A_{k-1}^{(k)}) = a_{1,1} \cdot a_{2,2}^{(2)} \cdots a_{k,k}^{(k)}
+    \det(A_k) = \det(A_k^{(k)}) = a_{1,1} \cdot a_{2,2}^{(2)} \cdots a_{k,k}^{(k)}
 \]
 e per il teorema di Binet \(a_{k,k}^{(k)} \neq 0\).
 Quindi possiamo trovare esattamente chi sono l'unica \(L\) e l'unica \(U\) di \(LU\).
@@ -3383,7 +3445,7 @@ Per quanto detto prima,
 \(E_j^{-1} =I - m_j e_j^T\) e quindi
 \begin{DispWithArrows*}
     L &= E_1^{-1} \cdots E_{n-1}^{-1} \\
-    &= (I-m_1e_1^T) \cdots (I-m_ne_{n-1}^T) \Arrow{\(-m_je_j^T - m_ke_k^T = 0\) \\ perché sono ortogonali} \\
+    &= (I-m_1e_1^T) \cdots (I-m_{n-1}e_{n-1}^T) \Arrow{\((m_je_j^T)(m_ke_k^T)=0\) \\ per \(j<k\)} \\
     &= (I-m_1e_1^T - m_2e_2^T) \cdots (I-m_{n-1}e_{n-1}^T) \\
     & = \cdots = I - \sum_{j=1}^{n-1}m_je_j^T
 \end{DispWithArrows*}
@@ -3406,11 +3468,11 @@ e quindi
                 \draw (\x, -\x) -- (\x, -8.5);
             }
 
-            \node[rotate=90, anchor=east] at (0.75, -0.9) {\LARGE $m_1$};
-            \node[rotate=90, anchor=east] at (2.25, -2.4) {\LARGE $m_2$};
+            \node[rotate=90, anchor=east] at (0.75, -0.9) {\LARGE \(-m_1\)};
+            \node[rotate=90, anchor=east] at (2.25, -2.4) {\LARGE \(-m_2\)};
             \node[rotate=90, anchor=east] at (4.0, -4.2) {\LARGE $\dots$};
-            \node[rotate=90, anchor=east] at (5.75, -5.9) {\LARGE $m_{n-2}$};
-            \node[rotate=90, anchor=east] at (7.25, -7.4) {\LARGE $m_{n-1}$};
+            \node[rotate=90, anchor=east] at (5.75, -5.9) {\LARGE \(-m_{n-2}\)};
+            \node[rotate=90, anchor=east] at (7.25, -7.4) {\LARGE \(-m_{n-1}\)};
         \end{tikzpicture}
     \right)
 \]
@@ -3435,12 +3497,12 @@ e quindi
         \end{align*}
         dove \(\tilde U\) è \(U\) ma con tutti gli elementi sopra la diagonale divisi per \(U_{j,j}\),
         così possiede \(1\) sulla diagonale.
-        Allora \(A = A^\ast = \tilde U^\ast \operatorname{diag}_j (U_{j,j}) L^\ast\).
+        Allora \(A = A^\ast = \tilde U^\ast \operatorname{diag}_j (\overline{U_{j,j}}) L^\ast\).
         Ma quindi \(\tilde U^\ast\) è una triangolare inferiore con \(1\) sulla diagonale.
         L'altro termine prodotto è una triangolare superiore.
         La forte non singolarità implica pure l'unicità della fattorizzazione, quindi deve essere
         \[
-            L = \tilde U^\ast, \quad U = \operatorname{diag}_j (\tilde U_{j,j}) L^\ast
+            L = \tilde U^\ast, \quad U = \operatorname{diag}_j (\overline{U_{j,j}}) L^\ast
         \]
         Abbiamo quindi trovato che
         \begin{align*}
@@ -3451,7 +3513,7 @@ e quindi
         Siccome \(L\) ha uno sulla diagonale ed è triangolare inferiore è invertibile.
         Scegliamo quindi \(v^{(j)} = (L^\ast)^{-1}e_j\). Con questa scelta,
         \[
-            0 < v_{(j)}^\ast A v_{(j)} = e_j^T \operatorname{diag}_j(U_{j,j})e_j
+            0 < (v^{(j)})^\ast A v^{(j)} = e_j^T \operatorname{diag}_j(U_{j,j})e_j
         \]
         Abbiamo quindi che \[
             A = L \operatorname{diag}_j(U_{j,j}) L^\ast
@@ -3469,6 +3531,7 @@ e quindi
         \end{DispWithArrows*}
         siccome \(V\) è invertibile \(y \neq 0\).
     \end{iffproof}
+    Per l'unicità, se \(VV^*=WW^*\), allora \(W^{-1}V\) è triangolare inferiore e unitaria, dunque diagonale; la diagonale positiva impone \(W^{-1}V=I\), quindi \(V=W\).
 \end{snippetproof}
 
 \pagebreak
@@ -3521,7 +3584,7 @@ da cui \(V_1 = \frac{A_1}{V_{1,1}}\)
 Abbiamo eseguito \(n-1\) operazioni (1 operazione per ogni elemento). \\
 \textbf{Passo 2:} per la colonna due, abbiamo
 \[
-    |V_{2,1}|^2 + V_{2,2}^2 \rightarrow V_{2,2} = \sqrt{A_{2,2} - |V_{2,1}|^2}
+    |V_{2,1}|^2 + V_{2,2}^2 = A_{2,2} \quad\Longrightarrow V_{2,2} = \sqrt{A_{2,2} - |V_{2,1}|^2}
 \]
 Abbiamo eseguito \(3\) operazioni.
 Denotiamo con \(\tilde V_i\) la coda di \(V_i\).
@@ -3560,8 +3623,8 @@ Tuttavia, l'algoritmo di Gauss applicato ad una matrice Hermitiana ha la stessa 
     e \(\mathcal J = \{j_1, \cdots, j_q\}\)
     con
     \begin{align*}
-        1 &\leq i_1 < i_2 \cdots < i_p < n \\
-        1 &\leq j_1 < j_2 \cdots < j_q < n
+        1 &\leq i_1 < i_2 < \cdots < i_p \leq n \\
+        1 &\leq j_1 < j_2 < \cdots < j_q \leq n
     \end{align*}
     Denotiamo con \(A_{\mathcal I, \mathcal J} \in \complexnumbers^{p \times q}\)
     un generico minore di dimensione \(p \times q\) che contiene gli elementi di indici \(\mathcal I\) incrociati con \(\mathcal J\).
@@ -3591,7 +3654,7 @@ Tuttavia, l'algoritmo di Gauss applicato ad una matrice Hermitiana ha la stessa 
     \begin{align*}
         (y_x)_l =
         \begin{cases}
-            0 & l \notin \{1, \cdots, p\} \\
+            0 & l \notin \mathcal I \\
             x_s & l = i_s \\
         \end{cases}
     \end{align*}
@@ -3639,10 +3702,10 @@ algoritmi ricorsivi.
         A_\varepsilon \triangleq QT_\varepsilon Q^*
     \]
     che è invertibile, dove
-    \((T_{\varepsilon})_{j,j} = \varepsilon\) se \((T_{\varepsilon})_{j,j} = 0\)
+    \((T_{\varepsilon})_{j,j} = \varepsilon\) se \(T_{j,j} = 0\)
     e il resto uguale a \(T\).
     Cioè sulla diagonale ci sono gli autovalori, e sostituiamo gli zeri con degli \(\varepsilon\),
-    visto che è triangolare inferiore rimane invertibile perché il prodotto è non nullo.
+    visto che è triangolare superiore rimane invertibile perché il prodotto è non nullo.
     Riconducendoci al caso invertibile, vale
     \[
         p_{A_\varepsilon B}(\lambda) = p_{BA_\varepsilon}(\lambda)
@@ -3661,7 +3724,7 @@ algoritmi ricorsivi.
 \end{snippettheorem}
 
 \begin{snippetproof}{}
-    Supponiamo senza perdita di generalità che \(m \geq n\).
+    Supponiamo senza perdita di generalità che \(n \geq m\).
     Vogliamo ricondurci al caso quadrato, e quindi consideriamo
     \[
         A_{\text{ext}}=
@@ -3759,7 +3822,7 @@ vettori \(v_1, \cdots, v_r\) linearmente indipendenti tali che
             & v_1 & \\ \hline
             & v_2 & \\ \hline
             \vdots \\ \hline
-            & v_n &
+            & v_r &
         \end{array}
     \right]
 \end{align*}
@@ -3771,10 +3834,10 @@ Abbiamo quindi che lo spettro è dato da \(1\)
 con molteplicità \(n - r\)
 e gli altri autovalori sono
 \[
-    1 + \sigma(YX^*)
+    1 + \sigma(Y^*X)
 \]
-con molteplicità \(1\).
-Quindi se \(YX^*\) non ha l'autovalore \(-1\), \(I + R\)
+contati con le loro molteplicità algebriche.
+Quindi se \(Y^*X\) non ha l'autovalore \(-1\), \(I + R\)
 è invertibile. In tal caso,
 \[
     (I + XY^*)^{-1}
@@ -3801,7 +3864,7 @@ Verifichiamo che sia l'inversa:
 
 \begin{snippetproposition}{}
     Sia \(E = I_n + UV^*\) con
-    \(U,V \in \complexnumbers^{n \times k}\).
+    \(U,V \in \complexnumbers^{n \times k}\), con \(k\leq n\).
     Allora
     \begin{enumerate}
         \item Gli autovalori di \(E\)
@@ -3809,7 +3872,7 @@ Verifichiamo che sia l'inversa:
             e \(1 + \sigma_i(V^*U)\)
             con \(i \in \{1, \cdots, k\}\).
             Nel caso in cui \(\operatorname{rank} U = \operatorname{rank} V = k\)
-            allora gli autovalori non nulli sono quelli di \(V^*U\).
+            gli autovalori non nulli di \(UV^*\) sono quelli non nulli di \(V^*U\).
         \item Dagli autovalori dati ricaviamo che \(E\) è invertibile se e solo
             se \(-1\) non è un autovalore di \(V^*U\).
         \item Se \(E\) è invertibile allora la sua inversa è
@@ -3845,21 +3908,19 @@ In tal caso, rappresentiamo la matrice come
 \[
     B^{-1} = \left(
         I_n - A^{-1} U(I_k + V^* A^{-1} U)^{-1}V^*
-    \right)^{-1}A^{-1}
+    \right)A^{-1}
 \]
 
 Quindi se siamo bravi a risolvere sistemi con \(A\)
 possiamo correggere il sistema per la matrice \(B\).
-Se \(\det A = 0\)
-ha senso comunque procedere ma rispetto al problema ai quadrati minimi,
-che è un senso più debole di risoluzione del sistema associato.
-Dato un sistema \(By=c\), come preprocessimo dobbiamo per forza calcolare
+Se \(\det A = 0\), la formula precedente non è applicabile; si può studiare il problema ai minimi quadrati, ma servono formule e ipotesi diverse.
+Dato un sistema \(By=c\), come preprocessing dobbiamo per forza calcolare
 \[
     W = A^{-1}U
 \]
-cioè \(A^{-1}v_1, \cdots, A^{-1} v_{k}\),
-che sono \(k\) sistemi lineari in \(A\).
-Chiaramente \(A^{-1}\) la calcoliamo solo una volta.
+cioè \(A^{-1}u_1, \cdots, A^{-1} u_{k}\),
+che si ottengono risolvendo \(k\) sistemi lineari con matrice \(A\).
+Chiaramente la fattorizzazione di \(A\) si calcola solo una volta; non è necessario formare esplicitamente \(A^{-1}\).
 Sostituendo
 \[
     B^{-1} c = (I_n - W(I_k + V^* A^{-1} U)^{-1}V^*)A^{-1} c
@@ -3880,7 +3941,7 @@ norma che secondo questo criterio.
     copre quasi tutto \(\Omega_\varepsilon \subseteq [0,1]\)
     tale che \(\mu(\Omega_\varepsilon) \geq 1-\varepsilon\) tale che
     \[
-        \restr{f}{\Omega_\varepsilon} = f_\varepsilon
+        \restr{f}{\Omega_\varepsilon} = \restr{f_\varepsilon}{\Omega_\varepsilon}
     \]
 \end{snippettheorem}
 
@@ -3905,7 +3966,7 @@ per \(x \in \complexnumbers^n\).
 Allora abbiamo
 \begin{DispWithArrows*}
     ||A||_\infty &= \sup_{x\neq 0} \frac{||Ax||_\infty}{||x||_\infty} \\
-    &= \sup_{x \neq 0} \left|\left|A \frac{x}{||x||_\infty}\right|\right| \\
+    &= \sup_{x \neq 0} \left|\left|A \frac{x}{||x||_\infty}\right|\right|_\infty \\
     &= \sup_{||x||_\infty = 1} ||Ax||_\infty \Arrow{Compattezza} \\
     &= \max_{||x||_\infty = 1} ||Ax||_\infty \\
     &= \max_{||x||_\infty = 1} \max_j \left|
@@ -3914,14 +3975,14 @@ Allora abbiamo
     &\leq \max_j \sum_{k=1}^n |A_{j,k}| \\
     &= \left|\left|
     \begin{pmatrix}
-        ||\text{row}_1||_\infty \\
-        ||\text{row}_2||_\infty \\
+        ||\text{row}_1||_1 \\
+        ||\text{row}_2||_1 \\
         \vdots \\
 
-        ||\text{row}_n||_\infty \\
+        ||\text{row}_n||_1 \\
     \end{pmatrix}
     \right|\right| \Arrow{per qualche \(p\)} \\
-    &= ||\text{row}_p||_1 = \sum_{i=1}^n \left|A_{p,i}x_i\right| \Arrow{\(A_{p,i} = |A_{p,i}|e^{i\varphi_i}\)} \\
+    &= ||\text{row}_p||_1 = \sum_{i=1}^n |A_{p,i}| \Arrow{\(A_{p,i} = |A_{p,i}|e^{i\varphi_i}\)} \\
     &
     \begin{cases}
         x_1 = e^{-i\varphi_1} \\
@@ -3930,16 +3991,17 @@ Allora abbiamo
         x_n = e^{-i\varphi_n}
     \end{cases}
 \end{DispWithArrows*}
+Con questa scelta di \(x\), \(||x||_\infty=1\) e \(|(Ax)_p|=\sum_i|A_{p,i}|\), quindi la maggiorazione è raggiunta e \(||A||_\infty=\max_j\sum_k|A_{j,k}|\).
 
 \begin{snippetexercise}{}
-    Con la stessa dimostrazione, considerare
+    Con un argomento analogo, per un dominio compatto \(D\subseteq\realnumbers\) e un nucleo continuo \(K\), considerare
     \[
-        A(f)(x) = \int_X K(x,t)f(t)\,\text{d}t,
+        A(f)(x) = \int_D K(x,t)f(t)\,\text{d}t,
         \quad A \colon \mathcal C[D] \fromto \mathcal C[D]
     \]
     calcolare
     \[
-        \sup_{||f||_\infty \leq 1} ||A(f)(x)||_\infty = \sup_{x\in D} \int_D |K(x,t)|\,\text{d}t
+        \sup_{||f||_\infty \leq 1} ||A(f)||_\infty = \sup_{x\in D} \int_D |K(x,t)|\,\text{d}t
     \]
 \end{snippetexercise}
 
@@ -3966,7 +4028,7 @@ Abbiamo
 \end{enumerate}
 L'invertibilità di \(S\) serve solo per la prima.
 
-Un altro modo di costruire una norma è quello di fare una combinazione lineare non negativa di altre norme.
+Un altro modo di costruire una norma è quello di fare una combinazione lineare non negativa di altre norme, con almeno un coefficiente strettamente positivo.
 \[
     \sum a_j ||\cdot||_{\ast, x_j},
     \quad ||\cdot||_{x_1}, \cdots, ||\cdot||_{x_k} \text{ norme su } \complexnumbers^n
@@ -4018,7 +4080,7 @@ in \(\complexnumbers^n\) e ovviamente \(0\) in \(0\).
         ||A||_{\ast, S} &= ||FT^{-1}(TJT^{-1})TF^{-1}||_{\ast}
         = ||FJF^{-1}||_\ast
     \end{align*}
-    Ricordiamo che \(J\) è bidiagonale superiore (autovalori sulla diagonale, valori \(\pm 1\) sulla sopradiagonale).
+    Ricordiamo che \(J\) è bidiagonale superiore (autovalori sulla diagonale, valori \(0\) o \(1\) sulla sopradiagonale).
     Scegliamo \(||\cdot||_\ast = ||\cdot||_\infty\).
     Dobbiamo scegliere \(F\) in maniera tale che il prodotto faccia uscire precisamente gli \(\varepsilon\).
     Cerchiamo una \(F\) diagonale in maniera tale che la moltiplicazione scali le righe e le colonne.
@@ -4044,9 +4106,10 @@ in \(\complexnumbers^n\) e ovviamente \(0\) in \(0\).
             \lambda_1 & \ast & & & \\
             & \lambda_2 & \ast & & \\
             & & \ddots & \ddots &  \\
-            & & & \lambda_n & \ast
+            & & & \lambda_{n-1} & \ast \\
+            & & & & \lambda_n
         \end{pmatrix}
-        \right|\right|_\infty \leq \max_j |\lambda_j + \ast \varepsilon| \leq \rho(A) + \varepsilon
+        \right|\right|_\infty \leq \max_j (|\lambda_j| + |\ast|\varepsilon) \leq \rho(A) + \varepsilon
     \end{align*}
 \end{snippetproof}
 
@@ -4064,15 +4127,15 @@ Abbiamo
     = \max_{||x||_1 = 1} \left|\left|
     \sum_{j=1}^n x_j \text{col}_j(A)
     \right|\right|_1 \Arrow{Disuguaglianza \\ triangolare} \\
-    &= \max_{||x||_1 = 1}
+    &\leq \max_{||x||_1 = 1}
     \sum_{j=1}^n |x_j| \cdot || \text{col}_j(A)||_1 \\
-    &= \left(\underbrace{\max_{||x||_1 = 1} \sum_{j=1}^n |x_j|}_1\right)
+    &\leq \left(\underbrace{\max_{||x||_1 = 1} \sum_{j=1}^n |x_j|}_1\right)
     \max_j ||\text{col}_j A||_1 \\
     &= \max_j ||\text{col}_j(A)||_1
 \end{DispWithArrows*}
 Per completare e dimostrare l'uguaglianza
 bisogna esibire un particolare vettore per il quale abbiamo l'uguaglianza.
-Un tale \(\hat x\) ha \(||\hat x||_1\)
+Un tale \(\hat x\) ha \(||\hat x||_1=1\)
 e \[
     ||A\hat x||_1 = \max_j ||\text{col}_j(A)||_1 = ||\text{col}_p(A)||_1
 \]
@@ -4081,7 +4144,7 @@ così selezioniamo precisamente la colonna \(p\).
 Per le norme infinite guardavamo la righe mentre qua le colonne.
 
 Passiamo ora alla norma \(2\).
-Sia \(V\) Hermitiana e definita positiva, quindi ordiamo
+Sia \(V\) Hermitiana e definita positiva, quindi ordiniamo
 \[
     \lambda_1(V) \leq \cdots \leq \lambda_n(V)
 \]
@@ -4091,7 +4154,7 @@ e vale
     \quad
     \lambda_n(V) = \max_{x \neq 0} \frac{x^* V x}{x^* x}
 \]
-Possiamo scrivere minimo e massimo al posto di infinimum e supremum in quanto
+Possiamo scrivere minimo e massimo al posto di infimum e supremum in quanto
 possiamo restringerci ad un compatto. Quello che importa è l'angolazione, non andare verso infinito.
 Per la norma indotta abbiamo
 \begin{align*}
@@ -4104,7 +4167,7 @@ Per la norma indotta abbiamo
         \rho(A^* A)
     }
 \end{align*}
-Essendo definita positiva, raggio spettrale e autovalore massimo sono la stessa cosa
+Essendo \(A^*A\) semidefinita positiva, raggio spettrale e autovalore massimo sono la stessa cosa
 (per il modulo).
 
 \begin{snippetproposition}{}
@@ -4116,7 +4179,7 @@ Essendo definita positiva, raggio spettrale e autovalore massimo sono la stessa 
     \]
     in quanto
     \[
-        \lambda_{\text{max}}(A^*A) = \max_j |\lambda_j(A)|^2 = \rho(A)
+        \lambda_{\text{max}}(A^*A) = \max_j |\lambda_j(A)|^2 = \rho(A)^2
     \]
     e la norma indotta è
     \[
@@ -4139,16 +4202,16 @@ e non è nemmeno una forma normale.
     unitarie ed \(\exists ! \Sigma \in \realnumbers_{\geq 0}^{n \times m}\)
     con \(\Sigma\) tale che \(\Sigma_{j,k} = 0\) se \(j \neq k\)
     e tale che \[
-        A = U \Sigma U, \quad
-        \Sigma_{j,j} = b_j, j \in \{1, \cdots, \min\{n,m\}\}
+        A = U \Sigma V^*, \quad
+        \Sigma_{j,j} = \sigma_j, j \in \{1, \cdots, \min\{n,m\}\}
     \]
-    dove \(\sigma_j\) sono i \emph{valori singoari}. In particolare,
+    dove \(\sigma_j\) sono i \emph{valori singolari}. In particolare,
     \[
         \sigma_1 = ||A||_2
-        \geq \sigma_2 \geq \cdots \geq \sigma_p > 0
+        \geq \sigma_2 \geq \cdots \geq \sigma_p > 0,\qquad 0
         = \sigma_{p+1} = \cdots = \sigma_{\min\{n,m\}}
     \]
-    quindi \(p\) è il rango di \(A\).
+    quindi \(p\) è il rango di \(A\); se \(p=0\) tutti i valori singolari sono nulli, e se \(p=\min\{n,m\}\) la coda nulla è assente.
 \end{snippettheorem}
 
 Nel processing delle immagini viene utilizzata questa decomposizione in quanto
@@ -4161,12 +4224,12 @@ la gran parte dell'informazione
         \item \(n \geq m:\)
             procediamo per induzione su \(m\). Il caso base è
             \((n, 1)\). Abbiamo quindi \(A\) vettore con elementi \(a\).
-            Consideriamo la matrice di Hausholder \[
+            Consideriamo la matrice di Householder \[
                 Ha =
                 \begin{pmatrix}
                     \alpha \\ 0 \\ \vdots \\ 0
                 \end{pmatrix},
-                \quad H = I - \frac{2vv^*}{||v||_2}
+                \quad H = I - \frac{2vv^*}{||v||_2^2}\quad(v\neq 0)
             \]
             Ma quindi \(\alpha = |\alpha| e^{i\theta}\),
             e sostituendo
@@ -4186,15 +4249,15 @@ la gran parte dell'informazione
             Notando che le matrici unitarie mantengono la norma due,
             per completare osserviamo che
             \[
-                |a| = ||A||_2
+                |\alpha| = ||a||_2 = ||A||_2
             \]
             Sia ora \(A \in \complexnumbers^{n \times m}\)
-            e \(m \geq 2\).
+            e \(m \geq 2\). Se \(A=0\), la tesi è immediata con \(\Sigma=0\); supponiamo quindi \(A\neq 0\).
             Notiamo che
             \[
                 ||A||_2 = \max_{||x||_2 = 1} ||Ax||
             \]
-            che oviamo essere il nostro \(\sigma_1\).
+            che vogliamo essere il nostro \(\sigma_1\).
             Essendo un massimo, ci deve essere un vettore che lo realizza.
             Sia \(\hat x\) tale che \(||\hat x|| = 1\) e
             \(y = A\hat x\) con \(||y||_2 = ||A||_2\).
@@ -4226,14 +4289,14 @@ la gran parte dell'informazione
                 &= \hat U \left[
                     \begin{array}{c|c|c|c}
                         & & & \\
-                        y & \hat s_2 & \cdots & \hat s_n \\
+                        y & \hat s_2 & \cdots & \hat s_m \\
                         & & &
                     \end{array}
                 \right]
             \end{align*}
             Ma eseguendo il prodotto troviamo
             \[
-                \frac{1}{||A||}y^*y = \frac{||y||^2}{||A||^2} = ||A||
+                \frac{1}{||A||}y^*y = \frac{||y||_2^2}{||A||_2} = ||A||_2
             \]
             quindi il primo elemento in testa è \(||A||\)
             \[
@@ -4251,7 +4314,7 @@ la gran parte dell'informazione
             Ma allora,
             \begin{DispWithArrows*}
                 ||\hat U A \hat V||_2 &= \max_{||x||=1} ||\hat U A \hat Vx||_2 \Arrow{\(y = \hat Vx\)} \\
-                &= \max_{||y||_2 = 1} ||\hat H Ay||_2
+                &= \max_{||y||_2 = 1} ||\hat U Ay||_2
                 = \max_{||y||_2 = 1} ||Ay||_2 = ||A||
             \end{DispWithArrows*}
             Vogliamo mostrare che \(c^*\) deve essere nullo.
@@ -4276,15 +4339,15 @@ la gran parte dell'informazione
                     ||A||_2^2 + ||c||_2^2 \\
                     \hat A c
                 \end{pmatrix}
-                \right|\right|_2 \Arrow{Minoriamo con \\ \(\hat A c = 0\)} \\
-                &\geq \left|\left|
+                \right|\right|_2 \Arrow{Minoriamo ignorando \\ la componente \(\hat A c\)} \\
+                &\geq \frac{1}{\sqrt{||A||_2^2+||c||_2^2}}\left|\left|
                 \begin{pmatrix}
                     ||A||_2^2 + ||c||_2^2 \\
                     0 \\ \vdots \\ 0
                 \end{pmatrix}
                 \right|\right|_2 \\
                 &= \frac{
-                    ||A|_2^2 + ||c||_2^2
+                    ||A||_2^2 + ||c||_2^2
                 }{
                     \sqrt{
                         ||A||_2^2 + ||c||_2^2
@@ -4296,7 +4359,7 @@ la gran parte dell'informazione
             il segno maggiore stretto. Ma quindi, deve essere per forza \(c=0\).
             Siccome \(c=0\), possiamo applicare l'ipotesi induttiva e segue il teorema
             Allora scriviamo \[
-                \hat A = \tilde U \tilde \Sigma \tilde V
+                \hat A = \tilde U \tilde \Sigma \tilde V^*
             \]
             con \(\tilde \Sigma_{1,1} \geq \tilde \Sigma_{2,2} \geq \cdots\).
             Troviamo quindi
@@ -4313,7 +4376,7 @@ la gran parte dell'informazione
                     \begin{array}{c|ccc}
                         ||A||_2 & 0 & \cdots & 0 \\ \hline
                         0 & & & \\
-                        \vdots & & \tilde U \tilde \Sigma \tilde V & \\
+                        \vdots & & \tilde U \tilde \Sigma \tilde V^* & \\
                         0 & & &
                     \end{array}
                 \right] \\
@@ -4337,7 +4400,7 @@ la gran parte dell'informazione
                     \begin{array}{c|ccc}
                         1 & 0 & \cdots & 0 \\ \hline
                         0 & & & \\
-                        \vdots & & \tilde V & \\
+                        \vdots & & \tilde V^* & \\
                         0 & & &
                     \end{array}
                 \right] \\
@@ -4362,34 +4425,34 @@ la gran parte dell'informazione
                         \begin{array}{c|ccc}
                             1 & 0 & \cdots & 0 \\ \hline
                             0 & & & \\
-                            \vdots & & \tilde V & \\
+                            \vdots & & \tilde V^* & \\
                             0 & & &
                         \end{array}
                     \right]
-                \hat V^*}_{V}
+                \hat V^*}_{V^*}
             \end{align*}
             che hanno la forma giusta e soddisfano tutte le proprietà per ipotesi induttiva.
             Inoltre, quando ricaviamo la norma di \(||A||_2\) nel caso base,
-            la norma è unica. Per induzione questa rimane unica.
+            la norma è unica. L'unicità di tutti i valori singolari segue da \(\sigma_j^2\in\sigma(A^*A)\), contati con molteplicità e ordinati in senso decrescente.
         \item \(n < m:\) Sia \(B = A^*\). Adesso possiamo utilizzare il primo caso
             \[
-                B = A^* = U_B \Sigma_B V_B,
+                B = A^* = U_B \Sigma_B V_B^*,
                 \quad \Sigma_B
                 = \operatorname{diag}(\sigma_1(B), \sigma_2(B), \cdots, \sigma_p(B), 0, \cdots, 0)
             \]
             Con le proprietà che
             \[
                 \sigma_1(B) = ||B||_2
-                \geq \sigma_2(B) \geq \cdots \geq \sigma_p(B) > 0
-                = \sigma_{p+1}(B) = \cdots = \sigma_m(B)
+                \geq \sigma_2(B) \geq \cdots \geq \sigma_p(B) > 0,\qquad 0
+                = \sigma_{p+1}(B) = \cdots = \sigma_n(B)
             \]
             Riapplicando la trasposta coniugata otteniamo
             \[
-                A = B^* = V_B^* \Sigma_B^T U_B^*
+                A = B^* = V_B \Sigma_B^T U_B^*
             \]
-            dove \(V_B^*\) è unitaria in \(\matrices_n(\complexnumbers)\)
+            dove \(V_B\) è unitaria in \(\matrices_n(\complexnumbers)\)
             e \(U_B^*\) è unitaria in \(\matrices_m(\complexnumbers)\).
-            Scegliendo quindi \(U = V_B^*, \Sigma = \Sigma_B^T\) e \(V = U_B^*\),
+            Scegliendo quindi \(U = V_B, \Sigma = \Sigma_B^T\) e \(V = U_B\),
             troviamo la tesi se mostriamo anche le proprietà aggiuntive.
             Sappiamo che \(p = \operatorname{rank}(B) = \operatorname{rank}(A)\)
             e che \[
@@ -4431,7 +4494,7 @@ per \(n \to +\infty\).
                 \phi(\alpha f  + \beta g) = \alpha \phi(f) + \beta\phi(g)
             \]
             per ogni \(f,g \in \mathcal A\)
-            e per ogni \(\alpha,\beta \in \mathbb K\) campo.
+            e per ogni \(\alpha,\beta \in \realnumbers\). Gli ordinamenti sono compatibili con le operazioni degli spazi vettoriali reali.
         \item Se \(f \geq_{\mathcal A} 0_{\mathcal A}\) allora \[
                 \phi(f) \geq_{\mathcal B} 0_{\mathcal B}
             \]
@@ -4440,7 +4503,7 @@ per \(n \to +\infty\).
 
 \begin{snippetdefinition}{Polinomi di Bernstein}
     Consideriamo \(\mathcal C([0,1])\) e \(f \in \mathcal C([0,1])\).
-    Un \emph{polinomio di Bernstein} è definito come
+    Per \(n\geq 1\), un \emph{polinomio di Bernstein} è definito come
     \[
         B_n(f)(x) = \sum_{k=0}^n f\left(\frac kn\right) \binom{n}{k} x^k (1-x)^{n-k}
     \]
@@ -4450,43 +4513,43 @@ per \(n \to +\infty\).
 \end{snippetdefinition}
 
 Se fosse stato uno spazio \(L^p\) al posto di un per ogni avremmo un quasi ovunque.
-L'oggetto \(B_n\) è un polinomio di grado al più \(n\), in quanto combinazione lineari di tali.
+L'oggetto \(B_n(f)\) è un polinomio di grado al più \(n\), in quanto combinazione lineare di tali.
 
 \begin{snippetproposition}{}
-    \(B_n\) è un endooperatore lineare positivo in \(\mathcal C([0,1])\) per ogni \(n\).
+    \(B_n\) è un endooperatore lineare positivo in \(\mathcal C([0,1])\) per ogni \(n\geq 1\).
 \end{snippetproposition}
 
 \begin{snippetproof}{}
     Siano \(\alpha, \beta \in \realnumbers\) e \(f,g \in \mathcal C([0,1])\).
     Abbiamo
     \begin{align*}
-        B_n(\alpha f + \beta g)(x) &= \sum_{n=0}^n \left(\alpha f + \beta g\right)\left(\frac{k}{n}\right)
-        \binom{k}{n} x^k(1-x)^{n-k} \\
-        &= \sum_{n=0}^n \left(
-            \alpha f\left(\frac{n}{k}\right) + \beta g\left(\frac{n}{k}\right)
-        \right) x^k(1-x)^{n-k} \\
+        B_n(\alpha f + \beta g)(x) &= \sum_{k=0}^n \left(\alpha f + \beta g\right)\left(\frac{k}{n}\right)
+        \binom{n}{k} x^k(1-x)^{n-k} \\
+        &= \sum_{k=0}^n \left(
+            \alpha f\left(\frac{k}{n}\right) + \beta g\left(\frac{k}{n}\right)
+        \right) \binom{n}{k}x^k(1-x)^{n-k} \\
         &= \alpha \sum_{k=0}^n f\left(\frac kn\right) \binom{n}{k} x^k (1-x)^{n-k}
         + \beta \sum_{k=0}^n g\left(\frac kn\right) \binom{n}{k} x^k (1-x)^{n-k} \\
         &= \alpha B_n(f) + \beta B_n(g)
     \end{align*}
     quindi è lineare. Per la positività vediamo,
     se \(f \geq 0\) allora \(f\left(\sfrac kn\right) \geq 0\) e quindi dalla definizione
-    una serie di termini positivi su \([0,1]\).
+    otteniamo una somma di termini non negativi su \([0,1]\).
 \end{snippetproof}
 
 \begin{snippetproposition}{}
     Un operatore lineare positivo \(\phi \colon \mathcal C([0,1]) \to \mathcal C([0,1])\)
-    è monotono e isotono.
+    è monotono (isotono) e soddisfa \( |\phi(f)|\leq\phi(|f|)\).
 \end{snippetproposition}
 
 \begin{snippetproof}{}
     \begin{enumerate}
         \item per la monotonia notiamo che \(f-g \geq 0\), allora
             \(\phi(f-g) \geq 0\), ma quindi per linearità \(\phi(f) - \phi(g) \geq 0\)
-            cioè \(\phi(f) \leq \phi(g)\).
-        \item per l'isotonia notiamo che \(-|f| \leq f \leq |f|\).
+            cioè \(\phi(f) \geq \phi(g)\).
+        \item per la disuguaglianza con il modulo notiamo che \(-|f| \leq f \leq |f|\).
             Per la monotonia abbiamo che \(-\phi(|f|) \leq \phi(f) \leq \phi(|f|)\)
-            da cui troviamo che \(|\phi(f)| \leq phi(|f|)\).
+            da cui troviamo che \(|\phi(f)| \leq \phi(|f|)\).
     \end{enumerate}
 \end{snippetproof}
 
@@ -5154,7 +5217,7 @@ Vogliamo ora dimostrare una versione multidimensionale del teorema di Weierstras
 \begin{snippettheorem}{Teorema di Weierstrass in \(\realnumbers^d\)}
     Sia \(K\subseteq\realnumbers^d\) compatto. Per ogni \(f\in C(K)\) esiste una famiglia di polinomi \(\{P_{\mathbf n}\}_{\mathbf n}\), con
     \[
-        \mathbf n=(n_1,\dots,n_d)\in\naturalnumbers^d,
+        \mathbf n=(n_1,\dots,n_d)\in(\naturalnumbers^+)^d,
     \]
     tale che
     \[
@@ -5366,7 +5429,7 @@ dove
 L'obiettivo è verificare le ipotesi del teorema di Korovkin per gli operatori di Bernstein su \([0,1]^d\). In questo modo si ottiene una dimostrazione del teorema di Weierstrass in più variabili: ogni funzione continua su un compatto rettangolare può essere approssimata uniformemente da polinomi.
 
 \begin{snippetdefinition}{Operatore di Bernstein in \(d\) variabili}
-    Sia \(D=[0,1]^d\) e sia \(\mathbf n=(n_1,\ldots,n_d)\), con \(n_i\in\naturalnumbers\). Per \(f\in C(D)\) definiamo
+    Sia \(D=[0,1]^d\) e sia \(\mathbf n=(n_1,\ldots,n_d)\), con \(n_i\in\naturalnumbers^+\). Per \(f\in C(D)\) definiamo
     \[
         B_{\mathbf n}(f)(x)
         =
@@ -5379,9 +5442,9 @@ L'obiettivo è verificare le ipotesi del teorema di Korovkin per gli operatori d
     La notazione \(\mathbf n\to\infty\) significa che \(\min_i n_i\to\infty\).
 \end{snippetdefinition}
 
-L'operatore \(B_{\mathbf n}\) è un polinomio in \(x_1,\ldots,x_d\), di grado al più \(n_i\) nella variabile \(x_i\). Per applicare Korovkin dobbiamo controllare le funzioni test
+L'immagine \(B_{\mathbf n}(f)\) è un polinomio in \(x_1,\ldots,x_d\), di grado al più \(n_i\) nella variabile \(x_i\). Per applicare Korovkin dobbiamo controllare le funzioni test
 \[
-    1,\qquad y_1,\ldots,y_d,\qquad \|y\|_2^2=y_1^2+\frac{}{}\cdots+y_d^2.
+    1,\qquad y_1,\ldots,y_d,\qquad \|y\|_2^2=y_1^2+\cdots+y_d^2.
 \]
 
 \begin{snippetproposition}{Linearità e positività}
@@ -5578,7 +5641,7 @@ In generale la risposta è negativa: l'interpolazione polinomiale non è un meto
     Per ogni scelta di nodi triangolare
     \[
         x_0^{(n)},\ldots,x_n^{(n)}\in[a,b],
-        \qquad n=0,1,2,
+        \qquad n=0,1,2,\ldots,
     \]
     a due a due distinti per ogni \(n\), esiste una funzione \(f\in C([a,b])\) tale che la successione dei polinomi interpolanti non è uniformemente convergente a \(f\). Più precisamente, si può avere
     \[
@@ -5605,7 +5668,7 @@ Questo risultato mostra che l'interpolazione polinomiale, a differenza dell'appr
 L'ipotesi \(|\lambda_1|>|\lambda_2|\) è molto comune nelle applicazioni: dice che, iterando la matrice, la componente lungo l'autospazio dominante prevale sulle altre.
 
 \begin{snippetdefinition}{Algoritmo del metodo delle potenze}
-    Si scelga \(q^{(0)}\neq 0\) e si ponga
+    Si scelga \(q^{(0)}\neq 0\) con componente dominante non nulla e si ponga
     \[
         x^{(0)}=\frac{q^{(0)}}{\|q^{(0)}\|_\infty}.
     \]
@@ -5614,18 +5677,21 @@ L'ipotesi \(|\lambda_1|>|\lambda_2|\) è molto comune nelle applicazioni: dice c
         q^{(k+1)}&=Ax^{(k)},\\
         p_{k+1}&\in\operatorname{argmax}_{1\leq i\leq n}\left|q_i^{(k+1)}\right|,\\
         \mu^{(k+1)}&=
-        \frac{q_{p_{k+1}}^{(k+1)}}{x_{p_{k+1}}^{(k)}},\\
+        \begin{cases}
+            \dfrac{q_{p_{k+1}}^{(k+1)}}{x_{p_{k+1}}^{(k)}}, & x_{p_{k+1}}^{(k)}\neq 0,\\
+            \dfrac{(x^{(k)})^*q^{(k+1)}}{(x^{(k)})^*x^{(k)}}, & x_{p_{k+1}}^{(k)}=0,
+        \end{cases}\\
         x^{(k+1)}&=
         \frac{q^{(k+1)}}{\|q^{(k+1)}\|_\infty}.
     \end{align*}
-    Ci si ferma quando, fissata una tolleranza \(\varepsilon>0\), vale
+    Per \(k\geq 1\), ci si ferma quando \(\mu^{(k+1)}\neq 0\) e, fissata una tolleranza \(\varepsilon>0\), vale
     \[
         \frac{|\mu^{(k+1)}-\mu^{(k)}|}{|\mu^{(k+1)}|}\leq \varepsilon,
     \]
     oppure quando si raggiunge un numero massimo di iterazioni.
 \end{snippetdefinition}
 
-Se l'algoritmo termina per la prima condizione, allora \(\mu^{(k+1)}\) approssima \(\lambda_1\) e \(x^{(k+1)}\) approssima un autovettore associato, normalizzato in norma \(\infty\).
+La prima condizione segnala la stabilizzazione della stima, ma da sola non garantisce l'accuratezza: conviene controllare anche il residuo \(Ax^{(k+1)}-\mu^{(k+1)}x^{(k+1)}\). Sotto le ipotesi di convergenza, \(\mu^{(k+1)}\) approssima \(\lambda_1\) e \(x^{(k+1)}\) approssima un autovettore associato, normalizzato in norma \(\infty\).
 
 \begin{snippetproposition}{Analisi nel caso diagonalizzabile}
     Supponiamo che \(A\) sia diagonalizzabile e che \(|\lambda_1|>|\lambda_2|\geq\cdots\geq |\lambda_n|\). Se il vettore iniziale ha componente non nulla lungo l'autovettore dominante, allora il metodo delle potenze converge all'autodirezione dominante.
@@ -5682,7 +5748,7 @@ Se l'algoritmo termina per la prima condizione, allora \(\mu^{(k+1)}\) approssim
             \alpha_1v_1+O\left(\left|\frac{\lambda_2}{\lambda_1}\right|^k\right)
         \right).
     \]
-    Prendendo il quoziente componente per componente, su una componente non nulla di \(v_1\), si ottiene
+    Prendendo il quoziente componente per componente, su una componente non nulla di \(v_1\) (come avviene per l'indice massimo per \(k\) sufficientemente grande), si ottiene
     \[
         \mu^{(k+1)}
         =
@@ -5695,7 +5761,7 @@ Se l'algoritmo termina per la prima condizione, allora \(\mu^{(k+1)}\) approssim
 
 \begin{snippetproposition}{Caso non diagonalizzabile}
     Supponiamo che \(|\lambda_1|>|\lambda_j|\) per \(j=2,
-    \ldots,n\) e che \(\lambda_1\) abbia molteplicità algebrica e geometrica uguale a \(1\). Allora il metodo delle potenze converge ancora all'autodirezione dominante, purché il vettore iniziale abbia componente non nulla lungo tale direzione.
+    \ldots,n\) e che \(\lambda_1\) abbia molteplicità algebrica e geometrica uguale a \(1\). Allora il metodo delle potenze converge ancora all'autodirezione dominante, purché il vettore iniziale abbia proiezione spettrale non nulla sul blocco dominante.
 \end{snippetproposition}
 
 \begin{snippetproof}{}
@@ -6378,8 +6444,7 @@ La matrice
             Per \(B\), sempre per Gershgorin, la prima e l'ultima riga danno
             l'intervallo \([1,3]\), mentre le righe interne danno l'intervallo
             \([0,4]\). Quindi \(\sigma(B) \subset [0,4]\).
-            Siccome \(B\) è definita positiva, possiamo migliorare a
-            \(\sigma(B) \subset (0,4]\).
+            Siccome \(B\) è definita positiva, possiamo escludere lo zero; inoltre, per irriducibilità e Gershgorin III, possiamo escludere anche \(4\). Quindi \(\sigma(B) \subset (0,4)\).
 
             In conclusione,
             \[
@@ -6395,7 +6460,7 @@ La matrice
                     \right]
                 \right)
                 \union
-                (0,4].
+                (0,4).
             \]
 
         \item Per mostrare che la fattorizzazione \(LU\) di \(C\) esiste ed è unica,
@@ -6614,8 +6679,8 @@ La matrice
         b\left(fg^T + gf^T\right)
         + a\left(ff^T + gg^T\right) \\
         &=
-        f\left(ag^0 + af^T + bg^T\right)
-        + g\left(af^0 + bf^T + ag^T\right).
+        f\left(af^T + bg^T\right)
+        + g\left(bf^T + ag^T\right).
     \end{align*}
     Più semplicemente,
     \[
@@ -8029,7 +8094,7 @@ con matrici quadrate di dimensioni compatibili.
     \[
         X=LU,
     \]
-    dove \(L\) è bidiagonale inferiore unitaria e \(U\) è bidiagonale superiore.
+    dove \(L\) è bidiagonale inferiore con diagonale unitaria e \(U\) è bidiagonale superiore.
 
     Indichiamo con \(p_j\) i pivot. Il primo pivot è
     \[
@@ -9415,7 +9480,7 @@ con matrici quadrate di dimensioni compatibili.
     \[
         A_m(11)=LU,
     \]
-    dove \(L\) è bidiagonale inferiore unitaria e \(U\) ha diagonale principale, prima sopradiagonale e seconda sopradiagonale eventualmente non nulle.
+    dove \(L\) è bidiagonale inferiore con diagonale unitaria e \(U\) ha diagonale principale, prima sopradiagonale e seconda sopradiagonale eventualmente non nulle.
 
     A ogni passo dell'eliminazione si calcola un solo moltiplicatore e si aggiornano al più due elementi della riga successiva. Quindi il costo della fattorizzazione è lineare in \(m\).
 
@@ -9468,7 +9533,7 @@ con matrici quadrate di dimensioni compatibili.
     \begin{enumerate}
         \item stabilire se è possibile trovare \(D_m\) e \(R_m\) tali che \(B_m(1)\) abbia cerchi di Gershgorin la cui unione contiene \(0_{\mathbb C}\) nella parte interna, e, al variare di \(t\), \(B_m(t)\) abbia cerchi di Gershgorin la cui unione non contiene \(0_{\mathbb C}\);
         \item discutere l'invertibilità di \(B_m(1)\) assumendo la proprietà individuata al punto precedente;
-        \item dimostrare che \(B_m(t)\) non può essere definita positiva per nessun \(t\in(0,1]\), assumendo la proprietà individuata al punto 1.
+        \item stabilire se \(B_m(t)\) non può essere definita positiva per nessun \(t\in(0,1]\), assumendo soltanto la proprietà individuata al punto 1.
     \end{enumerate}
 \end{snippetexercise}
 
@@ -9642,6 +9707,11 @@ con matrici quadrate di dimensioni compatibili.
     \[
         B_m(t)\text{ non è definita positiva per nessun }t\in(0,1).
     \]
+
+    La proprietà dei cerchi del punto 1, da sola, non determina l'invertibilità di \(B_m(1)\) né esclude la definita positività di \(B_m(t)\).
+    Infatti, scegliendo invece \(D_m=I_m\) e \(R_m=J_m-I_m\), i dischi hanno centro \(1\) e raggio \(t(m-1)\): contengono \(0\) nell'interno per \(t=1\) e lo escludono per \(0<t<1/(m-1)\).
+    Tuttavia \(B_m(1)=J_m\) è singolare e \(B_m(t)=(1-t)I_m+tJ_m\) è definita positiva per ogni \(0<t<1\), avendo autovalori \(1-t\) e \(1+t(m-1)\).
+    Le conclusioni precedenti valgono quindi per la scelta \(D_m=-I_m\), ma non seguono dalla sola proprietà richiesta.
 \end{snippetsolution}
 
 \begin{snippetexercise}{Localizzazione spettrale e metodo delle potenze}
@@ -9820,11 +9890,11 @@ con matrici quadrate di dimensioni compatibili.
         }
     \]
 
-    Più precisamente, il rapporto di convergenza è al più
+    Più precisamente, il fattore asintotico di convergenza è al più
     \[
         \frac{4}{6}=\frac{2}{3}.
     \]
-    Quindi la convergenza è almeno dell'ordine
+    Eventuali blocchi di Jordan non dominanti possono introdurre fattori polinomiali in \(k\); se \(A\) è diagonalizzabile, l'errore è dell'ordine
     \[
         \boxed{
             \left(\frac{2}{3}\right)^k.
