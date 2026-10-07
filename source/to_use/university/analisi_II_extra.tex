@@ -1,0 +1,585 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc}
+
+\geometry{margin=2.8cm}
+\setlength{\parindent}{1.5em}
+\setlength{\parskip}{0pt}
+\setlist[enumerate]{label=\arabic*),leftmargin=2.6em,itemsep=.35em,topsep=.35em}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Rbar}{\overline{\mathbb{R}}}
+\newcommand{\Sh}{\operatorname{Sh}}
+\newcommand{\Ch}{\operatorname{Ch}}
+\newcommand{\sen}{\operatorname{sen}}
+\newcommand{\result}[2]{\par\medskip\noindent\textbf{#1} \textit{#2}\par}
+\newcommand{\proofit}{\par\medskip\noindent\textit{Dim:} }
+\newcommand{\proofen}{\par\medskip\noindent\textit{Proof.} }
+\newcommand{\qedherecustom}{\hfill$\square$}
+\newcommand{\topic}[1]{\par\medskip\noindent\textbf{#1}\par\smallskip}
+
+\begin{document}
+
+% ============================================================
+% catenaria.pdf
+% ============================================================
+\section{La catenaria}
+
+Ci proponiamo di determinare l'equazione della curva descritta da una fune omogenea, inestensibile, vincolata ai due estremi e soggetta solo alla forza peso. Nel 1638 Galileo, all'interno dei \emph{Discorsi e dimostrazioni matematiche intorno a due nuove scienze}, a proposito dei metodi per tracciare il grafico di una parabola, scrisse:
+
+\begin{quote}
+L'altro modo, per disegnar la linea, che cerchiamo, sopra il prisma, procede così. Ferminsi ad alto due chiodi in un parete, equidistanti all'orizonte e tra di loro lontani il doppio della larghezza del rettangolo su 'l quale vogliamo notare la semiparabola, e da questi due chiodi penda una catenella sottile, e tanto lunga che la sua sacca si stenda quanta è la lunghezza del prisma: questa catenella si piega in figura parabolica, sì che andando punteggiando sopra 'l muro la strada che vi fa essa catenella, aremo descritta un'intera parabola, la quale con un perpendicolo, che penda dal mezo di quei due chiodi, si dividerà in parti eguali.
+\end{quote}
+
+Una ventina di anni più tardi, l'allora sedicenne Christian Huygens dimostrò che la curva descritta da una catenella sottile appesa a due chiodi non può essere una parabola e diede a tale curva sconosciuta il nome di catenaria. Il problema della determinazione dell'espressione matematica di tale curva fu infine risolto da Leibniz e Johann Bernoulli nel 1691. Quello che segue è un ragionamento basato sull'idea originale di Bernoulli: sia $B$ il vertice della catenaria e sia $A$ un punto arbitrario sulla curva. Supponiamo che la catenaria abbia densità lineare $\lambda$ uniforme e consideriamo il tratto di catenaria di lunghezza $s$ compreso tra $A$ e $B$. Su di esso agiscono le seguenti forze esterne: la forza peso $P$, che possiamo pensare applicata nel baricentro $G$, diretta verso il basso e di modulo $\lambda gs$, dove $g$ è l'accelerazione di gravità; la tensione $T_1$ agente sul punto $B$, diretta orizzontalmente; la tensione $T_2$ diretta lungo la tangente alla catenaria nel punto $A$. Dato che il sistema è in quiete, la somma vettoriale di tali forze deve essere nulla.
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth,scale=1.05]
+    \draw[thin] (-3.0,-1.15) -- (3.0,-1.15);
+    \draw[thin] (0,-1.45) -- (0,3.25);
+    \draw[domain=-2.25:2.25,samples=120,smooth,variable=\x,thin]
+    plot ({\x},{0.82*cosh(\x)-0.82});
+    \coordinate (B) at (0,0);
+    \coordinate (A) at (1.33,{0.82*cosh(1.33)-0.82});
+    \coordinate (G) at (0.82,0.55);
+    \fill (B) circle (1.5pt) node[below right] {$B$};
+    \fill (A) circle (1.5pt) node[right=5pt] {$A$};
+    \fill (G) circle (1.5pt) node[left=5pt] {$G$};
+    \draw[->,thick] (B) -- ++(-0.75,0) node[below,pos=.68] {$T_1$};
+    \draw[->,thick] (A) -- ++(0.72,1.038) node[right,pos=.72] {$T_2$};
+    \draw[thin] (0.82,0.55) -- (0.82,0.20);
+    \draw[->,thick] (0.82,0.20) -- (0.82,-0.45) node[right,pos=.7] {$P$};
+\end{tikzpicture}
+\end{center}
+
+Si ricavano così le equazioni
+\[
+\begin{cases}
+    T_2\cos\alpha-T_1=0,\\
+    T_2\sen\alpha-\lambda gs=0,
+\end{cases}
+\]
+dove $\alpha$ è l'angolo formato dalla tangente alla catenaria in $A$ con il verso positivo dell'asse $x$. Da qui, eliminando $T_2$ tramite la prima equazione e ricordando che la tangente di $\alpha$ non è altro che la derivata prima della funzione che rappresenta la catenaria, che indicheremo convenientemente con $y$, si ottiene l'equazione
+\[
+\frac{T_1}{\lambda g}y'=s.
+\]
+Da qui in avanti i calcoli di Bernoulli diventano molto complicati, quindi ce ne distacchiamo per procedere come segue: poniamo
+\[
+a=\frac{T_1}{\lambda g}
+\]
+e differenziamo entrambi i membri. Si ottiene
+\[
+ay''\,dx=ds.
+\]
+
+Focalizziamoci sull'elemento d'arco $ds$: non è difficile dimostrare che l'elemento d'arco della curva grafico della funzione $y(x)$ è dato da
+\[
+ds=\sqrt{1+\bigl(y'(x)\bigr)^2}\,dx
+\]
+e che quindi la formula per la lunghezza del grafico della funzione da $0$ a $\bar{x}$ è
+\[
+s=\int_0^{\bar{x}}\sqrt{1+\bigl(y'(x)\bigr)^2}\,dx,
+\]
+
+L'equazione differenziale che determina la catenaria risulta dunque
+\begin{equation}
+ay''=\sqrt{1+(y')^2},
+\label{eq:catenaria}
+\end{equation}
+che può essere ricondotta ad un'equazione del prim'ordine a variabili separabili mediante la sostituzione $y'=p$, da cui si ottiene
+\[
+ap'=\sqrt{1+p^2}.
+\]
+L'equazione non ha soluzioni costanti; possiamo allora dividere per $\sqrt{1+p^2}$ e integrare:
+\[
+\int_0^{y'(x)}\frac{dp}{\sqrt{1+p^2}}=\frac{x}{a},
+\]
+che porta alla soluzione
+\[
+y'(x)=\Sh\!\left(\frac{x}{a}\right).
+\]
+In questo modo, tramite un'ulteriore integrazione, si arriva all'integrale generale dell'equazione differenziale, ovvero all'equazione della catenaria nella sua forma più generale:
+\[
+y(x)=K+a\Ch\!\left(\frac{x}{a}\right).
+\]
+
+% ============================================================
+% derint.pdf
+% ============================================================
+\section{Derivazione sotto il segno di integrale}
+
+Sia $Q=[a,b]\times[c,d]$ e sia $f:Q\to\R$ una funzione continua. Allora, in particolare, risulta continua ogni restrizione del tipo
+\[
+f(\cdot,s_0):[a,b]\to\R,
+\]
+con $s_0\in[c,d]$ fissato e tale restrizione è sicuramente integrabile su $[a,b]$. Di conseguenza, è ben definita la funzione $g:[c,d]\to\R$ data da
+\[
+g(s)\doteq\int_a^b f(t,s)\,dt.
+\]
+
+\result{Teorema 1.}{Se $f$ è continua in $Q$, la funzione $g$ è continua in $[c,d]$.}
+
+\proofit Poiché $Q$ è compatto, $f$ è uniformemente continua in $Q$, quindi per ogni $\varepsilon>0$ esiste $\delta>0$ tale che per ogni coppia di punti $(t_1,s_1),(t_2,s_2)\in Q$,
+\[
+\lVert(t_1,s_1)-(t_2,s_2)\rVert<\delta
+\quad\Longrightarrow\quad
+|f(t_1,s_1)-f(t_2,s_2)|<\varepsilon.
+\]
+In particolare, per ogni $s_1,s_2\in[c,d]$ tali che $|s_2-s_1|<\delta$ e per ogni $t\in[a,b]$ si ha che
+\[
+\lVert(t,s_2)-(t,s_1)\rVert=|s_2-s_1|<\delta
+\]
+e quindi
+\[
+|f(t,s_2)-f(t,s_1)|<\varepsilon.
+\]
+Di conseguenza, per ogni $\varepsilon>0$ esiste $\delta>0$ tale che
+\[
+|s_2-s_1|<\delta
+\quad\Longrightarrow\quad
+|g(s_2)-g(s_1)|\leq\int_a^b|f(t,s_2)-f(t,s_1)|\,dt<\varepsilon(b-a),
+\]
+da cui la tesi. \qedherecustom
+
+Supponiamo ora che $f$ sia definita in un aperto $\Omega\supseteq Q$ e occupiamoci del problema della derivabilità di $g$.
+
+\result{Teorema 2.}{Sia $\Omega\subseteq\R^2$ aperto e sia $Q=[a,b]\times[c,d]\subset\Omega$. Sia $f$ continua in $\Omega$, esista in $\Omega$ la derivata parziale $\frac{\partial f}{\partial s}$ e sia anch'essa continua in $\Omega$. Allora $g$ è derivabile in $[c,d]$ e si ha}
+\[
+g'(s)=\int_a^b\frac{\partial f}{\partial s}(t,s)\,dt.
+\]
+
+\proofit Osserviamo che esiste un rettangolo $Q_1=[a_1,b_1]\times[c_1,d_1]$ tale che $Q\subset Q_1\subset\Omega$ e, per il Teorema 1, $g$ è continua in $[c_1,d_1]$.
+
+Per $s\in[c,d]$ e $h$ abbastanza piccolo si ha che
+\[
+\frac{g(s+h)-g(s)}{h}
+=\int_a^b\frac{f(t,s+h)-f(t,s)}{h}\,dt
+\]
+e per il teorema di Lagrange applicato ad $f(t,\cdot)$, esiste $\theta\in(0,1)$ tale che
+\[
+\frac{f(t,s+h)-f(t,s)}{h}
+=\frac{\partial f}{\partial s}(t,s+\theta h),
+\]
+ovvero
+\begin{equation}
+\frac{g(s+h)-g(s)}{h}
+=\int_a^b\frac{\partial f}{\partial s}(t,s+\theta h)\,dt.
+\label{eq:derint}
+\end{equation}
+Ma, per ipotesi, $\frac{\partial f}{\partial s}$ è continua in $\Omega$ (e quindi in $Q_1$) e si può applicare il Teorema 1 all'integrale in \eqref{eq:derint}. Siccome
+\[
+\lim_{h\to0}\frac{\partial f}{\partial s}(t,s+\theta h)
+=\frac{\partial f}{\partial s}(t,s),
+\]
+si ha che
+\[
+\lim_{h\to0}\frac{g(s+h)-g(s)}{h}
+=\int_a^b\frac{\partial f}{\partial s}(t,s)\,dt,
+\]
+che è la tesi. \qedherecustom
+
+\result{Corollario 1.}{Sia $\Omega\subseteq\R^2$ aperto e sia $Q=[a,b]\times[c,d]\subset\Omega$. Sia $f$ continua in $\Omega$, esista in $\Omega$ la derivata parziale $\frac{\partial f}{\partial s}$ e sia anch'essa continua in $\Omega$. Siano $\alpha,\beta:[c,d]\to[a,b]$ funzioni differenziabili in $[c,d]$. Allora, posto}
+\[
+g(s)\doteq\int_{\alpha(s)}^{\beta(s)}f(t,s)\,dt,
+\]
+si ha che $g:[c,d]\to\R$ è differenziabile e
+\[
+g'(s)=f(\beta(s),s)\beta'(s)-f(\alpha(s),s)\alpha'(s)
++\int_{\alpha(s)}^{\beta(s)}\frac{\partial f}{\partial s}(t,s)\,dt.
+\]
+
+\proofen Basta osservare che $g=G\circ H$, dove
+\[
+\begin{aligned}
+    G:[a,b]\times[a,b]\times[c,d]&\longrightarrow\R,\\
+    (x,y,s)&\longmapsto\int_x^y f(t,s)\,dt
+\end{aligned}
+\qquad\text{e}\qquad
+\begin{aligned}
+    H:[c,d]&\longrightarrow[a,b]\times[a,b]\times[c,d],\\
+    s&\longmapsto(\alpha(s),\beta(s),s).
+\end{aligned}
+\]
+Per ipotesi $H$ è differenziabile, come pure $G$ per il Teorema 2. Dalla regola di differenziazione della funzione composta deduciamo che anche $g$ è differenziabile e
+\[
+g'(s)=\nabla G(H(s))\cdot H'(s).
+\]
+Osservando che
+\[
+\nabla G(x,y,s)=
+\begin{bmatrix}
+    -f(x,s)\\
+    f(y,s)\\
+    \displaystyle\int_x^y\frac{\partial f}{\partial s}(t,s)\,dt
+\end{bmatrix}
+\qquad\text{e}\qquad
+H'(s)=
+\begin{bmatrix}
+    \alpha'(s)\\
+    \beta'(s)\\
+    1
+\end{bmatrix}
+\]
+si ottiene la tesi. \qedherecustom
+
+% ============================================================
+% impropri.pdf
+% ============================================================
+\section{Integrali multipli generalizzati e il volume della sfera}
+
+Nel trattare l'integrale di Riemann multiplo, abbiamo sempre assunto che la funzione integranda e il dominio di integrazione fossero limitati. Se lasciamo cadere una di queste due condizioni, in alcuni casi si può provare a definire comunque una nozione di integrale, che prenderà il nome di integrale multiplo improprio o generalizzato.
+
+Consideriamo inizialmente il caso di un dominio limitato, ma consentiamo che la funzione sia illimitata. In generale, assumeremo che $f$ sia continua e limitata fuori da un insieme di misura nulla. Tutte le ``singolarità'' sono confinate in un insieme di misura nulla e l'idea è rimuovere dal dominio d'integrazione un insieme di misura piccola che contiene le singolarità, integrare sul dominio rimanente e calcolare il limite degli integrali facendo tendere a zero la misura dell'insieme rimosso. Per semplicità di notazione, lavoreremo in $\R^2$.
+
+Sia $D$ un sottoinsieme limitato e misurabile di $\R^2$ e sia $f:D\to\R$. Supponiamo che esista una successione $\{D_j\}$ di sottoinsiemi di $D$ con le seguenti proprietà:
+\begin{enumerate}
+\item $D_j\subseteq D_{j+1}\ \forall j$;
+\item $D_j$ è misurabile $\forall j$ e $|D_j|\to|D|$ per $j\to+\infty$;
+\item $f\in\mathcal{R}(D_j)$ (e quindi $|f|\in\mathcal{R}(D_j)$) e $\displaystyle\lim_{j\to+\infty}\iint_{D_j}|f|$ esiste finito.
+\end{enumerate}
+Allora si può dimostrare che il limite
+\[
+\lim_{j\to+\infty}\iint_{D_j}f(x,y)\,dx\,dy
+\]
+esiste, è finito e non dipende dalla scelta della successione $\{D_j\}$. Il limite è chiamato integrale improprio di $f$ su $D$.
+
+\noindent\textbf{Esempio.} Sia
+\[
+f(x,y)=\frac{1}{(x^2+y^2)^\alpha},\qquad \alpha>0,
+\]
+e sia $D=B_1(0)=\{(x,y):x^2+y^2<1\}$. La funzione è illimitata nell'origine. Scegliamo
+\[
+D_n=\left\{(x,y):\frac1n<x^2+y^2<1\right\}
+\]
+e osserviamo che $f\in\mathcal{R}(D_n)$, $|D_n|\to|D|$ e
+\begin{align*}
+\iint_{D_n}f(x,y)\,dx\,dy
+&=\int_0^{2\pi}d\theta\int_{1/\sqrt n}^{1}\frac{\rho}{\rho^{2\alpha}}\,d\rho
+=2\pi\int_{1/\sqrt n}^{1}\rho^{1-2\alpha}\,d\rho\\
+&=\frac{2\pi}{2-2\alpha}\left[\rho^{2-2\alpha}\right]_{1/\sqrt n}^{1}
+=\frac{\pi}{1-\alpha}\left(1-\frac{1}{n^{1-\alpha}}\right)
+\end{align*}
+se $\alpha\neq1$. Se invece $\alpha=1$, allora
+\[
+\iint_{D_n}f(x,y)\,dx\,dy
+=\int_0^{2\pi}d\theta\int_{1/\sqrt n}^{1}\frac1\rho\,d\rho
+=2\pi[\ln\rho]_{1/\sqrt n}^{1}
+=2\pi\ln\sqrt n.
+\]
+Quindi si ha che
+\[
+\iint_{D_n}f\to+\infty\qquad\text{se }\alpha\ge1
+\]
+e pertanto in questo caso $f$ non è integrabile;
+\[
+\iint_{D_n}f\to\frac{\pi}{1-\alpha}\qquad\text{se }\alpha<1
+\]
+e in questo caso $f$ è integrabile in senso improprio.
+
+\noindent\textbf{Esempio.} Sia
+\[
+f(x,y,z)=\frac{1}{(x^2+y^2+z^2)^\alpha},\qquad \alpha>0,
+\]
+e sia $D=B_1(0)=\{(x,y,z):x^2+y^2+z^2<1\}$. La funzione è, di nuovo, illimitata nell'origine. Scegliamo ancora
+\[
+D_n=\left\{(x,y,z):\frac1n<x^2+y^2+z^2<1\right\}
+\]
+e osserviamo che $f\in\mathcal{R}(D_n)$, $|D_n|\to|D|$ e
+\begin{align*}
+\iint_{D_n}f(x,y,z)\,dx\,dy\,dz
+&=\int_0^{2\pi}d\theta\int_0^\pi d\varphi\int_{1/\sqrt n}^{1}
+\frac{\rho^2\sen\varphi}{\rho^{2\alpha}}\,d\rho\\
+&=2\pi\cdot2\int_{1/\sqrt n}^{1}\rho^{2-2\alpha}\,d\rho\\
+&=\frac{4\pi}{3-2\alpha}\left[\rho^{3-2\alpha}\right]_{1/\sqrt n}^{1}
+=\frac{4\pi}{3-2\alpha}\left(1-n^{\alpha-\frac32}\right)
+\end{align*}
+se $\alpha\neq\frac32$. Se invece $\alpha=\frac32$, allora
+\[
+\iint_{D_n}f(x,y,z)\,dx\,dy\,dz
+=\int_0^{2\pi}d\theta\int_0^\pi\sen\varphi\,d\varphi\int_{1/\sqrt n}^{1}\frac1\rho\,d\rho
+=4\pi[\ln\rho]_{1/\sqrt n}^{1}
+=4\pi\ln\sqrt n.
+\]
+Quindi si ha che
+\[
+\iint_{D_n}f\to+\infty\qquad\text{se }\alpha\ge\frac32
+\]
+e pertanto in questo caso $f$ non è integrabile;
+\[
+\iint_{D_n}f\to\frac{4\pi}{3-2\alpha}\qquad\text{se }\alpha<\frac32
+\]
+e in questo caso $f$ è integrabile in senso improprio.
+
+\noindent\textbf{Esempio.} In generale, in $\R^n$, se
+\[
+f(x)=\frac{1}{\lVert x\rVert^\alpha},\qquad \alpha>0,
+\]
+e $D=B_1(0)=\{x\in\R^n:\lVert x\rVert<1\}$, $f$ è integrabile in $D$ se e solo se $\alpha<n$.
+
+Consideriamo adesso il caso di un dominio di integrazione illimitato. Sia $D$ un sottoinsieme illimitato di $\R^2$ e sia $f:D\to\R$. Sia $\{D_j\}$ una successione di sottoinsiemi limitati e misurabili contenuti in $D$ tali che:
+\begin{enumerate}
+\item $D_j\subseteq D_{j+1}\ \forall j$;
+\item per ogni compatto $K\subseteq D$, esiste $j\in\N$ tale che $K\subseteq D_j$;
+\item $f\in\mathcal{R}(D_j)$ (e quindi $|f|\in\mathcal{R}(D_j)$) e $\displaystyle\lim_{j\to+\infty}\iint_{D_j}|f|$ esiste finito.
+\end{enumerate}
+Allora si dimostra che
+\[
+\lim_{j\to+\infty}\iint_{D_j}f(x,y)\,dx\,dy
+\]
+esiste finito ed è indipendente dalla scelta della successione $\{D_j\}$. In tal caso definiamo pertanto l'integrale improprio come
+\[
+\iint_D f(x,y)\,dx\,dy
+=\lim_{j\to+\infty}\iint_{D_j}f(x,y)\,dx\,dy.
+\]
+
+\noindent\textbf{Esempio.} Calcoliamo
+\[
+\iint_{\R^2}e^{-x^2-y^2}\,dx\,dy.
+\]
+Possiamo scegliere $D_n=B_n(0)$. I requisiti 1) e 2) sono senz'altro soddisfatti; inoltre, usando le coordinate polari:
+\[
+\iint_{B_n(0)}e^{-x^2-y^2}\,dx\,dy
+=\int_0^{2\pi}d\theta\int_0^n\rho e^{-\rho^2}\,d\rho
+=\pi\left(1-e^{-n^2}\right)\xrightarrow[n\to+\infty]{}\pi.
+\]
+Ne deduciamo che
+\[
+\iint_{\R^2}e^{-x^2-y^2}\,dx\,dy=\pi.
+\]
+D'altro canto, dobbiamo ottenere lo stesso risultato scegliendo la successione di domini $Q_n=[-n,n]\times[-n,n]$:
+\[
+\iint_{Q_n}e^{-x^2-y^2}\,dx\,dy
+=\int_{-n}^{n}e^{-x^2}\,dx\int_{-n}^{n}e^{-y^2}\,dy
+\xrightarrow[n\to+\infty]{}
+\left(\int_{-\infty}^{+\infty}e^{-t^2}\,dt\right)^2.
+\]
+Quindi abbiamo dimostrato che
+\[
+\int_{-\infty}^{+\infty}e^{-t^2}\,dt=\sqrt\pi.
+\]
+
+Per gli integrali multipli generalizzati valgono i seguenti criteri di convergenza:
+
+\result{Proposizione.}{Se $f$ è integrabile su $D$ in senso improprio e $|g|\le|f|$ in $D$, allora $g$ è integrabile su $D$ in senso improprio.}
+
+\result{Proposizione.}{Se $f$ non è integrabile su $D$ in senso improprio e $|g|\ge|f|$ in $D$, allora $g$ non è integrabile su $D$ in senso improprio.}
+
+In $\R^n$, con $n>3$, si può definire una generalizzazione delle coordinate sferiche ponendo
+\[
+\begin{cases}
+x_1=\rho\cos\varphi_1,\\
+x_2=\rho\sen\varphi_1\cos\varphi_2,\\
+x_3=\rho\sen\varphi_1\sen\varphi_2\cos\varphi_3,\\
+\qquad\vdots\\
+x_{n-1}=\rho\sen\varphi_1\sen\varphi_2\cdots\sen\varphi_{n-2}\cos\varphi_{n-1},\\
+x_n=\rho\sen\varphi_1\sen\varphi_2\cdots\sen\varphi_{n-2}\sen\varphi_{n-1},
+\end{cases}
+\]
+dove
+\[
+(\rho,\varphi_1,\varphi_2,\ldots,\varphi_{n-1})
+\in(0,+\infty)\times(0,\pi)\times\cdots\times(0,\pi)\times(0,2\pi)
+\]
+e l'elemento di volume è
+\[
+dx_1\cdots dx_n
+=\rho^{n-1}\sen^{n-2}\varphi_1\,\sen^{n-3}\varphi_2\cdots\sen\varphi_{n-2}\,d\rho\,d\varphi_1\cdots d\varphi_{n-1}.
+\]
+Se $g:\R^n\to\R$ è una funzione radiale, cioè $g(x)=f(\lVert x\rVert)$ per qualche $f:\R\to\R$, allora si ha che
+\[
+\int_{\{\lVert x\rVert<R\}}f(\lVert x\rVert)\,dx_1\cdots dx_n
+=\omega_n\int_0^R\rho^{n-1}f(\rho)\,d\rho,
+\]
+dove $\omega_n$ è l'area dell'ipersuperficie della sfera $S^{n-1}=\partial B_1(0)\subset\R^n$.
+
+Vogliamo determinare il valore di $\omega_n$ e quello del volume di $B_R(0)$. Consideriamo l'integrale
+\[
+\int_{\R^n}e^{-\lVert x\rVert^2}\,dx_1\cdots dx_n;
+\]
+possiamo calcolarlo in due modi: usando le coordinate sferiche generalizzate si trova
+\[
+\omega_n\int_0^{+\infty}\rho^{n-1}e^{-\rho^2}\,d\rho
+=\bigl[\rho^2=t\bigr]
+=\frac{\omega_n}{2}\int_0^{+\infty}t^{\frac n2-1}e^{-t}\,dt
+=\frac{\omega_n}{2}\Gamma\!\left(\frac n2\right),
+\]
+dove
+\[
+\Gamma(z)=\int_0^{+\infty}t^{z-1}e^{-t}\,dt
+\]
+è la funzione $\Gamma$ di Eulero, che (come si verifica immediatamente) soddisfa l'equazione funzionale $\Gamma(z+1)=z\Gamma(z)$ e pertanto interpola la successione $\{n!\}$; d'altro canto, applicando il teorema di Fubini,
+\[
+\int_{\R^n}e^{-\lVert x\rVert^2}\,dx_1\cdots dx_n
+=\int_{-\infty}^{+\infty}e^{-x_1^2}\,dx_1
+\int_{-\infty}^{+\infty}e^{-x_2^2}\,dx_2\cdots
+\int_{-\infty}^{+\infty}e^{-x_n^2}\,dx_n
+=\pi^{n/2}.
+\]
+Quindi abbiamo che
+\[
+\omega_n=\frac{2\pi^{n/2}}{\Gamma\!\left(\frac n2\right)}.
+\]
+Ora per il volume della bolla di raggio $R$ si ha che
+\begin{align*}
+\operatorname{Vol}_n(B_R(0))
+&=\int_{B_R(0)}dx_1\cdots dx_n
+=\omega_n\int_0^R\rho^{n-1}\,d\rho
+=\frac{\omega_n}{n}R^n\\
+&=\frac{\pi^{n/2}}{\frac n2\Gamma\!\left(\frac n2\right)}R^n
+=\frac{\pi^{n/2}}{\Gamma\!\left(\frac n2+1\right)}R^n.
+\end{align*}
+La seguente tabella riporta i valori del volume della bolla di raggio $R$ e dell'area della sua frontiera per i primi valori di $n$.
+\begin{center}
+\begingroup
+\small
+\setlength{\tabcolsep}{9pt}
+\newcommand{\headstrut}{\rule[-1.3ex]{0pt}{4.3ex}}
+\newcommand{\datastrut}{\rule[-2.2ex]{0pt}{6.0ex}}
+\begin{tabular}{|c|c|c|}
+\hline
+\headstrut $n$ & $\operatorname{Vol}(B_R(0))$ & $\operatorname{Area}(\partial B_R(0))$\\
+\hline
+\datastrut $1$ & $2R$ & $2$\\
+\hline
+\datastrut $2$ & $\pi R^2$ & $2\pi R$\\
+\hline
+\datastrut $3$ & $\dfrac{4}{3}\pi R^3$ & $4\pi R^2$\\
+\hline
+\datastrut $4$ & $\dfrac{\pi^2}{2}R^4$ & $2\pi^2R^3$\\
+\hline
+\datastrut $5$ & $\dfrac{8}{15}\pi^2R^5$ & $\dfrac{8}{3}\pi^2R^4$\\
+\hline
+\datastrut $6$ & $\dfrac{\pi^3}{6}R^6$ & $\pi^3R^5$\\
+\hline
+\datastrut $7$ & $\dfrac{16}{105}\pi^3R^7$ & $\dfrac{16}{15}\pi^3R^6$\\
+\hline
+\end{tabular}
+\endgroup
+\end{center}
+Osserviamo che, ad $R$ fissato, il volume di $B_R(0)$ è inizialmente crescente, raggiunge il massimo e poi tende a zero, dato che
+\[
+a^n=o\!\left(\Gamma\!\left(\frac n2+1\right)\right)
+\qquad\text{per }n\to+\infty,\qquad \forall a>1.
+\]
+Ad esempio, per $R=1$ il massimo è assunto per $n=5$.
+Analogamente, l'area di $\partial B_R(0)$ assume il massimo assoluto (che, per $R=1$, si ottiene per $n=7$) e poi tende a zero.
+
+Infine, osserviamo che
+\[
+\operatorname{Area}(\partial B_R(0))
+=\frac{d}{dR}\operatorname{Vol}(B_R(0));
+\]
+questo fatto non è casuale, ma la sua trattazione rigorosa richiede strumenti più sofisticati.
+
+% ============================================================
+% limsup.pdf
+% ============================================================
+\section{Limite superiore e limite inferiore. Classe limite}
+
+Denotiamo l'insieme dei numeri reali estesi con
+\[
+\Rbar\doteq\R\cup\{-\infty,+\infty\},
+\]
+munito della topologia euclidea estesa: gli intorni di $-\infty$ e di $+\infty$ sono rispettivamente gli intervalli del tipo
+\[
+[-\infty,a)\quad\text{e}\quad(a,+\infty],\qquad\text{con }a\in\R.
+\]
+Sia $(a_n)$ una successione di numeri reali. Diremo che $\ell\in\Rbar$ è un \textbf{valore limite} per $(a_n)$ se esiste una sottosuccessione $(a_{n_k})$ che converge ad $\ell$. L'insieme di tutti i valori limite di $(a_n)$ viene detto \textbf{classe limite} della successione $(a_n)$. Tale insieme verrà denotato con $\Lambda$.
+
+\noindent\textbf{Osservazione 1.} Se $a_n\to a$, allora $\Lambda=\{a\}$, infatti ogni sottosuccessione di $(a_n)$ converge allo stesso limite.
+
+\noindent\textbf{Esempio 1.} Sia $a_n=(-1)^n$. Allora $\Lambda=\{-1,1\}$.
+
+\noindent\textbf{Esempio 2.} Consideriamo la successione
+\[
+\frac12,\ 1,\ 2,\ \frac13,\ 1,\ 3,\ldots,\frac1n,\ 1,\ n,\ldots
+\]
+ottenuta intrecciando tre successioni. $\Lambda=\{0,1,+\infty\}$.
+
+\noindent\textbf{Esempio 3.} Sia $(r_n)$ una successione che enumera $\Q$. Allora $\Lambda=\Rbar$.
+
+Una domanda naturale è se possa succedere che $\Lambda=\varnothing$. Inoltre, il fatto che $\Lambda=\{a\}$ implica che $a_n\to a$? Risponderemo a queste domande con i prossimi risultati.
+
+\result{Proposizione 1.}{$\Lambda\neq\varnothing$.}
+
+\proofit Se $\{a_n:n\in\N\}$ è un insieme finito, ovvero la successione $(a_n)$ assume solo un numero finito di valori distinti, allora almeno uno di questi deve essere assunto infinite volte dalla successione e quindi esiste una sottosuccessione costante, che ovviamente converge a quel valore, che dunque è un valore limite. Supponiamo ora che $\{a_n:n\in\N\}$ sia un insieme infinito, ovvero che la successione $(a_n)$ assuma infiniti valori distinti. Se $(a_n)$ è illimitata, allora $+\infty$ o $-\infty$ è un valore limite; se invece $(a_n)$ è limitata, il teorema di Bolzano-Weierstrass garantisce l'esistenza di una sottosuccessione convergente, e quindi di un valore limite. \qedherecustom
+
+\result{Teorema 1.}{La classe limite è un chiuso in $\Rbar$.}
+
+\proofit Dobbiamo provare che se $\lambda$ è un punto di accumulazione per $\Lambda$, allora $\lambda$ è un valore limite.
+
+Consideriamo dapprima il caso in cui $\lambda=+\infty$. Dalla definizione di punto di accumulazione, per ogni $M>0$ nell'intervallo $(M,+\infty]$ cadono infiniti valori limite. Sia $\ell_1\in(M,+\infty]$ uno di questi valori limite e consideriamo un intorno di $\ell_1$ tutto contenuto in $(M,+\infty]$. In questo intorno cade almeno un elemento della successione $(a_n)$ e per l'arbitrarietà di $M$, $(a_n)$ è illimitata superiormente, quindi $+\infty$ è un valore limite. Il caso $\lambda=-\infty$ si tratta in modo analogo.
+
+Sia ora $\lambda\in\R$. Scegliamo $n_1$ tale che $a_{n_1}\neq\lambda$ (se questo non fosse possibile, non ci sarebbe nulla da dimostrare) e poniamo $\delta=|\lambda-a_{n_1}|$. Essendo $\lambda$ un punto di accumulazione per $\Lambda$, esiste $\ell_1\in\Lambda$ tale che $|\lambda-\ell_1|<\frac\delta4$ e siccome $\ell_1$ è un valore limite, esiste $n_2>n_1$ tale che $|\ell_1-a_{n_2}|<\frac\delta4$, così che $|\lambda-a_{n_2}|<\frac\delta2$. Procedendo induttivamente, scelti $n_1,\ldots,n_i$, dal fatto che $\lambda$ è punto di accumulazione per $\Lambda$, esiste $\ell_i\in\Lambda$ tale che $|\lambda-\ell_i|<2^{-i-1}\delta$ e siccome $\ell_i$ è un valore limite, esiste $n_{i+1}>n_i$ tale che
+\[
+|\ell_i-a_{n_{i+1}}|<2^{-i-1}\delta,
+\]
+così che
+\[
+|\lambda-a_{n_{i+1}}|<\frac{\delta}{2^i}.
+\]
+Questo prova che la sottosuccessione $(a_{n_i})$ converge a $\lambda$ e quindi $\lambda\in\Lambda$. \qedherecustom
+
+Per quanto visto, $\Lambda$ ammette sempre massimo e minimo, (che eventualmente possono essere $+\infty$ e $-\infty$). Il minimo e il massimo di $\Lambda$ sono detti rispettivamente \textbf{limite inferiore} e \textbf{limite superiore} della successione $(a_n)$ e denotati con
+\[
+\liminf_{n\to\infty}a_n\qquad\text{e}\qquad\limsup_{n\to\infty}a_n.
+\]
+Dalla definizione segue immediatamente che
+\[
+\liminf_{n\to\infty}a_n\le\limsup_{n\to\infty}a_n.
+\]
+
+\result{Proposizione 2.}{Se $\limsup_{n\to\infty}a_n=L\in\R$, allora per ogni $\varepsilon>0$ $a_n<L+\varepsilon$ definitivamente. Se $\liminf_{n\to\infty}a_n=\ell\in\R$, allora per ogni $\varepsilon>0$ $a_n>\ell-\varepsilon$ definitivamente.}
+
+\proofit Sia $\limsup_{n\to\infty}a_n=L\in\R$. Per assurdo, sia $\varepsilon>0$ tale che $a_n\ge L+\varepsilon$ per infiniti valori di $n$; possiamo allora estrarre una sottosuccessione $(a_{n_k})$ tale che $a_{n_k}\ge L+\varepsilon$ per ogni $k$. Se $(a_{n_k})$ è illimitata superiormente, allora ha una sottosuccessione divergente e $+\infty\in\Lambda$, assurdo. Se invece $(a_{n_k})$ è limitata, per il teorema di Bolzano-Weierstrass ammette una sottosuccessione convergente, il cui limite dovrebbe necessariamente essere maggiore o uguale a $L+\varepsilon$, contraddizione. L'affermazione relativa al limite inferiore si dimostra analogamente. \qedherecustom
+
+In base alla proposizione, $L\in\R$ è il limite superiore della successione $(a_n)$ se, per ogni $\varepsilon>0$, $a_n>L+\varepsilon$ solo per un numero finito di $n$ ed esistono infiniti $n$ tali che $a_n>L-\varepsilon$.
+
+\result{Corollario 1.}{Se $\Lambda=\{a\}$, allora $a_n\to a$.}
+
+\proofen Sia $a=+\infty$. Allora per ogni $M>0$ si ha $a_n\le M$ solo per un numero finito di $n$, ovvero $a_n>M$ definitivamente, e quindi $a_n\to+\infty$. Analogamente si tratta il caso $a=-\infty$, Se invece $a\in\R$, la tesi segue dalla Proposizione 2. \qedherecustom
+
+\result{Proposizione 3.}{Sia $(a_n)$ una successione. $\limsup_{n\to+\infty}a_n$ è l'unico elemento di $\Lambda$ con la proprietà che se $\lambda>\limsup_{n\to+\infty}a_n$, allora $a_n<\lambda$ definitivamente.}
+
+Un risultato analogo vale per il $\liminf_{n\to+\infty}a_n$.
+
+\proofit Supponiamo che $\ell_1,\ell_2\in\Lambda$, $\ell_1<\ell_2$, abbiano la proprietà che se $\lambda>\ell_i$, allora $a_n<\lambda$ definitivamente. Scegliamo $\ell_1<x<\ell_2$. Dato che la proprietà è soddisfatta da $\ell_1$, allora $a_n<x$ definitivamente. M allora $\ell_2$ non può essere un valore limite. \qedherecustom
+
+Sia $(a_n)$ una successione e definiamo
+\[
+b_n=\sup\{a_n,a_{n+1},a_{n+2},\ldots\}=\sup_{k\ge n}a_k.
+\]
+Allora $b_n\in\Rbar$ per ogni $n$ e inoltre $b_n\ge b_{n+1}$, ovvero $(b_n)$ è una successione non crescente a valori in $\Rbar$. Pertanto $(b_n)$ ammette limite e
+\[
+\lim_{n\to+\infty}b_n=\inf_n b_n\in\Rbar.
+\]
+Analogamente, definendo $c_n=\inf_{k\ge n}a_k$, si ha che la successione $(c_n)$ è non decrescente e quindi ammette limite.
+
+\result{Proposizione 4.}{Sia $(a_n)$ una successione. Allora}
+\[
+\limsup_{n\to\infty}a_n
+=\lim_{n\to+\infty}\sup_{k\ge n}a_k
+=\inf_n\sup_{k\ge n}a_k
+\]
+e
+\[
+\liminf_{n\to\infty}a_n
+=\lim_{n\to+\infty}\inf_{k\ge n}a_k
+=\sup_n\inf_{k\ge n}a_k.
+\]
+
+\proofit Sia $\lambda=\lim_{n\to+\infty}\sup_{k\ge n}a_k$. Se $\lambda=+\infty$, allora la successione $(a_n)$ è illimitata superiormente e dunque $\limsup_{n\to\infty}a_n=+\infty$. Se $\lambda=-\infty$, allora per ogni $M>0$ $b_n<-M$ definitivamente. Ma essendo $b_n=\sup_{k\ge n}a_k$, questo implica che $a_n<-M$ definitivamente, ovvero $a_n\to-\infty$. In particolare, $\limsup_{n\to\infty}a_n=-\infty$ Sia ora $\lambda\in\R$. Allora, per ogni $\varepsilon>0$, $a_n\in(\lambda-\varepsilon,\lambda+\varepsilon)$ per infiniti $n$ e dunque $\lambda$ è un valore limite. Sia $\widetilde\lambda>\lambda$. Se fosse $a_n\ge\widetilde\lambda$ per infiniti valori di $n$, allora sarebbe $b_n\ge\widetilde\lambda$ per ogni $n$, e quindi $\lambda\ge\widetilde\lambda$, assurdo. Quindi deve essere $a_n<\widetilde\lambda$ definitivamente, e per l'unicità nella Proposizione 3, $\lambda=\limsup_{n\to\infty}a_n$. \qedherecustom
+
+\end{document}

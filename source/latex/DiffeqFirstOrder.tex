@@ -1,244 +1,97 @@
 \documentclass[preview]{standalone}
-
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{fullpage}
-\usepackage{bettelini}
 \usepackage{stellar}
 \usepackage{definitions}
-%\usepackage{pgfplots}
-%\usepackage{wrapfig}
-
-%\usetikzlibrary{calc}
-
+\usepackage{bettelini}
+\usepackage{tikz}
 \begin{document}
-
 \id{diffeq-first-order}
 \genpage
+\section{First-order equations}
 
-\section{Linear equations}
-
-\begin{snippettheorem}{linear-first-order-differential-equation-solution}{Solution to a linear first-order differential equation}
-    The general solution to the differential equation
-    \[
-        y' = a(t)y(t) + b(t)
-    \]
-    is given by
-    \[
-        y(t)=Ce^{A(t)} + e^{A(t)} \int e^{-A(t)} b(t)\, dt
-    \]
-    where \(A(t)=\int a\,dt\), \(c\in\realnumbers\) and \(a\) and \(b\) are
-    continuous \function[functions].
-\end{snippettheorem}
-    
-\begin{snippetproof}{linear-first-order-differential-equation-solution-proof}{linear-first-order-differential-equation-solution}{Solution to a linear first-order differential equation}
-    Let's start by letting \(b(t)=0\)
-    \[
-        y' = ay
-        \implies
-        \frac{y'}{y}=a
-        \implies
-        \ln|y|'=a
-        \implies
-        \ln|y|=\int a\,dt
-    \]
-    concluding that
-    \[
-        y = \pm e^{A+c_0}=\pm e^{c_0} \cdot e^{A} = Ce^A
-    \]
-    where \(A=\int a\, dt\).
-    \\
-    We choose an integrating factor \(\mu\) such that
-    \[
-        -a\mu = \mu'
-    \]
-    By solving this differential equation we get
-    \[
-        \frac{\mu'}{\mu} = -a
-        \implies
-        \ln|\mu| = -A+C
-        \implies
-        \mu(t) = Ce^{-A}
-    \]
-    And by choosing \(C=1\) we have
-    \[
-        \mu(t) = e^{-A(t)}
-    \]
-    Now we multiply our equation by the integrating factor
-    \begin{align*}
-        y' - ay &= b \\
-        y'\mu - a\mu y &= \mu b \\
-        y' \mu + \mu' y &= \mu b \\
-        \left(y \mu\right)' &= \mu b \\
-        \left(e^{-A(t)}y\right)' &= e^{-A(t)}b \\
-        e^{-A(t)}y &= \int e^{-A(t)}b \,dt + C \\
-        y(t) &= Ce^{A(t)} + e^{A(t)} \int e^{-A(t)}b \,dt
-    \end{align*}
-\end{snippetproof}
-
-\section{Bernoulli Equation}
-
-\begin{snippetdefinition}{bernoulli-equation-definition}{Bernoulli Equation}
-    The Bernoulli equation has the form
-    \[
-        y' = p(t)y + q(t)y^n
-    \]
+\begin{snippetdefinition}{diffeq-first-order-normal-definition}{First-order normal form}
+    Let \(\Omega\subseteq\realnumbers^2\) be open and
+    \(f\colon\Omega\fromto\realnumbers\) continuous. A first-order equation
+    in normal form is \(y'=f(x,y)\). A solution is a differentiable
+    \function \(y\colon I\fromto\realnumbers\), on an open interval \(I\),
+    such that \((x,y(x))\in\Omega\) and \(y'(x)=f(x,y(x))\) for all \(x\in I\).
+    Continuity of \(f\) then implies \(y\in\continuityclass^1(I)\).
 \end{snippetdefinition}
 
-\begin{snippettheorem}{bernoulli-equation-sol}{Theorem}
-    The general solution of the Bernoulli equation is the general
-    solution of the linear equation
-    \[
-        v' = -(n-1)p(t)v-(n-1)q(t)
-    \]
-    where
-    \[
-        v = \frac{1}{y^{n-1}}
-    \]
+\begin{snippettheorem}{diffeq-local-existence-uniqueness}{Local existence and uniqueness}
+    Let \(\Omega\subseteq\realnumbers^2\) be open and suppose
+    \(f,\partial f/\partial y\colon\Omega\fromto\realnumbers\) are continuous.
+    For every \((x_0,y_0)\in\Omega\), there is an open interval \(I\) containing
+    \(x_0\) on which \(y'=f(x,y)\), \(y(x_0)=y_0\), has a unique solution.
+    Any two solutions with these initial data agree on the intersection of their domains.
 \end{snippettheorem}
 
-\begin{snippetproof}{bernoulli-equation-sol-proof}{bernoulli-equation-sol}{Theorem}
-    They idea is to transform this equation into a simplier
-    linear first-order equation. \\
-    Start by dividing both sides by \(y^n\)
-    \[
-        \frac{y'}{y^n} = \frac{p(t)}{y^{n-1}} + q(t)
-    \]
-    Let
-    \[
-        v = y^{-(n-1)}, 
-        \quad
-        v' = -(n-1)y^{-n}y'
-    \]
-    Thus
-    \[
-        -\frac{v'}{n-1} = \frac{y'(t)}{y^n(t)}
-    \]
-    By substituting we get
-    \begin{align*}
-        -\frac{v'}{n-1} &= p(t)v + q(t) \\
-        v' &= -(n-1)p(t)v-(n-1)g(t)
-    \end{align*}
+\begin{snippetproof}{diffeq-local-existence-uniqueness-proof}{diffeq-local-existence-uniqueness}{Local existence and uniqueness}
+    Around the initial point choose a compact rectangle contained in \(\Omega\).
+    Continuity makes \(\partial_y f\) bounded there, and the mean value theorem
+    gives a state Lipschitz bound uniform in time.
+    The \snippetref[diffeq-cauchy-lipschitz-cylinder][Cauchy--Lipschitz theorem]
+    gives existence and uniqueness on a neighborhood of the initial time.
+    Agreement throughout any common interval follows from the open-and-closed
+    argument for the set where the two solutions coincide.
 \end{snippetproof}
-
-\section{Separable equations}
 
 \begin{plainhtml}
-    Separable equations are equations that can be solved by integrating both sides.
+    This local theorem is stated here to justify the explicit methods.
+    The subsequent pages on existence, continuation and continuous dependence
+    give the vector-valued theory and its proofs.
 \end{plainhtml}
 
-\begin{snippetdefinition}{separale-equation-definition}{Separable Equation}
-    A \emph{separable equation} has the form
-    \[
-        h(y)y'=g(t)
-    \]
-\end{snippetdefinition}
+\begin{snippetcorollary}{diffeq-solutions-noncrossing}{Nonintersection of solution graphs}
+    Suppose \(\Omega\subseteq\realnumbers^2\) is open and \(f,\partial_y f\)
+    are continuous on \(\Omega\). If two solutions of \(y'=f(x,y)\)
+    meet at a point, they agree on the intersection of their interval domains.
+    In particular, distinct maximal solutions cannot intersect.
+\end{snippetcorollary}
 
-\begin{snippettheorem}{separale-equation-sol}{Solution to a separable equation}
-    A separable differential equation has an implicit solution
-    \[
-        H(y(t)) = G(t) + C
-    \]
-    where
-    \begin{align*}
-        H(y) = \int h(s)\,ds
-        ,\quad
-        G(t) = \int g(t)\,dt
-    \end{align*}
-\end{snippettheorem}
-
-\begin{snippetproof}{separale-equation-sol-proof}{separale-equation-sol}{Solution to a separable equation}
-    Start by integrating both sides of the equation
-    \[
-        \int h(y(t))y'(t)\,dt =
-        \int g(t)\,dt + C
-    \]
-    Now substitute for
-    \[
-        s=y(t),
-        \quad
-        ds=y'(t)\,dt
-    \]
-    meaning
-    \[
-        \int h(s)\, ds = 
-        \int g(t)\,dt
-    \]
-    which could be written as
-    \[
-        H(y) = G(t) + C
-    \]
+\begin{snippetproof}{diffeq-solutions-noncrossing-proof}{diffeq-solutions-noncrossing}{Nonintersection of solution graphs}
+    Let \(J\) be the intersection of the two domains. The \set of points of
+    \(J\) where the solutions agree is nonempty and relatively closed by continuity.
+    Local uniqueness makes it relatively open. Since \(J\) is an interval,
+    they agree throughout \(J\). If both are maximal, their common values allow
+    them to be joined on the union of their domains; maximality then forces
+    equality of both domains and solutions.
 \end{snippetproof}
 
-\section{Exact equations}
-
-\begin{snippetdefinition}{exact-equation-definition}{Exact Equation}
-    Consider a differential equation with the form
-    \[
-        M(x,y)+N(x,y)\frac{dy}{dx}=0
-    \]
-    Then, the equation is \textit{exact} if there exists a continuously
-    differentiable function \(\Psi(x,y)\) such that
-    \[
-        \frac{\partial \Psi}{\partial x} = M(x,y)
-        \quad \text{and} \quad
-        \frac{\partial \Psi}{\partial y} = N(x,y)
-    \]
-\end{snippetdefinition}
-
-\begin{snippet}{exact-equation-sol}
-    We can then rewrite the differential equation as
-    \[
-        \frac{\partial \Psi}{\partial x}+\frac{\partial \Psi}{\partial y} \frac{dy}{dx}=0
-    \]
-    Using the multi variable chain rule it can be reduced to
-    \[
-        \frac{d}{dx}\left( \Psi(x,y(x)) \right) = 0
-    \]
-    We can clearly see that here the derivative is equal to \(0\), meaning that
-    the function must be a constant. This gives us an implicit solution
-    \[
-        \Psi(x,y)=C
-    \]
+\begin{snippet}{diffeq-solutions-noncrossing-diagram}
+    Under local uniqueness, two solution curves cannot cross and then separate.
+\begin{center}
+        \begin{tikzpicture}[scale=0.8]
+            \draw[->] (-2.5,0) -- (2.5,0) node[right] {\(x\)};
+            \draw[->] (0,-1.8) -- (0,1.8) node[above] {\(y\)};
+            \draw[domain=-2:2,samples=100] plot (\x,{0.45*\x});
+            \draw[domain=-2:2,samples=100] plot (\x,{-0.45*\x});
+            \fill (0,0) circle (1.5pt);
+            \node at (0,-2.1) {impossible crossing};
+        \end{tikzpicture}
+    \end{center}
 \end{snippet}
 
-\section{Homogeneous equations}
-
-\begin{snippetdefinition}{homogenous-equation-definition}{Homogeneous Equation}
-    A \textit{homogenous} equation has the form
+\begin{snippetexample}{diffeq-discontinuous-no-solution}{Failure of existence}
+    Let
     \[
-        \frac{dy}{dx} = F\left(\frac{y}{x}\right)
+        f(x)=\operatorname{sign}(x)=
+        \begin{cases}1,&x>0,\\0,&x=0,\\-1,&x<0.\end{cases}
     \]
-\end{snippetdefinition}
+    The equation \(y'=f(x)\) has no solution on an open interval containing \(0\).
+    Indeed, on its positive and negative parts a solution would respectively be
+    \(x+C_+\) and \(-x+C_-\). Continuity at zero forces
+    \(C_+=C_-\), but the left and right derivatives at zero would be \(-1\) and \(1\).
+\end{snippetexample}
 
-\begin{snippet}{homogenous-equation-sol}
-    We use the substitution
-    \[
-        v=\frac{y}{x}
-    \]
-    Note that
-    \begin{align*}
-        y' &= (xv)' = v+yv' \\
-        &= F(v)
-    \end{align*}
-    We then have
-    \begin{align*}
-        v+xv'&=F(v) \\
-        xv'&=F(v)-v \\
-        \frac{v'}{F(v)-v}&=\frac{1}{x}
-    \end{align*}
+\section{Geometric and numerical interpretation}
 
-    This is a separable equation. Thus, an implicit solution is given by
-    \[
-        \integral[\frac{1}{F(v)-v}][v]=\ln|x|+C
-    \]
-\end{snippet}
-
-\section{Slope Field}
-
-\begin{snippetdefinition}{slope-field-definition}{Slope Field}
-    A slope field or directional field is a field to visualize
-    solutions to a first-order differential equation.
+\begin{snippetdefinition}{slope-field-definition}{Slope field}
+    For \(y'=f(x,y)\) on \(\Omega\subseteq\realnumbers^2\), the
+    \emph{slope field} assigns to every \((x,y)\in\Omega\) the line
+    with direction vector \((1,f(x,y))\). The graph of each solution
+    is tangent to these directions at its points.
 \end{snippetdefinition}
 
 % TODO
@@ -280,15 +133,23 @@
 %\wrapfill
 %\end{snippet}
 
-\subsection{Euler's Method}
 
-\begin{snippetdefinition}{euler-method}{Euler's Method}
-    Euler's method is a technique for solving a 
-    first-order differential equation numerically given a point of the solution.
-    \\
-    Starting at the known solution point \(A_0\), we take small steps the direction
-    of the slope field. As the length of the steps \(s \to 0\)
-    we approach the solution to the equation. \\
+
+\begin{snippetdefinition}{euler-method}{Explicit Euler method}
+    For the initial value problem \(y'=f(x,y)\), \(y(x_0)=y_0\),
+    choose a step size \(h>0\). The \emph{explicit Euler method} defines
+    \[
+        x_j=x_0+jh,\qquad Y_0=y_0,\qquad
+        Y_{j+1}=Y_j+h f(x_j,Y_j),
+    \]
+    for as long as the required points lie in the domain of \(f\).
 \end{snippetdefinition}
+
+\begin{snippet}{diffeq-euler-interpretation}
+    Each Euler step follows the slope field at the current approximate point.
+    The polygon through \((x_j,Y_j)\) approximates a solution.
+    Convergence as \(h\to0\) requires suitable regularity and stability assumptions;
+    it is not part of the definition and does not hold for arbitrary right-hand sides.
+\end{snippet}
 
 \end{document}

@@ -1,0 +1,126 @@
+\documentclass[preview]{standalone}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+\begin{document}
+\id{diffeq-variation-constants}
+\genpage
+\section{Nonhomogeneous equations}
+
+\begin{snippetproposition}{diffeq-nonhomogeneous-affine-space}{General solution of a nonhomogeneous equation}
+    Let \(L[y]=y^{(k)}+\sum_{j=0}^{k-1}a_jy^{(j)}\), with real constant
+    coefficients, and let \(b\in C(I)\) on an open interval \(I\).
+    If \(y_*\) solves \(L[y_*]=b\) and \(w_1,\ldots,w_k\) form a basis
+    of the homogeneous solution space on \(I\), then all solutions of \(L[y]=b\) are
+    \[
+        y=y_*+\sum_{j=1}^k c_jw_j,\qquad c_j\in\realnumbers.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{diffeq-nonhomogeneous-affine-space-proof}{diffeq-nonhomogeneous-affine-space}{General solution of a nonhomogeneous equation}
+    If \(L[w]=0\), linearity gives \(L[y_*+w]=b+0=b\).
+    Conversely, if \(L[y]=L[y_*]=b\), then \(L[y-y_*]=b-b=0\).
+    Expand this difference in the homogeneous basis.
+\end{snippetproof}
+
+\section{Wronskians and variation of constants}
+
+\begin{snippetdefinition}{diffeq-wronskian-definition}{Wronskian matrix}
+    For \function[functions] \(w_1,\ldots,w_k\in C^{k-1}(I)\), their
+    \emph{Wronskian matrix} and \emph{Wronskian determinant} are
+    \[
+        W(x)=
+        \begin{pmatrix}
+        w_1&\cdots&w_k\\
+        w_1'&\cdots&w_k'\\
+        \vdots&\ddots&\vdots\\
+        w_1^{(k-1)}&\cdots&w_k^{(k-1)}
+        \end{pmatrix}(x),
+        \qquad \mathcal W(x)=\det W(x).
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{diffeq-fundamental-wronskian-nonzero}{Nonvanishing of a fundamental Wronskian}
+    Let \(w_1,\ldots,w_k\) be linearly independent solutions on an open interval
+    \(I\) of \(y^{(k)}+\sum_{j=0}^{k-1}a_jy^{(j)}=0\), with constant real
+    coefficients. Their Wronskian matrix is invertible at every \(x\in I\).
+\end{snippetproposition}
+
+\begin{snippetproof}{diffeq-fundamental-wronskian-nonzero-proof}{diffeq-fundamental-wronskian-nonzero}{Nonvanishing of a fundamental Wronskian}
+    If \(W(x_0)c=0\) for a nonzero vector \(c\), the solution
+    \(w=\sum c_jw_j\) has all \(k\) initial data zero at \(x_0\).
+    Uniqueness forces \(w=0\), contradicting independence.
+    This argument uses that the \function[functions] solve the same equation;
+    independence alone does not guarantee a nonzero Wronskian for arbitrary \function[functions].
+\end{snippetproof}
+
+\begin{snippettheorem}{diffeq-variation-constants-theorem}{Variation of constants}
+    Let \(L[y]=y^{(k)}+\sum_{j=0}^{k-1}a_jy^{(j)}\), with real constant
+    coefficients, and let \(b\in C(I)\) on an open interval \(I\).
+    Let \(w_1,\ldots,w_k\) be a fundamental system for \(L[y]=0\),
+    with Wronskian matrix \(W\). Choose \function[functions] \(c_j\) satisfying
+    \[
+        W(x)\begin{pmatrix}c_1'\\ \vdots\\c_k'\end{pmatrix}
+        =\begin{pmatrix}0\\ \vdots\\0\\ b(x)\end{pmatrix}.
+    \]
+    Then \(y_*=\sum_{j=1}^k c_jw_j\) is a particular solution of \(L[y]=b\).
+    Such \(c_j\) exist on all of \(I\), by integrating the continuous vector
+    \(W^{-1}(0,\ldots,0,b)^{\mathsf T}\).
+\end{snippettheorem}
+
+\begin{snippetproof}{diffeq-variation-constants-proof}{diffeq-variation-constants-theorem}{Variation of constants}
+    The first \(k-1\) rows impose
+    \(\sum_j c_j'w_j^{(r)}=0\) for \(0\leq r\leq k-2\).
+    Successive differentiation therefore gives
+    \[
+        y_*^{(r)}=\sum_j c_jw_j^{(r)}\quad(0\leq r<k),\qquad
+        y_*^{(k)}=\sum_j c_jw_j^{(k)}+\sum_j c_j'w_j^{(k-1)}.
+    \]
+    The last sum is \(b\), by the last row. Thus
+    \(L[y_*]=\sum_j c_jL[w_j]+b=b\).
+    In particular, for \(k=2\), the imposed equations are
+    \[
+        c_1'w_1+c_2'w_2=0,\qquad
+        c_1'w_1'+c_2'w_2'=b.
+    \]
+    They make \(y_*'=c_1w_1'+c_2w_2'\) and produce exactly the desired
+    forcing in the second derivative.
+\end{snippetproof}
+
+\begin{snippetexample}{diffeq-variation-first-order-example}{The first-order case}
+    For \(y'+p(x)y=q(x)\), with \(p,q\in C(I)\), choose a primitive \(P'=p\).
+    The homogeneous solution \(w=e^{-P}\) is never zero.
+    Writing \(y_*=cw\) yields \(c'w=q\), so
+    \[
+        y=e^{-P(x)}\left(C+\int q(x)e^{P(x)}\,dx\right).
+    \]
+    This separates the homogeneous term \(Ce^{-P}\) from the particular
+    term \(e^{-P}\int qe^P\) and agrees with the integrating-factor method.
+\end{snippetexample}
+
+\begin{snippetexample}{diffeq-variation-secant-example}{A nonpolynomial forcing term}
+    Consider \(y''+y=1/\cos x\) on \(I=(-\pi/2,\pi/2)\).
+    The characteristic equation \(\lambda^2+1=0\) gives the fundamental
+    system \(w_1=\cos x,w_2=\sin x\).
+    Set \(y_*=c_1(x)\cos x+c_2(x)\sin x\) and impose
+    \[
+        \begin{cases}
+        c_1'\cos x+c_2'\sin x=0,\\
+        -c_1'\sin x+c_2'\cos x=1/\cos x.
+        \end{cases}
+    \]
+    The first equation gives \(c_1'=-c_2'\sin x/\cos x\).
+    Substitution in the second yields
+    \[
+        c_2'\frac{\sin^2x+\cos^2x}{\cos x}=\frac1{\cos x},
+        \qquad c_2'=1,\quad c_1'=-\tan x.
+    \]
+    As \(\cos x>0\) on \(I\), take \(c_2=x\), \(c_1=\ln(\cos x)\).
+    The general solution is therefore
+    \[
+        y=k_1\cos x+k_2\sin x+\cos x\ln(\cos x)+x\sin x.
+    \]
+\end{snippetexample}
+\end{document}

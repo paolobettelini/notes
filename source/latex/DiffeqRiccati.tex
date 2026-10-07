@@ -1,0 +1,107 @@
+\documentclass[preview]{standalone}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+\begin{document}
+\id{diffeq-riccati}
+\genpage
+\section{Riccati equations}
+
+\begin{snippetdefinition}{diffeq-riccati-definition}{Riccati equation}
+    Let \(I\) be an open interval and \(a,b,c\in C(I)\).
+    A \emph{Riccati equation} has the form
+    \[
+        y'+a(x)y+b(x)y^2+c(x)=0.
+    \]
+    If \(b\equiv0\), it reduces to a linear equation.
+\end{snippetdefinition}
+
+\begin{snippettheorem}{diffeq-riccati-reduction}{Reduction using a particular solution}
+    Let \(a,b,c\in C(I)\), and let \(y_*\) solve
+    \(y'+ay+by^2+c=0\) on an open interval \(I\).
+    On any subinterval where \(y\neq y_*\), the substitution
+    \[
+        y=y_*+\frac1z
+    \]
+    transforms the equation into
+    \[
+        z'-\bigl(a+2by_*\bigr)z=b.
+    \]
+    Conversely, any nonvanishing solution \(z\) of this linear equation
+    gives a Riccati solution by that formula.
+    The solution \(y=y_*\) must be included separately.
+\end{snippettheorem}
+
+\begin{snippetproof}{diffeq-riccati-reduction-proof}{diffeq-riccati-reduction}{Reduction using a particular solution}
+    Set \(y=y_*+u\). Expanding gives
+    \begin{align*}
+        0&=y_*'+u'+a(y_*+u)+b(y_*^2+2y_*u+u^2)+c\\
+         &=\underbrace{y_*'+ay_*+by_*^2+c}_{0}
+           +u'+(a+2by_*)u+bu^2.
+    \end{align*}
+    Thus \(u\) satisfies a Bernoulli equation of exponent two.
+    Write \(A=a+2by_*\) and substitute \(u=1/z\):
+    \[
+        -\frac{z'}{z^2}+\frac A z+\frac b{z^2}=0
+        \quad\Longleftrightarrow\quad z'-Az=b.
+    \]
+    All steps are reversible when \(z\neq0\).
+    Moreover \(f=-ay-by^2-c\) and \(\partial_yf=-a-2by\) are continuous,
+    so uniqueness implies that a solution differing initially from \(y_*\)
+    cannot meet it later on their common interval.
+\end{snippetproof}
+
+\section{Examples}
+
+\begin{snippetexample}{diffeq-riccati-cosine-example}{A constant particular solution}
+    Consider \(y'+(y^2+y-\tfrac34)\cos x=0\), \(y(0)=y_0\).
+    Since \((1/2)^2+1/2-3/4=0\), \(y_*=1/2\) is a particular solution.
+    If \(y_0=1/2\), it is the required global solution.
+    Otherwise set \(y=1/2+1/z\), obtaining
+    \[
+        z'-2\cos x\,z=\cos x,\qquad z(0)=\frac1{y_0-1/2}.
+    \]
+    Multiplying by \(e^{-2\sin x}\) gives
+    \[
+        (ze^{-2\sin x})'=\cos x\,e^{-2\sin x},
+        \qquad
+        z(x)=\left(\frac1{y_0-1/2}+\frac12\right)e^{2\sin x}-\frac12.
+    \]
+    Hence \(y=1/2+1/z(x)\) on the component of \(\{x:z(x)\neq0\}\)
+    containing zero. The second constant solution \(y=-3/2\) is included
+    by \(z=-1/2\).
+\end{snippetexample}
+
+\begin{snippetexample}{diffeq-riccati-logarithm-example}{A nonconstant particular solution}
+    Consider, for \(x>0\),
+    \[
+        y'-y^2+2y\ln x-\ln^2x-\frac1x=0,\qquad y(1)=a.
+    \]
+    The \function \(y_*=\ln x\) is a particular solution because
+    \[
+        \frac1x-\ln^2x+2\ln^2x-\ln^2x-\frac1x=0.
+    \]
+    If \(a=0\), the unique solution is \(\ln x\) on \((0,+\infty)\).
+    If \(a\neq0\), set \(y=\ln x+1/z\), so \(y'=1/x-z'/z^2\).
+    Substitution cancels all logarithmic terms:
+    \[
+        -\frac{z'}{z^2}-\frac1{z^2}=0,\qquad
+        z'=-1,\qquad z=-x+C.
+    \]
+    The initial value gives \(a=1/(C-1)\), hence
+    \[
+        y(x)=\ln x+\frac1{-x+1+1/a}.
+    \]
+    Excluding the pole \(x=1+1/a\) and retaining the component containing \(1\)
+    gives the maximal interval
+    \[
+        I=\begin{cases}
+          (0,1+1/a),&a>0,\\
+          (1+1/a,+\infty),&a<-1,\\
+          (0,+\infty),&-1\leq a<0.
+        \end{cases}
+    \]
+\end{snippetexample}
+\end{document}

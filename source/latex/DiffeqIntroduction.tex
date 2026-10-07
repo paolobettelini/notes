@@ -1,86 +1,131 @@
 \documentclass[preview]{standalone}
-
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{stellar}
 \usepackage{definitions}
-
+\usepackage{bettelini}
+\usepackage{tikz}
 \begin{document}
-
 \id{diffeq-introduction}
 \genpage
 
-\section{Introduction}
+\section{Differential equations}
 
-\begin{snippetdefinition}{nth-order-differential-equation-normal-form-definition}{\(N\)-th order differential equation in normal form}
-    Let \(n\in\naturalnumbers^+\).
-    An \emph{\(n\)-th order differential equation in normal form} is an equation of the form
+\begin{snippetdefinition}{diffeq-order-definition}{Differential equation and order}
+    A \emph{differential equation} is an equation for an unknown \function
+    involving some of its derivatives. It is \emph{ordinary} when the unknown
+    depends on one independent variable, and a \emph{partial differential equation}
+    when partial derivatives with respect to several independent variables occur.
+    An ordinary equation is \emph{scalar} for a real-valued unknown and a
+    \emph{system} for a vector-valued unknown.
+    Its \emph{order} is the highest derivative order occurring in the equation.
+    An implicit scalar equation of order \(n\geq1\) has the form
     \[
-        \frac{d^n y}{dx^n} = f\left(x, y, \frac{dy}{dx}, \ldots, \frac{d^{n-1}y}{dx^{n-1}}\right)
+        G(x,y,y',\ldots,y^{(n)})=0,
     \]
-    where \(f\colon A \subseteq \realnumbers^{n+1} \fromto \realnumbers\) with \(A\) \msopenset[open]
-    and \(f\) is continuous.
+    where \(G\) is defined on a subset of \(\realnumbers^{n+2}\).
 \end{snippetdefinition}
 
-\begin{snippetproposition}{nth-order-differential-equation-normal-form-necessary-condition}{}
-    Consider an \(n\)-th order differential equation in normal form
+\begin{snippetexample}{diffeq-implicit-second-order-example}{An implicit equation}
+    The equation
     \[
-        \frac{d^n y}{dx^n} = f\left(x, y, \frac{dy}{dx}, \ldots, \frac{d^{n-1}y}{dx^{n-1}}\right)
+        \ln\left(1-\tanh\left(\sqrt{1-x^2}\,y\right)
+        +e^{y'}-7y''\sqrt{y^2+1}\right)=0
     \]
-    A \emph{solution} to it is written \((\varphi, I)\) where \(\varphi\colon I \subseteq \realnumbers \fromto \realnumbers\) is a \function
-    and \(I\) is an interval such that:
-    \begin{enumerate}
-        \item \(\forall t\in I, (t, \varphi(t), \varphi'(t), \cdots, \varphi^{(n-1)}(t)) \in A\);
-        \item \(\varphi \in \continuityclass^n(I)\);
-        \item \(\forall t\in I\),
-        \[
-            \frac{d^n \varphi}{dt^n} = f\left(t, \varphi, \frac{d\varphi}{dt}, \ldots, \frac{d^{n-1}\varphi}{dt^{n-1}}\right).
-        \]
-    \end{enumerate}
-\end{snippetproposition}
+    has order two. On its real domain, the logarithm must have positive argument
+    and \(|x|\leq1\). Solving for the highest derivative gives
+    \[
+        y''=\frac{e^{y'}-\tanh(\sqrt{1-x^2}\,y)}
+                     {7\sqrt{y^2+1}}.
+    \]
+    On \(-1<x<1\), this is an equation in normal form.
+\end{snippetexample}
+
+\begin{snippetdefinition}{nth-order-differential-equation-normal-form-definition}{Normal form}
+    Let \(n\geq1\), let \(A\subseteq\realnumbers^{n+1}\) be open and
+    let \(f\colon A\fromto\realnumbers\) be continuous.
+    A scalar \emph{ordinary differential equation in normal form} is
+    \[
+        y^{(n)}(x)=f(x,y(x),y'(x),\ldots,y^{(n-1)}(x)).
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{nth-order-differential-equation-normal-form-necessary-condition}{Solution}
+    Let \(f\colon A\fromto\realnumbers\) be continuous, with
+    \(A\subseteq\realnumbers^{n+1}\) open.
+    A \emph{solution} of \(y^{(n)}=f(x,y,\ldots,y^{(n-1)})\)
+    is a pair \((\varphi,I)\), where \(I\subseteq\realnumbers\) is a nonempty
+    open interval and \(\varphi\in\continuityclass^n(I)\), such that, for every \(x\in I\),
+    \[
+        (x,\varphi(x),\ldots,\varphi^{(n-1)}(x))\in A,\qquad
+        \varphi^{(n)}(x)=f(x,\varphi(x),\ldots,\varphi^{(n-1)}(x)).
+    \]
+\end{snippetdefinition}
 
 \begin{snippetdefinition}{nth-order-cauchy-problem-definition}{Cauchy problem}
-    Let \(n\in\naturalnumbers^+\).
-    A \emph{Cauchy problem} or \emph{initial value problem} is a differential equation
-    with a constraint on the initial conditions
+    Let \(f\colon A\fromto\realnumbers\), where \(A\subseteq\realnumbers^{n+1}\)
+    is open, be continuous. Given \((x_0,y_0,\ldots,y_{n-1})\in A\),
+    the \emph{Cauchy problem}, or \emph{initial value problem}, is
     \[
-        \begin{cases}
-            \frac{d^n y}{dx^n} = f\left(x, y, \frac{dy}{dx}, \ldots, \frac{d^{n-1}y}{dx^{n-1}}\right) \\
-            y(x_0) = y_0 \\
-            \frac{dy}{dx}(x_0) = y_1 \\
-            \vdots \\
-            \frac{d^{n-1}y}{dx^{n-1}}(x_0) = y_{n-1}
-        \end{cases}
+        y^{(n)}=f(x,y,\ldots,y^{(n-1)}),\qquad
+        y^{(j)}(x_0)=y_j\quad(0\leq j<n).
     \]
-    where \((x_0, y_0, y_1, \ldots, y_{n-1}) \in A\).
 \end{snippetdefinition}
 
-\begin{snippetproposition}{nth-order-cauchy-problem-necessary-condition}{}
-    Consider a Cauchy problem
-    \[
-        \begin{cases}
-            \frac{d^n y}{dx^n} = f\left(x, y, \frac{dy}{dx}, \ldots, \frac{d^{n-1}y}{dx^{n-1}}\right) \\
-            y(x_0) = y_0 \\
-            \frac{dy}{dx}(x_0) = y_1 \\
-            \vdots \\
-            \frac{d^{n-1}y}{dx^{n-1}}(x_0) = y_{n-1}
-        \end{cases}
-    \]
-    A solution \((\varphi, I)\) to the differential equation is also a solution to the Cauchy problem
-    if
-    \[
-        \varphi(x_0) = y_0, \quad \varphi'(x_0) = y_1, \quad \cdots, \quad \varphi^{(n-1)}(x_0) = y_{n-1}
-    \]
+\begin{snippetproposition}{nth-order-cauchy-problem-necessary-condition}{Solutions of an initial value problem}
+    A solution \((\varphi,I)\) of \(y^{(n)}=f(x,y,\ldots,y^{(n-1)})\)
+    solves the Cauchy problem with data \((x_0,y_0,\ldots,y_{n-1})\)
+    \ifandonlyif \(x_0\in I\) and \(\varphi^{(j)}(x_0)=y_j\) for every \(0\leq j<n\).
 \end{snippetproposition}
 
-\begin{snippetdefinition}{diffeq-linear-definition}{Linear Differential Equation}
-    A differential equation is said to be \textit{linear} if it can be written as
+\begin{snippetdefinition}{diffeq-maximal-solution-definition}{Maximal solution}
+    A solution \((y,I)\) of a differential equation is \emph{maximal}
+    if there is no solution \((\widetilde y,J)\) of the same equation with
+    \(I\subsetneq J\) and \(\widetilde y|_I=y\).
+\end{snippetdefinition}
+
+\begin{snippetexample}{diffeq-logarithm-domain-example}{Why solutions have interval domains}
+    Consider \(y'=1/x\), \(y(1)=0\), on
+    \(\Omega=(\realnumbers\setminus\{0\})\times\realnumbers\).
+    On either half-line the primitives are \(y(x)=\ln|x|+c\).
+    The initial value gives \(c=0\) on the positive half-line, so the maximal
+    solution containing \(1\) is \(y(x)=\ln x\), \(I=(0,+\infty)\).
+    If disconnected domains were allowed, the same initial data would also admit
     \[
-        \sum_n a_n(t) \frac{d^n}{dt^n}y(t)=g(t)
+        y(x)=\begin{cases}\ln x,&x>0,\\ \ln(-x)+c,&x<0,\end{cases}
+        \qquad c\in\realnumbers,
     \]
-    where there are no products of the function \(y(t)\) and its derivatives,
-    \(y(t)\) or its derivative do not occur to any power other than the first power
-    and \(y(t)\) or any of its derivative are composed with another function.
+    because the initial condition says nothing about the negative half-line.
+    The following sketch shows the two independent families (with vertical scaling).
+\begin{center}
+        \begin{tikzpicture}[scale=0.9]
+            \draw[->] (-4.2,0) -- (4.2,0) node[right] {\(x\)};
+            \draw[->] (0,-2.4) -- (0,2.4) node[above] {\(y\)};
+            \draw[dashed] (0,-2.3) -- (0,2.3);
+
+            \draw[domain=0.15:4,samples=100] plot (\x,{0.6*ln(\x)-0.8});
+            \draw[domain=0.15:4,samples=100,very thick] plot (\x,{0.6*ln(\x)});
+            \draw[domain=0.15:4,samples=100] plot (\x,{0.6*ln(\x)+0.8});
+
+            \draw[domain=-4:-0.15,samples=100] plot (\x,{0.6*ln(-\x)-0.8});
+            \draw[domain=-4:-0.15,samples=100] plot (\x,{0.6*ln(-\x)});
+            \draw[domain=-4:-0.15,samples=100] plot (\x,{0.6*ln(-\x)+0.8});
+
+            \fill (1,0) circle (1.5pt) node[below right] {\((1,0)\)};
+        \end{tikzpicture}
+    \end{center}
+\end{snippetexample}
+
+\begin{snippetdefinition}{diffeq-linear-definition}{Linear differential equation}
+    Let \(I\) be an open interval, \(n\geq1\), and let
+    \(a_0,\ldots,a_n,g\colon I\fromto\realnumbers\) be continuous,
+    with \(a_n(x)\neq0\) on \(I\).
+    A \emph{linear differential equation of order \(n\)} is
+    \[
+        \sum_{j=0}^n a_j(x)y^{(j)}(x)=g(x),\qquad y^{(0)}=y.
+    \]
+    It is \emph{homogeneous} if \(g\equiv0\), and has
+    \emph{constant coefficients} if all the \(a_j\) are constant.
 \end{snippetdefinition}
 
 \end{document}

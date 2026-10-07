@@ -1,0 +1,116 @@
+\documentclass[preview]{standalone}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+\begin{document}
+\id{diffeq-homogeneous-exact}
+\genpage
+\section{Homogeneous first-order equations}
+
+\begin{snippetdefinition}{homogenous-equation-definition}{Homogeneous first-order equation}
+    Let \(J\subseteq\realnumbers\) be an open interval and \(g\in C(J)\).
+    A \emph{homogeneous first-order equation} has the form
+    \[
+        y'=g(y/x),\qquad x\neq0,\quad y/x\in J.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetnote}{diffeq-homogeneous-terminology}{Two uses of homogeneous}
+    The terminology \(y'=g(y/x)\) refers to invariance of the right-hand side
+    under simultaneous scaling of \(x\) and \(y\). It is different from
+    a homogeneous linear equation, whose forcing term is zero.
+\end{snippetnote}
+
+\begin{snippetproposition}{homogenous-equation-sol}{Reduction by a ratio}
+    Let \(g\in C(J)\), where \(J\) is an open interval, and let \(I\) be
+    an open interval not containing zero.
+    A differentiable \function \(y\) with \(y(x)/x\in J\) solves \(y'=g(y/x)\)
+    \ifandonlyif \(v=y/x\) solves
+    \[
+        v'=\frac{g(v)-v}{x}.
+    \]
+    Each root \(v_0\in J\) of \(g(v_0)=v_0\) gives the solution \(y=v_0x\).
+    On a branch where \(g(v)-v\neq0\), separation gives
+    \[
+        \int\frac{dv}{g(v)-v}=\ln|x|+C.
+    \]
+\end{snippetproposition}
+
+\begin{snippetproof}{homogenous-equation-sol-proof}{homogenous-equation-sol}{Reduction by a ratio}
+    Differentiate \(y=xv\): \(y'=v+xv'\).
+    Substitution yields \(v+xv'=g(v)\), equivalent to the asserted equation.
+    Constant solutions of that equation give the straight lines.
+    For all remaining branches, divide by \(g(v)-v\) and integrate \(1/x\).
+\end{snippetproof}
+
+\begin{snippetexample}{diffeq-homogeneous-ratio-example}{A positive ratio}
+    Solve \(y'=y/x+x/y\), \(y(2)=4\).
+    Work first on \(x>0,y>0\), and put \(y=xv\).
+    The equation becomes
+    \[
+        v+xv'=v+\frac1v,\qquad vv'=\frac1x,\qquad
+        \frac12v^2=\ln x+C.
+    \]
+    Since \(v>0\), \(y=x\sqrt{2\ln x+2C}\).
+    Substitution of \(y(2)=4\) gives
+    \[
+        4=2\sqrt{2\ln2+2C},\qquad C=2-\ln2.
+    \]
+    Hence
+    \[
+        y(x)=x\sqrt{4+2\ln(x/2)}.
+    \]
+    The original equation is undefined at \(y=0\), so the radicand must be
+    strictly positive: \(x>2e^{-2}\).
+    The maximal interval containing \(2\) is \((2e^{-2},+\infty)\).
+\end{snippetexample}
+
+\section{Exact equations}
+
+\begin{snippetdefinition}{exact-equation-definition}{Exact equation}
+    Let \(\Omega\subseteq\realnumbers^2\) be open and \(M,N\in C(\Omega)\).
+    The equation \(M(x,y)+N(x,y)y'=0\) is \emph{exact} if there exists
+    \(\Psi\in C^1(\Omega)\) such that
+    \[
+        \partial_x\Psi=M,\qquad \partial_y\Psi=N.
+    \]
+    Such a \function \(\Psi\) is called a \emph{potential}.
+\end{snippetdefinition}
+
+\begin{snippetproposition}{exact-equation-sol}{Solutions as level curves}
+    Let \(M,N\in C(\Omega)\), with \(\Omega\subseteq\realnumbers^2\) open,
+    and suppose \(\Psi\in C^1(\Omega)\) satisfies
+    \(\partial_x\Psi=M\), \(\partial_y\Psi=N\).
+    A differentiable \function \(y\) on an interval, with graph in \(\Omega\),
+    solves \(M(x,y)+N(x,y)y'=0\)
+    \ifandonlyif \(\Psi(x,y(x))=C\) for some constant \(C\).
+    At any point where \(N\neq0\), the corresponding level curve is locally
+    the graph of a continuously differentiable solution.
+\end{snippetproposition}
+
+\begin{snippetproof}{exact-equation-sol-proof}{exact-equation-sol}{Solutions as level curves}
+    The chain rule gives
+    \[
+        \frac{d}{dx}\Psi(x,y(x))
+        =\partial_x\Psi+\partial_y\Psi\,y'=M+Ny'.
+    \]
+    On an interval this derivative vanishes \ifandonlyif the composite is constant.
+    If \(\partial_y\Psi=N\neq0\), the implicit function theorem gives the local graph.
+\end{snippetproof}
+\begin{snippetproposition}{diffeq-separated-exact-potential}{A potential for a separable equation}
+    Let \(h\in C(I)\) and \(u\in C(J)\) with \(u\neq0\) on the interval \(J\).
+    The equation \(y'=h(x)u(y)\) is equivalent there to the exact relation
+    \[
+        h(x)\,dx-\frac{dy}{u(y)}=0,
+        \qquad V(x,y)=\int h(x)\,dx-\int\frac{dy}{u(y)}.
+    \]
+    Its solutions satisfy \(V(x,y)=C\).
+    More generally, if \(a\,dx-b\,dy=dV\), the equation \(y'=a/b\)
+    has these level curves as solution graphs wherever \(b\neq0\).
+    The level is an arbitrary constant, not necessarily zero.
+    In a separable equation, dividing by \(u\) requires retaining its
+    equilibrium solutions separately.
+\end{snippetproposition}
+\end{document}

@@ -1,0 +1,224 @@
+\documentclass[preview]{standalone}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+\begin{document}
+\id{diffeq-linear-systems}
+\genpage
+\section{Linear systems}
+
+\begin{snippetdefinition}{diffeq-linear-system-definition}{Linear differential system}
+    Let \(I\) be an open interval,
+    \(A\in C(I,\realnumbers^{m\times m})\), \(b\in C(I,\realnumbers^m)\).
+    A \emph{linear differential system} is \(y'=A(t)y+b(t)\).
+    Its associated homogeneous system is \(y'=A(t)y\).
+    The linear operator
+    \[
+        \Lambda\colon C^1(I,\realnumbers^m)\fromto C(I,\realnumbers^m),
+        \qquad \Lambda u=u'-Au
+    \]
+    has the homogeneous solution space as its kernel.
+\end{snippetdefinition}
+
+\begin{snippetcorollary}{diffeq-linear-system-global}{Global solvability of linear systems}
+    If \(A\in C(I,\realnumbers^{m\times m})\) and \(b\in C(I,\realnumbers^m)\)
+    on an open interval, every problem \(y'=Ay+b\), \(y(t_0)=y_0\),
+    has a unique solution on all of \(I\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{diffeq-linear-system-global-proof}{diffeq-linear-system-global}{Global solvability of linear systems}
+    The operator norm gives
+    \[
+        \|A(t)u-A(t)v\|\leq\|A(t)\|\|u-v\|,\qquad
+        \|A(t)y+b(t)\|\leq\|b(t)\|+\|A(t)\|\|y\|.
+    \]
+    Continuity of the coefficients gives local uniform Lipschitz bounds
+    and a linear-growth bound. Apply the global growth theorem.
+\end{snippetproof}
+
+\begin{snippetproposition}{diffeq-linear-system-affine}{Affine solution space}
+    Let \(A,b\) be continuous on an open interval \(I\), and let
+    \(\widetilde y\) be one solution of \(y'=Ay+b\).
+    The complete solution \set is \(\widetilde y+\ker\Lambda\),
+    where \(\Lambda u=u'-Au\).
+\end{snippetproposition}
+
+\begin{snippetproof}{diffeq-linear-system-affine-proof}{diffeq-linear-system-affine}{Affine solution space}
+    If \(\Lambda y=\Lambda\widetilde y=b\), linearity gives
+    \(\Lambda(y-\widetilde y)=0\).
+    Conversely \(\Lambda(\widetilde y+w)=b\) for every \(w\in\ker\Lambda\).
+\end{snippetproof}
+
+\begin{snippettheorem}{diffeq-linear-system-dimension}{Dimension of the homogeneous solution space}
+    For \(A\in C(I,\realnumbers^{m\times m})\), the solutions of \(y'=Ay\)
+    on the open interval \(I\) form a vector space of dimension \(m\).
+    Evaluation \(y\mapsto y(t_0)\) at any \(t_0\in I\) is an isomorphism
+    to \(\realnumbers^m\).
+\end{snippettheorem}
+
+\begin{snippetproof}{diffeq-linear-system-dimension-proof}{diffeq-linear-system-dimension}{Dimension of the homogeneous solution space}
+    Choose a basis \(e_1,\ldots,e_m\) of \(\realnumbers^m\).
+    Let \(\varphi_i\) solve \(\varphi_i'=A\varphi_i\), \(\varphi_i(t_0)=e_i\).
+    If \(\sum c_i\varphi_i=0\), evaluation at \(t_0\) gives
+    \(\sum c_ie_i=0\), hence all \(c_i=0\).
+    Conversely, for any homogeneous solution \(\varphi\), expand
+    \(\varphi(t_0)=\sum c_ie_i\). The solution \(\psi=\sum c_i\varphi_i\)
+    has the same initial value; uniqueness gives \(\psi=\varphi\).
+    Thus these \(m\) solutions are an independent spanning family.
+\end{snippetproof}
+
+\begin{snippetdefinition}{diffeq-fundamental-matrix-definition}{Fundamental matrix}
+    For \(y'=A(t)y\), with continuous \(A\) on an open interval \(I\),
+    a \emph{fundamental matrix} is \(\Phi=[\varphi_1,\ldots,\varphi_m]\),
+    whose columns form a basis of homogeneous solutions.
+    It satisfies \(\Phi'=A\Phi\); its determinant \(W=\det\Phi\) is the
+    \emph{Wronskian}. It is \emph{normalized at \(t_0\)} if \(\Phi(t_0)=I_m\).
+\end{snippetdefinition}
+
+\begin{snippettheorem}{diffeq-system-wronskian-independence}{Independence and the Wronskian}
+    Let \(\varphi_1,\ldots,\varphi_m\) solve \(y'=A(t)y\) on an open interval,
+    with \(A\) continuous. The following are equivalent:
+    they are linearly independent as \function[functions];
+    \(\det[\varphi_1(t),\ldots,\varphi_m(t)]\neq0\) at one point;
+    this determinant is nonzero at every point.
+\end{snippettheorem}
+
+\begin{snippetproof}{diffeq-system-wronskian-independence-proof}{diffeq-system-wronskian-independence}{Independence and the Wronskian}
+    A constant nonzero vector \(c\) with \(\sum c_i\varphi_i=0\) gives a
+    nontrivial null vector for the column matrix at every point.
+    Conversely, if its determinant vanishes at \(t_*\), fix a nonzero
+    \(c\) in that matrix's kernel. The \function \(w=\sum c_i\varphi_i\)
+    solves \(w'=Aw\) and \(w(t_*)=0\); uniqueness forces \(w\equiv0\).
+    It is essential that these coefficients are fixed at \(t_*\), not
+    chosen afresh as functions of time.
+\end{snippetproof}
+
+\begin{snippetexample}{diffeq-generic-zero-determinant}{Why the common equation matters}
+    The vector-valued \function[functions]
+    \(\varphi_1(x)=(x^2,2x)\), \(\varphi_2(x)=(x|x|,2|x|)\)
+    are independent on \(\realnumbers\), since they agree on the positive
+    half-line and are negatives on the negative half-line.
+    Their column determinant nevertheless vanishes everywhere.
+    They are not solutions of one common continuous linear system.
+    For arbitrary \function[functions], dependence persists on restriction,
+    and independence persists on extension, but neither converse holds.
+    For solutions of a common system, the Wronskian criterion gives
+    independence on every nonempty open subinterval.
+\end{snippetexample}
+
+\begin{snippettheorem}{diffeq-abel-liouville-identity}{Abel--Liouville identity}
+    Let \(A\in C(I,\realnumbers^{m\times m})\), and let the columns of
+    \(\Phi\in C^1(I,\realnumbers^{m\times m})\) solve \(y'=Ay\), without
+    assuming their independence. Then
+    \[
+        W'=(\operatorname{tr}A)W,\qquad
+        W(t)=W(t_0)\exp\left(\int_{t_0}^t\operatorname{tr}A(s)\,ds\right),
+        \quad W=\det\Phi.
+    \]
+    In particular \(W\) is either identically zero or never zero.
+\end{snippettheorem}
+
+\begin{snippetproof}{diffeq-abel-liouville-identity-proof}{diffeq-abel-liouville-identity}{Abel--Liouville identity}
+    Differentiate the determinant by multilinearity in its rows.
+    The \(i\)-th differentiated row is
+    \(\sum_j A_{ij}\) times the \(j\)-th row of \(\Phi\).
+    Each term with \(j\neq i\) has repeated rows and vanishes; the remaining
+    term is \(A_{ii}\det\Phi\). Summing yields \(W'=(\operatorname{tr}A)W\).
+    The scalar integrating-factor formula gives the exponential expression.
+\end{snippetproof}
+
+\section{Variation of constants}
+
+\begin{snippettheorem}{diffeq-system-variation-constants}{Variation of constants for systems}
+    Let \(A,b\) be continuous on an open interval \(I\), and \(\Phi\) be a
+    fundamental matrix of \(y'=Ay\). Every solution of \(y'=Ay+b\) is
+    \[
+        y(t)=\Phi(t)\left(c+\int_{t_0}^t\Phi(s)^{-1}b(s)\,ds\right).
+    \]
+    For the initial condition \(y(t_0)=y_0\), choose \(c=\Phi(t_0)^{-1}y_0\).
+\end{snippettheorem}
+
+\begin{snippetproof}{diffeq-system-variation-constants-proof}{diffeq-system-variation-constants}{Variation of constants for systems}
+    Invertibility makes every \(C^1\) \function expressible as
+    \(y=\Phi c(t)\), with \(c(t)=\Phi(t)^{-1}y(t)\in C^1\).
+    Substitute and use \(\Phi'=A\Phi\):
+    \[
+        \Phi'c+\Phi c'=A\Phi c+b,\qquad
+        \Phi c'=b,\qquad c'=\Phi^{-1}b.
+    \]
+    Integration gives the formula. Thus a particular solution is
+    \(\Phi(t)\int_{t_0}^t\Phi^{-1}b\); the homogeneous solutions are
+    \(\Phi(t)c\) with constant \(c\), and the complete solution space is affine of dimension \(m\).
+    For \(m=1\), \(\Phi=e^{\int_{t_0}^t a}\) gives
+    \[
+        y(t)=e^{\int_{t_0}^t a(s)\,ds}
+        \left(c+\int_{t_0}^t b(s)e^{-\int_{t_0}^s a(r)\,dr}\,ds\right),
+    \]
+    recovering the scalar formula.
+\end{snippetproof}
+
+\section{Constant matrices and scalar equations}
+
+\begin{snippetdefinition}{diffeq-matrix-exponential-definition}{Matrix exponential}
+    For a square matrix \(A\), its \emph{exponential} is
+    \(e^A=\sum_{j=0}^{\infty}A^j/j!\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{diffeq-constant-system-exponential}{Constant-coefficient fundamental matrix}
+    For a constant real square matrix \(A\), the exponential series converges
+    absolutely, and \(\Phi(t)=e^{(t-t_0)A}\) is the normalized fundamental
+    matrix of \(y'=Ay\).
+\end{snippetproposition}
+
+\begin{snippetproof}{diffeq-constant-system-exponential-proof}{diffeq-constant-system-exponential}{Constant-coefficient fundamental matrix}
+    A submultiplicative matrix norm gives
+    \(\sum\|A^j\|/j!\leq\sum\|A\|^j/j!<\infty\).
+    The series and its derivative converge uniformly on compact time intervals,
+    so \(\Phi'=A\Phi\), \(\Phi(t_0)=I_m\).
+    Its columns form a basis by their initial values.
+    In general, for time-varying \(A(t)\), simply exponentiating \(\int A\)
+    does not give a fundamental matrix; noncommutativity matters.
+\end{snippetproof}
+
+\begin{snippetproposition}{diffeq-companion-system}{Scalar linear equations as systems}
+    For continuous \(a_1,\ldots,a_m,b\), the equation
+    \[
+        y^{(m)}=a_1y+a_2y'+\cdots+a_my^{(m-1)}+b
+    \]
+    becomes \(Y'=AY+B\), with \(Y=(y,\ldots,y^{(m-1)})\), \(B=(0,\ldots,0,b)\), and
+    \[
+        A=\begin{pmatrix}
+        0&1&0&\cdots&0\\
+        0&0&1&\cdots&0\\
+        \vdots&&&\ddots&\vdots\\
+        0&0&0&\cdots&1\\
+        a_1&a_2&a_3&\cdots&a_m
+        \end{pmatrix}.
+    \]
+    For \(m=1\), take \(A=(a_1)\). Thus all initial problems are globally
+    solvable on the coefficient interval, and the homogeneous space has dimension \(m\).
+    The columns \((w_j,w_j',\ldots,w_j^{(m-1)})\) form precisely the scalar
+    Wronskian matrix. When the coefficients are constant, the ODE characteristic
+    polynomial is the characteristic polynomial of this companion matrix.
+\end{snippetproposition}
+
+\begin{snippetexample}{diffeq-exponential-vandermonde}{Independence of exponential solutions}
+    For distinct \(\alpha_1,\ldots,\alpha_m\), the Wronskian of
+    \(e^{\alpha_1x},\ldots,e^{\alpha_mx}\) is
+    \[
+        e^{(\alpha_1+\cdots+\alpha_m)x}
+        \det(\alpha_j^{i-1})_{i,j=1}^m
+        =e^{(\alpha_1+\cdots+\alpha_m)x}
+           \prod_{i<j}(\alpha_j-\alpha_i)\neq0.
+    \]
+    For the repeated pair \(e^{\alpha x},xe^{\alpha x}\), it is
+    \(e^{2\alpha x}\neq0\). Polynomial factors with a common exponential
+    are also independent by their different degrees.
+    These analytic \function[functions] remain independent on every open
+    subinterval: a vanishing linear combination there vanishes everywhere.
+    For complex roots one uses real and imaginary parts; growth order alone
+    does not distinguish the sine and cosine solutions.
+\end{snippetexample}
+\end{document}

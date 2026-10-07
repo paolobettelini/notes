@@ -1,75 +1,239 @@
 \documentclass[preview]{standalone}
-
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{parskip}
-\usepackage{fullpage}
-\usepackage{hyperref}
 \usepackage{stellar}
 \usepackage{definitions}
 \usepackage{bettelini}
-
+\usepackage{tikz}
 \begin{document}
-
 \id{diffeq-second-order}
 \genpage
+\section{Linear equations of higher order}
 
-\section{Second-Order Differential Equations}
-
-\begin{snippet}{diffeq-second-order-defintion}
-    A second-order differential equation has the form
+\begin{snippetdefinition}{diffeq-second-order-defintion}{Linear second-order equation}
+    On an open interval \(I\), with \(a,b,f\in C(I)\), a linear
+    second-order equation in normal form is
     \[
-        y''(t)+a(t)y'(t)+b(t)y(t)=f(t)
+        y''+a(x)y'+b(x)y=f(x).
     \]
-    if \(f(t)=0\) then the equation is said to be \textit{homogeneous}.
-\end{snippet}
+    It is homogeneous when \(f\equiv0\).
+\end{snippetdefinition}
 
-\section{Principle of superposition}
-
-\begin{snippettheorem}{diffeq-superposition-principle}{Principle of superposition}
-    If \(y_1(t)\) and \(y_2(t)\) are solutions to a linear homogeneous,
-    then so is
+\begin{snippetdefinition}{diffeq-constant-coefficients-definition}{Constant-coefficient operator}
+    For \(k\geq1\) and \(a_0,\ldots,a_{k-1}\in\realnumbers\), define
     \[
-        y(t) = c_1 y_1(t) + c_2 y_2(t)
+        L[y]=y^{(k)}+\sum_{j=0}^{k-1}a_jy^{(j)},\qquad y^{(0)}=y.
+    \]
+    On an open interval \(I\), the equation \(L[y]=b\), with \(b\in C(I)\),
+    has associated homogeneous equation \(L[y]=0\).
+    Its Cauchy problem prescribes \(y^{(j)}(x_0)=y_j\) for every \(0\leq j<k\),
+    where \(x_0\in I\).
+\end{snippetdefinition}
+
+\begin{snippettheorem}{diffeq-constant-coefficients-global-ivp}{Global initial value theorem}
+    Let \(I\subseteq\realnumbers\) be an open interval, \(k\geq1\),
+    \(a_0,\ldots,a_{k-1}\in\realnumbers\), and \(b\in C(I)\).
+    For every \(x_0\in I\) and \((y_0,\ldots,y_{k-1})\in\realnumbers^k\),
+    there is exactly one \(y\in C^k(I)\) such that
+    \[
+        y^{(k)}+\sum_{j=0}^{k-1}a_jy^{(j)}=b,\qquad
+        y^{(j)}(x_0)=y_j\quad(0\leq j<k).
     \]
 \end{snippettheorem}
 
-\section{Characteristic equation}
+\begin{snippetnote}{diffeq-higher-order-intersections}{Values alone do not determine a solution}
+    For an equation of order \(k>1\), two solution graphs may intersect.
+    Uniqueness requires agreement of all \(k\) initial data, not only the value.
+    For example \(y=0\) and \(y=\sin x\) both solve \(y''+y=0\) and meet at zero,
+    but their first derivatives there differ.
+\end{snippetnote}
 
-\begin{snippet}{diffeq-characteristic-equation}
-Consider a linear, homogeneous differential equation of the form
-\[
-    a_n y^{(n)} + a_{n-1} y^{(n-1)} + \cdots + a_0y = 0
-\]
+\begin{snippetproof}{diffeq-constant-coefficients-global-ivp-proof}{diffeq-constant-coefficients-global-ivp}{Global initial value theorem}
+    Set \(Y=(y,y',\ldots,y^{(k-1)})\).
+    The equation becomes a first-order linear system with constant companion
+    matrix and continuous forcing \((0,\ldots,0,b)\).
+    The \snippetref[diffeq-linear-system-global][global theorem for linear systems]
+    supplies its unique solution on \(I\).
+    The equivalence of the scalar equation and its system gives the required \(C^k\) solution.
+\end{snippetproof}
 
-We may try to solve it by assuming that the solution(s) will have the form \(e^{rt}\),
-meaning
-\begin{align*}
-    a_n r^n e^{rt}
-    + a_{n-1} r^{n-1} e^{rt} + \cdots + a_0 e^{rt} & = 0 \\
-    e^{rt} \left(
-        a_n r^n + a_{n-1} r^{n-1} + \cdots + a_0
-    \right) &= 0
-\end{align*}
-Since \(e^{rt} \neq 0\), then
-\begin{align*}
-    a_n r^n + a_{n-1} r^{n-1} + \cdots + a_0 = 0
-\end{align*}
-This is now a polynomial of \(n\)-degree whose solutions are
-\(r_n\), \(r_{n-1}\), \(\cdots\), \(r_1\).
+\section{The homogeneous solution space}
 
-The solutions to the differential equation are then \(e^{r_n t}\),
-\(e^{r_{n-1}t}\), \(\cdots\), \(e^{r_1 t}\).
+\begin{snippettheorem}{diffeq-superposition-principle}{Principle of superposition}
+    Let \(L[y]=\sum_{j=0}^k a_j(x)y^{(j)}\) be a linear differential operator
+    with continuous coefficients on an interval \(I\).
+    If \(L[w_1]=L[w_2]=0\), then \(L[c_1w_1+c_2w_2]=0\)
+    for every \(c_1,c_2\in\realnumbers\).
+    Consequently the \set of homogeneous solutions is a vector subspace of \(C^k(I)\).
+\end{snippettheorem}
 
-Thus, by the principle of superposition, a more generic solution is given by
-\[
-    c_n e^{r_n t} +
-    c_{n-1} e^{r_{n-1}t} +
-    \cdots +
-    c_1 e^{r_1 t}
-\]
-\end{snippet}
+\begin{snippetproof}{diffeq-superposition-principle-proof}{diffeq-superposition-principle}{Principle of superposition}
+    Differentiation and multiplication by fixed coefficients are linear:
+    \(L[c_1w_1+c_2w_2]=c_1L[w_1]+c_2L[w_2]=0\).
+\end{snippetproof}
 
-% https://tutorial.math.lamar.edu/Classes/DE/IntroSecondOrder.aspx
+\begin{snippettheorem}{diffeq-homogeneous-space-dimension}{Dimension of the solution space}
+    For \(k\geq1\) and real constants \(a_0,\ldots,a_{k-1}\), the space
+    \(S\) of solutions on an open interval \(I\) of
+    \[
+        y^{(k)}+\sum_{j=0}^{k-1}a_jy^{(j)}=0
+    \]
+    has dimension \(k\). For each \(x_0\in I\), the map
+    \(y\mapsto(y(x_0),y'(x_0),\ldots,y^{(k-1)}(x_0))\)
+    is a linear isomorphism from \(S\) to \(\realnumbers^k\).
+\end{snippettheorem}
+
+\begin{snippetproof}{diffeq-homogeneous-space-dimension-proof}{diffeq-homogeneous-space-dimension}{Dimension of the solution space}
+    The initial-data map is linear. Uniqueness makes it injective, since zero
+    initial data have the zero solution. Existence for arbitrary initial data
+    makes it surjective. Thus \(S\) is isomorphic to \(\realnumbers^k\).
+\end{snippetproof}
+
+\begin{snippetdefinition}{diffeq-fundamental-system-definition}{Fundamental system}
+    For a homogeneous linear equation of order \(k\) whose solution space on \(I\)
+    has dimension \(k\), a \emph{fundamental system} is a basis
+    \(w_1,\ldots,w_k\) of this space.
+    Its general solution is \(y=\sum_{j=1}^k c_jw_j\), \(c_j\in\realnumbers\).
+\end{snippetdefinition}
+
+\section{Characteristic roots}
+
+\begin{snippetdefinition}{diffeq-characteristic-polynomial-definition}{Characteristic polynomial}
+    For the constant-coefficient equation
+    \(y^{(k)}+\sum_{j=0}^{k-1}a_jy^{(j)}=0\), its
+    \emph{characteristic polynomial} is
+    \[
+        P(\lambda)=\lambda^k+\sum_{j=0}^{k-1}a_j\lambda^j.
+    \]
+    With a nonzero leading coefficient \(a_k\), use
+    \(P(\lambda)=\sum_{j=0}^k a_j\lambda^j\), or divide the equation by \(a_k\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{diffeq-characteristic-equation}{Exponential solutions}
+    Let \(P\) be the characteristic polynomial of a constant-coefficient
+    homogeneous scalar equation \(P(D)y=0\), where \(D=d/dx\).
+    For \(\lambda\in\complexnumbers\), the \function \(e^{\lambda x}\)
+    solves the equation \ifandonlyif \(P(\lambda)=0\).
+\end{snippetproposition}
+
+\begin{snippetproof}{diffeq-characteristic-equation-proof}{diffeq-characteristic-equation}{Exponential solutions}
+    The first-order equation \(y'+py=0\) has solutions \(Ce^{-px}\), suggesting
+    the exponential ansatz in higher order. Since
+    \(D^je^{\lambda x}=\lambda^je^{\lambda x}\),
+    \[
+        P(D)e^{\lambda x}=e^{\lambda x}P(\lambda).
+    \]
+    The exponential never vanishes, proving the equivalence.
+\end{snippetproof}
+
+\begin{snippettheorem}{diffeq-characteristic-root-basis}{Multiplicity and a real fundamental system}
+    Let \(P\in\realnumbers[\lambda]\) be monic of degree \(k\geq1\).
+    A real basis of the solutions of \(P(D)y=0\) on any open interval is obtained as follows:
+    \begin{enumerate}
+        \item For each real root \(\lambda\) of multiplicity \(r\), include
+        \(x^je^{\lambda x}\), \(0\leq j<r\).
+        \item For each conjugate pair \(\alpha\pm i\beta\), \(\beta>0\),
+        of multiplicity \(r\), include
+        \[
+            x^je^{\alpha x}\cos(\beta x),\qquad
+            x^je^{\alpha x}\sin(\beta x),\qquad 0\leq j<r.
+        \]
+    \end{enumerate}
+    Together these give exactly \(k\) linearly independent real solutions.
+\end{snippettheorem}
+
+\begin{snippetproof}{diffeq-characteristic-root-basis-proof}{diffeq-characteristic-root-basis}{Multiplicity and a real fundamental system}
+    The identity
+    \[
+        (D-\lambda)(e^{\lambda x}q)=e^{\lambda x}q'
+    \]
+    implies that \(x^je^{\lambda x}\) is killed by \((D-\lambda)^r\)
+    for \(j<r\), hence by \(P(D)\).
+    To prove independence over \(\complexnumbers\), suppose
+    \(\sum_\lambda e^{\lambda x}q_\lambda(x)=0\), with
+    \(\deg q_\lambda<r_\lambda\). Fix a root \(\lambda\), and apply
+    \(\prod_{\mu\neq\lambda}(D-\mu)^{r_\mu}\).
+    Every other term vanishes, leaving
+    \[
+        e^{\lambda x}\prod_{\mu\neq\lambda}
+        (D+\lambda-\mu)^{r_\mu}q_\lambda=0.
+    \]
+    On polynomials of degree less than \(r_\lambda\), each operator
+    \(D+\lambda-\mu\) is invertible: its matrix is triangular with nonzero
+    diagonal \(\lambda-\mu\). Thus \(q_\lambda=0\).
+    Finally,
+    \(e^{(\alpha+i\beta)x}=e^{\alpha x}(\cos\beta x+i\sin\beta x)\).
+    Taking real and imaginary parts replaces each conjugate pair by the stated
+    independent real \function[functions]. Their number is \(k\), so the
+    dimension theorem proves completeness.
+\end{snippetproof}
+
+\section{Examples}
+
+\begin{snippetexample}{diffeq-distinct-real-roots-example}{Distinct real roots}
+    For \(y''-3y'+2y=0\),
+    \[
+        P(\lambda)=\lambda^2-3\lambda+2=(\lambda-1)(\lambda-2),
+        \qquad y=c_1e^x+c_2e^{2x}.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{diffeq-conjugate-roots-example}{Conjugate roots}
+    For \(y''+4y=0\), \(P(\lambda)=\lambda^2+4\) has roots \(\pm2i\).
+    Since
+    \[
+        \cos(2x)=\frac{e^{2ix}+e^{-2ix}}2,\qquad
+        \sin(2x)=\frac{e^{2ix}-e^{-2ix}}{2i},
+    \]
+    the real general solution is \(y=c_1\cos(2x)+c_2\sin(2x)\).
+\end{snippetexample}
+
+\begin{snippetexample}{diffeq-double-root-example}{A repeated real root}
+    For \(y''-2y'+y=0\), \(P(\lambda)=(\lambda-1)^2\).
+    The two basis elements are \(e^x\) and \(xe^x\), giving
+    \(y=(c_1+c_2x)e^x\). A useful motivation for the extra factor is
+    \[
+        \lim_{\lambda_2\to\lambda_1}
+        \frac{e^{\lambda_2x}-e^{\lambda_1x}}{\lambda_2-\lambda_1}
+        =xe^{\lambda_1x}.
+    \]
+    This limiting argument is motivation; the multiplicity theorem verifies
+    that the extra \function actually solves the fixed equation.
+\end{snippetexample}
+
+\begin{snippetexample}{diffeq-fourth-order-roots-example}{Real and complex roots together}
+    For \(y^{(4)}-2y^{(3)}+2y''-2y'+y=0\),
+    \begin{align*}
+        P(\lambda)&=\lambda^4-2\lambda^3+2\lambda^2-2\lambda+1\\
+        &=\lambda^2(\lambda-1)^2+(\lambda-1)^2
+        =(\lambda^2+1)(\lambda-1)^2.
+    \end{align*}
+    The roots are \(1\), of multiplicity two, and \(\pm i\). Thus
+    \[
+        y=(c_1+c_2x)e^x+c_3\cos x+c_4\sin x.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{diffeq-third-order-roots-example}{A zero root}
+    For \(y'''-2y''+5y'=0\),
+    \[
+        P(\lambda)=\lambda(\lambda^2-2\lambda+5)
+    \]
+    has roots \(0,1\pm2i\). Therefore
+    \(y=c_1+c_2e^x\cos(2x)+c_3e^x\sin(2x)\).
+\end{snippetexample}
+
+\begin{snippetexample}{diffeq-harmonic-oscillator-example}{Harmonic oscillator}
+    For \(y''+\omega^2y=0\), \(\omega>0\), the roots of
+    \(P(\lambda)=\lambda^2+\omega^2\) are \(\pm i\omega\).
+    Hence \(y=c_1\cos(\omega x)+c_2\sin(\omega x)\).
+    Equivalently,
+    \[
+        y=A\cos(\omega x+\varphi),\qquad
+        c_1=A\cos\varphi,\quad c_2=-A\sin\varphi,\quad
+        A=\sqrt{c_1^2+c_2^2}.
+    \]
+    When \(A=0\), the phase may be chosen arbitrarily.
+\end{snippetexample}
 
 \end{document}

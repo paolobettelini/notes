@@ -45,10 +45,56 @@
 
 \subsection{Definizioni}
 
+\begin{snippetexample}{Metrica uniforme su uno spazio di funzioni}
+    Sia \(I\subseteq\realnumbers\) un intervallo chiuso e limitato e consideriamo
+    \(\mathcal{C}(I)\), lo spazio delle funzioni continue \(f\colon I\to\realnumbers\).
+    Definiamo
+    \[
+        d(f,g)=\sup_{t\in I}|f(t)-g(t)|.
+    \]
+    Il sup è ben definito perché \(|f-g|\) è continua su un compatto, quindi per Weierstrass
+    ammette massimo. Questa è una distanza su \(\mathcal{C}(I)\).
+\end{snippetexample}
+
+\begin{snippetexercise}{}
+    Verificare direttamente i tre assiomi della distanza per la metrica uniforme.
+\end{snippetexercise}
+
+\begin{snippetproposition}{Proprietà di Hausdorff}
+    Sia \((X,d)\) uno spazio metrico e siano \(x_1,x_2\in X\) con \(x_1\neq x_2\).
+    Allora esistono due bolle centrate in \(x_1\) e \(x_2\) che non si intersecano.
+\end{snippetproposition}
+
+\begin{snippetproof}{}
+    Poniamo
+    \[
+        r=\frac13 d(x_1,x_2)>0.
+    \]
+    Se esistesse \(z\in B_r(x_1)\cap B_r(x_2)\), per la disuguaglianza triangolare avremmo
+    \[
+        d(x_1,x_2)\leq d(x_1,z)+d(z,x_2)<2r=\frac23d(x_1,x_2),
+    \]
+    assurdo.
+\end{snippetproof}
+
+\begin{snippetdefinition}{Insieme aperto}
+    Sia \((X,d)\) uno spazio metrico e sia \(A\subseteq X\).
+    \(A\) è aperto se
+    \[
+        \forall x\in A\;\exists r_x>0 \suchthat B_{r_x}(x)\subseteq A.
+    \]
+    Equivalentemente, un aperto è un'unione di bolle.
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Insieme chiuso}
+    Sia \((X,d)\) uno spazio metrico e sia \(F\subseteq X\).
+    \(F\) è chiuso se il suo complementare \(X\setminus F\) è aperto.
+\end{snippetdefinition}
+
 L'insieme vuoto e l'insieme \(X\) sono aperti e chiusi.
 
 \begin{snippetproposition}{}
-    L'unione di aperti non numerabile è aperta, mentre l'intersezione è aperta solo se finita.
+    L'unione arbitraria di aperti è aperta, mentre l'intersezione di un numero finito di aperti è aperta.
 \end{snippetproposition}
 
 \begin{snippetproof}{}
@@ -147,18 +193,69 @@ La metrica discreta può generare una bolla che è un singoletto.
 \end{snippetexample}
 
 \begin{snippetproposition}{}
-    L'unione di chiusi finiti è chiusa. L'intersezione qualsiasi è chiusa.
+    L'unione di un numero finito di chiusi è chiusa. L'intersezione arbitraria di chiusi è chiusa.
 \end{snippetproposition}
 
 Ogni singoletto è chiuso. Per dimostrarlo mostriamo che nel complementare
 esiste una bolla che non interseca il punto (vero per proprietà di Hausdorff).
 
+\begin{snippetdefinition}{Punti notevoli di un insieme}
+    Sia \((X,d)\) uno spazio metrico, \(E\subseteq X\) e \(x_0\in X\).
+    \begin{enumerate}
+        \item \(x_0\) è \emph{aderente} a \(E\) se
+        \[
+            B_r(x_0)\cap E\neq\emptyset
+            \qquad \forall r>0.
+        \]
+        \item \(x_0\) è un \emph{punto di accumulazione} per \(E\) se
+        \[
+            \left(B_r(x_0)\setminus\{x_0\}\right)\cap E\neq\emptyset
+            \qquad \forall r>0.
+        \]
+        \item \(x_0\in E\) è un \emph{punto isolato} di \(E\) se
+        \[
+            \exists r>0 \suchthat B_r(x_0)\cap E=\{x_0\}.
+        \]
+        \item \(x_0\in E\) è un \emph{punto interno} di \(E\) se
+        \[
+            \exists r>0 \suchthat B_r(x_0)\subseteq E.
+        \]
+        \item \(x_0\) è un \emph{punto esterno} a \(E\) se è interno a \(X\setminus E\).
+        \item \(x_0\) è un \emph{punto di frontiera} di \(E\) se
+        \[
+            B_r(x_0)\cap E\neq\emptyset
+            \quad\text{e}\quad
+            B_r(x_0)\cap(X\setminus E)\neq\emptyset
+            \qquad \forall r>0.
+        \]
+    \end{enumerate}
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Insiemi associati a \(E\)}
+    Sia \(E\subseteq X\).
+    \begin{enumerate}
+        \item la \emph{chiusura} \(\overline E\) è l'insieme dei punti aderenti a \(E\);
+        \item la \emph{frontiera} \(\partial E\) è l'insieme dei punti di frontiera di \(E\);
+        \item il \emph{derivato} \(E'\) è l'insieme dei punti di accumulazione di \(E\);
+        \item l'\emph{interno} \(E^\circ\) è l'insieme dei punti interni di \(E\).
+    \end{enumerate}
+\end{snippetdefinition}
+
+\begin{snippetexample}{Insieme né aperto né chiuso}
+    In \(\realnumbers\), l'insieme \([3,5)\) non è aperto perché ogni bolla centrata in \(3\)
+    contiene punti minori di \(3\). Non è nemmeno chiuso perché \(5\) è un punto di accumulazione
+    di \([3,5)\), ma \(5\notin[3,5)\).
+\end{snippetexample}
+
+Un punto aderente non è necessariamente un punto di accumulazione: un punto isolato è aderente
+all'insieme ma non è di accumulazione. Inoltre, gli insiemi finiti non hanno punti di accumulazione.
+
 Tutti i punti di accumulazione sono dei punti aderenti.
 Tutti i punti di un sottoinsieme sono aderenti per il sottoinsieme.
 Ogni punto o è di accumulazione o è isolato.
 
-Se \(x_0\) è aderente ad E, \(x_0\) può essere un punto di E oppure no.
-Se \(x_0\) è punto di accumulazione per E, in ogni bolla centrata in \(x_0\) cadono infiniti punti.
+Se \(x_0\) è aderente a \(E\), \(x_0\) può appartenere a \(E\) oppure no.
+Se \(x_0\) è punto di accumulazione per \(E\), in ogni bolla centrata in \(x_0\) cadono infiniti punti di \(E\).
 
 \begin{snippetproposition}{}
     \(E^\circ\) è aperto. \(E\) è aperto se e solo se \(E = E^\circ\).
@@ -189,8 +286,8 @@ Se \(x_0\) è punto di accumulazione per E, in ogni bolla centrata in \(x_0\) ca
 
 % lezione 2
 
-Dire che un insieme è dentro in un altro significa dire che la sua chiusura coincide con l'insieme.
-Tipo la chiusura di Q è R quindi Q è denso in R.
+Dire che un insieme è denso in un altro significa dire che la sua chiusura coincide con quest'ultimo.
+Per esempio, la chiusura di \(\rationalnumbers\) è \(\realnumbers\), quindi \(\rationalnumbers\) è denso in \(\realnumbers\).
 
 
 \begin{snippetdefinition}{Limitato}
@@ -213,7 +310,7 @@ Tipo la chiusura di Q è R quindi Q è denso in R.
 \end{snippetdefinition}
 
 \begin{snippetdefinition}{Sottoricoprimento}
-    Un Sottoricoprimento di 
+    Un sottoricoprimento di 
     \[
         \{G_\alpha\}_{\alpha \in A}
     \]
@@ -323,8 +420,20 @@ Se \(F\subseteq X\) è chiuso, ed \(E\subseteq X\) è compatto, allora \(F \cap 
             \bigcap_{i=1}^n E_{\alpha_i}
         \right) = \emptyset
     \end{align*}
-    assurdo. % lightning
+    assurdo.
 \end{snippetproof}
+
+\begin{snippetexample}{Perché serve la compattezza}
+    Nel teorema dell'intersezione finita non si può togliere l'ipotesi di compattezza.
+    Per esempio, in \(\realnumbers\) consideriamo
+    \[
+        E_n=(n,+\infty), \qquad n\in\naturalnumbers.
+    \]
+    Gli insiemi sono annidati e ogni intersezione finita è non vuota, mentre
+    \[
+        \bigcap_{n=1}^{\infty}E_n=\emptyset.
+    \]
+\end{snippetexample}
 
 \begin{snippetcorollary}{caso particolare}
     Sia \(\{E_n\}_{n\in \naturalnumbers}\) una famiglia di compatti tale che
@@ -354,11 +463,11 @@ Se \(F\subseteq X\) è chiuso, ed \(E\subseteq X\) è compatto, allora \(F \cap 
 \begin{snippetproof}{}
     Gli intervalli sono annidati, quindi \(a_k\) è crescente e \(b_k\) è decrescente e \(a_k \leq b_k\).
     In particolare \(a_k \leq b_i\). Consideriamo l'insieme \(E = \{a_k \,|\, k\in \naturalnumbers\}\).
-    \(E\) è limitato superiormente, e ammette supremum \(x\).
+    \(E\) è limitato superiormente e ammette estremo superiore \(x\).
     Per definizione \(x \geq a_k\). Ma \(a_k \leq b_i\) per tutte le \(i\).
     Quindi, \(x \leq b_i\) per ogni \(i\). Allora
     \[
-        x \in I_n \implies x \in \bigcap I_k
+        x \in I_k \text{ per ogni }k \implies x \in \bigcap_k I_k
     \]
 \end{snippetproof}
 
@@ -443,7 +552,13 @@ Se \(F\subseteq X\) è chiuso, ed \(E\subseteq X\) è compatto, allora \(F \cap 
 \end{snippettheorem}
 
 \begin{snippetproof}{Teorema di Bolzano-Weierstrass}
-    % todo semplice una riga
+    % 
+    % Siccome è limitato allora sta in [-M,M]^n che è compatto.
+    % Per assurdo E non abbia punti di accumulazione: allora per ogni x in [-M,M]^n
+    % esiste r_x tale che la bolla centrata in quel punto di quel raggio, quando intersecata con E, contiene al più un punto di E.
+    % Se considero tutte le palle di quel raggio su ogni punto del rettangolo, formano un ricoprimento aperto del rettangolo,
+    % quindi esiste sottoricoprimento finito di bolle di quel raggio. Ma ciascuna di queste contiene al più un punto di E,
+    % assurdo perché è E è infinito.
 \end{snippetproof}
 
 \begin{snippetdefinition}{Insiemi separati}
@@ -479,6 +594,10 @@ In particolare la successione metrica converge se e solo se \(d(x_m, y) \to 0\)
 secondo la convergenza reale.
 
 Il limite è unico per proprietà di Hausdorff.
+
+Ogni successione convergente in uno spazio metrico è limitata.
+Infatti, se \(x_n\to x\), definitivamente \(x_n\in B_1(x)\), mentre i termini che rimangono
+sono in numero finito e possono essere contenuti tutti in una bolla sufficientemente grande.
 
 \begin{snippetproposition}{}
     Sia \((X,d)\) uno spazio metrico e \(E \subseteq X\) e sia \(y\) un punto di accumulazione
@@ -524,13 +643,23 @@ Questa c'è solo negli spazi metrici.
         Scegliamo \(x_{m_1}\) tale che \(d(x_{m_1}, y) < 1\).
         Scegliamo \(x_{m_2}\) tale che \(d(x_{m_2}, y) < \frac{1}{2}\) e \(m_2 > m_1\), e così via.
         La sottosuccessione così costruita converge ad \(y\) in quanto \(d(x_{m_k}, y) < \frac{1}{k} \to 0\).
-        \item XXX
+        \item La direzione inversa viene dimostrata nel teorema successivo, usando prima
+        un numero di Lebesgue per il ricoprimento e poi un ricoprimento finito mediante bolle
+        dello stesso raggio.
     \end{iffproof}
 \end{snippetproof}
 
+\begin{snippetdefinition}{Successione di Cauchy}
+    Una successione \(\{x_n\}\) in uno spazio metrico \((X,d)\) è di Cauchy se
+    \[
+        \forall\varepsilon>0\;\exists n_0\in\naturalnumbers\suchthat
+        \forall n,m\geq n_0,\quad d(x_n,x_m)<\varepsilon.
+    \]
+\end{snippetdefinition}
+
 Ogni successione convergente è di Cauchy.
 
-Per esempio con la metrica discreta una successione è convergente se e solo se è definitamente costante,
+Per esempio, con la metrica discreta una successione è convergente se e solo se è definitivamente costante,
 che è equivalente ad essere di Cauchy, quindi è completo.
 
 Nel caso dei razionali nei reali con metrica euclidea, consideriamo la radice di due che è un punto di accumulazione
@@ -556,9 +685,9 @@ Tuttavia è una successione di Cauchy in Q perché è convergente in R e quindi 
     Inoltre, \(E_n\) è limitato e \(\text{diam} E_n \to 0\).
     Infatti, dato \(\varepsilon > 0\) esiste \(N\) tale che per ogni \(m,n \geq N\)
     \(d(x_n, x_m) < \varepsilon\).
-    Notiamo inoltre che
+    Notiamo inoltre che, per \(n\) sufficientemente grande,
     \[
-        \text{diam} E_n = \sup\{d(x_m,x_k)\} < \varepsilon
+        \text{diam} E_n = \sup\{d(x_m,x_k) \mid m,k\ge n\} \leq \varepsilon.
     \]
     Dimostrazione per esercizio vale che \(\text{diam} F = \text{diam} \overline{F}\).
     Quindi, \(\text{diam} \overline{E_n} \to 0\).
@@ -566,7 +695,7 @@ Tuttavia è una successione di Cauchy in Q perché è convergente in R e quindi 
     Quindi \[
         E \triangleq \bigcap_{n\in \naturalnumbers} \overline{E_n} \neq \emptyset
     \]
-    Siccome \(\text{diam} E = 0\) o è vuoto o contiene un solo punto, quindi contiene un solo punto \(E = \{y\}\).
+    Siccome \(E\neq\emptyset\) e \(\text{diam} E = 0\), \(E\) contiene un solo punto, quindi \(E = \{y\}\).
     Mostriamo che \(x_n \to y\).
     Abbiamo \(d(x_n, y) \leq \text{diam} \overline{E_n} \to 0\).
 \end{snippetproof}
@@ -585,10 +714,10 @@ Tuttavia è una successione di Cauchy in Q perché è convergente in R e quindi 
     \(d(x_n, x_m) < \frac{1}{2}\varepsilon\).
     Per la convergenza di \(\{x_{n_k}\}\) esiste \(K\) tale che per ogni \(k \geq K\)
     \(d(x_{n_k}, y) < \frac{1}{2}\varepsilon\).
-    Scegliamo \(\overline{N} = \max\{N_0, n_K\}\).
-    Allora per ogni \(n \geq \overline{N}\) si ha
+    Scegliamo \(k\geq K\) tale che \(n_k\geq N_0\).
+    Allora per ogni \(n \geq N_0\) si ha
     \[
-        d(x_n, y) \leq d(x_n, x_{n_K}) + d(x_{n_K}, y) < \frac{1}{2}\varepsilon + \frac{1}{2}\varepsilon = \varepsilon
+        d(x_n, y) \leq d(x_n, x_{n_k}) + d(x_{n_k}, y) < \frac{1}{2}\varepsilon + \frac{1}{2}\varepsilon = \varepsilon
     \]
 \end{snippetproof}
 
@@ -616,7 +745,7 @@ Sia \(X\) uno spazio metrico completo, \(Y \subseteq X\).
             tale che \(B_\varepsilon(p) \subseteq G_{\hat{\alpha}}\).
             Ma \(x_{m_k} \to p\) quindi con \(k\) sufficientemente grande
             \[B_{1/m_k}(x_{m_k}) \subseteq B_\varepsilon(p) \subseteq G_{\hat{\alpha}}\]
-            che è assurdo lightning.
+            che è assurdo.
         \item \emph{claim 2:} \(E\) è contenuto nell'unione di un numero finito di bolle di raggio
             \(\delta\) centrate in punti di \(E\).
             Per assurdo, sia \(x_1 \in E\). Sicuramente \(B_\delta(x_1)\)
@@ -625,7 +754,7 @@ Sia \(X\) uno spazio metrico completo, \(Y \subseteq X\).
             quindi esiste un \(x_3 \in E \backslash (B_\delta(x_1) \cup B_\delta(x_2))\)
             e così via. La successione \(\{x_m\}\) deve ammettere una sottosuccessione
             convergente. Ma \(d(x_i, x_j) \geq \delta\) se \(i \neq j\) quindi la successione
-            \(\{x_m\}\) non è di Cauchy Lightning.
+            \(\{x_m\}\) non è di Cauchy, assurdo.
             Quindi \(E \subseteq B_\delta(x_1) \cup B_\delta(x_2) \cup \cdots\).
     \end{enumerate}
 \end{snippetproof}
@@ -762,7 +891,7 @@ Abbiamo che
 
 \begin{snippetdefinition}{Funzione aperta}
     Una funzione viene detta \emph{aperta}
-    se \(f(U)\) è aperto in \(X_2\) per tutti gli insiemi \(U\) aperto in \(X_1\).
+    se \(f(U)\) è aperto in \(X_2\) per ogni insieme \(U\) aperto in \(X_1\).
     Analogamente funzione chiusa.
 \end{snippetdefinition}
 
@@ -806,9 +935,9 @@ Sia \(f \colon (X, d) \to \realnumbers^n\) con \(n>1\)
 
 \begin{snippetproof}{Teorema di Weierstrass}
     \(f(X)\) è compatto in \(\realnumbers\), quindi è chiuso e limitato.
-    Siccome limitato, \(f(X)\) ammette infimum e supremum reali.
-    Siccome \(\inf f(x)\) e \(\sup f(x)\)
-    appartengono a \(\overline{f(x)}\) e \(f(x)\) è chiuso, appartengono allora ad \(f(X)\)
+    Siccome è limitato, \(f(X)\) ammette infimo e supremo reali.
+    Siccome \(\inf f(X)\) e \(\sup f(X)\)
+    appartengono a \(\overline{f(X)}\) e \(f(X)\) è chiuso, appartengono allora a \(f(X)\)
     e quindi sono massimi e minimi.
 \end{snippetproof}
 
@@ -839,7 +968,7 @@ In realtà questo funziona con domini compatti e codomini di Hausdorff.
 \end{snippetproof}
 
 \begin{snippettheorem}{}
-    Sia \(f\colon (X_1, d_1) \to (X_2, d_2)\) continua e sia \(E \subseteq X\) connesso.
+    Sia \(f\colon (X_1, d_1) \to (X_2, d_2)\) continua e sia \(E \subseteq X_1\) connesso.
     Allora \(f(E)\) è connesso.
 \end{snippettheorem}
 
@@ -855,16 +984,16 @@ In realtà questo funziona con domini compatti e codomini di Hausdorff.
     Siccome \(A \subseteq \overline{A}\) vale anche \(f^{-1}(A) \subseteq f^{-1}(\overline{A})\).
     L'applicazione \(f\) è continua e la chiusura di \(A\) è un chiuso.
     Quindi la preimmagine del chiuso \(\overline{A}\) è un chiuso.
-    Consideriamo ora \[\overline{F} \subseteq \overline{f^{-1}(A)} = f^{-1}(\overline{A})\]
+    Consideriamo ora \[\overline{F} \subseteq \overline{f^{-1}(A)} \subseteq f^{-1}(\overline{A})\]
     perché \(f\) è continua se \(\overline{A}\) è chiuso.
     Quindi \(\overline{F} \subseteq f^{-1}(\overline{A})\) che implica
     \(f(\overline{F}) \subseteq \overline{A}\). D'altro canto \(f(G) \subseteq B\)
     e \(\overline{A} \cap B = \emptyset\), e quindi \(\overline{F} \cap G = \emptyset\)
     perché altrimenti vi sarebbe un elemento sia in \(\overline{A}\) che in \(B\).
-    Dovrebbe essere \(f(x) \in \overline{A}\) e \(f(x) \in B\) lightning.
+    Dovrebbe essere \(f(x) \in \overline{A}\) e \(f(x) \in B\), assurdo.
     Analogamente si dimostra che \(F \cap \overline{G} = \emptyset\)
     cioè abbiamo scritto \(E\) come unione di due sottoinsiemi non vuoti e separati.
-    Ma \(E\) è connesso lightning.
+    Ma \(E\) è connesso, assurdo.
 \end{snippetproof}
 
 \begin{snippetdefinition}{}
@@ -909,6 +1038,7 @@ La dimostrazione è la medesima rispetto al caso banale.
 \end{snippetdefinition}
 
 Se il supremum è finito, allora questa è la miglior costante di Lipschitz (in generale)
+% TODO da ridere con d non ||
 \begin{align*}
     \sup_{x\neq y} \frac{|f(x)-f(y)|}{|x-y|}
 \end{align*}
@@ -987,7 +1117,7 @@ Se il supremum è finito, allora questa è la miglior costante di Lipschitz (in 
     Sia \(v \in \realnumbers^n\) e consideriamo
     \(f\colon \realnumbers^n \to \realnumbers\) data da
     \(f(x) = v \cdot x\).
-    Dobbiamo studiare \(|f(x) - f(y) = |v\cdot x - v \cdot y|\)
+    Dobbiamo studiare \(|f(x) - f(y)| = |v\cdot x - v \cdot y|\)
     usando la bilinearità del prodotto scalare ottengo
     \(|v\cdot (x-y)|\). Per Cauchy-Schwarz
     \[
@@ -1036,7 +1166,7 @@ Chiaramente non ci sono punti fissi in quanto \(f(t)=t\) è come dire \(e^{-t} =
             &\leq d(x_1, x_0) \sum_{i=0}^{k-1} \alpha^{n+k-i-1} \\
             &= \alpha^n d(x_1, x_0) \sum_{i=0}^{k-1} \alpha^i \\
             &= \alpha^n \frac{1 - \alpha^k}{1 - \alpha} d(x_1, x_0) \\
-            &= \frac{\alpha^n}{1 - \alpha} d(x_1, x_0) \to 0
+            &\leq \frac{\alpha^n}{1 - \alpha} d(x_1, x_0) \to 0
         \end{align*}
         Per sbarazzarci di \(k\) (siccome vogliamo \(k\) arbitrario e il \(\varepsilon\)
         nella definizione di Cauchy deve essere uniforme rispetto ad esso)
@@ -1083,14 +1213,14 @@ Ci chiediamo se nel caso in cui \(f\) non sia una contrazione, una sua iterata l
     Per esempio \(f(x) = \cos x\), che non è una contrazione in quanto il supremum
     della derivata è \(1\). Invece, \(\cos(\cos(x))\) ha derivata
     \[
-        \sin(\cos(x)) \cdot \sin
+        \sin(\cos(x)) \cdot \sin x
     \]
     Il suo modulo è dato da
     \[
         |\sin(\cos(x))| \cdot |\sin x|
         \leq \sin(1) < 1
     \]
-    Il secondo termine può solamente essere maggiorato da \(1\), mentre il secondo,
+    Il secondo termine può essere maggiorato da \(1\), mentre il primo,
     siccome \(-1 \leq \cos(x) \leq 1\), può essere maggiorato da \(\sin 1\).
     Quindi è una contrazione.
 
@@ -1159,6 +1289,99 @@ In particolare, vogliamo mostrare che \(\varphi\) è continua sotto alcune ipote
     La funzione \(T(\varphi(y_0), -)\) è continua in \(y\).
 \end{snippetproof}
 
+\begin{snippetexercise}{Dipendenza continua del punto fisso}
+    Costruire un controesempio al teorema di dipendenza continua del punto fisso dal parametro
+    indebolendo l'ipotesi di contrazione uniforme in modo che
+    \[
+        \sup_{y\in Y}\alpha(y)=1.
+    \]
+\end{snippetexercise}
+
+\subsection{Spazi normati}
+
+\begin{snippetdefinition}{Norma}
+    Sia \(X\) uno spazio vettoriale reale o complesso.
+    Una norma su \(X\) è un'applicazione \(||\cdot||\colon X\to\realnumbers\) tale che,
+    per ogni \(x,y\in X\) e ogni scalare \(\lambda\),
+    \begin{enumerate}
+        \item \(||x||\geq0\) e \(||x||=0\) se e solo se \(x=0\);
+        \item \(||\lambda x||=|\lambda|\,||x||\);
+        \item \(||x+y||\leq||x||+||y||\).
+    \end{enumerate}
+\end{snippetdefinition}
+
+Se \(X\) è uno spazio con prodotto interno, allora
+\[
+    ||x||=\sqrt{\langle x,x\rangle}
+\]
+è una norma. Non tutte le norme, però, sono indotte da un prodotto interno.
+
+\begin{snippetexercise}{}
+    Determinare una condizione necessaria e sufficiente affinché una norma sia indotta
+    da un prodotto interno.
+\end{snippetexercise}
+
+\begin{snippetexample}{Norme in \(\realnumbers^2\)}
+    In \(\realnumbers^2\) possiamo considerare, tra le altre,
+    \[
+        ||(x,y)||_2=\sqrt{x^2+y^2},
+        \qquad
+        ||(x,y)||_1=|x|+|y|,
+        \qquad
+        ||(x,y)||_\infty=\max\{|x|,|y|\}.
+    \]
+    Sono tutte norme, ma hanno palle unitarie di forma diversa.
+\end{snippetexample}
+
+\begin{snippetexample}{Norma sup su funzioni limitate}
+    Sia \(B(\realnumbers,\realnumbers)\) lo spazio vettoriale delle funzioni limitate
+    \(f\colon\realnumbers\to\realnumbers\). Definiamo
+    \[
+        ||f||_\infty=\sup_{t\in\realnumbers}|f(t)|.
+    \]
+    Per esempio, la disuguaglianza triangolare segue da
+    \[
+        ||f+g||_\infty
+        =\sup_t|f(t)+g(t)|
+        \leq \sup_t|f(t)|+\sup_t|g(t)|
+        =||f||_\infty+||g||_\infty.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{Norma integrale}
+    Su \(\mathcal{C}([0,1])\) possiamo definire
+    \[
+        ||f||_1=\int_0^1|f(t)|\,dt.
+    \]
+    Anche questa è una norma.
+\end{snippetexample}
+
+\begin{snippetexercise}{}
+    Verificare gli assiomi della norma per \(||f||_1=\int_0^1|f(t)|\,dt\).
+\end{snippetexercise}
+
+\begin{snippetdefinition}{Spazio normato}
+    Uno spazio normato è una coppia \((X,||\cdot||)\), dove \(X\) è uno spazio vettoriale
+    reale o complesso e \(||\cdot||\) è una norma su \(X\).
+\end{snippetdefinition}
+
+Ogni spazio normato è in modo naturale uno spazio metrico ponendo
+\[
+    d(x,y)=||x-y||.
+\]
+In particolare
+\[
+    B_r(x)=\{y\in X\suchthat ||y-x||<r\}.
+\]
+La convergenza diventa
+\[
+    x_n\to x
+    \iff
+    \forall\varepsilon>0\quad ||x_n-x||<\varepsilon
+    \quad\text{definitivamente}.
+\]
+Con la stessa metrica ha senso parlare di continuità delle funzioni fra spazi normati.
+
 \begin{snippetlemma}{Sugli spazi normati}
     \[
         \left|
@@ -1186,6 +1409,29 @@ Ogni spazio normato è uno spazio metrico, ma non il viceversa.
     completo rispetto alla norma.
 \end{snippetdefinition}
 
+In \(\realnumbers^n\) le norme standard sono
+\[
+    ||x||_1=\sum_{i=1}^n|x_i|,
+    \qquad
+    ||x||_2=\left(\sum_{i=1}^n|x_i|^2\right)^{1/2},
+    \qquad
+    ||x||_\infty=\max_{1\leq i\leq n}|x_i|.
+\]
+Più in generale, per \(p\geq1\),
+\[
+    ||x||_p=\left(\sum_{i=1}^n|x_i|^p\right)^{1/p}.
+\]
+
+Le tre norme standard si possono confrontare direttamente:
+\[
+    ||x||_\infty\leq||x||_2\leq\sqrt{n}\,||x||_\infty,
+    \qquad
+    ||x||_\infty\leq||x||_1\leq n||x||_\infty.
+\]
+Quindi inducono la stessa nozione di convergenza. In particolare, se \(x_k\to x\)
+rispetto ad una di queste norme, converge anche rispetto alle altre. Lo stesso vale per la topologia
+indotta e per la nozione di successione di Cauchy.
+
 \begin{snippetdefinition}{Equivalenza di norme}
     Diciamo che due norme \(||\cdot||, |\cdot|\) sono equivalenti
     se \(\exists 0 < \alpha \leq \beta\) tale che
@@ -1203,7 +1449,7 @@ Questa è una relazione di equivalenza.
 \end{snippettheorem}
 
 \begin{snippetproof}{}
-    Basta mostrare che una norma \(||\cdot||\) questa è equivalente alla \(||\cdot||_2\).
+    Basta mostrare che una norma \(||\cdot||\) è equivalente alla \(||\cdot||_2\).
     Dobbiamo trovare \(\alpha,\beta\) tale che
     \[
         \alpha||x||_2 \leq ||x|| \leq \beta||x||_2, \quad \forall x \in \realnumbers^n
@@ -1214,14 +1460,14 @@ Questa è una relazione di equivalenza.
         ||x|| &= \left|\left|
             \sum_{i=1}^n x_i \cdot e_i
         \right|\right| \leq \sum_{i=1}^n
-        |x_1| \cdot ||e_i|| \\
+        |x_i| \cdot ||e_i|| \\
         &\leq
-        \left(n \max \bigcup_{i=1}^n \{||e_i||\}\right)
+        \left(\max \bigcup_{i=1}^n \{||e_i||\}\right)
         \left(
             \sum_{i=1}^n |x_i|
         \right) \\
-        &\leq \left(n \max \bigcup_{i=1}^n \{||e_i||\}\right) ||x||_1
-        \leq \underbrace{\left(n \max \bigcup_{i=1}^n \{||e_i||\}\right)}_\beta ||x||_2
+        &\leq \left(\max \bigcup_{i=1}^n \{||e_i||\}\right) ||x||_1
+        \leq \underbrace{\left(\max \bigcup_{i=1}^n \{||e_i||\}\right)}_\beta ||x||_2
     \end{align*}
     Questo ci dice anche che \(||\cdot||\) è continua rispetto
     alla topologia indotta da \(||\cdot||_2\), e pure lipschitziana.
@@ -1240,26 +1486,60 @@ Questa è una relazione di equivalenza.
         ||z||_2 = \left|\left|\frac{x}{||x||_2}\right|\right|
         = \frac{1}{||x||_2}||x||_2 \implies ||z||_2 = 1
     \]
-    Quindi \(||z|| \geq \alpha\) and furthermore
+    Quindi \(||z|| \geq \alpha\) e inoltre
     \[
         \left|\left|\frac{x}{||x||_2}\right|\right| \geq \alpha \implies
         ||x|| \geq \alpha ||x||_2
     \]
-    We now need to show that \(\alpha\) is positive.
-    Siccome le normi sono non-negative, alla peggio sono nulle.
+    Resta da mostrare che \(\alpha\) è positivo.
+    Siccome le norme sono non negative, nel caso limite possono essere nulle.
     In realtà \(\alpha\) è un minimo
     \[
         \alpha = \min_{||x||_2 = 1} ||x||
     \]
-    since the norm is continuous with the respect to the topology induced by \(||\cdot||_2\).
-    The set over which we are taking the minimum is clearly closed and bounded.
+    poiché la norma è continua rispetto alla topologia indotta da \(||\cdot||_2\).
+    L'insieme su cui stiamo prendendo il minimo è chiuso e limitato.
     Siccome siamo nella topologia reale con norma euclidea è quindi anche compatto.
     Per Weierstrass, \(\alpha\) è un minimo.
     Quindi deve essere \(\alpha > 0\). Se fosse \(\alpha = 0\)
-    allora esisterebbe \(\hat{x}\) tale che \(||\hat{x}||_2 = 1\) e \(||\hat{x}|| = 0\), che è assurdo lightning.
+    allora esisterebbe \(\hat{x}\) tale che \(||\hat{x}||_2 = 1\) e \(||\hat{x}|| = 0\), che è assurdo.
 \end{snippetproof}
 
 \section{Operatori lineari fra spazi vettoriali}
+
+\begin{snippetdefinition}{Operatore lineare}
+    Siano \(X,Y\) spazi vettoriali. Una mappa \(A\colon X\to Y\) è un operatore lineare se
+    \[
+        A(x+y)=Ax+Ay,
+        \qquad
+        A(\lambda x)=\lambda Ax
+    \]
+    per ogni \(x,y\in X\) e ogni scalare \(\lambda\).
+\end{snippetdefinition}
+
+\begin{snippetexample}{Rappresentazione matriciale}
+    Consideriamo \(A\colon\realnumbers^2\to\realnumbers^3\) data da
+    \[
+        A\begin{pmatrix}x\\y\end{pmatrix}
+        =
+        \begin{pmatrix}
+            3x-2y\\
+            x+y\\
+            x+3y
+        \end{pmatrix}.
+    \]
+    Fissate le basi canoniche, si può scrivere
+    \[
+        A\begin{pmatrix}x\\y\end{pmatrix}
+        =
+        \begin{pmatrix}
+            3&-2\\
+            1&1\\
+            1&3
+        \end{pmatrix}
+        \begin{pmatrix}x\\y\end{pmatrix}.
+    \]
+\end{snippetexample}
 
 Lo spazio \(\mathcal{L}(\realnumbers^n, \realnumbers^m) \cong \text{Mat}_{m\times n}(\realnumbers)\).
 
@@ -1296,7 +1576,7 @@ Studiamo la continuità degli operatori lineari in spazi normati.
                 \sum_{i=1}^n x_i A e_i
             \right|\right|
             \leq \sum_{i=1}^n |x_i| \cdot ||Ae_i|| \\
-            &\leq C \sum_{i=1}^n |x_i|_1, \quad C = \max \bigcup_{i=1}^n \{||Ae_i||\}
+            &\leq C \sum_{i=1}^n |x_i|, \quad C = \max \bigcup_{i=1}^n \{||Ae_i||\}
         \end{align*}
         Ciò dimostra quindi che la funzione è Lipschitz-continua.
     \end{enumerate}
@@ -1312,7 +1592,7 @@ on è detto che \(A\) sia continuo.
     Come secondo spazio prendiamo delle funzioni continue e limitate \(f\colon \realnumbers \to \realnumbers\),
     \(\mathcal{BC}(\realnumbers)\).
     Consideriamo quindi l'operatore della derivata \(\mathcal{BC}^1(\realnumbers) \to \mathcal{BC}(\realnumbers)\).
-    Siccome questi non sono spazi finitamente generati, dobbiamo scegliere delle norme.
+    Siccome questi non sono necessariamente spazi finito-dimensionali, dobbiamo scegliere delle norme.
     Scegliamo come norma sia nel dominio che nel codominio \(||\cdot||_\infty\),
     che ha senso siccome le funzioni sono limitate. Mostriamo quindi che l'operatore lineare non è continuo.
     Scegliamo l'origine. Vogliamo quindi trovare \(\{f_n\} \to 0\) ma tale
@@ -1373,7 +1653,7 @@ Quindi il valore può essere calcolato solo sulla buccia in quanto lì viene rag
 \begin{snippetproposition}{Stima fondamentale}
     Per ogni \(x\in \realnumbers^n\) vale
     \[
-        ||Ax||_* \leq ||A|| \cdot ||x||
+        ||Ax|| \leq ||A||_* \cdot ||x||
     \]
 \end{snippetproposition}
 
@@ -1498,11 +1778,11 @@ Notiamo che abbiamo sfruttato solo la completezza di \(\realnumbers^n\).
         = \max_{\max \{|x|, |y|\} = 1}
         \max \{|3x-2y|, |y|, |x+3y|\}
     \]
-    Quindi \(|3x - 2x| \leq 3|x| + 2|y|\)
-    edeve essere \(\max\{||x||,||y||\} = 1\).
+    Quindi \(|3x - 2y| \leq 3|x| + 2|y|\)
+    e deve essere \(\max\{|x|,|y|\} = 1\).
     In particolare i due moduli sono minori o uguali ad uno.
     \(|3x-2y| \leq 3+2 = 5\) e il valore \(5\)
-    è assunto per \(x=1\) e \(y=-1\) (oppure cil contrario).
+    è assunto per \(x=1\) e \(y=-1\) (oppure il contrario).
     Quindi \(||A||=5\).
 
     Consideriamo invece ora la norma \(1\)
@@ -1518,11 +1798,11 @@ Notiamo che abbiamo sfruttato solo la completezza di \(\realnumbers^n\).
         = 4|x| + 6|y|
     \]
     Siccome \(|x| + |y| = 1\)
-    quest'ultima è un interpolazione lineare
+    quest'ultima è un'interpolazione lineare
     tipo \(ta + (1-t)b\).
     In questo caso abbiamo l'espressione 
     \(4|x| + 6|y|\)
-    che è sempre minore o uguale di \(6\).
+    che è sempre minore o uguale a \(6\).
     Quindi abbiamo trovato che \(|3x-2y| + |y| + |x + 3y| \leq 6\).
     Tale valore può essere raggiunto per esempio scegliendo \(x=0\) e \(y=1\).
 \end{snippetexercise}
@@ -1650,7 +1930,7 @@ quindi fra spazi con la medesima dimensione.
 
 \pagebreak
 
-\section{Calcoli differenziale multivariabile}
+\section{Calcolo differenziale multivariabile}
 
 \begin{radioactive}
 \begin{snippetdefinition}{Limite multivariabile}
@@ -1708,19 +1988,25 @@ e per il codominio
 
 \begin{radioactive}
 \begin{snippetdefinition}{Cammino}
-    Un \emph{cammino} è un applicazione \(\varphi: (0,1) \to \realnumbers^n\) continua.
+    Un \emph{cammino} è un'applicazione \(\varphi: (0,1) \to \realnumbers^n\) continua.
 \end{snippetdefinition}
 
-Sia \(\varphi_\Omega(a)\) l'insieme dei
-cammini con sostegni in \(\Omega\)
-e tale che \(\varphi(t) \to a\)
-per \(t \to 0^+\)
-e \(\varphi(t) \neq\) per tutte le \(t\).
+Il sostegno del cammino \(\varphi\) è la sua immagine
+\[
+    \operatorname{Im}\varphi=\varphi((0,1)).
+\]
+Sia \(\varphi_\Omega(a)\) l'insieme dei cammini con sostegno in \(\Omega\)
+tali che
+\[
+    \varphi(t)\to a\quad\text{per }t\to0^+,
+    \qquad
+    \varphi(t)\neq a\quad\forall t\in(0,1).
+\]
 
 \begin{snippettheorem}{}
     \[
         \lim_{x\to a} f(x) = b
-        \iff
+        \implies
         \lim_{t \to 0^+}
         f(\varphi(t)) = b
     \]
@@ -1729,12 +2015,149 @@ e \(\varphi(t) \neq\) per tutte le \(t\).
 \end{radioactive}
 
 \begin{radioactive}
-\begin{snippetdefinition}{Derivata direzionale}
-    TODO 15 ottobre
+Il criterio dei cammini è soprattutto un criterio di non esistenza. Controllare una collezione,
+anche molto grande, di cammini non basta in generale per provare che un limite esiste.
+Invece, due cammini lungo i quali si ottengono limiti diversi bastano per concludere che il limite
+non esiste. Inoltre, se il limite globale esiste, il valore ottenuto lungo un qualunque cammino
+fornisce l'unico possibile candidato limite.
+
+\begin{snippetexample}{Due cammini con limiti diversi}
+    Consideriamo
     \[
-        D_v f(a) = \lim_{t\to 0} \frac{f(a+vt) - f(a)}{t}
+        f(x,y)=\frac{xy}{x^2+y^2},
+        \qquad (x,y)\neq(0,0).
     \]
+    Lungo gli assi il valore è nullo, quindi se il limite esistesse dovrebbe essere \(0\).
+    Lungo la diagonale \(\varphi(t)=(t,t)\), invece,
+    \[
+        f(t,t)=\frac{t^2}{2t^2}=\frac12.
+    \]
+    Quindi il limite nell'origine non esiste. Più in generale, lungo la retta
+    \(\varphi_m(t)=(t,mt)\),
+    \[
+        f(t,mt)=\frac{m}{1+m^2}.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{Le rette non bastano}
+    Consideriamo
+    \[
+        f(x,y)=\frac{x^2y}{x^5+y^2}
+    \]
+    nel suo dominio e studiamo il limite in \((0,0)\). Lungo gli assi il valore è \(0\).
+    Lungo una retta \(y=mx\),
+    \[
+        f(t,mt)=\frac{mt^3}{t^5+m^2t^2}
+        =\frac{mt}{t^3+m^2}\to0.
+    \]
+    Quindi tutte le rette per l'origine danno lo stesso candidato. Tuttavia, lungo la parabola
+    \(\varphi(t)=(t,t^2)\),
+    \[
+        f(t,t^2)=\frac{t^4}{t^5+t^4}=\frac{1}{1+t}\to1.
+    \]
+    Il limite quindi non esiste.
+\end{snippetexample}
+
+\paragraph{Coordinate polari.}
+Nel piano poniamo
+\[
+    x=\rho\cos\theta,
+    \qquad
+    y=\rho\sin\theta,
+    \qquad
+    \rho=\sqrt{x^2+y^2}.
+\]
+Se \(F(\rho,\theta)=f(\rho\cos\theta,\rho\sin\theta)\), allora
+\[
+    \lim_{(x,y)\to(0,0)}f(x,y)=\ell
+\]
+se e solo se \(F(\rho,\theta)\to\ell\) per \(\rho\to0^+\) uniformemente rispetto a \(\theta\).
+Il punto importante è che il controllo non può dipendere dall'angolo. Fissare \(\theta\)
+significherebbe controllare soltanto le rette passanti per l'origine.
+
+Se vogliamo calcolare un limite in \(a=(a_1,a_2)\neq(0,0)\), basta traslare il punto:
+\[
+    g(x,y)=f(x+a_1,y+a_2)
+\]
+e studiare \(g\) nell'origine. In \(\realnumbers^n\) il ragionamento è lo stesso,
+con una variabile radiale e \(n-1\) variabili angolari.
+
+\begin{snippetexample}{Stima uniforme in coordinate polari}
+    Consideriamo
+    \[
+        f(x,y)=\frac{x^5}{x^4+y^2}.
+    \]
+    In coordinate polari
+    \[
+        F(\rho,\theta)
+        =\frac{\rho^3\cos^5\theta}{\rho^2\cos^4\theta+\sin^2\theta}.
+    \]
+    Poniamo
+    \[
+        g_\rho(\theta)=\rho^2\cos^4\theta+\sin^2\theta.
+    \]
+    Per \(\rho\) sufficientemente piccolo il minimo di \(g_\rho\) è \(\rho^2\), quindi
+    \[
+        |F(\rho,\theta)|
+        \leq \frac{\rho^3}{\rho^2}=\rho\to0,
+    \]
+    uniformemente rispetto a \(\theta\). Quindi il limite vale \(0\).
+    In questo esempio si può anche vedere direttamente che
+    \[
+        |f(x,y)|
+        =\frac{|x|^5}{x^4+y^2}
+        \leq |x|\to0.
+    \]
+\end{snippetexample}
+
+\begin{snippetexample}{Quando la stima angolare si annulla}
+    Riprendiamo
+    \[
+        f(x,y)=\frac{x^2y}{x^5+y^2}.
+    \]
+    In coordinate polari compare al denominatore un fattore angolare che può annullarsi,
+    quindi non si riesce a minorarlo uniformemente con una quantità positiva indipendente
+    da \(\theta\). Questo è coerente con il cammino \(y=x^2\), lungo il quale la funzione tende a \(1\).
+\end{snippetexample}
+
+Due stime elementari che useremo spesso sono
+\[
+    \frac{|ab|}{a^2+b^2}\leq\frac12
+    \qquad ((a,b)\neq(0,0)),
+    \qquad
+    |\sin t|\leq|t|.
+\]
+La prima segue da \((|a|-|b|)^2\geq0\).
+
+\begin{snippetdefinition}{Derivata direzionale}
+    Sia \(f\colon\Omega\subseteq\realnumbers^n\to\realnumbers\), con \(\Omega\) aperto,
+    sia \(a\in\Omega\) e sia \(v\in\realnumbers^n\) un versore. Siccome \(a\) è interno,
+    esiste \(\delta>0\) tale che \(a+tv\in\Omega\) per \(|t|<\delta\).
+    Se esiste finito il limite
+    \[
+        D_v f(a)=\lim_{t\to0}\frac{f(a+tv)-f(a)}{t},
+    \]
+    diremo che \(f\) è derivabile in \(a\) nella direzione \(v\).
 \end{snippetdefinition}
+
+\begin{snippetexample}{Derivate direzionali solo in alcune direzioni}
+    Sia
+    \[
+        f(x,y)=|3x-y|,
+        \qquad a=(1,3),
+        \qquad v=(v_1,v_2),\quad ||v||_2=1.
+    \]
+    Siccome \(f(a)=0\),
+    \[
+        \frac{f(a+tv)-f(a)}{t}
+        =\frac{|t|}{t}|3v_1-v_2|.
+    \]
+    Se \(3v_1-v_2\neq0\), il limite per \(t\to0\) non esiste. Se invece
+    \(v_2=3v_1\), allora \(D_vf(a)=0\). Imponendo anche \(||v||_2=1\) otteniamo
+    \[
+        v=\pm\frac{1}{\sqrt{10}}(1,3).
+    \]
+\end{snippetexample}
 
 La derivata parziale è come prendere una fetta della funzione multidimensionale,
 nella direzione data dal vettore direzionale, e calcolare la derivata ad una singola variabile.
@@ -1746,7 +2169,7 @@ Le derivate parziali lungo i versori della base canonica si chiamano derivate pa
 \begin{snippetexample}{}
     Sia \[
         f(x,y) = \begin{cases}
-            \frac{xy^2}{x^2 + y^2} & (x,y) \neq (0,0) \\
+            \frac{xy^2}{x^2 + y^4} & (x,y) \neq (0,0) \\
             0 & (x,y) = (0,0)
         \end{cases}
     \]
@@ -1760,17 +2183,17 @@ Le derivate parziali lungo i versori della base canonica si chiamano derivate pa
     \begin{align*}
         \lim_{t\to 0} \frac{f(0 + tv_1, 0 + tv_2) - f(0,0)}{t}
         &= \lim_{t\to 0}
-        \frac{1}{t} \frac{tv_1 t^2 v_2^2}{t^2v_1^2 + t^2v_2^2} \\
+        \frac{1}{t} \frac{tv_1 t^2 v_2^2}{t^2v_1^2 + t^4v_2^4} \\
         &= \lim_{t\to 0} \frac{t^3 v_1v_2^2}{t^3(v_1^2 + t^2v_2^4)} \\
         &= \lim_{t\to 0} \frac{v_1v_2^2}{v_1^2 + t^2v_2^4} \\
-        &= \frac{v_1v_2^2}{v_1^2} = \frac{v_2^2}{v_1}
+        &= \frac{v_1v_2^2}{v_1^2} = \frac{v_2^2}{v_1}, \qquad (v_1\neq0)
     \end{align*}
-    Quindi \(f\) ammette tutte le derivate direzionali.
+    Per \(v_1=0\) la derivata direzionale vale \(0\); quindi \(f\) ammette tutte le derivate direzionali.
     Controlliamo il limite di questa funzione nell'origine, per controllare
     se è quindi continua in quel punto.
     \begin{align*}
         \frac{\rho^3 |\cos\theta| \sin^2\theta}{
-            \rho^2 (\cos^2 \theta + \rho^2 \sin^2 \theta)
+            \rho^2 (\cos^2 \theta + \rho^2 \sin^4 \theta)
         }
         &\leq \frac{\rho}{\cos^2\theta + \rho^2 \sin^4 \rho}
     \end{align*}
@@ -1788,9 +2211,9 @@ Le derivate parziali lungo i versori della base canonica si chiamano derivate pa
 L'esistenza delle derivate parziali
 non implica la differenziabilità.
 
-Nelle funzioni di una variabili l'esistenza del rapporto incrementale
-e l'approssimazione lineare local di una funzione coincidono e sono equivalenti alla
-differenziabilità, ma in più variaibli non coincidono.
+Nelle funzioni di una variabile l'esistenza del rapporto incrementale
+e l'approssimazione lineare locale di una funzione coincidono e sono equivalenti alla
+differenziabilità, ma in più variabili non coincidono.
 \end{radioactive}
 
 \begin{radioactive}
@@ -1856,7 +2279,7 @@ Quindi non esistono \(\lambda \neq \mu\) tale che valga l'uguaglianza.
         Quindi, \begin{align*}
             |f(a+h) - f(a)| &= 
             |\lambda \cdot h + \varepsilon(h)| \\
-            &= |\lambda h| + |\varepsilon(h)| < ||\lambda||
+            &= |\lambda \cdot h| + |\varepsilon(h)| < ||\lambda||
             ||h|| + ||h|| \frac{|\varepsilon(h)|}{||h||} \\
             &\leq ||h|| \left[
                 ||\lambda|| + \frac{|\varepsilon(h)|}{||h||}
@@ -1867,9 +2290,9 @@ Quindi non esistono \(\lambda \neq \mu\) tale che valga l'uguaglianza.
         \begin{align*}
             \frac{f(a + tv) - f(a)}t
             &= \frac{\lambda \cdot tv + \varepsilon(tv)}{t} \\
-            &= \lambda v + \frac{\varepsilon(tv)}{t} \\
-            &= \lambda v + \frac{\varepsilon(tv)}{t ||v||} \\
-            &= \lambda v + \frac{|t|}{t} \frac{\varepsilon(tv)}{||tv||} \\
+            &= \lambda \cdot v + \frac{\varepsilon(tv)}{t} \\
+            &= \lambda \cdot v + \frac{\varepsilon(tv)}{t ||v||} \\
+            &= \lambda \cdot v + \frac{|t|}{t} \frac{\varepsilon(tv)}{||tv||} \\
             &\to \lambda v
         \end{align*}
         \item \[
@@ -1882,8 +2305,8 @@ Quindi non esistono \(\lambda \neq \mu\) tale che valga l'uguaglianza.
 \end{radioactive}
 
 \begin{radioactive}
-Per stabilire se una funzione \(f\) è differenziabile in \(a\),
-basta controllare se le derivate parziali esistono.
+L'esistenza delle derivate parziali in un punto non è, in generale, sufficiente per la differenziabilità.
+Una condizione sufficiente è data dal teorema del differenziale totale.
 
 \begin{snippetcorollary}{Formula del gradiente}
     Se \(f\) è differenziabile in \(a\),
@@ -1918,7 +2341,7 @@ basta controllare se le derivate parziali esistono.
     \begin{align*}
         \frac{\partial f}{\partial y}(x_0, 0)
         &= \lim_{y \to 0} \frac{f(x_0, y) - f(x_0, 0)}{y} \\
-        &= \lim_{y\to 0} \frac{x_0^5 \sqrt{||y||} - 0}{y} \\
+        &= \lim_{y\to 0} \frac{x_0^5 \sqrt{|y|} - 0}{y} \\
         &= \lim_{y\to 0} x_0^5 \frac{\sqrt{|y|}}{y} \\
         &= \lim_{y\to 0} x_0^5 \,\text{sgn} y |y|^{-1/2} = \begin{cases}
             0 & x_0 = 0 \\
@@ -2052,7 +2475,7 @@ Se \(f\) è differenziabile in \(a\) possiamo definire l'iperpiano tangente
 
 \begin{snippetdefinition}{}
     Sia \(f \colon \Omega \to \realnumbers\), con \(\Omega \subseteq \realnumbers^n\) aperto.
-    Se le derivate parziali esistono e sono continue in \(\Omega\), diremo che
+    Se le derivate parziali prime esistono e sono continue in \(\Omega\), diremo che
     \(f\) è differenziabile con continuità e scriviamo \(f \in C^1(\Omega)\).
 \end{snippetdefinition}
 \end{radioactive}
@@ -2092,7 +2515,7 @@ le classi \(C\) sono annidate.
     Sia \(v = (v_1, v_2)\) un versore
     \begin{align*}
         \frac{f(tv) - f(0)}{t} &= \frac{1}{t} \left(
-            |t| \left[1 - e^{\frac{t^2}{|t| \cdot |v_1|}}\right]
+            |t| \left[1 - e^{-\frac{t^2}{|t| \cdot |v_1|}}\right]
         \right) \\
         &= \text{sgn} t \left[1 - e^{- \frac{|t|}{|v_1|}}\right] \to 0
     \end{align*}
@@ -2129,11 +2552,12 @@ Quindi
 che associa \(h \to \gradient f(a) \cdot h\).
 In due variabili per esempio
 \[
-    \text{d}f(a)(x-a) = \gradient f(a)(x-a)= \frac{\partial f}{\partial x}(a)(x-e_1) + \frac{\partial f}{\partial x}(x-e_2)
+    \text{d}f(a)(x-a) = \gradient f(a) \cdot (x-a)\\
+    = \frac{\partial f}{\partial x_1}(a)(x_1-a_1) + \frac{\partial f}{\partial x_2}(a)(x_2-a_2)
 \]
 la cui applicazione può essere scritta con le proiezioni
 \[
-    \text{d}f(a) = \frac{\partial f}{\partial x}(a)\,dx + \frac{\partial f}{\partial x}\,dy
+    \text{d}f(a) = \frac{\partial f}{\partial x_1}(a)\,dx_1 + \frac{\partial f}{\partial x_2}(a)\,dx_2
 \]
 
 Nota: \(\gradient f(a)\) è il vettore che punta nella direzione di massima crescita locale.
@@ -2160,7 +2584,7 @@ cioè quando la direzione è il verso di \(\gradient f(a)\).
 Consideriamo \(f\colon \Omega \subseteq \realnumbers^n \to \realnumbers^m\) con \(\Omega\)
 aperto. Abbiamo quindi
 \[
-    f = \sum_{i=1}^n f_i e_i, \quad f_i \colon \Omega \fromto \realnumbers
+    f = \sum_{i=1}^m f_i e_i, \quad f_i \colon \Omega \fromto \realnumbers
 \]
 Sia \(a\in \Omega\) e sia \(v \in \realnumbers^n\). Definiamo la derivata direzionale
 \[
@@ -2175,19 +2599,19 @@ Posso definire un totale di \(mn\) derivate parziali
 \]
 Possiamo quindi definire la matrice Jacobiana come la matrice
 \(J(a)_{i,j} = \frac{\partial f_i}{\partial x_j} (a)\).
-Quindi le righe della matrice sono i trasporti dei gradienti \(\gradient f_j(a)\).
+Quindi le righe della matrice sono le trasposte dei gradienti \(\gradient f_i(a)\).
 \end{radioactive}
 
 \begin{radioactive}
 \begin{snippetdefinition}{Differenziabilità}
     Una funzione \(f\colon \Omega \subseteq \realnumbers^n \to \realnumbers^m\) con \(\Omega\)
-    aperto è differenziabile in \(a\in \Omega\) se \(\exists L \in \mathcal{L}(\realnumbers^m, \realnumbers^n)\)
+    aperto è differenziabile in \(a\in \Omega\) se \(\exists L \in \mathcal{L}(\realnumbers^n, \realnumbers^m)\)
     tale che
     \[
         f(a+h) - f(a) = L(h) + \varepsilon(h)
     \]
     dove \(\varepsilon(h) = o(||h||)\).
-    Tale applicazione lineare di chiama differenziale.
+    Tale applicazione lineare si chiama differenziale.
 \end{snippetdefinition}
 
 Equivalentemente, \(f\) è differenziabile
@@ -2196,9 +2620,10 @@ tale che \[ f(a+h) - f(a) = \Lambda h + \varepsilon(h) \]
 Equivalentemente \(f\) è differenziabile se e solo se \(f_i\) sono tutte differenziabili.
 \end{radioactive}
 
+Vale l'analogo teorema:
 \begin{radioactive}
 \begin{snippettheorem}{Teorema del differenziale totale}
-    Vale l'analogo teorema: se tutte le derivate parziali delle componenti di \(f\)
+    Se tutte le derivate parziali delle componenti di \(f\)
     esistono in un intorno di \(a\) e sono continue in a allora \(f\) è differenziabile in \(a\)
 \end{snippettheorem}
 
@@ -2216,6 +2641,58 @@ Cioè il differenziale (differenziale primo) \(L\) è rappresentato nella base c
         \sum_{j=1}^n \frac{\partial f_i}{\partial x_j}(a)h_j
     \right)e_i
 \]
+\end{radioactive}
+
+\begin{radioactive}
+\begin{snippetproposition}{Norma del differenziale con norme euclidee}
+    Supponiamo di usare le norme euclidee.
+    \begin{enumerate}
+        \item Se \(f\colon\realnumbers\to\realnumbers\), allora
+        \[
+            ||df(x_0)||_*=|f'(x_0)|.
+        \]
+        \item Se \(f\colon\realnumbers\to\realnumbers^m\), allora
+        \[
+            ||df(x_0)||_*=||f'(x_0)||_2.
+        \]
+        \item Se \(f\colon\realnumbers^n\to\realnumbers\), allora
+        \[
+            ||df(x_0)||_*=||\gradient f(x_0)||_2.
+        \]
+    \end{enumerate}
+\end{snippetproposition}
+
+Nel terzo caso, infatti,
+\[
+    |df(x_0)h|=|\gradient f(x_0)\cdot h|
+    \leq||\gradient f(x_0)||_2||h||_2.
+\]
+Se il gradiente non è nullo, l'uguaglianza si realizza scegliendo
+\[
+    h=\frac{\gradient f(x_0)}{||\gradient f(x_0)||_2}.
+\]
+Se il gradiente è nullo, anche il differenziale è l'applicazione nulla.
+
+Queste formule dipendono dalla scelta delle norme. Per esempio, sul dominio
+\((\realnumbers^2,||\cdot||_\infty)\) il funzionale
+\[
+    L(h,k)=h+k
+\]
+ha norma operatoriale \(||L||_*=2\), mentre \(||(1,1)||_\infty=1\).
+Analogamente, su \((\realnumbers^2,||\cdot||_1)\), il funzionale
+\[
+    L(h,k)=2h+k
+\]
+ha \(||L||_*=2\), mentre \(||(2,1)||_1=3\).
+Per questo, nelle formule precedenti è essenziale la scelta euclidea.
+
+Sia ora \(A\colon\realnumbers^n\to\realnumbers^m\) lineare. L'operatore
+\(A^*A\colon\realnumbers^n\to\realnumbers^n\) è semidefinito positivo.
+Se \(\lambda_1,\ldots,\lambda_n\) sono i suoi autovalori, i numeri
+\[
+    \sigma_i=\sqrt{\lambda_i}
+\]
+si chiamano \emph{valori singolari} di \(A\).
 \end{radioactive}
 
 \subsection{Chain rule}
@@ -2238,11 +2715,11 @@ Cioè il differenziale (differenziale primo) \(L\) è rappresentato nella base c
 \end{radioactive}
 
 \begin{radioactive}
-Sia \(h = g\circ f \colon \realnumbers^m \to \realnumbers^n\).
+Sia \(h = g\circ f \colon \realnumbers^n \to \realnumbers^p\).
 Calcoliamo il seguente, che è il prodotto della \(i\)-esima riga di \(Jg(f(a))\)
 per la \(j\)-esima colonna di \(\jacobian f(a)\)
 \begin{align*}
-    \frac{\partial h_i}{\partial x_i}(a)
+    \frac{\partial h_i}{\partial x_j}(a)
     &= \sum_{k=1}^m \frac{\partial g_i}{\partial y_k} (f(a))
     \cdot \frac{\partial f_k}{\partial x_j}(a)
 \end{align*}
@@ -2253,7 +2730,7 @@ per la \(j\)-esima colonna di \(\jacobian f(a)\)
     e \(u, v, w\) quelle di \(g\). Sia \(h = g \circ f\) quindi \(h(x,y) = (h_1(x,y), h_2(x,y))\).
     Calcoliamo per esempio
     \begin{align*}
-        \frac{\partial f_2}{\partial x}(a)
+        \frac{\partial h_2}{\partial x}(a)
         &= \frac{\partial g_2}{\partial u}(f(a))
         \cdot \frac{\partial f_1}{\partial x}(a)
         + \frac{\partial g_2}{\partial v}(f(a)) \cdot
@@ -2269,7 +2746,7 @@ per la \(j\)-esima colonna di \(\jacobian f(a)\)
     Siano \(f\colon \Omega \subseteq \realnumbers^2 \to \realnumbers^2\) e 
     \(g\colon \realnumbers^2 \to \realnumbers\). Chiamiamo le variabili di \(f\)
     \((\rho, \theta)\) e di \(g\) diciamo \((x,y)\).
-    Definiamo \(f(p, \theta) = (\rho\cos\theta,\rho\sin\theta)\).
+    Definiamo \(f(\rho, \theta) = (\rho\cos\theta,\rho\sin\theta)\).
     Sia \(h = g \circ f\) quindi \(h(\rho, \theta) = g(\rho\cos\theta, \rho\sin\theta)\).
     Calcoliamo
     \begin{align*}
@@ -2352,11 +2829,11 @@ per la \(j\)-esima colonna di \(\jacobian f(a)\)
 \end{snippetexercise}
 
 \begin{snippettheorem}{Teorema di Lagrange}
-    Sia \(\Omega \subseteq \realnumbers^n\) open and \([a,b]\subseteq \Omega\).
-    Let \(f\colon \Omega \to \realnumbers\) differentiable in \(\Omega\).
-    Then, \(\exists \alpha \in (a,b)\) such that
+    Sia \(\Omega \subseteq \realnumbers^n\) aperto e sia \([a,b]\subseteq \Omega\).
+    Sia \(f\colon \Omega \to \realnumbers\) differenziabile in \(\Omega\).
+    Allora esiste \(\theta \in (0,1)\) tale che
     \[
-        f(b)-f(a) = \gradient f(\alpha) (b-a)
+        f(b)-f(a) = \gradient f(a+\theta(b-a)) \cdot (b-a).
     \]
 \end{snippettheorem}
 \end{radioactive}
@@ -2376,7 +2853,7 @@ per la \(j\)-esima colonna di \(\jacobian f(a)\)
         \item \(F(1) = f(\varphi(1)) = f(b)\);
         \item \(F(0) = f(a)\);
         \item \(F'(t) = (f\circ \varphi)'(t) = \jacobian f(\varphi(t)) J \varphi(t) = \gradient f(\varphi(t)) \varphi'(t)\);
-        \item \(F'(\theta) = \gradient f(\varphi(\theta))\varphi'(\theta) = \gradient f(\varphi(\theta))(b-a)\), basta porre \(a = \varphi(\theta)\).
+        \item \(F'(\theta) = \gradient f(\varphi(\theta))\varphi'(\theta) = \gradient f(\varphi(\theta)) \cdot (b-a)\). Ponendo \(\xi = \varphi(\theta)\) si ottiene la tesi.
     \end{enumerate}
 \end{snippetproof}
 
@@ -2419,29 +2896,29 @@ per la \(j\)-esima colonna di \(\jacobian f(a)\)
     \]
     Se \(g(b) = g(a)\) la disuguaglianza è automaticamente verificata. Supponiamo \(g(b) \neq g(a)\), dividendo per
     \(||g(b) - g(a)||\) ottiene la tesi.
-    Consideriamo ora il naso \(n>1\).
+    Consideriamo ora il caso \(n>1\).
     Consideriamo la funzione ausiliaria \(\Psi(t) = f(x + t(y-x))\)
     che ha forma \([0,1] \to \realnumbers^m\) continua in \([0,1]\) e differenziabile in \((0,1)\).
     Per ciò che abbiamo appena mostrato sappiamo che
-    \(||\Psi(1) - \Psi(0)|| \leq \alpha(1-0)\) for
+    \(||\Psi(1) - \Psi(0)|| \leq \alpha(1-0)\), dove
     \[
         \alpha = \sup_{0<t<1} ||\Psi'(t)||
     \]
     Calcoliamo
     \[
-        \Psi'(t) = df(x + t(y+x))(y-x)
+        \Psi'(t) = df(x + t(y-x))(y-x)
     \]
     quindi otteniamo
     \[
         ||f(y)-f(x)|| \leq \sup_{0<t<1} ||df(x + t(y-x))(y-x)|| \leq
-        ||y-x|| \leq ||y-x|| \sup_{0<t<1} ||df(x + t(y-x))||
+        ||y-x|| \sup_{0<t<1} ||df(x + t(y-x))||
     \]
 \end{snippetproof}
 \end{radioactive}
 
 \begin{radioactive}
 \begin{snippetcorollary}{}
-    Let \(f\colon \Omega \to \realnumbers^m\), \(\Omega \subseteq \realnumbers^n\) aperto connesso,
+    Sia \(f\colon \Omega \to \realnumbers^m\), \(\Omega \subseteq \realnumbers^n\) aperto connesso,
     \(f\) differenziabile in \(\Omega\).
     Allora \(f\) è costante in \(\Omega\) se e solo se
     \[
@@ -2458,17 +2935,18 @@ per la \(j\)-esima colonna di \(\jacobian f(a)\)
         \item Sia \(x_0\in \Omega\) e poniamo \(E_{x_0} = \{x \in \Omega \,|\, f(x) = f(x_0) \}\).
         Vogliamo mostrare che \(E_{x_0} = \Omega\).
         Basta mostrare che \(E_{x_0} \neq \emptyset\) in quanto \(x_0 \in E_{x_0}\)
-        e che \(E_{x_0}\) è aperto e chiuso in \(\realnumbers^m\).
+        e che \(E_{x_0}\) è aperto e chiuso in \(\Omega\).
         Mostriamo che \(E_{x_0}\) è aperto. Sia \(y \in E_{x_0}\). Sicuramente
         \(\exists r > 0\) tale che \(B_r(y) \subseteq \Omega\).
         Sia \(x \in B_r(y)\). \(B_r(y)\) è convessa e quindi
-        \([x,y] \subseteq B_r(v)\). Per il teorema dell'incremento finito 
+        \([x,y] \subseteq B_r(y)\). Per il teorema dell'incremento finito 
         \[
             ||f(x) - f(y)|| \leq ||x-y|| \sup_{0 < t <1} ||df(x + t(y-x))|| = 0
         \]
         perché \(df = 0\).
         Quindi \(f(x)=f(y) = f(x_0)\) e \(x \in E_{x_0}\), cioè \(y\) è interno
-        e quindi \(E_{x_0}\) è aperto.
+        e quindi \(E_{x_0}\) è aperto. Inoltre \(E_{x_0}=f^{-1}(\{f(x_0)\})\)
+        è chiuso in \(\Omega\) perché \(f\) è continua.
     \end{iffproof}
 \end{snippetproof}
 \end{radioactive}
@@ -2523,7 +3001,7 @@ Dobbiamo richiedere che tutti i segmenti siano in \(\Omega\),
 quindi ci serve \(\Omega\) convesso.
 
 \begin{snippetproposition}{}
-    Sia \(\Omega \realnumbers^n\) aperto, \(f \colon \omega \to \realnumbers^m\)
+    Sia \(\Omega \subseteq \realnumbers^n\) aperto, \(f \colon \Omega \to \realnumbers^m\)
     e sia \(C \subseteq \Omega\) convesso.
     Supponiamo che \(\exists \alpha > 0\)
     tale che
@@ -2544,7 +3022,7 @@ quindi ci serve \(\Omega\) convesso.
     ma non è una costante di Lipschitz in quanto dipende da \(x\) e \(y\).
     Però per ipotesi
     \[
-        \sup_{0 < t < 1} ||dt(x + t(y-x))|| \leq \alpha 
+        \sup_{0 < t < 1} ||df(x + t(y-x))|| \leq \alpha 
     \]
     quindi è lipschitziana    
 \end{snippetproof}
@@ -2567,19 +3045,19 @@ quindi ci serve \(\Omega\) convesso.
     Dobbiamo calcolare la norma \(||\jacobian f(t)||\).
     Con la norma due abbiamo
     abbiamo \begin{align*}
-        ||f(t)||_2 = \sqrt{1 + {\left(\frac{1}{1 + t^2}\right)}^2} 
+        ||f'(t)||_2 = \sqrt{1 + {\left(\frac{1}{1 + t^2}\right)}^2} 
     \end{align*}
     Il massimo è chiaramente \(\sqrt{2}\) che è la miglior costante di Lipschitz.
     Con la norma 1 abbiamo
     abbiamo \begin{align*}
-        ||f(t)||_1 = |\sin t| + |\cos t| + \frac{1}{1 + t^2}
+        ||f'(t)||_1 = |\sin t| + |\cos t| + \frac{1}{1 + t^2}
     \end{align*}
     Il valore del sup è difficile da trovare, possiamo stimarla ad essere
     minore di \(3\). Inoltre, \(||f'(0)||_1 = 2\)
     quindi possiamo ridurre il bound.
     Con la norma infinito abbiamo
     \begin{align*}
-        ||f(t)||_\infty = \max\{|\sin t|, |\cos t|, \frac{1}{1 + t^2}\}
+        ||f'(t)||_\infty = \max\{|\sin t|, |\cos t|, \frac{1}{1 + t^2}\}
     \end{align*}
     Ci serve il supremum su \(t \in \realnumbers\)
     del massimo di queste 3 funzioni. Sicuramente è minore o uguale di \(1\)
@@ -2595,7 +3073,7 @@ quindi ci serve \(\Omega\) convesso.
 \pagebreak
 
 
-\section{Derivate di ordini successive}
+\section{Derivate di ordine superiore}
 
 
 \begin{radioactive}
@@ -2607,7 +3085,7 @@ Supponiamo che la derivata direzionale \(D_v f\) esista in un intorno
 Allora \(D_vf\) è una funzione
 definita in un aperto che contiene \(a\).
 Quindi, possiamo farne a sua volta la derivata direzionale.
-Fissiamo un altro versore \(w \in \realnumbers^m\) e costruiamo la derivata direzionale
+Fissiamo un altro versore \(w \in \realnumbers^n\) e costruiamo la derivata direzionale
 nella direzione di \(w\) nel punto \(a\) se esiste.
 \[
     D_w(D_v f)(a) \triangleq D^2_{w,v} f(a)
@@ -2621,7 +3099,7 @@ Essa viene denotata come
         \frac{\partial f}{\partial x_i}(a)
     \right) \triangleq f_{x_jx_i}(a)
 \]
-Se \(i \neq j\) si parla di derivate parziali secondo miste.
+Se \(i \neq j\) si parla di derivate parziali seconde miste.
 Se \(i = j\) si usa la notazione
 \[
     \frac{\partial^2f}{\partial x_i^2}(a)
@@ -2762,16 +3240,16 @@ Quindi anche se ambo le derivate miste esistono non coincidono necessariamente.
 
 \begin{snippettheorem}{Teorema di Schwarz}
     Sia \(f \colon \Omega \subseteq \realnumbers^n \to \realnumbers\),
-    \(\Omega\) aperto, \(a \in \Omega\) e \(v,w\) due versori in \(\realnumbers^m\).
-    Supponiamo che \(B_r(a)\) dove \(D^2_{v,w} f\)
-    e \(D^2_{w,v}f\) esistono e siano continue in \(a\).
+    \(\Omega\) aperto, \(a \in \Omega\) e \(v,w\) due versori in \(\realnumbers^n\).
+    Supponiamo che esista un intorno \(B_r(a)\) in cui \(D^2_{v,w} f\)
+    e \(D^2_{w,v}f\) esistano e siano continue in \(a\).
     Allora \(D^2_{v,w} f(a) = D^2_{w,v} f(a)\).
 \end{snippettheorem}
 \end{radioactive}
 
 \begin{radioactive}
 \begin{snippetcorollary}{}
-    Se le derivate parziali esistono e sono continue in \(\Omega\),
+    Se le derivate parziali seconde esistono e sono continue in \(\Omega\),
     allora
     \[
         \frac{\partial^2 f}{\partial x_i \partial x_j} =
@@ -2793,9 +3271,9 @@ Possiamo definire le derivate superiori analogamente.
 Se \(f\) è differenziabile in \(\Omega\) è definito il differenziale
 \(df(x) \colon \realnumbers^n \to \realnumbers^m\) dato da
 \(df(x)h = \jacobian f(x)h\).
-Fissato \(x\), al variare di \(h\) ho un applicazione lineare
+Fissato \(x\), al variare di \(h\) ho un'applicazione lineare
 \[
-    df\colon \Omega \to \mathcal{L}(\mathcal{R}^n, \mathcal{R}^m)
+    df\colon \Omega \to \mathcal{L}(\realnumbers^n, \realnumbers^m)
 \]
 che manda \(x \to df(x)\).
 Questa non è in generale lineare in \(x\).
@@ -2822,11 +3300,10 @@ Questa non è in generale lineare in \(x\).
             \item \(D_vf\) è differenziabile in \(a\) per ogni \(v\);
             \item \(D_{v,w}^2 f(a) = D_{w,v}^2 f(a)\);
             \item \[
-                D_{v,w}^2 f(a) = \sum_{i,j=1}^n \frac{\partial^2 f}{\partial x_i \partial x_j}(x)v_iw_i
+                D_{v,w}^2 f(a) = \sum_{i,j=1}^n \frac{\partial^2 f}{\partial x_i \partial x_j}(a)v_iw_j
             \]
         \end{enumerate}
-        \item Se in un intorno di \(a\) esistono e sono continue tutte le derivate parziali,
-        esistono tutte le derivate parziali seconde e sono continue in \(a\),
+        \item Se in un intorno di \(a\) esistono tutte le derivate parziali seconde e sono continue in \(a\),
         allora \(f\) è due volte differenziabile in \(a\).
         \item se \(f \in \mathcal{C}^2(\Omega)\) allora \(f\) è due volte differenziabile
         in \(\Omega\).
@@ -2852,7 +3329,7 @@ dato da \(d^2f(a)(h,k) = (d^2f(a)h)k\).
 Possiamo dire che
 \[
     d^2f(a)(h,k) = \sum_{i,j=1}^n \frac{\partial^2 f}{\partial x_i \partial x_j}(a)h_ik_j
-    = h^t \hessian f(a) k = (\hessian f(a)k)h
+    = h^t \hessian f(a) k = h\cdot(\hessian f(a)k)
 \]
 dove \(\hessian f(a)\) è un tensore.
 In particolare, se \(f\) è una funzione a valori reali
@@ -2864,7 +3341,7 @@ In particolare, se \(f\) è una funzione a valori reali
 Quando \(h=k\) scriviamo una sola variabile.
 In tal caso ottengo una forma quadratica che si scrive
 \[
-    \sum_{i,j=1}^n \frac{\partial^2 f}{\partial x_i \partial x_j}(a)h_ij_j    
+    \sum_{i,j=1}^n \frac{\partial^2 f}{\partial x_i \partial x_j}(a)h_i h_j    
 \]
 Succede che per \(h \to 0\)
 \begin{align*}
@@ -2878,7 +3355,7 @@ Succede che per \(h \to 0\)
     Data una forma quadratica \(ax^2 + bxy + cy^2\)
     e consideriamo
     \[
-        \frac{ax^2 + bxy + xy^2}{ax^2 + bxy + xy^2}
+        \frac{ax^2 + bxy + cy^2}{x^2+y^2}
     \]
     che in coordinate polari diventa
     \[
@@ -2916,14 +3393,14 @@ Se esistono continue tutte le derivate \(k\) esime possiamo permutare gli indici
 Chiaramente sono annidati.
 \end{radioactive}
 
-\subsection{Differenziabili \(k\)-esimi}
+\subsection{Differenziabilità di ordine \(k\)}
 
 \begin{radioactive}
 \begin{snippetdefinition}{Differenziabile \(k\)-esima}
     \[
         d^k f(a) \colon \realnumbers^n \times \realnumbers^n \times \cdots \times \realnumbers^n \to \realnumbers^n
     \]
-    è un applicazione lineare in ciascuno dei vettori di ingresso definita da
+    è un'applicazione lineare in ciascuno dei vettori di ingresso definita da
     \[
         d^k f(a) (h^{(1)}, \cdots, h^{(k)})
         = \sum_{i_1, \cdots, i_k = 1}^n \frac{\partial^k f}{\partial x_{i_1} \cdots \partial x_{i_k}}(a)
@@ -2962,11 +3439,11 @@ dove abbiamo usato il coefficiente multinomiale.
 \end{radioactive}
 
 \begin{radioactive}
-\(d^4 f(a)(h)\) è un polinomio omogeneo di grado \(k\)
+\(d^k f(a)(h)\) è un polinomio omogeneo di grado \(k\)
 in \(h_1, \cdots, h_n\).
 Inoltre valore che
 \[
-    \frac{d^4 f(a)(h)}{||h||^k}
+    \frac{d^k f(a)(h)}{||h||^k}
 \]
 è limitato per \(h\to 0\).
 \end{radioactive}
@@ -2985,14 +3462,14 @@ Inoltre valore che
     \[
         R_k(x-a) = \frac{d^k f(a)(x-a)}{k!} + o(||x-a||^k)
     \]
-    per \(x \to a\), oppure in forma di Lagrange (se al posto di fermarmi a \(k-1\) ci fossimo fermati a \(k\))
+    per \(x \to a\), oppure in forma di Lagrange
     \[
         R_k(x-a) = \frac{d^k f(y)(x-a)}{k!}
     \]
     con \(y \in (a,x)\).
     Inoltre, il polinomio di Taylor
-    è l'unico polinomio di grado al più \(k\)
-    tale che \(o(||x-a||^k)\) per \(x\to a\).
+    è l'unico polinomio \(P\) di grado al più \(k\) tale che
+    \(f(x)-P(x-a)=o(||x-a||^k)\) per \(x\to a\).
 \end{snippettheorem}
 \end{radioactive}
 
@@ -3034,12 +3511,12 @@ Inoltre valore che
 Sia \(\Omega \subseteq \realnumbers^n\) un sottoinsieme qualunque e sia \(f \colon \Omega \to \realnumbers\).
 
 \begin{snippetdefinition}{}
-    Sia \(a\in \Omega\) è un punto di massimo assoluto per \(f\) in \(\Omega\)
+    \(a\in \Omega\) è un punto di massimo assoluto per \(f\) in \(\Omega\)
     se \(f(x) \leq f(a)\) \(\forall x \in \Omega\).
     Invece \(a\) è punto di massimo relativo (o locale) per \(f\)
     se esiste \(U\) intorno di \(a\) tale che \(a\) è punto
     di massimo assoluto per \(f\) in \(\Omega \cap U\).
-    Analogamente forte per il minore stretto.
+    Analogamente si definiscono minimo assoluto e minimo relativo.
 \end{snippetdefinition}
 
 Se \(\Omega\) è un aperto, il problema di cercare
@@ -3052,7 +3529,7 @@ si chiama ottimizzazione libera.
     Se \(f\) è differenziabile in \(a\),
     allora
     \[
-        \frac{\partial f}{\partial x_i} = 0
+        \frac{\partial f}{\partial x_i}(a) = 0
     \]
     Cioè \(\gradient f =0\).
 \end{snippettheorem}
@@ -3070,7 +3547,7 @@ si chiama ottimizzazione libera.
     Allora, per il teorema di Fermat in una variabile vale \(\varphi_i'(0) = 0 \).
     Quindi abbiamo
     \begin{align*}
-        \varphi_i'(0) &= (f \circ \gamma_i)'(0) = \gradient f(\gamma_i (0)) \circ \gamma_i'(0) \\
+        \varphi_i'(0) &= (f \circ \gamma_i)'(0) = \gradient f(\gamma_i (0)) \cdot \gamma_i'(0) \\
         &= \gradient f(a) \cdot e_i = \frac{\partial f}{\partial x_i} (a) = 0
     \end{align*}
 \end{snippetproof}
@@ -3123,7 +3600,7 @@ Se \(a\) è punto critico, l'incremento di \(f\) ha la forma
 \[
     f(a + h) - f(a) = \frac{1}{2}h^t \hessian f(a)h + o(||h||^2)
     = ||h||^2 \left[
-        \frac{h^t\hessian f(a)h}{||h||^2} + o(1)
+        \frac{1}{2}\frac{h^t\hessian f(a)h}{||h||^2} + o(1)
     \right]
 \]
 Dobbiamo quindi studiare il segno della funzione
@@ -3150,7 +3627,7 @@ Allora esistono \(m, M \in \realnumbers\)
 tale che \(m \leq F(h) \leq M\) per tutte le \(h \in \realnumbers^n \backslash \{0\}\)
 e \(m, M\) sono
 \[
-    m \leq \frac{h^t \hessian f(g)h}{||h||^2} \leq M
+    m \leq \frac{h^t \hessian f(a)h}{||h||^2} \leq M
 \]
 per tutte le \(h \in \realnumbers^n \backslash \{0\}\)
 e quindi
@@ -3217,8 +3694,8 @@ autovalori reali
     \lambda_1 \leq \cdots \leq \lambda_n
 \]
 ed esiste una rotazione \(R\)
-tale che \(A = R^t D T\)
-dove \(D = \text{dial}(\lambda_1, \cdots, \lambda)\).
+tale che \(A = R^t D R\)
+dove \(D = \operatorname{diag}(\lambda_1, \cdots, \lambda_n)\).
 Quindi,
 \begin{align*}
     Q(v) &= v^t A v = v^t R^t DR v \\
@@ -3230,13 +3707,13 @@ Quindi
 \[
     \lambda_1 ||\tilde{v}||^2 \leq Q(v) \leq \lambda_n ||\tilde{v}||^2
 \]
-Siccome \(R\) è una rotazione, quindi un isometria, preserva la norma,
+Siccome \(R\) è una rotazione, quindi un'isometria, preserva la norma,
 quindi \(||\tilde{v}|| = ||Rv|| = ||v||\). Allora
 \[
     \lambda_1 ||v||^2 \leq Q(v) \leq \lambda_n ||v||^2
 \]
 Possiamo quindi dedurre che se \(\lambda_1 > 0\),
-\(Q\) è definita positiva. Se \(\lambda_m < 0\),
+\(Q\) è definita positiva. Se \(\lambda_n < 0\),
 \(Q\) è definita negativa.
 Se \(\lambda_1 \lambda_n < 0\), allora \(Q\) è indefinita,
 se \(\lambda_1 \lambda_n = 0\), allora \(Q\) è semidefinita.
@@ -3250,9 +3727,9 @@ Questa era la dimostrazione del seguente teorema.
     \(\Omega\) aperto e \(a \in \Omega\) punto critico per \(f\)
     ed \(f\) differenziabile due volte in \(a\). Allora,
     \begin{enumerate}
-        \item \(\hessian f(a)\) è definita positiva, allora \(a\) è punto di minimo relativo forte;
-        \item \(\hessian f(a)\) è definita negativa, allora \(a\) è punto di massimo relativo forte;
-        \item \(\hessian f(a)\) è indefinita, allora \(a\) è un punto di sella;
+        \item se \(\hessian f(a)\) è definita positiva, allora \(a\) è punto di minimo relativo forte;
+        \item se \(\hessian f(a)\) è definita negativa, allora \(a\) è punto di massimo relativo forte;
+        \item se \(\hessian f(a)\) è indefinita, allora \(a\) è un punto di sella;
         \item se \(a\) è punto di massimo relativo, allora \(\hessian f(a)\) è semidefinita negativa;
         \item se \(a\) è punto di minimo relativo, allora \(\hessian f(a)\) è semidefinita positiva.
     \end{enumerate}
@@ -3491,9 +3968,9 @@ Nel caso della parabola, dato un intervallo \(y\) ho infinite funzioni possibili
 cioè per ogni \(x\) posso associare \(\sqrt{y}\) oppure \(-\sqrt{y}\).
 Se richiedo che le funzioni siano continue, ottengo solamente due funzioni possibili:
 la parte di sopra e la parte di sotto.
-Adottando una approccio locale, sotto opportune supposizioni,
+Adottando un approccio locale, sotto opportune supposizioni,
 l'equazione \(F(x,y) = 0\) definisce implicitamente
-localmente un'unica funzione di variabile y oppure x.
+localmente un'unica funzione della variabile \(y\) oppure \(x\).
 \end{radioactive}
 
 \begin{radioactive}
@@ -3528,7 +4005,7 @@ Consideriamo l'espansione di Taylor.
 Sia \((x_0, y_0) \in \Omega\) tale che \(F(x_0, y_0) = 0\).
 Sviluppiamo \(F\) al primo ordine:
 \begin{align*}
-    F(x,y) &= F(x_0, y_0) + f_x(x_0, y_0)(x-x_0)
+    F(x,y) &= F(x_0, y_0) + F_x(x_0, y_0)(x-x_0)
     + F_y(x_0, y_0)(y-y_0) + o(||(x-x_0, y-y_0)||)
 \end{align*}
 Nel caso lineare, quindi quello dove possiamo trascurare l'o-piccolo,
@@ -3545,8 +4022,8 @@ e in questo caso
 \end{align*}
 Mi aspetto che valga anche il caso non-lineare aggiungendo \(o(||x-x_0||)\).
 
-Se consideriamo quindi l gradiente di \(F = x^2 + y^2 + 1\)
-che si annulla nella circonferenza, abbiamo \(\gradient F = (2x, 2y)\).
+Se consideriamo quindi il gradiente di \(F = x^2 + y^2 - 1\)
+che definisce la circonferenza, abbiamo \(\gradient F = (2x, 2y)\).
 Notiamo quindi che ciò si annulla quando \(x=y=0\)
 e \((0,0) \notin F^{-1}(0)\). In tutti gli altri punti possiamo quindi esprimere una
 funzione localmente.
@@ -3581,7 +4058,7 @@ Inoltre la funzione locale eredita tutte le regolarità di \(F\).
 \begin{radioactive}
 \begin{snippetproof}{}
     Sappiamo che \(F_y(x_0,y_0) \neq 0\)
-    (supponiamo senza perdita di generalità che sia non-negativo)
+    (supponiamo senza perdita di generalità che sia positivo)
     e \(F_y\) è continua in \((x_0, y_0)\).
     Per il teorema della permanenza del segno, esiste un intorno in cui questa derivata si mantiene
     diversa da zero.
@@ -3594,8 +4071,8 @@ Inoltre la funzione locale eredita tutte le regolarità di \(F\).
     e inoltre
     \[
         F_y(x,y) > 0, \quad
-        \forall (x,y) \in \overline{B}_{\tilde{\delta}} \times
-        \overline{B}_{\sigma}(y_0) \subseteq
+        \forall (x,y) \in \overline{B}_{\tilde{\delta}}(x_0) \times
+        \overline{B}_{\sigma}(y_0)
     \]
     che è un rettangolino.
     Consideriamo i valori che la funzione assume nella retta verticale \(x=x_0\).
@@ -3613,7 +4090,7 @@ Inoltre la funzione locale eredita tutte le regolarità di \(F\).
     \[
         F(x, y_0 + \sigma) > 0, \quad \forall x \in \overline{B}_{\delta}(x_0)
     \]
-    Consideriamo \(x \in \overline{B}_\delta(x)\)
+    Consideriamo \(x \in \overline{B}_\delta(x_0)\)
     e consideriamo la restrizione \(F(x, -)\), ossia le rette verticali.
     \(F(x, y_0 - \sigma) < 0\)
     e \(F(x, y_0 + \sigma) > 0\) e inoltre \(F_y > 0\)
@@ -3653,7 +4130,7 @@ Inoltre la funzione locale eredita tutte le regolarità di \(F\).
 Per \(\Omega \subseteq \realnumbers^n \times \realnumbers\)
 e \(F \colon \Omega \to \realnumbers\), la dimostrazione è la medesima
 in quanto la monotonia è usata solamente sull'ultima variabile
-e la funzione ha valore reali.
+e la funzione ha valori reali.
 
 Se invece la funzione ha valori in \(\realnumbers^m\)
 non possiamo più usare la monotonia. Questa versione generalizzata
@@ -3673,14 +4150,14 @@ non si chiama più teorema del Dini perché usa un altro argomento.
     la funzione è monotona crescente.
     Per controllare se c'è uno zero studiamo i due limiti
     \[
-        \lim_{y\to -\infty} F(y, x), \qquad
-        \lim_{y\to +\infty} F(y, x)
+        \lim_{y\to -\infty} F(x, y), \qquad
+        \lim_{y\to +\infty} F(x, y)
     \]
     Se il primo limite è non-positivo, mentre il secondo è non-negativo
     allora esiste un \(y = \varphi(x)\)
     tale che \(F(x, \varphi(x)) = 0\). Calcoliamo quindi
     \begin{align*}
-        \lim_{y\to -\infty} F(y, x)
+        \lim_{y\to -\infty} F(x, y)
         &= \begin{cases}
             0 & x=0 \\
             -\infty & x \neq 0
@@ -3688,7 +4165,7 @@ non si chiama più teorema del Dini perché usa un altro argomento.
     \end{align*}
     mentre l'altro
     \begin{align*}
-        \lim_{y\to -\infty} F(y, x)
+        \lim_{y\to -\infty} F(x, y)
         &= +\infty
     \end{align*}
     sempre.
@@ -3808,7 +4285,7 @@ non è sufficiente affinché \(mx+q\) sia asintoto obliquo di \(\varphi(x)\).
     \(y(0) = \frac12\). Calcoliamo la derivata
     \begin{align*}
         \frac{d}{dx} \left[F(x,y(x))\right]
-        &= -e^x - xe^yy' + 2y' = 0
+        &= -e^y - xe^yy' + 2y' = 0
     \end{align*}
     In particolare per \(x=0\) abbiamo \(-e^{y(0)} - 0 + 2y'(0) = 0\)
     quindi \(y'(0) = e^\frac12 / 2\).
@@ -3925,7 +4402,7 @@ Se \(F_y\) è invertibile possiamo isolarla
 \end{align*}
 quando \(F_y\) è invertibile.
 Questo chiaramente è il caso lineare. Ci aspettiamo che il medesimo
-avvenga in un contesto non linear ma solo localmente.
+avvenga in un contesto non lineare, ma solo localmente.
 Nell'esempio abbiamo
 \[
     \jacobian f = \begin{pmatrix}
@@ -3933,7 +4410,7 @@ Nell'esempio abbiamo
         yz\cos(xz) - 1 & \sin(xz) & xy\cos(xz)
     \end{pmatrix}
 \]
-Voglio stabilire se \(F(x,y,z) = 0\) permetti di esplicitare due variabili rispetto alla terza
+Voglio stabilire se \(F(x,y,z) = 0\) permetta di esplicitare due variabili rispetto alla terza
 nell'intorno di \((0,1,0)\). Abbiamo \(F(0,1,0) = (0,0)\).
 La matrice in questo punto ha rango 2
 \[
@@ -3950,7 +4427,7 @@ la prima matrice \(2\times 2\) di sinistra, quindi
 \begin{snippettheorem}{Teorema della funzione implicita}
     Sia \(\Omega \subseteq \realnumbers^n \times \realnumbers^m\) aperto,
     \((x_0, y_0) \in \Omega\), \(F \colon \Omega \to \realnumbers^m\).
-    Sia \(F\) continua in \(\Omega\). Allora esiste \(F_y \in \mathcal{L}(\realnumbers^m, \realnumbers^n)\)
+    Supponiamo che esista \(F_y \in \mathcal{L}(\realnumbers^m, \realnumbers^m)\)
     in \(\Omega\), continua in \((x_0, y_0)\).
     Sia \(F(x_0, y_0) = 0\), \(F_y(x_0, y_0) \in \text{GL}(\realnumbers^m)\).
     Allora \(\exists r,R > 0\) tale che \(\forall x \in \overline{B_r}(x_0)\),
@@ -4007,7 +4484,7 @@ la prima matrice \(2\times 2\) di sinistra, quindi
         \item Mostriamo che esistono \(r,R >0\)
             tali che per tutte le \(x \in \overline{B_r}(x_0)\)
             e per tutte le \(y \in \overline{B_R}(y_0)\)
-            \(T(x, -) \colon \overline{B_r}(y_0) \fromto \overline{B_r}(y_0)\).
+            \(T(x, -) \colon \overline{B_R}(y_0) \fromto \overline{B_R}(y_0)\).
             Vogliamo mostrare quindi che \(||T(x,y) - y_0 || \leq R\).
             Scegliamo \(R\) come al punto precedente.
             Voglio mostrare che esiste \(r>0\) tale che la condizione è soddisfatta.
@@ -4018,15 +4495,15 @@ la prima matrice \(2\times 2\) di sinistra, quindi
             Il primo termine lo possiamo stimare mediante il teorema dell'incremento finito
             in \(y\),
             \begin{align*}
-                ||T(x,y)-T(x,y_0)|| &\leq ||y-y_0|| \cdot \sup_{0<t<1} ||T_y(x, y_0 + t(y-y_0)) \\
+                ||T(x,y)-T(x,y_0)|| &\leq ||y-y_0|| \cdot \sup_{0<t<1} ||T_y(x, y_0 + t(y-y_0))|| \\
                 &\leq R \cdot \delta
             \end{align*}
             vogliamo che il secondo sia minore o uguale di \((1-\delta)R\).
             Non possiamo più modificare \(R, \delta\) ma solo \(r\)
             \begin{align*}
-                ||T(x,y_0) - y_0|| &= ||F_y(x_0, y_0)^{-1} F(x, y) \\
-                &\leq ||F_y(x_0, y_0)^{-1}|| \cdot ||F(x,y)|| \\
-                &= ||F_y(x_0, y_0)^{-1}|| \cdot ||F(x,y) - F(x_0, y_0)|| \to 0
+                ||T(x,y_0) - y_0|| &= ||F_y(x_0, y_0)^{-1} F(x, y_0)|| \\
+                &\leq ||F_y(x_0, y_0)^{-1}|| \cdot ||F(x,y_0)|| \\
+                &= ||F_y(x_0, y_0)^{-1}|| \cdot ||F(x,y_0) - F(x_0, y_0)|| \to 0
             \end{align*}
             che tende a zero per \((x,y) \to (x_0, y_0)\) perché \(F\) è continua.
             Abbiamo quindi i raggi tali che
@@ -4043,12 +4520,12 @@ la prima matrice \(2\times 2\) di sinistra, quindi
 Notiamo che ho usato le bolle chiuse in quanto mi serve uno spazio metrico completo.
 Vediamo se riusciamo a garantire l'esistenza anche su bolle aperte.
 In realtà mi è servita solamente la chiusura della bolla nella \(y\),
-\(\exists r_0, r_0>0\) tali che \(\forall x \in B_{r_0}(x_0)\),
+\(\exists r_0, R_0>0\) tali che \(\forall x \in B_{r_0}(x_0)\),
 \(\exists! y \in B_{R_0}(y_0)\) tale che \(F(x,y) =0\).
 Si può scegliere \(R_0=R\) a patto di rimpicciolire \(r_0\).
 \(\exists r_0 > 0\) tale che \(\varphi(B_{r_0}(x_0)) \subseteq B_R(y_0)\)
 per la continuità di \(\varphi\) in \(x_0\), e quindi
-abbiamo mostrato l'esistenza e l'unicità della fuzione implicita
+abbiamo mostrato l'esistenza e l'unicità della funzione implicita
 anche sostituendo le bolle chiuse con bolle aperte.
 
 Supponiamo di avere \(F \colon \Omega \fromto \realnumbers^m\) e \((x_0, y_0) \in \Omega\).
@@ -4554,45 +5031,81 @@ che \(f\) stabilisce una biiezione fra
 \(f^{-1}(B_R(y_0)) \cap B_r(x_0)\) e \(B_R(y_0)\).
 Notiamo che questi insiemi sono entrambi aperti. 
 
-% TODO disegno dalle slide 06/11/2025
 \begin{center}
-\begin{tikzpicture}[scale=1.2, every node/.style={font=\small}]
+    \begin{tikzpicture}[
+        scale=1.05,
+        line cap=round,
+        line join=round,
+        >=stealth
+    ]
 
-% Domini
-\draw[thick] (0,0) rectangle (3,3);
-\node at (1.5,3.3) {Dominio};
+    % Dominio \Omega
+    \draw[thick]
+        plot[smooth cycle, tension=0.85] coordinates {
+            (0.0,0.0)
+            (0.15,2.45)
+            (1.15,2.75)
+            (2.55,2.67)
+            (3.35,2.15)
+            (3.45,0.45)
+            (2.55,-0.15)
+            (1.15,-0.25)
+        };
 
-\draw[thick] (6,0) rectangle (9,3);
-\node at (7.5,3.3) {Codominio};
+    \node at (3.15,2.65) {$\Omega$};
+    \node at (3.85,2.55) {$\mathbb{R}^n$};
 
-% Punti centrali
-\fill (1.5,1.5) circle (1pt) node[below left] {$x_0$};
-\fill (7.5,1.5) circle (1pt) node[below left] {$y_0=f(x_0)$};
+    % Regione rossa lontana da x_0
+    \fill[
+        pattern=north east lines,
+        pattern color=red
+    ] (0.65,0.65) circle (0.36);
+    \draw[red,thick] (0.65,0.65) circle (0.36);
 
-% Bolla nel dominio
-\draw[fill=blue!20, thick] (1.5,1.5) circle (1);
-\node[blue!50!black] at (1.5,1.5+1.3) {$B_r(x_0)$};
+    % Intorno di x_0
+    \fill[cyan!10] (2.05,1.48) circle (0.31);
+    \draw[cyan!70!blue,thick] (2.05,1.48) circle (0.31);
 
-% Immagine deformata nel codominio
-\begin{scope}
-\clip (6,0) rectangle (9,3);
-\draw[fill=blue!20, thick, rotate around={15:(7.5,1.5)}]
-  (7.5,1.5) ellipse (1.3 and 0.8);
-\end{scope}
-\node[blue!50!black] at (7.5,2.9) {$f(B_r(x_0))$};
+    \fill[
+        pattern=north east lines,
+        pattern color=red
+    ] (2.05,1.48) circle (0.21);
+    \draw[red,thick] (2.05,1.48) circle (0.21);
 
-% Piccola bolla contenuta
-\draw[fill=green!20, thick, dashed] (7.5,1.5) circle (0.6);
-\node[green!50!black] at (7.5,0.5) {$B_R(y_0)$};
+    \fill (2.05,1.48) circle (1.4pt);
+    \node[below right=-1pt] at (2.05,1.48) {$x_0$};
 
-% Freccia fra i due spazi
-\draw[-{Stealth[length=3mm]}, thick] (3.2,1.5) -- (5.8,1.5)
-  node[midway, above] {$f$};
+    % Codominio
+    \node at (8.05,2.55) {$\mathbb{R}^n$};
 
-% Piccola indicazione di possibile preimmagine fuori
-\draw[fill=blue!10, dashed] (2.5,2.2) circle (0.3);
-\node[blue!50!black] at (2.5,2.7) {altra preimmagine};
-\end{tikzpicture}
+    % Immagine dell'intorno
+    \fill[cyan!10] (7.15,1.35) circle (0.95);
+    \draw[cyan!70!blue,thick] (7.15,1.35) circle (0.95);
+
+    \fill[
+        pattern=north east lines,
+        pattern color=red
+    ] (7.15,1.35) circle (0.72);
+    \draw[red,thick] (7.15,1.35) circle (0.72);
+
+    \fill (7.15,1.35) circle (1.4pt);
+    \node[right=2pt] at (7.15,1.35) {$y_0$};
+
+    % Corrispondenza locale
+    \draw[cyan!70!blue,thin]
+        (2.25,1.68) -- (6.48,1.98);
+
+    \draw[cyan!70!blue,thin]
+        (2.25,1.28) -- (6.48,0.72);
+
+    % Freccia della funzione
+    \draw[->,thick]
+        (3.85,0.95)
+        to[out=-15,in=195]
+        node[midway,below] {$f$}
+        (5.55,0.95);
+
+    \end{tikzpicture}
 \end{center}
 
 \begin{snippettheorem}{Teorema della funzione inversa}
@@ -4663,7 +5176,7 @@ Possiamo aggiungere la condizione di inietività per garantire l'invertibilità 
     \(f^{-1} \colon f(\Omega) \fromto \Omega\) e \(f(\Omega)\) è aperto.
     Sia \(y_0 = f(x_0) \in f(\Omega)\).
     Per il teorema della funzione inversa \(\exists r, R>0\)
-    tali che \(f\colon f^{-1}(B_R(y_0)) \cap B_r(x_0) \fromto B_r(y_0)\)
+    tali che \(f\colon f^{-1}(B_R(y_0)) \cap B_r(x_0) \fromto B_R(y_0)\)
     è un diffeomorfismo.
     In particolare, l'inverso di questa funzione è differenziabile.
     Ma essendo \(f\) iniettiva, questa inversa locale deve coincidere con l'inversa globale,
@@ -4733,7 +5246,7 @@ Il Jacobiano è dato da
     \jacobian_f(\rho,\varphi,\theta) = \begin{pmatrix}
         \sin\varphi\cos\theta & \rho\cos\varphi\cos\theta & -\rho\sin\varphi\sin\theta \\
         \sin\varphi\sin\theta & \rho\cos\varphi\sin\theta & \rho\sin\varphi\cos\theta \\
-        \cos\theta & -\rho\sin\varphi & 0
+        \cos\varphi & -\rho\sin\varphi & 0
     \end{pmatrix}
 \]
 il cui determinante è \(\rho^2 \sin\varphi > 0\).
@@ -4742,6 +5255,50 @@ il cui determinante è \(\rho^2 \sin\varphi > 0\).
 \pagebreak
 
 \section{Estremi vincolati}
+
+\begin{snippetexample}{Estremi di \(x+y\) sulla circonferenza unitaria}
+    Consideriamo
+    \[
+        f(x,y)=x+y,
+        \qquad
+        S^1=\{(x,y)\in\realnumbers^2\suchthat x^2+y^2=1\}.
+    \]
+    Il vincolo è compatto e \(f\) è continua, quindi massimo e minimo assoluti esistono per Weierstrass.
+    Siccome \(\gradient f=(1,1)\), gli estremi vincolati non sono punti critici liberi.
+    Parametrizziamo il vincolo con
+    \[
+        \varphi(\theta)=(\cos\theta,\sin\theta),
+        \qquad \theta\in[0,2\pi].
+    \]
+    Dobbiamo quindi ottimizzare
+    \[
+        g(\theta)=f(\varphi(\theta))=\cos\theta+\sin\theta.
+    \]
+    Abbiamo
+    \[
+        g'(\theta)=-\sin\theta+\cos\theta=0
+        \iff
+        \theta=\frac\pi4+k\pi.
+    \]
+    Nell'intervallo considerato otteniamo
+    \[
+        \theta=\frac\pi4
+        \quad\text{e}\quad
+        \theta=\frac{5\pi}{4}.
+    \]
+    Quindi
+    \[
+        \max_{S^1}f=\sqrt2
+        \quad\text{in}\quad
+        \left(\frac1{\sqrt2},\frac1{\sqrt2}\right),
+    \]
+    mentre
+    \[
+        \min_{S^1}f=-\sqrt2
+        \quad\text{in}\quad
+        \left(-\frac1{\sqrt2},-\frac1{\sqrt2}\right).
+    \]
+\end{snippetexample}
 
 Notiamo che in generale, siccome il gradiente punta nella direzione di massima crescita, dobbiamo
 studiare i punti in cui la direzione del gradiente della funzione è ortogonale
@@ -5014,7 +5571,7 @@ Il problema è che lo stesso \(M\) può essere descritto da molte \(\Phi\) diver
 \begin{snippetdefinition}{}
     Sia \(M \subseteq \realnumbers^n\) una sottovarietà \(k\)-dimensionale
     se \(\forall x_0 \in M\) esiste un intorno di \(x_0\) e una funzione
-    \(\varphi \colon \realnumbers^k \fromto \realnumbers^{n-k}\) (di cui le variaibli
+    \(\varphi \colon \realnumbers^k \fromto \realnumbers^{n-k}\) (di cui le variabili
     le chiamiamo \(x\) e \(y\)) tale che \((z,y) \in M\) se e solo se \(y = \varphi(z)\)
     (a mano di permutazioni delle variabili).
 \end{snippetdefinition}
@@ -5577,7 +6134,7 @@ per determinare se sono punti estremanti e di che tipo.
     \(M = \Phi^{-1}(0)\) per \(\Phi(x,y,z) = z^2 - xy - 1\). Ottimizziamo \(f\) sul vincolo \(M\).
     Verifichiamo che il vincolo sia regolare. Il gradiente è
     \(\gradient \Phi(x,y,z) = (-y, -x, 2z)\) che si annulla se solo se \(x=y=z=0\)
-    che non fa parte del vincolo. Quindi è regolare ed è una sotto varietà.
+    che non fa parte del vincolo. Quindi è regolare ed è una sottovarietà.
     Il vincolo è chiuso (gratis) ma non è limitato in quanto per \(z=0\) è un iperbole.
     Troviamo i punti critici \(\gradient f = (2x, 2y, 2z)\). Abbiamo quindi il sistema
     \[
@@ -5585,7 +6142,7 @@ per determinare se sono punti estremanti e di che tipo.
             2x = -\lambda y \\
             2y = -\lambda x \\
             2z = 2\lambda z \\
-            x^2 = 1 + xy
+            z^2 = 1 + xy
         \end{cases}
     \]
     Dalla terza otteniamo che \(z=0\) oppure \(\lambda = 1\).
@@ -5595,11 +6152,11 @@ per determinare se sono punti estremanti e di che tipo.
             z = 0 \\
             2y = -\lambda x \\
             2x = -\lambda y \\
-            x^2 = 1 + xy
+            z^2 = 1 + xy
         \end{cases}
     \]
     Se prendiamo le due equazioni lineari, sono omogenee, e quindi per avere una soluzione
-    il determinante della matrice associata di deve annullare, quindi
+    il determinante della matrice associata si deve annullare, quindi
     \[
         \det \begin{pmatrix}
             2 & \lambda \\ \lambda & 2
@@ -5620,10 +6177,10 @@ per determinare se sono punti estremanti e di che tipo.
     \]
     come prima facendo lo stesso ragionamento del sistema, ma il determinante non è nullo e quindi l'unica soluzione è
     \(x=y=0\), quindi otteniamo i punti critici \(A \equiv (0,0,1)\)
-    e \(B \equiv (0,0,1)\).
+    e \(B \equiv (0,0,-1)\).
     Se consideriamo una bolla di raggio \(R\), la funzione ha valore \(R^2\)
     su tali punti, che tende a infinito. Quindi il massimo assoluto vincolato ad una bolla
-    ti ottiene sulla frontiera, e un punto minimo deve essere per forza nella parte interna.
+    si ottiene sulla frontiera, e un punto minimo deve essere per forza nella parte interna.
     Abbiamo che \(f(A) = f(B) = 1\) e \(f(C) = f(D) = 2\).
     Chiaramente \(A\) e \(B\) sono punti di minimo assoluto.
     Per gli altri punti dobbiamo usare il criterio del secondo ordine.
@@ -5676,7 +6233,7 @@ per determinare se sono punti estremanti e di che tipo.
     all'infinito.
     Il gradient \(\gradient g = (2x + y, 2y + x)\) si annulla se e solo se
     \(x = y = 0\).
-    Ora facciamo ottimizzazione vincolata nel borso.
+    Ora facciamo ottimizzazione vincolata sul bordo.
     La frontiera è data da \(\partial D = \{(x,y) \suchthat 1 + xy = 0\}\).
     Possiamo parametrizzare il bordo con \(\varphi(x) = g(x, -1/x) = x^2 + 1/x^2\).
     Abbiamo
@@ -5740,16 +6297,44 @@ per determinare se sono punti estremanti e di che tipo.
 
 \section{Equazioni differenziali}
 
-Un'equazione differenziabile è un'equazione la cui incognita è una funzione
+\begin{radioactive}
+Un'equazione differenziale è un'equazione la cui incognita è una funzione
 \(y\colon \realnumbers^n \fromto \realnumbers^m\) che compare insieme a qualche sua derivata.
-Se \(n>1\) si parla di equazione derivata parziale, se \(n = 1\) si parla di equazione differenziale ordinaria.
-Quando si riesce ad esplicitare rispetto alle derivate di ordine massimo,
-si parla di equazione differenziale in forma normale.
+Se \(n>1\) si parla di equazione alle derivate parziali, se \(n=1\) si parla di equazione differenziale ordinaria.
+Nel caso ordinario, se \(m=1\) l'equazione è \emph{scalare}; se \(m>1\) si parla invece
+ di equazione a valori vettoriali, o equivalentemente di sistema di equazioni differenziali.
+
+L'ordine di un'equazione differenziale è il massimo ordine di derivazione con cui compare
+la funzione incognita. La forma implicita generale di un'ODE scalare di ordine \(k\) è
 \[
-    y^{(k)} = F(x,y,y', \cdots, y^{(k-1)})
+    G(x,y,y',\ldots,y^{(k)})=0,
+    \qquad
+    G\colon\realnumbers^{k+2}\to\realnumbers.
 \]
+\end{radioactive}
+
+\begin{radioactive}
+\begin{snippetexample}{Equazione implicita del secondo ordine}
+    Un esempio del tipo visto a lezione è un'equazione in cui \(y''\) compare assieme ad altre
+    funzioni di \(x,y,y'\), per esempio nella forma
+    \[
+        \ln\left(1-\operatorname{Th}\!\left(\sqrt{1-x^2}\,y\right)+e^{y'}-7y''\sqrt{y^2+1}\right)=0.
+    \]
+    È un'equazione del secondo ordine. Quando è possibile esplicitare rispetto alla derivata
+    di ordine massimo, si passa alla forma normale.
+\end{snippetexample}
+\end{radioactive}
+
+\begin{radioactive}
+Quando si riesce ad esplicitare rispetto alle derivate di ordine massimo,
+si parla di equazione differenziale in forma normale:
+\[
+    y^{(k)} = F(x,y,y', \cdots, y^{(k-1)}).
+\]
+\end{radioactive}
 
 \subsection{Equazioni differenziali ordinarie del primo ordine}
+\begin{radioactive}
 Consideriamo un'equazione differenziale ordinaria del primo ordine in forma normale:
 \[
     y'=f(x,y),
@@ -5758,7 +6343,9 @@ dove
 \[
     f:\Omega \subseteq \realnumbers^2 \to \realnumbers.
 \]
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetdefinition}{Soluzione}
     Sia \(I\subseteq\realnumbers\) un intervallo. Una funzione \(y:I\to\realnumbers\) si dice soluzione dell'equazione
     \[
@@ -5771,7 +6358,9 @@ dove
         \item \(y'(x)=f(x,y(x))\) per ogni \(x\in I\).
     \end{enumerate}
 \end{snippetdefinition}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetdefinition}{Problema di Cauchy}
     Sia \((x_0,y_0)\in\Omega\). Un problema di Cauchy per l'equazione \(y'=f(x,y)\) è il sistema
     \[
@@ -5782,7 +6371,9 @@ dove
     \]
     La condizione \(y(x_0)=y_0\) impone che il grafico della soluzione passi per il punto \((x_0,y_0)\).
 \end{snippetdefinition}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{Un esempio elementare}
     Consideriamo
     \[
@@ -5831,7 +6422,9 @@ dove
     \]
     con \(c\in\realnumbers\). Questo mostra perché, nella definizione corretta, il dominio della soluzione deve essere un intervallo.
 \end{snippetexample}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippettheorem}{Esistenza e unicità locale}
     Sia \(\Omega\subseteq\realnumbers^2\) aperto, sia \((x_0,y_0)\in\Omega\), e sia
     \[
@@ -5845,13 +6438,16 @@ dove
         \end{cases}
     \]
 \end{snippettheorem}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetcorollary}{Non intersezione dei grafici}
     Supponiamo che \(f\) soddisfi le ipotesi del teorema di esistenza e unicità locale. Allora i grafici di due soluzioni distinte dell'equazione
     \[
         y'=f(x,y)
     \]
-    non possono intersecarsi.
+    coincidono sull'intersezione dei loro intervalli di definizione se si incontrano.
+    In particolare, i grafici di due soluzioni massimali distinte non possono intersecarsi.
 
     \begin{center}
         \begin{tikzpicture}[scale=0.8]
@@ -5864,11 +6460,20 @@ dove
         \end{tikzpicture}
     \end{center}
 \end{snippetcorollary}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetproof}{}
-    Se due soluzioni distinte si intersecassero in un punto \((x_0,y_0)\), allora entrambe risolverebbero il problema di Cauchy con dato iniziale \(y(x_0)=y_0\). Questo contraddirebbe l'unicità locale.
+    Se due soluzioni si incontrano in \((x_0,y_0)\), l'unicità locale le fa
+    coincidere in un intorno di \(x_0\). Nell'intersezione dei loro intervalli,
+    l'insieme dei punti in cui coincidono è quindi non vuoto, relativamente
+    aperto per unicità e relativamente chiuso per continuità. Per connessione,
+    coincidono su tutta l'intersezione. Se sono massimali, si possono raccordare
+    sull'unione degli intervalli, e la massimalità implica che sono la stessa soluzione.
 \end{snippetproof}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{}
     L'equazione \(y' = f(x)\) dove
     \[
@@ -5878,11 +6483,13 @@ dove
             -1 & x < 0
         \end{cases}
     \]
-    non ha soluzione in alcun intervallo contenente \(x=0\).
+    non ha soluzione in alcun intervallo aperto contenente \(x=0\).
 \end{snippetexample}
+\end{radioactive}
 
 \subsection{Equazioni a variabili separabili}
 
+\begin{radioactive}
 \begin{snippetdefinition}{Equazione a variabili separabili}
     Un'equazione differenziale del primo ordine si dice a variabili separabili se può essere scritta nella forma
     \[
@@ -5896,7 +6503,9 @@ dove
     \]
     con \(I,J\subseteq\realnumbers\) intervalli.
 \end{snippetdefinition}
+\end{radioactive}
 
+\begin{radioactive}
 Siano \(x_0\in I\) e \(y_0\in J\). Consideriamo il problema di Cauchy
 \[
     \begin{cases}
@@ -5909,7 +6518,9 @@ Supponiamo \(h\in C^1(I)\) e \(u\in C^1(J)\). Allora
     f(x,y)=h(x)u(y)
 \]
 è di classe \(C^1\) in \(I\times J\), quindi vale il teorema di esistenza e unicità locale.
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetproposition}{Soluzioni costanti}
     Se \(u(y_0)=0\), allora la funzione costante
     \[
@@ -5917,7 +6528,9 @@ Supponiamo \(h\in C^1(I)\) e \(u\in C^1(J)\). Allora
     \]
     è soluzione del problema di Cauchy.
 \end{snippetproposition}
+\end{radioactive}
 
+\begin{radioactive}
 Supponiamo ora che \(u(y_0)\neq 0\). Per continuità, \(u(y)\neq 0\) in un intorno di \(y_0\). Se \(y(x)\) è la soluzione del problema di Cauchy, allora, restringendosi eventualmente a un intorno di \(x_0\), si ha
 \[
     u(y(x))\neq 0.
@@ -5962,7 +6575,9 @@ In particolare, poiché
     F'(y_0)=\frac{1}{u(y_0)}\neq 0,
 \]
 la funzione \(F\) è localmente invertibile in un intorno di \(y_0\).
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{}
     Consideriamo
     \[
@@ -5998,7 +6613,9 @@ la funzione \(F\) è localmente invertibile in un intorno di \(y_0\).
     \]
     L'intervallo di definizione della soluzione è \(I=\realnumbers\).
 \end{snippetexample}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{}
     Consideriamo
     \[
@@ -6057,7 +6674,9 @@ la funzione \(F\) è localmente invertibile in un intorno di \(y_0\).
     \]
     In questo caso \(x=\ln(1-e^a)\) è un asintoto verticale.
 \end{snippetexample}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{}
     Consideriamo
     \[
@@ -6103,9 +6722,11 @@ la funzione \(F\) è localmente invertibile in un intorno di \(y_0\).
     \]
     Non è possibile esplicitare \(y\) con funzioni elementari. Tuttavia, siccome la derivata rispetto a \(y\) di \((y-1)e^y\) è \(ye^y\), che è positiva per \(y>0\), il teorema della funzione implicita permette comunque di studiare localmente l'andamento della soluzione.
 \end{snippetexample}
+\end{radioactive}
 
 \subsection{Equazioni differenziali lineari del primo ordine}
 
+\begin{radioactive}
 \begin{snippetdefinition}{Equazione lineare del primo ordine}
     Un'equazione differenziale lineare del primo ordine in forma normale è un'equazione del tipo
     \[
@@ -6120,7 +6741,9 @@ la funzione \(F\) è localmente invertibile in un intorno di \(y_0\).
         f(x,y)=q(x)-p(x)y.
     \]
 \end{snippetdefinition}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippettheorem}{Formula risolutiva per il problema di Cauchy}
     Sia \(I\subseteq\realnumbers\) un intervallo, siano \(x_0\in I\), \(y_0\in\realnumbers\), e siano \(p,q:I\to\realnumbers\) continue in \(I\). Allora il problema di Cauchy
     \[
@@ -6140,7 +6763,9 @@ la funzione \(F\) è localmente invertibile in un intorno di \(y_0\).
         \right\}.
     \]
 \end{snippettheorem}
+\end{radioactive}
 
+\begin{radioactive}
 Inoltre, tutte le soluzioni dell'equazione differenziale lineare
 \[
     y'+p(x)y=q(x)
@@ -6156,7 +6781,9 @@ su \(I\) sono della forma
     \right\},
     \qquad C\in\realnumbers.
 \]
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetproof}{}
     Fissiamo \(x_0\in I\) e supponiamo che \(y\) sia soluzione, cioè
     \[
@@ -6214,7 +6841,9 @@ su \(I\) sono della forma
         \right\}.
     \]
 \end{snippetproof}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{}
     Consideriamo
     \[
@@ -6271,7 +6900,9 @@ su \(I\) sono della forma
         \frac{3}{2}e^{-x^2}+\frac{x^2-1}{2}.
     \end{align*}
 \end{snippetexample}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{}
     Consideriamo
     \[
@@ -6348,9 +6979,11 @@ su \(I\) sono della forma
         \right\}.
     \end{align*}
 \end{snippetexample}
+\end{radioactive}
 
 \subsection{Equazioni di Bernoulli}
 
+\begin{radioactive}
 \begin{snippetdefinition}{Equazione di Bernoulli}
     Un'equazione di Bernoulli è un'equazione differenziale del tipo
     \[
@@ -6369,7 +7002,9 @@ su \(I\) sono della forma
         y'=-a(x)y-b(x)y^\gamma.
     \]
 \end{snippetdefinition}
+\end{radioactive}
 
+\begin{radioactive}
 In generale, per rendere sempre ben definita la potenza \(y^\gamma\), si lavora nel dominio
 \[
     \Omega=\{(x,y):x\in I,\ y>0\}.
@@ -6383,15 +7018,19 @@ Supponiamo \(a,b\in C^1(I)\) e consideriamo il problema di Cauchy
         y(x_0)=y_0.
     \end{cases}
 \]
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetproposition}{Soluzione nulla}
-    Se \(\gamma>0\), allora la funzione
+    Se \(\gamma>0\) e il dominio dell'equazione include \(y=0\), allora la funzione
     \[
         y(x)=0
     \]
     è soluzione dell'equazione differenziale. In particolare, è soluzione del problema di Cauchy quando \(y_0=0\).
 \end{snippetproposition}
+\end{radioactive}
 
+\begin{radioactive}
 Nel caso \(y_0>0\), per il teorema di esistenza e unicità locale la soluzione locale del problema di Cauchy resta positiva in un intorno di \(x_0\). In tale intorno possiamo moltiplicare l'equazione per \(y^{-\gamma}\). Otteniamo
 \[
     y'y^{-\gamma}+a(x)y^{1-\gamma}+b(x)=0.
@@ -6420,7 +7059,9 @@ Una volta risolta l'equazione lineare in \(z\), se \(z(x)>0\) si recupera
 \[
     y(x)=z(x)^{\frac{1}{1-\gamma}}.
 \]
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{}
     Consideriamo
     \[
@@ -6513,9 +7154,11 @@ Una volta risolta l'equazione lineare in \(z\), se \(z(x)>0\) si recupera
     \]
     sull'intervallo massimale contenente \(0\) in cui la quantità tra parentesi non si annulla.
 \end{snippetexample}
+\end{radioactive}
 
 \subsection{Ancora sulle equazioni di Bernoulli}
 
+\begin{radioactive}
 Riprendiamo l'equazione di Bernoulli
 \[
     y'+a(x)y+b(x)y^\gamma=0,
@@ -6526,7 +7169,9 @@ Quando \(y\neq 0\), ponendo
     z=y^{1-\gamma}
 \]
 si ottiene un'equazione lineare in \(z\). È importante ricordare che questo cambio di variabile è lecito soltanto negli intervalli in cui la soluzione non si annulla.
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{}
     Consideriamo
     \[
@@ -6621,9 +7266,28 @@ si ottiene un'equazione lineare in \(z\). È importante ricordare che questo cam
     \[
         y(x_1)=0,
     \]
-    allora esso ammette almeno due soluzioni: la soluzione identicamente nulla e la soluzione appena costruita. Questo accade perché, per \(y=0\), la derivata \(\frac{\partial f}{\partial y}\) esplode, quindi non sono soddisfatte le ipotesi del teorema di esistenza e unicità locale.
+    allora esso ammette almeno due soluzioni: la soluzione identicamente nulla e
+    la soluzione positiva appena costruita, prolungata con \(y=0\) per \(x\geq x_1\).
+    Il raccordo è di classe \(C^1\), perché sia \(y\) sia \(y'\) tendono a zero
+    da sinistra. Le ipotesi del teorema di unicità non valgono in \(y=0\):
+    la derivata rispetto a \(y\) del termine con \(\sqrt y\) è singolare.
 
-    In realtà, nei punti dell'asse \(x\) è possibile raccordare la soluzione nulla con soluzioni positive, ottenendo molte soluzioni diverse.
+    Più precisamente, per ogni \(c\in(-1,1)\) si ottiene una soluzione su
+    \((-1,1)\) ponendo
+    \[
+        y_c(x)=
+        \begin{cases}
+            \displaystyle\left(\frac{\ln((1-x)/(1-c))}{2(x+1)}\right)^2,
+                & -1<x<c,\\[4pt]
+            0,&c\leq x<1.
+        \end{cases}
+    \]
+    Il termine noto è negativo per \(y>0\) in \((-1,1)\): una soluzione positiva
+    può arrivare a zero da sinistra, ma non ripartire verso valori positivi a destra.
+    Conserviamo i disegni originali seguenti come schemi di possibili forme
+    di raccordo in generale, non come quattro soluzioni di questa equazione.
+    Qui sono ammissibili soltanto la soluzione nulla e il raccordo
+    positivo-decrescente seguito dalla soluzione nulla.
 
     \begin{center}
         \begin{tikzpicture}[scale=0.8]
@@ -6653,9 +7317,11 @@ si ottiene un'equazione lineare in \(z\). È importante ricordare che questo cam
         \end{tikzpicture}
     \end{center}
 \end{snippetexample}
+\end{radioactive}
 
 \subsection{Equazioni di Riccati}
 
+\begin{radioactive}
 \begin{snippetdefinition}{Equazione di Riccati}
     Un'equazione di Riccati è un'equazione differenziale del tipo
     \[
@@ -6666,7 +7332,9 @@ si ottiene un'equazione lineare in \(z\). È importante ricordare che questo cam
         a,b,c\in C(I).
     \]
 \end{snippetdefinition}
+\end{radioactive}
 
+\begin{radioactive}
 La funzione
 \[
     f(x,y)=-a(x)y-b(x)y^2-c(x)
@@ -6741,7 +7409,9 @@ cioè
 \[
     z'-A(x)z=b(x).
 \]
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{}
     Consideriamo
     \[
@@ -6771,7 +7441,9 @@ cioè
         y(x)=\frac{1}{2}.
     \]
 \end{snippetexample}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{}
     Consideriamo il problema
     \[
@@ -6870,9 +7542,11 @@ cioè
         I=(0,+\infty).
     \]
 \end{snippetexample}
+\end{radioactive}
 
 \subsection{Equazioni omogenee del primo ordine}
 
+\begin{radioactive}
 \begin{snippetdefinition}{Equazione omogenea del primo ordine}
     Un'equazione differenziale del primo ordine si dice omogenea se può essere scritta nella forma
     \[
@@ -6883,7 +7557,9 @@ cioè
         g:\realnumbers\to\realnumbers.
     \]
 \end{snippetdefinition}
+\end{radioactive}
 
+\begin{radioactive}
 Per risolvere questo tipo di equazione si usa il cambio di variabile
 \[
     \frac{y}{x}=t,
@@ -6913,7 +7589,9 @@ allora \(t=t_0\) è una soluzione costante dell'equazione in \(t\). Essa corrisp
     y=t_0x,
 \]
 cioè a una retta passante per l'origine.
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{}
     Consideriamo
     \[
@@ -6995,9 +7673,11 @@ cioè a una retta passante per l'origine.
         I=(2e^{-2},+\infty).
     \]
 \end{snippetexample}
+\end{radioactive}
 
 \subsection{Equazioni differenziali lineari di ordine \(k\) a coefficienti costanti}
 
+\begin{radioactive}
 Consideriamo un'equazione differenziale lineare di ordine \(k\) a coefficienti costanti:
 \[
     y^{(k)}
@@ -7027,7 +7707,9 @@ Se \(b\neq 0\), all'equazione si associa comunque l'equazione omogenea corrispon
 \[
     y^{(k)}+\sum_{j=0}^{k-1}a_jy^{(j)}=0.
 \]
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetdefinition}{Problema di Cauchy per un'equazione di ordine \(k\)}
     Un problema di Cauchy per un'equazione differenziale di ordine \(k\) consiste nell'assegnare il valore della funzione e delle sue prime \(k-1\) derivate in un punto \(x_0\):
     \[
@@ -7040,11 +7722,15 @@ Se \(b\neq 0\), all'equazione si associa comunque l'equazione omogenea corrispon
         \end{cases}
     \]
 \end{snippetdefinition}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippettheorem}{Esistenza e unicità globale}
     Se \(b\in C(I)\), allora ogni problema di Cauchy per l'equazione lineare di ordine \(k\) a coefficienti costanti ammette una e una sola soluzione definita su tutto \(I\).
 \end{snippettheorem}
+\end{radioactive}
 
+\begin{radioactive}
 In questa situazione i grafici di due soluzioni possono intersecarsi, ma se due soluzioni hanno nello stesso punto \(x_0\) lo stesso valore e le stesse prime \(k-1\) derivate, allora coincidono su tutto l'intervallo di definizione. Quindi due soluzioni distinte devono differire almeno in uno dei dati
 \[
     y(x_0),
@@ -7055,15 +7741,19 @@ In questa situazione i grafici di due soluzioni possono intersecarsi, ma se due 
     \quad
     y^{(k-1)}(x_0).
 \]
+\end{radioactive}
 
 \subsubsection{Struttura dello spazio delle soluzioni dell'omogenea}
 
+\begin{radioactive}
 Consideriamo l'equazione omogenea
 \[
     y^{(k)}+\sum_{j=0}^{k-1}a_jy^{(j)}=0,
     \qquad I=\realnumbers.
 \]
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetproposition}{Principio di sovrapposizione}
     Se \(w_1\) e \(w_2\) sono soluzioni dell'equazione omogenea, allora anche
     \[
@@ -7071,9 +7761,13 @@ Consideriamo l'equazione omogenea
     \]
     è soluzione, per ogni \(c_1,c_2\in\realnumbers\).
 \end{snippetproposition}
+\end{radioactive}
 
+\begin{radioactive}
 Quindi l'insieme delle soluzioni dell'equazione omogenea è un sottospazio vettoriale di \(C^k(\realnumbers)\).
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippettheorem}{Dimensione dello spazio delle soluzioni}
     Lo spazio vettoriale delle soluzioni dell'equazione omogenea
     \[
@@ -7081,7 +7775,9 @@ Quindi l'insieme delle soluzioni dell'equazione omogenea è un sottospazio vetto
     \]
     ha dimensione \(k\).
 \end{snippettheorem}
+\end{radioactive}
 
+\begin{radioactive}
 Per trovare tutte le soluzioni dell'equazione omogenea basta dunque trovare \(k\) soluzioni linearmente indipendenti. Se
 \[
     w_1,\ldots,w_k
@@ -7091,9 +7787,11 @@ sono \(k\) soluzioni linearmente indipendenti, allora l'integrale generale dell'
     y(x)=\sum_{i=1}^{k}c_iw_i(x),
     \qquad c_i\in\realnumbers.
 \]
+\end{radioactive}
 
 \subsubsection{Polinomio caratteristico}
 
+\begin{radioactive}
 Per cercare soluzioni dell'equazione omogenea, partiamo dal caso \(k=1\):
 \[
     y'+py=0.
@@ -7125,7 +7823,9 @@ Poiché \(e^{\lambda x}\neq 0\), dobbiamo imporre
 \[
     \lambda^k+\sum_{j=0}^{k-1}a_j\lambda^j=0.
 \]
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetdefinition}{Polinomio caratteristico}
     Il polinomio
     \[
@@ -7139,9 +7839,11 @@ Poiché \(e^{\lambda x}\neq 0\), dobbiamo imporre
     \]
     Le soluzioni esponenziali \(e^{\lambda x}\) si ottengono scegliendo \(\lambda\) tra le radici di \(P\).
 \end{snippetdefinition}
+\end{radioactive}
 
 \subsection{Equazioni lineari a coefficienti costanti: radici del polinomio caratteristico}
 
+\begin{radioactive}
 Consideriamo l'equazione differenziale lineare di ordine \(k\) a coefficienti costanti
 \[
     y^{(k)}+\sum_{j=0}^{k-1}a_jy^{(j)}=b(x),
@@ -7179,7 +7881,9 @@ dove
     P(\lambda)=\lambda^k+\sum_{j=0}^{k-1}a_j\lambda^j
 \]
 è il polinomio caratteristico.
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippettheorem}{Soluzioni esponenziali}
     La funzione
     \[
@@ -7194,7 +7898,9 @@ dove
         P(\lambda)=\lambda^k+\sum_{j=0}^{k-1}a_j\lambda^j.
     \]
 \end{snippettheorem}
+\end{radioactive}
 
+\begin{radioactive}
 Poiché \(P\) ha coefficienti reali, se \(\lambda=\alpha+i\beta\) è una radice complessa di \(P\), allora anche
 \[
     \overline{\lambda}=\alpha-i\beta
@@ -7206,7 +7912,9 @@ Poiché \(P\) ha coefficienti reali, se \(\lambda=\alpha+i\beta\) è una radice 
     e^{\alpha x}\left(\cos(\beta x)+i\sin(\beta x)\right).
 \]
 Quindi da una coppia di radici complesse coniugate si ottengono soluzioni reali usando parte reale e parte immaginaria.
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{Radici reali semplici}
     Consideriamo
     \[
@@ -7228,7 +7936,9 @@ Quindi da una coppia di radici complesse coniugate si ottengono soluzioni reali 
         \qquad c_1,c_2\in\realnumbers.
     \]
 \end{snippetexample}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{Radici complesse coniugate}
     Consideriamo
     \[
@@ -7254,7 +7964,9 @@ Quindi da una coppia di radici complesse coniugate si ottengono soluzioni reali 
         \qquad c_1,c_2\in\realnumbers.
     \]
 \end{snippetexample}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{Radice reale doppia}
     Consideriamo
     \[
@@ -7286,7 +7998,9 @@ Quindi da una coppia di radici complesse coniugate si ottengono soluzioni reali 
         (c_1+c_2x)e^x.
     \]
 \end{snippetexample}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippettheorem}{Regola generale per le radici}
     Sia \(P\) il polinomio caratteristico dell'equazione omogenea.
 
@@ -7324,7 +8038,9 @@ Quindi da una coppia di radici complesse coniugate si ottengono soluzioni reali 
             sono soluzioni reali linearmente indipendenti.
     \end{enumerate}
 \end{snippettheorem}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{}
     Consideriamo
     \[
@@ -7352,7 +8068,9 @@ Quindi da una coppia di radici complesse coniugate si ottengono soluzioni reali 
         y(x)=(c_1+c_2x)e^x+c_3\cos x+c_4\sin x.
     \]
 \end{snippetexample}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{}
     Consideriamo
     \[
@@ -7375,7 +8093,9 @@ Quindi da una coppia di radici complesse coniugate si ottengono soluzioni reali 
         y(x)=c_1+c_2e^x\cos(2x)+c_3e^x\sin(2x).
     \]
 \end{snippetexample}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{Oscillatore armonico}
     Consideriamo
     \[
@@ -7400,9 +8120,11 @@ Quindi da una coppia di radici complesse coniugate si ottengono soluzioni reali 
     \]
     per opportuni \(A,\varphi\in\realnumbers\).
 \end{snippetexample}
+\end{radioactive}
 
 \subsection{Equazioni lineari non omogenee}
 
+\begin{radioactive}
 Indichiamo con \(L\) l'operatore differenziale lineare
 \[
     L[y]=y^{(k)}+\sum_{j=0}^{k-1}a_jy^{(j)}.
@@ -7415,7 +8137,9 @@ mentre l'equazione omogenea associata è
 \[
     L[y]=0.
 \]
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetproposition}{Struttura dell'integrale generale}
     Sia \(y_\ast\) una soluzione particolare dell'equazione non omogenea
     \[
@@ -7431,7 +8155,9 @@ mentre l'equazione omogenea associata è
         \qquad c_1,\ldots,c_k\in\realnumbers.
     \]
 \end{snippetproposition}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetproof}{}
     Se \(y_\ast\) è soluzione di \(L[y]=b(x)\), allora, per ogni soluzione \(w\) dell'omogenea,
     \[
@@ -7449,9 +8175,11 @@ mentre l'equazione omogenea associata è
     \]
     Dunque \(y_\ast-\widetilde{y}\) è soluzione dell'omogenea. Ne segue che ogni soluzione della non omogenea si ottiene sommando a una soluzione particolare una soluzione generale dell'omogenea.
 \end{snippetproof}
+\end{radioactive}
 
 \subsection{Metodo di variazione delle costanti}
 
+\begin{radioactive}
 Il metodo di variazione delle costanti permette di determinare una soluzione particolare dell'equazione non omogenea a partire da un sistema fondamentale di soluzioni dell'equazione omogenea.
 
 Per semplicità consideriamo prima il caso \(k=2\). Sia
@@ -7542,7 +8270,9 @@ e di una soluzione particolare
     e^{-\integral[p(x)][x]}
     \integral[q(x)e^{\integral[p(x)][x]}][x].
 \]
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{}
     Consideriamo
     \[
@@ -7609,9 +8339,11 @@ e di una soluzione particolare
         y(x)=k_1\cos x+k_2\sin x+\cos x\ln(\cos x)+x\sin x.
     \]
 \end{snippetexample}
+\end{radioactive}
 
 \subsection{Metodo di somiglianza}
 
+\begin{radioactive}
 Il metodo di somiglianza permette di cercare una soluzione particolare osservando la forma del termine noto \(b(x)\).
 
 Sia
@@ -7619,7 +8351,9 @@ Sia
     P(\lambda)=\lambda^k+\sum_{j=0}^{k-1}a_j\lambda^j
 \]
 il polinomio caratteristico dell'equazione omogenea associata.
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetproposition}{Termine noto polinomiale}
     Sia \(b(x)\) un polinomio di grado \(m\).
     \begin{enumerate}
@@ -7631,7 +8365,9 @@ il polinomio caratteristico dell'equazione omogenea associata.
             dove \(Q_m\) è un polinomio di grado \(m\).
     \end{enumerate}
 \end{snippetproposition}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetproposition}{Termine noto esponenziale}
     Sia
     \[
@@ -7648,7 +8384,9 @@ il polinomio caratteristico dell'equazione omogenea associata.
             \]
     \end{enumerate}
 \end{snippetproposition}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetproposition}{Termine noto oscillante}
     Sia
     \[
@@ -7665,13 +8403,17 @@ il polinomio caratteristico dell'equazione omogenea associata.
             \]
     \end{enumerate}
 \end{snippetproposition}
+\end{radioactive}
 
+\begin{radioactive}
 Se il termine noto è una somma, ad esempio
 \[
     b(x)=x^2+\cos x-e^{3x},
 \]
 si sfrutta la linearità dell'equazione: si risolvono separatamente tre equazioni, una per ciascun termine noto, e poi si sommano le soluzioni particolari ottenute.
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{Oscillatore forzato senza smorzamento}
     Consideriamo
     \[
@@ -7753,7 +8495,9 @@ si sfrutta la linearità dell'equazione: si risolvono separatamente tre equazion
         \end{tikzpicture}
     \end{center}
 \end{snippetexample}
+\end{radioactive}
 
+\begin{radioactive}
 \begin{snippetexample}{Termine noto esponenziale-oscillante}
     Consideriamo
     \[
@@ -7803,23 +8547,81 @@ si sfrutta la linearità dell'equazione: si risolvono separatamente tre equazion
         \operatorname{Re}\left(y_{\ast,c}\right).
     \]
 \end{snippetexample}
+\end{radioactive}
 
 \pagebreak
 
 \section{Curve}
 
+\begin{snippetdefinition}{Curva parametrica}
+    Una curva parametrica in \(\realnumbers^n\) è un'applicazione continua
+    \[
+        \gamma\colon[a,b]\to\realnumbers^n.
+    \]
+    Il \emph{sostegno} della curva è
+    \[
+        \Gamma=\operatorname{Im}\gamma=\gamma([a,b]).
+    \]
+\end{snippetdefinition}
+
+Dal punto di vista meccanico, il sostegno rappresenta la traiettoria, mentre la parametrizzazione
+rappresenta la legge oraria con cui un punto percorre tale traiettoria.
+
+\begin{snippetexample}{Stesso sostegno, parametrizzazioni diverse}
+    La curva
+    \[
+        \gamma(t)=(\cos t,\sin t),\qquad t\in[0,2\pi],
+    \]
+    parametrizza il cerchio unitario. La stessa traiettoria può essere percorsa a velocità doppia con
+    \[
+        \varphi(t)=(\cos 2t,\sin 2t),\qquad t\in[0,\pi].
+    \]
+    Le due curve hanno lo stesso sostegno ma parametrizzazioni diverse.
+\end{snippetexample}
+
+\begin{snippetdefinition}{Curva chiusa}
+    Una curva \(\gamma\colon[a,b]\to\realnumbers^n\) è chiusa se
+    \[
+        \gamma(a)=\gamma(b).
+    \]
+\end{snippetdefinition}
+
+Per esempio, \((\cos t,\sin t)\) su \([0,2\pi]\) è chiusa. Se la consideriamo invece
+su \([0,3\pi]\), il sostegno contiene ancora il cerchio unitario, ma la curva non è chiusa.
+
+Una curva porta con sé anche un verso di percorrenza, cioè un'orientazione. Data
+\(\gamma\colon[a,b]\to\realnumbers^n\), definiamo la curva con orientazione opposta
+\[
+    (-\gamma)(t)=\gamma(a+b-t),
+    \qquad a\leq t\leq b.
+\]
+Le due curve hanno lo stesso sostegno e orientazioni opposte.
+
 La parametrizzazione del cerchio \((\cos t, \sin t)\)
 è analoga a quella dell'iperbole \((\cosh t, \sinh t)\).
 Questo lo si vede dalle identità \(\sin^2(x) + \cos^2(x) = 1\)
 cioè \(x^2 + y^2 = 1\) e quindi analogamente \(x^2 - y^2 = 1\).
-Ma la forma dell'iperbola data ha due rami, ma una funzione connessa, quale la curva,
-deve mandare aperti in aperti e \(\realnumbers\) è connesso.
-Infatti questa parametrizza solamente un ramo.
+Ma l'iperbole data ha due rami, mentre l'immagine continua di un insieme connesso è connessa e \(\realnumbers\) è connesso.
+Infatti questa parametrizzazione descrive solamente un ramo.
 
 \begin{snippetdefinition}{Equivalenza fra curve}
-    Vedi \texttt{analisiIII.pdf}. Nozione più debole che dice solo che la mappa è un omeomorfismo
-    e che la composizione è l'altra curva.
-    In generale la nozione la si può estendere a \(k\)-diffeomorfismo.
+    Siano
+    \[
+        \gamma\colon[a,b]\to\realnumbers^n,
+        \qquad
+        \varphi\colon[\alpha,\beta]\to\realnumbers^n
+    \]
+    due curve continue. Diciamo che \(\gamma\) e \(\varphi\) sono equivalenti se esiste
+    un omeomorfismo
+    \[
+        h\colon[\alpha,\beta]\to[a,b]
+    \]
+    tale che
+    \[
+        \varphi=\gamma\circ h.
+    \]
+    Se le curve sono di classe \(\mathcal{C}^k\), si definisce analogamente l'equivalenza
+    di classe \(\mathcal{C}^k\) richiedendo che \(h\) sia un diffeomorfismo di classe \(\mathcal{C}^k\).
 \end{snippetdefinition}
 
 \begin{snippetexample}{}
@@ -7828,7 +8630,19 @@ Infatti questa parametrizza solamente un ramo.
     ma non è \(\mathcal{C}^1\) perché se facessi l'inverso della seconda otterrei la radice cubica che non è differenziabile in 0.
 \end{snippetexample}
 
-Possiamo quindi sempre supporre che una curva sia parametrizzata su \(([0,1])\).
+A meno di riparametrizzazioni possiamo sempre supporre che una curva sia parametrizzata su \([0,1]\).
+Infatti, se \(\gamma\colon[a,b]\to\realnumbers^n\), ponendo
+\[
+    s=\frac{t-a}{b-a},
+    \qquad
+    t=(b-a)s+a,
+\]
+la curva
+\[
+    \widetilde\gamma(s)=\gamma((b-a)s+a),
+    \qquad s\in[0,1],
+\]
+è equivalente a \(\gamma\).
 
 \begin{snippetdefinition}{Equivalenza orientata}
     Siano \(\gamma, \varphi\) due curve
@@ -7843,10 +8657,28 @@ Possiamo quindi sempre supporre che una curva sia parametrizzata su \(([0,1])\).
 Solo quella con il \(+\) è una relazione di equivalenza.
 Per esempio \(\gamma \overset-\sim -\gamma\) cambia l'orientazione.
 
-Per concatenare due curve le parametrizziamo entrambe
-per avere dominio \([0,1]\) e poi le concateniamo percorrendo ciascuna al doppio della velocità.
-La concatenazione di due curve \(\mathcal{C}^1\)
-non è necessariamente \(\mathcal{C}^1\), ma è \(\mathcal{C}^1\) a tratti.
+Siano \(\gamma\colon[a,b]\to\realnumbers^n\) e
+\(\varphi\colon[\alpha,\beta]\to\realnumbers^n\) tali che \(\gamma(b)=\varphi(\alpha)\).
+Possiamo percorrere prima \(\gamma\) e poi \(\varphi\) definendo la concatenazione
+\[
+    (\gamma+\varphi)(s)=
+    \begin{cases}
+        \gamma((b-a)s+a), & 0\leq s\leq1,\\
+        \varphi((\beta-\alpha)(s-1)+\alpha), & 1\leq s\leq2.
+    \end{cases}
+\]
+Le due definizioni si incollano in modo continuo proprio perché \(\gamma(b)=\varphi(\alpha)\).
+Anche se \(\gamma\) e \(\varphi\) sono di classe \(\mathcal{C}^1\), la concatenazione
+in generale è soltanto \(\mathcal{C}^1\) a tratti.
+
+\begin{snippetdefinition}{Curva \(\mathcal{C}^1\) a tratti}
+    Una curva \(\gamma\colon[a,b]\to\realnumbers^n\) è di classe \(\mathcal{C}^1\) a tratti se è continua
+    ed esiste una partizione finita
+    \[
+        a=t_0<t_1<\cdots<t_N=b
+    \]
+    tale che ogni restrizione \(\restr{\gamma}{[t_{i-1},t_i]}\) è di classe \(\mathcal{C}^1\).
+\end{snippetdefinition}
 
 Consideriamo una curva chiusa \(\gamma \colon [a,b] \fromto \realnumbers^n\).
 Affinché \(\gamma\) sia \(\mathcal{C}^1\) non basta che
@@ -7897,13 +8729,13 @@ Se una curva è semplice, allora è possibile identificarla con il suo sostegno.
 \begin{snippetproof}{}
     Supponiamo che le due curve non siano chiuse.
     Sia \(\Gamma = \text{Im} \gamma = \text{Im} \varphi\).
-    Vogliamo definire un omeomorfismo \(h \colon [a,b] \fromto [\alpha, \beta]\)
+    Vogliamo definire un omeomorfismo \(h \colon [\alpha,\beta] \fromto [a,b]\)
     tale che \(\gamma \circ h = \varphi\).
     Osserviamo che \(\gamma \colon [a,b] \fromto \Gamma\) è continua e suriettiva.
-    Inoltre \(\gamma\) è anche suriettiva, perché è semplice e non chiusa.
+    Inoltre \(\gamma\) è anche iniettiva, perché è semplice e non chiusa.
     Se mostriamo che \(\gamma^{-1}\) è continua, allora è un omeomorfismo (analogamente per \(\varphi\)).
     A questo punto basta scegliere \(h = \gamma^{-1} \circ \varphi\).
-    Resa da dimostrare che \(\gamma^{-1} \colon \Gamma \fromto [a,b]\)
+    Resta da dimostrare che \(\gamma^{-1} \colon \Gamma \fromto [a,b]\)
     è continua, osservo che \(\gamma \colon [a,b] \fromto \Gamma\) è chiuso.
     Ciò è vero per il teorema da compatto ad Hausdorff.
     Se invece le curve sono chiuse, perdiamo l'iniettività.
@@ -7931,7 +8763,7 @@ riparametrizzare \(\gamma\) usando \(x\) come parametro
 cioè abbiamo parametrizzato localmente \(\gamma\) come grafico di una funzione di una variabile.
 In particolare, se \(\gamma \colon [a,b] \fromto \realnumbers^n\)
 è una curva regolare, \(\gamma\) può essere localmente
-parametrizzata come grafico di una fuzione \(f \colon \realnumbers \fromto \realnumbers^{n-1}\),
+parametrizzata come grafico di una funzione \(f \colon \realnumbers \fromto \realnumbers^{n-1}\),
 con \(f\) di classe \(\mathcal{C}^1\).
 A questo punto sono sicuro che il sostegno di \(\gamma\)
 abbia una retta tangente.
@@ -7939,7 +8771,7 @@ Inoltre, se \(\gamma\) è una curva regolare, allora è anche localmente semplic
 di ogni suo punto, in quanto ogni curva data da un grafico di funzione è sempre semplice.
 Cioè in \((t,f(t))\) la prima componente \(t\) è iniettiva quindi è iniettiva.
 
-Se \(\gamma\) è una curva regolare, non è semplice (lo è solo necessariamente localmente, non globalmente).
+Se \(\gamma\) è una curva regolare, non è necessariamente semplice (lo è necessariamente solo localmente, non globalmente).
 
 \begin{snippetexercise}{}
     La curva grafico della funzione \(y = x^{2/3}\)
@@ -7965,9 +8797,43 @@ In tal caso se \(\gamma(x) = (x, f(x))\) con \(f \in \mathcal{C}^1([a,b])\)
 allora \(\dot\gamma(x) = (1, f'(x))\) che non si può annullare.
 
 Se \(\gamma\) è regolare la retta tangente al sostengo nel punto \(\gamma(t_0)\) è
-la retta \[ x = \gamma(t_0) + t\dot\gamma(t_0) \]
+la retta
+\[
+    x=\gamma(t_0)+s\dot\gamma(t_0),
+    \qquad s\in\realnumbers.
+\]
+Il vettore \(\dot\gamma(t_0)\) si chiama \emph{vettore tangente} alla curva in \(\gamma(t_0)\).
+Se la curva è regolare, il versore tangente è
+\[
+    T(t_0)=\frac{\dot\gamma(t_0)}{||\dot\gamma(t_0)||}.
+\]
 
-Vedi \texttt{analisiIII.pdf} per la definizione di lunghezza di una curva.
+\begin{snippetdefinition}{Partizione}
+    Una partizione di \([a,b]\) è un insieme finito ordinato
+    \[
+        \Pi=\{a=t_0<t_1<\cdots<t_N=b\}.
+    \]
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Variazione poligonale e lunghezza}
+    Data una curva \(\gamma\colon[a,b]\to\realnumbers^n\) e una partizione \(\Pi\), definiamo
+    \[
+        V(\gamma,\Pi)=\sum_{k=1}^N||\gamma(t_k)-\gamma(t_{k-1})||.
+    \]
+    È la lunghezza della poligonale che congiunge consecutivamente i punti della curva
+    corrispondenti alla partizione. La lunghezza della curva è
+    \[
+        L(\gamma)=\sup_\Pi V(\gamma,\Pi).
+    \]
+    Nel seguito useremo anche la notazione \(L(\gamma,\Pi)=V(\gamma,\Pi)\).
+\end{snippetdefinition}
+
+\begin{snippetdefinition}{Curva rettificabile}
+    Una curva \(\gamma\) è rettificabile se
+    \[
+        L(\gamma)<+\infty.
+    \]
+\end{snippetdefinition}
 
 \begin{snippetexample}{Curva non rettificabile}
     Sia \(\gamma(t) \colon [0,1] \fromto \realnumbers^2\) data da
@@ -7986,14 +8852,14 @@ Vedi \texttt{analisiIII.pdf} per la definizione di lunghezza di una curva.
     Sia \(P_k = \gamma(1/k)\). Calcoliamo
     \[
         ||P_k - P_{k-1}||^2 = \left(
-            \frac1k - \frac{1}{k-1}
+            \frac1k - \frac{1}{k+1}
         \right)^2 + \left(
-            \frac1k + \frac{1}{k-1}
+            \frac1k + \frac{1}{k+1}
         \right)^2
     \]
     Il contributo del primo addendo è quello di una serie convergente, infatti
     \[
-        \frac{1}{k} - \frac{1}{k-1} = -\frac{1}{k(k-1)}
+        \frac{1}{k} - \frac{1}{k-1} = \frac{1}{k(k+1)}
     \]
     che è la serie di Mengoli. Vogliamo mostrare che la variazione diverge,
     e per fare ciò consideriamo solo il secondo addendo.
@@ -8035,122 +8901,116 @@ Vedi \texttt{analisiIII.pdf} per la definizione di lunghezza di una curva.
 \begin{snippetproof}{}
     Per ipotesi esiste \(h\) diffeomorfismo (basta che sia un omeomorfismo)
     tale che \(\gamma \circ h = \varphi\).
-    Essendo \(h\) monotona e biunivoca, manda partizioni di \([a,b]\)
-    in partizioni di \([\alpha, \beta]\), quindi vi è una corrispondenza biunivoca.
+    Essendo \(h\) monotona e biunivoca, manda partizioni di \([\alpha,\beta]\)
+    in partizioni di \([a,b]\), quindi vi è una corrispondenza biunivoca.
     Siccome le due immagini delle curve sono le medesime le loro lunghezze devono coincidere.
 \end{snippetproof}
 
 \begin{radioactive}
 \begin{snippettheorem}{}
-    Sia \(\varphi \colon I \to \realnumbers^n\) con \(\varphi \in \mathcal{C}^1(I)\) (che sono di Lipschitz).
+    Sia \(\varphi \colon [a,b] \to \realnumbers^n\) con \(\varphi \in \mathcal{C}^1([a,b])\).
     Allora \(\varphi\) è rettificabile e
     \[
-        L(\varphi) = \integral[a][b][||\varphi'(t)||][t]
+        L(\varphi) = \integral[a][b][||\varphi'(t)||][t].
     \]
 \end{snippettheorem}
 \end{radioactive}
 
 (Come l'abbiamo vista ad analisi 3?)
 \begin{snippetproof}{}
-    Sia \(\delta > 0\) allora
+    Per ogni partizione \(\Pi=\{a=t_0<\cdots<t_N=b\}\), dal teorema fondamentale del calcolo
     \[
-        \gamma(t + \delta) - \gamma(t) = \integral[t][t+\delta][\dot\gamma(\tau)][\tau]
+        \varphi(t_k)-\varphi(t_{k-1})
+        =\integral[t_{k-1}][t_k][\varphi'(t)][t].
     \]
     Quindi
     \begin{align*}
-        \left|\left|\gamma(t + \delta) - \gamma(t)\right|\right|
-        &= \left|\left|
-            \integral[t][t + \delta][\dot\gamma(\tau)][\tau]
-        \right|\right| \\
-        &\leq \integral[t][t+\delta][||\dot\gamma(\tau)||][\tau]
+        V(\varphi,\Pi)
+        &=\sum_{k=1}^N||\varphi(t_k)-\varphi(t_{k-1})||\\
+        &\leq\sum_{k=1}^N\integral[t_{k-1}][t_k][||\varphi'(t)||][t]
+        =\integral[a][b][||\varphi'(t)||][t].
     \end{align*}
-    Data quindi una partizione \(P\)
-    \begin{align*}
-        L(\gamma, P) &= \sum_{k=1}^N ||\gamma(t_k) - \gamma(t_{k-1})|| \\
-        &\leq \sum_{k=1}^N \integral[t_k - 1][t_k][||\dot\gamma(\tau)||][\tau] \\
-        &= \integral[a][b][||\varphi'(t)||][t]
-    \end{align*}
-    Ma dobbiamo ancora verificare l'altra disuguaglianza.
-    Siccome \(\gamma\) è continua, per il teorema di Lagrange
+    Passando al supremum sulle partizioni otteniamo
     \[
-        \integral[t][t + \delta][\dot\gamma(\tau)][\tau] = \delta || \dot\gamma(t + \delta\theta) ||
+        L(\varphi)\leq\integral[a][b][||\varphi'(t)||][t].
     \]
-    per qualche \(\delta \in (0,1)\). Abbiamo quindi
-    \begin{align*}
-        \left|
-            ||\gamma(t + \delta) - \gamma(t)||
-            - \integral[t][t +\delta][||\dot\gamma(\tau)||][\tau]
-        \right|
-        &= \left|
-            ||\gamma(t + \delta) - \gamma(t)|| - \delta||\dot\gamma(t + \delta\theta)||
-        \right| \\
-        &= ||\gamma(t + \delta) - \gamma(t) - \delta\dot\gamma(t + \delta\theta)|| \\
-        &= \left|\left|\integral[t][t + \delta][[\dot\gamma(\tau) - \dot\gamma(\tau + \delta\theta)]][\tau]
-        \right|\right| \\
-        &= \integral[t][t+\delta][\dot\gamma(\tau + \delta\theta)][\tau]
-    \end{align*}
-    Siccome la curva è continua è anche uniformemente continua, quindi
+
+    Per l'altra disuguaglianza, \(\varphi'\) è uniformemente continua su \([a,b]\).
+    Dato \(\varepsilon>0\), esiste \(\delta>0\) tale che
     \[
-        \forall \varepsilon > 0, \exists \delta>0 \,|\,
-        \delta > |t-s| \implies ||\gamma(t) - \gamma(\tau)|| < \varepsilon
+        |s-t|<\delta\implies ||\varphi'(s)-\varphi'(t)||<\varepsilon.
     \]
-    Sia \(\delta < \delta_\varepsilon\). Allora nell'integrale
-    \(\tau \in [t, t+\delta]\), \(t + \delta\theta \in [t, t + \delta]\)
-    e quindi \(|\tau - (t + \delta\theta)| < \delta < \delta_\varepsilon\).
-    Possiamo quindi applicare l'uniforme continuità all'integranda. Se \(\delta < \delta_\varepsilon\)
-    allora
-    \begin{align*}
-        \left|||\gamma(t + \delta) - \gamma(t)|| - \integral[t][t + \delta][
-            ||\dot\gamma(\tau)||
-        ][\tau] \right|
-        &\leq \integral[t][t + \delta][
-            ||\dot\gamma(\tau) - \dot\gamma(t + \delta\theta)||
-        ][\tau] \leq \varepsilon \delta
-    \end{align*}
-    Ma conosciamo il segno dell'argomento del modulo, infatti
-    abbiamo detto prima che quel termine è minore dell'integrale della norma della derivata, quindi
-    \begin{align*}
-        0 \leq \integral[t][t + \delta][||\dot\gamma(\tau)||][\tau]
-        - ||\gamma(t + \delta) - \gamma(t)|| \leq \varepsilon\delta \\
-        \integral[t][t + \delta][
-            ||\dot\gamma(\tau)||
-        ][\tau] \leq ||\gamma(t + \delta) - \gamma(t)|| + \varepsilon \delta
-    \end{align*}
-    Scegliamo quindi una partizione \(\Pi\)
-    con la proprietà che \(|\Pi| < \delta_\varepsilon\), cioè che
-    \(|t_k - t_{k-1}| < \delta_\varepsilon\).
-    Allora abbiamo
-    \begin{align*}
-        \integral[t_{k-1}][t_k][
-            ||\dot\gamma(\tau)||
-        ][\tau] \leq ||\gamma(t_k) - \gamma(t_{k-1})|| + \varepsilon(t_k - t_{k-1})
-    \end{align*}
-    Sommando su \(k\) si ottiene
-    \begin{align*}
-        \integral[a][b][||\dot\gamma(t)||][t] &\leq
-        \sum_{k=1}^N ||\gamma(t_k) - \gamma(t_{k-1})|| + \varepsilon(b-a) \\
-        &= L(\gamma, \Pi) + \varepsilon(b-a) \leq L(\gamma) + \varepsilon(b-a)
-    \end{align*}
-    Abbiamo quindi mostrato che
+    Scegliamo una partizione \(\Pi\) con passo minore di \(\delta\). Per ogni intervallo poniamo
+    \(\Delta t_k=t_k-t_{k-1}\). Allora
+    \[
+        \left||\varphi(t_k)-\varphi(t_{k-1})||
+        -||\varphi'(t_{k-1})||\Delta t_k\right|
+        \leq \varepsilon\Delta t_k,
+    \]
+    e inoltre
+    \[
+        \left|\integral[t_{k-1}][t_k][||\varphi'(t)||][t]
+        -||\varphi'(t_{k-1})||\Delta t_k\right|
+        \leq \varepsilon\Delta t_k.
+    \]
+    Pertanto
+    \[
+        \integral[t_{k-1}][t_k][||\varphi'(t)||][t]
+        \leq ||\varphi(t_k)-\varphi(t_{k-1})||+2\varepsilon\Delta t_k.
+    \]
+    Sommando su \(k\),
     \[
         \integral[a][b][||\varphi'(t)||][t]
-        \leq L(\gamma) + \varepsilon(b-a)
+        \leq V(\varphi,\Pi)+2\varepsilon(b-a)
+        \leq L(\varphi)+2\varepsilon(b-a).
     \]
-    ma siccome \(\varepsilon\) è arbitrariamente piccolo segue la tesi.
+    Poiché \(\varepsilon\) è arbitrario, segue la tesi.
 \end{snippetproof}
 
 Questo vale anche per le curve \(\mathcal{C}^1\) a tratti, basta suddividere le distanze.
 
-\begin{snippetexercise}{}
-    Sostituiamo \(2y = \sinh(t)\) in
-    \begin{align*}
-        \integral[\sqrt{1 + 4y^2}][y]
-        &= \integral[\frac12\sqrt{\cosh^2(t)}\cosh(t)][t] \\
-        &= \frac12\integral[\cosh^2(t)][t] \\
-        &= \frac12(t + \sinh(t)\cosh(t)) + C
-    \end{align*}
-    che abbiamo risolto per parti.
-\end{snippetexercise}
+\begin{snippetexample}{Lunghezza di una curva \(\mathcal{C}^1\) a tratti}
+    Consideriamo il bordo dell'insieme
+    \[
+        D=\{(x,y)\in\realnumbers^2\suchthat y^2\leq x\leq y+1\}.
+    \]
+    I due archi si incontrano quando
+    \[
+        y^2=y+1,
+    \]
+    cioè per
+    \[
+        a=\frac{1-\sqrt5}{2},
+        \qquad
+        b=\frac{1+\sqrt5}{2}.
+    \]
+    Possiamo parametrizzare il pezzo di parabola e il segmento con
+    \[
+        \gamma_1(y)=(y^2,y),
+        \qquad
+        \gamma_2(y)=(y+1,y),
+        \qquad y\in[a,b].
+    \]
+    Quindi
+    \[
+        L(\partial D)=L(\gamma_1)+L(\gamma_2).
+    \]
+    Per il segmento
+    \[
+        L(\gamma_2)=\sqrt2\,(b-a)=\sqrt{10}.
+    \]
+    Per la parabola
+    \[
+        L(\gamma_1)=\int_a^b\sqrt{1+4y^2}\,dy.
+    \]
+    Ponendo \(2y=\sinh t\), quindi \(dy=\frac12\cosh t\,dt\), otteniamo
+    \[
+        \int\sqrt{1+4y^2}\,dy
+        =\frac12\int\cosh^2t\,dt
+        =\frac14\left(t+\sinh t\cosh t\right)+C.
+    \]
+    Per tornare a \(y\) si usa \(t=\operatorname{arsinh}(2y)\).
+\end{snippetexample}
 
 \pagebreak
 
@@ -8181,12 +9041,12 @@ La derivata è data da \begin{align*}
     &= \frac{\dot\gamma(h^{-1}(s))}{||\dot\gamma(h^{-1}(s))}
 \end{align*}
 Quindi abbiamo trovato una parametrizzazione il cui vettore tangente
-è sempre un vettore.
+è sempre un versore.
 In particolare
 \[
     L\left(
-        \restr{\varphi}{[a,b]}
-    \right)= \integral[a][b][|\varphi'(\tau)|][\tau] = b-a
+        \restr{\varphi}{[s_1,s_2]}
+    \right)= \integral[s_1][s_2][||\varphi'(\tau)||][\tau] = s_2-s_1
 \]
 tale parametro \(s\) si chiama parametro arco o lunghezza d'arco o ascisse curvilinea.
 D'ora in avanti usiamo \(\gamma'\) per intendere derivata rispetto a questo parametro.
@@ -8216,7 +9076,7 @@ D'ora in avanti usiamo \(\gamma'\) per intendere derivata rispetto a questo para
             \frac{bs}{\sqrt{R^2 + b^2}}
         \end{pmatrix}
     \]
-    per \(s \in [0, \sqrt{R^2 + b^2}]\).
+    per \(s \in [0, 2\pi\sqrt{R^2 + b^2}]\).
 \end{snippetexample}
 
 \begin{snippettheorem}{}
@@ -8283,7 +9143,7 @@ Se la curva non è semplice l'integrale esiste comunque ma perdiamo l'interpreta
         ][\xi] \\
         &= - \integral[h(\alpha)][h(\beta)][
             f(\gamma(t))||\dot\gamma(t)||
-        ][\xi] \\
+][t] \\
         &= \integral[a][b][f(\gamma(t))||\dot\gamma(t)||][t]
     \end{align*}
     ponendo \(t = h(\xi)\). Siccome \(h\) è decrescente
@@ -8297,13 +9157,13 @@ Se la curva non è semplice l'integrale esiste comunque ma perdiamo l'interpreta
     e quindi \(||\dot\gamma(t)|| = \sqrt{\sin^2 t + \cos^2 t + 1} = \sqrt{2}\).
     Abbiamo quindi
     \begin{align*}
-        \int_\Gamma f\,ds &= \integral[0][2\pi][f(\cos t, \sin t, t)||\dot\gamma(t)][t] \\
+        \int_\Gamma f\,ds &= \integral[0][2\pi][f(\cos t, \sin t, t)||\dot\gamma(t)||][t] \\
         &= \integral[0][2\pi][t^3 \sqrt{2}][t] = 4\sqrt{2}\pi^4
     \end{align*}
 \end{snippetexample}
 
 \begin{snippetexample}{}
-    Sia \(\Gamma\) una cura parametrizzata da \(\gamma(t) = (t, t^2)\)
+    Sia \(\Gamma\) una curva parametrizzata da \(\gamma(t) = (t, t^2)\)
     per \(t\in [0,1]\) e \(f(x,y) = xy\).
     Abbiamo \(\dot\gamma(t) = (1, 2t)\) e la sua norma è data da
     \(\sqrt{1 + 4t^2}\). Abbiamo dunque l'integrale
@@ -8336,7 +9196,7 @@ e analogamente
 \]
 Se avessimo anche una densità
 \[
-    x_G = \frac{1}{\int_\Gamma \delta \,ds} \int\Gamma \delta \cdot d \,ds
+    x_G = \frac{1}{\int_\Gamma \delta \,ds} \int_\Gamma x\,\delta \,ds
 \]
 
 \begin{snippetexample}{}
@@ -9517,8 +10377,8 @@ di dominio di dimensioni superiori, abbiamo il problema di sforare fuori dal bor
     Sia \(Q = [a,b] \times [c,d]\) un rettangolo
     e sia \(f \colon Q \fromto \realnumbers\) limitata
     in \(Q\).
-    Siano \(\Pi_X = \{a = x_0, < x_1 < \cdots < x_n = b\}\)
-    e \(\Pi_Y = \{c = y_0, < y_1 < \cdots < y_m = c\}\) due partizioni.
+    Siano \(\Pi_X = \{a = x_0 < x_1 < \cdots < x_n = b\}\)
+    e \(\Pi_Y = \{c = y_0 < y_1 < \cdots < y_m = d\}\) due partizioni.
     Sia quindi \(\Pi = \Pi_X \times \Pi_Y\) una partizione di \(Q\).
     Denotiamo \(x_h\) e \(y_k\) le coordinate dei rettangoli delle rispettive variabili, quindi
     abbiamo \(n \times m\) rettangolini
@@ -9528,7 +10388,7 @@ di dominio di dimensioni superiori, abbiamo il problema di sforare fuori dal bor
     Poniamo
     \[
         m_{hk} \triangleq \inf_{Q_{hk}} f, \quad
-        M_{hk} \triangleq \sup_{Q_{hk}}
+        M_{hk} \triangleq \sup_{Q_{hk}} f
     \]
     e \[
         |Q_{hk}| = (x_h - x_{h-1}) (y_k - y_{k-1})
@@ -9562,7 +10422,7 @@ non è Riemann-integrabile.
 
 \begin{snippetproposition}{}
     Se \(\forall \varepsilon > 0\), esiste partizione \(\Pi\)
-    tale che \(S(\Pi) s(\Pi) < \varepsilon\), allora \(f\) è integrabile.
+    tale che \(S(\Pi)-s(\Pi) < \varepsilon\), allora \(f\) è integrabile.
 \end{snippetproposition}
 
 \begin{snippettheorem}{}
@@ -9574,7 +10434,7 @@ non è Riemann-integrabile.
     cioè \(\forall \varepsilon > 0\), esiste \(\delta > 0\)
     tale che
     \[
-        ||(x_1,y_1) - (x_2, y_2)|| < \delta \implies |f(x_1,y_2) - f(x_2, y_2)| < \varepsilon
+        ||(x_1,y_1) - (x_2, y_2)|| < \delta \implies |f(x_1,y_1) - f(x_2, y_2)| < \varepsilon
     \]
     Basta scegliere \(\Pi\) in modo tale che \(\text{diam} Q_{hk} < \delta\)
     per tutti gli \(h,k\). Abbiamo quindi
@@ -9613,7 +10473,7 @@ al grafico, quindi \(S(\Pi)- s(\Pi) < \varepsilon\).
 Possiamo costruire dei rettangolini usando le differenza fra
 le funzioni a scala superiori e inferiori
 \[
-    \sum_j (x_j, x_{j-1})(M_j - m_j) < \varepsilon
+    \sum_j (x_j-x_{j-1})(M_j - m_j) < \varepsilon
 \]
 e i rettangolini contengono il grafico di \(f\), quindi è trascurabile.
 
@@ -9661,9 +10521,10 @@ ma l'area totale decresce quindi va bene comunque.
     Sui rettangoli che contengono punti di \(D_f\), \(f\) è limitata (come ovunque)
     e quindi
     \begin{align*}
-        \sum_{\substack{h,k \\ \bigcup Q_{h,k} \supseteq D_f}} &\leq
-        \sum_{\substack{h,k \\ \bigcup Q_{h,k} \supseteq D_f}} 2 \sup_Q(|f|) \\
-        &\leq 2 \sup_Q(|f|) \varepsilon
+        \sum_{\substack{h,k \\ Q_{h,k}\cap D_f\neq\emptyset}}
+        |Q_{h,k}|(M_{h,k}-m_{h,k})
+        &\leq 2\sup_Q|f|\sum_{\substack{h,k \\ Q_{h,k}\cap D_f\neq\emptyset}}|Q_{h,k}| \\
+        &\leq 2\sup_Q|f|\,\varepsilon.
     \end{align*}
     Il contributo della differenza fra la somma superiore e inferiore è quindi trascurabile.
     Consideriamo ora il contributo a \(S(\Pi) - s(\Pi)\) dovuto ai rettangoli
@@ -9673,7 +10534,7 @@ ma l'area totale decresce quindi va bene comunque.
     Raffinando eventualmente la partizione, possiamo supporre che \(\text{diam}Q_{h,k} < \delta\).
     Per lo stesso ragionamento utilizzato in precedenza
     \(S(\Pi) - s(\Pi) \leq \mu(Q) \varepsilon\),
-    quindi in totale \[S(\Pi) - s(\Pi) \leq 2 \sup_Q(|f|) \varepsilon + \varphi\mu(Q) \to 0\]
+    quindi in totale \[S(\Pi) - s(\Pi) \leq 2 \sup_Q(|f|) \varepsilon + \varepsilon\mu(Q)\]
 \end{snippetproof}
 
 Sia \(Q = [a,b] \times [c,d]\) e sia \(f \colon Q \fromto \realnumbers\)
@@ -9701,13 +10562,13 @@ integrabile. Vogliamo stabilire se esiste una formula del tipo
 
 \begin{snippettheorem}{Teorema di Fubini}
     Sia \(f \colon Q \fromto \realnumbers\) integrabile.
-    Se \(\forall y \in [c,d]\) Esiste\[
+    Se per ogni \(y \in [c,d]\) esiste\[
         F(y) = \integral[a][b][f(x,y)][x]
     \]
     cioè se \(f(\cdot, y)\) è integrabile in \([a,b]\), allora \(F\) è integrabile
     in \([c,d]\) e vale
     \[
-        \iint_Q f(x,y)\,\text{d}y\,\text{d}{x} = \integral[c][d][F(y)][y]
+        \iint_Q f(x,y)\,\text{d}x\,\text{d}y = \integral[c][d][F(y)][y]
     \]
 \end{snippettheorem}
 
@@ -9719,18 +10580,18 @@ integrabile. Vogliamo stabilire se esiste una formula del tipo
     con il sup sulla striscia e poi con il sup di tutto il quadratino (e rispettivamente sup)
     \begin{align*}
         &\sum_h (x_h - x_{h-1}) m_{h,k} \leq \\
-        &\sum_h (x_h - x_{h-1}) \inf_{x \in [x_{h-l}, x_h]} f(x,y)
+        &\sum_h (x_h - x_{h-1}) \inf_{x \in [x_{h-1}, x_h]} f(x,y)
         \leq F(y) \leq
-        \sum_h (x_h - x_{h-1}) \sup_{x \in [x_{h-l}, x_h]} f(x,y) \\
+        \sum_h (x_h - x_{h-1}) \sup_{x \in [x_{h-1}, x_h]} f(x,y) \\
         &\leq \sum_h (x_h - x_{h-1}) M_{h,k}
     \end{align*}
     Per integrare
     scriviamo
     \begin{align*}
         \sum_{h,k} |Q_{h,k}| m_{h,k} \leq
-        \sum_k (y_k - y_{k-1}) \inf_{y \in [y_{k-l}, y_k]} F(y)
+        \sum_k (y_k - y_{k-1}) \inf_{y \in [y_{k-1}, y_k]} F(y)
         \leq
-        \sum_k (y_k - y_{k-1}) \sup_{y \in [y_{k-l}, y_k]} F(y)
+        \sum_k (y_k - y_{k-1}) \sup_{y \in [y_{k-1}, y_k]} F(y)
         \leq \sum_{h,k} |Q_{h,k}| M_{h,k}
     \end{align*}
     \[
@@ -9771,7 +10632,7 @@ e quindi \(F\) è definita.
             \integral[0][x^2][
                 2xy
             ][y] + 
-            \integral[x^3][3][
+            \integral[x^2][3][
                 (x^3 + 2x^2y)
             ][y]
             \right)
@@ -11587,7 +12448,7 @@ Una superficie chiusa, come la sfera, non ha bordo. In tal caso, quando la super
     la cui norma è \(R\). Quindi \(\text{d}S = R\,\text{d}\theta\,\text{d}z\).
     L'area è quindi
     \[
-        \iint_{[0,2\pi] \times [-1, 1]} R\,\text{d}\theta\,\text{d}z = R2\pi-2
+        \iint_{[0,2\pi] \times [-1, 1]} R\,\text{d}\theta\,\text{d}z = 4\pi R
     \]
 \end{snippetexample}
 
@@ -11615,7 +12476,7 @@ Per essere sviluppabile serve che la curvatura di Gauss sia nulla.
     \[
         \sigma_\theta \wedge \sigma_\varphi =
         \left(
-            (R+r\cos\cos\varphi)r\cos\theta\cos\varphi,
+            (R+r\cos\varphi)r\cos\theta\cos\varphi,
             (R+r\cos\varphi)r\sin\theta\cos\varphi,
             (R+r\cos\varphi)r\sin\varphi
         \right)
@@ -11666,11 +12527,10 @@ otteniamo la bottiglia di Klein, che non si può immergere in \(\realnumbers^3\)
     Il dominio di integrazione è % disegno 19/12/25
     l'intersezione fra il complementare di un cerchio e l'ellisse data.
     Questa ellisse ha semiasse \(2\) rispetto alle \(x\) e \(1\) rispetto a \(y\).
-    Il dominio sono quindi quattro pezzi simmetrici, di cui ne chiamiamo uno \(\overline A\)
-    e poi moltiplichiamo per \(4\).
+    Il dominio di integrazione è l'ellisse privata del disco unitario.
     \begin{align*}
         \iint_\Sigma \frac{z+y^2}{\sqrt{1 + 4(x^2 + y^2)}}\,\text{d}S &=
-        \iint_{\overline A} \frac{x^2 - y^2 + y^2}{\sqrt{1 + 4(x^2 + y^2)}}
+        \iint_{D} \frac{x^2 - y^2 + y^2}{\sqrt{1 + 4(x^2 + y^2)}}
         \sqrt{1 + 4(x^2 + y^2)}\,\text{d}x\,\text{d}y \\
         &= \iint_{\overline A} x^2 \,\text{d}x\,\text{d}y
     \end{align*}
@@ -11684,7 +12544,7 @@ otteniamo la bottiglia di Klein, che non si può immergere in \(\realnumbers^3\)
             ][\rho]
         ][\theta] = \frac\pi 4
     \end{align*}
-    Per fare \(I_2\) schiacciamo l'ellisse in un cerchio, quindi componiamo un'omotetia
+    Per fare \(I_1\) schiacciamo l'ellisse in un cerchio, quindi componiamo un'omotetia
     e poi le coordinate polari, quindi la trasformazione è
     \[
         \begin{cases}
@@ -11702,13 +12562,13 @@ otteniamo la bottiglia di Klein, che non si può immergere in \(\realnumbers^3\)
     il cui determinante è \(2\rho\).
     Abbiamo quindi
     \begin{align*}
-        I_2 &= \integral[][2\pi][
+        I_1 &= \integral[0][2\pi][
             \integral[0][1][
                 \left(2\rho\cos\theta\right)^2 2\rho    
             ][\rho]
         ][\theta] = 2\pi
     \end{align*}
-    Quindi l'integrale totale è \(2\pi - \frac{\pi}{2} = \frac{7}{4}\pi\).
+    Quindi l'integrale totale è \(2\pi - \frac{\pi}{4} = \frac{7}{4}\pi\).
 \end{snippetexample}
 
 \subsection{Flussi}
@@ -11723,7 +12583,7 @@ che sia orientabile (a meno che non facciamo un rivestimento doppio).
 \begin{align*}
     \iint_\Sigma F \cdot m \,\text{d}S
     &\triangleq \iint_A F(\sigma(u, v)) \cdot \frac{
-        \sigma_u(u,v) \wedge \sigma_v(z,v)
+        \sigma_u(u,v) \wedge \sigma_v(u,v)
     }{
         ||\sigma_u \wedge \sigma_v||
     }
@@ -11740,7 +12600,7 @@ Cambiando l'orientazione si inverte il segno del flusso.
     \begin{align*}
         \iint_{S_R} F\cdot m_z\,\text d S &= \iint_{\substack{0 \leq \theta \leq 2\pi \\ 0 \leq \varphi \leq \pi}}
         (0,0, R\cos\varphi)\cdot \left(R\sin\varphi(R \sin\varphi\cos\theta, R \sin\varphi\sin\theta, R \cos\varphi)\right)
-        \,\text d \theta \,\text d \varphi \\
+        \,\text d \theta \,\text d z \\
         &= R^3 \integral[0][2\pi][
             \integral[0][\pi][\sin\varphi \cos^2\varphi][\varphi]
         ][\theta] = \frac43 \pi R^3
@@ -11752,7 +12612,7 @@ Cambiando l'orientazione si inverte il segno del flusso.
     Calcoliamo il flusso uscente dalla superficie laterale del cilindro
     \[
         \Sigma \colon \begin{cases}
-            x^2 + y^2 \leq R^2 \\
+            x^2 + y^2 = R^2 \\
             0 \leq z \leq 1
         \end{cases}
     \]
@@ -11764,14 +12624,14 @@ Cambiando l'orientazione si inverte il segno del flusso.
     \begin{align*}
         \iint_{S_R} F\cdot m_z\,\text d S &=
         \iint_{\substack{0 \leq \theta \leq 2\pi \\ 0 \leq z \leq 1}}
-        F(\sigma(theta, z)) \cdot \sigma_\theta \wedge \sigma_z \,\text d \theta \,\text d \varphi \\
+        F(\sigma(\theta, z)) \cdot \sigma_\theta \wedge \sigma_z \,\text d \theta \,\text d z \\
         &= \iint_{\substack{0 \leq \theta \leq 2\pi \\ 0 \leq z \leq 1}}
-        \left(R \sin z \cos\theta + R^2 \sin^2 \theta\right) \,\text d \theta \,\text d \varphi \\
-        &= R \pi^2
+        \left(R \sin z \cos\theta + R^2 \sin^2 \theta\right) \,\text d \theta \,\text d z \\
+        &= \pi R^2
     \end{align*}
     Calcoliamo ora il flusso uscente dai due "tappi".
     Dobbiamo parametrizzare i tappi. Quello superiore con
-    \(\sigma(x,y) = (x,y,1)\) e \(\sigma(x,y) = (x,y,-1)\).
+    \(\sigma(x,y) = (x,y,1)\) e \(\sigma(x,y) = (x,y,0)\).
     Il normale esterno è \((0,0,1)\) e \((0,0,-1)\).
     Quindi il flusso attraverso il tappo superiore è
     \begin{align*}
@@ -11787,7 +12647,7 @@ Cambiando l'orientazione si inverte il segno del flusso.
 \end{snippetexample}
 
 \begin{snippettheorem}{Teorema della divergenza o di Gauss}
-    Sia \(\omega \subseteq \realnumbers^n\) aperto, connesso,
+    Sia \(\Omega \subseteq \realnumbers^n\) aperto, connesso,
     limitato e semplice rispetto a tutti gli assi,
     \(\partial \Omega\) ipersuperficie regolare orientabile,
     \(F \in \mathcal C^1(\overline \Omega, \realnumbers^n)\)

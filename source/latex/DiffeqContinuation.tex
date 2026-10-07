@@ -1,0 +1,140 @@
+\documentclass[preview]{standalone}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+\begin{document}
+\id{diffeq-continuation}
+\genpage
+\section{Maximal solutions}
+
+\includesnpt{diffeq-maximal-solution-definition}
+
+\begin{snippetlemma}{diffeq-vector-overlap-uniqueness}{Agreement on an overlap}
+    Let \(f\) be continuous and locally Lipschitz in the state, uniformly
+    locally in time, on an open \(\Omega\subseteq\realnumbers^{m+1}\).
+    Two solutions of \(y'=f(t,y)\) meeting at a point agree on the intersection
+    of their interval domains.
+\end{snippetlemma}
+
+\begin{snippetproof}{diffeq-vector-overlap-uniqueness-proof}{diffeq-vector-overlap-uniqueness}{Agreement on an overlap}
+    On the common interval, the \set \(\{t:u(t)=v(t)\}\) is nonempty,
+    relatively closed by continuity, and relatively open by local uniqueness.
+    Connectedness makes it the whole interval. This avoids assuming that
+    a first point of disagreement or a last point of agreement exists.
+\end{snippetproof}
+
+\begin{snippettheorem}{diffeq-maximal-extension-existence}{Maximal extensions}
+    Let \(\Omega\subseteq\realnumbers^{m+1}\) be open and \(f\) continuous.
+    Every solution of \(y'=f(t,y)\) extends to a maximal solution, whose
+    domain is an open interval. If \(f\) is locally Lipschitz in the state,
+    uniformly locally in time, the maximal extension is unique.
+\end{snippettheorem}
+
+\begin{snippetproof}{diffeq-maximal-extension-existence-proof}{diffeq-maximal-extension-existence}{Maximal extensions}
+    Under local uniqueness, collect all extensions \((u_\gamma,I_\gamma)\)
+    of the given solution. They agree on overlaps by the preceding lemma.
+    Their union is an interval
+    \[
+        I_*=\bigcup_\gamma I_\gamma
+        =(\inf_\gamma\inf I_\gamma,\sup_\gamma\sup I_\gamma).
+    \]
+    Define \(u_*(t)=u_\gamma(t)\) whenever \(t\in I_\gamma\).
+    This is well defined and locally a solution; it is maximal by construction.
+    Without uniqueness, order extensions by restriction. Every chain has an
+    upper bound obtained by joining its compatible members. Zorn's lemma
+    gives a maximal member. A finite endpoint included in its domain would
+    allow extension using Peano's theorem there, so a maximal domain is open.
+\end{snippetproof}
+
+\section{Continuation at finite endpoints}
+
+\begin{snippetproposition}{diffeq-uniform-continuity-endpoint}{Endpoint limits}
+    A uniformly continuous \function \(u\colon(a,b)\fromto\realnumbers^m\)
+    has a finite limit at \(b\) if \(b<+\infty\), and at \(a\) if \(a>-\infty\).
+\end{snippetproposition}
+
+\begin{snippetproof}{diffeq-uniform-continuity-endpoint-proof}{diffeq-uniform-continuity-endpoint}{Endpoint limits}
+    If \(t_n\to b^-\), the sequence \(t_n\) is Cauchy, hence \(u(t_n)\)
+    is Cauchy and converges in \(\realnumbers^m\).
+    Interleaving any two such sequences proves that their limits agree.
+    The sequential criterion gives the endpoint limit; the left endpoint is analogous.
+\end{snippetproof}
+
+\begin{snippettheorem}{diffeq-interior-limit-continuation}{Continuation through an interior limit}
+    Let \(f\colon\Omega\fromto\realnumbers^m\) be continuous on an open set,
+    and let \(u\colon(a,b)\fromto\realnumbers^m\) solve \(u'=f(t,u)\).
+    If \(b<+\infty\), \(u(t)\to v\) as \(t\to b^-\), and \((b,v)\in\Omega\),
+    then \(u\) extends as a solution beyond \(b\).
+\end{snippettheorem}
+
+\begin{snippetproof}{diffeq-interior-limit-continuation-proof}{diffeq-interior-limit-continuation}{Continuation through an interior limit}
+    Peano's theorem gives a solution \(\psi\) near \(b\) with \(\psi(b)=v\).
+    Join \(u\) for \(t<b\) to \(\psi\) for \(t\geq b\).
+    The joined \function is continuous. Moreover
+    \[
+        u'(t)=f(t,u(t))\longrightarrow f(b,v)=\psi'(b).
+    \]
+    The endpoint derivative theorem, component by component, shows that its
+    left derivative at \(b\) equals its right derivative.
+    The join is therefore \(C^1\) and satisfies the equation at \(b\) as well.
+\end{snippetproof}
+
+\begin{snippettheorem}{diffeq-escape-compacts}{Escape from compact subsets}
+    Let \(\Omega\subseteq\realnumbers^{m+1}\) be open, \(f\) continuous,
+    and \(u\colon(a,b)\fromto\realnumbers^m\) a maximal solution.
+    At each finite endpoint, its graph eventually leaves every compact
+    \(K\subset\Omega\). For example, if \(b<+\infty\), there is \(\delta>0\)
+    such that \((t,u(t))\notin K\) for \(b-\delta<t<b\).
+    If both endpoints are finite, one can choose a common
+    \(0<\delta<(b-a)/2\) for both ends.
+\end{snippettheorem}
+
+\begin{snippetproof}{diffeq-escape-compacts-proof}{diffeq-escape-compacts}{Escape from compact subsets}
+    Suppose instead that \(t_n\to b^-\) and \((t_n,u(t_n))\in K\).
+    Compactness gives, after extraction, \((t_n,u(t_n))\to(b,v)\in K\subset\Omega\).
+    Choose a closed cylinder
+    \([b-\eta,b+\eta]\times\overline B_r(v)\subset\Omega\);
+    let \(M\) bound \(\|f\|\) on it.
+    For large \(n\), \(\|u(t_n)-v\|<r/2\) and \(b-t_n<r/(2(M+1))\).
+    Until a possible first exit from the ball,
+    \(\|u(t)-u(t_n)\|\leq M(t-t_n)<r/2\).
+    A first exit before \(b\) is therefore impossible.
+    The whole remaining tail stays in that cylinder, so its derivative is bounded.
+    It is Lipschitz there and has a finite limit at \(b\); the subsequence
+    forces this limit to be \(v\). The interior-limit theorem extends it, a contradiction.
+    The left endpoint follows by reversing time.
+\end{snippetproof}
+
+\begin{snippetnote}{diffeq-compact-proof-distinction}{Why a subsequence needs an extra argument}
+    If an entire solution tail lies in a compact subset of \(\Omega\), boundedness
+    of \(f\) immediately gives uniform continuity and an endpoint limit.
+    The escape theorem is stronger: it also rules out arbitrarily late returns
+    to a compact set. The bounded-speed cylinder argument upgrades those
+    returns to a trapped tail, filling the missing step.
+\end{snippetnote}
+
+\begin{snippetcorollary}{diffeq-strip-blowup-alternative}{Blow-up alternative on a full strip}
+    Let \(f\in C(I\times\realnumbers^m,\realnumbers^m)\), with \(I\) open.
+    If a maximal solution has a finite endpoint \(b\in I\), then
+    \(\|u(t)\|\to+\infty\) as \(t\to b^-\).
+    In particular a bounded solution cannot terminate at an interior time of \(I\).
+\end{snippetcorollary}
+
+\begin{snippetproof}{diffeq-strip-blowup-alternative-proof}{diffeq-strip-blowup-alternative}{Blow-up alternative on a full strip}
+    If the norm failed to tend to infinity, a sequence of graph points with
+    times tending to \(b\) would lie in
+    \([b-\eta,b+\eta]\times\overline B_R(0)\subset I\times\realnumbers^m\),
+    contradicting escape from compact subsets.
+\end{snippetproof}
+
+\begin{snippetexample}{diffeq-oscillating-boundary-example}{No endpoint limit at a domain boundary}
+    On \(\Omega=(0,+\infty)\times\realnumbers\), the equation
+    \(y'=-\cos(1/x)/x^2\) has solutions \(y=\sin(1/x)+C\).
+    They are bounded but have no limit as \(x\to0^+\).
+    Their graphs still leave every compact subset of \(\Omega\), since time
+    approaches its boundary. A compact subset of an open set has positive
+    distance from its complement, so boundary approach cannot remain in it.
+\end{snippetexample}
+\end{document}

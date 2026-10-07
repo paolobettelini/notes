@@ -1,0 +1,65 @@
+\documentclass[preview]{standalone}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+\begin{document}
+\id{diffeq-continuous-dependence}
+\genpage
+\section{Continuous dependence}
+
+\begin{snippettheorem}{diffeq-continuous-dependence-theorem}{Perturbing initial values and vector fields}
+    Let \(\Omega\subseteq\realnumbers^{m+1}\) be open and
+    \(f_n,f\colon\Omega\fromto\realnumbers^m\) continuous.
+    Suppose \(f_n\to f\) uniformly on compact subsets, and for every compact
+    \(K\subset\Omega\) there is \(L_K\) such that
+    \[
+        \|f_n(t,u)-f_n(t,v)\|\leq L_K\|u-v\|
+    \]
+    whenever \((t,u),(t,v)\in K\), uniformly in \(n\).
+    Let \(y_n\to y_0\), and let \(u\) be the maximal solution of
+    \(u'=f(t,u)\), \(u(t_0)=y_0\), on \((\alpha,\beta)\).
+    On each \([a,b]\subset(\alpha,\beta)\), the maximal solutions
+    \(u_n'=f_n(t,u_n)\), \(u_n(t_0)=y_n\), are defined for all sufficiently
+    large \(n\), and converge uniformly to \(u\) there.
+\end{snippettheorem}
+
+\begin{snippetproof}{diffeq-continuous-dependence-proof}{diffeq-continuous-dependence-theorem}{Perturbing initial values and vector fields}
+    Enlarge \([a,b]\) inside \((\alpha,\beta)\) to a compact interval \(J\)
+    containing \(t_0\). Choose a compact tube
+    \[
+        K=\{(t,v):t\in J,\ \|v-u(t)\|\leq r\}\subset\Omega,\qquad r>0.
+    \]
+    The Lipschitz estimate passes to \(f\) by taking limits, so all these
+    initial problems have local uniqueness.
+    Put \(\varepsilon_n=\max_K\|f_n-f\|\to0\), \(L=L_K\),
+    \(T=\max_{t\in J}|t-t_0|\).
+    As long as \(u_n\) stays in the tube, the integral equations give,
+    in either time direction,
+    \[
+        \|u_n(t)-u(t)\|
+        \leq\|y_n-y_0\|+\varepsilon_n|t-t_0|
+              +L\left|\int_{t_0}^t\|u_n(s)-u(s)\|\,ds\right|.
+    \]
+    Integral Gronwall yields
+    \[
+        \|u_n(t)-u(t)\|\leq
+        (\|y_n-y_0\|+\varepsilon_n T)e^{LT}=:\eta_n\longrightarrow0.
+    \]
+    For large \(n\), \(\eta_n<r/2\), ruling out a first exit through the tube wall.
+    Escape from compact sets rules out a maximal endpoint before the end of \(J\).
+    Thus \(u_n\) exists throughout \(J\), and the same estimate proves uniform convergence.
+\end{snippetproof}
+
+\begin{snippetcorollary}{diffeq-initial-value-stability}{Stability with respect to initial values}
+    Let \(f\) be continuous and \(L\)-Lipschitz in the state on
+    \(I\times\realnumbers^m\). Two solutions \(u,v\) satisfy
+    \[
+        \|u(t)-v(t)\|\leq e^{L|t-t_0|}\|u(t_0)-v(t_0)\|.
+    \]
+    In particular, for a fixed vector field with local Lipschitz bounds,
+    convergence of initial values implies locally uniform convergence of
+    solutions on the maximal interval of the limiting solution.
+\end{snippetcorollary}
+\end{document}

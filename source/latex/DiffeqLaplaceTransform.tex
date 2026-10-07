@@ -17,8 +17,9 @@
 \section{Laplace Transform}
 
 \begin{snippetdefinition}{laplace-transform-definition}{Laplace Transform}
-    Let \(f(t)\) be a piecewise continuous \function, the \emph{Laplace transform}
-    is defined as
+    Let \(f\colon[0,+\infty)\fromto\realnumbers\) be piecewise continuous
+    on every compact interval. Its \emph{Laplace transform}, at each real \(s\)
+    for which the following improper integral converges absolutely, is
     \[
         \mathcal{L}\{f(t)\}= \integral[0][\infty][e^{-st}f(t)][t]=F(s)
     \]
@@ -27,7 +28,8 @@
 \subsection{Properties of the Laplace Transform}
 
 \begin{snippetcorollary}{laplace-transform-constant-property}{Laplace Transform constant property}
-    It is easy to see that given \(f(t)\) and \(g(t)\)
+    Let \(f,g\) have absolutely convergent Laplace transforms at \(s\).
+    Then
     \[
         \laplacetf\{af(t)+bg(t)\} = a\laplacetf\{f(t)\} + b\laplacetf\{g(t)\}
     \]
@@ -37,7 +39,8 @@
 \subsection{Inverse Laplace Transform}
 
 \begin{snippetdefinition}{inverse-laplace-transform-definition}{Inverse Laplace Transform}
-    The Inverse Laplace Transform is defined as
+    On continuous \function[functions] on \([0,+\infty)\) of exponential order,
+    the \emph{inverse Laplace transform} recovers \(f\) from its transform \(F\):
     \[
         {\mathcal{L}}^{-1} \{F(s)\}= f(t)
     \]
@@ -46,7 +49,8 @@
 \subsection{Properties of the Inverse Laplace Transform}
 
 \begin{snippetcorollary}{inverse-laplace-transform-contant-property}{Inverse Laplace Transform constant property}
-    Given the Laplace transforms \(F(s)\) and \(G(s)\)
+    Let \(F,G\) be the transforms of continuous \function[functions] \(f,g\)
+    of exponential order on \([0,+\infty)\). Then
     \[
         \invlaplacetf \{aF(s)+bG(s)\} =
         a\invlaplacetf\{F(s)\} +
@@ -59,16 +63,25 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%% FROM HERE
 
-\begin{snippet}{heaviside-function-expl}
-    Consider a \function in the form \(H(t-c)f(t-c)\) where \(H\) is the
-    Heaviside step function, meaning \(f(t)\) is shifted by \(c\) and is \(0\) for \(t < c\).
+\begin{snippettheorem}{heaviside-function-expl}{Translation in time}
+    Let \(c\geq0\) and let \(f\) be piecewise continuous on compact subintervals
+    of \([0,+\infty)\), with absolutely convergent Laplace transform \(F(s)\).
+    Define \(g(t)=0\) for \(t<c\), and \(g(t)=f(t-c)\) for \(t\geq c\).
+    Equivalently \(g(t)=H(t-c)f(t-c)\), with the zero branch understood
+    without evaluating \(f\) at negative arguments. Then
+    \[
+        \laplacetf\{g\}(s)=e^{-cs}F(s).
+    \]
+\end{snippettheorem}
+
+\begin{snippetproof}{heaviside-function-expl-proof}{heaviside-function-expl}{Translation in time}
 
     \begin{align*}
         \laplacetf\{H(t-c)f(t-c)\} &=
         \integral[0][\infty][e^{-st}H(t-c)f(t-c)][t] \\
         &= \integral[c][\infty][e^{-st}f(t-c)][t]
     \end{align*}
-    Now substitue for \(u=t-c\)
+    Substitute \(u=t-c\):
     \begin{align*}
         \integral[0][\infty][e^{-s(u+c)}f(u)][u]
         &= \integral[0][\infty][e^{-su}e^{-cs}f(u)][u] \\
@@ -80,19 +93,25 @@
     \[
         \laplacetf\{H(t-c)f(t-c)\} =
         e^{-cs}F(s)
-        \quad
-        \text{and}
-        \quad
-        {\laplacetf}^{-1}\{e^{-cs}F(s)\} =
-        H(t-c)f(t-c)
     \]
-\end{snippet}
+\end{snippetproof}
+
+\begin{snippetnote}{diffeq-laplace-inversion-convention}{Values at jumps}
+    For piecewise continuous \function[functions], a Laplace transform does not
+    distinguish changes at isolated points. Inverse transforms in this class
+    therefore specify the \function at its continuity points, with a separate
+    convention at jumps. In this sense the translation formula is also written
+    \(\invlaplacetf\{e^{-cs}F(s)\}=H(t-c)f(t-c)\).
+\end{snippetnote}
 
 \subsection{Laplace Transform of derivatives}
 
 \begin{snippettheorem}{laplace-transform-of-derivatives}{Laplace Transform of derivatives}
-    Let \(f'\), \(f''\), \(\cdots\), \(f^{(n-1)}\) be continuous functions
-    and \(f^{(n)}\) a piecewise continuous functions. Then,
+    Let \(n\geq1\), \(f\in C^{n-1}([0,+\infty))\), and suppose
+    \(f^{(n-1)}\) is piecewise continuously differentiable on compact intervals.
+    Assume there exist \(M,a,T\) such that
+    \(|f^{(j)}(t)|\leq Me^{at}\) for \(0\leq j\leq n\), \(t\geq T\),
+    wherever the derivatives are defined. Then for real \(s>a\),
     \[
         \laplacetf\{f^{(n)}\} =
         s^n \laplacetf\{f\} -

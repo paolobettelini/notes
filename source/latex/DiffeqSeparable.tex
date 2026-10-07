@@ -1,0 +1,131 @@
+\documentclass[preview]{standalone}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+\begin{document}
+\id{diffeq-separable}
+\genpage
+\section{Separable equations}
+
+\begin{snippetdefinition}{separale-equation-definition}{Separable equation}
+    A first-order equation is \emph{separable} if it has the form
+    \(y'=h(x)u(y)\), where \(h\colon I\fromto\realnumbers\) and
+    \(u\colon J\fromto\realnumbers\) are continuous on open intervals.
+    A related separated form is \(a(y)y'=h(x)\); wherever \(a(y)\neq0\),
+    this is the normal form \(y'=h(x)/a(y)\).
+\end{snippetdefinition}
+
+\begin{snippetproposition}{diffeq-separable-equilibria}{Constant solutions}
+    Let \(h\colon I\fromto\realnumbers\) be continuous and
+    \(u\in\continuityclass^1(J)\), with \(I,J\) open intervals.
+    For every \(y_0\in J\) with \(u(y_0)=0\), the constant \function \(y=y_0\)
+    solves \(y'=h(x)u(y)\) on \(I\), and is the unique solution with
+    that initial value. If \(h\not\equiv0\), these are all constant solutions on \(I\).
+\end{snippetproposition}
+
+\begin{snippetproof}{diffeq-separable-equilibria-proof}{diffeq-separable-equilibria}{Constant solutions}
+    Substitute \(y=y_0\) into the equation. Local uniqueness applies because
+    \(f(x,y)=h(x)u(y)\) and \(\partial_y f=h(x)u'(y)\) are continuous.
+    If \(h(x_1)\neq0\), the equation for a constant solution implies \(u(y_0)=0\).
+\end{snippetproof}
+
+\begin{snippettheorem}{separale-equation-sol}{Separation of variables}
+    Let \(I,J\) be open intervals, \(h\in C(I)\), \(u\in C^1(J)\),
+    \(x_0\in I\), and \(y_0\in J\) with \(u(y_0)\neq0\).
+    On the component \(J_0\) of \(\{s\in J:u(s)\neq0\}\) containing \(y_0\), set
+    \[
+        F(v)=\integral[y_0][v][\frac{1}{u(s)}][s],
+        \qquad G(x)=\integral[x_0][x][h(t)][t].
+    \]
+    The initial value problem \(y'=h(x)u(y)\), \(y(x_0)=y_0\),
+    has the local solution \(y=F^{-1}\circ G\).
+    Equivalently, its solution in \(J_0\) is characterized by
+    \[
+        \integral[y_0][y(x)][\frac{1}{u(s)}][s]
+        =\integral[x_0][x][h(t)][t].
+    \]
+    More generally, if \(H'=a\) and \(G'=h\), a differentiable \function
+    \(y\) solves \(a(y)y'=h(x)\) \ifandonlyif \(H(y(x))=G(x)+C\).
+\end{snippettheorem}
+
+\begin{snippetproof}{separale-equation-sol-proof}{separale-equation-sol}{Separation of variables}
+    Near \(x_0\), continuity gives \(u(y(x))\neq0\). Divide by this quantity
+    and integrate:
+    \[
+        \integral[x_0][x][\frac{y'(t)}{u(y(t))}][t]
+        =\integral[x_0][x][h(t)][t].
+    \]
+    The chain rule, or the substitution \(s=y(t)\), identifies the left side
+    with \(F(y(x))\). Since \(F'=1/u\) is continuous and never zero on \(J_0\),
+    \(F\) is strictly monotone and has a differentiable inverse.
+    As \(G(x_0)=F(y_0)=0\), the inverse expression is defined near \(x_0\).
+    Differentiating it proves the converse. For the separated form,
+    \((H\circ y)'=a(y)y'\), so integration and differentiation prove both implications.
+\end{snippetproof}
+
+\begin{snippetnote}{diffeq-separation-domain-warning}{Domains and lost solutions}
+    Dividing \(y'=h(x)u(y)\) by \(u(y)\) discards the constant solutions
+    at zeros of \(u\); list them first. With primitives \(F'=1/u\), \(G'=h\),
+    the relation is \(F(y)=G(x)+C\). Inverting requires choosing a branch
+    on which \(u\neq0\) and restricting \(G(x)+C\) to the range of \(F\).
+    The component containing the initial point determines the relevant interval.
+\end{snippetnote}
+
+\section{Examples}
+
+\begin{snippetexample}{diffeq-separable-quartic-example}{A global positive solution}
+    Solve \(y'=4x^3/y\), \(y(0)=2\), in
+    \(\Omega=\realnumbers\times(0,+\infty)\).
+    Here \(h(x)=4x^3\), \(u(y)=1/y\), so there are no constant solutions.
+    Separation gives
+    \[
+        yy'=4x^3,\qquad (y^2/2)'=(x^4)',\qquad y^2/2=x^4+C.
+    \]
+    The initial value gives \(C=2\). The positive branch is therefore
+    \[
+        y(x)=\sqrt{2x^4+4},\qquad x\in\realnumbers.
+    \]
+    The radicand is positive everywhere, so this solution is global.
+\end{snippetexample}
+
+\begin{snippetexample}{diffeq-separable-exponential-example}{Dependence of the domain on the initial value}
+    Consider \(y'=e^{x-y}\), \(y(0)=a\), with \(a\in\realnumbers\).
+    Here \(h(x)=e^x\), \(u(y)=e^{-y}\), and the equation is defined on
+    \(\realnumbers^2\), with no constant solutions. Separation yields
+    \[
+        e^y y'=e^x,\qquad (e^y)'=(e^x)',\qquad e^y=e^x+C.
+    \]
+    At zero, \(e^a=1+C\), giving
+    \[
+        y(x)=\ln(e^x+e^a-1).
+    \]
+    Its domain requires \(e^x>1-e^a\).
+    If \(a\geq0\), the right-hand side is nonpositive and the maximal interval
+    is \(\realnumbers\). If \(a<0\), it is
+    \[
+        I=(\ln(1-e^a),+\infty).
+    \]
+    In the latter case the finite left endpoint is a vertical asymptote.
+\end{snippetexample}
+
+\begin{snippetexample}{diffeq-separable-implicit-example}{An implicit solution}
+    Consider \(y'=2x/(ye^y)\), \(y(1)=3\), on the positive \(y\)-half-plane.
+    Here \(h(x)=2x\) and \(u(y)=1/(ye^y)\). Multiplication and integration give
+    \begin{align*}
+        ye^y y'&=2x,\\
+        \integral[1][x][y(t)e^{y(t)}y'(t)][t]
+        &=\integral[1][x][2t][t],\\
+        \integral[3][y(x)][se^s][s]&=x^2-1.
+    \end{align*}
+    Integration by parts gives \(\int se^s\,ds=(s-1)e^s\), hence
+    \[
+        (y(x)-1)e^{y(x)}-2e^3=x^2-1.
+    \]
+    This cannot be solved for \(y\) using elementary \function[functions].
+    Nevertheless \(v\mapsto(v-1)e^v\) has derivative \(ve^v>0\) for \(v>0\);
+    its range there is \((-1,+\infty)\). Since \(x^2-1+2e^3>-1\),
+    the implicit formula determines a positive solution for every real \(x\).
+\end{snippetexample}
+\end{document}

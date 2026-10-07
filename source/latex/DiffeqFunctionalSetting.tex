@@ -1,0 +1,104 @@
+\documentclass[preview]{standalone}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stellar}
+\usepackage{definitions}
+\usepackage{bettelini}
+\begin{document}
+\id{diffeq-functional-setting}
+\genpage
+\section{Function spaces}
+
+\includesnpt{bounded-continuous-functions-uniform-norm}
+
+\begin{snippetdefinition}{diffeq-function-space-norms}{Uniform derivative norms}
+    For \(A\subseteq\realnumbers\), let \(B(A,\realnumbers^m)\) be the space
+    of bounded \function[functions], with
+    \(\|u\|_{\infty,A}=\sup_{x\in A}\|u(x)\|\).
+    For a compact nondegenerate interval \(I\) and \(k\geq0\), put
+    \[
+        \|u\|_{C^k(I)}=\sum_{j=0}^k\|u^{(j)}\|_{\infty,I},
+        \qquad u\in C^k(I,\realnumbers^m).
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{diffeq-function-spaces-complete}{Completeness and an anchored norm}
+    The spaces \(B(A,\realnumbers^m)\) with the uniform norm and
+    \(C^k([a,b],\realnumbers^m)\) with the uniform derivative norm are complete.
+    For \(x_0\in[a,b]\), the norm
+    \[
+        \|u\|_*=\|u(x_0)\|+\|u'\|_\infty
+    \]
+    is equivalent to the usual norm on \(C^1([a,b],\realnumbers^m)\).
+\end{snippetproposition}
+
+\begin{snippetproof}{diffeq-function-spaces-complete-proof}{diffeq-function-spaces-complete}{Completeness and an anchored norm}
+    A uniformly Cauchy sequence has pointwise limits in the complete space
+    \(\realnumbers^m\); the Cauchy estimate passes to the limit uniformly.
+    Uniform limits preserve boundedness and continuity.
+    If a sequence is Cauchy in \(C^k\), each derivative has a uniform limit.
+    Applying the fundamental theorem of calculus successively shows that these
+    limits are the derivatives of the zeroth limit, proving completeness.
+    Finally
+    \[
+        \|u\|_*\leq\|u\|_{C^1},\qquad
+        \|u\|_\infty\leq\|u(x_0)\|+(b-a)\|u'\|_\infty,
+    \]
+    so \(\|u\|_{C^1}\leq\max\{1,1+b-a\}\|u\|_*\).
+\end{snippetproof}
+
+\section{The integral formulation}
+
+\begin{snippetdefinition}{diffeq-volterra-equation-definition}{Volterra equation}
+    Let \(f\colon\Omega\fromto\realnumbers^m\) be continuous on an open
+    \(\Omega\subseteq\realnumbers^{m+1}\), and let \((x_0,y_0)\in\Omega\).
+    A solution of the associated \emph{Volterra equation} on an interval \(I\)
+    containing \(x_0\) is a continuous \function \(u\colon I\fromto\realnumbers^m\)
+    with graph in \(\Omega\), such that
+    \[
+        u(x)=y_0+\integral[x_0][x][f(t,u(t))][t].
+    \]
+\end{snippetdefinition}
+
+\begin{snippetproposition}{diffeq-volterra-equivalence}{Differential and integral formulations}
+    Let \(f\colon\Omega\fromto\realnumbers^m\) be continuous on an open
+    \(\Omega\subseteq\realnumbers^{m+1}\), and let \((x_0,y_0)\in\Omega\).
+    A continuous \function \(u\) on an interval \(I\ni x_0\), with graph in
+    \(\Omega\), solves the Volterra equation
+    \[
+        u(x)=y_0+\int_{x_0}^x f(t,u(t))\,dt
+    \]
+    \ifandonlyif it is a \(C^1\) solution of \(u'=f(x,u)\), \(u(x_0)=y_0\).
+\end{snippetproposition}
+
+\begin{snippetproof}{diffeq-volterra-equivalence-proof}{diffeq-volterra-equivalence}{Differential and integral formulations}
+    For a differential solution, the fundamental theorem of calculus gives
+    \[
+        u(x)-y_0=u(x)-u(x_0)=\int_{x_0}^x u'(t)\,dt
+        =\int_{x_0}^x f(t,u(t))\,dt.
+    \]
+    Conversely \(t\mapsto f(t,u(t))\) is continuous, so its proper Riemann
+    integral is \(C^1\) with derivative \(f(x,u(x))\). Evaluating at \(x_0\)
+    gives the initial condition.
+\end{snippetproof}
+
+\begin{snippetproposition}{diffeq-uniform-limit-solutions}{Uniform limits of solutions}
+    Let \(f\colon\Omega\fromto\realnumbers^m\) be continuous on an open set,
+    and let \(u_n\) solve \(u_n'=f(x,u_n)\) on a compact interval \(I\).
+    If \(u_n\to u\) uniformly and all graphs, including that of \(u\),
+    lie in one compact subset of \(\Omega\), then \(u\) solves the same equation
+    and \(u_n'\to u'\) uniformly.
+    In particular the compact-graph condition is automatic when
+    \(\Omega=\realnumbers^{m+1}\).
+\end{snippetproposition}
+
+\begin{snippetproof}{diffeq-uniform-limit-solutions-proof}{diffeq-uniform-limit-solutions}{Uniform limits of solutions}
+    Uniform continuity of \(f\) on the common compact set gives
+    \(f(\cdot,u_n)\to f(\cdot,u)\) uniformly.
+    In the identities
+    \(u_n(x)=u_n(x_0)+\int_{x_0}^x f(t,u_n(t))\,dt\),
+    pass to the uniform limit. The Volterra equivalence proves the result.
+    Equivalently, uniform convergence of the derivatives and convergence at
+    one point allow passage to the limit under differentiation.
+\end{snippetproof}
+\end{document}
